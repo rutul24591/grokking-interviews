@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .retry { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .comm { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .access { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Payment Failure -->
+  <rect class="step" x="50" y="50" width="180" height="100" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="text-label">Payment Failure</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Card declined</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">Insufficient funds</text>
+  <text x="140" y="145" text-anchor="middle" class="sublabel">Card expired</text>
+  
+  <!-- Retry 1 -->
+  <rect class="retry" x="280" y="50" width="140" height="100" rx="8"/>
+  <text x="350" y="80" text-anchor="middle" class="text-label">Retry 1</text>
+  <text x="350" y="105" text-anchor="middle" class="sublabel">Day 1</text>
+  <text x="350" y="125" text-anchor="middle" class="sublabel">Email: Payment Failed</text>
+  <text x="350" y="145" text-anchor="middle" class="sublabel">Access: Full</text>
+  
+  <!-- Retry 2 -->
+  <rect class="retry" x="470" y="50" width="140" height="100" rx="8"/>
+  <text x="540" y="80" text-anchor="middle" class="text-label">Retry 2</text>
+  <text x="540" y="105" text-anchor="middle" class="sublabel">Day 3</text>
+  <text x="540" y="125" text-anchor="middle" class="sublabel">Email: Retry Reminder</text>
+  <text x="540" y="145" text-anchor="middle" class="sublabel">Access: Full</text>
+  
+  <!-- Retry 3 -->
+  <rect class="retry" x="660" y="50" width="140" height="100" rx="8"/>
+  <text x="730" y="80" text-anchor="middle" class="text-label">Retry 3</text>
+  <text x="730" y="105" text-anchor="middle" class="sublabel">Day 7</text>
+  <text x="730" y="125" text-anchor="middle" class="sublabel">Email: Final Notice</text>
+  <text x="730" y="145" text-anchor="middle" class="sublabel">Access: Limited</text>
+  
+  <!-- Expired -->
+  <rect class="access" x="850" y="50" width="120" height="100" rx="8"/>
+  <text x="910" y="80" text-anchor="middle" class="text-label">Expired</text>
+  <text x="910" y="105" text-anchor="middle" class="sublabel">Day 30</text>
+  <text x="910" y="125" text-anchor="middle" class="sublabel">Access: None</text>
+  <text x="910" y="145" text-anchor="middle" class="sublabel">Data retained</text>
+  
+  <!-- Communication Cadence -->
+  <rect class="comm" x="280" y="200" width="520" height="120" rx="8"/>
+  <text x="540" y="230" text-anchor="middle" class="text-label">Communication Cadence</text>
+  
+  <rect class="comm" x="300" y="250" width="150" height="50" rx="4"/>
+  <text x="375" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600">Immediate</text>
+  <text x="375" y="290" text-anchor="middle" class="sublabel">Payment Failed Email</text>
+  
+  <rect class="comm" x="470" y="250" width="150" height="50" rx="4"/>
+  <text x="545" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600">Before Retry 2</text>
+  <text x="545" y="290" text-anchor="middle" class="sublabel">Retry Reminder Email</text>
+  
+  <rect class="comm" x="640" y="250" width="150" height="50" rx="4"/>
+  <text x="715" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600">Before Retry 3</text>
+  <text x="715" y="290" text-anchor="middle" class="sublabel">Final Notice Email</text>
+  
+  <!-- Access Levels -->
+  <rect class="access" x="280" y="350" width="520" height="80" rx="8"/>
+  <text x="540" y="380" text-anchor="middle" class="text-label">Access Levels During Dunning</text>
+  
+  <rect class="retry" x="300" y="390" width="150" height="30" rx="4"/>
+  <text x="375" y="410" text-anchor="middle" class="sublabel" style="font-weight: 600">Retry 1-2: Full Access</text>
+  
+  <rect class="comm" x="470" y="390" width="150" height="30" rx="4"/>
+  <text x="545" y="410" text-anchor="middle" class="sublabel" style="font-weight: 600">Retry 3: Limited Access</text>
+  
+  <rect class="access" x="640" y="390" width="150" height="30" rx="4"/>
+  <text x="715" y="410" text-anchor="middle" class="sublabel" style="font-weight: 600">Expired: No Access</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 100 L275 100"/>
+  <path class="arrow" d="M420 100 L465 100"/>
+  <path class="arrow" d="M610 100 L655 100"/>
+  <path class="arrow" d="M800 100 L845 100"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Dunning Management Flow</text>
+</svg>

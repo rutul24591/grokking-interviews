@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .state { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .return { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .refund { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .exception { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Return Tracking -->
+  <rect class="return" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Return Tracking</text>
+  
+  <rect class="return" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Label Created → In Transit</text>
+  
+  <rect class="return" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600;">→ Received → Inspection</text>
+  
+  <rect class="return" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600;">→ Refund Issued</text>
+  
+  <!-- Refund Tracking -->
+  <rect class="refund" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Refund Tracking</text>
+  
+  <rect class="refund" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Refund Issued → Pending</text>
+  
+  <rect class="refund" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600;">→ Processing → Completed</text>
+  
+  <rect class="refund" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">3-10 business days (card)</text>
+  
+  <!-- Exception Handling -->
+  <rect class="exception" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Exception Handling</text>
+  
+  <rect class="exception" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Package Lost</text>
+  
+  <rect class="exception" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600;">Damaged in Transit</text>
+  
+  <rect class="exception" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600;">Inspection Fail</text>
+  
+  <!-- Timeline Visualization -->
+  <rect class="state" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px;">Typical Refund Timeline</text>
+  
+  <!-- Day 0 -->
+  <circle cx="100" cy="350" r="30" class="return" stroke-width="3"/>
+  <text x="100" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Day 0</text>
+  <text x="100" y="365" text-anchor="middle" class="sublabel">Return</text>
+  <text x="100" y="380" text-anchor="middle" class="sublabel">Shipped</text>
+  
+  <!-- Day 1-3 -->
+  <circle cx="250" cy="350" r="30" class="return"/>
+  <text x="250" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Day 1-3</text>
+  <text x="250" y="365" text-anchor="middle" class="sublabel">In Transit</text>
+  
+  <!-- Day 4 -->
+  <circle cx="400" cy="350" r="30" class="return"/>
+  <text x="400" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Day 4</text>
+  <text x="400" y="365" text-anchor="middle" class="sublabel">Received</text>
+  
+  <!-- Day 5-6 -->
+  <circle cx="550" cy="350" r="30" class="refund"/>
+  <text x="550" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Day 5-6</text>
+  <text x="550" y="365" text-anchor="middle" class="sublabel">Inspection</text>
+  
+  <!-- Day 7 -->
+  <circle cx="700" cy="350" r="30" class="refund"/>
+  <text x="700" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Day 7</text>
+  <text x="700" y="365" text-anchor="middle" class="sublabel">Refund</text>
+  <text x="700" y="380" text-anchor="middle" class="sublabel">Issued</text>
+  
+  <!-- Day 10-17 -->
+  <circle cx="850" cy="350" r="30" class="refund" stroke-width="3"/>
+  <text x="850" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Day 10-17</text>
+  <text x="850" y="365" text-anchor="middle" class="sublabel">Refund</text>
+  <text x="850" y="380" text-anchor="middle" class="sublabel">Complete</text>
+  
+  <!-- Connection Line -->
+  <line x1="130" y1="350" x2="220" y2="350" stroke="#4a5568" stroke-width="2"/>
+  <line x1="280" y1="350" x2="370" y2="350" stroke="#4a5568" stroke-width="2"/>
+  <line x1="430" y1="350" x2="520" y2="350" stroke="#4a5568" stroke-width="2"/>
+  <line x1="580" y1="350" x2="670" y2="350" stroke="#4a5568" stroke-width="2"/>
+  <line x1="730" y1="350" x2="820" y2="350" stroke="#4a5568" stroke-width="2"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 3: Refund Status Tracking</text>
+</svg>

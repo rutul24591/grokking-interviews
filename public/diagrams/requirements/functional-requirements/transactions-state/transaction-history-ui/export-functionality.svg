@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .csv { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .pdf { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .qbo { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- CSV Export -->
+  <rect class="csv" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">CSV Export</text>
+  
+  <rect class="csv" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">For: Accounting Software</text>
+  
+  <rect class="csv" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Format: Comma-separated, UTF-8</text>
+  
+  <rect class="csv" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Content: Date, Description, Amount</text>
+  
+  <!-- PDF Export -->
+  <rect class="pdf" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">PDF Export</text>
+  
+  <rect class="pdf" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">For: Records, Tax</text>
+  
+  <rect class="pdf" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Format: PDF, Printable</text>
+  
+  <rect class="pdf" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Content: Summary + Receipts</text>
+  
+  <!-- QBO Export -->
+  <rect class="qbo" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">QBO Export</text>
+  
+  <rect class="qbo" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">For: QuickBooks Desktop</text>
+  
+  <rect class="qbo" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Format: QBO (Web Connect)</text>
+  
+  <rect class="qbo" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Content: Account Mapping</text>
+  
+  <!-- Export Options -->
+  <rect class="csv" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px;">Export Options</text>
+  
+  <!-- Date Range -->
+  <rect class="csv" x="70" y="320" width="200" height="70" rx="4"/>
+  <text x="170" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Date Range</text>
+  <text x="170" y="365" text-anchor="middle" class="sublabel">Last 30/90 days</text>
+  <text x="170" y="380" text-anchor="middle" class="sublabel">Custom range</text>
+  
+  <!-- Filters -->
+  <rect class="csv" x="300" y="320" width="200" height="70" rx="4"/>
+  <text x="400" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Apply Filters</text>
+  <text x="400" y="365" text-anchor="middle" class="sublabel">Export filtered</text>
+  <text x="400" y="380" text-anchor="middle" class="sublabel">results only</text>
+  
+  <!-- Delivery -->
+  <rect class="csv" x="530" y="320" width="200" height="70" rx="4"/>
+  <text x="630" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Delivery</text>
+  <text x="630" y="365" text-anchor="middle" class="sublabel">Download</text>
+  <text x="630" y="380" text-anchor="middle" class="sublabel">Email (large exports)</text>
+  
+  <!-- Performance -->
+  <rect class="csv" x="760" y="320" width="170" height="70" rx="4"/>
+  <text x="845" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">Performance</text>
+  <text x="845" y="365" text-anchor="middle" class="sublabel">Stream large</text>
+  <text x="845" y="380" text-anchor="middle" class="sublabel">Background generate</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 2: Export Functionality</text>
+</svg>

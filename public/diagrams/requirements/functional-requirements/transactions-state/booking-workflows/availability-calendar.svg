@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .calendar { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .available { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .booked { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .selected { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Date Selection -->
+  <rect class="calendar" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Date Selection</text>
+  
+  <rect class="calendar" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">◄ December 2024 ►</text>
+  
+  <!-- Calendar Grid -->
+  <rect class="available" x="70" y="145" width="30" height="30" rx="4"/>
+  <text x="85" y="165" text-anchor="middle" class="sublabel" style="font-size: 10px;">16</text>
+  
+  <rect class="available" x="110" y="145" width="30" height="30" rx="4"/>
+  <text x="125" y="165" text-anchor="middle" class="sublabel" style="font-size: 10px;">17</text>
+  
+  <rect class="selected" x="150" y="145" width="30" height="30" rx="4"/>
+  <text x="165" y="165" text-anchor="middle" class="sublabel" style="font-size: 10px; font-weight: bold;">18</text>
+  
+  <rect class="booked" x="190" y="145" width="30" height="30" rx="4"/>
+  <text x="205" y="165" text-anchor="middle" class="sublabel" style="font-size: 10px; fill: #a0aec0;">19</text>
+  
+  <rect class="available" x="230" y="145" width="30" height="30" rx="4"/>
+  <text x="245" y="165" text-anchor="middle" class="sublabel" style="font-size: 10px;">20</text>
+  
+  <rect class="available" x="70" y="185" width="30" height="30" rx="4"/>
+  <text x="85" y="205" text-anchor="middle" class="sublabel" style="font-size: 10px;">21</text>
+  
+  <rect class="booked" x="110" y="185" width="30" height="30" rx="4"/>
+  <text x="125" y="205" text-anchor="middle" class="sublabel" style="font-size: 10px; fill: #a0aec0;">22</text>
+  
+  <rect class="available" x="150" y="185" width="30" height="30" rx="4"/>
+  <text x="165" y="205" text-anchor="middle" class="sublabel" style="font-size: 10px;">23</text>
+  
+  <rect class="available" x="190" y="185" width="30" height="30" rx="4"/>
+  <text x="205" y="205" text-anchor="middle" class="sublabel" style="font-size: 10px;">24</text>
+  
+  <rect class="booked" x="230" y="185" width="30" height="30" rx="4"/>
+  <text x="245" y="205" text-anchor="middle" class="sublabel" style="font-size: 10px; fill: #a0aec0;">25</text>
+  
+  <text x="190" y="235" text-anchor="middle" class="sublabel">● Available  ● Selected  ● Booked</text>
+  
+  <!-- Time Slot Selection -->
+  <rect class="calendar" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Time Slot Selection</text>
+  
+  <rect class="calendar" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Wednesday, December 18</text>
+  
+  <!-- Morning Slots -->
+  <text x="410" y="150" text-anchor="start" class="sublabel" style="font-weight: 600;">Morning</text>
+  
+  <rect class="available" x="410" y="155" width="60" height="25" rx="4"/>
+  <text x="440" y="172" text-anchor="middle" class="sublabel" style="font-size: 10px;">9:00 AM</text>
+  
+  <rect class="available" x="480" y="155" width="60" height="25" rx="4"/>
+  <text x="510" y="172" text-anchor="middle" class="sublabel" style="font-size: 10px;">9:40 AM</text>
+  
+  <rect class="booked" x="550" y="155" width="60" height="25" rx="4"/>
+  <text x="580" y="172" text-anchor="middle" class="sublabel" style="font-size: 10px; fill: #a0aec0;">10:20 AM</text>
+  
+  <rect class="selected" x="620" y="155" width="60" height="25" rx="4"/>
+  <text x="650" y="172" text-anchor="middle" class="sublabel" style="font-size: 10px; font-weight: bold;">11:00 AM</text>
+  
+  <!-- Afternoon Slots -->
+  <text x="410" y="200" text-anchor="start" class="sublabel" style="font-weight: 600;">Afternoon</text>
+  
+  <rect class="booked" x="410" y="205" width="60" height="25" rx="4"/>
+  <text x="440" y="222" text-anchor="middle" class="sublabel" style="font-size: 10px; fill: #a0aec0;">12:00 PM</text>
+  
+  <rect class="available" x="480" y="205" width="60" height="25" rx="4"/>
+  <text x="510" y="222" text-anchor="middle" class="sublabel" style="font-size: 10px;">1:00 PM</text>
+  
+  <rect class="available" x="550" y="205" width="60" height="25" rx="4"/>
+  <text x="580" y="222" text-anchor="middle" class="sublabel" style="font-size: 10px;">2:00 PM</text>
+  
+  <rect class="available" x="620" y="205" width="60" height="25" rx="4"/>
+  <text x="650" y="222" text-anchor="middle" class="sublabel" style="font-size: 10px;">3:00 PM</text>
+  
+  <!-- Legend -->
+  <rect class="calendar" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Availability Legend</text>
+  
+  <rect class="available" x="730" y="100" width="30" height="30" rx="4"/>
+  <text x="775" y="120" text-anchor="start" class="sublabel">Available</text>
+  
+  <rect class="selected" x="730" y="140" width="30" height="30" rx="4"/>
+  <text x="775" y="160" text-anchor="start" class="sublabel">Selected (Held)</text>
+  
+  <rect class="booked" x="730" y="180" width="30" height="30" rx="4"/>
+  <text x="775" y="200" text-anchor="start" class="sublabel">Booked</text>
+  
+  <rect class="calendar" x="730" y="220" width="200" height="35" rx="4"/>
+  <text x="830" y="242" text-anchor="middle" class="sublabel" style="font-weight: 600;">⏱️ Slot held for 10:00</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 3: Availability Calendar</text>
+</svg>

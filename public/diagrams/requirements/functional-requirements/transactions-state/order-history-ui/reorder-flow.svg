@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .select { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .modify { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .check { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .add { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Step 1: Select Order -->
+  <rect class="select" x="50" y="50" width="180" height="120" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="text-label">1. Select Order</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">From order history</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">Order #ABC123</text>
+  <text x="140" y="145" text-anchor="middle" class="sublabel">3 items, $150</text>
+  
+  <!-- Step 2: Modify Items -->
+  <rect class="modify" x="280" y="50" width="200" height="120" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">2. Modify Items</text>
+  <text x="380" y="105" text-anchor="middle" class="sublabel">Change quantities</text>
+  <text x="380" y="125" text-anchor="middle" class="sublabel">Change variants</text>
+  <text x="380" y="145" text-anchor="middle" class="sublabel">Remove items</text>
+  
+  <!-- Step 3: Check Availability -->
+  <rect class="check" x="530" y="50" width="200" height="120" rx="8"/>
+  <text x="630" y="80" text-anchor="middle" class="text-label">3. Check Availability</text>
+  <text x="630" y="105" text-anchor="middle" class="sublabel">In stock ✓</text>
+  <text x="630" y="125" text-anchor="middle" class="sublabel">Out of stock ✗</text>
+  <text x="630" y="145" text-anchor="middle" class="sublabel">Discontinued ⚠</text>
+  
+  <!-- Step 4: Add to Cart -->
+  <rect class="add" x="780" y="50" width="180" height="120" rx="8"/>
+  <text x="870" y="80" text-anchor="middle" class="text-label">4. Add to Cart</text>
+  <text x="870" y="105" text-anchor="middle" class="sublabel">Review cart</text>
+  <text x="870" y="125" text-anchor="middle" class="sublabel">Proceed to checkout</text>
+  <text x="870" y="145" text-anchor="middle" class="sublabel">Continue shopping</text>
+  
+  <!-- Out of Stock Handling -->
+  <rect class="modify" x="280" y="220" width="200" height="120" rx="8"/>
+  <text x="380" y="250" text-anchor="middle" class="text-label">Out of Stock Options</text>
+  <text x="380" y="275" text-anchor="middle" class="sublabel">📧 Notify when available</text>
+  <text x="380" y="295" text-anchor="middle" class="sublabel">🔄 Suggest alternatives</text>
+  <text x="380" y="315" text-anchor="middle" class="sublabel">❌ Remove from reorder</text>
+  
+  <!-- Subscription Option -->
+  <rect class="check" x="530" y="220" width="200" height="120" rx="8"/>
+  <text x="630" y="250" text-anchor="middle" class="text-label">Subscribe &amp; Save</text>
+  <text x="630" y="275" text-anchor="middle" class="sublabel">💰 Save 10%</text>
+  <text x="630" y="295" text-anchor="middle" class="sublabel">📅 Every month</text>
+  <text x="630" y="315" text-anchor="middle" class="sublabel">✏️ Skip or cancel</text>
+  
+  <!-- Cart Preview -->
+  <rect class="add" x="780" y="220" width="180" height="120" rx="8"/>
+  <text x="870" y="250" text-anchor="middle" class="text-label">Cart Preview</text>
+  <text x="870" y="275" text-anchor="middle" class="sublabel">🛒 3 items</text>
+  <text x="870" y="295" text-anchor="middle" class="sublabel">💵 $150.00</text>
+  <text x="870" y="315" text-anchor="middle" class="sublabel">🚚 Free shipping</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 110 L275 110"/>
+  <path class="arrow" d="M480 110 L525 110"/>
+  <path class="arrow" d="M730 110 L775 110"/>
+  
+  <path class="arrow" d="M380 170 L380 215"/>
+  <path class="arrow" d="M630 170 L630 215"/>
+  <path class="arrow" d="M870 170 L870 215"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 3: Reorder Flow</text>
+</svg>

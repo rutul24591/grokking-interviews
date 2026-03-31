@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .hot { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .cold { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .archive { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Hot Storage -->
+  <rect class="hot" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Hot Storage</text>
+  
+  <rect class="hot" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Recent Logs (30-90 days)</text>
+  
+  <rect class="hot" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Fast Access (&lt;1 second)</text>
+  
+  <rect class="hot" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Expensive Storage (SSD)</text>
+  
+  <!-- Cold Storage -->
+  <rect class="cold" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Cold Storage</text>
+  
+  <rect class="cold" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Old Logs (90 days - 7 years)</text>
+  
+  <rect class="cold" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Slower Access (&lt;10 seconds)</text>
+  
+  <rect class="cold" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Cheaper Storage (HDD/Object)</text>
+  
+  <!-- Archive Storage -->
+  <rect class="archive" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Archive Storage</text>
+  
+  <rect class="archive" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Very Old Logs (7+ years)</text>
+  
+  <rect class="archive" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Slowest Access (Minutes-Hours)</text>
+  
+  <rect class="archive" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Cheapest Storage (Tape/Glacier)</text>
+  
+  <!-- Retention Timeline -->
+  <rect class="hot" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px">Log Retention Timeline</text>
+  
+  <!-- Timeline Bar -->
+  <line x1="70" y1="350" x2="930" y2="350" stroke="#4a5568" stroke-width="4"/>
+  
+  <!-- Hot Storage -->
+  <rect class="hot" x="70" y="335" width="200" height="30" rx="4"/>
+  <text x="170" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #2d3748">Hot (30-90 days)</text>
+  
+  <!-- Cold Storage -->
+  <rect class="cold" x="270" y="335" width="400" height="30" rx="4"/>
+  <text x="470" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #2d3748">Cold (90 days - 7 years)</text>
+  
+  <!-- Archive Storage -->
+  <rect class="archive" x="670" y="335" width="260" height="30" rx="4"/>
+  <text x="800" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #2d3748">Archive (7+ years)</text>
+  
+  <!-- Markers -->
+  <circle cx="70" cy="350" r="8" fill="#4a5568"/>
+  <text x="70" y="380" text-anchor="middle" class="sublabel">Day 0</text>
+  
+  <circle cx="270" cy="350" r="8" fill="#4a5568"/>
+  <text x="270" y="380" text-anchor="middle" class="sublabel">Day 90</text>
+  
+  <circle cx="670" cy="350" r="8" fill="#4a5568"/>
+  <text x="670" y="380" text-anchor="middle" class="sublabel">Year 7</text>
+  
+  <circle cx="930" cy="350" r="8" fill="#4a5568"/>
+  <text x="930" y="380" text-anchor="middle" class="sublabel">Indefinite</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Log Retention Tiers</text>
+</svg>

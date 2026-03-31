@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .survey { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .offer { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .confirm { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Step 1: Initiate -->
+  <rect class="step" x="50" y="50" width="180" height="100" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="label">1. Initiate</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Click &quot;Cancel&quot;</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">Entry point</text>
+  
+  <!-- Step 2: Survey -->
+  <rect class="survey" x="280" y="50" width="200" height="100" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="label">2. Reason Survey</text>
+  <text x="380" y="105" text-anchor="middle" class="sublabel">Why cancelling?</text>
+  <text x="380" y="125" text-anchor="middle" class="sublabel">Too expensive, not using...</text>
+  
+  <!-- Step 3: Retention -->
+  <rect class="offer" x="530" y="50" width="200" height="100" rx="8"/>
+  <text x="630" y="80" text-anchor="middle" class="label">3. Retention Offer</text>
+  <text x="630" y="105" text-anchor="middle" class="sublabel">Discount, pause, downgrade</text>
+  <text x="630" y="125" text-anchor="middle" class="sublabel">Accept or decline</text>
+  
+  <!-- Step 4: Confirm -->
+  <rect class="confirm" x="780" y="50" width="180" height="100" rx="8"/>
+  <text x="870" y="80" text-anchor="middle" class="label">4. Confirm</text>
+  <text x="870" y="105" text-anchor="middle" class="sublabel">Effective date</text>
+  <text x="870" y="125" text-anchor="middle" class="sublabel">End of period</text>
+  
+  <!-- Branch: Accept Offer -->
+  <rect class="offer" x="530" y="200" width="200" height="80" rx="8"/>
+  <text x="630" y="230" text-anchor="middle" class="label">Accept Offer</text>
+  <text x="630" y="255" text-anchor="middle" class="sublabel">Apply discount/pause</text>
+  <text x="630" y="275" text-anchor="middle" class="sublabel">Stay subscribed</text>
+  
+  <!-- Branch: Decline Offer -->
+  <rect class="confirm" x="780" y="200" width="180" height="80" rx="8"/>
+  <text x="870" y="230" text-anchor="middle" class="label">Decline Offer</text>
+  <text x="870" y="255" text-anchor="middle" class="sublabel">Continue to cancel</text>
+  <text x="870" y="275" text-anchor="middle" class="sublabel">No pressure</text>
+  
+  <!-- Post-Cancellation -->
+  <rect class="step" x="780" y="330" width="180" height="80" rx="8"/>
+  <text x="870" y="360" text-anchor="middle" class="label">Post-Cancellation</text>
+  <text x="870" y="385" text-anchor="middle" class="sublabel">Confirmation email</text>
+  <text x="870" y="405" text-anchor="middle" class="sublabel">Data download, win-back</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 100 L275 100"/>
+  <path class="arrow" d="M480 100 L525 100"/>
+  <path class="arrow" d="M730 100 L775 100"/>
+  
+  <path class="arrow" d="M630 150 L630 195"/>
+  <path class="arrow" d="M730 100 L825 230"/>
+  
+  <path class="arrow" d="M870 280 L870 325"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Cancellation Flow</text>
+</svg>

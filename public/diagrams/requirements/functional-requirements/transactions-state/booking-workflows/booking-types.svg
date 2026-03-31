@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .appointment { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .reservation { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .rental { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Appointment Booking -->
+  <rect class="appointment" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Appointment Booking</text>
+  
+  <rect class="appointment" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Services: Haircut, Massage, Consulting</text>
+  
+  <rect class="appointment" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Duration: 30 min - 2 hours</text>
+  
+  <rect class="appointment" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Staff: Specific or any available</text>
+  
+  <!-- Reservation Booking -->
+  <rect class="reservation" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Reservation Booking</text>
+  
+  <rect class="reservation" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Services: Restaurant, Hotel, Event</text>
+  
+  <rect class="reservation" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Duration: 1 hour - Multi-day</text>
+  
+  <rect class="reservation" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Capacity: Table size, room type</text>
+  
+  <!-- Rental Booking -->
+  <rect class="rental" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Rental Booking</text>
+  
+  <rect class="rental" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Services: Car, Equipment, Space</text>
+  
+  <rect class="rental" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Duration: Hourly - Weekly</text>
+  
+  <rect class="rental" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Resources: Vehicle, equipment ID</text>
+  
+  <!-- Comparison Table -->
+  <rect class="appointment" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px;">Booking Type Comparison</text>
+  
+  <!-- Header -->
+  <rect class="appointment" x="60" y="310" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600;">Type</text>
+  <text x="300" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600;">Duration</text>
+  <text x="450" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600;">Resource</text>
+  <text x="650" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600;">Payment</text>
+  <text x="850" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600;">Examples</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="370" text-anchor="middle" class="sublabel">Appointment</text>
+  <text x="300" y="370" text-anchor="middle" class="sublabel">Fixed (30-120 min)</text>
+  <text x="450" y="370" text-anchor="middle" class="sublabel">Staff + Room</text>
+  <text x="650" y="370" text-anchor="middle" class="sublabel">Prepay or pay later</text>
+  <text x="850" y="370" text-anchor="middle" class="sublabel">Salon, Medical</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="395" text-anchor="middle" class="sublabel">Reservation</text>
+  <text x="300" y="395" text-anchor="middle" class="sublabel">Flexible (1hr-multi-day)</text>
+  <text x="450" y="395" text-anchor="middle" class="sublabel">Table/Room</text>
+  <text x="650" y="395" text-anchor="middle" class="sublabel">Deposit or hold</text>
+  <text x="850" y="395" text-anchor="middle" class="sublabel">Restaurant, Hotel</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 4: Booking Types Comparison</text>
+</svg>

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .order { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .carrier { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .cache { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .notification { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
+  
+  <!-- Order Management -->
+  <rect class="order" x="50" y="50" width="200" height="380" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Order Management</text>
+  
+  <rect class="order" x="70" y="100" width="160" height="45" rx="4"/>
+  <text x="150" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Order Status</text>
+  
+  <rect class="order" x="70" y="160" width="160" height="45" rx="4"/>
+  <text x="150" y="187" text-anchor="middle" class="sublabel" style="font-weight: 600;">Tracking Numbers</text>
+  
+  <rect class="order" x="70" y="220" width="160" height="45" rx="4"/>
+  <text x="150" y="247" text-anchor="middle" class="sublabel" style="font-weight: 600;">Split Shipments</text>
+  
+  <rect class="order" x="70" y="280" width="160" height="45" rx="4"/>
+  <text x="150" y="307" text-anchor="middle" class="sublabel" style="font-weight: 600;">Order DB</text>
+  
+  <rect class="order" x="70" y="340" width="160" height="45" rx="4"/>
+  <text x="150" y="367" text-anchor="middle" class="sublabel" style="font-weight: 600;">Customer Portal</text>
+  
+  <!-- Carrier Integration -->
+  <rect class="carrier" x="320" y="50" width="200" height="380" rx="8"/>
+  <text x="420" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Carrier Integration</text>
+  
+  <rect class="carrier" x="340" y="100" width="160" height="45" rx="4"/>
+  <text x="420" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">UPS Adapter</text>
+  
+  <rect class="carrier" x="340" y="160" width="160" height="45" rx="4"/>
+  <text x="420" y="187" text-anchor="middle" class="sublabel" style="font-weight: 600;">FedEx Adapter</text>
+  
+  <rect class="carrier" x="340" y="220" width="160" height="45" rx="4"/>
+  <text x="420" y="247" text-anchor="middle" class="sublabel" style="font-weight: 600;">USPS Adapter</text>
+  
+  <rect class="carrier" x="340" y="280" width="160" height="45" rx="4"/>
+  <text x="420" y="307" text-anchor="middle" class="sublabel" style="font-weight: 600;">Event Normalization</text>
+  
+  <rect class="carrier" x="340" y="340" width="160" height="45" rx="4"/>
+  <text x="420" y="367" text-anchor="middle" class="sublabel" style="font-weight: 600;">Webhook Handler</text>
+  
+  <!-- Tracking Cache -->
+  <rect class="cache" x="590" y="50" width="180" height="200" rx="8"/>
+  <text x="680" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Tracking Cache</text>
+  
+  <rect class="cache" x="610" y="100" width="140" height="40" rx="4"/>
+  <text x="680" y="125" text-anchor="middle" class="sublabel" style="font-weight: 600;">Redis Cache</text>
+  
+  <rect class="cache" x="610" y="150" width="140" height="40" rx="4"/>
+  <text x="680" y="175" text-anchor="middle" class="sublabel" style="font-weight: 600;">TTL: 4-6 hours</text>
+  
+  <rect class="cache" x="610" y="200" width="140" height="40" rx="4"/>
+  <text x="680" y="225" text-anchor="middle" class="sublabel" style="font-weight: 600;">Event Enrichment</text>
+  
+  <!-- Notification Delivery -->
+  <rect class="notification" x="590" y="280" width="330" height="140" rx="8"/>
+  <text x="755" y="310" text-anchor="middle" class="label" style="font-size: 16px;">Notification Delivery</text>
+  
+  <rect class="notification" x="610" y="330" width="140" height="35" rx="4"/>
+  <text x="680" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600;">Email Service</text>
+  
+  <rect class="notification" x="765" y="330" width="140" height="35" rx="4"/>
+  <text x="835" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600;">SMS Service</text>
+  
+  <rect class="notification" x="610" y="375" width="140" height="35" rx="4"/>
+  <text x="680" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600;">Push Service</text>
+  
+  <rect class="notification" x="765" y="375" width="140" height="35" rx="4"/>
+  <text x="835" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600;">Preferences</text>
+  
+  <!-- External -->
+  <rect class="carrier" x="850" y="100" width="120" height="100" rx="8"/>
+  <text x="910" y="130" text-anchor="middle" class="label">Carriers</text>
+  <text x="910" y="155" text-anchor="middle" class="sublabel">UPS, FedEx</text>
+  <text x="910" y="180" text-anchor="middle" class="sublabel">USPS, DHL</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 125 L335 125"/>
+  <path class="arrow" d="M250 185 L335 185"/>
+  <path class="arrow" d="M520 145 L605 145"/>
+  <path class="arrow" d="M520 350 L605 350"/>
+  <path class="arrow" d="M770 150 L845 150"/>
+  
+  <text x="500" y="480" text-anchor="middle" class="label" style="font-size: 16px;">Figure 1: Order Tracking Architecture</text>
+</svg>

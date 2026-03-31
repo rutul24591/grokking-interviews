@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .highlight { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Exponential Backoff -->
+  <rect class="box" x="50" y="50" width="280" height="140" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Exponential Backoff</text>
+  
+  <rect class="highlight" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">1s → 2s → 4s → 8s → 16s</text>
+  
+  <rect class="box" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Max: 30s, Retries: 3-5</text>
+  
+  <!-- With Jitter -->
+  <rect class="box" x="380" y="50" width="280" height="140" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="label" style="font-size: 16px;">With Jitter (±20%)</text>
+  
+  <rect class="highlight" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Prevents Thundering Herd</text>
+  
+  <rect class="box" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">0.8s-1.2s, 1.6s-2.4s...</text>
+  
+  <!-- Safe vs Unsafe -->
+  <rect class="box" x="710" y="50" width="240" height="140" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Retry Classification</text>
+  
+  <rect class="highlight" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Safe: Timeout, 5xx</text>
+  
+  <rect class="box" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Unsafe: 4xx (fix first)</text>
+  
+  <!-- Timeline -->
+  <rect class="box" x="50" y="230" width="900" height="180" rx="8"/>
+  <text x="500" y="260" text-anchor="middle" class="label" style="font-size: 16px;">Retry Timeline</text>
+  
+  <!-- Request 1 -->
+  <rect class="box" x="70" y="280" width="100" height="40" rx="4"/>
+  <text x="120" y="305" text-anchor="middle" class="sublabel" style="font-weight: 600;">Request 1</text>
+  <text x="120" y="320" text-anchor="middle" class="sublabel">t=0s</text>
+  
+  <!-- Timeout -->
+  <rect class="highlight" x="190" y="280" width="80" height="40" rx="4"/>
+  <text x="230" y="305" text-anchor="middle" class="sublabel" style="font-weight: 600;">Timeout</text>
+  
+  <!-- Retry 1 -->
+  <rect class="box" x="290" y="280" width="100" height="40" rx="4"/>
+  <text x="340" y="305" text-anchor="middle" class="sublabel" style="font-weight: 600;">Retry 1</text>
+  <text x="340" y="320" text-anchor="middle" class="sublabel">t=1s</text>
+  
+  <!-- Retry 2 -->
+  <rect class="box" x="450" y="280" width="100" height="40" rx="4"/>
+  <text x="500" y="305" text-anchor="middle" class="sublabel" style="font-weight: 600;">Retry 2</text>
+  <text x="500" y="320" text-anchor="middle" class="sublabel">t=3s</text>
+  
+  <!-- Retry 3 -->
+  <rect class="box" x="610" y="280" width="100" height="40" rx="4"/>
+  <text x="660" y="305" text-anchor="middle" class="sublabel" style="font-weight: 600;">Retry 3</text>
+  <text x="660" y="320" text-anchor="middle" class="sublabel">t=7s</text>
+  
+  <!-- Success -->
+  <rect class="highlight" x="770" y="280" width="120" height="40" rx="4" stroke-width="3"/>
+  <text x="830" y="305" text-anchor="middle" class="sublabel" style="font-weight: 600;">Success</text>
+  <text x="830" y="320" text-anchor="middle" class="sublabel">Cached result</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M170 300 L185 300"/>
+  <path class="arrow" d="M270 300 L285 300"/>
+  <path class="arrow" d="M390 300 L445 300"/>
+  <path class="arrow" d="M550 300 L605 300"/>
+  <path class="arrow" d="M710 300 L765 300"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Retry Strategies</text>
+</svg>

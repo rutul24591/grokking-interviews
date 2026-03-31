@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .state { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .state-dark { fill: #2d3748; stroke: #718096; stroke-width: 2; }
+      .success { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .success-dark { fill: #276749; stroke: #48bb78; stroke-width: 2; }
+      .error { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .error-dark { fill: #742a2a; stroke: #f56565; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dark { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
+      .rollback { stroke: #e53e3e; stroke-width: 2; stroke-dasharray: 5,5; fill: none; marker-end: url(#arrowhead-error); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .label-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #e2e8f0; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+      .sublabel-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a0aec0; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0"/>
+    </marker>
+    <marker id="arrowhead-error" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e53e3e"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  <rect class="bg-dark" width="1000" height="450" data-theme="dark" style="display:none;"/>
+  
+  <!-- Cart Validation -->
+  <rect class="state" x="50" y="50" width="160" height="70" rx="8"/>
+  <text x="130" y="80" text-anchor="middle" class="label">1. Cart Validation</text>
+  <text x="130" y="105" text-anchor="middle" class="sublabel">Check stock, prices</text>
+  
+  <!-- Shipping -->
+  <rect class="state" x="280" y="50" width="160" height="70" rx="8"/>
+  <text x="360" y="80" text-anchor="middle" class="label">2. Shipping</text>
+  <text x="360" y="105" text-anchor="middle" class="sublabel">Address, calculate</text>
+  
+  <!-- Inventory Reserve -->
+  <rect class="success" x="510" y="50" width="160" height="70" rx="8"/>
+  <text x="590" y="80" text-anchor="middle" class="label">3. Reserve Inventory</text>
+  <text x="590" y="105" text-anchor="middle" class="sublabel">Hold stock (10-30 min)</text>
+  
+  <!-- Payment -->
+  <rect class="state" x="50" y="180" width="160" height="70" rx="8"/>
+  <text x="130" y="210" text-anchor="middle" class="label">4. Payment</text>
+  <text x="130" y="235" text-anchor="middle" class="sublabel">Authorize charge</text>
+  
+  <!-- 3D Secure -->
+  <rect class="state" x="280" y="180" width="160" height="70" rx="8"/>
+  <text x="360" y="210" text-anchor="middle" class="label">5. 3D Secure</text>
+  <text x="360" y="235" text-anchor="middle" class="sublabel">Bank verification</text>
+  
+  <!-- Order Create -->
+  <rect class="success" x="510" y="180" width="160" height="70" rx="8"/>
+  <text x="590" y="210" text-anchor="middle" class="label">6. Create Order</text>
+  <text x="590" y="235" text-anchor="middle" class="sublabel">Persist, notify</text>
+  
+  <!-- Confirmation -->
+  <rect class="success" x="740" y="115" width="180" height="70" rx="8" stroke-width="3"/>
+  <text x="830" y="145" text-anchor="middle" class="label">Order Confirmed</text>
+  <text x="830" y="170" text-anchor="middle" class="sublabel">Email, tracking</text>
+  
+  <!-- Error State -->
+  <rect class="error" x="50" y="320" width="200" height="60" rx="8"/>
+  <text x="150" y="350" text-anchor="middle" class="label">Payment Failed</text>
+  <text x="150" y="370" text-anchor="middle" class="sublabel">Release inventory, retry</text>
+  
+  <!-- Arrows Forward -->
+  <path class="arrow" d="M210 85 L275 85"/>
+  <path class="arrow" d="M440 85 L505 85"/>
+  <path class="arrow" d="M590 120 L590 150 L130 150 L130 175"/>
+  <path class="arrow" d="M210 215 L275 215"/>
+  <path class="arrow" d="M440 215 L505 215"/>
+  <path class="arrow" d="M670 215 L735 150"/>
+  
+  <!-- Rollback arrows -->
+  <path class="rollback" d="M505 105 L440 105"/>
+  <text x="470" y="100" text-anchor="middle" class="sublabel" fill="#e53e3e" font-size="10px">Fail</text>
+  
+  <path class="rollback" d="M275 235 L210 235"/>
+  <text x="245" y="230" text-anchor="middle" class="sublabel" fill="#e53e3e" font-size="10px">Declined</text>
+  
+  <path class="rollback" d="M130 250 L130 300 L150 300 L150 315"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Checkout State Machine</text>
+</svg>

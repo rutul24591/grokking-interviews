@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .state { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .active { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .terminal { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Order States -->
+  <circle class="state" cx="150" cy="100" r="50" stroke-width="3"/>
+  <text x="150" y="95" text-anchor="middle" class="label">Pending</text>
+  <text x="150" y="115" text-anchor="middle" class="sublabel">Created</text>
+  
+  <circle class="active" cx="350" cy="100" r="50"/>
+  <text x="350" y="95" text-anchor="middle" class="label">Confirmed</text>
+  <text x="350" y="115" text-anchor="middle" class="sublabel">Payment OK</text>
+  
+  <circle class="active" cx="550" cy="100" r="50"/>
+  <text x="550" y="95" text-anchor="middle" class="label">Shipped</text>
+  <text x="550" y="115" text-anchor="middle" class="sublabel">Tracking #</text>
+  
+  <circle class="terminal" cx="750" cy="100" r="50" stroke-width="3"/>
+  <text x="750" y="95" text-anchor="middle" class="label">Delivered</text>
+  <text x="750" y="115" text-anchor="middle" class="sublabel">Complete</text>
+  
+  <!-- Cancelled State -->
+  <circle class="terminal" cx="550" cy="280" r="50" stroke-width="3"/>
+  <text x="550" y="275" text-anchor="middle" class="label">Cancelled</text>
+  <text x="550" y="295" text-anchor="middle" class="sublabel">User/System</text>
+  
+  <!-- Returned State -->
+  <circle class="terminal" cx="750" cy="280" r="50"/>
+  <text x="750" y="275" text-anchor="middle" class="label">Returned</text>
+  <text x="750" y="295" text-anchor="middle" class="sublabel">Refunded</text>
+  
+  <!-- Transitions -->
+  <path class="arrow" d="M200 100 L300 100"/>
+  <text x="250" y="90" text-anchor="middle" class="sublabel">payment_authorized</text>
+  
+  <path class="arrow" d="M400 100 L500 100"/>
+  <text x="450" y="90" text-anchor="middle" class="sublabel">ship_requested</text>
+  
+  <path class="arrow" d="M600 100 L700 100"/>
+  <text x="650" y="90" text-anchor="middle" class="sublabel">delivery_confirmed</text>
+  
+  <path class="arrow" d="M350 150 L380 200 L510 260"/>
+  <text x="420" y="200" text-anchor="middle" class="sublabel">cancel_requested</text>
+  
+  <path class="arrow" d="M550 150 L550 230"/>
+  <text x="565" y="190" text-anchor="middle" class="sublabel">cancel_requested</text>
+  
+  <path class="arrow" d="M750 150 L750 230"/>
+  <text x="775" y="190" text-anchor="middle" class="sublabel">return_requested</text>
+  
+  <!-- Guards -->
+  <rect class="state" x="100" cy="350" width="200" height="60" rx="4"/>
+  <text x="200" y="370" text-anchor="middle" class="label">Example Guards</text>
+  <text x="200" y="395" text-anchor="middle" class="sublabel">payment.amount == order.total</text>
+  
+  <rect class="state" x="450" cy="350" width="200" height="60" rx="4"/>
+  <text x="550" y="370" text-anchor="middle" class="label">Example Actions</text>
+  <text x="550" y="395" text-anchor="middle" class="sublabel">send_email, update_inventory</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Order State Machine</text>
+</svg>

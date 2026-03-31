@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .selection { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .availability { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .booking { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .confirmation { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Step 1: Select Service -->
+  <rect class="selection" x="50" y="50" width="180" height="100" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="text-label">1. Select Service</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Browse catalog</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">Choose staff (optional)</text>
+  
+  <!-- Step 2: Check Availability -->
+  <rect class="availability" x="280" y="50" width="200" height="100" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">2. Check Availability</text>
+  <text x="380" y="105" text-anchor="middle" class="sublabel">Select date</text>
+  <text x="380" y="125" text-anchor="middle" class="sublabel">View available time slots</text>
+  
+  <!-- Step 3: Select Time Slot -->
+  <rect class="availability" x="530" y="50" width="180" height="100" rx="8"/>
+  <text x="620" y="80" text-anchor="middle" class="text-label">3. Select Time Slot</text>
+  <text x="620" y="105" text-anchor="middle" class="sublabel">Click available slot</text>
+  <text x="620" y="125" text-anchor="middle" class="sublabel">Slot held (10 min)</text>
+  
+  <!-- Step 4: Enter Details -->
+  <rect class="booking" x="760" y="50" width="180" height="100" rx="8"/>
+  <text x="850" y="80" text-anchor="middle" class="text-label">4. Enter Details</text>
+  <text x="850" y="105" text-anchor="middle" class="sublabel">Name, contact</text>
+  <text x="850" y="125" text-anchor="middle" class="sublabel">Special requests</text>
+  
+  <!-- Step 5: Payment -->
+  <rect class="booking" x="280" y="200" width="200" height="100" rx="8"/>
+  <text x="380" y="230" text-anchor="middle" class="text-label">5. Payment</text>
+  <text x="380" y="255" text-anchor="middle" class="sublabel">Pay now or later</text>
+  <text x="380" y="275" text-anchor="middle" class="sublabel">Card on file (hold)</text>
+  
+  <!-- Step 6: Confirm -->
+  <rect class="confirmation" x="530" y="200" width="180" height="100" rx="8"/>
+  <text x="620" y="230" text-anchor="middle" class="text-label">6. Confirm Booking</text>
+  <text x="620" y="255" text-anchor="middle" class="sublabel">Review details</text>
+  <text x="620" y="275" text-anchor="middle" class="sublabel">Confirm booking</text>
+  
+  <!-- Step 7: Confirmation -->
+  <rect class="confirmation" x="760" y="200" width="180" height="100" rx="8"/>
+  <text x="850" y="230" text-anchor="middle" class="text-label">7. Confirmation</text>
+  <text x="850" y="255" text-anchor="middle" class="sublabel">Email/SMS sent</text>
+  <text x="850" y="275" text-anchor="middle" class="sublabel">Calendar invite</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 100 L275 100"/>
+  <path class="arrow" d="M480 100 L525 100"/>
+  <path class="arrow" d="M710 100 L755 100"/>
+  
+  <path class="arrow" d="M380 150 L380 195"/>
+  <path class="arrow" d="M480 250 L525 250"/>
+  <path class="arrow" d="M710 250 L755 250"/>
+  
+  <!-- Hold Timer -->
+  <rect class="availability" x="530" y="160" width="180" height="30" rx="4"/>
+  <text x="620" y="180" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #d69e2e;">⏱️ Slot held for 09:59</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 2: Booking Flow</text>
+</svg>

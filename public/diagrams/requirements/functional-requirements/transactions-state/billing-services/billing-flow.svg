@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .billing { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .tax { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .invoice { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Billing Cycle -->
+  <rect class="billing" x="50" y="50" width="180" height="120" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="text-label">Billing Cycle</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Determine billing date</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">Generate billing run</text>
+  <text x="140" y="145" text-anchor="middle" class="sublabel">Calculate charges</text>
+  
+  <!-- Tax Calculation -->
+  <rect class="tax" x="280" y="50" width="200" height="120" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">Tax Calculation</text>
+  <text x="380" y="105" text-anchor="middle" class="sublabel">Determine jurisdiction</text>
+  <text x="380" y="125" text-anchor="middle" class="sublabel">Calculate tax</text>
+  <text x="380" y="145" text-anchor="middle" class="sublabel">Apply exemptions</text>
+  
+  <!-- Invoice Generation -->
+  <rect class="invoice" x="530" y="50" width="200" height="120" rx="8"/>
+  <text x="630" y="80" text-anchor="middle" class="text-label">Invoice Generation</text>
+  <text x="630" y="105" text-anchor="middle" class="sublabel">Generate invoice number</text>
+  <text x="630" y="125" text-anchor="middle" class="sublabel">Calculate totals</text>
+  <text x="630" y="145" text-anchor="middle" class="sublabel">Format invoice</text>
+  
+  <!-- Payment Processing -->
+  <rect class="billing" x="780" y="50" width="180" height="120" rx="8"/>
+  <text x="870" y="80" text-anchor="middle" class="text-label">Payment Processing</text>
+  <text x="870" y="105" text-anchor="middle" class="sublabel">Charge payment method</text>
+  <text x="870" y="125" text-anchor="middle" class="sublabel">Process payment</text>
+  <text x="870" y="145" text-anchor="middle" class="sublabel">Update billing status</text>
+  
+  <!-- Proration Example -->
+  <rect class="tax" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Proration Calculation Example</text>
+  
+  <rect class="tax" x="70" y="270" width="200" height="80" rx="4"/>
+  <text x="170" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Upgrade: $30 → $60/month</text>
+  <text x="170" y="315" text-anchor="middle" class="sublabel">Day 15 of 30-day period</text>
+  <text x="170" y="335" text-anchor="middle" class="sublabel">Days remaining: 15</text>
+  
+  <rect class="tax" x="300" y="270" width="180" height="80" rx="4"/>
+  <text x="390" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Proration Formula</text>
+  <text x="390" y="315" text-anchor="middle" class="sublabel">(New - Old) × (Days / Total)</text>
+  <text x="390" y="335" text-anchor="middle" class="sublabel">($60 - $30) × (15/30) = $15</text>
+  
+  <!-- Invoice Example -->
+  <rect class="invoice" x="530" y="220" width="450" height="150" rx="8"/>
+  <text x="755" y="250" text-anchor="middle" class="text-label">Invoice Example</text>
+  
+  <rect class="invoice" x="550" y="270" width="200" height="80" rx="4"/>
+  <text x="650" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Invoice #INV-2024-001</text>
+  <text x="650" y="315" text-anchor="middle" class="sublabel">Period: Dec 1-31, 2024</text>
+  <text x="650" y="335" text-anchor="middle" class="sublabel">Customer: Acme Corp</text>
+  
+  <rect class="invoice" x="780" y="270" width="180" height="80" rx="4"/>
+  <text x="870" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Line Items</text>
+  <text x="870" y="315" text-anchor="middle" class="sublabel">Subscription: $60.00</text>
+  <text x="870" y="335" text-anchor="middle" class="sublabel">Proration: $15.00</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 110 L275 110"/>
+  <path class="arrow" d="M480 110 L525 110"/>
+  <path class="arrow" d="M730 110 L775 110"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Billing Flow</text>
+</svg>

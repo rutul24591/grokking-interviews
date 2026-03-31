@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .flat { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .seat { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .usage { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .tiered { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Flat Rate -->
+  <rect class="flat" x="50" y="50" width="200" height="140" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Flat Rate</text>
+  
+  <rect class="flat" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">$X/month unlimited</text>
+  
+  <rect class="box" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">Simple, predictable</text>
+  
+  <!-- Per Seat -->
+  <rect class="seat" x="300" y="50" width="200" height="140" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Per Seat</text>
+  
+  <rect class="seat" x="320" y="100" width="160" height="35" rx="4"/>
+  <text x="400" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">$X/user/month</text>
+  
+  <rect class="box" x="320" y="145" width="160" height="35" rx="4"/>
+  <text x="400" y="167" text-anchor="middle" class="sublabel">Scales with team size</text>
+  
+  <!-- Usage Based -->
+  <rect class="usage" x="550" y="50" width="200" height="140" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Usage Based</text>
+  
+  <rect class="usage" x="570" y="100" width="160" height="35" rx="4"/>
+  <text x="650" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">$X per unit used</text>
+  
+  <rect class="box" x="570" y="145" width="160" height="35" rx="4"/>
+  <text x="650" y="167" text-anchor="middle" class="sublabel">Pay for what you use</text>
+  
+  <!-- Tiered -->
+  <rect class="tiered" x="800" y="50" width="170" height="140" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Tiered</text>
+  
+  <rect class="tiered" x="815" y="100" width="140" height="35" rx="4"/>
+  <text x="885" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Volume discounts</text>
+  
+  <rect class="box" x="815" y="145" width="140" height="35" rx="4"/>
+  <text x="885" y="167" text-anchor="middle" class="sublabel">Lower $ at higher tiers</text>
+  
+  <!-- Comparison Table -->
+  <rect class="box" x="50" y="230" width="900" height="180" rx="8"/>
+  
+  <!-- Header -->
+  <rect class="box" x="60" y="240" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">Model</text>
+  <text x="300" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">Predictability</text>
+  <text x="450" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">Scalability</text>
+  <text x="600" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">Complexity</text>
+  <text x="800" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">Best For</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="300" text-anchor="middle" class="sublabel">Flat Rate</text>
+  <text x="300" y="300" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">High</text>
+  <text x="450" y="300" text-anchor="middle" class="sublabel" fill="#e53e3e">Low</text>
+  <text x="600" y="300" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Low</text>
+  <text x="800" y="300" text-anchor="middle" class="sublabel">B2C, simple products</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="340" text-anchor="middle" class="sublabel">Per Seat</text>
+  <text x="300" y="340" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">High</text>
+  <text x="450" y="340" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">High</text>
+  <text x="600" y="340" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Low</text>
+  <text x="800" y="340" text-anchor="middle" class="sublabel">B2B SaaS (Slack, Zoom)</text>
+  
+  <!-- Row 3 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Usage Based</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel" fill="#e53e3e">Low</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">High</text>
+  <text x="600" y="380" text-anchor="middle" class="sublabel" fill="#e53e3e">High (metering)</text>
+  <text x="800" y="380" text-anchor="middle" class="sublabel">Cloud, APIs (AWS, Stripe)</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 4: Billing Models Comparison</text>
+</svg>

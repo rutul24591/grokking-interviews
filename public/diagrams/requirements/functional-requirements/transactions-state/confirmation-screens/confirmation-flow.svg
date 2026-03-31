@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .confirmation { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .details { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .receipt { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .engagement { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Step 1: Confirmation -->
+  <rect class="confirmation" x="50" y="50" width="180" height="120" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="text-label">1. Confirmation</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">✓ Order Confirmed</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">Order #ABC123</text>
+  <text x="140" y="145" text-anchor="middle" class="sublabel">Thank you!</text>
+  
+  <!-- Step 2: Order Details -->
+  <rect class="details" x="280" y="50" width="200" height="120" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">2. Order Details</text>
+  <text x="380" y="105" text-anchor="middle" class="sublabel">Items (thumbnail, name)</text>
+  <text x="380" y="125" text-anchor="middle" class="sublabel">Shipping address</text>
+  <text x="380" y="145" text-anchor="middle" class="sublabel">Payment method</text>
+  
+  <!-- Step 3: Next Steps -->
+  <rect class="details" x="530" y="50" width="200" height="120" rx="8"/>
+  <text x="630" y="80" text-anchor="middle" class="text-label">3. Next Steps</text>
+  <text x="630" y="105" text-anchor="middle" class="sublabel">Ships by Dec 20</text>
+  <text x="630" y="125" text-anchor="middle" class="sublabel">Arrives Dec 22-24</text>
+  <text x="630" y="145" text-anchor="middle" class="sublabel">Track your order</text>
+  
+  <!-- Step 4: Receipt -->
+  <rect class="receipt" x="780" y="50" width="180" height="120" rx="8"/>
+  <text x="870" y="80" text-anchor="middle" class="text-label">4. Receipt</text>
+  <text x="870" y="105" text-anchor="middle" class="sublabel">Email sent</text>
+  <text x="870" y="125" text-anchor="middle" class="sublabel">Download PDF</text>
+  <text x="870" y="145" text-anchor="middle" class="sublabel">Print receipt</text>
+  
+  <!-- Post-Purchase Engagement -->
+  <rect class="engagement" x="280" y="220" width="450" height="150" rx="8"/>
+  <text x="505" y="250" text-anchor="middle" class="text-label">Post-Purchase Engagement</text>
+  
+  <rect class="engagement" x="300" y="270" width="130" height="80" rx="4"/>
+  <text x="365" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600;">Create Account</text>
+  <text x="365" y="315" text-anchor="middle" class="sublabel">10% off next order</text>
+  <text x="365" y="335" text-anchor="middle" class="sublabel">Track orders easily</text>
+  
+  <rect class="engagement" x="440" y="270" width="130" height="80" rx="4"/>
+  <text x="505" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600;">Related Products</text>
+  <text x="505" y="315" text-anchor="middle" class="sublabel">Customers also bought</text>
+  <text x="505" y="335" text-anchor="middle" class="sublabel">Complete your look</text>
+  
+  <rect class="engagement" x="580" y="270" width="130" height="80" rx="4"/>
+  <text x="645" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600;">Refer Friends</text>
+  <text x="645" y="315" text-anchor="middle" class="sublabel">Give $20, Get $20</text>
+  <text x="645" y="335" text-anchor="middle" class="sublabel">Share your link</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 110 L275 110"/>
+  <path class="arrow" d="M480 110 L525 110"/>
+  <path class="arrow" d="M730 110 L775 110"/>
+  
+  <path class="arrow" d="M380 170 L380 215"/>
+  <path class="arrow" d="M630 170 L630 215"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 2: Confirmation Flow</text>
+</svg>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .trial { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .active { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .pastdue { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .cancelled { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .expired { fill: #e2e8f0; stroke: #4a5568; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Trial State -->
+  <circle class="trial" cx="150" cy="100" r="50" stroke-width="3"/>
+  <text x="150" y="95" text-anchor="middle" class="text-label">Trial</text>
+  <text x="150" y="115" text-anchor="middle" class="sublabel">14-30 days</text>
+  
+  <!-- Active State -->
+  <circle class="active" cx="350" cy="100" r="50" stroke-width="3"/>
+  <text x="350" y="95" text-anchor="middle" class="text-label">Active</text>
+  <text x="350" y="115" text-anchor="middle" class="sublabel">Billing</text>
+  
+  <!-- Past Due State -->
+  <circle class="pastdue" cx="550" cy="100" r="50"/>
+  <text x="550" y="95" text-anchor="middle" class="text-label">Past Due</text>
+  <text x="550" y="115" text-anchor="middle" class="sublabel">Grace Period</text>
+  
+  <!-- Cancelled State -->
+  <circle class="cancelled" cx="750" cy="200" r="50"/>
+  <text x="750" y="195" text-anchor="middle" class="text-label">Cancelled</text>
+  <text x="750" y="215" text-anchor="middle" class="sublabel">Period End</text>
+  
+  <!-- Expired State -->
+  <circle class="expired" cx="900" cy="100" r="50"/>
+  <text x="900" y="95" text-anchor="middle" class="text-label">Expired</text>
+  <text x="900" y="115" text-anchor="middle" class="sublabel">No Access</text>
+  
+  <!-- Transitions -->
+  <path class="arrow" d="M200 100 L300 100"/>
+  <text x="250" y="90" text-anchor="middle" class="sublabel">trial ends</text>
+  
+  <path class="arrow" d="M400 100 L500 100"/>
+  <text x="450" y="90" text-anchor="middle" class="sublabel">payment fails</text>
+  
+  <path class="arrow" d="M600 100 L850 100"/>
+  <text x="725" y="90" text-anchor="middle" class="sublabel">max retries</text>
+  
+  <path class="arrow" d="M550 150 L650 180 L710 190"/>
+  <text x="600" y="170" text-anchor="middle" class="sublabel">customer cancels</text>
+  
+  <path class="arrow" d="M350 150 L450 180 L710 190"/>
+  <text x="480" y="190" text-anchor="middle" class="sublabel">customer cancels</text>
+  
+  <path class="arrow" d="M800 200 L850 150 L860 140"/>
+  <text x="840" y="180" text-anchor="middle" class="sublabel">period ends</text>
+  
+  <!-- Reactivation -->
+  <path class="arrow" d="M750 250 L750 300 L350 300 L350 155"/>
+  <text x="550" y="320" text-anchor="middle" class="sublabel">reactivation / win-back</text>
+  
+  <!-- Legend -->
+  <rect class="trial" x="50" y="360" width="30" height="30" rx="4"/>
+  <text x="90" y="380" text-anchor="start" class="sublabel">Trial (full access)</text>
+  
+  <rect class="active" x="200" y="360" width="30" height="30" rx="4"/>
+  <text x="240" y="380" text-anchor="start" class="sublabel">Active (billing)</text>
+  
+  <rect class="pastdue" x="400" y="360" width="30" height="30" rx="4"/>
+  <text x="440" y="380" text-anchor="start" class="sublabel">Past Due (grace)</text>
+  
+  <rect class="cancelled" x="600" y="360" width="30" height="30" rx="4"/>
+  <text x="640" y="380" text-anchor="start" class="sublabel">Cancelled (period end)</text>
+  
+  <rect class="expired" x="800" y="360" width="30" height="30" rx="4"/>
+  <text x="840" y="380" text-anchor="start" class="sublabel">Expired (no access)</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Subscription States and Transitions</text>
+</svg>

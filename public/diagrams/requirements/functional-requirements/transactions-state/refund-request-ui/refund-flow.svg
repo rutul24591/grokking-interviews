@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .eligible { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .form { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .label { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Step 1: Select Order -->
+  <rect class="step" x="50" y="50" width="180" height="100" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="text-label">1. Select Order</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Delivered orders</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">Last 30-90 days</text>
+  
+  <!-- Step 2: Select Items -->
+  <rect class="eligible" x="280" y="50" width="180" height="100" rx="8"/>
+  <text x="370" y="80" text-anchor="middle" class="text-label">2. Select Items</text>
+  <text x="370" y="105" text-anchor="middle" class="sublabel">Eligible items only</text>
+  <text x="370" y="125" text-anchor="middle" class="sublabel">Check return window</text>
+  
+  <!-- Step 3: Reason -->
+  <rect class="form" x="510" y="50" width="180" height="100" rx="8"/>
+  <text x="600" y="80" text-anchor="middle" class="text-label">3. Select Reason</text>
+  <text x="600" y="105" text-anchor="middle" class="sublabel">Product/Fit/Preference</text>
+  <text x="600" y="125" text-anchor="middle" class="sublabel">Follow-up questions</text>
+  
+  <!-- Step 4: Refund Method -->
+  <rect class="form" x="740" y="50" width="180" height="100" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">4. Refund Method</text>
+  <text x="830" y="105" text-anchor="middle" class="sublabel">Original/Store Credit</text>
+  <text x="830" y="125" text-anchor="middle" class="sublabel">Exchange option</text>
+  
+  <!-- Step 5: Return Shipping -->
+  <rect class="form" x="280" y="200" width="180" height="100" rx="8"/>
+  <text x="370" y="230" text-anchor="middle" class="text-label">5. Return Shipping</text>
+  <text x="370" y="255" text-anchor="middle" class="sublabel">Print Label / QR Code</text>
+  <text x="370" y="275" text-anchor="middle" class="sublabel">Drop-off / Pickup</text>
+  
+  <!-- Step 6: Confirmation -->
+  <rect class="eligible" x="510" y="200" width="180" height="100" rx="8"/>
+  <text x="600" y="230" text-anchor="middle" class="text-label">6. Confirmation</text>
+  <text x="600" y="255" text-anchor="middle" class="sublabel">Return ID generated</text>
+  <text x="600" y="275" text-anchor="middle" class="sublabel">Email with label</text>
+  
+  <!-- Step 7: Track -->
+  <rect class="step" x="740" y="200" width="180" height="100" rx="8"/>
+  <text x="830" y="230" text-anchor="middle" class="text-label">7. Track Refund</text>
+  <text x="830" y="255" text-anchor="middle" class="sublabel">Return status</text>
+  <text x="830" y="275" text-anchor="middle" class="sublabel">Refund status</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 100 L275 100"/>
+  <path class="arrow" d="M460 100 L505 100"/>
+  <path class="arrow" d="M690 100 L735 100"/>
+  
+  <path class="arrow" d="M370 150 L370 195"/>
+  <path class="arrow" d="M460 250 L505 250"/>
+  <path class="arrow" d="M690 250 L735 250"/>
+  
+  <!-- Refund Estimate Box -->
+  <rect class="step" x="50" y="200" width="180" height="140" rx="8"/>
+  <text x="140" y="230" text-anchor="middle" class="text-label">Refund Estimate</text>
+  <text x="140" y="260" text-anchor="middle" class="sublabel">Item: $99.00</text>
+  <text x="140" y="280" text-anchor="middle" class="sublabel">Shipping: $9.99</text>
+  <text x="140" y="300" text-anchor="middle" class="sublabel">Restocking: -$14.85</text>
+  <text x="140" y="320" text-anchor="middle" class="sublabel" style="font-weight: 600;">Total: $94.14</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 2: Refund Request Flow</text>
+</svg>

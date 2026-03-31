@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .tracking { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .reservation { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .external { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
+  
+  <!-- Inventory Tracking -->
+  <rect class="tracking" x="50" y="50" width="200" height="380" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Inventory Tracking</text>
+  
+  <rect class="tracking" x="70" y="100" width="160" height="45" rx="4"/>
+  <text x="150" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Stock Levels</text>
+  
+  <rect class="tracking" x="70" y="160" width="160" height="45" rx="4"/>
+  <text x="150" y="187" text-anchor="middle" class="sublabel" style="font-weight: 600;">Adjustments</text>
+  
+  <rect class="tracking" x="70" y="220" width="160" height="45" rx="4"/>
+  <text x="150" y="247" text-anchor="middle" class="sublabel" style="font-weight: 600;">Aggregation</text>
+  
+  <rect class="tracking" x="70" y="280" width="160" height="45" rx="4"/>
+  <text x="150" y="307" text-anchor="middle" class="sublabel" style="font-weight: 600;">Inventory DB</text>
+  
+  <rect class="tracking" x="70" y="340" width="160" height="45" rx="4"/>
+  <text x="150" y="367" text-anchor="middle" class="sublabel" style="font-weight: 600;">Cache (Redis)</text>
+  
+  <!-- Reservation Service -->
+  <rect class="reservation" x="320" y="50" width="200" height="380" rx="8"/>
+  <text x="420" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Reservation Service</text>
+  
+  <rect class="reservation" x="340" y="100" width="160" height="45" rx="4"/>
+  <text x="420" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Soft Hold</text>
+  
+  <rect class="reservation" x="340" y="160" width="160" height="45" rx="4"/>
+  <text x="420" y="187" text-anchor="middle" class="sublabel" style="font-weight: 600;">Hard Commit</text>
+  
+  <rect class="reservation" x="340" y="220" width="160" height="45" rx="4"/>
+  <text x="420" y="247" text-anchor="middle" class="sublabel" style="font-weight: 600;">Release</text>
+  
+  <rect class="reservation" x="340" y="280" width="160" height="45" rx="4"/>
+  <text x="420" y="307" text-anchor="middle" class="sublabel" style="font-weight: 600;">Timeout Cleanup</text>
+  
+  <rect class="reservation" x="340" y="340" width="160" height="45" rx="4"/>
+  <text x="420" y="367" text-anchor="middle" class="sublabel" style="font-weight: 600;">Reservation DB</text>
+  
+  <!-- External Integrations -->
+  <rect class="external" x="600" y="50" width="180" height="200" rx="8"/>
+  <text x="690" y="80" text-anchor="middle" class="label" style="font-size: 16px;">External Systems</text>
+  
+  <rect class="external" x="620" y="100" width="140" height="40" rx="4"/>
+  <text x="690" y="125" text-anchor="middle" class="sublabel" style="font-weight: 600;">WMS</text>
+  
+  <rect class="external" x="620" y="150" width="140" height="40" rx="4"/>
+  <text x="690" y="175" text-anchor="middle" class="sublabel" style="font-weight: 600;">ERP</text>
+  
+  <rect class="external" x="620" y="200" width="140" height="40" rx="4"/>
+  <text x="690" y="225" text-anchor="middle" class="sublabel" style="font-weight: 600;">Marketplaces</text>
+  
+  <!-- Warehouses -->
+  <rect class="external" x="600" y="280" width="320" height="140" rx="8"/>
+  <text x="760" y="310" text-anchor="middle" class="label" style="font-size: 16px;">Warehouses</text>
+  
+  <rect class="external" x="620" y="330" width="130" height="35" rx="4"/>
+  <text x="685" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600;">Warehouse East</text>
+  
+  <rect class="external" x="765" y="330" width="130" height="35" rx="4"/>
+  <text x="830" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600;">Warehouse West</text>
+  
+  <rect class="external" x="620" y="375" width="130" height="35" rx="4"/>
+  <text x="685" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600;">Warehouse Central</text>
+  
+  <rect class="external" x="765" y="375" width="130" height="35" rx="4"/>
+  <text x="830" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600;">Store Locations</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 125 L335 125"/>
+  <path class="arrow" d="M250 185 L335 185"/>
+  <path class="arrow" d="M520 145 L615 145"/>
+  <path class="arrow" d="M520 350 L615 350"/>
+  
+  <text x="500" y="480" text-anchor="middle" class="label" style="font-size: 16px;">Figure 1: Inventory Management Architecture</text>
+</svg>

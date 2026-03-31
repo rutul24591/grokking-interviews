@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .section { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .summary { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .items { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .shipping { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Order Summary -->
+  <rect class="summary" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Order Summary</text>
+  
+  <rect class="summary" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Order #ABC123</text>
+  
+  <rect class="summary" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Placed: Dec 15, 2024</text>
+  
+  <rect class="summary" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Status: Delivered ✓</text>
+  
+  <!-- Items List -->
+  <rect class="items" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Items</text>
+  
+  <rect class="items" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">📦 Nike Air Max (Size 10)</text>
+  
+  <rect class="items" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Qty: 1 × $120.00</text>
+  
+  <rect class="items" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">📦 Running Socks (3-pack)</text>
+  
+  <!-- Shipping & Payment -->
+  <rect class="shipping" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px;">Shipping &amp; Payment</text>
+  
+  <rect class="shipping" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">📍 123 Main St, NY 10001</text>
+  
+  <rect class="shipping" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">🚚 Standard Shipping</text>
+  
+  <rect class="shipping" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">💳 Visa •••• 1234</text>
+  
+  <!-- Actions -->
+  <rect class="section" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px;">Order Actions</text>
+  
+  <!-- Reorder -->
+  <rect class="summary" x="70" y="320" width="200" height="70" rx="4"/>
+  <text x="170" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">🔄 Reorder</text>
+  <text x="170" y="365" text-anchor="middle" class="sublabel">Add to cart</text>
+  <text x="170" y="380" text-anchor="middle" class="sublabel">Modify quantities</text>
+  
+  <!-- Return -->
+  <rect class="items" x="300" y="320" width="200" height="70" rx="4"/>
+  <text x="400" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">↩️ Return</text>
+  <text x="400" y="365" text-anchor="middle" class="sublabel">If eligible</text>
+  <text x="400" y="380" text-anchor="middle" class="sublabel">Print label</text>
+  
+  <!-- Review -->
+  <rect class="shipping" x="530" y="320" width="200" height="70" rx="4"/>
+  <text x="630" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">⭐ Write Review</text>
+  <text x="630" y="365" text-anchor="middle" class="sublabel">If delivered</text>
+  <text x="630" y="380" text-anchor="middle" class="sublabel">Rate products</text>
+  
+  <!-- Invoice -->
+  <rect class="section" x="760" y="320" width="170" height="70" rx="4"/>
+  <text x="845" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600;">📄 Invoice</text>
+  <text x="845" y="365" text-anchor="middle" class="sublabel">Download PDF</text>
+  <text x="845" y="380" text-anchor="middle" class="sublabel">Print/Email</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 2: Order Details View</text>
+</svg>

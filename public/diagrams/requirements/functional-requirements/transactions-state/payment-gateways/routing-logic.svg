@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .cost { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .success { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .geo { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Cost-Based Routing -->
+  <rect class="cost" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Cost-Based Routing</text>
+  
+  <rect class="cost" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Calculate: Gateway + Interchange</text>
+  
+  <rect class="cost" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Route to: Lowest Total Cost</text>
+  
+  <rect class="cost" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Savings: 0.5-1% of volume</text>
+  
+  <!-- Success Rate Routing -->
+  <rect class="success" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Success Rate Routing</text>
+  
+  <rect class="success" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Track: Auth Rate per Gateway</text>
+  
+  <rect class="success" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Route to: Highest Auth Rate</text>
+  
+  <rect class="success" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Revenue: +1-2% auth rate</text>
+  
+  <!-- Geographic Routing -->
+  <rect class="geo" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Geographic Routing</text>
+  
+  <rect class="geo" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Detect: Customer Location</text>
+  
+  <rect class="geo" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Route to: Local Gateway</text>
+  
+  <rect class="geo" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Benefits: Local payment methods</text>
+  
+  <!-- Routing Decision -->
+  <rect class="cost" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px">Routing Decision Process</text>
+  
+  <!-- Step 1 -->
+  <rect class="cost" x="70" y="320" width="200" height="70" rx="4"/>
+  <text x="170" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">1. Customer Preference</text>
+  <text x="170" y="365" text-anchor="middle" class="sublabel">Saved gateway?</text>
+  <text x="170" y="380" text-anchor="middle" class="sublabel">Use if available</text>
+  
+  <!-- Step 2 -->
+  <rect class="success" x="300" y="320" width="200" height="70" rx="4"/>
+  <text x="400" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">2. Evaluate Rules</text>
+  <text x="400" y="365" text-anchor="middle" class="sublabel">Cost, Success, Geo</text>
+  <text x="400" y="380" text-anchor="middle" class="sublabel">Calculate scores</text>
+  
+  <!-- Step 3 -->
+  <rect class="geo" x="530" y="320" width="200" height="70" rx="4"/>
+  <text x="630" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">3. Select Gateway</text>
+  <text x="630" y="365" text-anchor="middle" class="sublabel">Highest score wins</text>
+  <text x="630" y="380" text-anchor="middle" class="sublabel">Set fallbacks</text>
+  
+  <!-- Step 4 -->
+  <rect class="cost" x="760" y="320" width="170" height="70" rx="4"/>
+  <text x="845" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">4. Route Transaction</text>
+  <text x="845" y="365" text-anchor="middle" class="sublabel">Send to gateway</text>
+  <text x="845" y="380" text-anchor="middle" class="sublabel">Track result</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Routing Logic</text>
+</svg>

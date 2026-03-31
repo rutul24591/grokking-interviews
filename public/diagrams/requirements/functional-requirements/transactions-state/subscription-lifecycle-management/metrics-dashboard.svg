@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .mrr { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .churn { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .ltv { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .cohort { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- MRR Tracking -->
+  <rect class="mrr" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">MRR Tracking</text>
+  
+  <rect class="mrr" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">New MRR</text>
+  
+  <rect class="mrr" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Expansion MRR</text>
+  
+  <rect class="mrr" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Contraction MRR</text>
+  
+  <!-- Churn Analysis -->
+  <rect class="churn" x="300" y="50" width="200" height="180" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Churn Analysis</text>
+  
+  <rect class="churn" x="320" y="100" width="160" height="35" rx="4"/>
+  <text x="400" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Voluntary Churn</text>
+  
+  <rect class="churn" x="320" y="145" width="160" height="35" rx="4"/>
+  <text x="400" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Involuntary Churn</text>
+  
+  <rect class="churn" x="320" y="190" width="160" height="35" rx="4"/>
+  <text x="400" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Churn by Cohort</text>
+  
+  <!-- LTV Calculation -->
+  <rect class="ltv" x="550" y="50" width="200" height="180" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">LTV Calculation</text>
+  
+  <rect class="ltv" x="570" y="100" width="160" height="35" rx="4"/>
+  <text x="650" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">ARPU / Churn Rate</text>
+  
+  <rect class="ltv" x="570" y="145" width="160" height="35" rx="4"/>
+  <text x="650" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">LTV by Cohort</text>
+  
+  <rect class="ltv" x="570" y="190" width="160" height="35" rx="4"/>
+  <text x="650" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">LTV:CAC Ratio</text>
+  
+  <!-- Cohort Analysis -->
+  <rect class="cohort" x="780" y="50" width="190" height="180" rx="8"/>
+  <text x="875" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Cohort Analysis</text>
+  
+  <rect class="cohort" x="795" y="100" width="160" height="35" rx="4"/>
+  <text x="875" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Signup Month Cohorts</text>
+  
+  <rect class="cohort" x="795" y="145" width="160" height="35" rx="4"/>
+  <text x="875" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Retention by Cohort</text>
+  
+  <rect class="cohort" x="795" y="190" width="160" height="35" rx="4"/>
+  <text x="875" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Revenue by Cohort</text>
+  
+  <!-- Dashboard Example -->
+  <rect class="mrr" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px">Subscription Metrics Dashboard</text>
+  
+  <!-- MRR Trend -->
+  <rect class="mrr" x="70" y="320" width="200" height="70" rx="4"/>
+  <text x="170" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">MRR Trend</text>
+  <text x="170" y="365" text-anchor="middle" class="sublabel">$100K → $120K</text>
+  <text x="170" y="380" text-anchor="middle" class="sublabel">+20% growth</text>
+  
+  <!-- Churn Rate -->
+  <rect class="churn" x="300" y="320" width="200" height="70" rx="4"/>
+  <text x="400" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">Churn Rate</text>
+  <text x="400" y="365" text-anchor="middle" class="sublabel">5.2% monthly</text>
+  <text x="400" y="380" text-anchor="middle" class="sublabel">-0.5% vs last month</text>
+  
+  <!-- LTV:CAC -->
+  <rect class="ltv" x="530" y="320" width="200" height="70" rx="4"/>
+  <text x="630" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">LTV:CAC Ratio</text>
+  <text x="630" y="365" text-anchor="middle" class="sublabel">4.2:1</text>
+  <text x="630" y="380" text-anchor="middle" class="sublabel">Target: 3:1</text>
+  
+  <!-- Recovery Rate -->
+  <rect class="cohort" x="760" y="320" width="170" height="70" rx="4"/>
+  <text x="845" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">Recovery Rate</text>
+  <text x="845" y="365" text-anchor="middle" class="sublabel">65% dunning recovery</text>
+  <text x="845" y="380" text-anchor="middle" class="sublabel">+5% vs last month</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Subscription Metrics Dashboard</text>
+</svg>

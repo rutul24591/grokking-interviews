@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .low { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .medium { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .high { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Risk Score Scale -->
+  <rect class="low" x="50" y="100" width="300" height="80" rx="8"/>
+  <text x="200" y="130" text-anchor="middle" class="label" style="font-size: 18px;">Low Risk (0-30)</text>
+  <text x="200" y="160" text-anchor="middle" class="sublabel">Auto-approve</text>
+  
+  <rect class="medium" x="400" y="100" width="300" height="80" rx="8"/>
+  <text x="550" y="130" text-anchor="middle" class="label" style="font-size: 18px;">Medium Risk (30-70)</text>
+  <text x="550" y="160" text-anchor="middle" class="sublabel">Manual review</text>
+  
+  <rect class="high" x="750" y="100" width="200" height="80" rx="8"/>
+  <text x="850" y="130" text-anchor="middle" class="label" style="font-size: 18px;">High Risk (70-100)</text>
+  <text x="850" y="160" text-anchor="middle" class="sublabel">Auto-decline</text>
+  
+  <!-- Flow -->
+  <rect class="low" x="50" y="250" width="200" height="120" rx="8"/>
+  <text x="150" y="280" text-anchor="middle" class="label">Feature Computation</text>
+  <text x="150" y="305" text-anchor="middle" class="sublabel">Velocity, device, location</text>
+  <text x="150" y="330" text-anchor="middle" class="sublabel">Customer history, network</text>
+  <text x="150" y="355" text-anchor="middle" class="sublabel">External data enrichment</text>
+  
+  <rect class="medium" x="300" y="250" width="200" height="120" rx="8"/>
+  <text x="400" y="280" text-anchor="middle" class="label">Rule Evaluation</text>
+  <text x="400" y="305" text-anchor="middle" class="sublabel">Velocity rules</text>
+  <text x="400" y="330" text-anchor="middle" class="sublabel">Location rules</text>
+  <text x="400" y="355" text-anchor="middle" class="sublabel">Clear fraud patterns</text>
+  
+  <rect class="high" x="550" y="250" width="200" height="120" rx="8"/>
+  <text x="650" y="280" text-anchor="middle" class="label">ML Scoring</text>
+  <text x="650" y="305" text-anchor="middle" class="sublabel">Risk model inference</text>
+  <text x="650" y="330" text-anchor="middle" class="sublabel">Score: 0-100</text>
+  <text x="650" y="355" text-anchor="middle" class="sublabel">&lt;100ms latency</text>
+  
+  <rect class="low" x="800" y="250" width="150" height="120" rx="8"/>
+  <text x="875" y="280" text-anchor="middle" class="label">Decision</text>
+  <text x="875" y="305" text-anchor="middle" class="sublabel">Approve / Review</text>
+  <text x="875" y="330" text-anchor="middle" class="sublabel">/ Decline</text>
+  <text x="875" y="355" text-anchor="middle" class="sublabel">+ Logging</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 310 L295 310"/>
+  <path class="arrow" d="M500 310 L545 310"/>
+  <path class="arrow" d="M750 310 L795 310"/>
+  
+  <!-- Thresholds -->
+  <text x="200" y="230" text-anchor="middle" class="sublabel">Threshold: 30</text>
+  <text x="550" y="230" text-anchor="middle" class="sublabel">Threshold: 70</text>
+  
+  <path class="arrow" d="M200 180 L200 220"/>
+  <path class="arrow" d="M550 180 L550 220"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Risk Scoring Flow</text>
+</svg>

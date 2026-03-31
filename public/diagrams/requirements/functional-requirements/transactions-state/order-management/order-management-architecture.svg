@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .channel { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .oms { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .external { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
+  
+  <!-- Channels -->
+  <rect class="channel" x="50" y="50" width="180" height="380" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Order Channels</text>
+  
+  <rect class="channel" x="70" y="100" width="140" height="45" rx="4"/>
+  <text x="140" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Web Store</text>
+  
+  <rect class="channel" x="70" y="160" width="140" height="45" rx="4"/>
+  <text x="140" y="187" text-anchor="middle" class="sublabel" style="font-weight: 600;">Mobile App</text>
+  
+  <rect class="channel" x="70" y="220" width="140" height="45" rx="4"/>
+  <text x="140" y="247" text-anchor="middle" class="sublabel" style="font-weight: 600;">Marketplace</text>
+  
+  <rect class="channel" x="70" y="280" width="140" height="45" rx="4"/>
+  <text x="140" y="307" text-anchor="middle" class="sublabel" style="font-weight: 600;">In-Store POS</text>
+  
+  <rect class="channel" x="70" y="340" width="140" height="45" rx="4"/>
+  <text x="140" y="367" text-anchor="middle" class="sublabel" style="font-weight: 600;">Call Center</text>
+  
+  <!-- OMS Core -->
+  <rect class="oms" x="320" y="50" width="200" height="380" rx="8"/>
+  <text x="420" y="80" text-anchor="middle" class="label" style="font-size: 16px;">OMS Core</text>
+  
+  <rect class="oms" x="340" y="100" width="160" height="45" rx="4"/>
+  <text x="420" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Order Ingestion</text>
+  
+  <rect class="oms" x="340" y="160" width="160" height="45" rx="4"/>
+  <text x="420" y="187" text-anchor="middle" class="sublabel" style="font-weight: 600;">State Machine</text>
+  
+  <rect class="oms" x="340" y="220" width="160" height="45" rx="4"/>
+  <text x="420" y="247" text-anchor="middle" class="sublabel" style="font-weight: 600;">Fulfillment</text>
+  
+  <rect class="oms" x="340" y="280" width="160" height="45" rx="4"/>
+  <text x="420" y="307" text-anchor="middle" class="sublabel" style="font-weight: 600;">Returns Mgmt</text>
+  
+  <rect class="oms" x="340" y="340" width="160" height="45" rx="4"/>
+  <text x="420" y="367" text-anchor="middle" class="sublabel" style="font-weight: 600;">Order DB</text>
+  
+  <!-- External Services -->
+  <rect class="external" x="600" y="50" width="180" height="200" rx="8"/>
+  <text x="690" y="80" text-anchor="middle" class="label" style="font-size: 16px;">External Services</text>
+  
+  <rect class="external" x="620" y="100" width="140" height="40" rx="4"/>
+  <text x="690" y="125" text-anchor="middle" class="sublabel" style="font-weight: 600;">Payment</text>
+  
+  <rect class="external" x="620" y="150" width="140" height="40" rx="4"/>
+  <text x="690" y="175" text-anchor="middle" class="sublabel" style="font-weight: 600;">Inventory</text>
+  
+  <rect class="external" x="620" y="200" width="140" height="40" rx="4"/>
+  <text x="690" y="225" text-anchor="middle" class="sublabel" style="font-weight: 600;">Shipping</text>
+  
+  <!-- Notifications -->
+  <rect class="external" x="600" y="280" width="180" height="140" rx="8"/>
+  <text x="690" y="310" text-anchor="middle" class="label" style="font-size: 16px;">Notifications</text>
+  
+  <rect class="external" x="620" y="330" width="140" height="35" rx="4"/>
+  <text x="690" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600;">Email</text>
+  
+  <rect class="external" x="620" y="375" width="140" height="35" rx="4"/>
+  <text x="690" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600;">SMS</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 125 L335 125"/>
+  <path class="arrow" d="M230 185 L335 185"/>
+  <path class="arrow" d="M230 245 L335 245"/>
+  <path class="arrow" d="M520 145 L615 120"/>
+  <path class="arrow" d="M520 185 L615 170"/>
+  <path class="arrow" d="M520 225 L615 205"/>
+  <path class="arrow" d="M520 305 L615 330"/>
+  
+  <text x="500" y="480" text-anchor="middle" class="label" style="font-size: 16px;">Figure 1: Order Management Architecture</text>
+</svg>

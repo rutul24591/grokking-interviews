@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .gateway { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .backend { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Gateway -->
+  <rect class="gateway" x="50" y="50" width="200" height="320" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Payment Gateway</text>
+  
+  <rect class="gateway" x="70" y="100" width="160" height="45" rx="4"/>
+  <text x="150" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Event Generated</text>
+  
+  <rect class="gateway" x="70" y="165" width="160" height="45" rx="4"/>
+  <text x="150" y="192" text-anchor="middle" class="sublabel" style="font-weight: 600;">Sign with HMAC</text>
+  
+  <rect class="gateway" x="70" y="230" width="160" height="45" rx="4"/>
+  <text x="150" y="257" text-anchor="middle" class="sublabel" style="font-weight: 600;">POST to Endpoint</text>
+  
+  <rect class="gateway" x="70" y="295" width="160" height="45" rx="4"/>
+  <text x="150" y="322" text-anchor="middle" class="sublabel" style="font-weight: 600;">Retry on Failure</text>
+  
+  <!-- Backend Webhook Handler -->
+  <rect class="backend" x="400" y="50" width="220" height="320" rx="8"/>
+  <text x="510" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Backend Webhook Handler</text>
+  
+  <rect class="backend" x="420" y="100" width="180" height="45" rx="4"/>
+  <text x="510" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Verify Signature</text>
+  
+  <rect class="backend" x="420" y="165" width="180" height="45" rx="4"/>
+  <text x="510" y="192" text-anchor="middle" class="sublabel" style="font-weight: 600;">Check Idempotency</text>
+  
+  <rect class="backend" x="420" y="230" width="180" height="45" rx="4"/>
+  <text x="510" y="257" text-anchor="middle" class="sublabel" style="font-weight: 600;">Queue for Processing</text>
+  
+  <rect class="backend" x="420" y="295" width="180" height="45" rx="4"/>
+  <text x="510" y="322" text-anchor="middle" class="sublabel" style="font-weight: 600;">Return 200 OK</text>
+  
+  <!-- Async Processing -->
+  <rect class="backend" x="720" y="150" width="200" height="120" rx="8"/>
+  <text x="820" y="180" text-anchor="middle" class="label" style="font-size: 16px;">Async Processing</text>
+  
+  <rect class="backend" x="740" y="200" width="160" height="45" rx="4"/>
+  <text x="820" y="227" text-anchor="middle" class="sublabel" style="font-weight: 600;">Update Payment State</text>
+  
+  <rect class="backend" x="740" y="255" width="160" height="45" rx="4"/>
+  <text x="820" y="282" text-anchor="middle" class="sublabel" style="font-weight: 600;">Notify Downstream</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 187 L415 187"/>
+  <text x="330" y="175" text-anchor="middle" class="sublabel">Webhook POST</text>
+  
+  <path class="arrow" d="M620 210 L735 210"/>
+  <text x="680" y="200" text-anchor="middle" class="sublabel">Queue</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Webhook Handling</text>
+</svg>

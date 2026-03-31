@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .warehouse { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .order { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .allocation { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Order -->
+  <rect class="order" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Order #12345</text>
+  
+  <rect class="order" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Item A × 2</text>
+  
+  <rect class="order" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600;">Item B × 1</text>
+  
+  <rect class="order" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600;">Item C × 3</text>
+  
+  <!-- Warehouses -->
+  <rect class="warehouse" x="350" y="50" width="180" height="120" rx="8"/>
+  <text x="440" y="80" text-anchor="middle" class="label">Warehouse East</text>
+  <text x="440" y="105" text-anchor="middle" class="sublabel">Item A: 100</text>
+  <text x="440" y="125" text-anchor="middle" class="sublabel">Item B: 0</text>
+  <text x="440" y="145" text-anchor="middle" class="sublabel">Item C: 50</text>
+  
+  <rect class="warehouse" x="350" y="200" width="180" height="120" rx="8"/>
+  <text x="440" y="230" text-anchor="middle" class="label">Warehouse West</text>
+  <text x="440" y="255" text-anchor="middle" class="sublabel">Item A: 0</text>
+  <text x="440" y="275" text-anchor="middle" class="sublabel">Item B: 25</text>
+  <text x="440" y="295" text-anchor="middle" class="sublabel">Item C: 10</text>
+  
+  <!-- Allocation Result -->
+  <rect class="allocation" x="620" y="50" width="180" height="140" rx="8"/>
+  <text x="710" y="80" text-anchor="middle" class="label">Allocation Result</text>
+  <text x="710" y="105" text-anchor="middle" class="sublabel">From East: A×2, C×2</text>
+  <text x="710" y="130" text-anchor="middle" class="sublabel">From West: B×1, C×1</text>
+  <text x="710" y="155" text-anchor="middle" class="sublabel">Split Shipment</text>
+  <text x="710" y="180" text-anchor="middle" class="sublabel">+ $8.99 shipping</text>
+  
+  <!-- Customer -->
+  <rect class="order" x="850" y="150" width="120" height="100" rx="8"/>
+  <text x="910" y="180" text-anchor="middle" class="label">Customer</text>
+  <text x="910" y="205" text-anchor="middle" class="sublabel">New York, NY</text>
+  <text x="910" y="230" text-anchor="middle" class="sublabel">2 Shipments</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 110 L345 85"/>
+  <path class="arrow" d="M250 165 L345 245"/>
+  
+  <path class="arrow" d="M530 110 L615 110"/>
+  <path class="arrow" d="M530 260 L615 140"/>
+  
+  <path class="arrow" d="M800 120 L845 165"/>
+  <path class="arrow" d="M800 260 L845 205"/>
+  
+  <!-- Allocation Algorithm -->
+  <rect class="allocation" x="550" y="250" width="350" height="120" rx="8"/>
+  <text x="725" y="280" text-anchor="middle" class="label">Allocation Algorithm</text>
+  
+  <text x="570" y="310" text-anchor="middle" class="sublabel">1. Filter warehouses with all items</text>
+  <text x="570" y="330" text-anchor="middle" class="sublabel">2. Rank by cost/time</text>
+  <text x="570" y="350" text-anchor="middle" class="sublabel">3. Select best warehouse</text>
+  <text x="570" y="370" text-anchor="middle" class="sublabel">4. If not all items → split shipment</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Multi-Warehouse Coordination</text>
+</svg>

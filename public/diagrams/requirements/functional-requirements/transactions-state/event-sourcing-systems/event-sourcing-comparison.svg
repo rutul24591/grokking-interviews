@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .event { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .state { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .cqrs { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Event Sourcing -->
+  <rect class="event" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Event Sourcing</text>
+  
+  <rect class="event" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Events as Source of Truth</text>
+  
+  <rect class="event" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Append-Only Storage</text>
+  
+  <rect class="event" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Full Audit Trail</text>
+  
+  <!-- State Storage -->
+  <rect class="state" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">State Storage</text>
+  
+  <rect class="state" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Store Current State</text>
+  
+  <rect class="state" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Update State</text>
+  
+  <rect class="state" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">No History</text>
+  
+  <!-- CQRS -->
+  <rect class="cqrs" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">CQRS</text>
+  
+  <rect class="cqrs" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Separate Write/Read</text>
+  
+  <rect class="cqrs" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Optimize Independently</text>
+  
+  <rect class="cqrs" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Scale Independently</text>
+  
+  <!-- Comparison Table -->
+  <rect class="event" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px">Approach Comparison</text>
+  
+  <!-- Header -->
+  <rect class="event" x="60" y="310" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">Approach</text>
+  <text x="300" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">Audit Trail</text>
+  <text x="450" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">Query Performance</text>
+  <text x="650" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">Complexity</text>
+  <text x="850" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">Best For</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="370" text-anchor="middle" class="sublabel">Event Sourcing</text>
+  <text x="300" y="370" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Complete</text>
+  <text x="450" y="370" text-anchor="middle" class="sublabel" fill="#e53e3e">Slower (Replay)</text>
+  <text x="650" y="370" text-anchor="middle" class="sublabel" fill="#e53e3e">High</text>
+  <text x="850" y="370" text-anchor="middle" class="sublabel">Audit, Temporal</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="395" text-anchor="middle" class="sublabel">State Storage</text>
+  <text x="300" y="395" text-anchor="middle" class="sublabel" fill="#e53e3e">None</text>
+  <text x="450" y="395" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Fastest</text>
+  <text x="650" y="395" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Low</text>
+  <text x="850" y="395" text-anchor="middle" class="sublabel">Simple, Performance</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Event Sourcing Comparison</text>
+</svg>

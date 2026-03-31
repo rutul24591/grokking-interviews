@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .highlight { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Stripe -->
+  <rect class="box" x="50" y="50" width="200" height="140" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Stripe</text>
+  
+  <rect class="highlight" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Developer-friendly</text>
+  
+  <rect class="box" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">2.9% + 30¢</text>
+  
+  <!-- Adyen -->
+  <rect class="box" x="300" y="50" width="200" height="140" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Adyen</text>
+  
+  <rect class="highlight" x="320" y="100" width="160" height="35" rx="4"/>
+  <text x="400" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Enterprise/Global</text>
+  
+  <rect class="box" x="320" y="145" width="160" height="35" rx="4"/>
+  <text x="400" y="167" text-anchor="middle" class="sublabel">Interchange++</text>
+  
+  <!-- PayPal -->
+  <rect class="box" x="550" y="50" width="200" height="140" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="label" style="font-size: 16px;">PayPal/Braintree</text>
+  
+  <rect class="highlight" x="570" y="100" width="160" height="35" rx="4"/>
+  <text x="650" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">PayPal Integration</text>
+  
+  <rect class="box" x="570" y="145" width="160" height="35" rx="4"/>
+  <text x="650" y="167" text-anchor="middle" class="sublabel">2.9% + 30¢</text>
+  
+  <!-- Comparison Table -->
+  <rect class="box" x="50" y="230" width="900" height="180" rx="8"/>
+  
+  <!-- Header -->
+  <rect class="box" x="60" y="240" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">Gateway</text>
+  <text x="300" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">Best For</text>
+  <text x="500" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">Geographic Coverage</text>
+  <text x="750" y="263" text-anchor="middle" class="sublabel" style="font-weight: 600;">3DS Support</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="300" text-anchor="middle" class="sublabel">Stripe</text>
+  <text x="300" y="300" text-anchor="middle" class="sublabel">Startups, Developers</text>
+  <text x="500" y="300" text-anchor="middle" class="sublabel">45+ countries</text>
+  <text x="750" y="300" text-anchor="middle" class="sublabel">3DS 2.0, SCA</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="340" text-anchor="middle" class="sublabel">Adyen</text>
+  <text x="300" y="340" text-anchor="middle" class="sublabel">Enterprise, Global</text>
+  <text x="500" y="340" text-anchor="middle" class="sublabel">150+ currencies</text>
+  <text x="750" y="340" text-anchor="middle" class="sublabel">3DS 2.2, Native</text>
+  
+  <!-- Row 3 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">PayPal</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel">Consumer Trust</text>
+  <text x="500" y="380" text-anchor="middle" class="sublabel">200+ markets</text>
+  <text x="750" y="380" text-anchor="middle" class="sublabel">3DS via gateway</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 4: Gateway Comparison</text>
+</svg>

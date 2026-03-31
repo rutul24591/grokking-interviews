@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .event { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .notification { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .channel { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Tracking Events -->
+  <rect class="event" x="50" y="50" width="200" height="280" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Tracking Events</text>
+  
+  <rect class="event" x="70" y="100" width="160" height="40" rx="4"/>
+  <text x="150" y="125" text-anchor="middle" class="sublabel" style="font-weight: 600;">Label Created</text>
+  
+  <rect class="event" x="70" y="150" width="160" height="40" rx="4"/>
+  <text x="150" y="175" text-anchor="middle" class="sublabel" style="font-weight: 600;">Picked Up</text>
+  
+  <rect class="event" x="70" y="200" width="160" height="40" rx="4"/>
+  <text x="150" y="225" text-anchor="middle" class="sublabel" style="font-weight: 600;">In Transit</text>
+  
+  <rect class="event" x="70" y="250" width="160" height="40" rx="4"/>
+  <text x="150" y="275" text-anchor="middle" class="sublabel" style="font-weight: 600;">Out for Delivery</text>
+  
+  <rect class="event" x="70" y="300" width="160" height="40" rx="4"/>
+  <text x="150" y="325" text-anchor="middle" class="sublabel" style="font-weight: 600;">Delivered</text>
+  
+  <!-- Notification Triggers -->
+  <rect class="notification" x="320" y="50" width="200" height="280" rx="8"/>
+  <text x="420" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Notification Triggers</text>
+  
+  <rect class="notification" x="340" y="100" width="160" height="40" rx="4"/>
+  <text x="420" y="125" text-anchor="middle" class="sublabel" style="font-weight: 600;">Order Shipped</text>
+  
+  <rect class="notification" x="340" y="150" width="160" height="40" rx="4"/>
+  <text x="420" y="175" text-anchor="middle" class="sublabel" style="font-weight: 600;">Out for Delivery</text>
+  
+  <rect class="notification" x="340" y="200" width="160" height="40" rx="4"/>
+  <text x="420" y="225" text-anchor="middle" class="sublabel" style="font-weight: 600;">Delivered</text>
+  
+  <rect class="notification" x="340" y="250" width="160" height="40" rx="4"/>
+  <text x="420" y="275" text-anchor="middle" class="sublabel" style="font-weight: 600;">Exception</text>
+  
+  <!-- Delivery Channels -->
+  <rect class="channel" x="590" y="50" width="180" height="280" rx="8"/>
+  <text x="680" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Delivery Channels</text>
+  
+  <rect class="channel" x="610" y="100" width="140" height="40" rx="4"/>
+  <text x="680" y="125" text-anchor="middle" class="sublabel" style="font-weight: 600;">Email</text>
+  <text x="680" y="145" text-anchor="middle" class="sublabel">Always on, detailed</text>
+  
+  <rect class="channel" x="610" y="160" width="140" height="40" rx="4"/>
+  <text x="680" y="185" text-anchor="middle" class="sublabel" style="font-weight: 600;">SMS</text>
+  <text x="680" y="205" text-anchor="middle" class="sublabel">Opt-in, time-sensitive</text>
+  
+  <rect class="channel" x="610" y="220" width="140" height="40" rx="4"/>
+  <text x="680" y="245" text-anchor="middle" class="sublabel" style="font-weight: 600;">Push</text>
+  <text x="680" y="265" text-anchor="middle" class="sublabel">Mobile app, real-time</text>
+  
+  <!-- Customer Preferences -->
+  <rect class="channel" x="820" y="100" width="150" height="120" rx="8"/>
+  <text x="895" y="130" text-anchor="middle" class="label">Customer Preferences</text>
+  <text x="895" y="155" text-anchor="middle" class="sublabel">Frequency: All/Milestones</text>
+  <text x="895" y="175" text-anchor="middle" class="sublabel">Channels: Email/SMS/Push</text>
+  <text x="895" y="195" text-anchor="middle" class="sublabel">Quiet Hours: 9PM-8AM</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 120 L335 120"/>
+  <path class="arrow" d="M250 170 L335 170"/>
+  <path class="arrow" d="M250 220 L335 220"/>
+  <path class="arrow" d="M250 270 L335 270"/>
+  
+  <path class="arrow" d="M520 120 L605 120"/>
+  <path class="arrow" d="M520 170 L605 170"/>
+  <path class="arrow" d="M520 220 L605 220"/>
+  <path class="arrow" d="M520 270 L605 270"/>
+  
+  <path class="arrow" d="M770 180 L815 180"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Notification Flow</text>
+</svg>

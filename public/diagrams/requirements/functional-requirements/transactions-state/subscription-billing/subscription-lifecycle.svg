@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .state { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .active { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .warning { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .terminal { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Trial -->
+  <circle class="active" cx="100" cy="100" r="45"/>
+  <text x="100" y="95" text-anchor="middle" class="label">Trial</text>
+  <text x="100" y="115" text-anchor="middle" class="sublabel">Free (30 days)</text>
+  
+  <!-- Active -->
+  <circle class="active" cx="300" cy="100" r="45" stroke-width="3"/>
+  <text x="300" y="95" text-anchor="middle" class="label">Active</text>
+  <text x="300" y="115" text-anchor="middle" class="sublabel">Billing OK</text>
+  
+  <!-- Past Due -->
+  <circle class="warning" cx="500" cy="100" r="45"/>
+  <text x="500" y="95" text-anchor="middle" class="label">Past Due</text>
+  <text x="500" y="115" text-anchor="middle" class="sublabel">Payment Failed</text>
+  
+  <!-- Suspended -->
+  <circle class="terminal" cx="700" cy="100" r="45"/>
+  <text x="700" y="95" text-anchor="middle" class="label">Suspended</text>
+  <text x="700" y="115" text-anchor="middle" class="sublabel">No Access</text>
+  
+  <!-- Expired -->
+  <circle class="terminal" cx="900" cy="100" r="45"/>
+  <text x="900" y="95" text-anchor="middle" class="label">Expired</text>
+  <text x="900" y="115" text-anchor="middle" class="sublabel">Ended</text>
+  
+  <!-- Cancelled -->
+  <circle class="terminal" cx="500" cy="280" r="45"/>
+  <text x="500" y="275" text-anchor="middle" class="label">Cancelled</text>
+  <text x="500" y="295" text-anchor="middle" class="sublabel">User/System</text>
+  
+  <!-- Transitions -->
+  <path class="arrow" d="M145 100 L255 100"/>
+  <text x="200" y="90" text-anchor="middle" class="sublabel">trial_ends</text>
+  
+  <path class="arrow" d="M345 100 L455 100"/>
+  <text x="400" y="90" text-anchor="middle" class="sublabel">payment_failed</text>
+  
+  <path class="arrow" d="M545 100 L655 100"/>
+  <text x="600" y="90" text-anchor="middle" class="sublabel">max_retries</text>
+  
+  <path class="arrow" d="M745 100 L855 100"/>
+  <text x="800" y="90" text-anchor="middle" class="sublabel">grace_period_ends</text>
+  
+  <path class="arrow" d="M300 145 L330 190 L460 260"/>
+  <text x="370" y="200" text-anchor="middle" class="sublabel">user_cancel</text>
+  
+  <path class="arrow" d="M500 145 L500 235"/>
+  <text x="520" y="190" text-anchor="middle" class="sublabel">user_cancel</text>
+  
+  <path class="arrow" d="M455 280 L345 280 L300 200"/>
+  <text x="370" y="270" text-anchor="middle" class="sublabel">reactivate (window)</text>
+  
+  <!-- Dunning Box -->
+  <rect class="warning" x="420" cy="350" width="160" height="70" rx="4"/>
+  <text x="500" y="375" text-anchor="middle" class="label">Dunning Workflow</text>
+  <text x="500" y="395" text-anchor="middle" class="sublabel">Retry: Day 1, 3, 7, 14, 21</text>
+  <text x="500" y="410" text-anchor="middle" class="sublabel">Notify: Email at each stage</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Subscription Lifecycle</text>
+</svg>

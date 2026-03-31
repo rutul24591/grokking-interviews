@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .dispute { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .tracking { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .resolution { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Step 1: Initiate -->
+  <rect class="step" x="50" y="50" width="180" height="100" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="text-label">1. Initiate Dispute</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Per-transaction button</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">&quot;Dispute Transaction&quot;</text>
+  
+  <!-- Step 2: Reason -->
+  <rect class="dispute" x="280" y="50" width="200" height="100" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">2. Select Reason</text>
+  <text x="380" y="105" text-anchor="middle" class="sublabel">Unauthorized, Not Received</text>
+  <text x="380" y="125" text-anchor="middle" class="sublabel">Defective, Duplicate, Other</text>
+  
+  <!-- Step 3: Evidence -->
+  <rect class="dispute" x="530" y="50" width="200" height="100" rx="8"/>
+  <text x="630" y="80" text-anchor="middle" class="text-label">3. Upload Evidence</text>
+  <text x="630" y="105" text-anchor="middle" class="sublabel">Photos, Documents</text>
+  <text x="630" y="125" text-anchor="middle" class="sublabel">Description, Order Details</text>
+  
+  <!-- Step 4: Submit -->
+  <rect class="step" x="780" y="50" width="180" height="100" rx="8"/>
+  <text x="870" y="80" text-anchor="middle" class="text-label">4. Submit</text>
+  <text x="870" y="105" text-anchor="middle" class="sublabel">Case Number Generated</text>
+  <text x="870" y="125" text-anchor="middle" class="sublabel">Confirmation Email</text>
+  
+  <!-- Tracking States -->
+  <rect class="tracking" x="280" y="200" width="450" height="120" rx="8"/>
+  <text x="505" y="230" text-anchor="middle" class="text-label">Dispute Tracking States</text>
+  
+  <rect class="tracking" x="300" y="250" width="80" height="50" rx="4"/>
+  <text x="340" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600;">Submitted</text>
+  
+  <rect class="tracking" x="400" y="250" width="80" height="50" rx="4"/>
+  <text x="440" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600;">Review</text>
+  
+  <rect class="tracking" x="500" y="250" width="80" height="50" rx="4"/>
+  <text x="540" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600;">Provisional</text>
+  
+  <rect class="tracking" x="600" y="250" width="80" height="50" rx="4"/>
+  <text x="640" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600;">Resolved</text>
+  
+  <rect class="tracking" x="700" y="250" width="80" height="50" rx="4"/>
+  <text x="740" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600;">Closed</text>
+  
+  <!-- Arrows between states -->
+  <path class="arrow" d="M380 275 L395 275"/>
+  <path class="arrow" d="M480 275 L495 275"/>
+  <path class="arrow" d="M580 275 L595 275"/>
+  <path class="arrow" d="M680 275 L695 275"/>
+  
+  <!-- Resolution Options -->
+  <rect class="resolution" x="280" y="350" width="200" height="80" rx="8"/>
+  <text x="380" y="380" text-anchor="middle" class="text-label">Customer Wins</text>
+  <text x="380" y="405" text-anchor="middle" class="sublabel">Full Refund</text>
+  <text x="380" y="420" text-anchor="middle" class="sublabel">Credit Issued</text>
+  
+  <rect class="dispute" x="530" y="350" width="200" height="80" rx="8"/>
+  <text x="630" y="380" text-anchor="middle" class="text-label">Merchant Wins</text>
+  <text x="630" y="405" text-anchor="middle" class="sublabel">Charge Upheld</text>
+  <text x="630" y="420" text-anchor="middle" class="sublabel">No Refund</text>
+  
+  <rect class="step" x="780" y="350" width="180" height="80" rx="8"/>
+  <text x="870" y="380" text-anchor="middle" class="text-label">Appeal</text>
+  <text x="870" y="405" text-anchor="middle" class="sublabel">If Unsatisfied</text>
+  <text x="870" y="420" text-anchor="middle" class="sublabel">Additional Evidence</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px;">Figure 3: Dispute and Issue Handling</text>
+</svg>

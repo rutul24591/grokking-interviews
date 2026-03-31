@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .state { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .soft { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .hard { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Available -->
+  <circle class="state" cx="100" cy="100" r="50" stroke-width="3"/>
+  <text x="100" y="95" text-anchor="middle" class="label">Available</text>
+  <text x="100" y="115" text-anchor="middle" class="sublabel">On-hand</text>
+  
+  <!-- Soft Hold -->
+  <circle class="soft" cx="300" cy="100" r="50"/>
+  <text x="300" y="95" text-anchor="middle" class="label">Soft Hold</text>
+  <text x="300" y="115" text-anchor="middle" class="sublabel">Checkout (15-30m)</text>
+  
+  <!-- Committed -->
+  <circle class="hard" cx="500" cy="100" r="50"/>
+  <text x="500" y="95" text-anchor="middle" class="label">Committed</text>
+  <text x="500" y="115" text-anchor="middle" class="sublabel">Payment OK</text>
+  
+  <!-- Shipped -->
+  <circle class="hard" cx="700" cy="100" r="50"/>
+  <text x="700" y="95" text-anchor="middle" class="label">Shipped</text>
+  <text x="700" y="115" text-anchor="middle" class="sublabel">Deducted</text>
+  
+  <!-- Released -->
+  <circle class="state" cx="300" cy="280" r="50"/>
+  <text x="300" y="275" text-anchor="middle" class="label">Released</text>
+  <text x="300" y="295" text-anchor="middle" class="sublabel">Timeout/Cancel</text>
+  
+  <!-- Transitions -->
+  <path class="arrow" d="M150 100 L250 100"/>
+  <text x="200" y="90" text-anchor="middle" class="sublabel">checkout_start</text>
+  
+  <path class="arrow" d="M350 100 L450 100"/>
+  <text x="400" y="90" text-anchor="middle" class="sublabel">payment_success</text>
+  
+  <path class="arrow" d="M550 100 L650 100"/>
+  <text x="600" y="90" text-anchor="middle" class="sublabel">ship_created</text>
+  
+  <path class="arrow" d="M300 150 L300 230"/>
+  <text x="320" y="190" text-anchor="middle" class="sublabel">timeout/failure</text>
+  
+  <path class="arrow" d="M300 280 L150 130"/>
+  <text x="200" y="240" text-anchor="middle" class="sublabel">return to available</text>
+  
+  <!-- Timeline -->
+  <rect class="state" x="550" y="200" width="350" height="120" rx="8"/>
+  <text x="725" y="230" text-anchor="middle" class="label">Reservation Timeline</text>
+  
+  <text x="570" y="260" text-anchor="middle" class="sublabel">Soft Hold: 15-30 minutes (TTL)</text>
+  <text x="570" y="280" text-anchor="middle" class="sublabel">Hard Commit: Until ship/cancel</text>
+  <text x="570" y="300" text-anchor="middle" class="sublabel">Cleanup: Every 1 minute (cron)</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Inventory Reservation Flow</text>
+</svg>

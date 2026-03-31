@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .retry { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .notify { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .terminal { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Payment Failure -->
+  <rect class="terminal" x="50" y="50" width="180" height="70" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="label">Payment Failed</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Day 0</text>
+  
+  <!-- Retry 1 -->
+  <rect class="retry" x="280" y="50" width="140" height="70" rx="8"/>
+  <text x="350" y="80" text-anchor="middle" class="label">Retry 1</text>
+  <text x="350" y="105" text-anchor="middle" class="sublabel">Day 1</text>
+  
+  <!-- Retry 2 -->
+  <rect class="retry" x="470" y="50" width="140" height="70" rx="8"/>
+  <text x="540" y="80" text-anchor="middle" class="label">Retry 2</text>
+  <text x="540" y="105" text-anchor="middle" class="sublabel">Day 3</text>
+  
+  <!-- Retry 3 -->
+  <rect class="retry" x="660" y="50" width="140" height="70" rx="8"/>
+  <text x="730" y="80" text-anchor="middle" class="label">Retry 3</text>
+  <text x="730" y="105" text-anchor="middle" class="sublabel">Day 7</text>
+  
+  <!-- Suspend -->
+  <rect class="terminal" x="850" y="50" width="120" height="70" rx="8"/>
+  <text x="910" y="80" text-anchor="middle" class="label">Suspend</text>
+  <text x="910" y="105" text-anchor="middle" class="sublabel">Day 14-21</text>
+  
+  <!-- Notifications -->
+  <rect class="notify" x="280" y="170" width="140" height="60" rx="8"/>
+  <text x="350" y="200" text-anchor="middle" class="label">Email 1</text>
+  <text x="350" y="220" text-anchor="middle" class="sublabel">&quot;Update Card&quot;</text>
+  
+  <rect class="notify" x="470" y="170" width="140" height="60" rx="8"/>
+  <text x="540" y="200" text-anchor="middle" class="label">Email 2</text>
+  <text x="540" y="220" text-anchor="middle" class="sublabel">&quot;At Risk&quot;</text>
+  
+  <rect class="notify" x="660" y="170" width="140" height="60" rx="8"/>
+  <text x="730" y="200" text-anchor="middle" class="label">Email 3</text>
+  <text x="730" y="220" text-anchor="middle" class="sublabel">&quot;Final Notice&quot;</text>
+  
+  <rect class="notify" x="850" y="170" width="120" height="60" rx="8"/>
+  <text x="910" y="200" text-anchor="middle" class="label">Email 4</text>
+  <text x="910" y="220" text-anchor="middle" class="sublabel">&quot;Suspended&quot;</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 85 L275 85"/>
+  <path class="arrow" d="M420 85 L465 85"/>
+  <path class="arrow" d="M610 85 L655 85"/>
+  <path class="arrow" d="M800 85 L845 85"/>
+  
+  <path class="arrow" d="M350 120 L350 165"/>
+  <path class="arrow" d="M540 120 L540 165"/>
+  <path class="arrow" d="M730 120 L730 165"/>
+  <path class="arrow" d="M910 120 L910 165"/>
+  
+  <!-- Success Path -->
+  <rect class="step" x="470" y="280" width="140" height="70" rx="8" stroke-width="3"/>
+  <text x="540" y="310" text-anchor="middle" class="label">Payment Success</text>
+  <text x="540" y="335" text-anchor="middle" class="sublabel">Recover (30-50%)</text>
+  
+  <path class="arrow" d="M350 230 L420 280"/>
+  <path class="arrow" d="M540 230 L540 275"/>
+  <path class="arrow" d="M730 230 L660 280"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Dunning Workflow</text>
+</svg>

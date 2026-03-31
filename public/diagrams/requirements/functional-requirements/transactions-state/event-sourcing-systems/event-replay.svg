@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .debugging { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .features { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .disaster { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Debugging Replay -->
+  <rect class="debugging" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Debugging Replay</text>
+  
+  <rect class="debugging" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Reproduce Issues</text>
+  
+  <rect class="debugging" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Test Fixes</text>
+  
+  <rect class="debugging" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Understand Behavior</text>
+  
+  <!-- New Features Replay -->
+  <rect class="features" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">New Features Replay</text>
+  
+  <rect class="features" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Build New Read Models</text>
+  
+  <rect class="features" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Build New Projections</text>
+  
+  <rect class="features" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Build New Analytics</text>
+  
+  <!-- Disaster Recovery Replay -->
+  <rect class="disaster" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Disaster Recovery Replay</text>
+  
+  <rect class="disaster" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Recover from Disasters</text>
+  
+  <rect class="disaster" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Recover from Data Loss</text>
+  
+  <rect class="disaster" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Recover from System Failure</text>
+  
+  <!-- Replay Process -->
+  <rect class="debugging" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px">Event Replay Process</text>
+  
+  <!-- Step 1 -->
+  <rect class="debugging" x="70" y="320" width="200" height="70" rx="4"/>
+  <text x="170" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">1. Identify Events</text>
+  <text x="170" y="365" text-anchor="middle" class="sublabel">Event Range</text>
+  <text x="170" y="380" text-anchor="middle" class="sublabel">Event Selection</text>
+  
+  <!-- Step 2 -->
+  <rect class="features" x="300" y="320" width="200" height="70" rx="4"/>
+  <text x="400" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">2. Replay Events</text>
+  <text x="400" y="365" text-anchor="middle" class="sublabel">To Environment</text>
+  <text x="400" y="380" text-anchor="middle" class="sublabel">Test/Debug/Recovery</text>
+  
+  <!-- Step 3 -->
+  <rect class="disaster" x="530" y="320" width="200" height="70" rx="4"/>
+  <text x="630" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">3. Analyze/Build</text>
+  <text x="630" y="365" text-anchor="middle" class="sublabel">Analyze Results</text>
+  <text x="630" y="380" text-anchor="middle" class="sublabel">Build Read Models</text>
+  
+  <!-- Step 4 -->
+  <rect class="debugging" x="760" y="320" width="170" height="70" rx="4"/>
+  <text x="845" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">4. Verify</text>
+  <text x="845" y="365" text-anchor="middle" class="sublabel">Verify Results</text>
+  <text x="845" y="380" text-anchor="middle" class="sublabel">Verify System</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M270 355 L295 355"/>
+  <path class="arrow" d="M500 355 L525 355"/>
+  <path class="arrow" d="M730 355 L755 355"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Event Replay</text>
+</svg>

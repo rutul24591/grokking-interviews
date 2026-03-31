@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .advance { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .arrears { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .daily { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- In Advance -->
+  <rect class="advance" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Billing In Advance</text>
+  
+  <rect class="advance" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Bill at start of period</text>
+  
+  <rect class="advance" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Pros: Better cash flow</text>
+  
+  <rect class="advance" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Cons: Refund complexity</text>
+  
+  <!-- In Arrears -->
+  <rect class="arrears" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Billing In Arrears</text>
+  
+  <rect class="arrears" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Bill at end of period</text>
+  
+  <rect class="arrears" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Pros: Customer preference</text>
+  
+  <rect class="arrears" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Cons: Worse cash flow</text>
+  
+  <!-- Daily Proration -->
+  <rect class="daily" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Daily Proration</text>
+  
+  <rect class="daily" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Most accurate</text>
+  
+  <rect class="daily" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Pay for exact days</text>
+  
+  <rect class="daily" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Handle edge cases</text>
+  
+  <!-- Comparison Table -->
+  <rect class="advance" x="50" y="270" width="900" height="140" rx="8"/>
+  <text x="500" y="300" text-anchor="middle" class="text-label" style="font-size: 16px">Billing Comparison</text>
+  
+  <!-- Header -->
+  <rect class="advance" x="60" y="310" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">Aspect</text>
+  <text x="300" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">In Advance</text>
+  <text x="500" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">In Arrears</text>
+  <text x="700" y="333" text-anchor="middle" class="sublabel" style="font-weight: 600">Daily Proration</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="370" text-anchor="middle" class="sublabel">Cash Flow</text>
+  <text x="300" y="370" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Better</text>
+  <text x="500" y="370" text-anchor="middle" class="sublabel" fill="#e53e3e">Worse</text>
+  <text x="700" y="370" text-anchor="middle" class="sublabel">N/A</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="395" text-anchor="middle" class="sublabel">Customer Preference</text>
+  <text x="300" y="395" text-anchor="middle" class="sublabel" fill="#e53e3e">Lower</text>
+  <text x="500" y="395" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Higher</text>
+  <text x="700" y="395" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Fairest</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Billing Comparison</text>
+</svg>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .state { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .completed { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .current { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .pending { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; stroke-dasharray: 5,5; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Timeline -->
+  <circle class="completed" cx="100" cy="150" r="40" stroke-width="3"/>
+  <text x="100" y="145" text-anchor="middle" class="label">Order</text>
+  <text x="100" y="165" text-anchor="middle" class="sublabel">Placed</text>
+  <text x="100" y="200" text-anchor="middle" class="sublabel">Dec 10, 2:30 PM</text>
+  
+  <circle class="completed" cx="300" cy="150" r="40"/>
+  <text x="300" y="145" text-anchor="middle" class="label">Processing</text>
+  <text x="300" y="165" text-anchor="middle" class="sublabel">Dec 10, 5:00 PM</text>
+  
+  <circle class="current" cx="500" cy="150" r="40" stroke-width="3"/>
+  <text x="500" y="145" text-anchor="middle" class="label">Shipped</text>
+  <text x="500" y="165" text-anchor="middle" class="sublabel">Dec 11, 9:00 AM</text>
+  
+  <circle class="pending" cx="700" cy="150" r="40"/>
+  <text x="700" y="145" text-anchor="middle" class="label">Out for</text>
+  <text x="700" y="165" text-anchor="middle" class="sublabel">Delivery</text>
+  <text x="700" y="200" text-anchor="middle" class="sublabel">Est. Dec 13</text>
+  
+  <circle class="pending" cx="900" cy="150" r="40"/>
+  <text x="900" y="145" text-anchor="middle" class="label">Delivered</text>
+  <text x="900" y="165" text-anchor="middle" class="sublabel">Est. Dec 13</text>
+  
+  <!-- Progress Line -->
+  <line x1="140" y1="150" x2="260" y2="150" stroke="#38a169" stroke-width="4"/>
+  <line x1="340" y1="150" x2="460" y2="150" stroke="#38a169" stroke-width="4"/>
+  <line x1="540" y1="150" x2="660" y2="150" stroke="#d69e2e" stroke-width="4" stroke-dasharray="5,5"/>
+  <line x1="740" y1="150" x2="860" y2="150" stroke="#4a5568" stroke-width="4" stroke-dasharray="5,5"/>
+  
+  <!-- Current Status Box -->
+  <rect class="current" x="400" cy="250" width="200" height="100" rx="8"/>
+  <text x="500" y="280" text-anchor="middle" class="label">Current Status</text>
+  <text x="500" y="305" text-anchor="middle" class="sublabel">In Transit</text>
+  <text x="500" y="325" text-anchor="middle" class="sublabel">Chicago, IL Facility</text>
+  <text x="500" y="345" text-anchor="middle" class="sublabel">Est. Delivery: Dec 13</text>
+  
+  <!-- Tracking Info -->
+  <rect class="state" x="50" cy="250" width="180" height="100" rx="8"/>
+  <text x="140" y="280" text-anchor="middle" class="label">Tracking Info</text>
+  <text x="140" y="305" text-anchor="middle" class="sublabel">1Z 9999 9999 9999</text>
+  <text x="140" y="325" text-anchor="middle" class="sublabel">UPS Ground</text>
+  <text x="140" y="345" text-anchor="middle" class="sublabel">Copy | Track on UPS</text>
+  
+  <!-- Delivery Info -->
+  <rect class="state" x="770" cy="250" width="180" height="100" rx="8"/>
+  <text x="860" y="280" text-anchor="middle" class="label">Delivery Info</text>
+  <text x="860" y="305" text-anchor="middle" class="sublabel">123 Main St</text>
+  <text x="860" y="325" text-anchor="middle" class="sublabel">New York, NY 10001</text>
+  <text x="860" y="345" text-anchor="middle" class="sublabel">Signature Required</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Tracking Timeline</text>
+</svg>

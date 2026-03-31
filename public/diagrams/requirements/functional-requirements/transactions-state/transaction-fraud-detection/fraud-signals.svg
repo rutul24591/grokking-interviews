@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .signal { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .velocity { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .location { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .device { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Velocity Signals -->
+  <rect class="velocity" x="50" y="50" width="200" height="160" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Velocity</text>
+  
+  <rect class="velocity" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Transactions/hour</text>
+  
+  <rect class="velocity" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600;">Amount/day</text>
+  
+  <rect class="velocity" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600;">Failed attempts</text>
+  
+  <!-- Location Signals -->
+  <rect class="location" x="300" y="50" width="200" height="160" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Location</text>
+  
+  <rect class="location" x="320" y="100" width="160" height="35" rx="4"/>
+  <text x="400" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Billing vs. Shipping</text>
+  
+  <rect class="location" x="320" y="145" width="160" height="35" rx="4"/>
+  <text x="400" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600;">IP Geolocation</text>
+  
+  <rect class="location" x="320" y="190" width="160" height="35" rx="4"/>
+  <text x="400" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600;">Proxy/VPN Detection</text>
+  
+  <!-- Device Signals -->
+  <rect class="device" x="550" y="50" width="200" height="160" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Device</text>
+  
+  <rect class="device" x="570" y="100" width="160" height="35" rx="4"/>
+  <text x="650" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Device Fingerprint</text>
+  
+  <rect class="device" x="570" y="145" width="160" height="35" rx="4"/>
+  <text x="650" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600;">New Device</text>
+  
+  <rect class="device" x="570" y="190" width="160" height="35" rx="4"/>
+  <text x="650" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600;">Device Velocity</text>
+  
+  <!-- Amount Signals -->
+  <rect class="signal" x="800" y="50" width="170" height="160" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Amount</text>
+  
+  <rect class="signal" x="815" y="100" width="140" height="35" rx="4"/>
+  <text x="885" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600;">Unusual High</text>
+  
+  <rect class="signal" x="815" y="145" width="140" height="35" rx="4"/>
+  <text x="885" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600;">Round Amounts</text>
+  
+  <rect class="signal" x="815" y="190" width="140" height="35" rx="4"/>
+  <text x="885" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600;">vs. History</text>
+  
+  <!-- Network Signals -->
+  <rect class="signal" x="50" y="260" width="200" height="140" rx="8"/>
+  <text x="150" y="290" text-anchor="middle" class="label" style="font-size: 16px;">Network</text>
+  
+  <rect class="signal" x="70" y="310" width="160" height="35" rx="4"/>
+  <text x="150" y="332" text-anchor="middle" class="sublabel" style="font-weight: 600;">Same Email, Multiple Accounts</text>
+  
+  <rect class="signal" x="70" y="355" width="160" height="35" rx="4"/>
+  <text x="150" y="377" text-anchor="middle" class="sublabel" style="font-weight: 600;">Same Device, Multiple Cards</text>
+  
+  <!-- Customer History -->
+  <rect class="signal" x="300" y="260" width="200" height="140" rx="8"/>
+  <text x="400" y="290" text-anchor="middle" class="label" style="font-size: 16px;">Customer History</text>
+  
+  <rect class="signal" x="320" y="310" width="160" height="35" rx="4"/>
+  <text x="400" y="332" text-anchor="middle" class="sublabel" style="font-weight: 600;">Account Age</text>
+  
+  <rect class="signal" x="320" y="355" width="160" height="35" rx="4"/>
+  <text x="400" y="377" text-anchor="middle" class="sublabel" style="font-weight: 600;">Purchase History</text>
+  
+  <!-- Behavioral -->
+  <rect class="signal" x="550" y="260" width="200" height="140" rx="8"/>
+  <text x="650" y="290" text-anchor="middle" class="label" style="font-size: 16px;">Behavioral</text>
+  
+  <rect class="signal" x="570" y="310" width="160" height="35" rx="4"/>
+  <text x="650" y="332" text-anchor="middle" class="sublabel" style="font-weight: 600;">Rush Checkout</text>
+  
+  <rect class="signal" x="570" y="355" width="160" height="35" rx="4"/>
+  <text x="650" y="377" text-anchor="middle" class="sublabel" style="font-weight: 600;">Rush Shipping</text>
+  
+  <!-- High-Risk Products -->
+  <rect class="signal" x="800" y="260" width="170" height="140" rx="8"/>
+  <text x="885" y="290" text-anchor="middle" class="label" style="font-size: 16px;">Product</text>
+  
+  <rect class="signal" x="815" y="310" width="140" height="35" rx="4"/>
+  <text x="885" y="332" text-anchor="middle" class="sublabel" style="font-weight: 600;">Gift Cards</text>
+  
+  <rect class="signal" x="815" y="355" width="140" height="35" rx="4"/>
+  <text x="885" y="377" text-anchor="middle" class="sublabel" style="font-weight: 600;">Electronics</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Fraud Signals</text>
+</svg>

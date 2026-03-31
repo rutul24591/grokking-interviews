@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .planning { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .migration { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .cutover { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .post { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Planning Phase -->
+  <rect class="planning" x="50" y="50" width="200" height="120" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">1. Planning</text>
+  <text x="150" y="105" text-anchor="middle" class="sublabel">Define scope</text>
+  <text x="150" y="125" text-anchor="middle" class="sublabel">Timeline, resources</text>
+  <text x="150" y="145" text-anchor="middle" class="sublabel">Risk mitigation</text>
+  
+  <!-- Data Migration -->
+  <rect class="migration" x="300" y="50" width="200" height="120" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label">2. Data Migration</text>
+  <text x="400" y="105" text-anchor="middle" class="sublabel">Customer data</text>
+  <text x="400" y="125" text-anchor="middle" class="sublabel">Subscription data</text>
+  <text x="400" y="145" text-anchor="middle" class="sublabel">Billing history</text>
+  
+  <!-- Cutover -->
+  <rect class="cutover" x="550" y="50" width="200" height="120" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">3. Cutover</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">Gradual cutover</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Monitor migration</text>
+  <text x="650" y="145" text-anchor="middle" class="sublabel">Rollback if needed</text>
+  
+  <!-- Post-Migration -->
+  <rect class="post" x="800" y="50" width="170" height="120" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label">4. Post-Migration</text>
+  <text x="885" y="105" text-anchor="middle" class="sublabel">Monitor billing</text>
+  <text x="885" y="125" text-anchor="middle" class="sublabel">Resolve issues</text>
+  <text x="885" y="145" text-anchor="middle" class="sublabel">Optimize platform</text>
+  
+  <!-- Migration Details -->
+  <rect class="planning" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Migration Details</text>
+  
+  <rect class="planning" x="70" y="270" width="200" height="80" rx="4"/>
+  <text x="170" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Data to Migrate</text>
+  <text x="170" y="315" text-anchor="middle" class="sublabel">Customer, subscription</text>
+  <text x="170" y="335" text-anchor="middle" class="sublabel">Billing history, dunning</text>
+  
+  <rect class="migration" x="300" y="270" width="180" height="80" rx="4"/>
+  <text x="390" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Validation</text>
+  <text x="390" y="315" text-anchor="middle" class="sublabel">Data validation</text>
+  <text x="390" y="335" text-anchor="middle" class="sublabel">Billing validation</text>
+  
+  <!-- Cutover Strategies -->
+  <rect class="cutover" x="550" y="220" width="420" height="150" rx="8"/>
+  <text x="760" y="250" text-anchor="middle" class="text-label">Cutover Strategies</text>
+  
+  <rect class="cutover" x="570" y="270" width="180" height="80" rx="4"/>
+  <text x="660" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Big-Bang Cutover</text>
+  <text x="660" y="315" text-anchor="middle" class="sublabel">All customers at once</text>
+  <text x="660" y="335" text-anchor="middle" class="sublabel">Fast, high risk</text>
+  
+  <rect class="migration" x="780" y="270" width="170" height="80" rx="4"/>
+  <text x="865" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Gradual Cutover</text>
+  <text x="865" y="315" text-anchor="middle" class="sublabel">Customers gradually</text>
+  <text x="865" y="335" text-anchor="middle" class="sublabel">Slower, lower risk</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 110 L295 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Platform Migration Flow</text>
+</svg>

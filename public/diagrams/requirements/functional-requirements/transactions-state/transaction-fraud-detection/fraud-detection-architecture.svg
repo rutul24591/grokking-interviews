@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .feature { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .rule { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .ml { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .decision { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
+  
+  <!-- Feature Computation -->
+  <rect class="feature" x="50" y="50" width="200" height="380" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Feature Computation</text>
+  
+  <rect class="feature" x="70" y="100" width="160" height="45" rx="4"/>
+  <text x="150" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Transaction Data</text>
+  
+  <rect class="feature" x="70" y="160" width="160" height="45" rx="4"/>
+  <text x="150" y="187" text-anchor="middle" class="sublabel" style="font-weight: 600;">Velocity Features</text>
+  
+  <rect class="feature" x="70" y="220" width="160" height="45" rx="4"/>
+  <text x="150" y="247" text-anchor="middle" class="sublabel" style="font-weight: 600;">Device Fingerprint</text>
+  
+  <rect class="feature" x="70" y="280" width="160" height="45" rx="4"/>
+  <text x="150" y="307" text-anchor="middle" class="sublabel" style="font-weight: 600;">IP Geolocation</text>
+  
+  <rect class="feature" x="70" y="340" width="160" height="45" rx="4"/>
+  <text x="150" y="367" text-anchor="middle" class="sublabel" style="font-weight: 600;">Feature Store</text>
+  
+  <!-- Rule Engine -->
+  <rect class="rule" x="320" y="50" width="200" height="200" rx="8"/>
+  <text x="420" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Rule Engine</text>
+  
+  <rect class="rule" x="340" y="100" width="160" height="40" rx="4"/>
+  <text x="420" y="125" text-anchor="middle" class="sublabel" style="font-weight: 600;">Velocity Rules</text>
+  
+  <rect class="rule" x="340" y="150" width="160" height="40" rx="4"/>
+  <text x="420" y="175" text-anchor="middle" class="sublabel" style="font-weight: 600;">Location Rules</text>
+  
+  <rect class="rule" x="340" y="200" width="160" height="40" rx="4"/>
+  <text x="420" y="225" text-anchor="middle" class="sublabel" style="font-weight: 600;">Amount Rules</text>
+  
+  <!-- ML Scoring -->
+  <rect class="ml" x="320" y="280" width="200" height="150" rx="8"/>
+  <text x="420" y="310" text-anchor="middle" class="label" style="font-size: 16px;">ML Scoring</text>
+  
+  <rect class="ml" x="340" y="330" width="160" height="40" rx="4"/>
+  <text x="420" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600;">Risk Model</text>
+  
+  <rect class="ml" x="340" y="380" width="160" height="40" rx="4"/>
+  <text x="420" y="405" text-anchor="middle" class="sublabel" style="font-weight: 600;">Risk Score (0-100)</text>
+  
+  <!-- Decision -->
+  <rect class="decision" x="590" y="150" width="180" height="180" rx="8"/>
+  <text x="680" y="180" text-anchor="middle" class="label" style="font-size: 16px;">Decision</text>
+  
+  <rect class="decision" x="610" y="200" width="140" height="40" rx="4"/>
+  <text x="680" y="225" text-anchor="middle" class="sublabel" style="font-weight: 600;">Approve (&lt;30)</text>
+  
+  <rect class="decision" x="610" y="250" width="140" height="40" rx="4"/>
+  <text x="680" y="275" text-anchor="middle" class="sublabel" style="font-weight: 600;">Review (30-70)</text>
+  
+  <rect class="decision" x="610" y="300" width="140" height="40" rx="4"/>
+  <text x="680" y="325" text-anchor="middle" class="sublabel" style="font-weight: 600;">Decline (&gt;70)</text>
+  
+  <!-- External -->
+  <rect class="feature" x="820" y="80" width="130" height="80" rx="8"/>
+  <text x="885" y="110" text-anchor="middle" class="label">External Data</text>
+  <text x="885" y="135" text-anchor="middle" class="sublabel">MaxMind, FingerprintJS</text>
+  
+  <rect class="decision" x="820" y="200" width="130" height="80" rx="8"/>
+  <text x="885" y="230" text-anchor="middle" class="label">Review Queue</text>
+  <text x="885" y="255" text-anchor="middle" class="sublabel">Manual Review</text>
+  
+  <rect class="ml" x="820" y="320" width="130" height="80" rx="8"/>
+  <text x="885" y="350" text-anchor="middle" class="label">Feedback Loop</text>
+  <text x="885" y="375" text-anchor="middle" class="sublabel">Model Retraining</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 145 L335 145"/>
+  <path class="arrow" d="M250 365 L335 365"/>
+  <path class="arrow" d="M520 150 L605 220"/>
+  <path class="arrow" d="M520 355 L605 280"/>
+  <path class="arrow" d="M815 120 L815 120"/>
+  <path class="arrow" d="M770 240 L815 240"/>
+  <path class="arrow" d="M770 360 L815 360"/>
+  
+  <text x="500" y="480" text-anchor="middle" class="label" style="font-size: 16px;">Figure 1: Fraud Detection Architecture</text>
+</svg>

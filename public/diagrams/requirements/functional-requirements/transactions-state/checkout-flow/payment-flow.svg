@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .client { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .client-dark { fill: #2c5282; stroke: #4299e1; stroke-width: 2; }
+      .gateway { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .gateway-dark { fill: #744210; stroke: #ecc94b; stroke-width: 2; }
+      .bank { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .bank-dark { fill: #276749; stroke: #48bb78; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dark { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .label-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #e2e8f0; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+      .sublabel-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a0aec0; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  <rect class="bg-dark" width="1000" height="450" data-theme="dark" style="display:none;"/>
+  
+  <!-- Client -->
+  <rect class="client" x="50" y="50" width="180" height="320" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="label">Client</text>
+  
+  <rect class="client" x="70" y="100" width="140" height="50" rx="4"/>
+  <text x="140" y="130" text-anchor="middle" class="sublabel" style="font-weight: 600;">Card Input</text>
+  
+  <rect class="client" x="70" y="170" width="140" height="50" rx="4"/>
+  <text x="140" y="200" text-anchor="middle" class="sublabel" style="font-weight: 600;">Token Storage</text>
+  
+  <rect class="client" x="70" y="240" width="140" height="50" rx="4"/>
+  <text x="140" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600;">3DS Redirect</text>
+  
+  <!-- Payment Gateway -->
+  <rect class="gateway" x="350" y="50" width="220" height="320" rx="8"/>
+  <text x="460" y="80" text-anchor="middle" class="label">Payment Gateway</text>
+  
+  <rect class="gateway" x="370" y="100" width="180" height="45" rx="4"/>
+  <text x="460" y="127" text-anchor="middle" class="sublabel" style="font-weight: 600;">Tokenization</text>
+  
+  <rect class="gateway" x="370" y="165" width="180" height="45" rx="4"/>
+  <text x="460" y="192" text-anchor="middle" class="sublabel" style="font-weight: 600;">Authorization</text>
+  
+  <rect class="gateway" x="370" y="230" width="180" height="45" rx="4"/>
+  <text x="460" y="257" text-anchor="middle" class="sublabel" style="font-weight: 600;">3DS Handler</text>
+  
+  <rect class="gateway" x="370" y="295" width="180" height="45" rx="4"/>
+  <text x="460" y="322" text-anchor="middle" class="sublabel" style="font-weight: 600;">Capture</text>
+  
+  <!-- Card Networks / Bank -->
+  <rect class="bank" x="680" y="100" width="200" height="100" rx="8"/>
+  <text x="780" y="130" text-anchor="middle" class="label">Card Network / Bank</text>
+  <text x="780" y="155" text-anchor="middle" class="sublabel">Fraud Check</text>
+  <text x="780" y="175" text-anchor="middle" class="sublabel">Funds Verification</text>
+  
+  <!-- 3DS Server -->
+  <rect class="bank" x="680" y="240" width="200" height="80" rx="8"/>
+  <text x="780" y="270" text-anchor="middle" class="label">3DS Server (ACS)</text>
+  <text x="780" y="295" text-anchor="middle" class="sublabel">Bank Authentication</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 125 L365 125"/>
+  <text x="300" y="115" text-anchor="middle" class="sublabel">Card data</text>
+  
+  <path class="arrow" d="M365 145 L230 145"/>
+  <text x="300" y="160" text-anchor="middle" class="sublabel">Payment token</text>
+  
+  <path class="arrow" d="M570 187 L675 150"/>
+  <text x="620" y="170" text-anchor="middle" class="sublabel">Auth request</text>
+  
+  <path class="arrow" d="M675 170 L570 207"/>
+  <text x="620" y="205" text-anchor="middle" class="sublabel">Auth response</text>
+  
+  <path class="arrow" d="M570 252 L675 270"/>
+  <text x="620" y="255" text-anchor="middle" class="sublabel">3DS challenge</text>
+  
+  <path class="arrow" d="M230 265 L365 265"/>
+  <text x="300" y="255" text-anchor="middle" class="sublabel">Complete 3DS</text>
+  
+  <path class="arrow" d="M675 290 L570 317"/>
+  <text x="620" y="310" text-anchor="middle" class="sublabel">3DS verified</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Payment Authorization Flow</text>
+</svg>
