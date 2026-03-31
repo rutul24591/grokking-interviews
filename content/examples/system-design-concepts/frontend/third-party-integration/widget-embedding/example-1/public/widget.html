@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Embedded Widget</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; padding: 16px; background: #f8fafc; color: #0f172a; }
+      .card { border-radius: 16px; background: white; border: 1px solid #cbd5e1; padding: 16px; }
+      button { margin-top: 12px; border: 0; border-radius: 999px; padding: 10px 14px; background: #0f172a; color: white; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Pricing widget</h2>
+      <p>Embedded widget content from a third-party origin.</p>
+      <button id="resize">Request larger frame</button>
+    </div>
+    <script>
+      document.getElementById("resize").addEventListener("click", () => {
+        parent.postMessage({ type: "resize", height: 340 }, "http://localhost:3000");
+      });
+    </script>
+  </body>
+</html>
