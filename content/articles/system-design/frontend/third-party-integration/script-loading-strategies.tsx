@@ -131,19 +131,13 @@ export default function ArticlePage() {
 
         <h3>Security: Subresource Integrity (SRI)</h3>
         <p>
-          Subresource Integrity allows you to verify that a script hasn&apos;t been tampered with by specifying a cryptographic hash:
+          Subresource Integrity allows you to verify that a script hasn&apos;t been tampered with by specifying a cryptographic hash. The script tag includes an integrity attribute with a sha384 hash and a crossorigin attribute for proper CORS handling.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`&lt;script 
-  src="https://cdn.example.com/analytics.js"
-  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"
-  crossorigin="anonymous"&gt;&lt;/script&gt;`}</code>
-        </pre>
         <p>
           The browser calculates the hash of the downloaded script and compares it to the specified hash. If they don&apos;t match, the script is not executed. This protects against CDN compromises or man-in-the-middle attacks.
         </p>
         <p>
-          Generate SRI hashes using tools like <code>https://www.srihash.org/</code> or build plugins (webpack-subresource-integrity). Update hashes whenever scripts change.
+          Generate SRI hashes using tools like SRI Hash Generator or build plugins like webpack-subresource-integrity. Update hashes whenever scripts change.
         </p>
 
         <ArticleImage

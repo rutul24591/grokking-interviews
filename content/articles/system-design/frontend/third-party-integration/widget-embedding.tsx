@@ -218,28 +218,13 @@ export default function ArticlePage() {
         <h3>Cross-Origin Communication: postMessage</h3>
         <p>
           When widgets are isolated (especially in iframes), communication must
-          happen via the postMessage API:
+          happen via the postMessage API. The parent app sends messages to the
+          iframe using contentWindow.postMessage with the message object and
+          target origin. The iframe receives messages via a message event
+          listener and must validate the event.origin before processing any
+          message. Messages should include a type field to identify the action,
+          and the iframe should only process messages from trusted origins.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Parent app sends message to iframe
-iframe.contentWindow.postMessage(
-  { type: 'SET_USER', userId: '123', name: 'John' },
-  'https://trusted-widget-origin.com'
-);
-
-// Iframe receives message
-window.addEventListener('message', (event) => {
-  // CRITICAL: Always validate origin
-  if (event.origin !== 'https://parent-app.com') {
-    return; // Ignore messages from untrusted origins
-  }
-  
-  // Process validated message
-  if (event.data.type === 'SET_USER') {
-    initializeChat(event.data.userId, event.data.name);
-  }
-});`}</code>
-        </pre>
         <p>Security considerations for postMessage:</p>
         <ul className="space-y-2">
           <li>
