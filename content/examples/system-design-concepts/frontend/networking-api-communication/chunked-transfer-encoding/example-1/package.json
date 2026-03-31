@@ -1,0 +1,28 @@
+{
+  "name": "chunked-transfer-encoding-example-1",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n api,web -c magenta,cyan \"pnpm dev:api\" \"pnpm dev:web\"",
+    "dev:api": "tsx watch api/server.ts",
+    "dev:web": "next dev -p 3000"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/express": "^4.17.22",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^9.2.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}

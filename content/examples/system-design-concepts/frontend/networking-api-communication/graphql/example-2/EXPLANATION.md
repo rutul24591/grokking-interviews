@@ -1,0 +1,1 @@
+This check executes two concrete field selections against the same article object and prints the resulting payload. It demonstrates the real GraphQL win: the response shape contracts or expands with the query instead of being fixed by the endpoint.

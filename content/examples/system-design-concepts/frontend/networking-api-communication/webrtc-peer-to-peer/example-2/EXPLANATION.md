@@ -1,0 +1,1 @@
+This check ranks concrete candidate pairs instead of just listing candidate types. It reflects the actual connectivity decision that determines whether the session gets a direct path or a weaker fallback.
