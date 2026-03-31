@@ -1,0 +1,75 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Session Stitching Flow</text>
+  
+  <!-- Anonymous Session -->
+  <rect x="50" y="80" width="250" height="450" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="175" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Anonymous Sessions</text>
+  
+  <rect x="70" y="135" width="210" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="175" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Session 1</text>
+  <text x="175" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">anonymous_id: abc123</text>
+  
+  <rect x="70" y="220" width="210" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="175" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Session 2</text>
+  <text x="175" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">anonymous_id: abc123</text>
+  
+  <rect x="70" y="305" width="210" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="175" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Session 3</text>
+  <text x="175" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">anonymous_id: abc123</text>
+  
+  <!-- Arrow to login -->
+  <line x1="300" y1="300" x2="380" y2="300" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow1)"/>
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <text x="340" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#3b82f6" font-weight="600">User Logs In</text>
+  
+  <!-- Login Event -->
+  <rect x="390" y="80" width="120" height="450" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Login Event</text>
+  
+  <rect x="410" y="280" width="100" height="80" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Send to Backend</text>
+  <text x="450" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">anonymous_id +</text>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">user_id</text>
+  
+  <!-- Arrow to identity graph -->
+  <line x1="510" y1="320" x2="570" y2="320" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow2)"/>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  
+  <!-- Identity Graph -->
+  <rect x="580" y="80" width="270" height="450" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="715" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Identity Graph</text>
+  
+  <rect x="600" y="135" width="230" height="100" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="715" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Store Mapping</text>
+  <text x="715" y="195" text-anchor="middle" font-family="monospace" font-size="9" fill="#22c55e">abc123 → user_456</text>
+  <text x="715" y="215" text-anchor="middle" font-family="monospace" font-size="9" fill="#22c55e">def789 → user_456</text>
+  <text x="715" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#94a3b8">(multiple devices)</text>
+  
+  <!-- Arrow back to update sessions -->
+  <path d="M 715 235 L 715 280 L 200 280 L 200 320" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrow3)"/>
+  <defs>
+    <marker id="arrow3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  
+  <!-- Stitched Sessions -->
+  <rect x="50" y="540" width="400" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="250" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Before: 3 anonymous sessions | After: 1 user journey with 3 sessions</text>
+  
+  <!-- User Journey -->
+  <rect x="580" y="540" width="270" height="30" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="715" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857" font-weight="600">Backfill historical sessions</text>
+</svg>

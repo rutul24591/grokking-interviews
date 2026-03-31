@@ -1,0 +1,100 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Session Management Architecture</text>
+  
+  <!-- Session Flow -->
+  <rect x="50" y="80" width="800" height="200" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  
+  <!-- First Visit -->
+  <rect x="70" y="110" width="180" height="140" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af">First Visit</text>
+  <line x1="90" y1="155" x2="230" y2="155" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="160" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Generate session_id</text>
+  <text x="160" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Store in cookie</text>
+  <text x="160" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Set last_activity</text>
+  
+  <!-- Arrow -->
+  <line x1="250" y1="180" x2="280" y2="180" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Subsequent Visits -->
+  <rect x="290" y="110" width="180" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="380" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#3730a3">Subsequent Page Views</text>
+  <line x1="310" y1="155" x2="450" y2="155" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="380" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Read session_id</text>
+  <text x="380" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Update last_activity</text>
+  <text x="380" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Same session</text>
+  
+  <!-- Arrow -->
+  <line x1="470" y1="180" x2="500" y2="180" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Timeout Check -->
+  <rect x="510" y="110" width="180" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="600" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#92400e">Timeout Check</text>
+  <line x1="530" y1="155" x2="670" y2="155" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="600" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">now - last_activity</text>
+  <text x="600" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">&gt; 30 minutes?</text>
+  
+  <!-- Arrow split -->
+  <line x1="600" y1="250" x2="550" y2="280" stroke="#10b981" stroke-width="2" marker-end="url(#arrowYes)"/>
+  <defs>
+    <marker id="arrowYes" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  <text x="565" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#10b981" font-weight="600">No</text>
+  
+  <line x1="600" y1="250" x2="650" y2="280" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowNo)"/>
+  <defs>
+    <marker id="arrowNo" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <text x="635" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ef4444" font-weight="600">Yes</text>
+  
+  <!-- Continue Session -->
+  <rect x="470" y="285" width="160" height="70" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="550" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Continue Session</text>
+  <text x="550" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Same session_id</text>
+  
+  <!-- New Session -->
+  <rect x="650" y="285" width="160" height="70" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="730" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">New Session</text>
+  <text x="730" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Generate new session_id</text>
+  
+  <!-- Session Storage -->
+  <rect x="50" y="310" width="400" height="220" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="250" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Session Storage Options</text>
+  
+  <rect x="70" y="365" width="360" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Cookie (Recommended)</text>
+  <text x="250" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Persists across page loads, sent to server</text>
+  
+  <rect x="70" y="425" width="360" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">localStorage</text>
+  <text x="250" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Client-side only, not sent with requests</text>
+  
+  <!-- Session Data -->
+  <rect x="470" y="310" width="380" height="220" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="660" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Session Data Structure</text>
+  
+  <rect x="490" y="365" width="340" height="150" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="510" y="390" font-family="monospace" font-size="10" fill="#22c55e">{</text>
+  <text x="530" y="410" font-family="monospace" font-size="10" fill="#e2e8f0">"session_id": "uuid-abc123",</text>
+  <text x="530" y="430" font-family="monospace" font-size="10" fill="#e2e8f0">"user_id": null,</text>
+  <text x="530" y="450" font-family="monospace" font-size="10" fill="#e2e8f0">"created_at": 1234567890,</text>
+  <text x="530" y="470" font-family="monospace" font-size="10" fill="#e2e8f0">"last_activity": 1234567920,</text>
+  <text x="530" y="490" font-family="monospace" font-size="10" fill="#e2e8f0">"traffic_source": "google",</text>
+  <text x="530" y="510" font-family="monospace" font-size="10" fill="#22c55e">}</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="540" width="800" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Session timeout: 30 minutes standard | Cookie expiry: 2 years for returning user recognition</text>
+</svg>

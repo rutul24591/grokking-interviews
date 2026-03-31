@@ -1,0 +1,97 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow5" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">GDPR Consent Flow</text>
+  
+  <!-- User Visit -->
+  <rect x="50" y="80" width="180" height="450" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="140" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">User Visits Site</text>
+  
+  <rect x="70" y="140" width="140" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="140" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">First visit detected</text>
+  <text x="140" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">No consent cookie</text>
+  
+  <!-- Arrow to banner -->
+  <line x1="230" y1="180" x2="300" y2="180" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow1)"/>
+  
+  <!-- Consent Banner -->
+  <rect x="310" y="80" width="280" height="450" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Consent Banner</text>
+  
+  <rect x="330" y="135" width="240" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">We use cookies to improve</text>
+  <text x="450" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">your experience. Choose which</text>
+  <text x="450" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">cookies to accept.</text>
+  <text x="450" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b" font-style="italic">[Learn More] [Privacy Policy]</text>
+  
+  <!-- Consent choices -->
+  <rect x="330" y="250" width="240" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Strictly Necessary</text>
+  <text x="450" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b" font-style="italic">(Required, cannot disable)</text>
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Analytics</text>
+  <text x="450" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Marketing</text>
+  
+  <!-- Action buttons -->
+  <rect x="330" y="365" width="115" height="40" rx="6" fill="#ef4444" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="387" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">Reject All</text>
+  
+  <rect x="455" y="365" width="115" height="40" rx="6" fill="#22c55e" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="512" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">Accept All</text>
+  
+  <!-- Arrow to storage -->
+  <line x1="590" y1="300" x2="650" y2="300" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow2)"/>
+  <text x="620" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#f59e0b" font-weight="600">Store Choice</text>
+  
+  <!-- Consent Storage -->
+  <rect x="660" y="80" width="190" height="450" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="755" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Consent Storage</text>
+  
+  <rect x="680" y="135" width="150" height="100" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="755" y="160" font-family="monospace" font-size="9" fill="#22c55e">{</text>
+  <text x="700" y="180" font-family="monospace" font-size="9" fill="#e2e8f0">"consent_id": "uuid",</text>
+  <text x="700" y="195" font-family="monospace" font-size="9" fill="#e2e8f0">"analytics": true,</text>
+  <text x="700" y="210" font-family="monospace" font-size="9" fill="#e2e8f0">"marketing": false,</text>
+  <text x="700" y="225" font-family="monospace" font-size="9" fill="#e2e8f0">"timestamp": 123456,</text>
+  <text x="700" y="240" font-family="monospace" font-size="9" fill="#e2e8f0">"version": "1.0"</text>
+  <text x="755" y="255" font-family="monospace" font-size="9" fill="#22c55e">}</text>
+  
+  <!-- Arrow to tracking -->
+  <line x1="755" y1="280" x2="755" y2="350" stroke="#6366f1" stroke-width="3" marker-end="url(#arrow3)"/>
+  
+  <!-- Tracking Gate -->
+  <rect x="680" y="360" width="150" height="80" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="755" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Check Before Track</text>
+  <text x="755" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">analytics - Load</text>
+  <text x="755" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">marketing - Block</text>
+  
+  <!-- Bottom paths -->
+  <path d="M 450 450 L 450 490 L 250 490 L 250 520" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow4)"/>
+  <text x="380" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ef4444" font-weight="600">Reject - No tracking</text>
+  
+  <path d="M 450 450 L 450 490 L 755 490 L 755 520" fill="none" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow5)"/>
+  <text x="620" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#22c55e" font-weight="600">Accept - Track per consent</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="540" width="800" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">GDPR requires: explicit opt-in, granular choices, easy withdrawal, consent records for compliance proof</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Event Taxonomy Hierarchy</text>
+  
+  <!-- Event Categories -->
+  <rect x="50" y="80" width="800" height="450" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  
+  <!-- Top Level: Event Categories -->
+  <rect x="70" y="100" width="760" height="60" rx="8" fill="#3b82f6" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Event Categories (Domain-Level Grouping)</text>
+  
+  <!-- Category 1: User Events -->
+  <rect x="70" y="180" width="240" height="330" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="190" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af">User Events</text>
+  <line x1="90" y1="225" x2="290" y2="225" stroke="#3b82f6" stroke-width="1.5"/>
+  
+  <rect x="85" y="240" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="190" y="267" text-anchor="middle" font-family="monospace" font-size="10" fill="#1e3a8a">user_signed_up</text>
+  
+  <rect x="85" y="290" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="190" y="317" text-anchor="middle" font-family="monospace" font-size="10" fill="#1e3a8a">user_logged_in</text>
+  
+  <rect x="85" y="340" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="190" y="367" text-anchor="middle" font-family="monospace" font-size="10" fill="#1e3a8a">user_logged_out</text>
+  
+  <rect x="85" y="390" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="190" y="417" text-anchor="middle" font-family="monospace" font-size="10" fill="#1e3a8a">profile_updated</text>
+  
+  <rect x="85" y="440" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="190" y="467" text-anchor="middle" font-family="monospace" font-size="10" fill="#1e3a8a">subscription_changed</text>
+  
+  <!-- Category 2: Content Events -->
+  <rect x="330" y="180" width="240" height="330" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="450" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#3730a3">Content Events</text>
+  <line x1="350" y1="225" x2="550" y2="225" stroke="#6366f1" stroke-width="1.5"/>
+  
+  <rect x="345" y="240" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="267" text-anchor="middle" font-family="monospace" font-size="10" fill="#4338ca">page_viewed</text>
+  
+  <rect x="345" y="290" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="317" text-anchor="middle" font-family="monospace" font-size="10" fill="#4338ca">article_read</text>
+  
+  <rect x="345" y="340" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="367" text-anchor="middle" font-family="monospace" font-size="10" fill="#4338ca">video_played</text>
+  
+  <rect x="345" y="390" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="417" text-anchor="middle" font-family="monospace" font-size="10" fill="#4338ca">search_performed</text>
+  
+  <rect x="345" y="440" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="467" text-anchor="middle" font-family="monospace" font-size="10" fill="#4338ca">content_shared</text>
+  
+  <!-- Category 3: Commerce Events -->
+  <rect x="590" y="180" width="240" height="330" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="710" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#92400e">Commerce Events</text>
+  <line x1="610" y1="225" x2="810" y2="225" stroke="#f59e0b" stroke-width="1.5"/>
+  
+  <rect x="605" y="240" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="710" y="267" text-anchor="middle" font-family="monospace" font-size="10" fill="#78350f">product_viewed</text>
+  
+  <rect x="605" y="290" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="710" y="317" text-anchor="middle" font-family="monospace" font-size="10" fill="#78350f">cart_added</text>
+  
+  <rect x="605" y="340" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="710" y="367" text-anchor="middle" font-family="monospace" font-size="10" fill="#78350f">checkout_started</text>
+  
+  <rect x="605" y="390" width="210" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="710" y="417" text-anchor="middle" font-family="monospace" font-size="10" fill="#78350f">payment_submitted</text>
+  
+  <rect x="605" y="440" width="210" height="45" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="710" y="467" text-anchor="middle" font-family="monospace" font-size="10" fill="#065f46">purchase_completed</text>
+  
+  <!-- Event Properties Legend -->
+  <rect x="70" y="520" width="760" height="40" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="450" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Naming Convention: [category]_[action] (snake_case) | Common Properties: user_id, session_id, timestamp, page_url</text>
+</svg>

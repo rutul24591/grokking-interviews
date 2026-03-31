@@ -1,0 +1,104 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowNo" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrowYes" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrowSend" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="arrowWithdraw" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Consent Gating Architecture</text>
+  
+  <!-- Event Queue -->
+  <rect x="50" y="80" width="250" height="450" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="175" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Event Queue</text>
+  
+  <rect x="70" y="135" width="210" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="175" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">page_view (queued)</text>
+  
+  <rect x="70" y="195" width="210" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="175" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">button_click (queued)</text>
+  
+  <rect x="70" y="255" width="210" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="175" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">form_submit (queued)</text>
+  
+  <rect x="70" y="330" width="210" height="80" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="175" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Hold Events</text>
+  <text x="175" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Until consent given</text>
+  <text x="175" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">or timeout (30 days)</text>
+  
+  <!-- Arrow to consent check -->
+  <line x1="300" y1="250" x2="380" y2="250" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow1)"/>
+  
+  <!-- Consent Check -->
+  <rect x="390" y="80" width="250" height="450" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="515" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Consent Check</text>
+  
+  <!-- Decision diamond -->
+  <path d="M 465 180 L 515 210 L 565 180 L 515 150 Z" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="515" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Consent</text>
+  <text x="515" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Given?</text>
+  
+  <!-- No path -->
+  <line x1="465" y1="180" x2="400" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowNo)"/>
+  <text x="430" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ef4444" font-weight="600">No</text>
+  
+  <rect x="410" y="250" width="210" height="80" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="515" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Keep Queued</text>
+  <text x="515" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Check again on next event</text>
+  <text x="515" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">or consent change</text>
+  
+  <!-- Yes path -->
+  <line x1="565" y1="180" x2="630" y2="180" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowYes)"/>
+  <text x="595" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#22c55e" font-weight="600">Yes</text>
+  
+  <rect x="630" y="250" width="210" height="80" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="735" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Check Category</text>
+  <text x="735" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">analytics consent?</text>
+  <text x="735" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">marketing consent?</text>
+  
+  <!-- Arrow to tracking systems -->
+  <line x1="840" y1="290" x2="880" y2="290" stroke="#10b981" stroke-width="3" marker-end="url(#arrowSend)"/>
+  
+  <!-- Tracking Systems -->
+  <rect x="660" y="80" width="200" height="450" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="760" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Tracking Systems</text>
+  
+  <rect x="680" y="135" width="160" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="760" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Google Analytics</text>
+  <text x="760" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">If analytics=true</text>
+  
+  <rect x="680" y="200" width="160" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="760" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Facebook Pixel</text>
+  <text x="760" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">If marketing=true</text>
+  
+  <rect x="680" y="265" width="160" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="760" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Hotjar</text>
+  <text x="760" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">If analytics=true</text>
+  
+  <rect x="680" y="330" width="160" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="760" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Blocked Scripts</text>
+  <text x="760" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">No consent = no load</text>
+  
+  <!-- Withdrawal path -->
+  <path d="M 515 400 L 515 450 L 760 450 L 760 400" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowWithdraw)"/>
+  <text x="650" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ef4444" font-weight="600">Withdrawal - Stop and Delete</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="540" width="800" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Consent gating: queue events until consent | check category per event | stop immediately on withdrawal</text>
+</svg>

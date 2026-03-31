@@ -1,0 +1,71 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Dimension Scope Hierarchy</text>
+  
+  <!-- Hit-Level -->
+  <rect x="50" y="80" width="380" height="200" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="240" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Hit-Level Scope</text>
+  <text x="240" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1e3a8a">Applies to single interaction</text>
+  
+  <rect x="70" y="160" width="340" height="100" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="240" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Examples:</text>
+  <text x="240" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">page_category, button_color,</text>
+  <text x="240" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">event_type, form_name</text>
+  
+  <rect x="70" y="270" width="340" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="240" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#92400e" font-weight="600">Lifetime: Single event only</text>
+  
+  <!-- Arrow down -->
+  <line x1="240" y1="340" x2="240" y2="370" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Session-Level -->
+  <rect x="50" y="380" width="380" height="150" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="240" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#3730a3">Session-Level Scope</text>
+  <text x="240" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#4338ca">Applies to entire session</text>
+  
+  <rect x="70" y="455" width="340" height="60" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="240" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">traffic_source, session_device,</text>
+  <text x="240" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">landing_page, campaign_id</text>
+  
+  <!-- Session box on right -->
+  <rect x="470" y="80" width="380" height="450" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#166534">User-Level Scope</text>
+  <text x="660" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#047857">Applies to user across sessions</text>
+  
+  <rect x="490" y="160" width="340" height="100" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Examples:</text>
+  <text x="660" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">user_tier, subscription_plan,</text>
+  <text x="660" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">registration_date, lifetime_value</text>
+  
+  <rect x="490" y="280" width="340" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="660" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#065f46" font-weight="600">Lifetime: Persists across all sessions</text>
+  
+  <!-- User timeline -->
+  <rect x="490" y="360" width="340" height="150" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="660" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">User Journey Timeline</text>
+  
+  <!-- Session boxes in timeline -->
+  <rect x="510" y="405" width="80" height="40" rx="4" fill="#6366f1" opacity="0.7"/>
+  <text x="550" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Session 1</text>
+  
+  <rect x="610" y="405" width="80" height="40" rx="4" fill="#6366f1" opacity="0.7"/>
+  <text x="650" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Session 2</text>
+  
+  <rect x="710" y="405" width="80" height="40" rx="4" fill="#6366f1" opacity="0.7"/>
+  <text x="750" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Session 3</text>
+  
+  <line x1="500" y1="470" x2="820" y2="470" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">user_tier = "premium" applies to ALL sessions</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="540" width="800" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Scope determines persistence: hit-level (event only) → session-level (30 min) → user-level (indefinite with user_id)</text>
+</svg>

@@ -1,0 +1,75 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">SPA vs MPA Page View Tracking</text>
+  
+  <!-- Left: MPA -->
+  <rect x="50" y="80" width="400" height="450" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Multi-Page Application (MPA)</text>
+  
+  <!-- MPA Flow -->
+  <rect x="70" y="135" width="360" height="60" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">1. User Clicks Link</text>
+  <text x="250" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Full page request to server</text>
+  
+  <line x1="250" y1="195" x2="250" y2="215" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow1)"/>
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  
+  <rect x="70" y="220" width="360" height="60" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">2. Server Returns New Page</text>
+  <text x="250" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Full HTML with analytics script</text>
+  
+  <line x1="250" y1="280" x2="250" y2="300" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow1)"/>
+  
+  <rect x="70" y="305" width="360" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="250" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">3. Analytics Auto-Tracks</text>
+  <text x="250" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Script loads, sends pageview</text>
+  
+  <rect x="70" y="390" width="360" height="50" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="250" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#166534" font-weight="600">✓ Simple: Just include snippet on all pages</text>
+  
+  <!-- Right: SPA -->
+  <rect x="470" y="80" width="380" height="450" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Single-Page Application (SPA)</text>
+  
+  <!-- SPA Flow -->
+  <rect x="490" y="135" width="340" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">1. Initial Load</text>
+  <text x="660" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Analytics loads once</text>
+  
+  <line x1="660" y1="185" x2="660" y2="205" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow2)"/>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  
+  <rect x="490" y="210" width="340" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">2. User Navigates</text>
+  <text x="660" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Client-side route change</text>
+  
+  <line x1="660" y1="260" x2="660" y2="280" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow2)"/>
+  
+  <rect x="490" y="285" width="340" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">3. Manual Tracking Required</text>
+  <text x="660" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Hook into router events</text>
+  
+  <line x1="660" y1="345" x2="660" y2="365" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow2)"/>
+  
+  <rect x="490" y="370" width="340" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">4. Fire Pageview Event</text>
+  <text x="660" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">trackPageView(newPath)</text>
+  
+  <rect x="490" y="450" width="340" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="660" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e" font-weight="600">⚠ Requires router integration</text>
+  
+  <!-- Bottom comparison -->
+  <rect x="50" y="540" width="800" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">MPA: Automatic tracking | SPA: Manual tracking via router hooks (useEffect, router.events)</text>
+</svg>

@@ -1,0 +1,56 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Conversion Funnel Visualization</text>
+  
+  <!-- Funnel chart -->
+  <rect x="50" y="80" width="800" height="450" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  
+  <!-- Step 1: Landing Page -->
+  <rect x="200" y="110" width="500" height="60" rx="8" fill="#3b82f6"/>
+  <text x="450" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff">1. Landing Page - 10,000 users (100%)</text>
+  
+  <!-- Arrow down -->
+  <path d="M 440 170 L 440 190 L 450 200 L 460 190 L 460 170" fill="#64748b" stroke="#64748b" stroke-width="2"/>
+  <text x="450" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">50% drop-off</text>
+  
+  <!-- Step 2: Signup Started -->
+  <rect x="250" y="200" width="400" height="60" rx="8" fill="#6366f1"/>
+  <text x="450" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff">2. Signup Started - 5,000 users (50%)</text>
+  
+  <!-- Arrow down -->
+  <path d="M 440 260 L 440 280 L 450 290 L 460 280 L 460 260" fill="#64748b" stroke="#64748b" stroke-width="2"/>
+  <text x="450" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">40% drop-off</text>
+  
+  <!-- Step 3: Email Verified -->
+  <rect x="300" y="290" width="300" height="60" rx="8" fill="#8b5cf6"/>
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff">3. Email Verified - 3,000 users (30%)</text>
+  
+  <!-- Arrow down -->
+  <path d="M 440 350 L 440 370 L 450 380 L 460 370 L 460 350" fill="#64748b" stroke="#64748b" stroke-width="2"/>
+  <text x="450" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">33% drop-off</text>
+  
+  <!-- Step 4: Onboarding Complete -->
+  <rect x="350" y="380" width="200" height="60" rx="8" fill="#a855f7"/>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff">4. Onboarding - 2,000 (20%)</text>
+  
+  <!-- Arrow down -->
+  <path d="M 440 440 L 440 460 L 450 470 L 460 460 L 460 440" fill="#10b981" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#10b981">25% drop-off</text>
+  
+  <!-- Step 5: Activation -->
+  <rect x="375" y="470" width="150" height="50" rx="8" fill="#10b981"/>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">✓ 1,500 Activated (15%)</text>
+  
+  <!-- Drop-off callouts -->
+  <rect x="680" y="200" width="150" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="755" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#991b1b">Biggest Drop</text>
+  <text x="755" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Step 1 → 2 (50%)</text>
+  
+  <!-- Optimization opportunity -->
+  <rect x="680" y="350" width="150" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="755" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Optimize Here</text>
+  <text x="755" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Email verification friction</text>
+</svg>

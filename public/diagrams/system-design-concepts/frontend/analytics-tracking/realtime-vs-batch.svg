@@ -1,0 +1,81 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Real-Time vs Batch Event Processing</text>
+  
+  <!-- Left: Real-Time -->
+  <rect x="50" y="80" width="400" height="450" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Real-Time Processing</text>
+  
+  <!-- Real-time flow -->
+  <rect x="70" y="135" width="360" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Event Generated</text>
+  
+  <line x1="250" y1="185" x2="250" y2="205" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow1)"/>
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="270" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">&lt;1 second</text>
+  
+  <rect x="70" y="210" width="360" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="250" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Stream Processor</text>
+  <text x="250" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Kafka Streams / Flink</text>
+  
+  <line x1="250" y1="260" x2="250" y2="280" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow1)"/>
+  
+  <rect x="70" y="285" width="360" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="250" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Real-Time Actions</text>
+  <text x="250" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Personalization, alerts</text>
+  
+  <!-- Use cases -->
+  <rect x="70" y="360" width="360" height="80" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="250" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">Use Cases</text>
+  <text x="250" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Fraud detection, real-time dashboards,</text>
+  <text x="250" y="432" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">trigger notifications, personalization</text>
+  
+  <rect x="70" y="450" width="360" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="250" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d" font-weight="600">Higher cost, complex infrastructure</text>
+  
+  <!-- Right: Batch -->
+  <rect x="470" y="80" width="380" height="450" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Batch Processing</text>
+  
+  <!-- Batch flow -->
+  <rect x="490" y="135" width="340" height="50" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Events Collected</text>
+  
+  <line x1="660" y1="185" x2="660" y2="205" stroke="#10b981" stroke-width="2" marker-end="url(#arrow2)"/>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  <text x="680" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#10b981" font-weight="600">Hourly/Daily</text>
+  
+  <rect x="490" y="210" width="340" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="660" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Batch Job</text>
+  <text x="660" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Data warehouse ETL</text>
+  
+  <line x1="660" y1="260" x2="660" y2="280" stroke="#10b981" stroke-width="2" marker-end="url(#arrow2)"/>
+  
+  <rect x="490" y="285" width="340" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="660" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Aggregate &amp; Store</text>
+  <text x="660" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">BigQuery / Snowflake</text>
+  
+  <!-- Use cases -->
+  <rect x="490" y="360" width="340" height="80" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="660" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">Use Cases</text>
+  <text x="660" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Historical analysis, reporting,</text>
+  <text x="660" y="432" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">ML training, trend analysis</text>
+  
+  <rect x="490" y="450" width="340" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="660" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857" font-weight="600">Lower cost, simpler infrastructure</text>
+  
+  <!-- Bottom: Hybrid approach -->
+  <rect x="50" y="540" width="800" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Hybrid: Real-time for critical events (conversion, errors) | Batch for engagement events (page views, clicks)</text>
+</svg>
