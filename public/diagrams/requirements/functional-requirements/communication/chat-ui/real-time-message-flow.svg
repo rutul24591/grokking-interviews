@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="chatBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#chatBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Real-time Message Flow</text>
+  
+  <!-- Sender Client -->
+  <rect x="30" y="70" width="180" height="140" rx="8" fill="#3b82f6"/>
+  <text x="120" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Sender Client</text>
+  <text x="120" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Generate Message UUID</text>
+  <text x="120" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Optimistic UI Insert</text>
+  <text x="120" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send via WebSocket</text>
+  <text x="120" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show "Sending..."</text>
+  <text x="120" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Update on ACK</text>
+  
+  <!-- WebSocket -->
+  <rect x="260" y="70" width="160" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="340" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">WebSocket</text>
+  <text x="340" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Persistent Connection</text>
+  <text x="340" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Bidirectional</text>
+  <text x="340" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Low Latency</text>
+  <text x="340" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Heartbeat</text>
+  <text x="340" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Auto-reconnect</text>
+  
+  <!-- Server -->
+  <rect x="470" y="70" width="180" height="140" rx="8" fill="#f59e0b"/>
+  <text x="560" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Message Server</text>
+  <text x="560" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Receive Message</text>
+  <text x="560" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Validate &amp; Dedupe</text>
+  <text x="560" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Assign Sequence #</text>
+  <text x="560" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Persist to DB</text>
+  <text x="560" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send ACK to Sender</text>
+  <text x="560" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Broadcast to Recipients</text>
+  
+  <!-- Recipient Client -->
+  <rect x="700" y="70" width="180" height="140" rx="8" fill="#10b981"/>
+  <text x="790" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Recipient Client</text>
+  <text x="790" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Receive via WebSocket</text>
+  <text x="790" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Insert into UI</text>
+  <text x="790" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Play Notification</text>
+  <text x="790" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send Delivery Receipt</text>
+  <text x="790" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">On View: Read Receipt</text>
+  
+  <!-- Receipt Flow -->
+  <rect x="150" y="260" width="320" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="310" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Receipt Flow</text>
+  <text x="310" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Delivery Receipt: Recipient → Server → Sender</text>
+  <text x="310" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Read Receipt: On message view (scroll to bottom)</text>
+  <text x="310" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Privacy: Users can disable read receipts</text>
+  
+  <!-- Typing Indicator Flow -->
+  <rect x="520" y="260" width="350" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="695" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Typing Indicator Flow</text>
+  <text x="695" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Keystroke → Debounce (1-2s) → Send typing event</text>
+  <text x="695" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Timeout after 5-10s inactivity</text>
+  <text x="695" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Display: "typing..." animation (3 dots)</text>
+  
+  <!-- Arrows -->
+  <path d="M 210 140 L 255 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="255,140 245,135 245,145" fill="#64748b"/>
+  <text x="232" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Send</text>
+  
+  <path d="M 420 140 L 465 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="465,140 455,135 455,145" fill="#64748b"/>
+  <text x="442" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Receive</text>
+  
+  <path d="M 650 140 L 695 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="695,140 685,135 685,145" fill="#64748b"/>
+  <text x="672" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Broadcast</text>
+  
+  <!-- Receipt return path -->
+  <path d="M 790 210 L 790 240 L 560 240 L 560 210" stroke="#ec4899" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <polygon points="560,210 555,220 565,220" fill="#ec4899"/>
+  <text x="680" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#ec4899">Receipt</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="400" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">WebSocket enables bidirectional real-time communication with delivery and read receipts</text>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="msgBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#msgBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Scaling Strategies</text>
+  
+  <!-- Connection Sharding -->
+  <rect x="50" y="70" width="270" height="140" rx="8" fill="#3b82f6"/>
+  <text x="185" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Connection Sharding</text>
+  <text x="185" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Distribute WebSocket connections</text>
+  <text x="185" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">across gateway servers</text>
+  <text x="185" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Consistent Hashing</text>
+  <text x="185" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• User ID → Gateway mapping</text>
+  <text x="185" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 10K-50K connections/server</text>
+  
+  <!-- Message Queue -->
+  <rect x="370" y="70" width="270" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="505" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Message Queue Decoupling</text>
+  <text x="505" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Buffer messages between</text>
+  <text x="505" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">send and delivery</text>
+  <text x="505" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Kafka / RabbitMQ</text>
+  <text x="505" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Absorb traffic spikes</text>
+  <text x="505" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Async processing</text>
+  
+  <!-- Regional Deployment -->
+  <rect x="690" y="70" width="260" height="140" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Regional Deployment</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Place servers close to users</text>
+  <text x="820" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• DNS-based routing</text>
+  <text x="820" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Nearest region connection</text>
+  <text x="820" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Cross-region replication</text>
+  <text x="820" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Disaster recovery</text>
+  
+  <!-- Database Sharding -->
+  <rect x="100" y="250" width="240" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="220" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Database Sharding</text>
+  <text x="220" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Shard by Conversation ID</text>
+  <text x="220" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Cassandra / DynamoDB</text>
+  <text x="220" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Horizontal scaling</text>
+  <text x="220" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Consistent hashing</text>
+  
+  <!-- Load Balancing -->
+  <rect x="380" y="250" width="240" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="500" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Load Balancing</text>
+  <text x="500" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Distribute incoming connections</text>
+  <text x="500" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Round-robin / Least connections</text>
+  <text x="500" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Health checks</text>
+  <text x="500" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Auto-scaling</text>
+  
+  <!-- Caching Strategy -->
+  <rect x="660" y="250" width="240" height="110" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="780" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#065f46">Caching Strategy</text>
+  <text x="780" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Redis for hot data</text>
+  <text x="780" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Connection registry</text>
+  <text x="780" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Recent messages</text>
+  <text x="780" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Presence state</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 320 140 L 365 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="365,140 355,135 355,145" fill="#64748b"/>
+  
+  <path d="M 640 140 L 685 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="685,140 675,135 675,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Multi-layer scaling: shard connections, decouple with queues, deploy regionally, cache hot data</text>
+</svg>

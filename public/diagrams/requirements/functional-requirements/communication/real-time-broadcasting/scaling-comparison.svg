@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .box-dark { fill: #2d3748; stroke: #718096; stroke-width: 2; }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .label-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #e2e8f0; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+      .sublabel-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a0aec0; font-weight: 400; }
+      .axis { stroke: #4a5568" stroke-width="2"; }
+      .bar { fill: #4299e1; }
+      .bar-dark { fill: #4299e1; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  <rect class="bg-dark" width="1000" height="450" data-theme="dark" style="display:none;"/>
+  
+  <!-- Connection Capacity Chart -->
+  <rect class="box" x="30" y="30" width="300" height="180" rx="8"/>
+  <text x="180" y="55" text-anchor="middle" class="label">Max Connections per Server</text>
+  
+  <!-- Bars -->
+  <rect x="60" y="180" width="60" height="20" fill="#fed7d7" stroke="#e53e3e" stroke-width="2"/>
+  <text x="90" y="195" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #c53030;">Centralized</text>
+  <text x="90" y="80" text-anchor="middle" class="sublabel" fill="#e53e3e">50K</text>
+  
+  <rect x="150" y="140" width="60" height="60" fill="#c6f6d5" stroke="#38a169" stroke-width="2"/>
+  <text x="180" y="215" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #2f855a;">Hierarchical</text>
+  <text x="180" y="120" text-anchor="middle" class="sublabel" fill="#38a169">500K</text>
+  
+  <rect x="240" y="80" width="60" height="120" fill="#bee3f8" stroke="#3182ce" stroke-width="2"/>
+  <text x="270" y="215" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #2c5282;">CDN</text>
+  <text x="270" y="60" text-anchor="middle" class="sublabel" fill="#3182ce">1M+</text>
+  
+  <!-- Latency Comparison -->
+  <rect class="box" x="360" y="30" width="300" height="180" rx="8"/>
+  <text x="510" y="55" text-anchor="middle" class="label">End-to-End Latency</text>
+  
+  <rect x="390" y="180" width="50" height="20" fill="#fef3c7" stroke="#d69e2e" stroke-width="2"/>
+  <text x="415" y="215" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #975a16;">WebSocket</text>
+  <text x="415" y="100" text-anchor="middle" class="sublabel" fill="#d69e2e">&lt;100ms</text>
+  
+  <rect x="470" y="160" width="50" height="40" fill="#feebc8" stroke="#dd6b20" stroke-width="2"/>
+  <text x="495" y="215" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #c05621;">SSE</text>
+  <text x="495" y="140" text-anchor="middle" class="sublabel" fill="#dd6b20">100-500ms</text>
+  
+  <rect x="550" y="120" width="50" height="80" fill="#fed7d7" stroke="#e53e3e" stroke-width="2"/>
+  <text x="575" y="215" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #c53030;">Long Poll</text>
+  <text x="575" y="100" text-anchor="middle" class="sublabel" fill="#e53e3e">1-5s</text>
+  
+  <!-- Cost Comparison -->
+  <rect class="box" x="690" y="30" width="280" height="180" rx="8"/>
+  <text x="830" y="55" text-anchor="middle" class="label">Relative Cost (per 1M msgs)</text>
+  
+  <rect x="720" y="140" width="60" height="60" fill="#c6f6d5" stroke="#38a169" stroke-width="2"/>
+  <text x="750" y="215" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #2f855a;">Self-hosted</text>
+  <text x="750" y="120" text-anchor="middle" class="sublabel" fill="#38a169">$</text>
+  
+  <rect x="800" y="100" width="60" height="100" fill="#feebc8" stroke="#dd6b20" stroke-width="2"/>
+  <text x="830" y="215" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #c05621;">Managed</text>
+  <text x="830" y="80" text-anchor="middle" class="sublabel" fill="#dd6b20">$$</text>
+  
+  <rect x="880" y="60" width="60" height="140" fill="#fed7d7" stroke="#e53e3e" stroke-width="2"/>
+  <text x="910" y="215" text-anchor="middle" class="sublabel" style="font-weight: 600; fill: #c53030;">CDN</text>
+  <text x="910" y="40" text-anchor="middle" class="sublabel" fill="#e53e3e">$$$</text>
+  
+  <!-- Summary Table -->
+  <rect class="box" x="30" y="240" width="940" height="170" rx="8"/>
+  
+  <!-- Header -->
+  <rect class="box" x="40" y="250" width="920" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="100" y="273" text-anchor="middle" class="sublabel" style="font-weight: 600;">Architecture</text>
+  <text x="250" y="273" text-anchor="middle" class="sublabel" style="font-weight: 600;">Scale</text>
+  <text x="400" y="273" text-anchor="middle" class="sublabel" style="font-weight: 600;">Latency</text>
+  <text x="550" y="273" text-anchor="middle" class="sublabel" style="font-weight: 600;">Cost</text>
+  <text x="750" y="273" text-anchor="middle" class="sublabel" style="font-weight: 600;">Best For</text>
+  
+  <!-- Row 1 -->
+  <text x="100" y="310" text-anchor="middle" class="sublabel">Centralized</text>
+  <text x="250" y="310" text-anchor="middle" class="sublabel" fill="#e53e3e">&lt;50K</text>
+  <text x="400" y="310" text-anchor="middle" class="sublabel" fill="#38a169">Low</text>
+  <text x="550" y="310" text-anchor="middle" class="sublabel" fill="#38a169">Low</text>
+  <text x="750" y="310" text-anchor="middle" class="sublabel">Small events</text>
+  
+  <!-- Row 2 -->
+  <text x="100" y="345" text-anchor="middle" class="sublabel">Hierarchical</text>
+  <text x="250" y="345" text-anchor="middle" class="sublabel" fill="#3182ce">50K-500K</text>
+  <text x="400" y="345" text-anchor="middle" class="sublabel" fill="#38a169">Low</text>
+  <text x="550" y="345" text-anchor="middle" class="sublabel" fill="#d69e2e">Medium</text>
+  <text x="750" y="345" text-anchor="middle" class="sublabel">Medium-large events</text>
+  
+  <!-- Row 3 -->
+  <text x="100" y="380" text-anchor="middle" class="sublabel">CDN-based</text>
+  <text x="250" y="380" text-anchor="middle" class="sublabel" fill="#38a169">500K+</text>
+  <text x="400" y="380" text-anchor="middle" class="sublabel" fill="#d69e2e">Medium</text>
+  <text x="550" y="380" text-anchor="middle" class="sublabel" fill="#e53e3e">High</text>
+  <text x="750" y="380" text-anchor="middle" class="sublabel">Massive global events</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 4: Scaling Comparison</text>
+</svg>

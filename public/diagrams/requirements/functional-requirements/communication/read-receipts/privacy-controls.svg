@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="readBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#readBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Privacy Controls</text>
+  
+  <!-- Global Toggle -->
+  <rect x="50" y="70" width="200" height="130" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Global Toggle</text>
+  <text x="150" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Settings → Privacy</text>
+  <text x="150" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Options:</text>
+  <text x="150" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Enable Read Receipts</text>
+  <text x="150" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Disable Read Receipts</text>
+  <text x="150" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Default: Varies by app</text>
+  
+  <!-- Per-Conversation -->
+  <rect x="300" y="70" width="200" height="130" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Per-Conversation</text>
+  <text x="400" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Conversation Info → Settings</text>
+  <text x="400" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Override Global:</text>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Enable for This Chat</text>
+  <text x="400" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Disable for This Chat</text>
+  <text x="400" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Stored as Exception List</text>
+  
+  <!-- Reciprocal -->
+  <rect x="550" y="70" width="200" height="130" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Reciprocal Rule</text>
+  <text x="650" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If You Disable:</text>
+  <text x="650" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">→ You Can't See Others'</text>
+  <text x="650" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Fairness Enforcement</text>
+  <text x="650" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server-Side Check</text>
+  
+  <!-- Privacy Evaluation -->
+  <rect x="800" y="70" width="170" height="130" rx="8" fill="#10b981"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Privacy Evaluation</text>
+  <text x="885" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Before Sending Read:</text>
+  <text x="885" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">1. Check Sender Preference</text>
+  <text x="885" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">2. Check Recipient Preference</text>
+  <text x="885" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">3. Check Conversation Override</text>
+  <text x="885" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">If Any False: Don't Send</text>
+  
+  <!-- Privacy Flow Diagram -->
+  <rect x="100" y="240" width="380" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Privacy Check Flow</text>
+  
+  <text x="150" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">User A sends to User B</text>
+  <text x="150" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">B reads message</text>
+  <text x="150" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Check: A wants receipts?</text>
+  <text x="150" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Check: B allows receipts?</text>
+  <text x="280" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#22c55e">Both Yes → Send Read</text>
+  <text x="280" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#ef4444">Either No → Show Delivered</text>
+  
+  <!-- Use Cases -->
+  <rect x="530" y="240" width="370" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Common Use Cases</text>
+  <text x="715" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Professional: Enable for boss/clients</text>
+  <text x="715" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Personal: Enable for family/close friends</text>
+  <text x="715" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Casual: Disable for acquaintances</text>
+  <text x="715" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Dating: Strategic enable/disable</text>
+  
+  <!-- Status Display Based on Privacy -->
+  <rect x="150" y="390" width="300" height="40" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="300" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">Receipts Disabled: Shows "Delivered" (not "Read")</text>
+  
+  <rect x="500" y="390" width="350" height="40" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="675" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#065f46">Receipts Enabled: Shows "Read 2:30 PM"</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 250 135 L 295 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,135 285,130 285,140" fill="#64748b"/>
+  
+  <path d="M 500 135 L 545 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="545,135 535,130 535,140" fill="#64748b"/>
+  
+  <path d="M 750 135 L 795 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="795,135 785,130 785,140" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="445" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Privacy Flow: Global → Per-Conversation → Reciprocal → Evaluate Before Send/Display</text>
+</svg>

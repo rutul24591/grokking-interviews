@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="notifDelBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#notifDelBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Preference Evaluation Flow</text>
+  
+  <!-- Global Toggle -->
+  <rect x="50" y="70" width="180" height="100" rx="8" fill="#3b82f6"/>
+  <text x="140" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">1. Global Toggle</text>
+  <text x="140" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Master Switch</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If OFF: Block All</text>
+  <text x="140" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If ON: Continue</text>
+  
+  <!-- Type Preference -->
+  <rect x="280" y="70" width="180" height="100" rx="8" fill="#8b5cf6"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">2. Type Preference</text>
+  <text x="370" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Notification Type</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Social/Likes/Comments</text>
+  <text x="370" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If Disabled: Block</text>
+  
+  <!-- Sender Mute -->
+  <rect x="510" y="70" width="180" height="100" rx="8" fill="#f59e0b"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">3. Sender Mute</text>
+  <text x="600" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Muted Users</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Muted Groups</text>
+  <text x="600" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If Muted: Block</text>
+  
+  <!-- Quiet Hours -->
+  <rect x="740" y="70" width="180" height="100" rx="8" fill="#10b981"/>
+  <text x="830" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">4. Quiet Hours</text>
+  <text x="830" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Local Time</text>
+  <text x="830" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If Active: Queue</text>
+  <text x="830" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Unless Urgent</text>
+  
+  <!-- Rate Limits -->
+  <rect x="150" y="210" width="200" height="100" rx="8" fill="#ec4899"/>
+  <text x="250" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">5. Rate Limits</text>
+  <text x="250" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Hourly Limit</text>
+  <text x="250" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Daily Limit</text>
+  <text x="250" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If Exceeded: Queue</text>
+  
+  <!-- Channel Selection -->
+  <rect x="400" y="210" width="200" height="100" rx="8" fill="#06b6d4"/>
+  <text x="500" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">6. Channel Selection</text>
+  <text x="500" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Enabled Channels</text>
+  <text x="500" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Optimize by Engagement</text>
+  <text x="500" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Select Best Channel</text>
+  
+  <!-- Deliver -->
+  <rect x="650" y="210" width="200" height="100" rx="8" fill="#6366f1"/>
+  <text x="750" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">7. Deliver</text>
+  <text x="750" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send via Channel</text>
+  <text x="750" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Track Delivery</text>
+  <text x="750" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Log Engagement</text>
+  
+  <!-- Decision outcomes -->
+  <rect x="50" y="350" width="280" height="80" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="190" y="380" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">Blocked Notifications</text>
+  <text x="190" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Global OFF | Type Disabled | Sender Muted</text>
+  <text x="190" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Log for analytics, do not deliver</text>
+  
+  <rect x="380" y="350" width="280" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="520" y="380" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Queued Notifications</text>
+  <text x="520" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Quiet Hours Active | Rate Limit Exceeded</text>
+  <text x="520" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Deliver when conditions allow</text>
+  
+  <rect x="710" y="350" width="240" height="80" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="830" y="380" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#065f46">Delivered Notifications</text>
+  <text x="830" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">All checks passed</text>
+  <text x="830" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Send via selected channel</text>
+  
+  <!-- Arrows between steps -->
+  <path d="M 230 120 L 275 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="275,120 265,115 265,125" fill="#64748b"/>
+  
+  <path d="M 460 120 L 505 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,120 495,115 495,125" fill="#64748b"/>
+  
+  <path d="M 690 120 L 735 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,120 725,115 725,125" fill="#64748b"/>
+  
+  <!-- Down arrows to second row -->
+  <path d="M 140 170 L 140 205" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 600 170 L 600 205" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Flow to outcomes -->
+  <path d="M 250 310 L 250 345" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 500 310 L 500 345" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 750 310 L 750 345" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="450" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Hierarchical evaluation: Global → Type → Sender → Quiet Hours → Rate Limits → Channel → Deliver</text>
+</svg>

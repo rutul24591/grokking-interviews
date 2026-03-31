@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="mediaBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#mediaBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Upload Flow</text>
+  
+  <!-- File Selection -->
+  <rect x="50" y="70" width="180" height="110" rx="8" fill="#3b82f6"/>
+  <text x="140" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">1. File Selection</text>
+  <text x="140" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Native File Picker</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Multiple Selection</text>
+  <text x="140" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Preview Thumbnails</text>
+  <text x="140" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Add Captions</text>
+  
+  <!-- Client Processing -->
+  <rect x="280" y="70" width="180" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">2. Client Processing</text>
+  <text x="370" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Image Compression</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Thumbnail Generation</text>
+  <text x="370" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Type Validation</text>
+  <text x="370" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Size Check</text>
+  
+  <!-- Upload -->
+  <rect x="510" y="70" width="180" height="110" rx="8" fill="#f59e0b"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">3. Upload</text>
+  <text x="600" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Multipart (Large Files)</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Progress Tracking</text>
+  <text x="600" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Retry on Failure</text>
+  <text x="600" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Background Upload</text>
+  
+  <!-- Server Processing -->
+  <rect x="740" y="70" width="180" height="110" rx="8" fill="#10b981"/>
+  <text x="830" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">4. Server Processing</text>
+  <text x="830" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Virus Scan</text>
+  <text x="830" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Generate Derivatives</text>
+  <text x="830" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Store Metadata</text>
+  <text x="830" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send to Recipient</text>
+  
+  <!-- Upload States -->
+  <rect x="100" y="220" width="380" height="130" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Upload States</text>
+  
+  <circle cx="150" cy="285" r="15" fill="#64748b"/>
+  <text x="150" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">↻</text>
+  <text x="200" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Uploading (Progress Bar)</text>
+  
+  <circle cx="150" cy="320" r="15" fill="#10b981"/>
+  <text x="150" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">✓</text>
+  <text x="200" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Sent (Delivered)</text>
+  
+  <circle cx="330" cy="285" r="15" fill="#ef4444"/>
+  <text x="330" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">!</text>
+  <text x="380" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Failed (Tap to Retry)</text>
+  
+  <circle cx="330" cy="320" r="15" fill="#f59e0b"/>
+  <text x="330" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">⏳</text>
+  <text x="380" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Pending (Processing)</text>
+  
+  <!-- Retry Logic -->
+  <rect x="530" y="220" width="370" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Retry Logic</text>
+  <text x="715" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Attempt 1: Immediate</text>
+  <text x="715" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Attempt 2: After 2s</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Attempt 3: After 4s</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Final: After 8s → Show Error</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Resume from last chunk (multipart)</text>
+  
+  <!-- Arrows between steps -->
+  <path d="M 230 125 L 275 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="275,125 265,120 265,130" fill="#64748b"/>
+  
+  <path d="M 460 125 L 505 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,125 495,120 495,130" fill="#64748b"/>
+  
+  <path d="M 690 125 L 735 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,125 725,120 725,130" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="50" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="405" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Upload Flow: Select → Process → Upload → Process → Deliver with retry on failure</text>
+</svg>

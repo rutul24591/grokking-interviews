@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .box-dark { fill: #2d3748; stroke: #718096; stroke-width: 2; }
+      .central { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .central-dark { fill: #742a2a; stroke: #fc8181; stroke-width: 2; }
+      .hierarchical { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .hierarchical-dark { fill: #276749; stroke: #48bb78; stroke-width: 2; }
+      .cdn { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .cdn-dark { fill: #2c5282; stroke: #4299e1; stroke-width: 2; }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .label-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #e2e8f0; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+      .sublabel-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a0aec0; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  <rect class="bg-dark" width="1000" height="450" data-theme="dark" style="display:none;"/>
+  
+  <!-- Centralized -->
+  <rect class="box" x="30" y="30" width="280" height="180" rx="8"/>
+  <text x="170" y="55" text-anchor="middle" class="label" style="font-size: 16px;">Centralized</text>
+  
+  <rect class="central" x="120" y="70" width="100" height="50" rx="8"/>
+  <text x="170" y="100" text-anchor="middle" class="sublabel" style="font-weight: 600;">Origin Server</text>
+  
+  <!-- Direct connections -->
+  <path d="M170 120 L80 180" stroke="#e53e3e" stroke-width="2" fill="none"/>
+  <path d="M170 120 L140 180" stroke="#e53e3e" stroke-width="2" fill="none"/>
+  <path d="M170 120 L200 180" stroke="#e53e3e" stroke-width="2" fill="none"/>
+  <path d="M170 120 L260 180" stroke="#e53e3e" stroke-width="2" fill="none"/>
+  
+  <circle cx="80" cy="195" r="10" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="140" cy="195" r="10" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="200" cy="195" r="10" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="260" cy="195" r="10" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <text x="170" y="200" text-anchor="middle" class="sublabel">Clients</text>
+  
+  <text x="170" y="140" text-anchor="middle" class="sublabel" fill="#e53e3e" font-weight="600">O(N) connections</text>
+  <text x="170" y="155" text-anchor="middle" class="sublabel">Max ~50K clients</text>
+  
+  <!-- Hierarchical -->
+  <rect class="box" x="360" y="30" width="280" height="180" rx="8"/>
+  <text x="500" y="55" text-anchor="middle" class="label" style="font-size: 16px;">Hierarchical</text>
+  
+  <rect class="hierarchical" x="450" y="70" width="100" height="40" rx="4"/>
+  <text x="500" y="95" text-anchor="middle" class="sublabel" style="font-weight: 600;">Origin</text>
+  
+  <rect class="hierarchical" x="390" y="130" width="80" height="35" rx="4"/>
+  <text x="430" y="152" text-anchor="middle" class="sublabel" style="font-weight: 600;">Edge 1</text>
+  
+  <rect class="hierarchical" x="520" y="130" width="80" height="35" rx="4"/>
+  <text x="560" y="152" text-anchor="middle" class="sublabel" style="font-weight: 600;">Edge 2</text>
+  
+  <path d="M500 110 L430 128" stroke="#38a169" stroke-width="2" fill="none"/>
+  <path d="M500 110 L560 128" stroke="#38a169" stroke-width="2" fill="none"/>
+  
+  <circle cx="410" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="450" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="540" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="580" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  
+  <path d="M430 165 L410 177" stroke="#38a169" stroke-width="2" fill="none"/>
+  <path d="M430 165 L450 177" stroke="#38a169" stroke-width="2" fill="none"/>
+  <path d="M560 165 L540 177" stroke="#38a169" stroke-width="2" fill="none"/>
+  <path d="M560 165 L580 177" stroke="#38a169" stroke-width="2" fill="none"/>
+  
+  <text x="500" y="140" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">O(M) origin connections</text>
+  <text x="500" y="155" text-anchor="middle" class="sublabel">500K+ clients</text>
+  
+  <!-- CDN-based -->
+  <rect class="box" x="690" y="30" width="280" height="180" rx="8"/>
+  <text x="830" y="55" text-anchor="middle" class="label" style="font-size: 16px;">CDN-based</text>
+  
+  <rect class="cdn" x="780" y="70" width="100" height="40" rx="4"/>
+  <text x="830" y="95" text-anchor="middle" class="sublabel" style="font-weight: 600;">Origin</text>
+  
+  <rect class="cdn" x="710" y="130" width="70" height="35" rx="4"/>
+  <text x="745" y="147" text-anchor="middle" class="sublabel" style="font-weight: 600; font-size: 10px;">CDN Edge</text>
+  
+  <rect class="cdn" x="790" y="130" width="70" height="35" rx="4"/>
+  <text x="825" y="147" text-anchor="middle" class="sublabel" style="font-weight: 600; font-size: 10px;">CDN Edge</text>
+  
+  <rect class="cdn" x="870" y="130" width="70" height="35" rx="4"/>
+  <text x="905" y="147" text-anchor="middle" class="sublabel" style="font-weight: 600; font-size: 10px;">CDN Edge</text>
+  
+  <path d="M830 110 L745 128" stroke="#3182ce" stroke-width="2" fill="none"/>
+  <path d="M830 110 L825 128" stroke="#3182ce" stroke-width="2" fill="none"/>
+  <path d="M830 110 L905 128" stroke="#3182ce" stroke-width="2" fill="none"/>
+  
+  <circle cx="725" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="755" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="815" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="845" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="885" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  <circle cx="915" cy="185" r="8" fill="#f0f4f8" stroke="#4a5568" stroke-width="2"/>
+  
+  <path d="M745 165 L725 177" stroke="#3182ce" stroke-width="2" fill="none"/>
+  <path d="M745 165 L755 177" stroke="#3182ce" stroke-width="2" fill="none"/>
+  <path d="M825 165 L815 177" stroke="#3182ce" stroke-width="2" fill="none"/>
+  <path d="M825 165 L845 177" stroke="#3182ce" stroke-width="2" fill="none"/>
+  <path d="M905 165 L885 177" stroke="#3182ce" stroke-width="2" fill="none"/>
+  <path d="M905 165 L915 177" stroke="#3182ce" stroke-width="2" fill="none"/>
+  
+  <text x="830" y="140" text-anchor="middle" class="sublabel" fill="#3182ce" font-weight="600">Global scale</text>
+  <text x="830" y="155" text-anchor="middle" class="sublabel">1M+ clients</text>
+  
+  <!-- Comparison at bottom -->
+  <text x="170" y="230" text-anchor="middle" class="sublabel" fill="#e53e3e">~10K-50K</text>
+  <text x="500" y="230" text-anchor="middle" class="sublabel" fill="#38a169">10K-500K</text>
+  <text x="830" y="230" text-anchor="middle" class="sublabel" fill="#3182ce">500K+</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Fan-out Strategies</text>
+</svg>

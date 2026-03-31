@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="notifBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#notifBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Read State Synchronization</text>
+  
+  <!-- Device A -->
+  <rect x="50" y="70" width="180" height="140" rx="8" fill="#3b82f6"/>
+  <text x="140" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Device A (Phone)</text>
+  <text x="140" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User Opens App</text>
+  <text x="140" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Views Notifications</text>
+  <text x="140" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Marks as Read</text>
+  <text x="140" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send Read Event</text>
+  <text x="140" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">→ WebSocket</text>
+  
+  <!-- WebSocket -->
+  <rect x="280" y="70" width="180" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">WebSocket Server</text>
+  <text x="370" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Receive Read Event</text>
+  <text x="370" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Publish to Channel</text>
+  <text x="370" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">user:ID:read_events</text>
+  <text x="370" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Payload:</text>
+  <text x="370" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">(notification_ids, read)</text>
+  
+  <!-- Device B -->
+  <rect x="510" y="70" width="180" height="140" rx="8" fill="#10b981"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Device B (Tablet)</text>
+  <text x="600" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Subscribed to Channel</text>
+  <text x="600" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Receive Read Event</text>
+  <text x="600" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Update Local State</text>
+  <text x="600" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Mark Notifications Read</text>
+  <text x="600" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Update Badge Count</text>
+  
+  <!-- Device C -->
+  <rect x="740" y="70" width="180" height="140" rx="8" fill="#06b6d4"/>
+  <text x="830" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Device C (Desktop)</text>
+  <text x="830" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Subscribed to Channel</text>
+  <text x="830" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Receive Read Event</text>
+  <text x="830" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Update Local State</text>
+  <text x="830" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Mark Notifications Read</text>
+  <text x="830" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Update Badge Count</text>
+  
+  <!-- Database -->
+  <rect x="350" y="260" width="300" height="100" rx="8" fill="#f59e0b"/>
+  <text x="500" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Database (Source of Truth)</text>
+  <text x="500" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Update read_at timestamp</text>
+  <text x="500" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">WHERE notification_id IN (...)</text>
+  <text x="500" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Async update (eventual consistency)</text>
+  
+  <!-- Timeline -->
+  <rect x="100" y="390" width="800" height="40" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#3730a3">Timeline: Device A reads → WebSocket publishes → Devices B,C sync (&lt;1 second latency)</text>
+  
+  <!-- Arrows -->
+  <path d="M 230 140 L 275 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="275,140 265,135 265,145" fill="#64748b"/>
+  <text x="252" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Read Event</text>
+  
+  <path d="M 460 140 L 505 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,140 495,135 495,145" fill="#64748b"/>
+  <text x="482" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Broadcast</text>
+  
+  <path d="M 690 140 L 735 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,140 725,135 725,145" fill="#64748b"/>
+  <text x="712" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Broadcast</text>
+  
+  <!-- Down arrow to DB -->
+  <path d="M 370 210 L 370 255" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <text x="380" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Persist</text>
+</svg>

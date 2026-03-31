@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .box-dark { fill: #2d3748; stroke: #718096; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dark { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .label-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #e2e8f0; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+      .sublabel-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a0aec0; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0"/>
+    </marker>
+  </defs>
+  
+  <!-- Light mode background -->
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
+  <!-- Dark mode background -->
+  <rect class="bg-dark" width="1000" height="500" data-theme="dark" style="display:none;"/>
+  
+  <!-- Publishers -->
+  <rect class="box" x="50" y="50" width="140" height="60" rx="8"/>
+  <text x="120" y="75" text-anchor="middle" class="label">Publisher 1</text>
+  <text x="120" y="95" text-anchor="middle" class="sublabel">Service A</text>
+  
+  <rect class="box" x="50" y="140" width="140" height="60" rx="8"/>
+  <text x="120" y="165" text-anchor="middle" class="label">Publisher 2</text>
+  <text x="120" y="185" text-anchor="middle" class="sublabel">Service B</text>
+  
+  <rect class="box" x="50" y="230" width="140" height="60" rx="8"/>
+  <text x="120" y="255" text-anchor="middle" class="label">Publisher 3</text>
+  <text x="120" y="275" text-anchor="middle" class="sublabel">Service C</text>
+  
+  <!-- Message Broker -->
+  <rect class="box" x="280" y="100" width="200" height="220" rx="8" stroke-width="3"/>
+  <text x="380" y="130" text-anchor="middle" class="label" style="font-size: 16px;">Message Broker</text>
+  
+  <!-- Topics inside Broker -->
+  <rect class="box" x="310" y="150" width="140" height="40" rx="4"/>
+  <text x="380" y="175" text-anchor="middle" class="sublabel" style="font-weight: 600;">Topic A</text>
+  
+  <rect class="box" x="310" y="200" width="140" height="40" rx="4"/>
+  <text x="380" y="225" text-anchor="middle" class="sublabel" style="font-weight: 600;">Topic B</text>
+  
+  <rect class="box" x="310" y="250" width="140" height="40" rx="4"/>
+  <text x="380" y="275" text-anchor="middle" class="sublabel" style="font-weight: 600;">Topic C</text>
+  
+  <!-- Subscribers -->
+  <rect class="box" x="570" y="50" width="140" height="60" rx="8"/>
+  <text x="640" y="75" text-anchor="middle" class="label">Subscriber 1</text>
+  <text x="640" y="95" text-anchor="middle" class="sublabel">Service X</text>
+  
+  <rect class="box" x="570" y="140" width="140" height="60" rx="8"/>
+  <text x="640" y="165" text-anchor="middle" class="label">Subscriber 2</text>
+  <text x="640" y="185" text-anchor="middle" class="sublabel">Service Y</text>
+  
+  <rect class="box" x="570" y="230" width="140" height="60" rx="8"/>
+  <text x="640" y="255" text-anchor="middle" class="label">Subscriber 3</text>
+  <text x="640" y="275" text-anchor="middle" class="sublabel">Service Z</text>
+  
+  <rect class="box" x="570" y="320" width="140" height="60" rx="8"/>
+  <text x="640" y="345" text-anchor="middle" class="label">Subscriber 4</text>
+  <text x="640" y="365" text-anchor="middle" class="sublabel">Service W</text>
+  
+  <!-- Arrows Publishers to Broker -->
+  <path class="arrow" d="M190 80 L275 165"/>
+  <path class="arrow" d="M190 170 L275 215"/>
+  <path class="arrow" d="M190 260 L275 260"/>
+  
+  <!-- Arrows Broker to Subscribers -->
+  <path class="arrow" d="M480 170 L565 80"/>
+  <path class="arrow" d="M480 215 L565 170"/>
+  <path class="arrow" d="M480 260 L565 260"/>
+  <path class="arrow" d="M480 280 L540 340"/>
+  
+  <!-- Consumer Group Label -->
+  <rect class="box" x="550" y="30" width="180" height="380" rx="8" fill="none" stroke-dasharray="5,5"/>
+  <text x="640" y="40" text-anchor="middle" class="sublabel">Consumer Group 1</text>
+  
+  <!-- Title -->
+  <text x="500" y="480" text-anchor="middle" class="label" style="font-size: 16px;">Figure 1: Pub/Sub Architecture</text>
+</svg>

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="offlineBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#offlineBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Push Throttling</text>
+  
+  <!-- Message 1 -->
+  <rect x="50" y="70" width="180" height="110" rx="8" fill="#3b82f6"/>
+  <text x="140" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Message 1</text>
+  <text x="140" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">First Message</text>
+  <text x="140" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Full Push Notification</text>
+  <text x="140" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Alert + Preview</text>
+  
+  <!-- Messages 2-5 -->
+  <rect x="280" y="70" width="180" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Messages 2-5</text>
+  <text x="370" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Silent Push</text>
+  <text x="370" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Wake App Only</text>
+  <text x="370" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">No Alert</text>
+  
+  <!-- Messages 6+ -->
+  <rect x="510" y="70" width="180" height="110" rx="8" fill="#f59e0b"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Messages 6+</text>
+  <text x="600" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Batch into Digest</text>
+  <text x="600" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send Every 1-4 Hours</text>
+  <text x="600" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">"You have X messages"</text>
+  
+  <!-- Rate Limit Tracker -->
+  <rect x="740" y="70" width="180" height="110" rx="8" fill="#10b981"/>
+  <text x="830" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Rate Limit Tracker</text>
+  <text x="830" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Push Count / Hour</text>
+  <text x="830" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">APNs: ~2-3/hour</text>
+  <text x="830" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">FCM: Higher limits</text>
+  
+  <!-- Timeline -->
+  <rect x="100" y="230" width="800" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="500" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Push Timeline Example</text>
+  
+  <!-- Timeline markers -->
+  <line x1="150" y1="280" x2="150" y2="310" stroke="#6366f1" stroke-width="2"/>
+  <text x="150" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T+0: Msg 1</text>
+  <text x="150" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#6366f1" font-weight="bold">FULL PUSH</text>
+  
+  <line x1="300" y1="280" x2="300" y2="310" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="300" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T+5min: Msg 2-3</text>
+  <text x="300" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#8b5cf6" font-weight="bold">SILENT</text>
+  
+  <line x1="450" y1="280" x2="450" y2="310" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T+15min: Msg 4-5</text>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#8b5cf6" font-weight="bold">SILENT</text>
+  
+  <line x1="600" y1="280" x2="600" y2="310" stroke="#f59e0b" stroke-width="2"/>
+  <text x="600" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T+1hr: Msg 6-10</text>
+  <text x="600" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#f59e0b" font-weight="bold">DIGEST</text>
+  
+  <line x1="750" y1="280" x2="750" y2="310" stroke="#f59e0b" stroke-width="2"/>
+  <text x="750" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T+4hr: Msg 11-20</text>
+  <text x="750" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#f59e0b" font-weight="bold">DIGEST</text>
+  
+  <!-- Platform Limits -->
+  <rect x="150" y="370" width="300" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="300" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Platform Rate Limits</text>
+  <text x="300" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">APNs (iOS): ~2-3 pushes/hour/device</text>
+  
+  <rect x="500" y="370" width="350" height="60" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="675" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#065f46">FCM (Android)</text>
+  <text x="675" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Higher limits, but still throttle for UX</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="450" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Throttling prevents notification fatigue while ensuring important messages wake the device</text>
+</svg>

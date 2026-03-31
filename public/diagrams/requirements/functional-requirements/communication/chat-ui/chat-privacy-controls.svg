@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="chatBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#chatBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Chat Privacy Controls</text>
+  
+  <!-- Typing Indicators -->
+  <rect x="50" y="70" width="200" height="130" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Typing Indicators</text>
+  <text x="150" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Default: Enabled</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Toggle: On/Off</text>
+  <text x="150" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Reciprocal Privacy:</text>
+  <text x="150" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If off, can't see others'</text>
+  
+  <!-- Read Receipts -->
+  <rect x="300" y="70" width="200" height="130" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Read Receipts</text>
+  <text x="400" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Default: Enabled</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Toggle: On/Off</text>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Per-conversation option</text>
+  <text x="400" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Reciprocal Privacy</text>
+  
+  <!-- Online Status -->
+  <rect x="550" y="70" width="200" height="130" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Online Status</text>
+  <text x="650" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show: Online/Offline</text>
+  <text x="650" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Last Seen Timestamp</text>
+  <text x="650" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Hide from specific users</text>
+  <text x="650" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Grace period for blips</text>
+  
+  <!-- Message Deletion -->
+  <rect x="800" y="70" width="170" height="130" rx="8" fill="#10b981"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Message Deletion</text>
+  <text x="885" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Delete for Me</text>
+  <text x="885" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Delete for Everyone</text>
+  <text x="885" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Time limit (e.g., 1h)</text>
+  <text x="885" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Disappearing Messages</text>
+  
+  <!-- Screenshot Warning -->
+  <rect x="100" y="250" width="220" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="210" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">Screenshot Detection</text>
+  <text x="210" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Mobile: Detect screenshot</text>
+  <text x="210" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Notify sender (optional)</text>
+  <text x="210" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Limitation: Can't prevent</text>
+  
+  <!-- End-to-End Encryption -->
+  <rect x="370" y="250" width="240" height="100" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="490" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#065f46">End-to-End Encryption</text>
+  <text x="490" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Messages encrypted in transit</text>
+  <text x="490" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Server can't read messages</text>
+  <text x="490" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Key verification (QR code)</text>
+  
+  <!-- Privacy Presets -->
+  <rect x="660" y="250" width="240" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="780" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">Privacy Presets</text>
+  <text x="780" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Default: Balanced privacy</text>
+  <text x="780" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Maximum Privacy: All off</text>
+  <text x="780" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Default Settings: All on</text>
+  
+  <!-- Arrows between related items -->
+  <path d="M 250 135 L 295 135" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 500 135 L 545 135" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 750 135 L 795 135" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="50" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Privacy controls are typically reciprocal—if you disable a feature, you lose access to it for others too</text>
+</svg>

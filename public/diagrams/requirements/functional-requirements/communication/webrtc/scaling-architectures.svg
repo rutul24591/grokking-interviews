@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="webrtcBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#webrtcBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Scaling Architectures</text>
+  
+  <!-- Mesh (P2P) -->
+  <rect x="50" y="70" width="280" height="160" rx="8" fill="#3b82f6"/>
+  <text x="190" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Mesh (P2P)</text>
+  
+  <!-- 4 peers in mesh -->
+  <circle cx="100" cy="140" r="15" fill="#1e40af"/>
+  <text x="100" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">A</text>
+  
+  <circle cx="280" cy="140" r="15" fill="#1e40af"/>
+  <text x="280" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">B</text>
+  
+  <circle cx="100" cy="200" r="15" fill="#1e40af"/>
+  <text x="100" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">C</text>
+  
+  <circle cx="280" cy="200" r="15" fill="#1e40af"/>
+  <text x="280" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">D</text>
+  
+  <!-- Mesh connections -->
+  <path d="M 115 140 L 265 140" stroke="#93c5fd" stroke-width="2" fill="none"/>
+  <path d="M 115 200 L 265 200" stroke="#93c5fd" stroke-width="2" fill="none"/>
+  <path d="M 100 155 L 100 185" stroke="#93c5fd" stroke-width="2" fill="none"/>
+  <path d="M 280 155 L 280 185" stroke="#93c5fd" stroke-width="2" fill="none"/>
+  <path d="M 110 150 L 270 190" stroke="#93c5fd" stroke-width="2" fill="none"/>
+  <path d="M 270 150 L 110 190" stroke="#93c5fd" stroke-width="2" fill="none"/>
+  
+  <text x="190" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#e2e8f0">N×(N-1) connections</text>
+  <text x="190" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#e2e8f0">Best: 2-5 participants</text>
+  
+  <!-- SFU -->
+  <rect x="370" y="70" width="280" height="160" rx="8" fill="#8b5cf6"/>
+  <text x="510" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">SFU (Selective Forwarding Unit)</text>
+  
+  <!-- SFU central -->
+  <rect x="480" y="120" width="60" height="60" rx="8" fill="#6b21a8"/>
+  <text x="510" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">SFU</text>
+  
+  <!-- Peers around SFU -->
+  <circle cx="420" cy="130" r="15" fill="#7c3aed"/>
+  <text x="420" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">A</text>
+  
+  <circle cx="600" cy="130" r="15" fill="#7c3aed"/>
+  <text x="600" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">B</text>
+  
+  <circle cx="420" cy="190" r="15" fill="#7c3aed"/>
+  <text x="420" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">C</text>
+  
+  <circle cx="600" cy="190" r="15" fill="#7c3aed"/>
+  <text x="600" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">D</text>
+  
+  <!-- SFU connections -->
+  <path d="M 435 130 L 475 130" stroke="#a78bfa" stroke-width="2" fill="none"/>
+  <path d="M 545 130 L 585 130" stroke="#a78bfa" stroke-width="2" fill="none"/>
+  <path d="M 435 190 L 475 190" stroke="#a78bfa" stroke-width="2" fill="none"/>
+  <path d="M 545 190 L 585 190" stroke="#a78bfa" stroke-width="2" fill="none"/>
+  
+  <text x="510" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#e2e8f0">N connections to SFU</text>
+  <text x="510" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#e2e8f0">Best: 10-50 participants</text>
+  
+  <!-- MCU -->
+  <rect x="690" y="70" width="260" height="160" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">MCU (Multipoint Control Unit)</text>
+  
+  <!-- MCU central -->
+  <rect x="790" y="120" width="60" height="60" rx="8" fill="#b45309"/>
+  <text x="820" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="white">MCU</text>
+  <text x="820" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Mixer</text>
+  
+  <!-- Peers around MCU -->
+  <circle cx="740" cy="130" r="15" fill="#d97706"/>
+  <text x="740" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">A</text>
+  
+  <circle cx="900" cy="130" r="15" fill="#d97706"/>
+  <text x="900" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">B</text>
+  
+  <circle cx="740" cy="190" r="15" fill="#d97706"/>
+  <text x="740" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">C</text>
+  
+  <circle cx="900" cy="190" r="15" fill="#d97706"/>
+  <text x="900" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">D</text>
+  
+  <!-- MCU connections -->
+  <path d="M 755 130 L 785 130" stroke="#fcd34d" stroke-width="2" fill="none"/>
+  <path d="M 855 130 L 885 130" stroke="#fcd34d" stroke-width="2" fill="none"/>
+  <path d="M 755 190 L 785 190" stroke="#fcd34d" stroke-width="2" fill="none"/>
+  <path d="M 855 190 L 885 190" stroke="#fcd34d" stroke-width="2" fill="none"/>
+  
+  <text x="820" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#e2e8f0">Single mixed stream</text>
+  <text x="820" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#e2e8f0">Best: 100+ participants</text>
+  
+  <!-- Comparison Table -->
+  <rect x="100" y="270" width="800" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="500" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Architecture Comparison</text>
+  
+  <!-- Table Header -->
+  <rect x="120" y="305" width="150" height="25" fill="#c7d2fe"/>
+  <text x="195" y="322" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e293b">Architecture</text>
+  <rect x="270" y="305" width="150" height="25" fill="#c7d2fe"/>
+  <text x="345" y="322" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e293b">Connections</text>
+  <rect x="420" y="305" width="150" height="25" fill="#c7d2fe"/>
+  <text x="495" y="322" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e293b">Server Cost</text>
+  <rect x="570" y="305" width="150" height="25" fill="#c7d2fe"/>
+  <text x="645" y="322" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e293b">Best For</text>
+  <rect x="720" y="305" width="150" height="25" fill="#c7d2fe"/>
+  <text x="795" y="322" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e293b">Latency</text>
+  
+  <!-- Mesh Row -->
+  <rect x="120" y="330" width="150" height="25" fill="#f1f5f9"/>
+  <text x="195" y="347" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Mesh (P2P)</text>
+  <rect x="270" y="330" width="150" height="25" fill="#f1f5f9"/>
+  <text x="345" y="347" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">N×(N-1)</text>
+  <rect x="420" y="330" width="150" height="25" fill="#f1f5f9"/>
+  <text x="495" y="347" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">None</text>
+  <rect x="570" y="330" width="150" height="25" fill="#f1f5f9"/>
+  <text x="645" y="347" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">2-5 participants</text>
+  <rect x="720" y="330" width="150" height="25" fill="#f1f5f9"/>
+  <text x="795" y="347" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Lowest</text>
+  
+  <!-- SFU Row -->
+  <rect x="120" y="355" width="150" height="25" fill="#e2e8f0"/>
+  <text x="195" y="372" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">SFU</text>
+  <rect x="270" y="355" width="150" height="25" fill="#e2e8f0"/>
+  <text x="345" y="372" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">N</text>
+  <rect x="420" y="355" width="150" height="25" fill="#e2e8f0"/>
+  <text x="495" y="372" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Medium (bandwidth)</text>
+  <rect x="570" y="355" width="150" height="25" fill="#e2e8f0"/>
+  <text x="645" y="372" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">10-50 participants</text>
+  <rect x="720" y="355" width="150" height="25" fill="#e2e8f0"/>
+  <text x="795" y="372" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Low</text>
+  
+  <!-- MCU Row -->
+  <rect x="120" y="380" width="150" height="25" fill="#f1f5f9"/>
+  <text x="195" y="397" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">MCU</text>
+  <rect x="270" y="380" width="150" height="25" fill="#f1f5f9"/>
+  <text x="345" y="397" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">N</text>
+  <rect x="420" y="380" width="150" height="25" fill="#f1f5f9"/>
+  <text x="495" y="397" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">High (CPU for mixing)</text>
+  <rect x="570" y="380" width="150" height="25" fill="#f1f5f9"/>
+  <text x="645" y="397" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">100+ participants</text>
+  <rect x="720" y="380" width="150" height="25" fill="#f1f5f9"/>
+  <text x="795" y="397" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Higher (encoding)</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="425" width="900" height="25" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="443" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Scaling: Mesh (small) → SFU (medium) → MCU (large) based on participant count</text>
+</svg>

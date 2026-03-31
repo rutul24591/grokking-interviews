@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="notifBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#notifBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Preference Management</text>
+  
+  <!-- Global Settings -->
+  <rect x="50" y="70" width="200" height="140" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Global Settings</text>
+  <text x="150" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Master Toggle</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Enable/Disable All</text>
+  <text x="150" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Channel Preferences</text>
+  <text x="150" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Push: On/Off</text>
+  <text x="150" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Email: On/Off</text>
+  <text x="150" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Quiet Hours: 10PM-8AM</text>
+  
+  <!-- Type Settings -->
+  <rect x="300" y="70" width="200" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">By Notification Type</text>
+  <text x="400" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Social</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">☑ Likes  ☑ Comments  ☐ Follows</text>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Messages</text>
+  <text x="400" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">☑ Direct Messages  ☑ Mentions</text>
+  <text x="400" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">System</text>
+  <text x="400" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">☑ Security  ☐ Marketing</text>
+  
+  <!-- Per-Sender -->
+  <rect x="550" y="70" width="200" height="140" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Per-Sender Mute</text>
+  <text x="650" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Muted Users:</text>
+  <text x="650" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• @spammer ✕ Unmute</text>
+  <text x="650" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• @noisyfriend ✕ Unmute</text>
+  <text x="650" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Mute Group:</text>
+  <text x="650" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Project Chat 🔕</text>
+  
+  <!-- Storage Schema -->
+  <rect x="800" y="70" width="170" height="140" rx="8" fill="#10b981"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Storage Schema</text>
+  <text x="885" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">user_id | type | enabled</text>
+  <text x="885" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">channels | quiet_hours</text>
+  <text x="885" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">muted_users[]</text>
+  <text x="885" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">muted_groups[]</text>
+  <text x="885" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Sync: WebSocket</text>
+  
+  <!-- Preference Evaluation Flow -->
+  <rect x="100" y="250" width="380" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Preference Evaluation Flow</text>
+  <text x="290" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">1. Check Master Toggle → If off, block</text>
+  <text x="290" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">2. Check Type Preference → If off, block</text>
+  <text x="290" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">3. Check Quiet Hours → If active, queue</text>
+  <text x="290" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">4. Check Sender Mute → If muted, block</text>
+  
+  <!-- Sync Across Devices -->
+  <rect x="530" y="250" width="370" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Sync Across Devices</text>
+  <text x="715" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">User changes preference on Device A</text>
+  <text x="715" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">→ Update Database</text>
+  <text x="715" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">→ WebSocket broadcast to Devices B, C</text>
+  <text x="715" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">→ All devices updated in &lt;1 second</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 250 140 L 295 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,140 285,135 285,145" fill="#64748b"/>
+  
+  <path d="M 500 140 L 545 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="545,140 535,135 535,145" fill="#64748b"/>
+  
+  <path d="M 750 140 L 795 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="795,140 785,135 785,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Hierarchical preferences: Global → Type → Sender, synced across all devices in real-time</text>
+</svg>

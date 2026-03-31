@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="groupBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#groupBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Member Management Flow</text>
+  
+  <!-- Add Member -->
+  <rect x="50" y="70" width="200" height="130" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Add Member Flow</text>
+  <text x="150" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">1. Search/Select User</text>
+  <text x="150" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">2. Validate Permission</text>
+  <text x="150" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">3. Check Not Already Member</text>
+  <text x="150" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">4. Insert Membership Record</text>
+  <text x="150" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">5. Send Welcome + Notify</text>
+  
+  <!-- Remove Member -->
+  <rect x="300" y="70" width="200" height="130" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Remove Member Flow</text>
+  <text x="400" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">1. Admin Initiates Remove</text>
+  <text x="400" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">2. Validate Admin Permission</text>
+  <text x="400" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">3. Delete Membership Record</text>
+  <text x="400" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">4. Optional: Notify User</text>
+  <text x="400" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">5. Post System Message</text>
+  
+  <!-- Role Change -->
+  <rect x="550" y="70" width="200" height="130" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Role Change Flow</text>
+  <text x="650" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">1. Admin Selects Member</text>
+  <text x="650" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">2. Choose New Role</text>
+  <text x="650" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">3. Validate Permission</text>
+  <text x="650" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">4. Update Role in Database</text>
+  <text x="650" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">5. Notify + Audit Log</text>
+  
+  <!-- Audit Trail -->
+  <rect x="800" y="70" width="170" height="130" rx="8" fill="#10b981"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Audit Trail</text>
+  <text x="885" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Log All Actions:</text>
+  <text x="885" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Member Added</text>
+  <text x="885" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Member Removed</text>
+  <text x="885" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Role Changed</text>
+  <text x="885" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Immutable Records</text>
+  
+  <!-- Invite Link Flow -->
+  <rect x="100" y="240" width="250" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="225" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Invite Link Flow</text>
+  <text x="225" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Generate Unique Token → Map to Group</text>
+  <text x="225" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Set Expiration + Use Count Limit</text>
+  <text x="225" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Track Usage → Auto-invalidate</text>
+  <text x="225" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Revoke Compromised Links</text>
+  
+  <!-- Permission Matrix -->
+  <rect x="400" y="240" width="280" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="540" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Permission Matrix</text>
+  <text x="540" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Owner: All Permissions</text>
+  <text x="540" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Admin: Add/Remove, Role Change</text>
+  <text x="540" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Moderator: Delete Messages, Timeout</text>
+  <text x="540" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Member: Standard Participation</text>
+  
+  <!-- Member Sync -->
+  <rect x="730" y="240" width="220" height="110" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="840" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#065f46">Member Sync</text>
+  <text x="840" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Full List on Join</text>
+  <text x="840" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Delta Updates on Change</text>
+  <text x="840" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Periodic Full Sync</text>
+  <text x="840" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Large Groups: Paginate</text>
+  
+  <!-- Arrows between top flows -->
+  <path d="M 250 135 L 295 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,135 285,130 285,140" fill="#64748b"/>
+  
+  <path d="M 500 135 L 545 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="545,135 535,130 535,140" fill="#64748b"/>
+  
+  <path d="M 750 135 L 795 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="795,135 785,130 785,140" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="50" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="405" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">All member changes validated, logged to audit trail, and synced to clients</text>
+</svg>

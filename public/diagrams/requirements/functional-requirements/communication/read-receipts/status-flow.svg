@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="readBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#readBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Message Status Flow</text>
+  
+  <!-- Sent State -->
+  <rect x="50" y="70" width="200" height="110" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">1. Sent</text>
+  <text x="150" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Client Uploads Message</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server Acknowledges</text>
+  <text x="150" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Display: ✓ (Single Check)</text>
+  <text x="150" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Timestamp: sent_at</text>
+  
+  <!-- Delivered State -->
+  <rect x="300" y="70" width="200" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">2. Delivered</text>
+  <text x="400" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server Pushes to Recipient</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Recipient Client Acknowledges</text>
+  <text x="400" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Display: ✓✓ (Double Gray)</text>
+  <text x="400" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Timestamp: delivered_at</text>
+  
+  <!-- Read State -->
+  <rect x="550" y="70" width="200" height="110" rx="8" fill="#10b981"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">3. Read</text>
+  <text x="650" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Message Scrolls into View</text>
+  <text x="650" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Dwell Time Threshold (2-5s)</text>
+  <text x="650" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Display: ✓✓ (Double Blue/Green)</text>
+  <text x="650" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Timestamp: read_at</text>
+  
+  <!-- Read Event Broadcast -->
+  <rect x="800" y="70" width="170" height="110" rx="8" fill="#f59e0b"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">4. Broadcast</text>
+  <text x="885" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send Read Event to Server</text>
+  <text x="885" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server Broadcasts to Sender</text>
+  <text x="885" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Sender UI Updates</text>
+  <text x="885" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Latency: &lt;1 second</text>
+  
+  <!-- Status Indicators -->
+  <rect x="100" y="220" width="380" height="130" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Status Indicators Visual</text>
+  
+  <!-- Sent indicator -->
+  <circle cx="150" cy="285" r="12" fill="#64748b"/>
+  <text x="150" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">✓</text>
+  <text x="200" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Sent</text>
+  
+  <!-- Delivered indicator -->
+  <circle cx="280" cy="285" r="12" fill="#64748b"/>
+  <text x="280" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">✓✓</text>
+  <text x="330" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Delivered</text>
+  
+  <!-- Read indicator -->
+  <circle cx="150" cy="325" r="12" fill="#10b981"/>
+  <text x="150" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">✓✓</text>
+  <text x="200" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Read 2:30 PM</text>
+  
+  <!-- Triggers -->
+  <rect x="530" y="220" width="370" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Read Detection Triggers</text>
+  <text x="715" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">1. Message enters viewport (50% visible)</text>
+  <text x="715" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">2. Dwell time threshold met (2-5 seconds)</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">3. App in foreground (not background)</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">4. Privacy check passes (receipts enabled)</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">→ Send Read Event</text>
+  
+  <!-- Arrows between states -->
+  <path d="M 250 125 L 295 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,125 285,120 285,130" fill="#64748b"/>
+  <text x="272" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Server Ack</text>
+  
+  <path d="M 500 125 L 545 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="545,125 535,120 535,130" fill="#64748b"/>
+  <text x="522" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Device Ack</text>
+  
+  <path d="M 750 125 L 795 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="795,125 785,120 785,130" fill="#64748b"/>
+  <text x="772" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Read Event</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="50" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="405" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Status Flow: Sent (server ack) → Delivered (device ack) → Read (viewport + dwell time)</text>
+</svg>

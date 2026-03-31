@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <linearGradient id="pushBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="500" fill="url(#pushBgGrad)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Push Notification Architecture</text>
+  
+  <!-- Token Service -->
+  <rect x="30" y="70" width="180" height="120" rx="8" fill="#3b82f6"/>
+  <text x="120" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Token Service</text>
+  <text x="120" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Token Registration</text>
+  <text x="120" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Token Lookup</text>
+  <text x="120" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Token Invalidation</text>
+  <text x="120" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Multi-Device Support</text>
+  
+  <!-- Payload Service -->
+  <rect x="260" y="70" width="180" height="120" rx="8" fill="#8b5cf6"/>
+  <text x="350" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Payload Service</text>
+  <text x="350" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Payload Construction</text>
+  <text x="350" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Platform Formatting</text>
+  <text x="350" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Localization</text>
+  <text x="350" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Rich Media Support</text>
+  
+  <!-- Delivery Service -->
+  <rect x="490" y="70" width="220" height="120" rx="8" fill="#f59e0b"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Delivery Service</text>
+  <text x="600" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">APNs (iOS)</text>
+  <text x="600" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">FCM (Android)</text>
+  <text x="600" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Web Push (Browsers)</text>
+  <text x="600" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Retry Logic</text>
+  
+  <!-- Feedback Service -->
+  <rect x="760" y="70" width="180" height="120" rx="8" fill="#10b981"/>
+  <text x="850" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Feedback Service</text>
+  <text x="850" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">APNs Feedback API</text>
+  <text x="850" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">FCM Error Handling</text>
+  <text x="850" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Token Cleanup</text>
+  <text x="850" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Analytics Logging</text>
+  
+  <!-- Token Storage -->
+  <rect x="100" y="240" width="200" height="110" rx="8" fill="#ec4899"/>
+  <text x="200" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Token Storage</text>
+  <text x="200" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Database (Primary)</text>
+  <text x="200" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Redis (Cache)</text>
+  <text x="200" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">user_id → tokens[]</text>
+  <text x="200" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Platform, Device Info</text>
+  
+  <!-- Rate Limiter -->
+  <rect x="350" y="240" width="200" height="110" rx="8" fill="#06b6d4"/>
+  <text x="450" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Rate Limiter</text>
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Per-Device Limits</text>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">APNs: ~2-3/hour</text>
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">FCM: ~100/minute</text>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Queue Excess</text>
+  
+  <!-- Analytics -->
+  <rect x="600" y="240" width="200" height="110" rx="8" fill="#6366f1"/>
+  <text x="700" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Analytics</text>
+  <text x="700" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Delivery Rate</text>
+  <text x="700" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Open Rate</text>
+  <text x="700" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Click-Through Rate</text>
+  <text x="700" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Engagement Metrics</text>
+  
+  <!-- Arrows -->
+  <path d="M 210 130 L 255 130" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="255,130 245,125 245,135" fill="#64748b"/>
+  
+  <path d="M 440 130 L 485 130" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="485,130 475,125 475,135" fill="#64748b"/>
+  
+  <path d="M 710 130 L 755 130" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="755,130 745,125 745,135" fill="#64748b"/>
+  
+  <!-- Down arrows -->
+  <path d="M 120 190 L 120 235" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 350 190 L 350 235" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 600 190 L 600 235" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 850 190 L 850 235" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Flow between bottom layers -->
+  <path d="M 300 295 L 345 295" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="345,295 335,290 335,300" fill="#64748b"/>
+  
+  <path d="M 550 295 L 595 295" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="595,295 585,290 585,300" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="90" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Push Flow</text>
+  
+  <circle cx="100" cy="445" r="8" fill="#3b82f6"/>
+  <text x="120" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Token service manages device tokens</text>
+  
+  <circle cx="350" cy="445" r="8" fill="#8b5cf6"/>
+  <text x="370" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Payload service formats for each platform</text>
+  
+  <circle cx="600" cy="445" r="8" fill="#f59e0b"/>
+  <text x="620" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Delivery service sends via APNs/FCM/Web Push</text>
+  
+  <circle cx="850" cy="445" r="8" fill="#10b981"/>
+  <text x="870" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Feedback service handles failures and cleanup</text>
+</svg>

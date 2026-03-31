@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="emailBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#emailBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Email Tracking Flow</text>
+  
+  <!-- Email Sent -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="#3b82f6"/>
+  <text x="125" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">1. Email Sent</text>
+  <text x="125" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Provider Accepts</text>
+  <text x="125" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Tracking Pixel Added</text>
+  <text x="125" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Links Rewritten</text>
+  
+  <!-- Delivered -->
+  <rect x="250" y="70" width="150" height="100" rx="8" fill="#10b981"/>
+  <text x="325" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">2. Delivered</text>
+  <text x="325" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Inbox Placement</text>
+  <text x="325" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Webhook: Delivered</text>
+  
+  <!-- Open Tracking -->
+  <rect x="450" y="70" width="150" height="100" rx="8" fill="#8b5cf6"/>
+  <text x="525" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">3. Open Tracking</text>
+  <text x="525" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">1x1 Pixel Loads</text>
+  <text x="525" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Record Open</text>
+  <text x="525" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Device, Location</text>
+  
+  <!-- Click Tracking -->
+  <rect x="650" y="70" width="150" height="100" rx="8" fill="#f59e0b"/>
+  <text x="725" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">4. Click Tracking</text>
+  <text x="725" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Link Clicked</text>
+  <text x="725" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Redirect via Tracker</text>
+  <text x="725" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Record Click</text>
+  
+  <!-- Bounce/Complaint -->
+  <rect x="850" y="70" width="120" height="100" rx="8" fill="#ef4444"/>
+  <text x="910" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">5. Bounce / Complaint</text>
+  <text x="910" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Hard Bounce → Suppress</text>
+  <text x="910" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Soft Bounce → Retry</text>
+  <text x="910" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Complaint → Suppress</text>
+  
+  <!-- Open Tracking Detail -->
+  <rect x="100" y="210" width="380" height="130" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Open Tracking Mechanism</text>
+  
+  <text x="150" y="265" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Email HTML includes:</text>
+  <text x="150" y="280" text-anchor="start" font-family="monospace, system-ui, sans-serif" font-size="9" fill="#1e40af">&lt;img src="https://track.yourapp.com/</text>
+  <text x="150" y="295" text-anchor="start" font-family="monospace, system-ui, sans-serif" font-size="9" fill="#1e40af">open?email_id=123&amp;user=456"</text>
+  <text x="150" y="310" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">width="1" height="1" style="display:none"&gt;</text>
+  
+  <text x="290" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">When email loads image → open recorded</text>
+  
+  <!-- Click Tracking Detail -->
+  <rect x="530" y="210" width="370" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Click Tracking Mechanism</text>
+  
+  <text x="580" y="265" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Original link:</text>
+  <text x="580" y="280" text-anchor="start" font-family="monospace, system-ui, sans-serif" font-size="9" fill="#b45309">https://yourapp.com/page</text>
+  
+  <text x="580" y="300" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Rewritten to:</text>
+  <text x="580" y="315" text-anchor="start" font-family="monospace, system-ui, sans-serif" font-size="9" fill="#b45309">https://track.yourapp.com/click?</text>
+  <text x="580" y="330" text-anchor="start" font-family="monospace, system-ui, sans-serif" font-size="9" fill="#b45309">url=https://yourapp.com/page</text>
+  
+  <!-- Webhook Events -->
+  <rect x="150" y="370" width="700" height="60" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="500" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#065f46">Webhook Events: sent → delivered → (opened | clicked | bounced | complained | unsubscribed)</text>
+  
+  <!-- Arrows between steps -->
+  <path d="M 200 120 L 245 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="245,120 235,115 235,125" fill="#64748b"/>
+  
+  <path d="M 400 120 L 445 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="445,120 435,115 435,125" fill="#64748b"/>
+  
+  <path d="M 600 120 L 645 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="645,120 635,115 635,125" fill="#64748b"/>
+  
+  <path d="M 800 120 L 845 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="845,120 835,115 835,125" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="445" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Tracking: Pixel for opens, Link rewrite for clicks, Webhooks for delivery events</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .box-dark { fill: #2d3748; stroke: #718096; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dark { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .label-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #e2e8f0; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+      .sublabel-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a0aec0; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  <rect class="bg-dark" width="1000" height="450" data-theme="dark" style="display:none;"/>
+  
+  <!-- Step 1: Publish -->
+  <rect class="box" x="50" y="50" width="180" height="80" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="label">1. Publish</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Create message</text>
+  <text x="140" y="120" text-anchor="middle" class="sublabel">Add metadata</text>
+  
+  <!-- Step 2: Route -->
+  <rect class="box" x="280" y="50" width="180" height="80" rx="8"/>
+  <text x="370" y="80" text-anchor="middle" class="label">2. Route</text>
+  <text x="370" y="105" text-anchor="middle" class="sublabel">Topic selection</text>
+  <text x="370" y="120" text-anchor="middle" class="sublabel">Partition assignment</text>
+  
+  <!-- Step 3: Persist -->
+  <rect class="box" x="510" y="50" width="180" height="80" rx="8"/>
+  <text x="600" y="80" text-anchor="middle" class="label">3. Persist</text>
+  <text x="600" y="105" text-anchor="middle" class="sublabel">Write-ahead log</text>
+  <text x="600" y="120" text-anchor="middle" class="sublabel">Replication</text>
+  
+  <!-- Step 4: Dispatch -->
+  <rect class="box" x="740" y="50" width="180" height="80" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="label">4. Dispatch</text>
+  <text x="830" y="105" text-anchor="middle" class="sublabel">Push to subscribers</text>
+  <text x="830" y="120" text-anchor="middle" class="sublabel">Queue for pull</text>
+  
+  <!-- Arrows between steps -->
+  <path class="arrow" d="M230 90 L275 90"/>
+  <path class="arrow" d="M460 90 L505 90"/>
+  <path class="arrow" d="M690 90 L735 90"/>
+  
+  <!-- Subscriber Flow below -->
+  <rect class="box" x="200" y="200" width="200" height="70" rx="8"/>
+  <text x="300" y="230" text-anchor="middle" class="label">5. Subscribe</text>
+  <text x="300" y="255" text-anchor="middle" class="sublabel">Join consumer group</text>
+  
+  <rect class="box" x="520" y="200" width="200" height="70" rx="8"/>
+  <text x="620" y="230" text-anchor="middle" class="label">6. Consume</text>
+  <text x="620" y="255" text-anchor="middle" class="sublabel">Process message</text>
+  
+  <rect class="box" x="520" y="320" width="200" height="70" rx="8"/>
+  <text x="620" y="350" text-anchor="middle" class="label">7. Acknowledge</text>
+  <text x="620" y="375" text-anchor="middle" class="sublabel">Commit offset</text>
+  
+  <!-- Arrows for subscriber flow -->
+  <path class="arrow" d="M300 130 L300 160 L300 195"/>
+  <path class="arrow" d="M400 235 L515 235"/>
+  <path class="arrow" d="M620 270 L620 315"/>
+  
+  <!-- Acknowledge back to broker -->
+  <path class="arrow" d="M620 355 L620 390 L140 390 L140 135"/>
+  <text x="380" y="410" text-anchor="middle" class="sublabel">Acknowledgment</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 2: Message Flow</text>
+</svg>

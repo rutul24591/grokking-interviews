@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="chatBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#chatBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Message Lifecycle</text>
+  
+  <!-- Compose -->
+  <rect x="30" y="70" width="160" height="100" rx="8" fill="#3b82f6"/>
+  <text x="110" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">1. Compose</text>
+  <text x="110" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User types message</text>
+  <text x="110" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Attachments added</text>
+  <text x="110" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Draft saved locally</text>
+  
+  <!-- Send -->
+  <rect x="240" y="70" width="160" height="100" rx="8" fill="#8b5cf6"/>
+  <text x="320" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">2. Send</text>
+  <text x="320" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Generate UUID</text>
+  <text x="320" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Optimistic UI update</text>
+  <text x="320" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Status: Sending</text>
+  
+  <!-- Server Process -->
+  <rect x="450" y="70" width="180" height="100" rx="8" fill="#f59e0b"/>
+  <text x="540" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">3. Server Process</text>
+  <text x="540" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Validate &amp; Deduplicate</text>
+  <text x="540" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Assign Sequence #</text>
+  <text x="540" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Persist to Database</text>
+  <text x="540" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Broadcast to Recipients</text>
+  
+  <!-- Deliver -->
+  <rect x="680" y="70" width="160" height="100" rx="8" fill="#10b981"/>
+  <text x="760" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">4. Deliver</text>
+  <text x="760" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Recipient receives</text>
+  <text x="760" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Status: Delivered</text>
+  <text x="760" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Delivery receipt sent</text>
+  
+  <!-- Read -->
+  <rect x="890" y="70" width="80" height="100" rx="8" fill="#ec4899"/>
+  <text x="930" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">5. Read</text>
+  <text x="930" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Message viewed</text>
+  <text x="930" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Read receipt</text>
+  
+  <!-- Status Flow -->
+  <rect x="100" y="220" width="380" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Message Status Transitions</text>
+  
+  <circle cx="150" cy="285" r="15" fill="#3b82f6"/>
+  <text x="150" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">⏳</text>
+  <text x="150" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Sending</text>
+  
+  <path d="M 170 285 L 210 285" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="210,285 200,280 200,290" fill="#64748b"/>
+  
+  <circle cx="240" cy="285" r="15" fill="#8b5cf6"/>
+  <text x="240" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">✓</text>
+  <text x="240" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Sent</text>
+  
+  <path d="M 260 285 L 300 285" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="300,285 290,280 290,290" fill="#64748b"/>
+  
+  <circle cx="330" cy="285" r="15" fill="#10b981"/>
+  <text x="330" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">✓✓</text>
+  <text x="330" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Delivered</text>
+  
+  <path d="M 350 285 L 390 285" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="390,285 380,280 380,290" fill="#64748b"/>
+  
+  <circle cx="420" cy="285" r="15" fill="#ec4899"/>
+  <text x="420" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">✓✓</text>
+  <text x="420" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Read</text>
+  
+  <!-- Error State -->
+  <rect x="530" y="220" width="200" height="80" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="630" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">Error State</text>
+  <text x="630" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Network failure</text>
+  <text x="630" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Server rejection</text>
+  <text x="630" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">→ Show retry option</text>
+  
+  <!-- Retry Flow -->
+  <rect x="780" y="220" width="190" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="875" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Retry Flow</text>
+  <text x="875" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">User taps retry</text>
+  <text x="875" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Resend with same UUID</text>
+  
+  <!-- Arrows between main stages -->
+  <path d="M 190 120 L 235 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="235,120 225,115 225,125" fill="#64748b"/>
+  
+  <path d="M 400 120 L 445 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="445,120 435,115 435,125" fill="#64748b"/>
+  
+  <path d="M 630 120 L 675 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="675,120 665,115 665,125" fill="#64748b"/>
+  
+  <path d="M 840 120 L 885 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="885,120 875,115 875,125" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="50" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Optimistic updates show message immediately, server confirms with status transitions</text>
+</svg>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="groupBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#groupBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Mention and Notification Flow</text>
+  
+  <!-- Message Input -->
+  <rect x="50" y="70" width="180" height="110" rx="8" fill="#3b82f6"/>
+  <text x="140" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Message Input</text>
+  <text x="140" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User Types @</text>
+  <text x="140" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Autocomplete Shows</text>
+  <text x="140" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Select Member/Role</text>
+  <text x="140" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Formatted Mention Pill</text>
+  
+  <!-- Parse Mentions -->
+  <rect x="280" y="70" width="180" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Parse Mentions</text>
+  <text x="370" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Regex: @(\w+)</text>
+  <text x="370" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Extract User IDs</text>
+  <text x="370" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Resolve Role Mentions</text>
+  <text x="370" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Store Mention Metadata</text>
+  
+  <!-- Send Message -->
+  <rect x="510" y="70" width="180" height="110" rx="8" fill="#f59e0b"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Send Message</text>
+  <text x="600" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Store in Database</text>
+  <text x="600" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Attach Mention List</text>
+  <text x="600" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Fan-out to Members</text>
+  <text x="600" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Rate Limit Check</text>
+  
+  <!-- Route Notifications -->
+  <rect x="740" y="70" width="210" height="110" rx="8" fill="#10b981"/>
+  <text x="845" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Route Notifications</text>
+  <text x="845" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">For Each Mentioned User:</text>
+  <text x="845" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Check Group Settings</text>
+  <text x="845" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• High-Priority Notify</text>
+  <text x="845" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Deep Link to Message</text>
+  
+  <!-- Notification Settings -->
+  <rect x="150" y="220" width="220" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="260" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Notification Settings</text>
+  <text x="260" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">All Messages (Default)</text>
+  <text x="260" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Mentions Only</text>
+  <text x="260" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Muted (No Notifications)</text>
+  <text x="260" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Custom Keywords</text>
+  
+  <!-- Mention Types -->
+  <rect x="420" y="220" width="220" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="530" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Mention Types</text>
+  <text x="530" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">@username → Specific User</text>
+  <text x="530" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">@everyone → All Members</text>
+  <text x="530" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">@here → Online Members</text>
+  <text x="530" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">@role → Role Members</text>
+  
+  <!-- Rate Limiting -->
+  <rect x="690" y="220" width="220" height="120" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="800" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#991b1b">Rate Limiting</text>
+  <text x="800" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Max 10 Mentions/Message</text>
+  <text x="800" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Max 5 @everyone/Hour</text>
+  <text x="800" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Prevent Mention Spam</text>
+  <text x="800" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Error on Limit Exceeded</text>
+  
+  <!-- Arrows -->
+  <path d="M 230 125 L 275 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="275,125 265,120 265,130" fill="#64748b"/>
+  
+  <path d="M 460 125 L 505 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,125 495,120 495,130" fill="#64748b"/>
+  
+  <path d="M 690 125 L 735 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,125 725,120 725,130" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="370" width="900" height="60" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Mention Flow</text>
+  
+  <circle cx="100" cy="415" r="8" fill="#3b82f6"/>
+  <text x="120" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">User types @ and selects member</text>
+  
+  <circle cx="350" cy="415" r="8" fill="#8b5cf6"/>
+  <text x="370" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Server parses and extracts user IDs</text>
+  
+  <circle cx="600" cy="415" r="8" fill="#f59e0b"/>
+  <text x="620" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Message stored with mention metadata</text>
+  
+  <circle cx="850" cy="415" r="8" fill="#10b981"/>
+  <text x="870" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">High-priority notifications sent</text>
+</svg>

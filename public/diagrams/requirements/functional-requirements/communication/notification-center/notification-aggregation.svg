@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="notifBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#notifBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Notification Grouping Strategies</text>
+  
+  <!-- By Type -->
+  <rect x="50" y="70" width="200" height="130" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Group by Type</text>
+  <text x="150" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Social: 5 notifications</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• John liked your post</text>
+  <text x="150" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Sarah commented</text>
+  <text x="150" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Mike followed you</text>
+  <text x="150" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">System: 2 notifications</text>
+  
+  <!-- By Time -->
+  <rect x="300" y="70" width="200" height="130" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Group by Time</text>
+  <text x="400" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Today</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 3 new notifications</text>
+  <text x="400" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Yesterday</text>
+  <text x="400" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 5 notifications</text>
+  <text x="400" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">This Week</text>
+  <text x="400" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 12 notifications</text>
+  
+  <!-- By Conversation -->
+  <rect x="550" y="70" width="200" height="130" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Group by Conversation</text>
+  <text x="650" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Project Chat</text>
+  <text x="650" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 8 new messages</text>
+  <text x="650" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Family Group</text>
+  <text x="650" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 3 new messages</text>
+  <text x="650" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Direct Messages</text>
+  <text x="650" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 1 new message</text>
+  
+  <!-- Digest -->
+  <rect x="800" y="70" width="170" height="130" rx="8" fill="#10b981"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Digest Summary</text>
+  <text x="885" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Daily Digest</text>
+  <text x="885" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">"You have 15 new</text>
+  <text x="885" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">notifications"</text>
+  <text x="885" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Top 3 shown</text>
+  <text x="885" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">View all →</text>
+  
+  <!-- UI Examples -->
+  <rect x="100" y="240" width="380" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">UI Example: Grouped List</text>
+  <text x="290" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">▼ Social (5)</text>
+  <text x="290" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">  John, Sarah, and 3 others engaged with your post</text>
+  <text x="290" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">▼ Messages (8)</text>
+  <text x="290" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">  Project Chat: 8 new messages</text>
+  
+  <!-- Expand/Collapse -->
+  <rect x="530" y="240" width="370" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Expand/Collapse Behavior</text>
+  <text x="715" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Collapsed: Show group header + count</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Expanded: Show individual notifications</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Tap to expand/collapse</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">"Mark all as read" per group</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 250 135 L 295 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,135 285,130 285,140" fill="#64748b"/>
+  
+  <path d="M 500 135 L 545 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="545,135 535,130 535,140" fill="#64748b"/>
+  
+  <path d="M 750 135 L 795 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="795,135 785,130 785,140" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Grouping reduces notification clutter while preserving important context</text>
+</svg>

@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .box-dark { fill: #2d3748; stroke: #718096; stroke-width: 2; }
+      .highlight { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .highlight-dark { fill: #744210; stroke: #ecc94b; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dark { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .label-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #e2e8f0; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+      .sublabel-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a0aec0; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  <rect class="bg-dark" width="1000" height="450" data-theme="dark" style="display:none;"/>
+  
+  <!-- Connection Pooling -->
+  <rect class="box" x="50" y="50" width="200" height="100" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="label">Connection Pooling</text>
+  <text x="150" y="105" text-anchor="middle" class="sublabel">Pre-establish connections</text>
+  <text x="150" y="125" text-anchor="middle" class="sublabel">Reduce setup latency</text>
+  
+  <rect class="highlight" x="70" y="130" width="160" height="40" rx="4"/>
+  <text x="150" y="155" text-anchor="middle" class="sublabel" style="font-weight: 600;">Impact: -50-100ms</text>
+  
+  <!-- Batching -->
+  <rect class="box" x="300" y="50" width="200" height="100" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="label">Message Batching</text>
+  <text x="400" y="105" text-anchor="middle" class="sublabel">Combine multiple updates</text>
+  <text x="400" y="125" text-anchor="middle" class="sublabel">Reduce message count</text>
+  
+  <rect class="highlight" x="320" y="130" width="160" height="40" rx="4"/>
+  <text x="400" y="155" text-anchor="middle" class="sublabel" style="font-weight: 600;">Trade-off: Latency vs BW</text>
+  
+  <!-- Delta Updates -->
+  <rect class="box" x="550" y="50" width="200" height="100" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="label">Delta Updates</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">Send only changes</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Reconstruct state client-side</text>
+  
+  <rect class="highlight" x="570" y="130" width="160" height="40" rx="4"/>
+  <text x="650" y="155" text-anchor="middle" class="sublabel" style="font-weight: 600;">Impact: -60-80% BW</text>
+  
+  <!-- Edge Caching -->
+  <rect class="box" x="800" y="50" width="170" height="100" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="label">Edge Caching</text>
+  <text x="885" y="105" text-anchor="middle" class="sublabel">Cache at edge locations</text>
+  <text x="885" y="125" text-anchor="middle" class="sublabel">Reduce origin load</text>
+  
+  <rect class="highlight" x="815" y="130" width="140" height="40" rx="4"/>
+  <text x="885" y="155" text-anchor="middle" class="sublabel" style="font-weight: 600;">Impact: -100-300ms</text>
+  
+  <!-- Before/After Comparison -->
+  <rect class="box" x="50" y="220" width="420" height="180" rx="8"/>
+  <text x="260" y="250" text-anchor="middle" class="label" style="font-size: 16px;">Latency Comparison</text>
+  
+  <!-- Before -->
+  <rect class="box" x="80" y="270" width="160" height="100" rx="4"/>
+  <text x="160" y="300" text-anchor="middle" class="sublabel" style="font-weight: 600;">Before Optimization</text>
+  <text x="160" y="330" text-anchor="middle" class="sublabel">Connection setup: 100ms</text>
+  <text x="160" y="350" text-anchor="middle" class="sublabel">Full state: 200ms</text>
+  <text x="160" y="370" text-anchor="middle" class="sublabel">Origin fetch: 150ms</text>
+  <text x="160" y="395" text-anchor="middle" class="label" fill="#e53e3e">Total: ~450ms</text>
+  
+  <!-- After -->
+  <rect class="highlight" x="290" y="270" width="160" height="100" rx="4"/>
+  <text x="370" y="300" text-anchor="middle" class="sublabel" style="font-weight: 600;">After Optimization</text>
+  <text x="370" y="330" text-anchor="middle" class="sublabel">Pooled connection: 0ms</text>
+  <text x="370" y="350" text-anchor="middle" class="sublabel">Delta update: 40ms</text>
+  <text x="370" y="370" text-anchor="middle" class="sublabel">Edge cache: 20ms</text>
+  <text x="370" y="395" text-anchor="middle" class="label" fill="#38a169">Total: ~60ms</text>
+  
+  <!-- Arrow between -->
+  <path class="arrow" d="M245 320 L285 320"/>
+  <text x="265" y="315" text-anchor="middle" class="sublabel" style="font-size: 10px;">87% reduction</text>
+  
+  <!-- Adaptive Bitrate -->
+  <rect class="box" x="520" y="220" width="430" height="180" rx="8"/>
+  <text x="735" y="250" text-anchor="middle" class="label" style="font-size: 16px;">Adaptive Bitrate</text>
+  
+  <!-- Fast Client -->
+  <rect class="highlight" x="550" y="270" width="180" height="50" rx="4"/>
+  <text x="640" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600;">Fast Client (WiFi)</text>
+  <text x="640" y="315" text-anchor="middle" class="sublabel">Full updates, 100ms interval</text>
+  
+  <!-- Slow Client -->
+  <rect class="box" x="750" y="270" width="180" height="50" rx="4"/>
+  <text x="840" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600;">Slow Client (Cellular)</text>
+  <text x="840" y="315" text-anchor="middle" class="sublabel">Summarized updates, 500ms</text>
+  
+  <!-- Arrows to clients -->
+  <path class="arrow" d="M640 320 L640 350"/>
+  <path class="arrow" d="M840 320 L840 350"/>
+  
+  <circle cx="640" cy="370" r="15" fill="#c6f6d5" stroke="#38a169" stroke-width="2"/>
+  <text x="640" y="395" text-anchor="middle" class="sublabel">High Quality</text>
+  
+  <circle cx="840" cy="370" r="15" fill="#feebc8" stroke="#dd6b20" stroke-width="2"/>
+  <text x="840" y="395" text-anchor="middle" class="sublabel">Reduced Quality</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Latency Optimization</text>
+</svg>

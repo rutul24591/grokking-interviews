@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="pushBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#pushBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Token Lifecycle</text>
+  
+  <!-- Registration -->
+  <rect x="50" y="70" width="180" height="110" rx="8" fill="#3b82f6"/>
+  <text x="140" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">1. Registration</text>
+  <text x="140" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">App Requests Permission</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Platform Generates Token</text>
+  <text x="140" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">App Sends to Server</text>
+  <text x="140" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server Stores Token</text>
+  
+  <!-- Active -->
+  <rect x="280" y="70" width="180" height="110" rx="8" fill="#10b981"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">2. Active</text>
+  <text x="370" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Token Valid</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Notifications Delivered</text>
+  <text x="370" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Last Used Updated</text>
+  <text x="370" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Engagement Tracked</text>
+  
+  <!-- Refresh -->
+  <rect x="510" y="70" width="180" height="110" rx="8" fill="#f59e0b"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">3. Refresh</text>
+  <text x="600" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">iOS: Periodic Refresh</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">FCM: On Request</text>
+  <text x="600" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">App Reinstall: New Token</text>
+  <text x="600" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server Updates Mapping</text>
+  
+  <!-- Invalidation -->
+  <rect x="740" y="70" width="180" height="110" rx="8" fill="#ef4444"/>
+  <text x="830" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">4. Invalidation</text>
+  <text x="830" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">App Uninstalled</text>
+  <text x="830" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Token Expired</text>
+  <text x="830" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Feedback API Returns</text>
+  <text x="830" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server Removes Token</text>
+  
+  <!-- Token Transition Flow -->
+  <rect x="100" y="220" width="380" height="130" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Token Transition Flow (iOS)</text>
+  <text x="290" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T0: Old Token Active → Notifications sent</text>
+  <text x="290" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T1: iOS Refreshes Token → App receives new</text>
+  <text x="290" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T2: App sends new token to server</text>
+  <text x="290" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T3: Server updates mapping, keeps old valid (24h)</text>
+  <text x="290" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">T4: Old token expires, removed from database</text>
+  
+  <!-- Multi-Device Support -->
+  <rect x="530" y="220" width="370" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Multi-Device Support</text>
+  <text x="715" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">User has multiple devices:</text>
+  <text x="715" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• iPhone (iOS token)</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• iPad (iOS token)</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Android Phone (FCM token)</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">→ Send to all devices, track each independently</text>
+  
+  <!-- Arrows between steps -->
+  <path d="M 230 125 L 275 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="275,125 265,120 265,130" fill="#64748b"/>
+  
+  <path d="M 460 125 L 505 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,125 495,120 495,130" fill="#64748b"/>
+  
+  <path d="M 690 125 L 735 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,125 725,120 725,130" fill="#64748b"/>
+  
+  <!-- Refresh loop -->
+  <path d="M 600 180 L 600 205 L 370 205 L 370 185" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <polygon points="370,185 365,195 375,195" fill="#64748b"/>
+  <text x="500" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Token Refresh</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="50" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="405" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Token lifecycle: Register → Active → (Refresh) → Invalidate, with multi-device support</text>
+</svg>

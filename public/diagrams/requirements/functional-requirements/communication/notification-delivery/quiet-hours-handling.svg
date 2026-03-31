@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="notifDelBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#notifDelBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Quiet Hours Handling</text>
+  
+  <!-- Quiet Hours Config -->
+  <rect x="50" y="70" width="200" height="110" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Quiet Hours Config</text>
+  <text x="150" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Start: 10:00 PM</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">End: 8:00 AM</text>
+  <text x="150" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Timezone: User's</text>
+  <text x="150" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">VIP Bypass: Enabled</text>
+  
+  <!-- Notification Arrives -->
+  <rect x="300" y="70" width="180" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="390" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Notification Arrives</text>
+  <text x="390" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Current Time</text>
+  <text x="390" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">In User Timezone</text>
+  <text x="390" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Is it Quiet Hours?</text>
+  <text x="390" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Is it Urgent?</text>
+  
+  <!-- Decision Diamond -->
+  <polygon points="570,125 650,125 680,150 650,175 570,175" fill="#f59e0b"/>
+  <text x="625" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Quiet Hours</text>
+  <text x="625" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Active?</text>
+  
+  <!-- Deliver Immediately -->
+  <rect x="730" y="70" width="180" height="110" rx="8" fill="#10b981"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Deliver Immediately</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Not in Quiet Hours</text>
+  <text x="820" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">OR Urgent Notification</text>
+  <text x="820" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Send via Channel</text>
+  <text x="820" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Track Delivery</text>
+  
+  <!-- Queue for Later -->
+  <rect x="730" y="220" width="180" height="110" rx="8" fill="#ec4899"/>
+  <text x="820" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Queue for Later</text>
+  <text x="820" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Add to Quiet Queue</text>
+  <text x="820" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Set Delivery Time</text>
+  <text x="820" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">= Quiet Hours End</text>
+  <text x="820" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Notify User on Wake</text>
+  
+  <!-- Quiet Hours Timeline -->
+  <rect x="50" y="220" width="450" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="275" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Quiet Hours Timeline</text>
+  
+  <!-- Timeline bar -->
+  <rect x="80" y="270" width="390" height="30" rx="4" fill="#cbd5e1"/>
+  <rect x="80" y="270" width="260" height="30" rx="4" fill="#6366f1"/>
+  
+  <text x="80" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">10 PM</text>
+  <text x="340" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">8 AM</text>
+  <text x="210" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">QUIET HOURS</text>
+  <text x="470" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Active Hours</text>
+  
+  <!-- Notification examples -->
+  <text x="210" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6366f1">• Security: Deliver</text>
+  <text x="210" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6366f1">• VIP DM: Deliver</text>
+  <text x="210" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#6366f1">• Social: Queue</text>
+  
+  <!-- Batch Delivery on Wake -->
+  <rect x="550" y="220" width="400" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="750" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Batch Delivery on Wake</text>
+  <text x="750" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">When Quiet Hours End:</text>
+  <text x="750" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Send digest notification</text>
+  <text x="750" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• "You have X notifications"</text>
+  <text x="750" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Show top 3-5 in digest</text>
+  
+  <!-- Arrows -->
+  <path d="M 250 125 L 295 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,125 285,120 285,130" fill="#64748b"/>
+  
+  <path d="M 480 125 L 565 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="565,125 555,120 555,130" fill="#64748b"/>
+  
+  <!-- Yes path -->
+  <path d="M 680 150 L 725 150" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="725,150 715,145 715,155" fill="#64748b"/>
+  <text x="702" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#22c55e">No</text>
+  
+  <!-- No path (quiet hours active) -->
+  <path d="M 650 175 L 650 250 L 725 250" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="725,250 715,245 715,255" fill="#64748b"/>
+  <text x="665" y="245" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#ef4444">Yes</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="370" width="900" height="60" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Quiet Hours Flow</text>
+  
+  <circle cx="100" cy="415" r="8" fill="#3b82f6"/>
+  <text x="120" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">User configures quiet hours (10PM-8AM)</text>
+  
+  <circle cx="350" cy="415" r="8" fill="#f59e0b"/>
+  <text x="370" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Notifications checked against quiet hours</text>
+  
+  <circle cx="600" cy="415" r="8" fill="#10b981"/>
+  <text x="620" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Urgent bypass, others queued</text>
+  
+  <circle cx="850" cy="415" r="8" fill="#ec4899"/>
+  <text x="870" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Digest delivered when quiet hours end</text>
+</svg>

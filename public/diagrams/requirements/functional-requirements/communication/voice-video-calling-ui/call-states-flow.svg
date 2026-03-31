@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="callingBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#callingBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Call States Flow</text>
+  
+  <!-- Idle -->
+  <rect x="50" y="70" width="180" height="100" rx="8" fill="#3b82f6"/>
+  <text x="140" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">1. Idle</text>
+  <text x="140" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">No Active Call</text>
+  <text x="140" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show Contact List</text>
+  <text x="140" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Dial Pad / New Call</text>
+  
+  <!-- Ringing Outgoing -->
+  <rect x="280" y="70" width="180" height="100" rx="8" fill="#8b5cf6"/>
+  <text x="370" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">2. Ringing (Out)</text>
+  <text x="370" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Calling...</text>
+  <text x="370" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show Caller Info</text>
+  <text x="370" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Cancel Button</text>
+  
+  <!-- Ringing Incoming -->
+  <rect x="510" y="70" width="180" height="100" rx="8" fill="#f59e0b"/>
+  <text x="600" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">3. Ringing (In)</text>
+  <text x="600" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Incoming Call</text>
+  <text x="600" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Answer / Decline</text>
+  <text x="600" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Timeout (30-60s)</text>
+  
+  <!-- Connected -->
+  <rect x="740" y="70" width="180" height="100" rx="8" fill="#10b981"/>
+  <text x="830" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">4. Connected</text>
+  <text x="830" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Call Active</text>
+  <text x="830" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Media Streams</text>
+  <text x="830" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Duration Timer</text>
+  
+  <!-- Ended -->
+  <rect x="400" y="220" width="200" height="100" rx="8" fill="#64748b"/>
+  <text x="500" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">5. Ended</text>
+  <text x="500" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Call Summary</text>
+  <text x="500" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Duration, Participants</text>
+  <text x="500" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Return to Idle</text>
+  
+  <!-- State Transitions -->
+  <path d="M 230 120 L 275 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="275,120 265,115 265,125" fill="#64748b"/>
+  <text x="252" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Initiate Call</text>
+  
+  <path d="M 460 120 L 505 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,120 495,115 495,125" fill="#64748b"/>
+  <text x="482" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Answer</text>
+  
+  <path d="M 690 120 L 735 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,120 725,115 725,125" fill="#64748b"/>
+  <text x="712" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Connected</text>
+  
+  <path d="M 830 170 L 830 200 L 600 200 L 600 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <polygon points="600,215 595,205 605,205" fill="#64748b"/>
+  <text x="720" y="195" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">End Call</text>
+  
+  <path d="M 370 170 L 370 200 L 495 200 L 495 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <polygon points="495,215 490,205 500,205" fill="#64748b"/>
+  <text x="380" y="195" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Cancel/Decline</text>
+  
+  <path d="M 140 170 L 140 250 L 395 250 L 395 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <polygon points="395,215 390,225 400,225" fill="#64748b"/>
+  <text x="150" y="245" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Timeout</text>
+  
+  <!-- Call Controls During Connected -->
+  <rect x="100" y="350" width="380" height="80" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Controls During Connected State</text>
+  <text x="290" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Mute | Video Toggle | Speaker | Screen Share | End Call</text>
+  <text x="290" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Keyboard: M (Mute) | V (Video) | Escape (End)</text>
+  
+  <!-- Call Duration -->
+  <rect x="530" y="350" width="370" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Call Duration Tracking</text>
+  <text x="715" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Start: Connected State Entry</text>
+  <text x="715" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Display: MM:SS format, update every second</text>
+  <text x="715" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">End: Show in Call Summary</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="450" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Call Flow: Idle → Ringing → Connected → Ended with cancel/decline/timeout paths</text>
+</svg>

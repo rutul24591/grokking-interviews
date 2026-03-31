@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="presenceBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#presenceBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Typing Indicator Flow</text>
+  
+  <!-- User Starts Typing -->
+  <rect x="50" y="70" width="180" height="110" rx="8" fill="#3b82f6"/>
+  <text x="140" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">1. User Starts Typing</text>
+  <text x="140" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Keystroke Detected</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Start Debounce Timer</text>
+  <text x="140" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">(500ms)</text>
+  <text x="140" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If Still Typing: Send</text>
+  
+  <!-- Send Typing Event -->
+  <rect x="280" y="70" width="180" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">2. Send Typing Event</text>
+  <text x="370" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">WebSocket: typing_start</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Include: conversation_id</text>
+  <text x="370" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Rate Limit Check</text>
+  <text x="370" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">(Max 1 per 2s)</text>
+  
+  <!-- Server Broadcast -->
+  <rect x="510" y="70" width="180" height="110" rx="8" fill="#f59e0b"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">3. Server Broadcast</text>
+  <text x="600" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Validate: In Conversation?</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Update Typing State</text>
+  <text x="600" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Broadcast to Participants</text>
+  <text x="600" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Exclude Sender</text>
+  
+  <!-- Display Indicator -->
+  <rect x="740" y="70" width="180" height="110" rx="8" fill="#10b981"/>
+  <text x="830" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">4. Display Indicator</text>
+  <text x="830" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show "User is typing..."</text>
+  <text x="830" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Or Animated Dots</text>
+  <text x="830" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Start Auto-Hide Timer</text>
+  <text x="830" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">(10 seconds)</text>
+  
+  <!-- Stop Typing -->
+  <rect x="150" y="220" width="200" height="110" rx="8" fill="#ec4899"/>
+  <text x="250" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Stop Typing Triggers</text>
+  <text x="250" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• User Sends Message</text>
+  <text x="250" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 2s Inactivity Timeout</text>
+  <text x="250" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• User Clears Input</text>
+  <text x="250" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">→ Send typing_stop Event</text>
+  
+  <!-- Hide Indicator -->
+  <rect x="400" y="220" width="200" height="110" rx="8" fill="#06b6d4"/>
+  <text x="500" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Hide Indicator</text>
+  <text x="500" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">On typing_stop Event</text>
+  <text x="500" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">On Auto-Hide Timeout</text>
+  <text x="500" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">When Recipient Scrolls Away</text>
+  <text x="500" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Remove "typing..." Display</text>
+  
+  <!-- Privacy Check -->
+  <rect x="650" y="220" width="200" height="110" rx="8" fill="#6366f1"/>
+  <text x="750" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Privacy Check</text>
+  <text x="750" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Typing Preferences</text>
+  <text x="750" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">If Disabled: Don't Send</text>
+  <text x="750" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Reciprocal: If You Disable,</text>
+  <text x="750" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">You Don't See Others'</text>
+  
+  <!-- Timeline -->
+  <rect x="100" y="360" width="800" height="60" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="500" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">Typing Timeline</text>
+  
+  <!-- Timeline markers -->
+  <line x1="150" y1="400" x2="150" y2="410" stroke="#6366f1" stroke-width="2"/>
+  <text x="150" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">T+0: Typing Starts</text>
+  
+  <line x1="300" y1="400" x2="300" y2="410" stroke="#6366f1" stroke-width="2"/>
+  <text x="300" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">T+500ms: Send Event</text>
+  
+  <line x1="450" y1="400" x2="450" y2="410" stroke="#6366f1" stroke-width="2"/>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">T+2s: Auto-Hide if Inactive</text>
+  
+  <line x1="600" y1="400" x2="600" y2="410" stroke="#6366f1" stroke-width="2"/>
+  <text x="600" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">T+10s: Force Hide</text>
+  
+  <line x1="750" y1="400" x2="750" y2="410" stroke="#6366f1" stroke-width="2"/>
+  <text x="750" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">On Send: Hide Immediately</text>
+  
+  <!-- Arrows between steps -->
+  <path d="M 230 125 L 275 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="275,125 265,120 265,130" fill="#64748b"/>
+  
+  <path d="M 460 125 L 505 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,125 495,120 495,130" fill="#64748b"/>
+  
+  <path d="M 690 125 L 735 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,125 725,120 725,130" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="440" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="460" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Typing Flow: Detect → Debounce → Send → Broadcast → Display → Auto-Hide</text>
+</svg>

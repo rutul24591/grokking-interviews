@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="callingBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#callingBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Quality Indicators</text>
+  
+  <!-- Network Quality -->
+  <rect x="50" y="70" width="200" height="130" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Network Quality</text>
+  
+  <!-- Signal bars -->
+  <rect x="80" y="120" width="15" height="20" rx="2" fill="#22c55e"/>
+  <rect x="100" y="115" width="15" height="25" rx="2" fill="#22c55e"/>
+  <rect x="120" y="110" width="15" height="30" rx="2" fill="#22c55e"/>
+  <rect x="140" y="105" width="15" height="35" rx="2" fill="#22c55e"/>
+  
+  <text x="150" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Good (4 bars)</text>
+  
+  <text x="150" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#e2e8f0">Tooltip:</text>
+  <text x="150" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Bitrate: 2.5 Mbps</text>
+  <text x="150" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Packet Loss: 0.1%</text>
+  
+  <!-- Audio Quality -->
+  <rect x="300" y="70" width="200" height="130" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Audio Quality</text>
+  
+  <!-- Audio indicator -->
+  <circle cx="350" cy="145" r="20" fill="#22c55e"/>
+  <text x="350" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="white">🔊</text>
+  
+  <circle cx="410" cy="145" r="20" fill="#ef4444"/>
+  <text x="410" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="white">🔇</text>
+  
+  <text x="350" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#e2e8f0">Unmuted</text>
+  <text x="410" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#e2e8f0">Muted</text>
+  
+  <text x="400" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#e2e8f0">Echo Detected → Use Headphones</text>
+  
+  <!-- Video Quality -->
+  <rect x="550" y="70" width="200" height="130" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Video Quality</text>
+  
+  <!-- Resolution badges -->
+  <rect x="580" y="125" width="50" height="25" rx="4" fill="#22c55e"/>
+  <text x="605" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">HD</text>
+  
+  <rect x="640" y="125" width="50" height="25" rx="4" fill="#f59e0b"/>
+  <text x="665" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">SD</text>
+  
+  <rect x="700" y="125" width="50" height="25" rx="4" fill="#ef4444"/>
+  <text x="725" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">Low</text>
+  
+  <text x="650" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#e2e8f0">Auto-Adjust Based on Network</text>
+  <text x="650" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#e2e8f0">Manual: Quality vs Smoothness</text>
+  
+  <!-- Connection Status -->
+  <rect x="800" y="70" width="170" height="130" rx="8" fill="#10b981"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Connection Status</text>
+  
+  <!-- Status icons -->
+  <circle cx="840" cy="145" r="18" fill="#22c55e"/>
+  <text x="840" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">✓</text>
+  <text x="840" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Connected</text>
+  
+  <circle cx="890" cy="145" r="18" fill="#f59e0b"/>
+  <text x="890" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">↻</text>
+  <text x="890" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Reconnecting</text>
+  
+  <circle cx="940" cy="145" r="18" fill="#ef4444"/>
+  <text x="940" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">✕</text>
+  <text x="940" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Disconnected</text>
+  
+  <!-- Quality Metrics -->
+  <rect x="100" y="240" width="380" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Quality Metrics Display</text>
+  <text x="290" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Green (Good): &gt;1 Mbps, &lt;1% loss, &lt;100ms</text>
+  <text x="290" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Yellow (Fair): 500K-1 Mbps, 1-5% loss, 100-300ms</text>
+  <text x="290" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Red (Poor): &lt;500K, &gt;5% loss, &gt;300ms</text>
+  <text x="290" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Update Interval: Every 5-10 seconds</text>
+  
+  <!-- User Feedback -->
+  <rect x="530" y="240" width="370" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">User Feedback &amp; Suggestions</text>
+  <text x="715" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Poor Network: "Move closer to WiFi"</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Echo Detected: "Use headphones"</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Low Bandwidth: "Turn off video"</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Reconnecting: "Trying to reconnect..."</text>
+  
+  <!-- Color Legend -->
+  <rect x="150" y="380" width="100" height="35" rx="8" fill="#22c55e"/>
+  <text x="200" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">Good</text>
+  
+  <rect x="300" y="380" width="100" height="35" rx="8" fill="#f59e0b"/>
+  <text x="350" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">Fair</text>
+  
+  <rect x="450" y="380" width="100" height="35" rx="8" fill="#ef4444"/>
+  <text x="500" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">Poor</text>
+  
+  <rect x="600" y="380" width="250" height="35" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="725" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Update every 5-10s, suggest fixes on poor quality</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="430" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Quality: Network (bars) | Audio (mute/echo) | Video (HD/SD/Low) | Connection (status)</text>
+</svg>

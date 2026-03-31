@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="groupBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#groupBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Group Scaling Strategies</text>
+  
+  <!-- Small Groups -->
+  <rect x="50" y="70" width="200" height="140" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Small Groups</text>
+  <text x="150" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">3-50 Members</text>
+  <text x="150" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Fan-out: Push to All</text>
+  <text x="150" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Presence: All Members</text>
+  <text x="150" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Member List: Full Display</text>
+  <text x="150" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Example: WhatsApp, iMessage</text>
+  
+  <!-- Medium Groups -->
+  <rect x="300" y="70" width="200" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Medium Groups</text>
+  <text x="400" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">50-500 Members</text>
+  <text x="400" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Fan-out: Batch + Rate Limit</text>
+  <text x="400" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Presence: Aggregate Count</text>
+  <text x="400" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Member List: Search + Filter</text>
+  <text x="400" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Example: Discord, Telegram</text>
+  
+  <!-- Large Groups -->
+  <rect x="550" y="70" width="200" height="140" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Large Groups</text>
+  <text x="650" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">500-10,000 Members</text>
+  <text x="650" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Fan-out: Lazy Fetch</text>
+  <text x="650" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Presence: Sampled</text>
+  <text x="650" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Member List: Paginated</text>
+  <text x="650" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Example: Telegram Groups</text>
+  
+  <!-- Massive Groups -->
+  <rect x="800" y="70" width="170" height="140" rx="8" fill="#10b981"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Massive Groups</text>
+  <text x="885" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">10,000-100,000+ Members</text>
+  <text x="885" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Fan-out: CDN Distribution</text>
+  <text x="885" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Presence: Aggregate Only</text>
+  <text x="885" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Broadcast Channel Model</text>
+  <text x="885" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Example: Telegram Channels</text>
+  
+  <!-- Delivery Comparison -->
+  <rect x="100" y="250" width="250" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="225" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Delivery Strategy</text>
+  <text x="225" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Small: WebSocket Push</text>
+  <text x="225" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Medium: Message Queue</text>
+  <text x="225" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Large: Lazy Fetch on Open</text>
+  <text x="225" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Massive: CDN Edge Fetch</text>
+  
+  <!-- Admin Complexity -->
+  <rect x="400" y="250" width="250" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="525" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Admin Complexity</text>
+  <text x="525" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Small: Basic Tools</text>
+  <text x="525" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Medium: Moderators</text>
+  <text x="525" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Large: Auto-Moderation</text>
+  <text x="525" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Massive: Full Moderation Team</text>
+  
+  <!-- Notification Strategy -->
+  <rect x="700" y="250" width="250" height="110" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="825" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#065f46">Notification Strategy</text>
+  <text x="825" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Small: All Messages</text>
+  <text x="825" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Medium: Mentions Default</text>
+  <text x="825" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Large: Mentions Only</text>
+  <text x="825" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Massive: Admin Posts Only</text>
+  
+  <!-- Arrows between size boxes -->
+  <path d="M 250 140 L 295 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,140 285,135 285,145" fill="#64748b"/>
+  
+  <path d="M 500 140 L 545 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="545,140 535,135 535,145" fill="#64748b"/>
+  
+  <path d="M 750 140 L 795 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="795,140 785,135 785,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Architecture adapts to group size—push for small, lazy/CDN for large, with increasing moderation</text>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="wsBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#wsBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Reconnection Strategies</text>
+  
+  <!-- Exponential Backoff -->
+  <rect x="50" y="70" width="260" height="140" rx="8" fill="#3b82f6"/>
+  <text x="180" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Exponential Backoff</text>
+  <text x="180" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Delay increases exponentially</text>
+  <text x="180" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Attempt 1: 1 second</text>
+  <text x="180" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Attempt 2: 2 seconds</text>
+  <text x="180" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Attempt 3: 4 seconds</text>
+  <text x="180" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Max: 30 seconds</text>
+  
+  <!-- Session Resumption -->
+  <rect x="360" y="70" width="280" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="500" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Session Resumption</text>
+  <text x="500" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Preserve state across reconnects</text>
+  <text x="500" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Send Session ID on reconnect</text>
+  <text x="500" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Server retrieves from Redis</text>
+  <text x="500" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Deliver missed messages</text>
+  <text x="500" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Restore subscriptions</text>
+  
+  <!-- Connection Migration -->
+  <rect x="690" y="70" width="260" height="140" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Connection Migration</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server failover handling</text>
+  <text x="820" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Server A fails</text>
+  <text x="820" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Client reconnects to Server B</text>
+  <text x="820" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Server B retrieves session</text>
+  <text x="820" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Seamless continuation</text>
+  
+  <!-- Jitter Implementation -->
+  <rect x="100" y="250" width="250" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="225" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Jitter Implementation</text>
+  <text x="225" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Add randomness to prevent</text>
+  <text x="225" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">thundering herd:</text>
+  <text x="225" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• delay = base_delay × (1 ± 0.2)</text>
+  <text x="225" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• 4s becomes 3.2s - 4.8s</text>
+  
+  <!-- Reconnect Flow -->
+  <rect x="400" y="250" width="280" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="540" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Reconnect Flow</text>
+  <text x="540" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">1. Detect Disconnect</text>
+  <text x="540" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">2. Wait (backoff + jitter)</text>
+  <text x="540" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">3. Attempt Reconnect</text>
+  <text x="540" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">4. On success: Sync session</text>
+  
+  <!-- Server Protection -->
+  <rect x="730" y="250" width="220" height="110" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="840" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#991b1b">Server Protection</text>
+  <text x="840" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Rate limit reconnects</text>
+  <text x="840" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Queue connection requests</text>
+  <text x="840" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Circuit breaker on overload</text>
+  <text x="840" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Gradual reconnection</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 310 140 L 355 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="355,140 345,135 345,145" fill="#64748b"/>
+  
+  <path d="M 640 140 L 685 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="685,140 675,135 675,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Backoff with jitter prevents connection storms, session resumption enables seamless reconnect</text>
+</svg>

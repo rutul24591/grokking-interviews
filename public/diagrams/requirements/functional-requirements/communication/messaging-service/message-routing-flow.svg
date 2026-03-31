@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="msgBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#msgBgGrad2)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Message Routing Flow</text>
+  
+  <!-- Sender -->
+  <rect x="30" y="70" width="140" height="100" rx="8" fill="#3b82f6"/>
+  <text x="100" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Sender</text>
+  <text x="100" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Device: Mobile</text>
+  <text x="100" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Connected to</text>
+  <text x="100" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Gateway A</text>
+  
+  <!-- Gateway A -->
+  <rect x="220" y="70" width="150" height="100" rx="8" fill="#8b5cf6"/>
+  <text x="295" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Gateway A</text>
+  <text x="295" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Authenticates</text>
+  <text x="295" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Assigns Msg ID</text>
+  <text x="295" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Forwards to Router</text>
+  
+  <!-- Message Router -->
+  <rect x="420" y="70" width="160" height="100" rx="8" fill="#f59e0b"/>
+  <text x="500" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Message Router</text>
+  <text x="500" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Lookup Recipient</text>
+  <text x="500" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Connection Registry</text>
+  <text x="500" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Determine Route</text>
+  
+  <!-- Connection Registry -->
+  <rect x="630" y="70" width="150" height="100" rx="8" fill="#ec4899"/>
+  <text x="705" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Connection Registry</text>
+  <text x="705" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">(Redis Cache)</text>
+  <text x="705" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User B → Gateway C</text>
+  <text x="705" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User C → Gateway B</text>
+  
+  <!-- Gateway C -->
+  <rect x="830" y="70" width="140" height="100" rx="8" fill="#8b5cf6"/>
+  <text x="900" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Gateway C</text>
+  <text x="900" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Receives from</text>
+  <text x="900" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Router</text>
+  <text x="900" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Pushes to Recipient</text>
+  
+  <!-- Recipient -->
+  <rect x="830" y="220" width="140" height="100" rx="8" fill="#10b981"/>
+  <text x="900" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Recipient</text>
+  <text x="900" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Device: Desktop</text>
+  <text x="900" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Connected to</text>
+  <text x="900" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Gateway C</text>
+  
+  <!-- Persistence -->
+  <rect x="420" y="220" width="180" height="100" rx="8" fill="#06b6d4"/>
+  <text x="510" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Persistence</text>
+  <text x="510" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Write-Ahead Log</text>
+  <text x="510" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Message Database</text>
+  <text x="510" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Sequence Assignment</text>
+  
+  <!-- Arrows -->
+  <path d="M 170 120 L 215 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="215,120 205,115 205,125" fill="#64748b"/>
+  <text x="192" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Send</text>
+  
+  <path d="M 370 120 L 415 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="415,120 405,115 405,125" fill="#64748b"/>
+  <text x="392" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Route</text>
+  
+  <path d="M 580 120 L 625 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="625,120 615,115 615,125" fill="#64748b"/>
+  <text x="602" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Lookup</text>
+  
+  <path d="M 780 120 L 825 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="825,120 815,115 815,125" fill="#64748b"/>
+  <text x="802" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Forward</text>
+  
+  <path d="M 900 170 L 900 215" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="900,215 895,205 905,205" fill="#64748b"/>
+  <text x="910" y="195" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Deliver</text>
+  
+  <!-- Persistence connection -->
+  <path d="M 500 170 L 500 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <text x="510" y="195" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Persist</text>
+  
+  <!-- ACK path -->
+  <path d="M 900 220 L 900 350 L 100 350 L 100 175" stroke="#22c55e" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <polygon points="100,175 95,185 105,185" fill="#22c55e"/>
+  <text x="500" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#22c55e">Delivery ACK</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="50" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Message routes through gateway → router → recipient's gateway → recipient, with parallel persistence</text>
+</svg>

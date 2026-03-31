@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="pushBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#pushBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Delivery Optimization</text>
+  
+  <!-- Priority -->
+  <rect x="50" y="70" width="200" height="110" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Priority Delivery</text>
+  <text x="150" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">iOS: apns-priority</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">10 = Urgent, 5 = Normal</text>
+  <text x="150" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Android: priority</text>
+  <text x="150" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">high = Urgent</text>
+  
+  <!-- Collapse -->
+  <rect x="300" y="70" width="200" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Collapsed Delivery</text>
+  <text x="400" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">iOS: apns-collapse-id</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Android: collapse_key</text>
+  <text x="400" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Same ID = Replace</text>
+  <text x="400" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Use for: Live scores</text>
+  
+  <!-- TTL -->
+  <rect x="550" y="70" width="200" height="110" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Time-to-Live (TTL)</text>
+  <text x="650" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">iOS: exp claim</text>
+  <text x="650" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Android: ttl field</text>
+  <text x="650" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">1h = Time-sensitive</text>
+  <text x="650" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">24h = Regular</text>
+  
+  <!-- Rate Limiting -->
+  <rect x="800" y="70" width="170" height="110" rx="8" fill="#10b981"/>
+  <text x="885" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Rate Limiting</text>
+  <text x="885" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">APNs: ~2-3/hour</text>
+  <text x="885" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">FCM: ~100/minute</text>
+  <text x="885" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Queue Excess</text>
+  <text x="885" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Backoff on 429</text>
+  
+  <!-- Optimization Strategies -->
+  <rect x="100" y="220" width="380" height="130" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Optimization Strategies</text>
+  <text x="290" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Urgent notifications: High priority, immediate</text>
+  <text x="290" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Updatable content: Collapse ID, replace old</text>
+  <text x="290" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Time-sensitive: Short TTL (1h)</text>
+  <text x="290" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Regular: Normal priority, 24h TTL</text>
+  <text x="290" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Batch non-urgent: Digest delivery</text>
+  
+  <!-- Platform Limits -->
+  <rect x="530" y="220" width="370" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Platform Rate Limits</text>
+  <text x="715" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">APNs (iOS):</text>
+  <text x="715" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Non-urgent: ~2-3/hour</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Urgent: Higher, but use sparingly</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">FCM (Android):</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• ~100 messages/minute per project</text>
+  
+  <!-- Delivery Flow -->
+  <rect x="200" y="380" width="600" height="50" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="500" y="405" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#065f46">Delivery Flow: Check Rate Limit → Set Priority → Set Collapse ID → Set TTL → Send → Handle Response</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 250 125 L 295 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,125 285,120 285,130" fill="#64748b"/>
+  
+  <path d="M 500 125 L 545 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="545,125 535,120 535,130" fill="#64748b"/>
+  
+  <path d="M 750 125 L 795 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="795,125 785,120 785,130" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="450" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Optimization: Priority for urgency, collapse for updates, TTL for expiration, rate limiting for fatigue prevention</text>
+</svg>

@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <linearGradient id="notifBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="500" fill="url(#notifBgGrad)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Notification Center Architecture</text>
+  
+  <!-- Notification Sources -->
+  <rect x="30" y="70" width="180" height="120" rx="8" fill="#3b82f6"/>
+  <text x="120" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Notification Sources</text>
+  <text x="120" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Social (likes, comments)</text>
+  <text x="120" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">System (updates, alerts)</text>
+  <text x="120" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Marketing (promos)</text>
+  <text x="120" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Messages (DM, mentions)</text>
+  
+  <!-- Aggregation Service -->
+  <rect x="260" y="70" width="180" height="120" rx="8" fill="#8b5cf6"/>
+  <text x="350" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Aggregation Service</text>
+  <text x="350" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Collect from Sources</text>
+  <text x="350" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Apply Preferences</text>
+  <text x="350" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Priority Scoring</text>
+  <text x="350" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Deduplication</text>
+  
+  <!-- Storage -->
+  <rect x="490" y="70" width="180" height="120" rx="8" fill="#f59e0b"/>
+  <text x="580" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Storage</text>
+  <text x="580" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Notification Table</text>
+  <text x="580" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User Index</text>
+  <text x="580" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Read/Unread State</text>
+  <text x="580" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">TTL Expiration</text>
+  
+  <!-- Delivery -->
+  <rect x="720" y="70" width="180" height="120" rx="8" fill="#10b981"/>
+  <text x="810" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Delivery</text>
+  <text x="810" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Push Notifications</text>
+  <text x="810" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Email Digest</text>
+  <text x="810" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">In-App Badge</text>
+  <text x="810" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Real-time Sync</text>
+  
+  <!-- Client UI -->
+  <rect x="150" y="240" width="200" height="110" rx="8" fill="#ec4899"/>
+  <text x="250" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Client UI</text>
+  <text x="250" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Notification List</text>
+  <text x="250" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Grouping by Type/Date</text>
+  <text x="250" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Mark as Read</text>
+  <text x="250" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Unread Badge</text>
+  
+  <!-- Preferences -->
+  <rect x="400" y="240" width="200" height="110" rx="8" fill="#06b6d4"/>
+  <text x="500" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">User Preferences</text>
+  <text x="500" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Notification Types</text>
+  <text x="500" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Channel Selection</text>
+  <text x="500" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Quiet Hours</text>
+  <text x="500" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Per-Sender Mute</text>
+  
+  <!-- Analytics -->
+  <rect x="650" y="240" width="200" height="110" rx="8" fill="#6366f1"/>
+  <text x="750" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Analytics</text>
+  <text x="750" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Open Rates</text>
+  <text x="750" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Click-Through Rates</text>
+  <text x="750" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Engagement Metrics</text>
+  <text x="750" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">A/B Testing</text>
+  
+  <!-- Arrows -->
+  <path d="M 210 130 L 255 130" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="255,130 245,125 245,135" fill="#64748b"/>
+  
+  <path d="M 440 130 L 485 130" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="485,130 475,125 475,135" fill="#64748b"/>
+  
+  <path d="M 670 130 L 715 130" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="715,130 705,125 705,135" fill="#64748b"/>
+  
+  <!-- Down arrows -->
+  <path d="M 120 190 L 120 235" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 350 190 L 350 235" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 580 190 L 580 235" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 810 190 L 810 235" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Flow between bottom layers -->
+  <path d="M 350 295 L 395 295" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="395,295 385,290 385,300" fill="#64748b"/>
+  
+  <path d="M 600 295 L 645 295" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="645,295 635,290 635,300" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="90" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Notification Flow</text>
+  
+  <circle cx="100" cy="445" r="8" fill="#3b82f6"/>
+  <text x="120" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Events generated from various sources</text>
+  
+  <circle cx="350" cy="445" r="8" fill="#8b5cf6"/>
+  <text x="370" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Aggregated and filtered by preferences</text>
+  
+  <circle cx="600" cy="445" r="8" fill="#f59e0b"/>
+  <text x="620" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Stored with read/unread state</text>
+  
+  <circle cx="850" cy="445" r="8" fill="#10b981"/>
+  <text x="870" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Delivered via multiple channels</text>
+</svg>

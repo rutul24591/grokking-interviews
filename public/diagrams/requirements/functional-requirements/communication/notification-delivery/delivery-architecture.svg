@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <linearGradient id="notifDelBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="500" fill="url(#notifDelBgGrad)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Notification Delivery Architecture</text>
+  
+  <!-- Notification Sources -->
+  <rect x="30" y="70" width="170" height="110" rx="8" fill="#3b82f6"/>
+  <text x="115" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Notification Sources</text>
+  <text x="115" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Social Events</text>
+  <text x="115" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">System Alerts</text>
+  <text x="115" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Marketing</text>
+  <text x="115" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User Activity</text>
+  
+  <!-- Preference Service -->
+  <rect x="250" y="70" width="180" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="340" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Preference Service</text>
+  <text x="340" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Global Toggle</text>
+  <text x="340" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Type Preference</text>
+  <text x="340" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Quiet Hours</text>
+  <text x="340" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Rate Limits</text>
+  
+  <!-- Channel Router -->
+  <rect x="480" y="70" width="180" height="110" rx="8" fill="#f59e0b"/>
+  <text x="570" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Channel Router</text>
+  <text x="570" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Select Channels</text>
+  <text x="570" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Optimize Timing</text>
+  <text x="570" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Channel Fallback</text>
+  <text x="570" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Batch Non-Urgent</text>
+  
+  <!-- Delivery Services -->
+  <rect x="710" y="70" width="220" height="110" rx="8" fill="#10b981"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Delivery Services</text>
+  <text x="820" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Push (APNs/FCM)</text>
+  <text x="820" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Email (SMTP/SendGrid)</text>
+  <text x="820" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">SMS (Twilio)</text>
+  <text x="820" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">In-App</text>
+  
+  <!-- User Preferences -->
+  <rect x="100" y="230" width="200" height="110" rx="8" fill="#ec4899"/>
+  <text x="200" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">User Preferences Store</text>
+  <text x="200" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Redis Cache</text>
+  <text x="200" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Global/Type/Sender</text>
+  <text x="200" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Quiet Hours</text>
+  <text x="200" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Channel Settings</text>
+  
+  <!-- Delivery Tracking -->
+  <rect x="350" y="230" width="200" height="110" rx="8" fill="#06b6d4"/>
+  <text x="450" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Delivery Tracking</text>
+  <text x="450" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Delivery Status</text>
+  <text x="450" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Engagement Tracking</text>
+  <text x="450" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Bounce/Failure Log</text>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Analytics Dashboard</text>
+  
+  <!-- Queue Management -->
+  <rect x="600" y="230" width="200" height="110" rx="8" fill="#6366f1"/>
+  <text x="700" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Queue Management</text>
+  <text x="700" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Quiet Hours Queue</text>
+  <text x="700" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Rate Limit Queue</text>
+  <text x="700" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Batch Queue</text>
+  <text x="700" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Delayed Delivery</text>
+  
+  <!-- Arrows -->
+  <path d="M 200 125 L 245 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="245,125 235,120 235,130" fill="#64748b"/>
+  
+  <path d="M 430 125 L 475 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="475,125 465,120 465,130" fill="#64748b"/>
+  
+  <path d="M 660 125 L 705 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="705,125 695,120 695,130" fill="#64748b"/>
+  
+  <!-- Down arrows -->
+  <path d="M 115 180 L 115 225" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 340 180 L 340 225" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 570 180 L 570 225" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 820 180 L 820 225" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Flow between bottom layers -->
+  <path d="M 300 285 L 345 285" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="345,285 335,280 335,290" fill="#64748b"/>
+  
+  <path d="M 550 285 L 595 285" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="595,285 585,280 585,290" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="100" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="405" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Delivery Flow</text>
+  
+  <circle cx="100" cy="435" r="8" fill="#3b82f6"/>
+  <text x="120" y="440" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Notifications generated from various sources</text>
+  
+  <circle cx="350" cy="435" r="8" fill="#8b5cf6"/>
+  <text x="370" y="440" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Preferences evaluated (global, type, sender)</text>
+  
+  <circle cx="600" cy="435" r="8" fill="#f59e0b"/>
+  <text x="620" y="440" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Channel router selects optimal delivery method</text>
+  
+  <circle cx="850" cy="435" r="8" fill="#10b981"/>
+  <text x="870" y="440" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Delivery services send via selected channels</text>
+</svg>

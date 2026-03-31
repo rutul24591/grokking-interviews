@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="readBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#readBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Group Read Receipts</text>
+  
+  <!-- Small Group -->
+  <rect x="50" y="70" width="260" height="140" rx="8" fill="#3b82f6"/>
+  <text x="180" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Small Groups (2-10)</text>
+  <text x="180" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show All Names</text>
+  <text x="180" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Display:</text>
+  <text x="180" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">"Read by John (2:30),</text>
+  <text x="180" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Sarah (2:32), Mike (2:35)"</text>
+  <text x="180" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Expandable per message</text>
+  
+  <!-- Medium Group -->
+  <rect x="360" y="70" width="280" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="500" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Medium Groups (10-50)</text>
+  <text x="500" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show Count + Expand</text>
+  <text x="500" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Display:</text>
+  <text x="500" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">"Read by 12 people"</text>
+  <text x="500" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Tap to expand:</text>
+  <text x="500" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">"John, Sarah, Mike... (+9)"</text>
+  <text x="500" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Balances info with clarity</text>
+  
+  <!-- Large Group -->
+  <rect x="690" y="70" width="260" height="140" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Large Groups (50+)</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show Only Unread Count</text>
+  <text x="820" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Display:</text>
+  <text x="820" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">"45 people haven't read"</text>
+  <text x="820" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Or minimal:</text>
+  <text x="820" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">"Read by 125/170"</text>
+  <text x="820" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Reduces visual clutter</text>
+  
+  <!-- Per-Member Privacy -->
+  <rect x="100" y="250" width="380" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Per-Member Privacy Handling</text>
+  <text x="290" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Member A disables read receipts</text>
+  <text x="290" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Group sees: "Delivered to A" (not "Read")</text>
+  <text x="290" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Other members show normally</text>
+  <text x="290" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Respects individual privacy in group context</text>
+  
+  <!-- Read Notification Settings -->
+  <rect x="530" y="250" width="370" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Sender Notification Settings</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Configure when to notify:</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• When all members read</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• When specific people read (VIP)</text>
+  <text x="715" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Never (prevent notification spam)</text>
+  
+  <!-- Group Status Table Example -->
+  <rect x="150" y="390" width="700" height="40" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#065f46">Group Status Storage: (message_id, member_id, status, read_at) — N members × M messages</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 310 140 L 355 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="355,140 345,135 345,145" fill="#64748b"/>
+  
+  <path d="M 640 140 L 685 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="685,140 675,135 675,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="445" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Group Read: Small (all names) → Medium (count+expand) → Large (aggregated) with per-member privacy</text>
+</svg>

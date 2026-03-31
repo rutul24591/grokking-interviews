@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="e2eeBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#e2eeBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Group Encryption</text>
+  
+  <!-- Pairwise Encryption -->
+  <rect x="50" y="70" width="280" height="140" rx="8" fill="#3b82f6"/>
+  <text x="190" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Pairwise Encryption</text>
+  <text x="190" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Encrypt separately for each member</text>
+  <text x="190" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Process:</text>
+  <text x="190" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• For each member: Encrypt with pairwise key</text>
+  <text x="190" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• N encryptions for N members</text>
+  <text x="190" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Best for:</text>
+  <text x="190" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Small groups (2-10 members)</text>
+  
+  <!-- Sender Keys -->
+  <rect x="370" y="70" width="280" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="510" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Sender Keys</text>
+  <text x="510" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Encrypt once, all decrypt</text>
+  <text x="510" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Process:</text>
+  <text x="510" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Generate group sender key</text>
+  <text x="510" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Distribute via pairwise E2EE</text>
+  <text x="510" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Encrypt message once with sender key</text>
+  <text x="510" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• All members decrypt with sender key</text>
+  <text x="510" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Best for:</text>
+  <text x="510" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Medium groups (10-100 members)</text>
+  
+  <!-- Tree-Based -->
+  <rect x="690" y="70" width="260" height="140" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Tree-Based Encryption</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Encrypt to tree nodes</text>
+  <text x="820" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Process:</text>
+  <text x="820" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Members in binary tree</text>
+  <text x="820" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Each node has encryption key</text>
+  <text x="820" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Encrypt to log(N) nodes</text>
+  <text x="820" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Members decrypt path to root</text>
+  <text x="820" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Best for:</text>
+  <text x="820" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Large groups (100+ members)</text>
+  
+  <!-- Efficiency Comparison -->
+  <rect x="100" y="250" width="380" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Encryption Efficiency</text>
+  <text x="290" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Pairwise: N encryptions (linear)</text>
+  <text x="290" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Sender Keys: 1 encryption (constant)</text>
+  <text x="290" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Tree-Based: log(N) encryptions (logarithmic)</text>
+  <text x="290" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Example: 1000 members → 1000 vs 1 vs 10 encryptions</text>
+  
+  <!-- Key Rotation -->
+  <rect x="530" y="250" width="370" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Key Rotation on Member Leave</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">When member leaves group:</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Generate new group sender key</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Encrypt new key for remaining members</text>
+  <text x="715" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Old member cannot decrypt new messages</text>
+  
+  <!-- Group Message Flow -->
+  <rect x="150" y="390" width="700" height="40" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#065f46">Group Flow: Generate Sender Key → Distribute via Pairwise → Encrypt Once → All Decrypt</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 330 140 L 365 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="365,140 355,135 355,145" fill="#64748b"/>
+  
+  <path d="M 650 140 L 685 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="685,140 675,135 675,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="445" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Group E2EE: Pairwise (small), Sender Keys (medium), Tree-Based (large) for efficiency</text>
+</svg>

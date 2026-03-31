@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bg-dark { fill: #1a1a2e; }
+      .box { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .box-dark { fill: #2d3748; stroke: #718096; stroke-width: 2; }
+      .partition { fill: #e2e8f0; stroke: #4a5568; stroke-width: 2; }
+      .partition-dark { fill: #4a5568; stroke: #718096; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dark { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
+      .label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .label-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #e2e8f0; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+      .sublabel-dark { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a0aec0; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  <rect class="bg-dark" width="1000" height="450" data-theme="dark" style="display:none;"/>
+  
+  <!-- Topic -->
+  <rect class="box" x="50" y="50" width="180" height="300" rx="8" stroke-width="3"/>
+  <text x="140" y="80" text-anchor="middle" class="label" style="font-size: 16px;">Topic</text>
+  <text x="140" y="100" text-anchor="middle" class="sublabel">orders-events</text>
+  
+  <!-- Partitions -->
+  <rect class="partition" x="70" y="120" width="140" height="50" rx="4"/>
+  <text x="140" y="150" text-anchor="middle" class="sublabel" style="font-weight: 600;">Partition 0</text>
+  
+  <rect class="partition" x="70" y="180" width="140" height="50" rx="4"/>
+  <text x="140" y="210" text-anchor="middle" class="sublabel" style="font-weight: 600;">Partition 1</text>
+  
+  <rect class="partition" x="70" y="240" width="140" height="50" rx="4"/>
+  <text x="140" y="270" text-anchor="middle" class="sublabel" style="font-weight: 600;">Partition 2</text>
+  
+  <!-- Consumer Group -->
+  <rect class="box" x="400" y="50" width="280" height="300" rx="8" fill="none" stroke-dasharray="5,5"/>
+  <text x="540" y="75" text-anchor="middle" class="sublabel">Consumer Group: order-processors</text>
+  
+  <!-- Consumers -->
+  <rect class="box" x="430" y="100" width="220" height="60" rx="8"/>
+  <text x="540" y="125" text-anchor="middle" class="label">Consumer 1</text>
+  <text x="540" y="145" text-anchor="middle" class="sublabel">Assigned: Partition 0</text>
+  
+  <rect class="box" x="430" y="180" width="220" height="60" rx="8"/>
+  <text x="540" y="205" text-anchor="middle" class="label">Consumer 2</text>
+  <text x="540" y="225" text-anchor="middle" class="sublabel">Assigned: Partition 1</text>
+  
+  <rect class="box" x="430" y="260" width="220" height="60" rx="8"/>
+  <text x="540" y="285" text-anchor="middle" class="label">Consumer 3</text>
+  <text x="540" y="305" text-anchor="middle" class="sublabel">Assigned: Partition 2</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M210 145 L425 130"/>
+  <path class="arrow" d="M210 205 L425 210"/>
+  <path class="arrow" d="M210 265 L425 290"/>
+  
+  <!-- Rebalancing example -->
+  <rect class="box" x="720" y="50" width="240" height="150" rx="8"/>
+  <text x="840" y="80" text-anchor="middle" class="label">Rebalancing</text>
+  <text x="840" y="110" text-anchor="middle" class="sublabel">Consumer 2 leaves</text>
+  <text x="840" y="130" text-anchor="middle" class="sublabel">Partitions reassigned</text>
+  
+  <rect class="box" x="740" y="160" width="200" height="50" rx="4" fill="#fef3c7"/>
+  <text x="840" y="190" text-anchor="middle" class="sublabel" style="font-weight: 600;">Partition 1 → Consumer 1</text>
+  
+  <rect class="box" x="740" y="220" width="200" height="50" rx="4" fill="#fef3c7"/>
+  <text x="840" y="250" text-anchor="middle" class="sublabel" style="font-weight: 600;">Partition 2 → Consumer 3</text>
+  
+  <path class="arrow" d="M680 200 L735 180"/>
+  <path class="arrow" d="M680 250 L735 240"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="label" style="font-size: 16px;">Figure 3: Consumer Groups</text>
+</svg>

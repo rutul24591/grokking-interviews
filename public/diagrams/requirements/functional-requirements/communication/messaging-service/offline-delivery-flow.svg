@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="msgBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#msgBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Offline Delivery Flow</text>
+  
+  <!-- Sender -->
+  <rect x="50" y="70" width="140" height="90" rx="8" fill="#3b82f6"/>
+  <text x="120" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Sender</text>
+  <text x="120" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Sends Message</text>
+  <text x="120" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Online</text>
+  
+  <!-- Message Server -->
+  <rect x="250" y="70" width="180" height="90" rx="8" fill="#8b5cf6"/>
+  <text x="340" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Message Server</text>
+  <text x="340" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Recipient Status</text>
+  <text x="340" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Store in Database</text>
+  <text x="340" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Queue for Delivery</text>
+  
+  <!-- Decision -->
+  <polygon points="520,115 580,115 610,140 580,165 520,165" fill="#f59e0b"/>
+  <text x="565" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Recipient</text>
+  <text x="565" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Online?</text>
+  
+  <!-- Online Path -->
+  <rect x="670" y="70" width="140" height="90" rx="8" fill="#10b981"/>
+  <text x="740" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Online Delivery</text>
+  <text x="740" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Push via WebSocket</text>
+  <text x="740" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Delivery Receipt</text>
+  <text x="740" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Mark Delivered</text>
+  
+  <!-- Offline Path -->
+  <rect x="670" y="190" width="140" height="90" rx="8" fill="#ec4899"/>
+  <text x="740" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Offline Queue</text>
+  <text x="740" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Store with TTL</text>
+  <text x="740" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Send Push (optional)</text>
+  <text x="740" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">Wait for Reconnect</text>
+  
+  <!-- Recipient Online -->
+  <rect x="850" y="70" width="120" height="90" rx="8" fill="#06b6d4"/>
+  <text x="910" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Recipient</text>
+  <text x="910" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Receives</text>
+  <text x="910" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Read Receipt</text>
+  
+  <!-- Recipient Reconnect -->
+  <rect x="850" y="190" width="120" height="90" rx="8" fill="#6366f1"/>
+  <text x="910" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Reconnect</text>
+  <text x="910" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Sync Request</text>
+  <text x="910" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Receive Queued</text>
+  
+  <!-- Push Notification -->
+  <rect x="400" y="280" width="200" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="500" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Push Notification</text>
+  <text x="500" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">APNs (iOS) / FCM (Android)</text>
+  <text x="500" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Wake device for urgent messages</text>
+  
+  <!-- Arrows -->
+  <path d="M 190 115 L 245 115" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="245,115 235,110 235,120" fill="#64748b"/>
+  
+  <path d="M 430 115 L 515 115" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="515,115 505,110 505,120" fill="#64748b"/>
+  
+  <path d="M 610 140 L 665 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="665,140 655,135 655,145" fill="#64748b"/>
+  <text x="640" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#22c55e">Yes</text>
+  
+  <path d="M 580 165 L 580 210 L 665 210" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="665,210 655,205 655,215" fill="#64748b"/>
+  <text x="595" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#ef4444">No</text>
+  
+  <path d="M 810 115 L 845 115" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="845,115 835,110 835,120" fill="#64748b"/>
+  
+  <path d="M 810 235 L 845 235" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="845,235 835,230 835,240" fill="#64748b"/>
+  
+  <!-- Push arrow -->
+  <path d="M 500 165 L 500 275" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Offline messages queued with TTL, push notification for urgent, sync on reconnect</text>
+</svg>

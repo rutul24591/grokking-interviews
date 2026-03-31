@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="pushBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#pushBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Platform Comparison</text>
+  
+  <!-- APNs -->
+  <rect x="50" y="70" width="270" height="160" rx="8" fill="#3b82f6"/>
+  <text x="185" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="white">APNs (iOS)</text>
+  <text x="185" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Apple Push Notification service</text>
+  <text x="185" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Protocol:</text>
+  <text x="185" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">HTTP/2 with JWT</text>
+  <text x="185" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Limits:</text>
+  <text x="185" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">4KB payload, ~2-3/hour</text>
+  <text x="185" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Delivery:</text>
+  <text x="185" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Best-effort, no confirmation</text>
+  
+  <!-- FCM -->
+  <rect x="370" y="70" width="270" height="160" rx="8" fill="#10b981"/>
+  <text x="505" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="white">FCM (Android)</text>
+  <text x="505" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Firebase Cloud Messaging</text>
+  <text x="505" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Protocol:</text>
+  <text x="505" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">HTTP v1 with OAuth 2.0</text>
+  <text x="505" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Limits:</text>
+  <text x="505" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">4KB payload, ~100/minute</text>
+  <text x="505" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Delivery:</text>
+  <text x="505" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Best-effort, optional receipt</text>
+  
+  <!-- Web Push -->
+  <rect x="690" y="70" width="260" height="160" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="white">Web Push</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Browser Push API</text>
+  <text x="820" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Protocol:</text>
+  <text x="820" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Web Push Protocol + VAPID</text>
+  <text x="820" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Limits:</text>
+  <text x="820" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">4KB payload, browser-dependent</text>
+  <text x="820" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Delivery:</text>
+  <text x="820" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Browser must be running</text>
+  
+  <!-- Feature Comparison -->
+  <rect x="100" y="260" width="800" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="500" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Feature Comparison</text>
+  
+  <!-- Table Header -->
+  <rect x="120" y="295" width="150" height="25" fill="#cbd5e1"/>
+  <text x="195" y="312" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e293b">Feature</text>
+  <rect x="270" y="295" width="150" height="25" fill="#3b82f6"/>
+  <text x="345" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">APNs</text>
+  <rect x="420" y="295" width="150" height="25" fill="#10b981"/>
+  <text x="495" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">FCM</text>
+  <rect x="570" y="295" width="150" height="25" fill="#f59e0b"/>
+  <text x="645" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="white">Web Push</text>
+  
+  <!-- Table Rows -->
+  <rect x="120" y="320" width="150" height="20" fill="#f1f5f9"/>
+  <text x="195" y="334" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Rate Limit</text>
+  <rect x="270" y="320" width="150" height="20" fill="#f1f5f9"/>
+  <text x="345" y="334" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">~2-3/hour</text>
+  <rect x="420" y="320" width="150" height="20" fill="#f1f5f9"/>
+  <text x="495" y="334" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">~100/minute</text>
+  <rect x="570" y="320" width="150" height="20" fill="#f1f5f9"/>
+  <text x="645" y="334" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Browser-dependent</text>
+  
+  <rect x="120" y="340" width="150" height="20" fill="#e2e8f0"/>
+  <text x="195" y="354" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Delivery Receipt</text>
+  <rect x="270" y="340" width="150" height="20" fill="#e2e8f0"/>
+  <text x="345" y="354" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">No</text>
+  <rect x="420" y="340" width="150" height="20" fill="#e2e8f0"/>
+  <text x="495" y="354" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Optional</text>
+  <rect x="570" y="340" width="150" height="20" fill="#e2e8f0"/>
+  <text x="645" y="354" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">No</text>
+  
+  <rect x="120" y="360" width="150" height="20" fill="#f1f5f9"/>
+  <text x="195" y="374" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Silent Push</text>
+  <rect x="270" y="360" width="150" height="20" fill="#f1f5f9"/>
+  <text x="345" y="374" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Yes (limited)</text>
+  <rect x="420" y="360" width="150" height="20" fill="#f1f5f9"/>
+  <text x="495" y="374" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Yes</text>
+  <rect x="570" y="360" width="150" height="20" fill="#f1f5f9"/>
+  <text x="645" y="374" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Yes</text>
+  
+  <rect x="120" y="380" width="150" height="20" fill="#e2e8f0"/>
+  <text x="195" y="394" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Rich Media</text>
+  <rect x="270" y="380" width="150" height="20" fill="#e2e8f0"/>
+  <text x="345" y="394" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Yes (extension)</text>
+  <rect x="420" y="380" width="150" height="20" fill="#e2e8f0"/>
+  <text x="495" y="394" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Yes</text>
+  <rect x="570" y="380" width="150" height="20" fill="#e2e8f0"/>
+  <text x="645" y="394" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Yes</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="420" width="900" height="25" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="438" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">APNs: Most restrictive, FCM: Most flexible, Web Push: Browser-dependent</text>
+</svg>

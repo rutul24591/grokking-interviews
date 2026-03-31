@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="wsBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#wsBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Scaling WebSocket Connections</text>
+  
+  <!-- Horizontal Scaling -->
+  <rect x="50" y="70" width="280" height="140" rx="8" fill="#3b82f6"/>
+  <text x="190" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Horizontal Scaling</text>
+  <text x="190" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Add servers to handle more connections</text>
+  <text x="190" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Server 1: 50K connections</text>
+  <text x="190" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Server 2: 50K connections</text>
+  <text x="190" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Server N: 50K connections</text>
+  <text x="190" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Total: N × 50K connections</text>
+  
+  <!-- Connection Sharding -->
+  <rect x="370" y="70" width="280" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="510" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Connection Sharding</text>
+  <text x="510" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User ID → Server mapping</text>
+  <text x="510" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• hash(user_id) % server_count</text>
+  <text x="510" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Consistent Hashing</text>
+  <text x="510" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Minimal remapping on scale</text>
+  <text x="510" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Deterministic routing</text>
+  
+  <!-- Regional Deployment -->
+  <rect x="690" y="70" width="260" height="140" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Regional Deployment</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Deploy close to users</text>
+  <text x="820" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• US-East: 200K connections</text>
+  <text x="820" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• EU-West: 150K connections</text>
+  <text x="820" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• APAC: 100K connections</text>
+  <text x="820" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Lowest latency per region</text>
+  
+  <!-- Load Balancer Strategies -->
+  <rect x="100" y="250" width="250" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="225" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Load Balancer Strategies</text>
+  <text x="225" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Round-Robin</text>
+  <text x="225" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Least Connections</text>
+  <text x="225" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• IP Hash (Sticky)</text>
+  <text x="225" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• User ID Hash</text>
+  
+  <!-- Session Replication -->
+  <rect x="400" y="250" width="250" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="525" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Session Replication</text>
+  <text x="525" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Redis Cluster</text>
+  <text x="525" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Shared Session State</text>
+  <text x="525" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Failover Support</text>
+  <text x="525" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• TTL Cleanup</text>
+  
+  <!-- Capacity Planning -->
+  <rect x="700" y="250" width="250" height="110" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="825" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#065f46">Capacity Planning</text>
+  <text x="825" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Memory: ~1KB/connection</text>
+  <text x="825" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• FD: 1 per connection</text>
+  <text x="825" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Alert at 80% capacity</text>
+  <text x="825" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Auto-scale triggers</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 330 140 L 365 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="365,140 355,135 355,145" fill="#64748b"/>
+  
+  <path d="M 650 140 L 685 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="685,140 675,135 675,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="390" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Scale horizontally with sharding, deploy regionally, replicate sessions for failover</text>
+</svg>

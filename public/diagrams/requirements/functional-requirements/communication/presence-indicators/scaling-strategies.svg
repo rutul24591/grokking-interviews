@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="presenceBgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#presenceBgGrad4)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Scaling Strategies</text>
+  
+  <!-- Connection Sharding -->
+  <rect x="50" y="70" width="260" height="140" rx="8" fill="#3b82f6"/>
+  <text x="180" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Connection Sharding</text>
+  <text x="180" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Distribute WebSocket connections</text>
+  <text x="180" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">across multiple servers</text>
+  <text x="180" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• User ID Hash → Server</text>
+  <text x="180" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Consistent Hashing</text>
+  <text x="180" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• 10K-50K connections/server</text>
+  
+  <!-- Presence Aggregation -->
+  <rect x="370" y="70" width="260" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="500" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Presence Aggregation</text>
+  <text x="500" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Batch presence updates</text>
+  <text x="500" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Instead of individual events:</text>
+  <text x="500" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">{online: [u1, u2], offline: [u3]}</text>
+  <text x="500" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Reduces message overhead</text>
+  <text x="500" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Batch interval: 100-500ms</text>
+  
+  <!-- Redis Cluster -->
+  <rect x="690" y="70" width="260" height="140" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Redis Cluster</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Distributed presence storage</text>
+  <text x="820" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Shard by user ID</text>
+  <text x="820" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Fast lookup (O(1))</text>
+  <text x="820" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• TTL for auto-cleanup</text>
+  <text x="820" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Pub/Sub for broadcasts</text>
+  
+  <!-- Presence Storm Handling -->
+  <rect x="100" y="250" width="380" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Presence Storm Handling</text>
+  <text x="290" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">After outage, thousands come online simultaneously</text>
+  <text x="290" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Queue presence events</text>
+  <text x="290" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Drain gradually (1000 users/second)</text>
+  <text x="290" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Batch broadcasts to subscribers</text>
+  
+  <!-- Multi-Device Aggregation -->
+  <rect x="530" y="250" width="370" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Multi-Device Aggregation</text>
+  <text x="715" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">User has: Phone + Tablet + Desktop</text>
+  <text x="715" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Track presence per device</text>
+  <text x="715" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Aggregate: Any online = User online</text>
+  <text x="715" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Show active device ("Online from phone")</text>
+  
+  <!-- Capacity Planning -->
+  <rect x="150" y="390" width="230" height="40" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="265" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">1M Users @ 10% Active</text>
+  <text x="265" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">= 100K concurrent connections</text>
+  
+  <rect x="400" y="390" width="230" height="40" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="515" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Heartbeat: 100K × every 30s</text>
+  <text x="515" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">= 3,333 heartbeats/second</text>
+  
+  <rect x="650" y="390" width="230" height="40" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="765" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#065f46">Redis: ~100MB for 1M users</text>
+  <text x="765" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">user_id → {status, last_seen}</text>
+  
+  <!-- Arrows between top boxes -->
+  <path d="M 310 140 L 365 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="365,140 355,135 355,145" fill="#64748b"/>
+  
+  <path d="M 630 140 L 685 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="685,140 675,135 675,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="450" width="900" height="30" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Scaling: Shard connections, batch updates, use Redis cluster, handle presence storms gracefully</text>
+</svg>

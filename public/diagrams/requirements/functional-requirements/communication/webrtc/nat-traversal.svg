@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="webrtcBgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#webrtcBgGrad3)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">NAT Traversal</text>
+  
+  <!-- Peer A (Behind NAT) -->
+  <rect x="50" y="70" width="180" height="140" rx="8" fill="#3b82f6"/>
+  <text x="140" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Peer A</text>
+  <text x="140" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Private IP:</text>
+  <text x="140" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">192.168.1.100</text>
+  <text x="140" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">NAT Type:</text>
+  <text x="140" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Port-Restricted</text>
+  <text x="140" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Public IP (via STUN):</text>
+  <text x="140" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">203.0.113.1:54321</text>
+  
+  <!-- NAT A -->
+  <rect x="260" y="70" width="80" height="140" rx="4" fill="#64748b"/>
+  <text x="300" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">NAT A</text>
+  <text x="300" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Firewall</text>
+  <text x="300" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Port Mapping</text>
+  <text x="300" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">203.0.113.1</text>
+  
+  <!-- Internet -->
+  <rect x="370" y="70" width="260" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="500" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Internet</text>
+  <text x="500" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Public Network</text>
+  <text x="500" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">P2P or TURN</text>
+  
+  <!-- NAT B -->
+  <rect x="660" y="70" width="80" height="140" rx="4" fill="#64748b"/>
+  <text x="700" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">NAT B</text>
+  <text x="700" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Firewall</text>
+  <text x="700" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">Port Mapping</text>
+  <text x="700" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#e2e8f0">198.51.100.1</text>
+  
+  <!-- Peer B (Behind NAT) -->
+  <rect x="770" y="70" width="180" height="140" rx="8" fill="#10b981"/>
+  <text x="860" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Peer B</text>
+  <text x="860" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Private IP:</text>
+  <text x="860" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">192.168.2.50</text>
+  <text x="860" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">NAT Type:</text>
+  <text x="860" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Symmetric</text>
+  <text x="860" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Public IP (via STUN):</text>
+  <text x="860" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">198.51.100.1:12345</text>
+  
+  <!-- STUN Server -->
+  <rect x="200" y="260" width="200" height="100" rx="8" fill="#f59e0b"/>
+  <text x="300" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">STUN Server</text>
+  <text x="300" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">stun.l.google.com:19302</text>
+  <text x="300" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Discovers Public IP</text>
+  <text x="300" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Server-Reflexive Candidate</text>
+  
+  <!-- TURN Server -->
+  <rect x="600" y="260" width="200" height="100" rx="8" fill="#ec4899"/>
+  <text x="700" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">TURN Server</text>
+  <text x="700" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Relay: turn.example.com</text>
+  <text x="700" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Fallback when P2P Fails</text>
+  <text x="700" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Relayed Candidate</text>
+  
+  <!-- P2P Connection -->
+  <path d="M 340 140 C 450 100, 550 100, 660 140" stroke="#22c55e" stroke-width="3" fill="none"/>
+  <text x="500" y="90" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#22c55e">P2P (80% success)</text>
+  
+  <!-- TURN Relay -->
+  <path d="M 340 180 L 340 310 L 600 310 L 600 180" stroke="#ec4899" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <text x="500" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#ec4899">TURN Relay (20% fallback)</text>
+  
+  <!-- STUN Query -->
+  <path d="M 140 220 L 140 255 L 295 255" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <text x="180" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">Query</text>
+  
+  <path d="M 305 265 L 305 300 L 140 300 L 140 220" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <text x="180" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">Response</text>
+  
+  <!-- NAT Types Info -->
+  <rect x="100" y="390" width="380" height="40" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="290" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#991b1b">NAT Types: Full Cone → Restricted → Port-Restricted → Symmetric (hardest)</text>
+  
+  <rect x="520" y="390" width="380" height="40" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="710" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">P2P Success: Full Cone (95%) → Symmetric (50%), TURN for remainder</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="440" width="900" height="25" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="458" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">NAT Traversal: STUN discovers public IP, P2P connects directly, TURN relays when P2P fails</text>
+</svg>
