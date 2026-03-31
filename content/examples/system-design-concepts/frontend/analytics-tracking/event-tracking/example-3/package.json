@@ -1,0 +1,8 @@
+{
+  "name": "event-tracking-example-3",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "start": "node demo.js"
+  }
+}
