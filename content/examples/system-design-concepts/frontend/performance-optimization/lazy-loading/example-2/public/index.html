@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lazy Loading Trigger Demo</title>
+    <style>
+      body { font-family: Inter, system-ui, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
+      main { max-width: 780px; margin: 0 auto; padding: 48px 24px 120px; }
+      .spacer { height: 75vh; }
+      .target { min-height: 220px; border: 1px dashed #94a3b8; border-radius: 24px; padding: 24px; background: white; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Scroll-triggered lazy loading</h1>
+      <p>Only load the widget when the target enters the viewport.</p>
+      <div class="spacer"></div>
+      <section class="target" id="target">Waiting for viewport intersection…</section>
+    </main>
+    <script type="module">
+      const target = document.querySelector("#target");
+      const observer = new IntersectionObserver(async (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        observer.disconnect();
+        const module = await import("./widget.js");
+        module.renderWidget(target);
+      }, { rootMargin: "150px" });
+      observer.observe(target);
+    </script>
+  </body>
+  </html>

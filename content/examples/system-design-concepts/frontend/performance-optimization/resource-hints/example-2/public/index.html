@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Prefetch</title>
+  </head>
+  <body>
+    <button id="prefetch">Prefetch article route</button>
+    <script type="module">
+      document.querySelector("#prefetch").addEventListener("mouseenter", () => {
+        const link = document.createElement("link");
+        link.rel = "prefetch";
+        link.href = "/next-article.json";
+        document.head.appendChild(link);
+        console.log("prefetch injected");
+      }, { once: true });
+    </script>
+  </body>
+  </html>
