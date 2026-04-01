@@ -1,0 +1,1 @@
+{ "name": "functional-requirements-permission-validation-example-3", "private": true, "version": "0.1.0", "type": "module", "scripts": { "demo": "node src/demo.js" } }
