@@ -5,17 +5,26 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-requirements-cm-other-cdn-delivery",
+  id: "article-requirements-cm-cdn-delivery",
   title: "CDN Delivery",
-  description: "Comprehensive guide to implementing CDN delivery covering caching strategies, invalidation, edge optimization, multi-CDN, security, performance monitoring, and cost optimization for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing CDN delivery covering caching strategies, invalidation, edge optimization, multi-CDN routing, security, performance monitoring, and cost optimization for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "cdn-delivery",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "cdn", "delivery", "caching", "performance"],
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-04-01",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "cdn",
+    "delivery",
+    "caching",
+    "performance",
+  ],
   relatedTopics: ["media-processing", "content-storage", "performance", "edge-computing"],
 };
 
@@ -25,325 +34,204 @@ export default function CDNDeliveryArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>CDN Delivery</strong> distributes content globally through edge caches,
-          reducing latency and origin load. It is essential for fast content delivery at scale.
+          CDN (Content Delivery Network) Delivery distributes content globally through strategically positioned edge cache servers, reducing latency for end users and offloading traffic from origin infrastructure. A CDN works by caching content at edge locations closer to users, serving subsequent requests from the cache rather than the origin server. For global platforms, CDN delivery is not optional—it&apos;s essential infrastructure that determines user experience quality, origin costs, and platform scalability. When users in Tokyo, London, and São Paulo all access your platform, a properly configured CDN ensures each receives content from a nearby edge location with minimal latency, rather than all traffic hitting a single origin datacenter.
         </p>
         <p>
-          For staff and principal engineers, implementing CDN delivery requires understanding
-          caching strategies, cache invalidation, edge optimization, multi-CDN routing,
-          security (DDoS, WAF), performance monitoring, and cost optimization. The implementation
-          must balance cache hit rate with content freshness and cost efficiency.
+          For staff and principal engineers, CDN delivery architecture involves multiple interconnected concerns: caching strategies (cache-aside, write-through, stale-while-revalidate), cache invalidation (purge by URL, tag-based invalidation, versioned URLs), edge optimization (image optimization, compression, minification at edge), multi-CDN routing (load balancing, failover, geo-routing), security (DDoS protection, WAF, token authentication), and performance monitoring (cache hit rates, edge latency, origin load). The implementation must balance competing priorities: cache hit rate versus content freshness, performance versus cost, simplicity versus flexibility. A poorly configured CDN can serve stale content, expose origin to traffic spikes, or incur unexpected costs from cache misses and bandwidth overages.
+        </p>
+        <p>
+          The complexity of CDN delivery extends beyond basic configuration. Cache key design determines what gets cached separately (by URL, headers, cookies, user agent). Invalidation strategies must handle both predictable updates (content publishing) and emergency purges (sensitive content removal). Multi-CDN setups require health monitoring, performance-based routing, and seamless failover. Edge computing capabilities (Cloudflare Workers, Lambda@Edge) enable running logic at edge nodes for personalization, A/B testing, and authentication. Security considerations include DDoS mitigation, WAF rule configuration, HTTPS enforcement, and bot detection. For staff engineers, CDN delivery is a strategic infrastructure decision with long-term consequences for performance, cost, and operational complexity.
+        </p>
+      </section>
+
+      <section>
+        <h2>Core Concepts</h2>
+        <h3>Cache Headers and TTL Configuration</h3>
+        <p>
+          Cache headers control how content is cached and for how long. Cache-Control is the primary header, with directives like max-age (how long content is fresh), s-maxage (shared cache TTL), public/private (cacheable by any cache or browser only), no-cache (must revalidate), and no-store (don&apos;t cache). ETag provides entity validation through content hashing—browsers send If-None-Match headers, origin responds 304 Not Modified if unchanged. Last-Modified provides timestamp-based validation. Vary header specifies which request headers affect caching (Accept-Encoding for compression variants, User-Agent for device-specific content). Proper header configuration is critical—missing headers cause cache misses, overly long TTLs serve stale content, and incorrect Vary headers cause cache fragmentation.
+        </p>
+        <p>
+          TTL (Time To Live) settings vary by content type. Static assets (images, CSS, JavaScript) use long TTLs (1 year) with versioned URLs—when content changes, the URL changes (app.v1.js → app.v2.js), invalidating the old cache naturally. Dynamic content (HTML pages, API responses) uses short TTLs (minutes to hours) with ETag validation for freshness. Personalized content (user dashboards, recommendations) often bypasses cache entirely or uses very short TTLs with user-specific cache keys. API responses are cached based on method and response type—GET requests are cacheable, while POST/PUT/DELETE requests trigger invalidation of related cached content.
+        </p>
+
+        <h3 className="mt-6">Cache Invalidation Strategies</h3>
+        <p>
+          Cache invalidation ensures updated content reaches users promptly. Purge by URL invalidates specific paths—effective for targeted updates but requires knowing exact URLs. Purge by tag invalidates content by cache tag—content is tagged during caching (e.g., &quot;article-123&quot;, &quot;user-456&quot;), enabling grouped invalidation without knowing all URLs. Purge All clears the entire cache—use sparingly as it causes massive cache miss storms and origin load spikes. Versioned URLs change the URL when content changes—natural invalidation through URL change, ideal for static assets. Soft purge marks content as stale but continues serving it while revalidating in background—maintains availability during invalidation.
+        </p>
+        <p>
+          Invalidation timing matters. Immediate invalidation (purge on content update) ensures freshness but may cause race conditions if origin update fails. Delayed invalidation (purge after origin confirms update) ensures consistency but briefly serves stale content. Batched invalidation (collect invalidations, purge in batches) reduces CDN API calls but increases staleness window. The choice depends on content criticality—news content needs immediate invalidation, while blog posts can tolerate brief staleness.
+        </p>
+
+        <h3 className="mt-6">Caching Strategies</h3>
+        <p>
+          Cache-aside (lazy loading) is the most common pattern. Application checks cache first, on miss fetches from origin, caches the response, then returns it. Benefits include simplicity and only caching requested content. Drawbacks include cache miss penalty (first request is slow) and stale data risk (cache doesn&apos;t know when origin data changes). This strategy works well for read-heavy workloads with unpredictable access patterns where caching everything would be wasteful.
+        </p>
+        <p>
+          Write-through caching writes to cache and origin simultaneously. Benefits include cache always being fresh (no stale data) and consistent read performance. Drawbacks include write latency (must wait for both writes) and cache pollution (caching data that may never be read). This strategy works well for write-heavy workloads where data consistency is critical and write latency is acceptable.
+        </p>
+        <p>
+          Stale-while-revalidate serves stale content while refreshing in background. When content expires, serve the stale version immediately while fetching fresh content asynchronously. Benefits include fast response times (no waiting for origin) and origin protection (only one request triggers refresh). Drawbacks include brief staleness window (users see slightly outdated content). This strategy works well for high-availability requirements where brief staleness is acceptable.
+        </p>
+        <p>
+          Cache warming pre-populates cache before traffic arrives. Predict high-traffic content (new product launches, breaking news, viral content) and pre-fetch into edge caches. Benefits include no cache misses on launch (all requests hit cache) and origin protection (no thundering herd). Drawbacks include storage cost (caching content that may not be requested) and staleness risk (warmed content may become outdated). This strategy works well for predictable high-traffic events.
+        </p>
+
+        <h3 className="mt-6">Edge Optimization</h3>
+        <p>
+          Image optimization at edge reduces bandwidth and improves load times. Resize images to appropriate dimensions for requesting device. Compress images with modern formats (WebP, AVIF) that offer better compression than JPEG/PNG. Serve responsive images with srcset attribute, letting browser choose appropriate size. Implement lazy loading so images load only when visible. Edge image optimization can reduce image bandwidth by 50-80% compared to serving original uploads.
+        </p>
+        <p>
+          Compression reduces bandwidth costs and improves load times. Brotli compression offers better compression than Gzip (15-20% smaller) but requires more CPU. Gzip is universally supported and fast. Compress text content (HTML, CSS, JavaScript, JSON) at edge before sending to users. Typical compression ratios are 70-80% for text content. Enable compression in CDN configuration, ensuring proper Vary: Accept-Encoding headers.
+        </p>
+        <p>
+          Protocol optimization improves connection efficiency. HTTP/2 enables multiplexing (multiple requests over single connection), header compression (HPACK), and server push. HTTP/3 (QUIC) provides 0-RTT resumption (instant connection for returning users), improved congestion control, and better performance on lossy networks. Enable HTTP/2 or HTTP/3 in CDN configuration for modern browsers, with HTTP/1.1 fallback for legacy clients.
+        </p>
+
+        <h3 className="mt-6">Multi-CDN Strategy</h3>
+        <p>
+          Multi-CDN setups use multiple CDN providers simultaneously. Redundancy ensures no single point of failure—if one CDN has an outage, traffic fails over to another. Load balancing distributes traffic across CDNs based on performance, cost, or capacity. Geo-routing uses the best CDN for each region—some CDNs have better coverage in specific regions (e.g., Cloudflare strong globally, Akamai strong in enterprise, regional CDNs strong locally). Cost optimization routes traffic to cheapest CDN for each traffic type. Health checks monitor CDN performance and availability, triggering automatic failover on issues.
+        </p>
+        <p>
+          Multi-CDN routing approaches vary. DNS-based routing uses DNS to direct users to different CDNs—simple but slow to change (DNS TTL delays failover). Anycast routing uses same IP across CDNs, with BGP routing to nearest—fast but requires coordination. HTTP-based routing uses a routing layer (load balancer, DNS service) to direct requests—flexible but adds latency. Performance-based routing continuously measures CDN performance per region and routes accordingly—optimal but complex to implement.
+        </p>
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          CDN delivery architecture spans origin infrastructure, CDN edge network, caching layer, and user routing. Origin infrastructure hosts original content. CDN edge network distributes content globally. Caching layer stores content at edge locations. User routing directs requests to optimal edge location. Each layer has specific responsibilities and configuration requirements.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/cdn-architecture.svg"
           alt="CDN Architecture"
-          caption="CDN Architecture — showing origin, edge nodes, caching, and user routing"
+          caption="Figure 1: CDN Architecture — Origin, edge nodes, caching, and user routing"
+          width={1000}
+          height={500}
         />
-      </section>
 
-      <section>
-        <h2>CDN Configuration</h2>
+        <h3>Origin Infrastructure</h3>
+        <p>
+          Origin infrastructure serves as source of truth for content. Origin servers host original content, handle cache misses, and process invalidation requests. Origin shield (intermediate cache layer) consolidates cache misses from multiple edge nodes, reducing origin load. Origin configuration includes connection pooling (reuse connections to edge), keep-alive settings (maintain connections), and rate limiting (protect from traffic spikes). Origin must handle variable load—cache misses create unpredictable traffic patterns that can overwhelm unprepared origins.
+        </p>
+        <p>
+          Origin security protects infrastructure from direct access. Restrict origin access to CDN IP ranges only (block direct user access). Use origin authentication (signed requests from CDN to origin). Implement DDoS protection at origin level (rate limiting, IP blocking). Monitor origin health and set up alerts for unusual traffic patterns. Origin security is critical—a compromised origin undermines all CDN security.
+        </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Cache Headers</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Cache-Control:</strong> max-age, s-maxage, public/private,
-              no-cache, no-store.
-            </li>
-            <li>
-              <strong>ETag:</strong> Entity tag for validation. Hash of content.
-            </li>
-            <li>
-              <strong>Last-Modified:</strong> Timestamp for conditional requests.
-            </li>
-            <li>
-              <strong>Vary:</strong> Cache variations (Accept-Encoding, User-Agent).
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">TTL Settings</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Static Assets:</strong> Long TTL (1 year) with versioned URLs.
-              Images, CSS, JS.
-            </li>
-            <li>
-              <strong>Dynamic Content:</strong> Short TTL (minutes to hours).
-              HTML pages, API responses.
-            </li>
-            <li>
-              <strong>Personalized Content:</strong> No cache or very short TTL.
-              User-specific data.
-            </li>
-            <li>
-              <strong>API Responses:</strong> Cache based on response type.
-              GET cacheable, POST/PUT/DELETE invalidate.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Invalidation Strategies</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Purge by URL:</strong> Invalidate specific paths.
-            </li>
-            <li>
-              <strong>Purge by Tag:</strong> Invalidate by cache tag.
-              Group related content.
-            </li>
-            <li>
-              <strong>Purge All:</strong> Full cache clear. Use sparingly.
-            </li>
-            <li>
-              <strong>Versioned URLs:</strong> Change URL on update.
-              asset.v123.js → asset.v124.js.
-            </li>
-            <li>
-              <strong>Soft Purge:</strong> Mark stale, serve while revalidating.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Geo-Routing</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>DNS-based:</strong> Return nearest edge IP based on
-              resolver location.
-            </li>
-            <li>
-              <strong>Anycast:</strong> Same IP, routed to nearest edge by BGP.
-            </li>
-            <li>
-              <strong>HTTP-based:</strong> Route based on user's IP at edge.
-            </li>
-            <li>
-              <strong>Latency-based:</strong> Route to lowest latency edge.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Caching Strategies</h2>
+        <h3 className="mt-6">Edge Network</h3>
+        <p>
+          Edge network distributes content globally through Points of Presence (PoPs). Each PoP contains cache servers serving nearby users. Edge servers handle cache hits (serve cached content), cache misses (fetch from origin), and edge computing (run logic at edge). PoP density affects performance—more PoPs means users are closer to edge, reducing latency. Major CDNs have hundreds to thousands of PoPs globally.
+        </p>
+        <p>
+          Edge computing enables running logic at edge nodes. Cloudflare Workers, Lambda@Edge, and Vercel Edge Functions execute JavaScript/WebAssembly at edge. Use cases include A/B testing (route users to variants at edge), personalization (modify content based on user attributes), authentication (validate tokens at edge), and request transformation (modify requests before origin). Edge computing reduces origin load and latency by processing requests closer to users.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/caching-strategies.svg"
           alt="Caching Strategies"
-          caption="Caching — comparing cache-aside, write-through, and stale-while-revalidate"
+          caption="Figure 2: Caching Strategies — Cache-aside, write-through, and stale-while-revalidate comparison"
+          width={1000}
+          height={450}
         />
 
+        <h3 className="mt-6">User Routing</h3>
         <p>
-          Different caching strategies for different use cases.
+          User routing directs requests to optimal edge location. DNS-based routing returns different IPs based on user&apos;s DNS resolver location—simple but affected by DNS resolver geography (user in Tokyo using US DNS resolver may get US edge). Anycast routing advertises same IP from all PoPs, with BGP routing to nearest—fast but requires BGP expertise. HTTP-based routing uses a routing layer to direct requests based on user IP—flexible but adds latency. Latency-based routing measures actual latency to PoPs and routes to lowest—optimal but requires continuous measurement.
+        </p>
+        <p>
+          Routing health monitoring ensures users are directed to healthy PoPs. Health checks continuously test PoP availability and performance. Unhealthy PoPs are removed from routing pool automatically. Failover routing redirects traffic from unhealthy PoPs to nearest healthy alternative. Routing health is critical for availability—a failed PoP without failover causes outages for affected users.
         </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Cache-aside (Lazy Loading)</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Check cache, miss → origin → cache → return.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Read-heavy workloads, unpredictable access.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Simple, only caches requested content.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Cache miss penalty, stale data risk.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Write-through</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Write to cache and origin simultaneously.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Write-heavy workloads, data consistency.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Cache always fresh, no stale data.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Write latency, cache pollution.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Stale-while-revalidate</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Serve stale while refreshing in background.
-            </li>
-            <li>
-              <strong>Use Case:</strong> High availability, acceptable staleness.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Fast response, origin protection.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Brief staleness window.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Cache Warming</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Pre-populate cache before traffic.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Predictable high-traffic content.
-            </li>
-            <li>
-              <strong>Benefits:</strong> No cache misses on launch.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Storage cost, staleness.
-            </li>
-          </ul>
-        </div>
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/cdn-invalidation-flow.svg"
+          alt="Cache Invalidation Flow"
+          caption="Figure 3: Cache Invalidation Flow — Purge by URL, tag-based, and versioned URLs"
+          width={1000}
+          height={450}
+        />
       </section>
 
       <section>
-        <h2>Edge Optimization</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Image Optimization:</strong> Resize, compress, format conversion
-            at edge. WebP, AVIF support.
-          </li>
-          <li>
-            <strong>Compression:</strong> Gzip, Brotli compression at edge.
-            Reduce bandwidth costs.
-          </li>
-          <li>
-            <strong>Minification:</strong> Minify CSS, JS at edge. Remove whitespace,
-            comments.
-          </li>
-          <li>
-            <strong>HTTP/2 &amp; HTTP/3:</strong> Multiplexing, header compression,
-            0-RTT resumption.
-          </li>
-          <li>
-            <strong>TCP Optimization:</strong> Connection reuse, keep-alive,
-            congestion control.
-          </li>
-        </ul>
-      </section>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          CDN delivery design involves trade-offs between cache freshness and hit rate, single-CDN simplicity and multi-CDN redundancy, and edge optimization and origin control. Understanding these trade-offs enables informed decisions aligned with platform requirements and constraints.
+        </p>
 
-      <section>
-        <h2>Multi-CDN Strategy</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Redundancy:</strong> Multiple CDN providers for failover.
-            Avoid single point of failure.
-          </li>
-          <li>
-            <strong>Load Balancing:</strong> Distribute traffic across CDNs.
-            Based on performance, cost.
-          </li>
-          <li>
-            <strong>Geo-routing:</strong> Use best CDN per region. Some CDNs
-            better in specific regions.
-          </li>
-          <li>
-            <strong>Cost Optimization:</strong> Route to cheapest CDN for
-            traffic type.
-          </li>
-          <li>
-            <strong>Health Checks:</strong> Monitor CDN health, failover on
-            issues.
-          </li>
-        </ul>
-      </section>
+        <h3>Cache Freshness: Long TTL vs. Short TTL</h3>
+        <p>
+          Long TTL (hours to days). Pros: High cache hit rate (content stays cached longer), reduced origin load (fewer cache misses), lower CDN costs (fewer origin requests). Cons: Stale content served longer (updates delayed), requires robust invalidation (must purge on updates), risk of serving outdated content. Best for: Static content, infrequently updated content, content where brief staleness is acceptable.
+        </p>
+        <p>
+          Short TTL (seconds to minutes). Pros: Fresh content (updates reflected quickly), reduced invalidation complexity (content expires naturally), lower staleness risk. Cons: Lower cache hit rate (content expires frequently), higher origin load (more cache misses), higher CDN costs (more origin requests). Best for: Dynamic content, frequently updated content, content where freshness is critical.
+        </p>
+        <p>
+          Hybrid: stale-while-revalidate with appropriate max-age and stale-while-revalidate values. Pros: Best of both (fresh content with high availability, serves stale while revalidating). Cons: Complexity (two TTL values to tune), brief staleness window. Best for: Most platforms—balance freshness with availability using stale-while-revalidate.
+        </p>
 
-      <section>
-        <h2>Security</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>DDoS Protection:</strong> Rate limiting, IP blocking,
-            challenge pages.
-          </li>
-          <li>
-            <strong>WAF:</strong> Web Application Firewall at edge. Block
-            common attacks.
-          </li>
-          <li>
-            <strong>HTTPS:</strong> TLS at edge. HSTS, modern cipher suites.
-          </li>
-          <li>
-            <strong>Token Authentication:</strong> Signed URLs for protected
-            content.
-          </li>
-          <li>
-            <strong>Bot Detection:</strong> Identify and block malicious bots.
-          </li>
-        </ul>
-      </section>
+        <h3>CDN Strategy: Single vs. Multi-CDN</h3>
+        <p>
+          Single CDN. Pros: Simplicity (one provider, one configuration), lower operational overhead (one dashboard, one support relationship), potentially lower costs (volume discounts). Cons: Single point of failure (CDN outage affects all users), limited geographic optimization (one CDN may be weak in some regions), vendor lock-in (hard to switch providers). Best for: Small to medium platforms, regions with good CDN coverage, cost-conscious deployments.
+        </p>
+        <p>
+          Multi-CDN. Pros: Redundancy (failover on CDN outage), geographic optimization (best CDN per region), negotiating leverage (can switch providers), performance optimization (route to best performing CDN). Cons: Complexity (multiple configurations, multiple dashboards), higher operational overhead (monitor multiple providers), potentially higher costs (may not qualify for volume discounts). Best for: Large platforms, global reach requirements, high availability requirements.
+        </p>
+        <p>
+          Hybrid: primary CDN with backup for failover. Pros: Best of both (simplicity of single CDN, redundancy of multi-CDN). Cons: Backup CDN may be cold (not warmed up), failover may be slow. Best for: Most platforms—single primary CDN with backup ready for failover.
+        </p>
 
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://web.dev/fast/#optimize-your-content" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Web.dev Content Optimization
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN HTTP Caching
-            </a>
-          </li>
-        </ul>
+        <h3>Edge Optimization: Aggressive vs. Conservative</h3>
+        <p>
+          Aggressive optimization (optimize everything at edge). Pros: Maximum performance (all optimizations applied), reduced origin load (processing at edge), consistent optimization (all users get optimized content). Cons: Higher CDN costs (optimization features cost extra), less origin control (edge may optimize differently than origin), potential quality issues (over-aggressive compression). Best for: Performance-critical platforms, image-heavy sites, global audiences with varying connection speeds.
+        </p>
+        <p>
+          Conservative optimization (minimal optimization at edge). Pros: Lower CDN costs (basic features only), more origin control (origin handles optimization), predictable quality (origin controls optimization). Cons: Higher origin load (processing at origin), inconsistent optimization (depends on origin capacity), potentially slower performance. Best for: Cost-conscious deployments, platforms with specific quality requirements, origins with optimization capabilities.
+        </p>
+        <p>
+          Hybrid: selective optimization (optimize high-impact content). Pros: Best of both (optimize where it matters, skip where it doesn&apos;t). Cons: Complexity (decide what to optimize), requires analysis (identify high-impact content). Best for: Most platforms—optimize images and text, skip already-optimized content.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/cdn-comparison.svg"
+          alt="CDN Provider Comparison"
+          caption="Figure 4: CDN Provider Comparison — Cloudflare, Akamai, Fastly, AWS CloudFront features"
+          width={1000}
+          height={450}
+        />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Caching</h3>
-        <ul className="space-y-2">
-          <li>Set appropriate Cache-Control headers</li>
-          <li>Use versioned URLs for static assets</li>
-          <li>Implement stale-while-revalidate</li>
-          <li>Warm cache for predictable traffic</li>
-          <li>Monitor cache hit rates</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance</h3>
-        <ul className="space-y-2">
-          <li>Enable compression (Brotli, Gzip)</li>
-          <li>Optimize images at edge</li>
-          <li>Use HTTP/2 or HTTP/3</li>
-          <li>Minimize origin requests</li>
-          <li>Implement connection reuse</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security</h3>
-        <ul className="space-y-2">
-          <li>Enable DDoS protection</li>
-          <li>Configure WAF rules</li>
-          <li>Use HTTPS everywhere</li>
-          <li>Implement token authentication</li>
-          <li>Monitor for abuse patterns</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track cache hit/miss rates</li>
-          <li>Monitor edge latency</li>
-          <li>Alert on origin load spikes</li>
-          <li>Track bandwidth usage</li>
-          <li>Monitor CDN health</li>
+        <ul className="space-y-3">
+          <li>
+            <strong>Set appropriate cache headers:</strong> Cache-Control with max-age and stale-while-revalidate. ETag for validation. Vary header for content variants. Proper headers are foundation of effective caching.
+          </li>
+          <li>
+            <strong>Use versioned URLs for static assets:</strong> app.v123.js, style.abc123.css. Natural invalidation through URL change. Long TTL (1 year) safe with versioned URLs.
+          </li>
+          <li>
+            <strong>Implement stale-while-revalidate:</strong> Serve stale content while refreshing. Maintains availability during origin issues. Configurable staleness window.
+          </li>
+          <li>
+            <strong>Enable compression:</strong> Brotli for modern browsers, Gzip fallback. 70-80% compression for text content. Significant bandwidth savings.
+          </li>
+          <li>
+            <strong>Optimize images at edge:</strong> Resize, compress, format conversion. WebP/AVIF for modern browsers. 50-80% bandwidth reduction.
+          </li>
+          <li>
+            <strong>Use HTTP/2 or HTTP/3:</strong> Multiplexing, header compression, 0-RTT. Significant performance improvement for multiple requests.
+          </li>
+          <li>
+            <strong>Implement cache warming:</strong> Pre-populate cache for predictable traffic. Product launches, breaking news, viral content. Prevents cache miss storms.
+          </li>
+          <li>
+            <strong>Monitor cache metrics:</strong> Cache hit rate, edge latency, origin load, bandwidth usage. Set up alerts for anomalies. Track per-region performance.
+          </li>
+          <li>
+            <strong>Configure DDoS protection:</strong> Rate limiting, IP blocking, challenge pages. CDN absorbs attack traffic. Protect origin from spikes.
+          </li>
+          <li>
+            <strong>Use HTTPS everywhere:</strong> TLS at edge. HSTS enforcement. Modern cipher suites. No mixed content.
+          </li>
         </ul>
       </section>
 
@@ -351,467 +239,178 @@ export default function CDNDeliveryArticle() {
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
           <li>
-            <strong>No cache headers:</strong> Content not cached properly.
-            <br /><strong>Fix:</strong> Set appropriate Cache-Control headers.
+            <strong>No cache headers:</strong> Content not cached properly, every request hits origin. <strong>Solution:</strong> Set Cache-Control headers with appropriate max-age and stale-while-revalidate values.
           </li>
           <li>
-            <strong>Too long TTL:</strong> Stale content served too long.
-            <br /><strong>Fix:</strong> Use versioned URLs or shorter TTL.
+            <strong>Too long TTL without invalidation:</strong> Stale content served indefinitely. <strong>Solution:</strong> Use versioned URLs for static assets, implement purge API for dynamic content.
           </li>
           <li>
-            <strong>No invalidation:</strong> Updated content not reflected.
-            <br /><strong>Fix:</strong> Implement purge API or versioned URLs.
+            <strong>Caching personalized content:</strong> Wrong content served to users. <strong>Solution:</strong> No cache for personalized content, or use user-specific cache keys with proper Vary headers.
           </li>
           <li>
-            <strong>Caching personalized content:</strong> Wrong content to users.
-            <br /><strong>Fix:</strong> No cache or vary by user.
+            <strong>No compression enabled:</strong> High bandwidth costs, slow page loads. <strong>Solution:</strong> Enable Brotli/Gzip compression in CDN configuration.
           </li>
           <li>
-            <strong>No compression:</strong> High bandwidth costs.
-            <br /><strong>Fix:</strong> Enable Brotli/Gzip compression.
+            <strong>Single CDN without failover:</strong> CDN outage causes complete outage. <strong>Solution:</strong> Implement multi-CDN with automatic failover, or have backup CDN ready.
           </li>
           <li>
-            <strong>Single CDN:</strong> No failover option.
-            <br /><strong>Fix:</strong> Implement multi-CDN strategy.
+            <strong>No monitoring:</strong> Issues undetected until users complain. <strong>Solution:</strong> Monitor cache hit rate, edge latency, origin load, error rates. Set up alerts.
           </li>
           <li>
-            <strong>No monitoring:</strong> Issues undetected.
-            <br /><strong>Fix:</strong> Monitor cache hit rate, latency, errors.
+            <strong>Poor image optimization:</strong> Large images slow pages, high bandwidth costs. <strong>Solution:</strong> Optimize images at edge, use modern formats (WebP, AVIF), implement lazy loading.
           </li>
           <li>
-            <strong>Poor image optimization:</strong> Large images slow pages.
-            <br /><strong>Fix:</strong> Optimize images at edge, use modern formats.
+            <strong>Origin exposed directly:</strong> Users bypass CDN, DDoS attacks hit origin. <strong>Solution:</strong> Restrict origin access to CDN IPs only, use origin authentication.
           </li>
           <li>
-            <strong>No HTTPS:</strong> Content vulnerable to interception.
-            <br /><strong>Fix:</strong> Enable HTTPS, HSTS.
+            <strong>Cache pollution:</strong> Unimportant content fills cache, important content evicted. <strong>Solution:</strong> Cache only valuable content, set appropriate TTLs, use cache tags for prioritization.
           </li>
           <li>
-            <strong>Cache pollution:</strong> Unimportant content fills cache.
-            <br /><strong>Fix:</strong> Cache only valuable content, set appropriate TTL.
+            <strong>No invalidation strategy:</strong> Updated content not reflected, stale content served. <strong>Solution:</strong> Implement purge API, use versioned URLs, configure appropriate TTLs with stale-while-revalidate.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
+        <h2>Real-world Use Cases</h2>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edge Computing</h3>
+        <h3>E-commerce Platform CDN</h3>
         <p>
-          Run logic at edge nodes. A/B testing, personalization, authentication. Reduce origin load. Consider Cloudflare Workers, Lambda@Edge, Vercel Edge Functions.
+          E-commerce platform uses CDN for product images, static assets, and dynamic content. Static assets (CSS, JS, product images) use versioned URLs with 1-year TTL. Product pages use 5-minute TTL with stale-while-revalidate (serve 5-minute stale while revalidating). Shopping cart and checkout bypass cache entirely (personalized, sensitive). Image optimization at edge reduces image bandwidth by 60%. Multi-CDN setup with primary (Cloudflare) and backup (AWS CloudFront) for redundancy. Black Friday traffic handled with cache warming (pre-populate popular products) and origin shield (protect origin from cache miss storms).
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cache Key Design</h3>
+        <h3 className="mt-6">News Website CDN</h3>
         <p>
-          Design cache keys carefully. Include relevant headers (Accept-Encoding, User-Agent). Exclude irrelevant headers. Use cache tags for grouping. Consider query string handling.
+          News website uses CDN for article content, images, and breaking news. Articles use 1-hour TTL with tag-based invalidation (purge by article ID when updated). Breaking news uses cache warming (pre-populate homepage, trending articles). Images optimized at edge with WebP for supporting browsers. Multi-CDN routing based on geography (best CDN per region). During major news events, cache hit rate reaches 99%+ with proper warming. Invalidation API triggers immediate purge for corrections and updates.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Origin Shield</h3>
+        <h3 className="mt-6">Video Streaming CDN</h3>
         <p>
-          Add intermediate cache layer. Reduce origin requests from multiple edge nodes. Consolidate cache misses. Protect origin from traffic spikes.
+          Video streaming platform uses CDN for video delivery. Video segments cached with long TTL (24 hours) since content doesn&apos;t change. Manifest files (HLS/DASH) use short TTL (30 seconds) for live stream updates. Token authentication for premium content (signed URLs with expiration). Multi-CDN for global reach with geo-routing to best CDN per region. Edge computing for ad insertion (insert ads at edge based on user profile). Origin shield protects video origin from cache miss storms during popular releases.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
+        <h3 className="mt-6">SaaS Application CDN</h3>
         <p>
-          Handle CDN failures gracefully. Fail-safe defaults (serve from origin). Queue requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor CDN health continuously.
+          SaaS application uses CDN for static assets and API responses. Application bundle (JS, CSS) uses versioned URLs with 1-year TTL. API responses cached based on endpoint—read-only endpoints (GET /users, GET /projects) cached with 1-minute TTL, write endpoints invalidate related caches. Personalized dashboards bypass cache or use user-specific cache keys. Edge computing for authentication (validate JWT at edge, reject invalid tokens before origin). Multi-CDN with performance-based routing (route to fastest CDN per user).
+        </p>
+
+        <h3 className="mt-6">API Platform CDN</h3>
+        <p>
+          API platform uses CDN for API response caching. Public API endpoints cached with endpoint-specific TTLs (frequently accessed endpoints: 5 minutes, rarely accessed: 1 hour). Cache keys include relevant query parameters, exclude irrelevant ones (timestamps, tracking params). Rate limiting at edge protects API from abuse. API versioning through URL path (/v1/, /v2/) enables clean cache separation. Invalidation API allows API consumers to purge cached responses when underlying data changes.
         </p>
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/cdn-comparison.svg"
-          alt="CDN Provider Comparison"
-          caption="CDNs — comparing Cloudflare, Akamai, Fastly, AWS CloudFront with features"
-        />
-
+        <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle cache invalidation?</p>
-            <p className="mt-2 text-sm">A: Version URLs (asset.v123.js), purge by path, invalidation API, TTL-based expiry. Use cache tags for grouped invalidation.</p>
+            <p className="font-semibold">Q: How do you handle cache invalidation for updated content?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Use multiple invalidation strategies based on content type. Versioned URLs for static assets (app.v123.js → app.v124.js) provide natural invalidation. Purge by URL for specific content updates. Tag-based invalidation for grouped content (purge all &quot;article-123&quot; tagged content). Stale-while-revalidate maintains availability during invalidation. The key insight: no single strategy works for all cases—use versioned URLs for static, purge API for dynamic, and accept brief staleness for high-availability requirements.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize CDN costs?</p>
-            <p className="mt-2 text-sm">A: Compression, image optimization, cache hit optimization, tiered pricing, multi-CDN routing. Monitor bandwidth usage.</p>
+            <p className="font-semibold">Q: How do you optimize CDN costs at scale?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Optimize across multiple dimensions. Compression (Brotli/Gzip) reduces bandwidth 70-80%. Image optimization (resize, WebP/AVIF) reduces image bandwidth 50-80%. Cache hit optimization (appropriate TTLs, cache warming) reduces origin requests. Tiered pricing negotiation (volume discounts, committed use). Multi-CDN routing (route to cheapest CDN for traffic type). Monitor bandwidth usage per CDN, per region, per content type. The operational insight: CDN costs scale with traffic—optimization compounds at scale, making even small percentage improvements worth significant investment.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What's your caching strategy?</p>
-            <p className="mt-2 text-sm">A: Cache-aside for most content. Stale-while-revalidate for availability. Write-through for consistency. Versioned URLs for static assets.</p>
+            <p className="font-semibold">Q: What caching strategy do you recommend for different content types?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Match strategy to content characteristics. Static assets (CSS, JS, images): versioned URLs with 1-year TTL, cache-aside pattern. Dynamic content (HTML pages, API responses): short TTL (minutes) with stale-while-revalidate, ETag validation. Personalized content (dashboards, recommendations): no cache or user-specific cache keys, very short TTL. Frequently updated content (news, stock prices): short TTL with tag-based invalidation. The key principle: one size doesn&apos;t fit all—different content types have different freshness requirements and access patterns.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle dynamic content?</p>
-            <p className="mt-2 text-sm">A: Short TTL with ETag validation. Cache by user segment if possible. Edge computing for personalization. Origin shield for protection.</p>
+            <p className="font-semibold">Q: How do you implement multi-CDN failover?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Implement health monitoring and automatic failover. Health checks continuously test each CDN&apos;s availability and performance (response time, error rate). DNS-based failover updates DNS records to point to healthy CDN (slow due to DNS TTL). HTTP-based failover uses routing layer to direct traffic to healthy CDN (faster but adds latency). Anycast failover relies on BGP to withdraw routes from unhealthy CDN (fastest but requires BGP expertise). The operational challenge: balance failover speed with stability—too sensitive causes flapping, too slow causes extended outages.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement multi-CDN?</p>
-            <p className="mt-2 text-sm">A: DNS-based routing, health checks, performance monitoring. Route based on region, cost, availability. Failover on issues.</p>
+            <p className="font-semibold">Q: How do you protect against DDoS attacks with CDN?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Leverage CDN&apos;s DDoS mitigation capabilities. Rate limiting at edge blocks excessive requests per IP. IP blocking bans known malicious IPs. Challenge pages (CAPTCHA, JavaScript challenge) filter bots from humans. WAF rules block common attack patterns (SQL injection, XSS). CDN absorbs attack traffic across distributed edge network, protecting origin. Origin shield provides additional protection layer. The key insight: CDN&apos;s distributed nature makes it ideal for DDoS mitigation—attack traffic is absorbed across hundreds of PoPs rather than overwhelming single origin.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you protect against DDoS?</p>
-            <p className="mt-2 text-sm">A: Rate limiting, IP blocking, challenge pages, WAF rules. CDN absorbs attack traffic. Origin shield for additional protection.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you monitor CDN performance?</p>
-            <p className="mt-2 text-sm">A: Cache hit rate, edge latency, origin load, bandwidth usage, error rates. Set up alerts for anomalies. Track per-region performance.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle cache misses?</p>
-            <p className="mt-2 text-sm">A: Serve from origin, cache response. Use stale-while-revalidate to serve stale while fetching. Implement cache warming for predictable traffic.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize images?</p>
-            <p className="mt-2 text-sm">A: Resize at edge, compress, convert to WebP/AVIF. Lazy load images. Use srcset for responsive images. Implement blur-up placeholders.</p>
+            <p className="font-semibold">Q: How do you monitor CDN performance and detect issues?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Monitor multiple metrics with alerting. Cache hit rate (target: 90%+ for static, varies for dynamic). Edge latency (p50, p95, p99 per region). Origin load (requests per second, bandwidth). Error rates (4xx, 5xx errors per CDN). Bandwidth usage (per CDN, per region, per content type). Set up alerts for anomalies (sudden drop in cache hit rate, latency spike, error rate increase). Track per-region performance to identify regional issues. The operational insight: proactive monitoring catches issues before users notice—cache hit rate drop often precedes origin overload.
+            </p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ HTTPS enabled with HSTS</li>
-            <li>☐ DDoS protection configured</li>
-            <li>☐ WAF rules enabled</li>
-            <li>☐ Cache headers set correctly</li>
-            <li>☐ Invalidation strategy implemented</li>
-            <li>☐ Compression enabled</li>
-            <li>☐ Image optimization configured</li>
-            <li>☐ Monitoring and alerting set up</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
+        <h2>References</h2>
         <ul className="space-y-2">
-          <li>Test cache header generation</li>
-          <li>Test invalidation logic</li>
-          <li>Test cache key generation</li>
-          <li>Test compression logic</li>
-          <li>Test image optimization</li>
+          <li>
+            <a
+              href="https://web.dev/fast/#optimize-your-content"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Web.dev — Content Optimization Guide
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN — HTTP Caching Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cloudflare — CDN Learning Center
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://aws.amazon.com/cloudfront/features/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS — CloudFront Features and Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.fastly.com/blog/tag/caching-best-practices"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Fastly — Caching Best Practices Blog
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.akamai.com/resources"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Akamai — CDN Resources and Whitepapers
+            </a>
+          </li>
         </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test CDN integration</li>
-          <li>Test cache hit/miss flow</li>
-          <li>Test invalidation flow</li>
-          <li>Test multi-CDN failover</li>
-          <li>Test edge optimization</li>
-          <li>Test origin shield</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test DDoS protection</li>
-          <li>Test WAF rules</li>
-          <li>Test HTTPS configuration</li>
-          <li>Test token authentication</li>
-          <li>Test bot detection</li>
-          <li>Penetration testing for CDN</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test cache hit rate</li>
-          <li>Test edge latency</li>
-          <li>Test origin load under cache miss</li>
-          <li>Test compression effectiveness</li>
-          <li>Test image optimization impact</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li><a href="https://web.dev/fast/#optimize-your-content" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Web.dev Content Optimization</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN HTTP Caching</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Delivery_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Content Delivery</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Web Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cache-aside Pattern</h3>
-        <p>
-          Check cache first. On miss, fetch from origin, cache, return. Simple and effective for most workloads. Handle cache stampede with locking.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Invalidation Pattern</h3>
-        <p>
-          Versioned URLs for static assets. Purge API for dynamic content. Cache tags for grouped invalidation. Soft purge for availability.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edge Optimization Pattern</h3>
-        <p>
-          Compress at edge (Brotli, Gzip). Optimize images (resize, format). Minify CSS/JS. Use HTTP/2 or HTTP/3. Implement connection reuse.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-CDN Pattern</h3>
-        <p>
-          Route traffic across multiple CDNs. Health checks for failover. Performance-based routing. Cost optimization. Avoid single point of failure.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle CDN failures gracefully. Fail-safe defaults (serve from origin). Queue requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor CDN health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for CDN. SOC2: CDN audit trails. HIPAA: PHI delivery safeguards. PCI-DSS: Cardholder data delivery. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize CDN for high-throughput systems. Batch CDN operations. Use connection pooling. Implement async content loading. Monitor CDN latency. Set SLOs for CDN time. Scale CDN endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle CDN errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback CDN mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make CDN easy for developers to use. Provide CDN SDK. Auto-generate CDN documentation. Include CDN requirements in API docs. Provide testing utilities. Implement CDN linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant CDN</h3>
-        <p>
-          Handle CDN in multi-tenant systems. Tenant-scoped CDN configuration. Isolate CDN events between tenants. Tenant-specific CDN policies. Audit CDN per tenant. Handle cross-tenant CDN carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise CDN</h3>
-        <p>
-          Special handling for enterprise CDN. Dedicated support for enterprise onboarding. Custom CDN configurations. SLA for CDN availability. Priority support for CDN issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency CDN bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Testing</h3>
-        <p>
-          Test CDN thoroughly before deployment. Chaos engineering for CDN failures. Simulate high-volume CDN scenarios. Test CDN under load. Validate CDN propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate CDN changes clearly to users. Explain why CDN is required. Provide steps to configure CDN. Offer support contact for issues. Send CDN confirmation. Provide CDN history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve CDN based on operational learnings. Analyze CDN patterns. Identify false positives. Optimize CDN triggers. Gather user feedback. Track CDN metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen CDN against attacks. Implement defense in depth. Regular penetration testing. Monitor for CDN bypass attempts. Encrypt CDN data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic CDN revocation on HR termination. Role change triggers CDN review. Contractor expiry triggers CDN revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Analytics</h3>
-        <p>
-          Analyze CDN data for insights. Track CDN reasons distribution. Identify common CDN triggers. Detect anomalous CDN patterns. Measure CDN effectiveness. Generate CDN reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System CDN</h3>
-        <p>
-          Coordinate CDN across multiple systems. Central CDN orchestration. Handle system-specific CDN. Ensure consistent enforcement. Manage CDN dependencies. Orchestrate CDN updates. Monitor cross-system CDN health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Documentation</h3>
-        <p>
-          Maintain comprehensive CDN documentation. CDN procedures and runbooks. Decision records for CDN design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with CDN endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize CDN system costs. Right-size CDN infrastructure. Use serverless for variable workloads. Optimize storage for CDN data. Reduce unnecessary CDN checks. Monitor cost per CDN. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Governance</h3>
-        <p>
-          Establish CDN governance framework. Define CDN ownership and stewardship. Regular CDN reviews and audits. CDN change management process. Compliance reporting. CDN exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time CDN</h3>
-        <p>
-          Enable real-time CDN capabilities. Hot reload CDN rules. Version CDN for rollback. Validate CDN before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for CDN changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Simulation</h3>
-        <p>
-          Test CDN changes before deployment. What-if analysis for CDN changes. Simulate CDN decisions with sample requests. Detect unintended consequences. Validate CDN coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Inheritance</h3>
-        <p>
-          Support CDN inheritance for easier management. Parent CDN triggers child CDN. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited CDN results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic CDN</h3>
-        <p>
-          Enforce location-based CDN controls. CDN access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic CDN patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based CDN</h3>
-        <p>
-          CDN access by time of day/day of week. Business hours only for sensitive operations. After-hours CDN requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based CDN violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based CDN</h3>
-        <p>
-          CDN access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based CDN decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based CDN</h3>
-        <p>
-          CDN access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based CDN patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral CDN</h3>
-        <p>
-          Detect anomalous access patterns for CDN. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up CDN for high-risk access. Continuous CDN during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based CDN</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification CDN</h3>
-        <p>
-          Apply CDN based on data sensitivity. Classify data (public, internal, confidential, restricted). Different CDN per classification. Automatic classification where possible. Handle classification changes. Audit classification-based CDN. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Orchestration</h3>
-        <p>
-          Coordinate CDN across distributed systems. Central CDN orchestration service. Handle CDN conflicts across systems. Ensure consistent enforcement. Manage CDN dependencies. Orchestrate CDN updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust CDN</h3>
-        <p>
-          Implement zero trust CDN control. Never trust, always verify. Least privilege CDN by default. Micro-segmentation of CDN. Continuous verification of CDN trust. Assume breach mentality. Monitor and log all CDN.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Versioning Strategy</h3>
-        <p>
-          Manage CDN versions effectively. Semantic versioning for CDN. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request CDN</h3>
-        <p>
-          Handle access request CDN systematically. Self-service access CDN request. Manager approval workflow. Automated CDN after approval. Temporary CDN with expiry. Access CDN audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Compliance Monitoring</h3>
-        <p>
-          Monitor CDN compliance continuously. Automated compliance checks. Alert on CDN violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for CDN system failures. Backup CDN configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Performance Tuning</h3>
-        <p>
-          Optimize CDN evaluation performance. Profile CDN evaluation latency. Identify slow CDN rules. Optimize CDN rules. Use efficient data structures. Cache CDN results. Scale CDN engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Testing Automation</h3>
-        <p>
-          Automate CDN testing in CI/CD. Unit tests for CDN rules. Integration tests with sample requests. Regression tests for CDN changes. Performance tests for CDN evaluation. Security tests for CDN bypass. Automated CDN validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Communication</h3>
-        <p>
-          Communicate CDN changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain CDN changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Retirement</h3>
-        <p>
-          Retire obsolete CDN systematically. Identify unused CDN. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove CDN after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party CDN Integration</h3>
-        <p>
-          Integrate with third-party CDN systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party CDN evaluation. Manage trust relationships. Audit third-party CDN. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Cost Management</h3>
-        <p>
-          Optimize CDN system costs. Right-size CDN infrastructure. Use serverless for variable workloads. Optimize storage for CDN data. Reduce unnecessary CDN checks. Monitor cost per CDN. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Scalability</h3>
-        <p>
-          Scale CDN for growing systems. Horizontal scaling for CDN engines. Shard CDN data by user. Use read replicas for CDN checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Observability</h3>
-        <p>
-          Implement comprehensive CDN observability. Distributed tracing for CDN flow. Structured logging for CDN events. Metrics for CDN health. Dashboards for CDN monitoring. Alerts for CDN anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Training</h3>
-        <p>
-          Train team on CDN procedures. Regular CDN drills. Document CDN runbooks. Cross-train team members. Test CDN knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Innovation</h3>
-        <p>
-          Stay current with CDN best practices. Evaluate new CDN technologies. Pilot innovative CDN approaches. Share CDN learnings. Contribute to CDN community. Patent CDN innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Metrics</h3>
-        <p>
-          Track key CDN metrics. CDN success rate. Time to CDN. CDN propagation latency. Denylist hit rate. User session count. CDN error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Security</h3>
-        <p>
-          Secure CDN systems against attacks. Encrypt CDN data. Implement access controls. Audit CDN access. Monitor for CDN abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Compliance</h3>
-        <p>
-          Meet regulatory requirements for CDN. SOC2 audit trails. HIPAA immediate CDN. PCI-DSS session controls. GDPR right to CDN. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );

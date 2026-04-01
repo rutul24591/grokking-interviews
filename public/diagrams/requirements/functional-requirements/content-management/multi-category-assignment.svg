@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .primary { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .secondary { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .conflict { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Primary Category -->
+  <rect class="primary" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Primary Category</text>
+  
+  <rect class="primary" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Electronics → Computers → Laptops</text>
+  
+  <rect class="primary" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Used for Breadcrumbs</text>
+  
+  <rect class="primary" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Canonical URL Path</text>
+  
+  <!-- Secondary Categories -->
+  <rect class="secondary" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Secondary Categories</text>
+  
+  <rect class="secondary" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Gaming, Reviews, Deals</text>
+  
+  <rect class="secondary" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Additional Discovery Paths</text>
+  
+  <rect class="secondary" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Max 3-5 Categories</text>
+  
+  <!-- Conflict Resolution -->
+  <rect class="conflict" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Conflict Resolution</text>
+  
+  <rect class="conflict" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Sibling Categories: NO</text>
+  
+  <rect class="conflict" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Parent-Child: YES</text>
+  
+  <rect class="conflict" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Max Limit Enforced</text>
+  
+  <!-- Example Content -->
+  <rect class="primary" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Example: Gaming Laptop Review Article</text>
+  
+  <!-- Category Assignment -->
+  <rect class="primary" x="70" y="330" width="200" height="60" rx="4"/>
+  <text x="170" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Primary</text>
+  <text x="170" y="375" text-anchor="middle" class="sublabel">Laptops</text>
+  
+  <rect class="secondary" x="300" y="330" width="150" height="60" rx="4"/>
+  <text x="375" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Secondary 1</text>
+  <text x="375" y="375" text-anchor="middle" class="sublabel">Gaming</text>
+  
+  <rect class="secondary" x="480" y="330" width="150" height="60" rx="4"/>
+  <text x="555" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Secondary 2</text>
+  <text x="555" y="375" text-anchor="middle" class="sublabel">Reviews</text>
+  
+  <rect class="conflict" x="660" y="330" width="150" height="60" rx="4"/>
+  <text x="735" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Rejected</text>
+  <text x="735" y="375" text-anchor="middle" class="sublabel">Desktops (sibling)</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Multi-Category Assignment</text>
+</svg>

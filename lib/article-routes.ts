@@ -142,6 +142,7 @@ export const articleRoutes: Record<string, () => Promise<any>> = {
   "system-design-concepts/frontend-concepts/performance-optimization/tree-shaking": () => import("@/content/articles/system-design/frontend/performance-optimization/tree-shaking"),
   "system-design-concepts/frontend-concepts/performance-optimization/virtualization-windowing": () => import("@/content/articles/system-design/frontend/performance-optimization/virtualization-windowing"),
   "system-design-concepts/frontend-concepts/performance-optimization/web-vitals": () => import("@/content/articles/system-design/frontend/performance-optimization/web-vitals"),
+  "system-design-concepts/frontend-concepts/real-time-features/collaborative-editing": () => import("@/content/articles/system-design/frontend/real-time-features/collaborative-editing"),
   "system-design-concepts/frontend-concepts/real-time-features/live-updates-feed": () => import("@/content/articles/system-design/frontend/real-time-features/live-updates-feed"),
   "system-design-concepts/frontend-concepts/real-time-features/presence-systems": () => import("@/content/articles/system-design/frontend/real-time-features/presence-systems"),
   "system-design-concepts/frontend-concepts/real-time-features/real-time-notifications": () => import("@/content/articles/system-design/frontend/real-time-features/real-time-notifications"),

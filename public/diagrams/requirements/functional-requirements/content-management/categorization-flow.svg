@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .user { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .ui { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .service { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .content = { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- User -->
+  <rect class="user" x="50" y="50" width="150" height="80" rx="8"/>
+  <text x="125" y="85" text-anchor="middle" class="text-label">Content Creator</text>
+  <text x="125" y="110" text-anchor="middle" class="sublabel">Writes Article</text>
+  
+  <!-- Category Selection UI -->
+  <rect class="ui" x="280" y="50" width="200" height="120" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">Category Selection UI</text>
+  
+  <rect class="ui" x="300" y="100" width="160" height="25" rx="4"/>
+  <text x="380" y="117" text-anchor="middle" class="sublabel">Tree View</text>
+  
+  <rect class="ui" x="300" y="130" width="160" height="25" rx="4"/>
+  <text x="380" y="147" text-anchor="middle" class="sublabel">Search</text>
+  
+  <!-- Auto-Suggestions -->
+  <rect class="service" x="560" y="50" width="180" height="80" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">Auto-Suggestions</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">ML Predictions</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Confidence Score</text>
+  
+  <!-- Taxonomy Service -->
+  <rect class="service" x="560" y="180" width="180" height="80" rx="8"/>
+  <text x="650" y="210" text-anchor="middle" class="text-label">Taxonomy Service</text>
+  <text x="650" y="235" text-anchor="middle" class="sublabel">Category Hierarchy</text>
+  
+  <!-- Content -->
+  <rect class="content" x="820" y="115" width="150" height="80" rx="8"/>
+  <text x="895" y="150" text-anchor="middle" class="text-label">Content</text>
+  <text x="895" y="175" text-anchor="middle" class="sublabel">Category Assigned</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M200 90 L275 90"/>
+  <text x="240" y="80" text-anchor="middle" class="sublabel" style="font-size: 10px">Opens Editor</text>
+  
+  <path class="arrow" d="M480 110 L555 110"/>
+  <text x="520" y="100" text-anchor="middle" class="sublabel" style="font-size: 10px">Get Suggestions</text>
+  
+  <path class="arrow" d="M480 140 L555 180"/>
+  <text x="520" y="155" text-anchor="middle" class="sublabel" style="font-size: 10px">Browse Categories</text>
+  
+  <path class="arrow" d="M740 140 L815 140"/>
+  <text x="780" y="130" text-anchor="middle" class="sublabel" style="font-size: 10px">Save Assignment</text>
+  
+  <!-- Flow Steps -->
+  <rect class="user" x="50" y="250" width="200" height="60" rx="8"/>
+  <text x="150" y="275" text-anchor="middle" class="sublabel" style="font-weight: 600">1. Create Content</text>
+  <text x="150" y="295" text-anchor="middle" class="sublabel">Write article, post</text>
+  
+  <rect class="ui" x="280" y="250" width="200" height="60" rx="8"/>
+  <text x="380" y="275" text-anchor="middle" class="sublabel" style="font-weight: 600">2. Select Category</text>
+  <text x="380" y="295" text-anchor="middle" class="sublabel">Tree, search, suggestions</text>
+  
+  <rect class="service" x="510" y="250" width="200" height="60" rx="8"/>
+  <text x="610" y="275" text-anchor="middle" class="sublabel" style="font-weight: 600">3. Validate</text>
+  <text x="610" y="295" text-anchor="middle" class="sublabel">Check limits, conflicts</text>
+  
+  <rect class="content" x="740" y="250" width="200" height="60" rx="8"/>
+  <text x="840" y="275" text-anchor="middle" class="sublabel" style="font-weight: 600">4. Save</text>
+  <text x="840" y="295" text-anchor="middle" class="sublabel">Persist assignment</text>
+  
+  <path class="arrow" d="M250 280 L275 280"/>
+  <path class="arrow" d="M480 280 L505 280"/>
+  <path class="arrow" d="M710 280 L735 280"/>
+  
+  <text x="500" y="420" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Categorization Flow</text>
+</svg>

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .user { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .appeal { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .review { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .outcome { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- User -->
+  <rect class="user" x="50" y="50" width="180" height="100" rx="8"/>
+  <text x="140" y="90" text-anchor="middle" class="text-label">User</text>
+  <text x="140" y="115" text-anchor="middle" class="sublabel">Content Removed</text>
+  <text x="140" y="135" text-anchor="middle" class="sublabel">Account Action</text>
+  
+  <!-- Appeal Submission -->
+  <rect class="appeal" x="280" y="50" width="200" height="120" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">Appeal Submission</text>
+  <text x="380" y="110" text-anchor="middle" class="sublabel">Appeal Form</text>
+  <text x="380" y="135" text-anchor="middle" class="sublabel">Evidence</text>
+  <text x="380" y="160" text-anchor="middle" class="sublabel">Within 30 Days</text>
+  
+  <!-- Appeal Review -->
+  <rect class="review" x="530" y="50" width="200" height="120" rx="8"/>
+  <text x="630" y="80" text-anchor="middle" class="text-label">Appeal Review</text>
+  <text x="630" y="110" text-anchor="middle" class="sublabel">Different Reviewer</text>
+  <text x="630" y="135" text-anchor="middle" class="sublabel">Full Context</text>
+  <text x="630" y="160" text-anchor="middle" class="sublabel">Specialist if Complex</text>
+  
+  <!-- Outcome -->
+  <rect class="outcome" x="780" y="50" width="180" height="120" rx="8"/>
+  <text x="870" y="80" text-anchor="middle" class="text-label">Outcome</text>
+  <text x="870" y="110" text-anchor="middle" class="sublabel">Upheld</text>
+  <text x="870" y="135" text-anchor="middle" class="sublabel">Overturned</text>
+  <text x="870" y="160" text-anchor="middle" class="sublabel">Modified</text>
+  
+  <!-- Appeal Flow -->
+  <rect class="user" x="50" y="250" width="900" height="160" rx="8"/>
+  <text x="500" y="280" text-anchor="middle" class="text-label">Appeal Process Flow</text>
+  
+  <!-- Flow boxes -->
+  <rect class="user" x="70" y="310" width="180" height="80" rx="4"/>
+  <text x="160" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">1. Decision</text>
+  <text x="160" y="365" text-anchor="middle" class="sublabel">Content Removed</text>
+  <text x="160" y="385" text-anchor="middle" class="sublabel">User Notified</text>
+  
+  <rect class="appeal" x="280" y="310" width="180" height="80" rx="4"/>
+  <text x="370" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">2. Appeal</text>
+  <text x="370" y="365" text-anchor="middle" class="sublabel">User Submits</text>
+  <text x="370" y="385" text-anchor="middle" class="sublabel">Within 30 Days</text>
+  
+  <rect class="review" x="490" y="310" width="180" height="80" rx="4"/>
+  <text x="580" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">3. Review</text>
+  <text x="580" y="365" text-anchor="middle" class="sublabel">Different Reviewer</text>
+  <text x="580" y="385" text-anchor="middle" class="sublabel">Full Context</text>
+  
+  <rect class="outcome" x="700" y="310" width="180" height="80" rx="4"/>
+  <text x="790" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">4. Decision</text>
+  <text x="790" y="365" text-anchor="middle" class="sublabel">Upheld/Overturned</text>
+  <text x="790" y="385" text-anchor="middle" class="sublabel">User Notified</text>
+  
+  <path class="arrow" d="M250 350 L275 350"/>
+  <path class="arrow" d="M460 350 L485 350"/>
+  <path class="arrow" d="M670 350 L695 350"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Appeal Process</text>
+</svg>

@@ -5,17 +5,26 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-requirements-cm-frontend-content-preview",
+  id: "article-requirements-cm-content-preview",
   title: "Content Preview",
-  description: "Comprehensive guide to implementing content preview covering live preview, responsive preview, preview modes, social preview, draft watermarks, and UX patterns for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing content preview covering live preview, responsive preview, social preview cards, draft watermarks, preview security, and UX patterns for effective content validation before publishing.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "content-preview",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "preview", "frontend", "responsive", "draft"],
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-04-01",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "preview",
+    "frontend",
+    "responsive",
+    "draft",
+  ],
   relatedTopics: ["create-content-ui", "edit-content-ui", "responsive-design", "content-publishing"],
 };
 
@@ -25,263 +34,204 @@ export default function ContentPreviewArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Content Preview</strong> shows users how their content will appear when
-          published, enabling them to catch formatting issues and optimize presentation
-          before going live.
+          Content Preview enables users to see how their content will appear when published, allowing them to catch formatting issues, optimize presentation, and validate the user experience before going live. Preview functionality is essential for content creation workflows—authors need to verify formatting (headings, images, links render correctly), responsive behavior (content looks good on mobile, tablet, desktop), social sharing (preview cards display properly on Twitter, Facebook, LinkedIn), and overall presentation (layout, typography, spacing match expectations). For platforms with rich content creation (blogs, e-commerce product listings, marketing pages, documentation), effective preview is critical for content quality and author confidence.
         </p>
         <p>
-          For staff and principal engineers, implementing preview requires understanding
-          preview modes, live preview, responsive preview, social preview, draft watermarks,
-          performance optimization, and security considerations. The implementation must balance
-          preview accuracy with performance and security.
+          For staff and principal engineers, content preview architecture involves preview modes (live preview, full preview, responsive preview), rendering strategies (client-side rendering, server-side rendering, hybrid), social preview (Open Graph, Twitter Cards, LinkedIn preview), draft watermarks (indicate unpublished status), preview security (prevent unauthorized access to drafts), and performance optimization (fast preview generation without impacting editor performance). The implementation must balance preview accuracy (match published output exactly) with performance (instant preview without lag) and security (drafts not accessible to unauthorized users). Poor preview implementation leads to publishing errors, frustrated authors, and degraded content quality.
+        </p>
+        <p>
+          The complexity of content preview extends beyond simple rendering. Live preview must update in real-time without lag (debounced rendering, efficient diffing). Responsive preview must accurately simulate different devices (viewport sizes, touch interactions, performance characteristics). Social preview must fetch and render external preview cards (Open Graph metadata, Twitter Cards). Draft watermarks must be visible but not obstructive. Preview security must prevent unauthorized access (authentication, authorization, expiring preview URLs). For staff engineers, preview is a content quality tool affecting author experience, content accuracy, and publishing confidence.
+        </p>
+      </section>
+
+      <section>
+        <h2>Core Concepts</h2>
+        <h3>Preview Modes</h3>
+        <p>
+          Live preview updates in real-time as user types. Side-by-side layout (editor on left, preview on right). Debounced rendering (update after user stops typing for 300-500ms to avoid excessive re-renders). Efficient diffing (only re-render changed portions). Live preview enables quick formatting checks without leaving editor. Benefits include immediate feedback (see formatting as you write), reduced context switching (don&apos;t need to navigate to separate preview). Drawbacks include performance impact (rendering while typing can lag editor), limited context (side-by-side view may not show full page layout).
+        </p>
+        <p>
+          Full preview renders content on dedicated preview page. Separate URL (preview.example.com/post/123/preview). Full page context (shows complete layout including header, footer, navigation). Shareable URL (send preview link to reviewers). Full preview enables final review before publishing. Benefits include accurate representation (exact published output), full context (see how content fits in page), shareable (collaborators can review). Drawbacks includes context switching (navigate away from editor), slower (requires page load).
+        </p>
+        <p>
+          Responsive preview shows content at different device sizes. Device toggles (mobile, tablet, desktop buttons). Viewport simulation (resize preview to device dimensions). Touch simulation (simulate touch interactions for mobile). Responsive preview enables checking mobile experience before publishing. Benefits include mobile validation (ensure content works on mobile), responsive issues caught early (fix before publishing). Drawbacks includes complexity (multiple viewport rendering), may not perfectly simulate device characteristics (performance, touch accuracy).
+        </p>
+
+        <h3 className="mt-6">Social Preview</h3>
+        <p>
+          Open Graph metadata controls how content appears when shared on Facebook, LinkedIn, and other platforms. og:title (page title), og:description (page description), og:image (preview image), og:url (canonical URL). Open Graph metadata must be set correctly for proper social sharing. Preview shows how link will appear on social platforms. Benefits include social optimization (ensure attractive preview), click-through improvement (good previews get more clicks).
+        </p>
+        <p>
+          Twitter Cards control Twitter link preview. Card types (summary, summary with large image, player card). Twitter-specific metadata (twitter:card, twitter:title, twitter:description, twitter:image). Twitter preview shows how link will appear in tweets. Benefits include Twitter optimization (ensure attractive tweet preview), engagement improvement.
+        </p>
+        <p>
+          LinkedIn preview displays when content is shared on LinkedIn. LinkedIn uses Open Graph metadata with some LinkedIn-specific enhancements. LinkedIn preview shows title, description, image. Preview ensures professional appearance on LinkedIn. Benefits include LinkedIn optimization, professional presentation.
+        </p>
+
+        <h3 className="mt-6">Draft Watermarks and Indicators</h3>
+        <p>
+          Draft watermarks indicate content is unpublished. Visual indicator (&quot;DRAFT&quot; watermark overlaid on preview). Banner (draft banner at top of preview). URL indicator (preview URL contains /draft/ or /preview/). Watermarks prevent confusion between draft and published content. Benefits include clear status (know this is draft), prevents accidental sharing (looks unpublished). Drawbacks includes visual obstruction (watermark may block content).
+        </p>
+        <p>
+          Preview expiration limits preview URL lifetime. Time-limited URLs (preview URL expires after 7 days). Authentication required (must be logged in to view preview). Owner-only access (only content author can view preview). Expiration prevents stale previews from circulating. Benefits include security (old previews inaccessible), accuracy (previews reflect current content).
+        </p>
+
+        <h3 className="mt-6">Preview Rendering Strategies</h3>
+        <p>
+          Client-side rendering renders preview in browser. Fast for live preview (no server round-trip). May not match server rendering exactly (browser differences). Benefits include speed (instant preview), offline capability (preview without server). Drawbacks includes accuracy (may not match published output), JavaScript required.
+        </p>
+        <p>
+          Server-side rendering renders preview on server. Accurate (matches published output exactly). Requires server round-trip (slower than client-side). Benefits include accuracy (exact published output), works without JavaScript. Drawbacks includes latency (server request required), server load (preview requests consume server resources).
+        </p>
+        <p>
+          Hybrid rendering combines client and server. Live preview uses client-side (fast, frequent updates). Full preview uses server-side (accurate, final review). Benefits include best of both (fast live, accurate full). Drawbacks includes complexity (two rendering paths).
+        </p>
+
+        <h3 className="mt-6">Preview Security</h3>
+        <p>
+          Authentication ensures only authorized users access preview. Login required (must be authenticated). Session validation (valid session required). Benefits include draft protection (unauthorized users can&apos;t see drafts).
+        </p>
+        <p>
+          Authorization ensures only permitted users access specific previews. Owner access (content author can preview). Collaborator access (team members can preview). Admin access (admins can preview all). Benefits include access control (right people see drafts).
+        </p>
+        <p>
+          Preview URL security prevents unauthorized access. Token-based URLs (preview URL includes secure token). Expiring URLs (URLs expire after time). Benefits include link security (can&apos;t guess preview URLs), time-limited access (old links stop working).
+        </p>
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Content preview architecture spans preview service, rendering engine, social preview generator, and security layer. Preview service manages preview requests and URLs. Rendering engine generates preview output. Social preview generator creates social media preview cards. Security layer ensures only authorized access. Each layer has specific responsibilities and integration requirements.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/preview-modes.svg"
           alt="Preview Modes"
-          caption="Preview Modes — showing live preview, full preview, and responsive preview"
-        />
-      </section>
-
-      <section>
-        <h2>Preview Modes</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Live Preview</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Real-time:</strong> Preview updates as user types.
-            </li>
-            <li>
-              <strong>Side-by-side:</strong> Editor and preview side by side.
-            </li>
-            <li>
-              <strong>Debounced:</strong> Update after user stops typing.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Quick formatting checks.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Full Preview</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Dedicated Page:</strong> Separate preview page.
-            </li>
-            <li>
-              <strong>Full Context:</strong> Shows complete page layout.
-            </li>
-            <li>
-              <strong>Shareable URL:</strong> Preview URL for review.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Final review before publish.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Responsive Preview</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Device Views:</strong> Mobile, tablet, desktop.
-            </li>
-            <li>
-              <strong>Toggle:</strong> Switch between device sizes.
-            </li>
-            <li>
-              <strong>Actual Rendering:</strong> Real responsive behavior.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Check mobile experience.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Social Preview</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Social Cards:</strong> How content appears when shared.
-            </li>
-            <li>
-              <strong>Platforms:</strong> Facebook, Twitter, LinkedIn preview.
-            </li>
-            <li>
-              <strong>OG Tags:</strong> Open Graph metadata preview.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Optimize social sharing.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Implementation</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/preview-pipeline.svg"
-          alt="Preview Pipeline"
-          caption="Preview Pipeline — showing content rendering, caching, and delivery"
+          caption="Figure 1: Preview Modes — Live preview, full preview, and responsive preview comparison"
+          width={1000}
+          height={500}
         />
 
+        <h3>Preview Service</h3>
         <p>
-          Preview implementation requires careful consideration of rendering and performance.
+          Preview service manages preview generation and URLs. Preview URL generation (create unique preview URL per draft). URL expiration (URLs expire after configurable period). Access control (check authentication/authorization). Preview service is the entry point for all preview requests.
+        </p>
+        <p>
+          Preview caching improves performance. Render cache (cache rendered preview for speed). Invalidation (invalidate cache when content changes). Cache headers (appropriate caching for preview content). Caching reduces server load and improves preview speed.
         </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Render Pipeline</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Same Rendering:</strong> Use same pipeline as published content.
-            </li>
-            <li>
-              <strong>Preview Mode:</strong> Flag to indicate preview rendering.
-            </li>
-            <li>
-              <strong>Dynamic Components:</strong> Mock or disable dynamic features.
-            </li>
-            <li>
-              <strong>Caching:</strong> Cache preview for performance.
-            </li>
-          </ul>
-        </div>
+        <h3 className="mt-6">Rendering Engine</h3>
+        <p>
+          Rendering engine generates preview output. Template rendering (apply content to page template). Asset inclusion (CSS, JavaScript, images). Layout rendering (header, footer, navigation). Rendering must match published output exactly for accurate preview.
+        </p>
+        <p>
+          Responsive rendering handles different device sizes. Viewport detection (detect requested device size). Responsive CSS (apply responsive styles). Image resizing (serve appropriate image sizes). Responsive rendering ensures preview matches how content will appear on different devices.
+        </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Draft Watermark</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Visual Indicator:</strong> Show "DRAFT" or "PREVIEW" watermark.
-            </li>
-            <li>
-              <strong>Non-Printable:</strong> Don't include in published version.
-            </li>
-            <li>
-              <strong>Clear Messaging:</strong> "This is a preview, not live".
-            </li>
-            <li>
-              <strong>Position:</strong> Corner or overlay position.
-            </li>
-          </ul>
-        </div>
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/social-preview.svg"
+          alt="Social Preview"
+          caption="Figure 2: Social Preview — Open Graph, Twitter Cards, and LinkedIn preview generation"
+          width={1000}
+          height={450}
+        />
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Performance</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Debounce:</strong> Debounce preview updates (300-500ms).
-            </li>
-            <li>
-              <strong>Lazy Load:</strong> Lazy load preview components.
-            </li>
-            <li>
-              <strong>Incremental:</strong> Update only changed parts.
-            </li>
-            <li>
-              <strong>Cache:</strong> Cache preview for repeated views.
-            </li>
-          </ul>
-        </div>
+        <h3 className="mt-6">Social Preview Generator</h3>
+        <p>
+          Social preview generator creates social media preview cards. Metadata extraction (extract title, description, image from content). Open Graph generation (generate og:* tags). Twitter Card generation (generate twitter:* tags). LinkedIn preview (generate LinkedIn-specific metadata). Social preview ensures content looks good when shared.
+        </p>
+        <p>
+          Social preview validation checks metadata completeness. Required fields (title, description, image present). Image validation (image meets size requirements). URL validation (canonical URL set). Validation ensures social previews render correctly.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/preview-security.svg"
+          alt="Preview Security"
+          caption="Figure 3: Preview Security — Authentication, authorization, and expiring URLs"
+          width={1000}
+          height={450}
+        />
       </section>
 
       <section>
-        <h2>Preview Security</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Authentication:</strong> Require authentication for preview.
-          </li>
-          <li>
-            <strong>Authorization:</strong> Only author/editors can preview.
-          </li>
-          <li>
-            <strong>Rate Limiting:</strong> Rate limit preview requests.
-          </li>
-          <li>
-            <strong>No Indexing:</strong> Prevent search engines from indexing preview.
-          </li>
-          <li>
-            <strong>Expiring URLs:</strong> Preview URLs expire after time.
-          </li>
-        </ul>
-      </section>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Content preview design involves trade-offs between accuracy and performance, client-side and server-side rendering, and open and restricted preview access. Understanding these trade-offs enables informed decisions aligned with platform requirements and user needs.
+        </p>
 
-      <section>
-        <h2>Preview Sharing</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Shareable Link:</strong> Generate preview link for review.
-          </li>
-          <li>
-            <strong>Access Control:</strong> Control who can view preview.
-          </li>
-          <li>
-            <strong>Comments:</strong> Allow comments on preview.
-          </li>
-          <li>
-            <strong>Version:</strong> Link to specific preview version.
-          </li>
-          <li>
-            <strong>Expiry:</strong> Preview links expire after publish.
-          </li>
-        </ul>
-      </section>
+        <h3>Rendering: Client-side vs. Server-side</h3>
+        <p>
+          Client-side rendering (render in browser). Pros: Fast (no server round-trip), works offline (preview without server), low server load (client does work). Cons: May not match server exactly (browser differences), JavaScript required (no JS = no preview), initial load may be slow (download rendering code). Best for: Live preview, frequent updates, simple content.
+        </p>
+        <p>
+          Server-side rendering (render on server). Pros: Accurate (matches published output), works without JavaScript, consistent (same rendering for all users). Cons: Slower (server round-trip required), server load (preview requests consume resources), requires server capacity. Best for: Full preview, final review, complex content.
+        </p>
+        <p>
+          Hybrid: client-side live, server-side full. Pros: Best of both (fast live preview, accurate full preview). Cons: Complexity (two rendering paths), maintenance overhead. Best for: Most platforms—client-side for live, server-side for full preview.
+        </p>
 
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Google Robots Meta Tag
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Authentication Cheat Sheet
-            </a>
-          </li>
-        </ul>
+        <h3>Preview Access: Open vs. Restricted</h3>
+        <p>
+          Open preview (anyone with URL can view). Pros: Easy sharing (send link to anyone), no authentication friction, simple implementation. Cons: Security risk (drafts accessible if URL leaked), no access control, URLs may be guessed. Best for: Public previews, marketing content, low-sensitivity drafts.
+        </p>
+        <p>
+          Restricted preview (authentication required). Pros: Secure (drafts protected), access control (only authorized users), audit trail (track who viewed). Cons: Sharing friction (recipients must log in), implementation complexity, authentication overhead. Best for: Sensitive content, internal reviews, user drafts.
+        </p>
+        <p>
+          Hybrid: token-based URLs with expiration. Pros: Best of both (shareable links, time-limited access). Cons: Complexity (token generation, expiration), URL management. Best for: Most platforms—token-based URLs that expire after period.
+        </p>
+
+        <h3>Live Preview: Real-time vs. Debounced</h3>
+        <p>
+          Real-time (update on every keystroke). Pros: Instant feedback (see changes immediately), smooth experience (no delay). Cons: Performance impact (excessive re-rendering), server load (many requests), may lag editor. Best for: Simple content, powerful clients, low-latency servers.
+        </p>
+        <p>
+          Debounced (update after typing pause). Pros: Better performance (fewer re-renders), reduced server load, smoother editor experience. Cons: Slight delay (wait for debounce period), may feel less responsive. Best for: Most platforms—300-500ms debounce balances responsiveness with performance.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/preview-comparison.svg"
+          alt="Preview Approaches Comparison"
+          caption="Figure 4: Preview Approaches Comparison — Rendering, access, and update strategy trade-offs"
+          width={1000}
+          height={450}
+        />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Accuracy</h3>
-        <ul className="space-y-2">
-          <li>Use same rendering as published content</li>
-          <li>Include all layout elements</li>
-          <li>Show responsive behavior accurately</li>
-          <li>Mock dynamic components appropriately</li>
-          <li>Test preview against published output</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
-        <ul className="space-y-2">
-          <li>Provide multiple preview modes</li>
-          <li>Show clear draft indicators</li>
-          <li>Enable easy preview sharing</li>
-          <li>Support responsive preview</li>
-          <li>Provide social preview</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance</h3>
-        <ul className="space-y-2">
-          <li>Debounce preview updates</li>
-          <li>Lazy load preview components</li>
-          <li>Cache preview for performance</li>
-          <li>Optimize image loading</li>
-          <li>Minimize preview latency</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track preview usage</li>
-          <li>Monitor preview latency</li>
-          <li>Alert on preview failures</li>
-          <li>Track preview-to-publish rate</li>
-          <li>Monitor preview sharing</li>
+        <ul className="space-y-3">
+          <li>
+            <strong>Provide multiple preview modes:</strong> Live preview for quick checks. Full preview for final review. Responsive preview for mobile validation.
+          </li>
+          <li>
+            <strong>Use hybrid rendering:</strong> Client-side for live preview (fast). Server-side for full preview (accurate).
+          </li>
+          <li>
+            <strong>Implement social preview:</strong> Open Graph for Facebook/LinkedIn. Twitter Cards for Twitter. Preview social cards before publishing.
+          </li>
+          <li>
+            <strong>Add draft watermarks:</strong> Clear &quot;DRAFT&quot; indicator. Prevents confusion with published content.
+          </li>
+          <li>
+            <strong>Secure preview URLs:</strong> Token-based URLs. Expiration (7 days typical). Authentication required.
+          </li>
+          <li>
+            <strong>Debounce live preview:</strong> 300-500ms delay. Reduces re-rendering. Improves editor performance.
+          </li>
+          <li>
+            <strong>Cache previews:</strong> Cache rendered output. Invalidate on content change. Reduces server load.
+          </li>
+          <li>
+            <strong>Validate social metadata:</strong> Check required fields. Image size validation. Warn if incomplete.
+          </li>
+          <li>
+            <strong>Support responsive preview:</strong> Mobile, tablet, desktop views. Touch simulation for mobile. Accurate viewport rendering.
+          </li>
+          <li>
+            <strong>Track preview usage:</strong> Who viewed preview. When preview accessed. Preview-to-publish conversion.
+          </li>
         </ul>
       </section>
 
@@ -289,467 +239,178 @@ export default function ContentPreviewArticle() {
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
           <li>
-            <strong>No live preview:</strong> Users can't see changes immediately.
-            <br /><strong>Fix:</strong> Implement live preview with debouncing.
+            <strong>Preview doesn&apos;t match published:</strong> Client-side differs from server. <strong>Solution:</strong> Use server-side for full preview, validate rendering matches.
           </li>
           <li>
-            <strong>Inaccurate preview:</strong> Preview differs from published.
-            <br /><strong>Fix:</strong> Use same rendering pipeline.
+            <strong>Slow live preview:</strong> Laggy editor experience. <strong>Solution:</strong> Debounce rendering, optimize diffing, use client-side for live.
           </li>
           <li>
-            <strong>No responsive preview:</strong> Can't check mobile view.
-            <br /><strong>Fix:</strong> Add responsive preview modes.
+            <strong>No responsive preview:</strong> Mobile issues caught after publishing. <strong>Solution:</strong> Provide responsive preview with device toggles.
           </li>
           <li>
-            <strong>No draft indicator:</strong> Users confuse preview with live.
-            <br /><strong>Fix:</strong> Show clear "DRAFT" watermark.
+            <strong>Insecure preview URLs:</strong> Drafts accessible to unauthorized users. <strong>Solution:</strong> Token-based URLs, authentication, expiration.
           </li>
           <li>
-            <strong>Slow preview:</strong> Preview takes too long to load.
-            <br /><strong>Fix:</strong> Optimize rendering, cache preview.
+            <strong>No social preview:</strong> Poor social sharing appearance. <strong>Solution:</strong> Open Graph, Twitter Cards preview before publishing.
           </li>
           <li>
-            <strong>No social preview:</strong> Can't optimize social sharing.
-            <br /><strong>Fix:</strong> Add social card preview.
+            <strong>No draft indicators:</strong> Confusion between draft and published. <strong>Solution:</strong> Clear watermarks, banners, URL indicators.
           </li>
           <li>
-            <strong>Preview indexed:</strong> Search engines index preview.
-            <br /><strong>Fix:</strong> Add noindex meta tag.
+            <strong>Preview URLs never expire:</strong> Old drafts accessible indefinitely. <strong>Solution:</strong> Expiring URLs (7 days typical).
           </li>
           <li>
-            <strong>No access control:</strong> Anyone can view preview.
-            <br /><strong>Fix:</strong> Require authentication, authorization.
+            <strong>No preview caching:</strong> Slow preview generation, high server load. <strong>Solution:</strong> Cache rendered previews, invalidate on change.
           </li>
           <li>
-            <strong>Preview abuse:</strong> Excessive preview requests.
-            <br /><strong>Fix:</strong> Rate limit preview requests.
+            <strong>Social metadata not validated:</strong> Missing image, wrong dimensions. <strong>Solution:</strong> Validate metadata, warn if incomplete.
           </li>
           <li>
-            <strong>Broken sharing:</strong> Preview links don't work.
-            <br /><strong>Fix:</strong> Generate shareable preview URLs.
+            <strong>No preview analytics:</strong> Don&apos;t know if preview is used. <strong>Solution:</strong> Track preview views, preview-to-publish rate.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
+        <h2>Real-world Use Cases</h2>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Caching</h3>
+        <h3>Blog Platform Preview</h3>
         <p>
-          Cache preview for performance. Invalidate cache on content change. Use CDN for preview delivery. Cache different device views separately. Implement cache warming.
+          Blog platform provides comprehensive preview. Live preview (side-by-side, debounced rendering). Full preview (dedicated URL, shareable with editors). Responsive preview (mobile, tablet, desktop toggles). Social preview (Open Graph, Twitter Cards preview). Draft watermark (&quot;DRAFT&quot; banner). Preview URL expires after 7 days. Authentication required for preview access.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Dynamic Component Preview</h3>
+        <h3 className="mt-6">E-commerce Product Listing Preview</h3>
         <p>
-          Mock dynamic components for preview. Use preview data for dynamic content. Disable interactive features in preview. Note limitations in preview mode. Provide fallback for unavailable features.
+          E-commerce platform provides product preview. Live preview (see product page as editing). Full preview (complete product page with related products). Mobile preview (critical for shopping experience). Social preview (product sharing on social media). Draft indicator (unpublished products marked). Preview accessible to merchandising team. Preview expires when product published.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Collaboration</h3>
+        <h3 className="mt-6">Documentation Site Preview</h3>
         <p>
-          Enable comments on preview. Share preview with team members. Track preview views. Version preview for review cycles. Approve preview before publish.
+          Documentation platform provides technical preview. Live preview (Markdown rendered in real-time). Full preview (complete docs site with navigation). Table of contents preview (see generated TOC). Link validation (check internal links work). Code syntax highlighting preview. Draft watermark for unpublished docs. Preview shareable with team for review.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
+        <h3 className="mt-6">Marketing Page Builder Preview</h3>
         <p>
-          Handle preview failures gracefully. Fail-safe defaults (show error message). Queue preview requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor preview health continuously.
+          Marketing page builder provides visual preview. Live preview (WYSIWYG editing with instant preview). Full preview (complete page with all components). Responsive preview (critical for marketing pages). A/B test preview (see variant appearance). Social preview (how page appears when shared). Draft indicator for unpublished pages. Preview accessible to marketing team.
+        </p>
+
+        <h3 className="mt-6">Email Campaign Preview</h3>
+        <p>
+          Email platform provides email preview. Live preview (email content as editing). Inbox preview (how email appears in inbox). Mobile email preview (critical for email). Email client preview (Gmail, Outlook, Apple Mail rendering). Spam score preview (likelihood of hitting spam). Send test email (actual email to test inbox). Draft indicator for unsent campaigns.
         </p>
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/preview-security.svg"
-          alt="Preview Security"
-          caption="Security — showing authentication, authorization, and access control for preview"
-        />
-
+        <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle preview for dynamic content?</p>
-            <p className="mt-2 text-sm">A: Mock dynamic components, use preview data, note limitations in preview mode.</p>
+            <p className="font-semibold">Q: How do you ensure preview matches published output exactly?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Use server-side rendering for full preview. Same rendering pipeline as publishing (same templates, same assets). Validation testing (compare preview vs. published output). Client-side for live preview (fast), server-side for full preview (accurate). The key insight: preview accuracy is critical for user trust—if preview doesn&apos;t match published, users won&apos;t trust preview. Invest in accurate rendering.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent preview abuse?</p>
-            <p className="mt-2 text-sm">A: Rate limit preview requests, require authentication, don't index preview URLs.</p>
+            <p className="font-semibold">Q: How do you optimize live preview performance?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Implement debounced rendering (300-500ms delay). Efficient diffing (only re-render changed portions). Client-side rendering (no server round-trip). Web Workers for heavy rendering (don&apos;t block UI). Cache rendered portions (re-use unchanged sections). The performance insight: live preview must feel instant—any lag breaks the flow. Optimize rendering pipeline for speed.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure preview accuracy?</p>
-            <p className="mt-2 text-sm">A: Use same rendering pipeline as published content. Test preview against published output. Include all layout elements.</p>
+            <p className="font-semibold">Q: How do you secure preview URLs?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Implement token-based URLs (include secure random token). Authentication required (must be logged in). Authorization check (user must have access to content). URL expiration (tokens expire after 7 days). Audit logging (track who accessed preview). The security insight: preview URLs are often shared—must protect against unauthorized access while enabling legitimate sharing. Token-based expiration balances both.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize preview performance?</p>
-            <p className="mt-2 text-sm">A: Debounce updates, lazy load components, cache preview, optimize images, minimize latency.</p>
+            <p className="font-semibold">Q: How do you handle responsive preview?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Implement viewport simulation (resize preview container to device dimensions). CSS media queries (responsive styles apply). Touch simulation (simulate touch events for mobile). Device presets (common device sizes: iPhone, iPad, desktop). Actual rendering (not just resize—test responsive behavior). The UX insight: mobile traffic is majority for many platforms—responsive preview is essential, not optional.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle preview sharing?</p>
-            <p className="mt-2 text-sm">A: Generate shareable preview URLs. Control access. Allow comments. Link to specific version. Expire after publish.</p>
+            <p className="font-semibold">Q: How do you implement social preview?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Extract metadata (title, description, image from content). Generate Open Graph tags (og:title, og:description, og:image). Generate Twitter Card tags (twitter:card, twitter:title, etc.). Preview rendering (show how link appears on each platform). Validation (warn if missing required fields, image too small). The social insight: social sharing drives significant traffic—social preview optimization directly impacts click-through rates.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent search indexing?</p>
-            <p className="mt-2 text-sm">A: Add noindex meta tag. Use robots.txt. Require authentication. Use non-canonical URLs.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement responsive preview?</p>
-            <p className="mt-2 text-sm">A: Device toggle (mobile, tablet, desktop). Actual responsive rendering. Real device dimensions. Test all breakpoints.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track?</p>
-            <p className="mt-2 text-sm">A: Preview usage, preview latency, preview failures, preview-to-publish rate, preview sharing. Alert on anomalies.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle preview security?</p>
-            <p className="mt-2 text-sm">A: Authentication required. Authorization for author/editors. Rate limiting. No indexing. Expiring URLs.</p>
+            <p className="font-semibold">Q: How do you handle preview caching?</p>
+            <p className="mt-2 text-sm">
+              <strong>A:</strong> Cache rendered preview (store HTML output). Cache key includes content version (invalidate on change). TTL-based expiration (cache expires after time). Manual invalidation (invalidate when content updated). Cache warming (pre-render preview for active drafts). The performance insight: preview generation can be expensive—caching reduces server load and improves preview speed, but must invalidate correctly to show current content.
+            </p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ Authentication for preview access</li>
-            <li>☐ Authorization for preview creation</li>
-            <li>☐ Rate limiting configured</li>
-            <li>☐ Noindex meta tag added</li>
-            <li>☐ Preview URL expiration</li>
-            <li>☐ Draft watermark implemented</li>
-            <li>☐ Preview caching configured</li>
-            <li>☐ Monitoring and alerting set up</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
+        <h2>References</h2>
         <ul className="space-y-2">
-          <li>Test preview rendering</li>
-          <li>Test preview caching</li>
-          <li>Test responsive preview</li>
-          <li>Test social preview</li>
-          <li>Test draft watermark</li>
+          <li>
+            <a
+              href="https://ogp.me/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Graph Protocol — Standard for Social Preview
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Twitter Developer — Twitter Cards Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn Help — Making Your Website Shareable on LinkedIn
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/preview/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Web.dev — Preview Best Practices
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.facebook.com/docs/sharing/webmasters/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook Developers — Sharing Debugger
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://schema.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Schema.org — Structured Data for Rich Previews
+            </a>
+          </li>
         </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test preview flow</li>
-          <li>Test preview sharing</li>
-          <li>Test access control</li>
-          <li>Test rate limiting</li>
-          <li>Test preview expiration</li>
-          <li>Test noindex tag</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test authentication</li>
-          <li>Test authorization</li>
-          <li>Test rate limiting</li>
-          <li>Test noindex enforcement</li>
-          <li>Test URL expiration</li>
-          <li>Penetration testing for preview</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test preview latency</li>
-          <li>Test concurrent preview</li>
-          <li>Test caching effectiveness</li>
-          <li>Test responsive rendering</li>
-          <li>Test large content preview</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li><a href="https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Google Robots Meta Tag</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authentication Cheat Sheet</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Web Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Access Control Cheat Sheet</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Live Preview Pattern</h3>
-        <p>
-          Real-time preview alongside editor. Debounced updates (300-500ms). Same rendering as published. Show draft watermark. Optimize for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Full Preview Pattern</h3>
-        <p>
-          Dedicated preview page. Full page layout. Shareable URL. Version-specific preview. Expiring preview links.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Responsive Preview Pattern</h3>
-        <p>
-          Device toggle (mobile, tablet, desktop). Actual responsive rendering. Real device dimensions. Test all breakpoints. Show device frame.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Preview Pattern</h3>
-        <p>
-          Show social card preview. Facebook, Twitter, LinkedIn formats. OG tag preview. Edit social metadata. Preview sharing appearance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle preview failures gracefully. Fail-safe defaults (show error message). Queue preview requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor preview health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for preview. SOC2: Preview audit trails. HIPAA: PHI preview safeguards. PCI-DSS: Cardholder data preview. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize preview for high-throughput systems. Batch preview operations. Use connection pooling. Implement async preview operations. Monitor preview latency. Set SLOs for preview time. Scale preview endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle preview errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback preview mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make preview easy for developers to use. Provide preview SDK. Auto-generate preview documentation. Include preview requirements in API docs. Provide testing utilities. Implement preview linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant Preview</h3>
-        <p>
-          Handle preview in multi-tenant systems. Tenant-scoped preview configuration. Isolate preview events between tenants. Tenant-specific preview policies. Audit preview per tenant. Handle cross-tenant preview carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Preview</h3>
-        <p>
-          Special handling for enterprise preview. Dedicated support for enterprise onboarding. Custom preview configurations. SLA for preview availability. Priority support for preview issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency preview bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Testing</h3>
-        <p>
-          Test preview thoroughly before deployment. Chaos engineering for preview failures. Simulate high-volume preview scenarios. Test preview under load. Validate preview propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate preview changes clearly to users. Explain why preview is required. Provide steps to configure preview. Offer support contact for issues. Send preview confirmation. Provide preview history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve preview based on operational learnings. Analyze preview patterns. Identify false positives. Optimize preview triggers. Gather user feedback. Track preview metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen preview against attacks. Implement defense in depth. Regular penetration testing. Monitor for preview bypass attempts. Encrypt preview data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic preview revocation on HR termination. Role change triggers preview review. Contractor expiry triggers preview revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Analytics</h3>
-        <p>
-          Analyze preview data for insights. Track preview reasons distribution. Identify common preview triggers. Detect anomalous preview patterns. Measure preview effectiveness. Generate preview reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System Preview</h3>
-        <p>
-          Coordinate preview across multiple systems. Central preview orchestration. Handle system-specific preview. Ensure consistent enforcement. Manage preview dependencies. Orchestrate preview updates. Monitor cross-system preview health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Documentation</h3>
-        <p>
-          Maintain comprehensive preview documentation. Preview procedures and runbooks. Decision records for preview design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with preview endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize preview system costs. Right-size preview infrastructure. Use serverless for variable workloads. Optimize storage for preview data. Reduce unnecessary preview checks. Monitor cost per preview. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Governance</h3>
-        <p>
-          Establish preview governance framework. Define preview ownership and stewardship. Regular preview reviews and audits. Preview change management process. Compliance reporting. Preview exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time Preview</h3>
-        <p>
-          Enable real-time preview capabilities. Hot reload preview rules. Version preview for rollback. Validate preview before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for preview changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Simulation</h3>
-        <p>
-          Test preview changes before deployment. What-if analysis for preview changes. Simulate preview decisions with sample requests. Detect unintended consequences. Validate preview coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Inheritance</h3>
-        <p>
-          Support preview inheritance for easier management. Parent preview triggers child preview. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited preview results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic Preview</h3>
-        <p>
-          Enforce location-based preview controls. Preview access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic preview patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Preview</h3>
-        <p>
-          Preview access by time of day/day of week. Business hours only for sensitive operations. After-hours preview requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based preview violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based Preview</h3>
-        <p>
-          Preview access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based preview decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based Preview</h3>
-        <p>
-          Preview access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based preview patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral Preview</h3>
-        <p>
-          Detect anomalous access patterns for preview. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up preview for high-risk access. Continuous preview during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based Preview</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification Preview</h3>
-        <p>
-          Apply preview based on data sensitivity. Classify data (public, internal, confidential, restricted). Different preview per classification. Automatic classification where possible. Handle classification changes. Audit classification-based preview. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Orchestration</h3>
-        <p>
-          Coordinate preview across distributed systems. Central preview orchestration service. Handle preview conflicts across systems. Ensure consistent enforcement. Manage preview dependencies. Orchestrate preview updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust Preview</h3>
-        <p>
-          Implement zero trust preview control. Never trust, always verify. Least privilege preview by default. Micro-segmentation of preview. Continuous verification of preview trust. Assume breach mentality. Monitor and log all preview.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Versioning Strategy</h3>
-        <p>
-          Manage preview versions effectively. Semantic versioning for preview. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request Preview</h3>
-        <p>
-          Handle access request preview systematically. Self-service access preview request. Manager approval workflow. Automated preview after approval. Temporary preview with expiry. Access preview audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Compliance Monitoring</h3>
-        <p>
-          Monitor preview compliance continuously. Automated compliance checks. Alert on preview violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for preview system failures. Backup preview configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Performance Tuning</h3>
-        <p>
-          Optimize preview evaluation performance. Profile preview evaluation latency. Identify slow preview rules. Optimize preview rules. Use efficient data structures. Cache preview results. Scale preview engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Testing Automation</h3>
-        <p>
-          Automate preview testing in CI/CD. Unit tests for preview rules. Integration tests with sample requests. Regression tests for preview changes. Performance tests for preview evaluation. Security tests for preview bypass. Automated preview validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Communication</h3>
-        <p>
-          Communicate preview changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain preview changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Retirement</h3>
-        <p>
-          Retire obsolete preview systematically. Identify unused preview. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove preview after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Preview Integration</h3>
-        <p>
-          Integrate with third-party preview systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party preview evaluation. Manage trust relationships. Audit third-party preview. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Cost Management</h3>
-        <p>
-          Optimize preview system costs. Right-size preview infrastructure. Use serverless for variable workloads. Optimize storage for preview data. Reduce unnecessary preview checks. Monitor cost per preview. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Scalability</h3>
-        <p>
-          Scale preview for growing systems. Horizontal scaling for preview engines. Shard preview data by user. Use read replicas for preview checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Observability</h3>
-        <p>
-          Implement comprehensive preview observability. Distributed tracing for preview flow. Structured logging for preview events. Metrics for preview health. Dashboards for preview monitoring. Alerts for preview anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Training</h3>
-        <p>
-          Train team on preview procedures. Regular preview drills. Document preview runbooks. Cross-train team members. Test preview knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Innovation</h3>
-        <p>
-          Stay current with preview best practices. Evaluate new preview technologies. Pilot innovative preview approaches. Share preview learnings. Contribute to preview community. Patent preview innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Metrics</h3>
-        <p>
-          Track key preview metrics. Preview success rate. Time to preview. Preview propagation latency. Denylist hit rate. User session count. Preview error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Security</h3>
-        <p>
-          Secure preview systems against attacks. Encrypt preview data. Implement access controls. Audit preview access. Monitor for preview abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preview Compliance</h3>
-        <p>
-          Meet regulatory requirements for preview. SOC2 audit trails. HIPAA immediate preview. PCI-DSS session controls. GDPR right to preview. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );

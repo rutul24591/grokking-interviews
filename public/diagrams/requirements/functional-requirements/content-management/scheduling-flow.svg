@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .user { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .schedule { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .queue { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .publish = { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- User -->
+  <rect class="user" x="50" y="50" width="180" height="100" rx="8"/>
+  <text x="140" y="90" text-anchor="middle" class="text-label">User</text>
+  <text x="140" y="115" text-anchor="middle" class="sublabel">Creates Content</text>
+  <text x="140" y="135" text-anchor="middle" class="sublabel">Sets Schedule</text>
+  
+  <!-- Schedule Creation -->
+  <rect class="schedule" x="280" y="50" width="200" height="120" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">Schedule Creation</text>
+  <text x="380" y="110" text-anchor="middle" class="sublabel">Date/Time Selection</text>
+  <text x="380" y="135" text-anchor="middle" class="sublabel">Timezone Handling</text>
+  <text x="380" y="160" text-anchor="middle" class="sublabel">Validation</text>
+  
+  <!-- Job Queue -->
+  <rect class="queue" x="530" y="50" width="200" height="120" rx="8"/>
+  <text x="630" y="80" text-anchor="middle" class="text-label">Job Queue</text>
+  <text x="630" y="110" text-anchor="middle" class="sublabel">Store Job</text>
+  <text x="630" y="135" text-anchor="middle" class="sublabel">Priority Queue</text>
+  <text x="630" y="160" text-anchor="middle" class="sublabel">Retry Logic</text>
+  
+  <!-- Publish Execution -->
+  <rect class="publish" x="780" y="50" width="180" height="120" rx="8"/>
+  <text x="870" y="80" text-anchor="middle" class="text-label">Publish</text>
+  <text x="870" y="110" text-anchor="middle" class="sublabel">Execute Job</text>
+  <text x="870" y="135" text-anchor="middle" class="sublabel">Content Live</text>
+  <text x="870" y="160" text-anchor="middle" class="sublabel">Notify User</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 100 L275 100"/>
+  <path class="arrow" d="M480 100 L525 100"/>
+  <path class="arrow" d="M730 100 L775 100"/>
+  
+  <!-- Scheduling Timeline -->
+  <rect class="user" x="50" y="250" width="900" height="160" rx="8"/>
+  <text x="500" y="280" text-anchor="middle" class="text-label">Scheduling Timeline</text>
+  
+  <!-- Timeline -->
+  <line x1="100" y1="350" x2="900" y2="350" stroke="#1a1822" stroke-width="2"/>
+  
+  <!-- Now -->
+  <circle cx="150" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Now</text>
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Content Created</text>
+  
+  <!-- Scheduled -->
+  <circle cx="400" cy="350" r="8" fill="#d7d1e6"/>
+  <text x="400" y="380" text-anchor="middle" class="sublabel">Scheduled Time</text>
+  <text x="400" y="400" text-anchor="middle" class="sublabel">Job Executed</text>
+  
+  <!-- Published -->
+  <circle cx="650" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="650" y="380" text-anchor="middle" class="sublabel">Published</text>
+  <text x="650" y="400" text-anchor="middle" class="sublabel">Content Live</text>
+  
+  <!-- Recurring -->
+  <circle cx="850" cy="350" r="8" fill="#6d5bd0" stroke-dasharray="2,2"/>
+  <text x="850" y="380" text-anchor="middle" class="sublabel">Next Occurrence</text>
+  <text x="850" y="400" text-anchor="middle" class="sublabel">(Recurring)</text>
+  
+  <path class="arrow" d="M158 350 L392 350"/>
+  <path class="arrow" d="M408 350 L642 350"/>
+  <path class="arrow" d="M658 350 L842 350"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Scheduling Flow</text>
+</svg>

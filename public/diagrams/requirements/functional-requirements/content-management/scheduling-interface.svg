@@ -1,100 +1,100 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .calendar { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .timezone = { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .schedule { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .publish = { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
   
-  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Content Scheduling Interface</text>
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
   
   <!-- Calendar Picker -->
-  <rect x="50" y="70" width="340" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
-  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Calendar Picker</text>
+  <rect class="calendar" x="50" y="50" width="220" height="200" rx="8"/>
+  <text x="160" y="80" text-anchor="middle" class="text-label">Calendar Picker</text>
   
-  <!-- Calendar Grid -->
-  <rect x="70" y="115" width="300" height="180" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <rect class="calendar" x="70" y="100" width="180" height="35" rx="4"/>
+  <text x="160" y="122" text-anchor="middle" class="sublabel">Month View</text>
   
-  <!-- Calendar Header -->
-  <rect x="70" y="115" width="300" height="30" rx="4" fill="#3b82f6"/>
-  <text x="220" y="135" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">March 2026</text>
+  <rect class="calendar" x="70" y="145" width="180" height="35" rx="4"/>
+  <text x="160" y="167" text-anchor="middle" class="sublabel">Week View</text>
   
-  <!-- Day Headers -->
-  <rect x="70" y="145" width="300" height="25" rx="2" fill="#f1f5f9"/>
-  <text x="93" y="162" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Sun</text>
-  <text x="136" y="162" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Mon</text>
-  <text x="179" y="162" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Tue</text>
-  <text x="222" y="162" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Wed</text>
-  <text x="265" y="162" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Thu</text>
-  <text x="308" y="162" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Fri</text>
-  <text x="351" y="162" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Sat</text>
+  <rect class="calendar" x="70" y="190" width="180" height="35" rx="4"/>
+  <text x="160" y="212" text-anchor="middle" class="sublabel">Day View</text>
   
-  <!-- Calendar Days -->
-  <text x="93" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#94a3b8">1</text>
-  <text x="136" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">2</text>
-  <text x="179" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">3</text>
-  <text x="222" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">4</text>
-  <text x="265" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">5</text>
-  <text x="308" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">6</text>
-  <text x="351" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">7</text>
+  <!-- Timezone Selection -->
+  <rect class="timezone" x="320" y="50" width="220" height="200" rx="8"/>
+  <text x="430" y="80" text-anchor="middle" class="text-label">Timezone Selection</text>
   
-  <text x="93" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">8</text>
-  <text x="136" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">9</text>
-  <text x="179" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">10</text>
-  <text x="222" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">11</text>
-  <text x="265" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">12</text>
-  <text x="308" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">13</text>
-  <text x="351" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">14</text>
+  <rect class="timezone" x="340" y="100" width="180" height="35" rx="4"/>
+  <text x="430" y="122" text-anchor="middle" class="sublabel">Auto-detect</text>
   
-  <text x="93" y="250" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">15</text>
-  <text x="136" y="250" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">16</text>
-  <rect x="165" y="235" width="28" height="28" rx="4" fill="#3b82f6"/>
-  <text x="179" y="254" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#ffffff">17</text>
-  <text x="222" y="250" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">18</text>
-  <text x="265" y="250" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">19</text>
-  <text x="308" y="250" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">20</text>
-  <text x="351" y="250" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">21</text>
+  <rect class="timezone" x="340" y="145" width="180" height="35" rx="4"/>
+  <text x="430" y="167" text-anchor="middle" class="sublabel">Manual Select</text>
   
-  <!-- Time Picker -->
-  <rect x="70" y="300" width="300" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="90" y="325" text-anchor="start" font-family="system-ui" font-size="10" fill="#475569">Time:</text>
-  <text x="150" y="325" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">9:00 AM</text>
-  <rect x="250" y="305" width="100" height="30" rx="4" fill="#3b82f6"/>
-  <text x="300" y="325" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Schedule</text>
+  <rect class="timezone" x="340" y="190" width="180" height="35" rx="4"/>
+  <text x="430" y="212" text-anchor="middle" class="sublabel">UTC Offset Display</text>
   
-  <!-- Timezone Selector -->
-  <rect x="420" y="70" width="340" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="590" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Timezone</text>
+  <!-- Scheduled Content -->
+  <rect class="schedule" x="590" y="50" width="220" height="200" rx="8"/>
+  <text x="700" y="80" text-anchor="middle" class="text-label">Scheduled Content</text>
   
-  <rect x="440" y="115" width="300" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
-  <text x="460" y="140" text-anchor="start" font-family="system-ui" font-size="11" fill="#0f172a">🌍 America/New_York (EST)</text>
+  <rect class="schedule" x="610" y="100" width="180" height="35" rx="4"/>
+  <text x="700" y="122" text-anchor="middle" class="sublabel">Upcoming Queue</text>
   
-  <rect x="440" y="160" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
-  <text x="590" y="182" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Auto-detected from browser</text>
+  <rect class="schedule" x="610" y="145" width="180" height="35" rx="4"/>
+  <text x="700" y="167" text-anchor="middle" class="sublabel">Edit/Cancel</text>
   
-  <!-- Best Time Suggestions -->
-  <rect x="420" y="190" width="340" height="160" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="590" y="215" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Best Times for Your Audience</text>
+  <rect class="schedule" x="610" y="190" width="180" height="35" rx="4"/>
+  <text x="700" y="212" text-anchor="middle" class="sublabel">Reschedule</text>
   
-  <rect x="440" y="230" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
-  <text x="590" y="252" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">⭐ Tuesday 9:00 AM (Highest engagement)</text>
+  <!-- Publish Action -->
+  <rect class="publish" x="850" y="125" width="120" height="100" rx="8"/>
+  <text x="910" y="160" text-anchor="middle" class="text-label">Publish</text>
+  <text x="910" y="185" text-anchor="middle" class="sublabel">At Scheduled</text>
+  <text x="910" y="205" text-anchor="middle" class="sublabel">Time</text>
   
-  <rect x="440" y="270" width="300" height="35" rx="4" fill="#22c55e" opacity="0.2"/>
-  <text x="590" y="292" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">⭐ Wednesday 1:00 PM</text>
+  <!-- Arrows -->
+  <path class="arrow" d="M270 150 L315 150"/>
+  <path class="arrow" d="M540 150 L585 150"/>
+  <path class="arrow" d="M810 150 L845 150"/>
   
-  <rect x="440" y="310" width="300" height="35" rx="4" fill="#22c55e" opacity="0.1"/>
-  <text x="590" y="332" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">⭐ Friday 11:00 AM</text>
+  <!-- Scheduling Flow -->
+  <rect class="calendar" x="50" y="300" width="900" height="160" rx="8"/>
+  <text x="500" y="330" text-anchor="middle" class="text-label">Scheduling Workflow</text>
   
-  <!-- Quick Select -->
-  <rect x="50" y="370" width="340" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="220" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Quick Select</text>
+  <!-- Flow boxes -->
+  <rect class="calendar" x="70" y="350" width="180" height="90" rx="4"/>
+  <text x="160" y="380" text-anchor="middle" class="sublabel" style="font-weight: 600">1. Select Date</text>
+  <text x="160" y="405" text-anchor="middle" class="sublabel">Calendar Picker</text>
+  <text x="160" y="425" text-anchor="middle" class="sublabel">Time Selection</text>
   
-  <rect x="70" y="410" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="140" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Tomorrow 9 AM</text>
+  <rect class="timezone" x="280" y="350" width="180" height="90" rx="4"/>
+  <text x="370" y="380" text-anchor="middle" class="sublabel" style="font-weight: 600">2. Set Timezone</text>
+  <text x="370" y="405" text-anchor="middle" class="sublabel">Auto or Manual</text>
+  <text x="370" y="425" text-anchor="middle" class="sublabel">UTC Storage</text>
   
-  <rect x="230" y="410" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="300" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Next Monday</text>
+  <rect class="schedule" x="490" y="350" width="180" height="90" rx="4"/>
+  <text x="580" y="380" text-anchor="middle" class="sublabel" style="font-weight: 600">3. Schedule</text>
+  <text x="580" y="405" text-anchor="middle" class="sublabel">Create Job</text>
+  <text x="580" y="425" text-anchor="middle" class="sublabel">Add to Queue</text>
   
-  <rect x="70" y="445" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="140" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">End of Month</text>
+  <rect class="publish" x="700" y="350" width="180" height="90" rx="4"/>
+  <text x="790" y="380" text-anchor="middle" class="sublabel" style="font-weight: 600">4. Publish</text>
+  <text x="790" y="405" text-anchor="middle" class="sublabel">Execute Job</text>
+  <text x="790" y="425" text-anchor="middle" class="sublabel">Content Live</text>
   
-  <rect x="230" y="445" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="300" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Custom...</text>
-
+  <path class="arrow" d="M250 395 L275 395"/>
+  <path class="arrow" d="M460 395 L485 395"/>
+  <path class="arrow" d="M670 395 L695 395"/>
+  
+  <text x="500" y="480" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 1: Scheduling Interface</text>
 </svg>

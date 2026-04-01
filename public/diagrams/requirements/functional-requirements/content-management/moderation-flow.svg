@@ -1,108 +1,66 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .content { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .auto { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .human { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .action { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
     </marker>
   </defs>
-  <rect width="800" height="500" fill="#ffffff"/>
   
-  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Content Moderation Approaches</text>
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
   
-  <!-- Pre-moderation -->
-  <rect x="50" y="70" width="170" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
-  <text x="135" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#3b82f6">Pre-moderation</text>
+  <!-- Content Submission -->
+  <rect class="content" x="50" y="50" width="180" height="100" rx="8"/>
+  <text x="140" y="90" text-anchor="middle" class="text-label">Content</text>
+  <text x="140" y="115" text-anchor="middle" class="sublabel">User Submission</text>
+  <text x="140" y="135" text-anchor="middle" class="sublabel">Text/Image/Video</text>
   
-  <rect x="70" y="110" width="130" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
-  <text x="135" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Review BEFORE publish</text>
+  <!-- Automated Detection -->
+  <rect class="auto" x="280" y="50" width="220" height="120" rx="8"/>
+  <text x="390" y="80" text-anchor="middle" class="text-label">Automated Detection</text>
+  <text x="390" y="110" text-anchor="middle" class="sublabel">ML Classification</text>
+  <text x="390" y="135" text-anchor="middle" class="sublabel">Rule Filtering</text>
+  <text x="390" y="160" text-anchor="middle" class="sublabel">Hash Matching</text>
   
-  <rect x="70" y="145" width="130" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
-  <text x="135" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Safe (no harmful content)</text>
+  <!-- Decision -->
+  <rect class="human" x="550" y="50" width="180" height="120" rx="8"/>
+  <text x="640" y="80" text-anchor="middle" class="text-label">Decision</text>
+  <text x="640" y="110" text-anchor="middle" class="sublabel">High Confidence</text>
+  <text x="640" y="135" text-anchor="middle" class="sublabel">→ Auto Action</text>
+  <text x="640" y="160" text-anchor="middle" class="sublabel">Low Confidence</text>
   
-  <rect x="70" y="185" width="130" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
-  <text x="135" y="205" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✗ Slow (delays publishing)</text>
+  <!-- Human Review -->
+  <rect class="human" x="780" y="50" width="180" height="120" rx="8"/>
+  <text x="870" y="80" text-anchor="middle" class="text-label">Human Review</text>
+  <text x="870" y="110" text-anchor="middle" class="sublabel">Moderator Queue</text>
+  <text x="870" y="135" text-anchor="middle" class="sublabel">Review &amp; Decide</text>
   
-  <line x1="220" y1="130" x2="260" y2="130" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Action -->
+  <rect class="action" x="550" y="250" width="180" height="120" rx="8"/>
+  <text x="640" y="280" text-anchor="middle" class="text-label">Enforcement</text>
+  <text x="640" y="310" text-anchor="middle" class="sublabel">Remove Content</text>
+  <text x="640" y="335" text-anchor="middle" class="sublabel">Warn User</text>
+  <text x="640" y="360" text-anchor="middle" class="sublabel">Suspend/Ban</text>
   
-  <!-- Post-moderation -->
-  <rect x="270" y="70" width="170" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="355" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f59e0b">Post-moderation</text>
+  <!-- Arrows -->
+  <path class="arrow" d="M230 100 L275 100"/>
+  <path class="arrow" d="M500 100 L545 100"/>
+  <path class="arrow" d="M730 100 L775 100"/>
   
-  <rect x="290" y="110" width="130" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
-  <text x="355" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Review AFTER publish</text>
+  <path class="arrow" d="M640 170 L640 200 L640 245"/>
+  <path class="arrow" d="M870 170 L870 220 L640 220 L640 245"/>
   
-  <rect x="290" y="145" width="130" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
-  <text x="355" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Fast (no delays)</text>
+  <!-- Confidence Split -->
+  <text x="640" y="200" text-anchor="middle" class="sublabel" style="font-size: 10px">High → Auto</text>
+  <text x="700" y="220" text-anchor="start" class="sublabel" style="font-size: 10px">Low → Human</text>
   
-  <rect x="290" y="185" width="130" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
-  <text x="355" y="205" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✗ Risk (brief exposure)</text>
-  
-  <line x1="440" y1="130" x2="480" y2="130" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
-  
-  <!-- Reactive -->
-  <rect x="490" y="70" width="170" height="120" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="575" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#8b5cf6">Reactive</text>
-  
-  <rect x="510" y="110" width="130" height="30" rx="4" fill="#8b5cf6" opacity="0.3"/>
-  <text x="575" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Review when REPORTED</text>
-  
-  <rect x="510" y="145" width="130" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
-  <text x="575" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Scalable (community)</text>
-  
-  <rect x="510" y="185" width="130" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
-  <text x="575" y="205" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✗ Reactive (until reported)</text>
-  
-  <!-- Auto-moderation Flow -->
-  <rect x="50" y="220" width="700" height="260" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="400" y="245" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Auto-Moderation Flow (90%+ of content)</text>
-  
-  <!-- User Submit -->
-  <rect x="70" y="260" width="100" height="50" rx="8" fill="#3b82f6"/>
-  <text x="120" y="290" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">User Submit</text>
-  
-  <line x1="170" y1="285" x2="210" y2="285" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
-  
-  <!-- ML Models -->
-  <rect x="220" y="260" width="140" height="50" rx="8" fill="#8b5cf6"/>
-  <text x="290" y="285" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">ML Models</text>
-  <text x="290" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Hate/Nudity/Violence/Spam</text>
-  
-  <line x1="360" y1="285" x2="400" y2="285" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
-  
-  <!-- Confidence Check -->
-  <rect x="410" y="260" width="140" height="50" rx="8" fill="#f59e0b"/>
-  <text x="480" y="285" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Confidence Check</text>
-  
-  <!-- High Confidence Safe -->
-  <line x1="480" y1="310" x2="480" y2="340" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="500" y="325" text-anchor="start" font-family="system-ui" font-size="8" fill="#22c55e">High (Safe)</text>
-  
-  <rect x="410" y="345" width="140" height="40" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="480" y="370" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#22c55e">Auto-Approve</text>
-  <text x="480" y="385" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Publish immediately</text>
-  
-  <!-- High Confidence Violation -->
-  <line x1="550" y1="285" x2="590" y2="285" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="560" y="275" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ef4444">High (Violation)</text>
-  
-  <rect x="600" y="260" width="130" height="50" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
-  <text x="665" y="290" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ef4444">Auto-Reject</text>
-  <text x="665" y="305" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Block, notify user</text>
-  
-  <!-- Low Confidence -->
-  <line x1="480" y1="235" x2="480" y2="210" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="500" y="225" text-anchor="start" font-family="system-ui" font-size="8" fill="#f59e0b">Low</text>
-  
-  <rect x="410" y="160" width="140" height="40" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="480" y="185" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#f59e0b">Human Review</text>
-  <text x="480" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Edge cases</text>
-  
-  <!-- Appeal -->
-  <line x1="665" y1="310" x2="665" y2="340" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="685" y="325" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">User can appeal</text>
-  
-  <rect x="600" y="345" width="130" height="40" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="1"/>
-  <text x="665" y="370" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#3b82f6">Appeal Review</text>
-  <text x="665" y="385" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Different moderator</text>
-
+  <text x="500" y="460" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 1: Moderation Flow</text>
 </svg>

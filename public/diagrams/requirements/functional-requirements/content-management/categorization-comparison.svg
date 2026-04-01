@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .deep { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .shallow { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .hybrid { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Deep Hierarchy -->
+  <rect class="deep" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Deep Hierarchy (5+ levels)</text>
+  
+  <rect class="deep" x="70" y="100" width="240" height="30" rx="4"/>
+  <text x="190" y="120" text-anchor="middle" class="sublabel">Electronics</text>
+  
+  <rect class="deep" x="90" y="130" width="220" height="25" rx="4"/>
+  <text x="190" y="148" text-anchor="middle" class="sublabel" style="font-size: 11px">└─ Computers</text>
+  
+  <rect class="deep" x="110" y="155" width="200" height="25" rx="4"/>
+  <text x="190" y="173" text-anchor="middle" class="sublabel" style="font-size: 11px">└─ Laptops</text>
+  
+  <rect class="deep" x="130" y="180" width="180" height="25" rx="4"/>
+  <text x="190" y="198" text-anchor="middle" class="sublabel" style="font-size: 11px">└─ Gaming Laptops</text>
+  
+  <rect class="deep" x="150" y="205" width="160" height="20" rx="4"/>
+  <text x="190" y="218" text-anchor="middle" class="sublabel" style="font-size: 10px">└─ High-End Gaming</text>
+  
+  <!-- Shallow Hierarchy -->
+  <rect class="shallow" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Shallow Hierarchy (2-3 levels)</text>
+  
+  <rect class="shallow" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Electronics</text>
+  
+  <rect class="shallow" x="420" y="140" width="220" height="35" rx="4"/>
+  <text x="520" y="162" text-anchor="middle" class="sublabel">└─ Computers, Phones, TVs</text>
+  
+  <rect class="shallow" x="440" y="180" width="200" height="35" rx="4"/>
+  <text x="520" y="202" text-anchor="middle" class="sublabel">└─ Laptops, Desktops</text>
+  
+  <!-- Hybrid with Facets -->
+  <rect class="hybrid" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Hybrid + Faceted Filtering</text>
+  
+  <rect class="hybrid" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">3-4 Level Hierarchy</text>
+  
+  <rect class="hybrid" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">+ Faceted Filters</text>
+  
+  <rect class="hybrid" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Brand, Price, Features</text>
+  
+  <!-- Comparison Table -->
+  <rect class="deep" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Hierarchy Depth Comparison</text>
+  
+  <!-- Header -->
+  <rect class="deep" x="60" y="320" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Approach</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Granularity</text>
+  <text x="450" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Usability</text>
+  <text x="600" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Maintenance</text>
+  <text x="800" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Best For</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Deep</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">High</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel" fill="#e53e3e">Low</text>
+  <text x="600" y="380" text-anchor="middle" class="sublabel" fill="#e53e3e">High</text>
+  <text x="800" y="380" text-anchor="middle" class="sublabel">Specialized Domains</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Shallow</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel" fill="#e53e3e">Low</text>
+  <text x="450" y="400" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">High</text>
+  <text x="600" y="400" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Low</text>
+  <text x="800" y="400" text-anchor="middle" class="sublabel">General Platforms</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Categorization Approaches Comparison</text>
+</svg>
