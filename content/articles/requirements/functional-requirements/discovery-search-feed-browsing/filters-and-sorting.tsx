@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to filters and sorting covering filter types, sort options, state management, URL persistence, performance optimization, and UX best practices for search refinement.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "filters-and-sorting",
   version: "extensive",
   wordCount: 6000,

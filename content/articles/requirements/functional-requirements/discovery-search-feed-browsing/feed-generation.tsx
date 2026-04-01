@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to feed generation systems covering fan-out patterns, ranking pipelines, real-time updates, and scaling strategies for personalized content streams.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "feed-generation",
   version: "extensive",
   wordCount: 6200,

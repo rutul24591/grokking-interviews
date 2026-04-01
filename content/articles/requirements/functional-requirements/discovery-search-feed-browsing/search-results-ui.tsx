@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to search results UI covering result display, highlighting, pagination strategies, infinite scroll, empty states, and performance optimization for optimal search experience.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "search-results-ui",
   version: "extensive",
   wordCount: 6000,

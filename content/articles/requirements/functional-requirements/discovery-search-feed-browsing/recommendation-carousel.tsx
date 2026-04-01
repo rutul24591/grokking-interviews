@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to recommendation carousels covering horizontal scroll UX, prefetching strategies, personalization algorithms, reason labels, and performance optimization for content discovery.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "recommendation-carousel",
   version: "extensive",
   wordCount: 6000,

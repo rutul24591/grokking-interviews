@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to faceted search covering facet types, computation strategies, multi-select filtering, performance optimization, and UX best practices.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "faceted-search",
   version: "extensive",
   wordCount: 6000,

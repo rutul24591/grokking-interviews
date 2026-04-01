@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to explore pages covering discovery features, trending topics, curated collections, personalization, and topic following for content discovery.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "explore-page",
   version: "extensive",
   wordCount: 6000,

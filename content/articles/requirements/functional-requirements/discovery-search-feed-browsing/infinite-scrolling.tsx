@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to infinite scrolling covering trigger mechanisms, cursor-based pagination, virtualization, memory management, and UX best practices.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "infinite-scrolling",
   version: "extensive",
   wordCount: 6000,

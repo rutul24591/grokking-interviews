@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to query processing covering tokenization, query expansion, spelling correction, intent detection, and query optimization for search systems.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "query-processing",
   version: "extensive",
   wordCount: 6000,

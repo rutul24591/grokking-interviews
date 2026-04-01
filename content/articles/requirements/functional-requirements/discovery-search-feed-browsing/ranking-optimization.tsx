@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to ranking optimization covering feature engineering, model training, A/B testing, online learning, and continuous improvement for search and recommendation systems.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "ranking-optimization",
   version: "extensive",
   wordCount: 6000,

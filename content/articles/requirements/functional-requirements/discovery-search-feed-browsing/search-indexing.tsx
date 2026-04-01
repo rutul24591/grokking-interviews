@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to search indexing covering inverted indexes, analyzers, tokenization, incremental updates, and reindexing strategies for production search systems.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "search-indexing",
   version: "extensive",
   wordCount: 6500,

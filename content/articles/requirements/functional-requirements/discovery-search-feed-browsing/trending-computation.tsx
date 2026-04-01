@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to trending computation covering velocity calculation, time windows, stream processing, geographic trends, and manipulation prevention for real-time discovery.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "trending-computation",
   version: "extensive",
   wordCount: 6000,

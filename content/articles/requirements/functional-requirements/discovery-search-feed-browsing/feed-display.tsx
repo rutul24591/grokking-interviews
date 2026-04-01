@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to feed display covering chronological vs ranked feeds, infinite scroll, virtualization, feed updates, and scroll position management.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "feed-display",
   version: "extensive",
   wordCount: 6000,

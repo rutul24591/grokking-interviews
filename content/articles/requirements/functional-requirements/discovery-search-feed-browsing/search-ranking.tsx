@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to search ranking systems covering relevance scoring, learning-to-rank models, two-stage ranking architecture, and optimization strategies for production search.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "search-ranking",
   version: "extensive",
   wordCount: 6500,

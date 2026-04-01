@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to Elasticsearch covering cluster architecture, index design, query optimization, scaling strategies, and production best practices.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "elasticsearch",
   version: "extensive",
   wordCount: 6500,

@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to recommendation algorithms covering collaborative filtering, content-based filtering, hybrid approaches, cold start solutions, and evaluation metrics.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "recommendation-algorithms",
   version: "extensive",
   wordCount: 6500,

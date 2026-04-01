@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to related content recommendations covering similarity algorithms, co-engagement, placement strategies, pre-computation, and real-time updates for increasing engagement.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "related-content",
   version: "extensive",
   wordCount: 6000,

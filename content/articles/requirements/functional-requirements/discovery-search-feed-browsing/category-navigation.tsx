@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to category navigation covering hierarchical structures, navigation patterns, breadcrumbs, mega menus, mobile navigation, and SEO best practices for content discovery.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "category-navigation",
   version: "extensive",
   wordCount: 6000,

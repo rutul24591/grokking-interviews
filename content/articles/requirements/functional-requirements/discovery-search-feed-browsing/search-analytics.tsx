@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to search analytics covering query logging, search metrics, zero-result analysis, click-through tracking, and using analytics to improve search quality and identify content gaps.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "search-analytics",
   version: "extensive",
   wordCount: 6000,

@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to search bar implementation covering autocomplete, debouncing, recent searches, trending queries, accessibility, and performance optimization.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "search-bar",
   version: "extensive",
   wordCount: 6000,

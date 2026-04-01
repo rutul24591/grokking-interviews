@@ -10,7 +10,7 @@ export const metadata: ArticleMetadata = {
   description:
     "Comprehensive guide to trending section UI covering real-time trend display, velocity indicators, geographic filtering, category tabs, and engagement optimization for discovery.",
   category: "functional-requirements",
-  subcategory: "discovery",
+  subcategory: "discovery-search-feed-browsing",
   slug: "trending-section",
   version: "extensive",
   wordCount: 6000,
