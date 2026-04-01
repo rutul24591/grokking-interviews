@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .peruser { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .perip { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .perendpoint { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Per-User Rate Limiting -->
+  <rect class="peruser" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Per-User Rate Limiting</text>
+  
+  <rect class="peruser" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Limit by User ID</text>
+  
+  <rect class="peruser" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">User-Specific Limits</text>
+  
+  <rect class="peruser" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">User Quota Management</text>
+  
+  <!-- Per-IP Rate Limiting -->
+  <rect class="perip" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Per-IP Rate Limiting</text>
+  
+  <rect class="perip" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Limit by IP Address</text>
+  
+  <rect class="perip" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">IP-Specific Limits</text>
+  
+  <rect class="perip" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">IP Quota Management</text>
+  
+  <!-- Per-Endpoint Rate Limiting -->
+  <rect class="perendpoint" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Per-Endpoint Rate Limiting</text>
+  
+  <rect class="perendpoint" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Limit by Endpoint</text>
+  
+  <rect class="perendpoint" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Endpoint-Specific Limits</text>
+  
+  <rect class="perendpoint" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Endpoint Quota Management</text>
+  
+  <!-- Rate Limiting Flow -->
+  <rect class="peruser" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Rate Limiting Flow</text>
+  
+  <!-- Flow -->
+  <rect class="peruser" x="70" y="330" width="280" height="60" rx="4"/>
+  <rect class="perip" x="360" y="330" width="280" height="60" rx="4"/>
+  <rect class="perendpoint" x="650" y="330" width="280" height="60" rx="4"/>
+  <text x="500" y="365" text-anchor="middle" class="sublabel" style="font-weight: 600;">Per-User → Per-IP → Per-Endpoint</text>
+  
+  <text x="70" y="410" text-anchor="start" class="sublabel">Per-User</text>
+  <text x="360" y="410" text-anchor="middle" class="sublabel">Per-IP</text>
+  <text x="650" y="410" text-anchor="end" class="sublabel">Per-Endpoint</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Rate Limiting</text>
+</svg>

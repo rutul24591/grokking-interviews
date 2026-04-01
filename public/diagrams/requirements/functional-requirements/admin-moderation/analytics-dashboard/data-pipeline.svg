@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .collection { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .streaming { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .batch { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .storage { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Event Collection -->
+  <rect class="collection" x="50" y="50" width="200" height="120" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Event Collection</text>
+  <text x="150" y="105" text-anchor="middle" class="sublabel">User Events</text>
+  <text x="150" y="125" text-anchor="middle" class="sublabel">Content Events</text>
+  <text x="150" y="145" text-anchor="middle" class="sublabel">Payment Events</text>
+  
+  <!-- Event Streaming -->
+  <rect class="streaming" x="300" y="50" width="200" height="120" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label">Event Streaming</text>
+  <text x="400" y="105" text-anchor="middle" class="sublabel">Kafka / Kinesis</text>
+  <text x="400" y="125" text-anchor="middle" class="sublabel">Real-time Processing</text>
+  <text x="400" y="145" text-anchor="middle" class="sublabel">Windowing</text>
+  
+  <!-- Batch Aggregation -->
+  <rect class="batch" x="550" y="50" width="200" height="120" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">Batch Aggregation</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">Scheduled Jobs</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Hourly/Daily</text>
+  <text x="650" y="145" text-anchor="middle" class="sublabel">Incremental</text>
+  
+  <!-- Data Storage -->
+  <rect class="storage" x="800" y="50" width="170" height="120" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label">Data Storage</text>
+  <text x="885" y="105" text-anchor="middle" class="sublabel">Time-series DB</text>
+  <text x="885" y="125" text-anchor="middle" class="sublabel">Data Warehouse</text>
+  <text x="885" y="145" text-anchor="middle" class="sublabel">Cache (Redis)</text>
+  
+  <!-- Arrows between steps -->
+  <path class="arrow" d="M250 110 L295 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <!-- Storage Details -->
+  <rect class="collection" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Data Pipeline Flow</text>
+  
+  <rect class="collection" x="70" y="270" width="200" height="80" rx="4"/>
+  <text x="170" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Raw Events</text>
+  <text x="170" y="315" text-anchor="middle" class="sublabel">Event Collection</text>
+  <text x="170" y="335" text-anchor="middle" class="sublabel">Validation</text>
+  
+  <rect class="streaming" x="300" y="270" width="180" height="80" rx="4"/>
+  <text x="390" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Aggregated Metrics</text>
+  <text x="390" y="315" text-anchor="middle" class="sublabel">Real-time + Batch</text>
+  <text x="390" y="335" text-anchor="middle" class="sublabel">Pre-computed</text>
+  
+  <!-- Storage Types -->
+  <rect class="batch" x="550" y="220" width="400" height="150" rx="8"/>
+  <text x="750" y="250" text-anchor="middle" class="text-label">Storage Types</text>
+  
+  <rect class="batch" x="570" y="270" width="180" height="80" rx="4"/>
+  <text x="660" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Time-series DB</text>
+  <text x="660" y="315" text-anchor="middle" class="sublabel">InfluxDB, Timescale</text>
+  <text x="660" y="335" text-anchor="middle" class="sublabel">Time-series metrics</text>
+  
+  <rect class="storage" x="780" y="270" width="150" height="80" rx="4"/>
+  <text x="855" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Data Warehouse</text>
+  <text x="855" y="315" text-anchor="middle" class="sublabel">BigQuery, Redshift</text>
+  <text x="855" y="335" text-anchor="middle" class="sublabel">Historical analysis</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Data Pipeline and Aggregation</text>
+</svg>

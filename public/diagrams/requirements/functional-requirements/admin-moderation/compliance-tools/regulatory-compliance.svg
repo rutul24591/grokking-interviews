@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .gdpr { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .ccpa { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .hipaa { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .sox { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- GDPR -->
+  <rect class="gdpr" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">GDPR</text>
+  <text x="150" y="110" text-anchor="middle" class="sublabel">General Data Protection</text>
+  
+  <rect class="gdpr" x="70" y="130" width="160" height="35" rx="4"/>
+  <text x="150" y="152" text-anchor="middle" class="sublabel">Data Access</text>
+  
+  <rect class="gdpr" x="70" y="175" width="160" height="35" rx="4"/>
+  <text x="150" y="197" text-anchor="middle" class="sublabel">Right to Erasure</text>
+  
+  <rect class="gdpr" x="70" y="220" width="160" height="35" rx="4"/>
+  <text x="150" y="242" text-anchor="middle" class="sublabel">Retention: As needed</text>
+  
+  <!-- CCPA -->
+  <rect class="ccpa" x="300" y="50" width="200" height="180" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">CCPA</text>
+  <text x="400" y="110" text-anchor="middle" class="sublabel">California Consumer</text>
+  
+  <rect class="ccpa" x="320" y="130" width="160" height="35" rx="4"/>
+  <text x="400" y="152" text-anchor="middle" class="sublabel">Data Access</text>
+  
+  <rect class="ccpa" x="320" y="175" width="160" height="35" rx="4"/>
+  <text x="400" y="197" text-anchor="middle" class="sublabel">Right to Deletion</text>
+  
+  <rect class="ccpa" x="320" y="220" width="160" height="35" rx="4"/>
+  <text x="400" y="242" text-anchor="middle" class="sublabel">Right to Opt-Out</text>
+  
+  <!-- HIPAA -->
+  <rect class="hipaa" x="550" y="50" width="200" height="180" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">HIPAA</text>
+  <text x="650" y="110" text-anchor="middle" class="sublabel">Healthcare Data</text>
+  
+  <rect class="hipaa" x="570" y="130" width="160" height="35" rx="4"/>
+  <text x="650" y="152" text-anchor="middle" class="sublabel">PHI Protection</text>
+  
+  <rect class="hipaa" x="570" y="175" width="160" height="35" rx="4"/>
+  <text x="650" y="197" text-anchor="middle" class="sublabel">Data Access</text>
+  
+  <rect class="hipaa" x="570" y="220" width="160" height="35" rx="4"/>
+  <text x="650" y="242" text-anchor="middle" class="sublabel">Retention: 6+ years</text>
+  
+  <!-- SOX -->
+  <rect class="sox" x="800" y="50" width="170" height="180" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">SOX</text>
+  <text x="885" y="110" text-anchor="middle" class="sublabel">Sarbanes-Oxley</text>
+  
+  <rect class="sox" x="815" y="130" width="140" height="35" rx="4"/>
+  <text x="885" y="152" text-anchor="middle" class="sublabel">Admin Actions</text>
+  
+  <rect class="sox" x="815" y="175" width="140" height="35" rx="4"/>
+  <text x="885" y="197" text-anchor="middle" class="sublabel">Financial Data</text>
+  
+  <rect class="sox" x="815" y="220" width="140" height="35" rx="4"/>
+  <text x="885" y="242" text-anchor="middle" class="sublabel">Retention: 7+ years</text>
+  
+  <!-- Comparison Table -->
+  <rect class="gdpr" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Regulatory Requirements Summary</text>
+  
+  <!-- Header -->
+  <rect class="gdpr" x="60" y="320" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Regulation</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Industry</text>
+  <text x="450" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Key Requirements</text>
+  <text x="650" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Retention</text>
+  <text x="850" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Region</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">GDPR</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel">Data Privacy</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel">Access, Erasure, Portability</text>
+  <text x="650" y="380" text-anchor="middle" class="sublabel">As needed</text>
+  <text x="850" y="380" text-anchor="middle" class="sublabel">EU</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">CCPA</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel">Data Privacy</text>
+  <text x="450" y="400" text-anchor="middle" class="sublabel">Access, Deletion, Opt-Out</text>
+  <text x="650" y="400" text-anchor="middle" class="sublabel">As needed</text>
+  <text x="850" y="400" text-anchor="middle" class="sublabel">California</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Regulatory Compliance</text>
+</svg>

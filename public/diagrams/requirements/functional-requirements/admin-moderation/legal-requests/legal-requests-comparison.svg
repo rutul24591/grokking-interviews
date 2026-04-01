@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .comprehensive { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .simple { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .hybrid { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Comprehensive -->
+  <rect class="comprehensive" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Comprehensive</text>
+  
+  <rect class="comprehensive" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Comprehensive Handling</text>
+  
+  <rect class="comprehensive" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Effective Handling</text>
+  
+  <rect class="comprehensive" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Complex, Expensive</text>
+  
+  <!-- Simple -->
+  <rect class="simple" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Simple</text>
+  
+  <rect class="simple" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Simple Handling</text>
+  
+  <rect class="simple" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Cheap to Implement</text>
+  
+  <rect class="simple" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Not Comprehensive</text>
+  
+  <!-- Hybrid -->
+  <rect class="hybrid" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Hybrid</text>
+  
+  <rect class="hybrid" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Comprehensive for High-Risk</text>
+  
+  <rect class="hybrid" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Simple for Low-Risk</text>
+  
+  <rect class="hybrid" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Recommended</text>
+  
+  <!-- Comparison Table -->
+  <rect class="comprehensive" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Legal Requests Comparison</text>
+  
+  <!-- Header -->
+  <rect class="comprehensive" x="60" y="320" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Approach</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Comprehensive</text>
+  <text x="450" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Cost</text>
+  <text x="600" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Best For</text>
+  <text x="800" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Use Case</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Comprehensive</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Yes</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel" fill="#e53e3e">High</text>
+  <text x="600" y="380" text-anchor="middle" class="sublabel">Legal-Intensive</text>
+  <text x="800" y="380" text-anchor="middle" class="sublabel">High-Risk Platforms</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Simple</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel" fill="#e53e3e">No</text>
+  <text x="450" y="400" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">Low</text>
+  <text x="600" y="400" text-anchor="middle" class="sublabel">Non-Legal</text>
+  <text x="800" y="400" text-anchor="middle" class="sublabel">Low-Risk Platforms</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Legal Requests Comparison</text>
+</svg>

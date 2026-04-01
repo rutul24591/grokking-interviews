@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .management { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .flags { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .dynamic { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .versioning { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
+  
+  <!-- Configuration Management -->
+  <rect class="management" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Configuration Management</text>
+  
+  <rect class="management" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">System Configuration</text>
+  
+  <rect class="management" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Application Configuration</text>
+  
+  <rect class="management" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Service Configuration</text>
+  
+  <!-- Feature Flags -->
+  <rect class="flags" x="320" y="50" width="200" height="180" rx="8"/>
+  <text x="420" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Feature Flags</text>
+  
+  <rect class="flags" x="340" y="100" width="160" height="35" rx="4"/>
+  <text x="420" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Boolean Flags</text>
+  
+  <rect class="flags" x="340" y="145" width="160" height="35" rx="4"/>
+  <text x="420" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Multivariate Flags</text>
+  
+  <rect class="flags" x="340" y="190" width="160" height="35" rx="4"/>
+  <text x="420" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Rollout Flags</text>
+  
+  <!-- Dynamic Configuration -->
+  <rect class="dynamic" x="590" y="50" width="180" height="180" rx="8"/>
+  <text x="680" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Dynamic Configuration</text>
+  
+  <rect class="dynamic" x="610" y="100" width="140" height="35" rx="4"/>
+  <text x="680" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Runtime Configuration</text>
+  
+  <rect class="dynamic" x="610" y="145" width="140" height="35" rx="4"/>
+  <text x="680" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Dynamic Updates</text>
+  
+  <rect class="dynamic" x="610" y="190" width="140" height="35" rx="4"/>
+  <text x="680" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Hot Reload</text>
+  
+  <!-- Configuration Versioning -->
+  <rect class="versioning" x="590" y="280" width="330" height="140" rx="8"/>
+  <text x="755" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Configuration Versioning</text>
+  
+  <rect class="versioning" x="610" y="330" width="140" height="35" rx="4"/>
+  <text x="680" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600">Configuration Versioning</text>
+  
+  <rect class="versioning" x="765" y="330" width="140" height="35" rx="4"/>
+  <text x="835" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600">Configuration History</text>
+  
+  <rect class="versioning" x="610" y="375" width="140" height="35" rx="4"/>
+  <text x="680" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600">Configuration Rollback</text>
+  
+  <rect class="versioning" x="765" y="375" width="140" height="35" rx="4"/>
+  <text x="835" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600">Configuration Validation</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 140 L315 140"/>
+  <path class="arrow" d="M520 140 L605 140"/>
+  <path class="arrow" d="M755 230 L755 275"/>
+  <path class="arrow" d="M250 350 L315 350"/>
+  
+  <text x="500" y="480" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 1: Configuration Services Architecture</text>
+</svg>

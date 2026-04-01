@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .support { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .moderator { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .engineer { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .executive { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Support Agent View -->
+  <rect class="support" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Support Agent</text>
+  
+  <rect class="support" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">User Search</text>
+  
+  <rect class="support" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">User Profile</text>
+  
+  <rect class="support" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Support Tickets</text>
+  
+  <!-- Moderator View -->
+  <rect class="moderator" x="300" y="50" width="200" height="180" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Moderator</text>
+  
+  <rect class="moderator" x="320" y="100" width="160" height="35" rx="4"/>
+  <text x="400" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Moderation Queue</text>
+  
+  <rect class="moderator" x="320" y="145" width="160" height="35" rx="4"/>
+  <text x="400" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Content Review</text>
+  
+  <rect class="moderator" x="320" y="190" width="160" height="35" rx="4"/>
+  <text x="400" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Moderation Metrics</text>
+  
+  <!-- Engineer View -->
+  <rect class="engineer" x="550" y="50" width="200" height="180" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Engineer</text>
+  
+  <rect class="engineer" x="570" y="100" width="160" height="35" rx="4"/>
+  <text x="650" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">System Health</text>
+  
+  <rect class="engineer" x="570" y="145" width="160" height="35" rx="4"/>
+  <text x="650" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Error Rates</text>
+  
+  <rect class="engineer" x="570" y="190" width="160" height="35" rx="4"/>
+  <text x="650" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Incident Response</text>
+  
+  <!-- Executive View -->
+  <rect class="executive" x="800" y="50" width="170" height="180" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Executive</text>
+  
+  <rect class="executive" x="815" y="100" width="140" height="35" rx="4"/>
+  <text x="885" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Business KPIs</text>
+  
+  <rect class="executive" x="815" y="145" width="140" height="35" rx="4"/>
+  <text x="885" y="167" text-anchor="middle" class="sublabel" style="font-weight: 600">Growth Metrics</text>
+  
+  <rect class="executive" x="815" y="190" width="140" height="35" rx="4"/>
+  <text x="885" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Trend Analysis</text>
+  
+  <!-- Metrics Comparison -->
+  <rect class="support" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Metrics by Role</text>
+  
+  <!-- Header -->
+  <rect class="support" x="60" y="320" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Role</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Primary Metrics</text>
+  <text x="500" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Workflows</text>
+  <text x="700" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Access Level</text>
+  <text x="880" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Refresh Rate</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Support</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel">Tickets, Users</text>
+  <text x="500" y="380" text-anchor="middle" class="sublabel">User Management</text>
+  <text x="700" y="380" text-anchor="middle" class="sublabel">User Data</text>
+  <text x="880" y="380" text-anchor="middle" class="sublabel">30s</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Moderator</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel">Queue, Reviews</text>
+  <text x="500" y="400" text-anchor="middle" class="sublabel">Content Review</text>
+  <text x="700" y="400" text-anchor="middle" class="sublabel">Content</text>
+  <text x="880" y="400" text-anchor="middle" class="sublabel">10s</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Role-Based Dashboard Views</text>
+</svg>

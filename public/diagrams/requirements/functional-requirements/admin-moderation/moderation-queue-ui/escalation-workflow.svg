@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .escalate { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .review { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .decide { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Step 1: Escalation -->
+  <rect class="escalate" x="50" y="50" width="200" height="120" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">1. Escalation</text>
+  <text x="150" y="105" text-anchor="middle" class="sublabel">Moderator Escalates</text>
+  <text x="150" y="125" text-anchor="middle" class="sublabel">Select Type</text>
+  <text x="150" y="145" text-anchor="middle" class="sublabel">Add Notes</text>
+  
+  <!-- Step 2: Routing -->
+  <rect class="escalate" x="300" y="50" width="200" height="120" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label">2. Auto-Routing</text>
+  <text x="400" y="105" text-anchor="middle" class="sublabel">Based on Type</text>
+  <text x="400" y="125" text-anchor="middle" class="sublabel">Assign to Reviewer</text>
+  <text x="400" y="145" text-anchor="middle" class="sublabel">Track Status</text>
+  
+  <!-- Step 3: Review -->
+  <rect class="review" x="550" y="50" width="200" height="120" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">3. Review</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">Senior/Legal/Policy</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Review Case</text>
+  <text x="650" y="145" text-anchor="middle" class="sublabel">Add Decision</text>
+  
+  <!-- Step 4: Decision -->
+  <rect class="decide" x="800" y="50" width="170" height="120" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label">4. Decision</text>
+  <text x="885" y="105" text-anchor="middle" class="sublabel">Uphold/Overturn</text>
+  <text x="885" y="125" text-anchor="middle" class="sublabel">Notify User</text>
+  <text x="885" y="145" text-anchor="middle" class="sublabel">Log Decision</text>
+  
+  <!-- Arrows between steps -->
+  <path class="arrow" d="M250 110 L295 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <!-- Appeal Process -->
+  <rect class="step" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Appeal Process</text>
+  
+  <rect class="escalate" x="70" y="270" width="200" height="80" rx="4"/>
+  <text x="170" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">User Appeal</text>
+  <text x="170" y="315" text-anchor="middle" class="sublabel">Submit Appeal Form</text>
+  <text x="170" y="335" text-anchor="middle" class="sublabel">Provide Context</text>
+  
+  <rect class="review" x="300" y="270" width="180" height="80" rx="4"/>
+  <text x="390" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Review Appeal</text>
+  <text x="390" y="315" text-anchor="middle" class="sublabel">Moderator Reviews</text>
+  <text x="390" y="335" text-anchor="middle" class="sublabel">Makes Decision</text>
+  
+  <!-- Tracking -->
+  <rect class="decide" x="550" y="220" width="400" height="150" rx="8"/>
+  <text x="750" y="250" text-anchor="middle" class="text-label">Escalation Tracking</text>
+  
+  <rect class="decide" x="570" y="270" width="180" height="80" rx="4"/>
+  <text x="660" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Escalation Queue</text>
+  <text x="660" y="315" text-anchor="middle" class="sublabel">Pending Escalations</text>
+  <text x="660" y="335" text-anchor="middle" class="sublabel">Status Tracking</text>
+  
+  <rect class="decide" x="780" y="270" width="150" height="80" rx="4"/>
+  <text x="855" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Resolution</text>
+  <text x="855" y="315" text-anchor="middle" class="sublabel">Decision Logged</text>
+  <text x="855" y="335" text-anchor="middle" class="sublabel">User Notified</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Escalation Workflow</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .step { fill: #f0f4f8; stroke: #4a5568; stroke-width: 2; }
+      .config { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .review { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .execute { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Step 1: Select User -->
+  <rect class="step" x="50" y="50" width="180" height="120" rx="8"/>
+  <text x="140" y="80" text-anchor="middle" class="text-label">1. Select User</text>
+  <text x="140" y="105" text-anchor="middle" class="sublabel">Search User</text>
+  <text x="140" y="125" text-anchor="middle" class="sublabel">View Profile</text>
+  <text x="140" y="145" text-anchor="middle" class="sublabel">Select Action</text>
+  
+  <!-- Step 2: Configure -->
+  <rect class="config" x="280" y="50" width="200" height="120" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">2. Configure Action</text>
+  <text x="380" y="105" text-anchor="middle" class="sublabel">Select Type/Duration</text>
+  <text x="380" y="125" text-anchor="middle" class="sublabel">Enter Reason</text>
+  <text x="380" y="145" text-anchor="middle" class="sublabel">Review Impact</text>
+  
+  <!-- Step 3: Approval -->
+  <rect class="review" x="530" y="50" width="200" height="120" rx="8"/>
+  <text x="630" y="80" text-anchor="middle" class="text-label">3. Approval</text>
+  <text x="630" y="105" text-anchor="middle" class="sublabel">Auto (Low Risk)</text>
+  <text x="630" y="125" text-anchor="middle" class="sublabel">Manager (Medium)</text>
+  <text x="630" y="145" text-anchor="middle" class="sublabel">Legal (High Risk)</text>
+  
+  <!-- Step 4: Execute -->
+  <rect class="execute" x="780" y="50" width="170" height="120" rx="8"/>
+  <text x="865" y="80" text-anchor="middle" class="text-label">4. Execute</text>
+  <text x="865" y="105" text-anchor="middle" class="sublabel">Execute Action</text>
+  <text x="865" y="125" text-anchor="middle" class="sublabel">Notify User</text>
+  <text x="865" y="145" text-anchor="middle" class="sublabel">Log Action</text>
+  
+  <!-- Arrows between steps -->
+  <path class="arrow" d="M230 110 L275 110"/>
+  <path class="arrow" d="M480 110 L525 110"/>
+  <path class="arrow" d="M730 110 L775 110"/>
+  
+  <!-- Risk Assessment -->
+  <rect class="step" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Risk Assessment</text>
+  
+  <rect class="config" x="70" y="270" width="200" height="80" rx="4"/>
+  <text x="170" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Low Risk</text>
+  <text x="170" y="315" text-anchor="middle" class="sublabel">Warning, 1-day suspend</text>
+  <text x="170" y="335" text-anchor="middle" class="sublabel">Auto-approve</text>
+  
+  <rect class="review" x="300" y="270" width="180" height="80" rx="4"/>
+  <text x="390" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">High Risk</text>
+  <text x="390" y="315" text-anchor="middle" class="sublabel">Ban, permanent suspend</text>
+  <text x="390" y="335" text-anchor="middle" class="sublabel">Manager/Legal approval</text>
+  
+  <!-- Audit Log -->
+  <rect class="execute" x="550" y="220" width="400" height="150" rx="8"/>
+  <text x="750" y="250" text-anchor="middle" class="text-label">Audit Logging</text>
+  
+  <rect class="execute" x="570" y="270" width="180" height="80" rx="4"/>
+  <text x="660" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Log Details</text>
+  <text x="660" y="315" text-anchor="middle" class="sublabel">Who, What, When</text>
+  <text x="660" y="335" text-anchor="middle" class="sublabel">Why, Result</text>
+  
+  <rect class="execute" x="780" y="270" width="150" height="80" rx="4"/>
+  <text x="855" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Immutable</text>
+  <text x="855" y="315" text-anchor="middle" class="sublabel">Append-only</text>
+  <text x="855" y="335" text-anchor="middle" class="sublabel">7+ years</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Suspend User Workflow</text>
+</svg>

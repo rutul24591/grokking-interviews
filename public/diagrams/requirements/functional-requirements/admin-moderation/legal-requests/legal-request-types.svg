@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .subpoena { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .dmca { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .law { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .gov { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Subpoenas -->
+  <rect class="subpoena" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Subpoenas</text>
+  <text x="150" y="110" text-anchor="middle" class="sublabel">Court-Ordered Data</text>
+  
+  <rect class="subpoena" x="70" y="130" width="160" height="35" rx="4"/>
+  <text x="150" y="152" text-anchor="middle" class="sublabel">Subpoena Handling</text>
+  
+  <rect class="subpoena" x="70" y="175" width="160" height="35" rx="4"/>
+  <text x="150" y="197" text-anchor="middle" class="sublabel">Subpoena Compliance</text>
+  
+  <!-- DMCA -->
+  <rect class="dmca" x="300" y="50" width="200" height="180" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">DMCA</text>
+  <text x="400" y="110" text-anchor="middle" class="sublabel">Copyright Takedown</text>
+  
+  <rect class="dmca" x="320" y="130" width="160" height="35" rx="4"/>
+  <text x="400" y="152" text-anchor="middle" class="sublabel">DMCA Handling</text>
+  
+  <rect class="dmca" x="320" y="175" width="160" height="35" rx="4"/>
+  <text x="400" y="197" text-anchor="middle" class="sublabel">DMCA Compliance</text>
+  
+  <!-- Law Enforcement -->
+  <rect class="law" x="550" y="50" width="200" height="180" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Law Enforcement</text>
+  <text x="650" y="110" text-anchor="middle" class="sublabel">Emergency Data</text>
+  
+  <rect class="law" x="570" y="130" width="160" height="35" rx="4"/>
+  <text x="650" y="152" text-anchor="middle" class="sublabel">Law Enforcement Handling</text>
+  
+  <rect class="law" x="570" y="175" width="160" height="35" rx="4"/>
+  <text x="650" y="197" text-anchor="middle" class="sublabel">Law Enforcement Compliance</text>
+  
+  <!-- Government -->
+  <rect class="gov" x="800" y="50" width="170" height="180" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Government</text>
+  <text x="885" y="110" text-anchor="middle" class="sublabel">Government Data</text>
+  
+  <rect class="gov" x="815" y="130" width="140" height="35" rx="4"/>
+  <text x="885" y="152" text-anchor="middle" class="sublabel">Government Handling</text>
+  
+  <rect class="gov" x="815" y="175" width="140" height="35" rx="4"/>
+  <text x="885" y="197" text-anchor="middle" class="sublabel">Government Compliance</text>
+  
+  <!-- Legal Requests Timeline -->
+  <rect class="subpoena" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Legal Request Types</text>
+  
+  <!-- Timeline -->
+  <rect class="subpoena" x="70" y="330" width="210" height="60" rx="4"/>
+  <rect class="dmca" x="290" y="330" width="210" height="60" rx="4"/>
+  <rect class="law" x="510" y="330" width="210" height="60" rx="4"/>
+  <rect class="gov" x="730" y="330" width="210" height="60" rx="4"/>
+  <text x="500" y="365" text-anchor="middle" class="sublabel" style="font-weight: 600;">Subpoenas → DMCA → Law Enforcement → Government</text>
+  
+  <text x="70" y="410" text-anchor="start" class="sublabel">Subpoenas</text>
+  <text x="290" y="410" text-anchor="middle" class="sublabel">DMCA</text>
+  <text x="510" y="410" text-anchor="middle" class="sublabel">Law Enforcement</text>
+  <text x="730" y="410" text-anchor="end" class="sublabel">Government</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Legal Request Types</text>
+</svg>

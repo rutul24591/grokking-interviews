@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .account { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .activity { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .moderation { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .related { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Account Info -->
+  <rect class="account" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Account Info</text>
+  
+  <rect class="account" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Username, Email</text>
+  
+  <rect class="account" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">Signup Date, Status</text>
+  
+  <rect class="account" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel">Roles, Permissions</text>
+  
+  <!-- Activity Timeline -->
+  <rect class="activity" x="300" y="50" width="200" height="180" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Activity Timeline</text>
+  
+  <rect class="activity" x="320" y="100" width="160" height="35" rx="4"/>
+  <text x="400" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Posts, Comments</text>
+  
+  <rect class="activity" x="320" y="145" width="160" height="35" rx="4"/>
+  <text x="400" y="167" text-anchor="middle" class="sublabel">Likes, Shares</text>
+  
+  <rect class="activity" x="320" y="190" width="160" height="35" rx="4"/>
+  <text x="400" y="212" text-anchor="middle" class="sublabel">Login History</text>
+  
+  <!-- Moderation History -->
+  <rect class="moderation" x="550" y="50" width="200" height="180" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Moderation History</text>
+  
+  <rect class="moderation" x="570" y="100" width="160" height="35" rx="4"/>
+  <text x="650" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Warnings</text>
+  
+  <rect class="moderation" x="570" y="145" width="160" height="35" rx="4"/>
+  <text x="650" y="167" text-anchor="middle" class="sublabel">Suspensions</text>
+  
+  <rect class="moderation" x="570" y="190" width="160" height="35" rx="4"/>
+  <text x="650" y="212" text-anchor="middle" class="sublabel">Bans, Appeals</text>
+  
+  <!-- Related Data -->
+  <rect class="related" x="800" y="50" width="170" height="180" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Related Data</text>
+  
+  <rect class="related" x="815" y="100" width="140" height="35" rx="4"/>
+  <text x="885" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Connected Accounts</text>
+  
+  <rect class="related" x="815" y="145" width="140" height="35" rx="4"/>
+  <text x="885" y="167" text-anchor="middle" class="sublabel">Devices, Sessions</text>
+  
+  <rect class="related" x="815" y="190" width="140" height="35" rx="4"/>
+  <text x="885" y="212" text-anchor="middle" class="sublabel">Content</text>
+  
+  <!-- User Profile Layout -->
+  <rect class="account" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">User Profile Layout</text>
+  
+  <!-- Header -->
+  <rect class="account" x="60" y="320" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Section</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Data Displayed</text>
+  <text x="500" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Actions</text>
+  <text x="700" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Access Level</text>
+  <text x="880" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Refresh</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Account</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel">Basic Info, Status</text>
+  <text x="500" y="380" text-anchor="middle" class="sublabel">Edit, Suspend</text>
+  <text x="700" y="380" text-anchor="middle" class="sublabel">All Admins</text>
+  <text x="880" y="380" text-anchor="middle" class="sublabel">On Load</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Activity</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel">Timeline, Metrics</text>
+  <text x="500" y="400" text-anchor="middle" class="sublabel">Export</text>
+  <text x="700" y="400" text-anchor="middle" class="sublabel">On Demand</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: User Profile View</text>
+</svg>

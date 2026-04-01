@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .auto { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .manual { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .hybrid { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Auto Assignment -->
+  <rect class="auto" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Auto-Assignment</text>
+  
+  <rect class="auto" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Round-Robin Distribution</text>
+  
+  <rect class="auto" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Skill-Based Assignment</text>
+  
+  <rect class="auto" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Load Balancing</text>
+  
+  <!-- Manual Assignment -->
+  <rect class="manual" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Manual Assignment</text>
+  
+  <rect class="manual" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Moderator Picks Items</text>
+  
+  <rect class="manual" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Based on Expertise</text>
+  
+  <rect class="manual" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Handle Complex Cases</text>
+  
+  <!-- Hybrid Approach -->
+  <rect class="hybrid" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Hybrid Approach</text>
+  
+  <rect class="hybrid" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Auto for Standard</text>
+  
+  <rect class="hybrid" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Manual for Complex</text>
+  
+  <rect class="hybrid" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Recommended</text>
+  
+  <!-- Comparison Table -->
+  <rect class="auto" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Assignment Comparison</text>
+  
+  <!-- Header -->
+  <rect class="auto" x="60" y="320" width="880" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Approach</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Pros</text>
+  <text x="500" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Cons</text>
+  <text x="700" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Best For</text>
+  <text x="880" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Efficiency</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Auto</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel">Efficient, Fast</text>
+  <text x="500" y="380" text-anchor="middle" class="sublabel">Less Control</text>
+  <text x="700" y="380" text-anchor="middle" class="sublabel">High-Volume</text>
+  <text x="880" y="380" text-anchor="middle" class="sublabel" fill="#38a169" font-weight="600">High</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Manual</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel">Control, Flexible</text>
+  <text x="500" y="400" text-anchor="middle" class="sublabel">Slower, Uneven</text>
+  <text x="700" y="400" text-anchor="middle" class="sublabel">Complex Cases</text>
+  <text x="880" y="400" text-anchor="middle" class="sublabel" fill="#e53e3e">Low</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Queue Management Comparison</text>
+</svg>

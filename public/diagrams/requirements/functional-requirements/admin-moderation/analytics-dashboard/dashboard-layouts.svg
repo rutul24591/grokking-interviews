@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .summary { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .detailed { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .chart { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Summary View -->
+  <rect class="summary" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Summary View</text>
+  
+  <rect class="summary" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Key Metrics at Glance</text>
+  
+  <rect class="summary" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">DAU, MAU, Revenue</text>
+  
+  <rect class="summary" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Trend Indicators</text>
+  
+  <!-- Detailed View -->
+  <rect class="detailed" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Detailed View</text>
+  
+  <rect class="detailed" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Drill-down Charts</text>
+  
+  <rect class="detailed" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Segment Analysis</text>
+  
+  <rect class="detailed" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Time-series Analysis</text>
+  
+  <!-- Chart Types -->
+  <rect class="chart" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Chart Types</text>
+  
+  <rect class="chart" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Line Charts (Trends)</text>
+  
+  <rect class="chart" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Bar Charts (Comparisons)</text>
+  
+  <rect class="chart" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Funnel Charts (Conversion)</text>
+  
+  <!-- Dashboard Layout Example -->
+  <rect class="summary" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Dashboard Layout Example</text>
+  
+  <!-- Top Row: Key Metrics -->
+  <rect class="summary" x="70" y="325" width="180" height="70" rx="4"/>
+  <text x="160" y="350" text-anchor="middle" class="sublabel" style="font-weight: 600">DAU</text>
+  <text x="160" y="370" text-anchor="middle" class="sublabel">10,234 (+5%)</text>
+  
+  <rect class="summary" x="270" y="325" width="180" height="70" rx="4"/>
+  <text x="360" y="350" text-anchor="middle" class="sublabel" style="font-weight: 600">MAU</text>
+  <text x="360" y="370" text-anchor="middle" class="sublabel">85,432 (+3%)</text>
+  
+  <rect class="summary" x="470" y="325" width="180" height="70" rx="4"/>
+  <text x="560" y="350" text-anchor="middle" class="sublabel" style="font-weight: 600">Revenue</text>
+  <text x="560" y="370" text-anchor="middle" class="sublabel">$52,340 (+8%)</text>
+  
+  <rect class="summary" x="670" y="325" width="180" height="70" rx="4"/>
+  <text x="770" y="350" text-anchor="middle" class="sublabel" style="font-weight: 600">Conversion</text>
+  <text x="770" y="370" text-anchor="middle" class="sublabel">3.2% (+0.5%)</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Dashboard Layouts and Visualizations</text>
+</svg>

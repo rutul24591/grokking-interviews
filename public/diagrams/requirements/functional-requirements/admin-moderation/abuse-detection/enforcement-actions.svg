@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .rate { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .shadow { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .suspend { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .ban { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Rate Limiting -->
+  <rect class="rate" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Rate Limiting</text>
+  
+  <rect class="rate" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel">Limit Actions/Time</text>
+  
+  <rect class="rate" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">Enforce Limits</text>
+  
+  <rect class="rate" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel">Appeal Limits</text>
+  
+  <!-- Shadow Banning -->
+  <rect class="shadow" x="300" y="50" width="200" height="180" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Shadow Banning</text>
+  
+  <rect class="shadow" x="320" y="100" width="160" height="35" rx="4"/>
+  <text x="400" y="122" text-anchor="middle" class="sublabel">Limit Visibility</text>
+  
+  <rect class="shadow" x="320" y="145" width="160" height="35" rx="4"/>
+  <text x="400" y="167" text-anchor="middle" class="sublabel">Enforce Shadow Ban</text>
+  
+  <rect class="shadow" x="320" y="190" width="160" height="35" rx="4"/>
+  <text x="400" y="212" text-anchor="middle" class="sublabel">Appeal Shadow Ban</text>
+  
+  <!-- Suspension -->
+  <rect class="suspend" x="550" y="50" width="200" height="180" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Suspension</text>
+  
+  <rect class="suspend" x="570" y="100" width="160" height="35" rx="4"/>
+  <text x="650" y="122" text-anchor="middle" class="sublabel">Temporary Suspension</text>
+  
+  <rect class="suspend" x="570" y="145" width="160" height="35" rx="4"/>
+  <text x="650" y="167" text-anchor="middle" class="sublabel">Enforce Suspension</text>
+  
+  <rect class="suspend" x="570" y="190" width="160" height="35" rx="4"/>
+  <text x="650" y="212" text-anchor="middle" class="sublabel">Appeal Suspension</text>
+  
+  <!-- Banning -->
+  <rect class="ban" x="800" y="50" width="170" height="180" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Banning</text>
+  
+  <rect class="ban" x="815" y="100" width="140" height="35" rx="4"/>
+  <text x="885" y="122" text-anchor="middle" class="sublabel">Permanent Ban</text>
+  
+  <rect class="ban" x="815" y="145" width="140" height="35" rx="4"/>
+  <text x="885" y="167" text-anchor="middle" class="sublabel">Enforce Ban</text>
+  
+  <rect class="ban" x="815" y="190" width="140" height="35" rx="4"/>
+  <text x="885" y="212" text-anchor="middle" class="sublabel">Appeal Ban</text>
+  
+  <!-- Enforcement Timeline -->
+  <rect class="rate" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Enforcement Escalation</text>
+  
+  <!-- Timeline -->
+  <rect class="rate" x="70" y="330" width="215" height="60" rx="4"/>
+  <rect class="shadow" x="285" y="330" width="215" height="60" rx="4"/>
+  <rect class="suspend" x="500" y="330" width="215" height="60" rx="4"/>
+  <rect class="ban" x="715" y="330" width="215" height="60" rx="4"/>
+  <text x="500" y="365" text-anchor="middle" class="sublabel" style="font-weight: 600;">Rate Limit → Shadow Ban → Suspension → Ban</text>
+  
+  <text x="70" y="410" text-anchor="start" class="sublabel">Rate Limit</text>
+  <text x="285" y="410" text-anchor="middle" class="sublabel">Shadow Ban</text>
+  <text x="500" y="410" text-anchor="middle" class="sublabel">Suspension</text>
+  <text x="715" y="410" text-anchor="end" class="sublabel">Ban</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Enforcement Actions</text>
+</svg>

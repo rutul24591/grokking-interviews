@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .source { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .fields { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .filters { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .charts { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Data Source Selection -->
+  <rect class="source" x="50" y="50" width="200" height="120" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Data Source</text>
+  <text x="150" y="105" text-anchor="middle" class="sublabel">Select Database/API</text>
+  <text x="150" y="125" text-anchor="middle" class="sublabel">Preview Data</text>
+  <text x="150" y="145" text-anchor="middle" class="sublabel">Test Connection</text>
+  
+  <!-- Field Selection -->
+  <rect class="fields" x="300" y="50" width="200" height="120" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label">Field Selection</text>
+  <text x="400" y="105" text-anchor="middle" class="sublabel">Drag Fields</text>
+  <text x="400" y="125" text-anchor="middle" class="sublabel">Drop Zones</text>
+  <text x="400" y="145" text-anchor="middle" class="sublabel">Configure Fields</text>
+  
+  <!-- Filter Builder -->
+  <rect class="filters" x="550" y="50" width="200" height="120" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">Filter Builder</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">Add Filters</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Date Filters</text>
+  <text x="650" y="145" text-anchor="middle" class="sublabel">Conditional Filters</text>
+  
+  <!-- Chart Builder -->
+  <rect class="charts" x="800" y="50" width="170" height="120" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label">Chart Builder</text>
+  <text x="885" y="105" text-anchor="middle" class="sublabel">Select Chart Type</text>
+  <text x="885" y="125" text-anchor="middle" class="sublabel">Configure Chart</text>
+  <text x="885" y="145" text-anchor="middle" class="sublabel">Preview</text>
+  
+  <!-- Report Canvas -->
+  <rect class="source" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Report Canvas</text>
+  
+  <rect class="source" x="70" y="270" width="200" height="80" rx="4"/>
+  <text x="170" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Data Fields</text>
+  <text x="170" y="315" text-anchor="middle" class="sublabel">Drag from Source</text>
+  <text x="170" y="335" text-anchor="middle" class="sublabel">Drop in Canvas</text>
+  
+  <rect class="fields" x="300" y="270" width="180" height="80" rx="4"/>
+  <text x="390" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Report Preview</text>
+  <text x="390" y="315" text-anchor="middle" class="sublabel">Live Preview</text>
+  <text x="390" y="335" text-anchor="middle" class="sublabel">Save Report</text>
+  
+  <!-- Chart Types -->
+  <rect class="filters" x="550" y="220" width="400" height="150" rx="8"/>
+  <text x="750" y="250" text-anchor="middle" class="text-label">Available Chart Types</text>
+  
+  <rect class="filters" x="570" y="270" width="180" height="80" rx="4"/>
+  <text x="660" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Line Chart</text>
+  <text x="660" y="315" text-anchor="middle" class="sublabel">Trends Over Time</text>
+  <text x="660" y="335" text-anchor="middle" class="sublabel">Time-series Data</text>
+  
+  <rect class="charts" x="780" y="270" width="150" height="80" rx="4"/>
+  <text x="855" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Bar Chart</text>
+  <text x="855" y="315" text-anchor="middle" class="sublabel">Comparisons</text>
+  <text x="855" y="335" text-anchor="middle" class="sublabel">Category Data</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Report Builder Interface</text>
+</svg>

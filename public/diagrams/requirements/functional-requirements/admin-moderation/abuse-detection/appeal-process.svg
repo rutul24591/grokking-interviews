@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .submission { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .review { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .decision { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .enforcement { fill: #fed7d7; stroke: #e53e3e; stroke-width: 2; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Appeal Submission -->
+  <rect class="submission" x="50" y="50" width="200" height="120" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Appeal Submission</text>
+  <text x="150" y="105" text-anchor="middle" class="sublabel">Submit Appeal</text>
+  <text x="150" y="125" text-anchor="middle" class="sublabel">Provide Details</text>
+  <text x="150" y="145" text-anchor="middle" class="sublabel">Submit Evidence</text>
+  
+  <!-- Appeal Review -->
+  <rect class="review" x="300" y="50" width="200" height="120" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label">Appeal Review</text>
+  <text x="400" y="105" text-anchor="middle" class="sublabel">Review Appeal</text>
+  <text x="400" y="125" text-anchor="middle" class="sublabel">Investigate Appeal</text>
+  <text x="400" y="145" text-anchor="middle" class="sublabel">Gather Evidence</text>
+  
+  <!-- Appeal Decision -->
+  <rect class="decision" x="550" y="50" width="200" height="120" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">Appeal Decision</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">Approve Appeal</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Deny Appeal</text>
+  <text x="650" y="145" text-anchor="middle" class="sublabel">Document Decision</text>
+  
+  <!-- Appeal Enforcement -->
+  <rect class="enforcement" x="800" y="50" width="170" height="120" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label">Appeal Enforcement</text>
+  <text x="885" y="105" text-anchor="middle" class="sublabel">Enforce Decision</text>
+  <text x="885" y="125" text-anchor="middle" class="sublabel">Track Decision</text>
+  <text x="885" y="145" text-anchor="middle" class="sublabel">Notify User</text>
+  
+  <!-- Arrows between steps -->
+  <path class="arrow" d="M250 110 L295 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <!-- Appeal Flow -->
+  <rect class="submission" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Appeal Submission Flow</text>
+  
+  <rect class="submission" x="70" y="270" width="200" height="80" rx="4"/>
+  <text x="170" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Submit Appeal</text>
+  <text x="170" y="315" text-anchor="middle" class="sublabel">User Submits Appeal</text>
+  <text x="170" y="335" text-anchor="middle" class="sublabel">Provide Details</text>
+  
+  <rect class="review" x="300" y="270" width="180" height="80" rx="4"/>
+  <text x="390" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Review Appeal</text>
+  <text x="390" y="315" text-anchor="middle" class="sublabel">Moderator Reviews</text>
+  <text x="390" y="335" text-anchor="middle" class="sublabel">Investigates</text>
+  
+  <!-- Decision Flow -->
+  <rect class="decision" x="550" y="220" width="400" height="150" rx="8"/>
+  <text x="750" y="250" text-anchor="middle" class="text-label">Appeal Decision Flow</text>
+  
+  <rect class="decision" x="570" y="270" width="180" height="80" rx="4"/>
+  <text x="660" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Approve</text>
+  <text x="660" y="315" text-anchor="middle" class="sublabel">Approve Appeal</text>
+  <text x="660" y="335" text-anchor="middle" class="sublabel">Reverse Action</text>
+  
+  <rect class="enforcement" x="780" y="270" width="150" height="80" rx="4"/>
+  <text x="855" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Deny</text>
+  <text x="855" y="315" text-anchor="middle" class="sublabel">Deny Appeal</text>
+  <text x="855" y="335" text-anchor="middle" class="sublabel">Uphold Action</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Appeal Process</text>
+</svg>

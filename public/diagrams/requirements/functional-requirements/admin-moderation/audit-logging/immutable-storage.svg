@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .entry { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .hash { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .chain { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Log Entry 1 -->
+  <rect class="entry" x="50" y="50" width="300" height="80" rx="8"/>
+  <text x="200" y="80" text-anchor="middle" class="text-label">Log Entry 1</text>
+  <text x="200" y="105" text-anchor="middle" class="sublabel">Timestamp, User, Action</text>
+  <text x="200" y="125" text-anchor="middle" class="sublabel">Hash: abc123...</text>
+  
+  <!-- Hash 1 -->
+  <rect class="hash" x="400" y="70" width="150" height="40" rx="4"/>
+  <text x="475" y="95" text-anchor="middle" class="sublabel" style="font-weight: 600;">Hash 1</text>
+  
+  <!-- Log Entry 2 -->
+  <rect class="entry" x="50" y="160" width="300" height="80" rx="8"/>
+  <text x="200" y="190" text-anchor="middle" class="text-label">Log Entry 2</text>
+  <text x="200" y="215" text-anchor="middle" class="sublabel">Timestamp, User, Action</text>
+  <text x="200" y="235" text-anchor="middle" class="sublabel">Prev Hash: abc123...</text>
+  
+  <!-- Hash 2 -->
+  <rect class="hash" x="400" y="180" width="150" height="40" rx="4"/>
+  <text x="475" y="205" text-anchor="middle" class="sublabel" style="font-weight: 600;">Hash 2</text>
+  
+  <!-- Log Entry 3 -->
+  <rect class="entry" x="50" y="270" width="300" height="80" rx="8"/>
+  <text x="200" y="300" text-anchor="middle" class="text-label">Log Entry 3</text>
+  <text x="200" y="325" text-anchor="middle" class="sublabel">Timestamp, User, Action</text>
+  <text x="200" y="345" text-anchor="middle" class="sublabel">Prev Hash: def456...</text>
+  
+  <!-- Hash 3 -->
+  <rect class="hash" x="400" y="290" width="150" height="40" rx="4"/>
+  <text x="475" y="315" text-anchor="middle" class="sublabel" style="font-weight: 600;">Hash 3</text>
+  
+  <!-- Chain Arrows -->
+  <path d="M350 90 L395 90" stroke="#4a5568" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M350 200 L395 200" stroke="#4a5568" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M350 310 L395 310" stroke="#4a5568" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Chain Connection -->
+  <path d="M550 110 L550 160 L350 160" stroke="#3182ce" stroke-width="2" stroke-dasharray="5,5"/>
+  <path d="M550 220 L550 270 L350 270" stroke="#3182ce" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- Tamper Detection -->
+  <rect class="chain" x="600" y="50" width="350" height="180" rx="8"/>
+  <text x="775" y="80" text-anchor="middle" class="text-label">Tamper Detection</text>
+  
+  <rect class="chain" x="620" y="100" width="310" height="50" rx="4"/>
+  <text x="775" y="120" text-anchor="middle" class="sublabel">If Entry Modified</text>
+  <text x="775" y="140" text-anchor="middle" class="sublabel">Hash Doesn&apos;t Match</text>
+  
+  <rect class="chain" x="620" y="160" width="310" height="50" rx="4"/>
+  <text x="775" y="190" text-anchor="middle" class="sublabel">Chain Integrity Broken</text>
+  <text x="775" y="210" text-anchor="middle" class="sublabel">Tamper Detected</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Immutable Storage with Hash Chaining</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+</svg>

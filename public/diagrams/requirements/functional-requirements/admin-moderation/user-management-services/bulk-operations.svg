@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .bulkcreate { fill: #c6f6d5; stroke: #38a169; stroke-width: 2; }
+      .bulkupdate { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .bulkdelete { fill: #bee3f8; stroke: #3182ce; stroke-width: 2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #2d3748; font-weight: 600; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #718096; font-weight: 400; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Bulk User Creation -->
+  <rect class="bulkcreate" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Bulk User Creation</text>
+  
+  <rect class="bulkcreate" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Upload User List</text>
+  
+  <rect class="bulkcreate" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Validate Users</text>
+  
+  <rect class="bulkcreate" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Create Users in Bulk</text>
+  
+  <!-- Bulk User Updating -->
+  <rect class="bulkupdate" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Bulk User Updating</text>
+  
+  <rect class="bulkupdate" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Select Users to Update</text>
+  
+  <rect class="bulkupdate" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Apply Updates</text>
+  
+  <rect class="bulkupdate" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Validate Updates</text>
+  
+  <!-- Bulk User Deletion -->
+  <rect class="bulkdelete" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Bulk User Deletion</text>
+  
+  <rect class="bulkdelete" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Select Users to Delete</text>
+  
+  <rect class="bulkdelete" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Confirm Deletion</text>
+  
+  <rect class="bulkdelete" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Delete Users in Bulk</text>
+  
+  <!-- Bulk Operations Flow -->
+  <rect class="bulkcreate" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Bulk Operations Flow</text>
+  
+  <!-- Flow -->
+  <rect class="bulkcreate" x="70" y="330" width="280" height="60" rx="4"/>
+  <rect class="bulkupdate" x="360" y="330" width="280" height="60" rx="4"/>
+  <rect class="bulkdelete" x="650" y="330" width="280" height="60" rx="4"/>
+  <text x="500" y="365" text-anchor="middle" class="sublabel" style="font-weight: 600;">Bulk Creation → Bulk Updating → Bulk Deletion</text>
+  
+  <text x="70" y="410" text-anchor="start" class="sublabel">Bulk Creation</text>
+  <text x="360" y="410" text-anchor="middle" class="sublabel">Bulk Updating</text>
+  <text x="650" y="410" text-anchor="end" class="sublabel">Bulk Deletion</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Bulk Operations</text>
+</svg>
