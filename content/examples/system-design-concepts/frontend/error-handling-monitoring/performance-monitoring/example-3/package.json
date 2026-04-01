@@ -1,0 +1,1 @@
+{ "name": "performance-monitoring-example-3", "private": true, "scripts": { "start": "node src/demo.js" } }

@@ -1,0 +1,14 @@
+"use client";
+import { useEffect, useState } from "react";
+
+type Metric = { id: string; name: string; value: number; budget: number; trend: "up" | "down" | "flat"; owner: string };
+type PerfState = { metrics: Metric[]; release: string; lastMessage: string };
+
+export default function Page() {
+  const [state, setState] = useState<PerfState | null>(null);
+  async function refresh() { const response = await fetch('/api/perf/state'); setState((await response.json()) as PerfState); }
+  async function measure(id: string, value: number) { const response = await fetch('/api/perf/measure', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, value }) }); setState((await response.json()) as PerfState); }
+  useEffect(() => { void refresh(); }, []);
+  const failing = state?.metrics.filter((metric) => metric.value > metric.budget) ?? [];
+  return <main className="mx-auto max-w-6xl px-6 py-10"><h1 className="text-3xl font-bold">Performance Monitoring</h1><p className="mt-2 text-slate-300">Track runtime experience metrics and compare them against production budgets.</p><section className="mt-8 grid gap-6 lg:grid-cols-[320px,1fr]"><article className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 text-sm text-slate-300"><div className="rounded-lg border border-slate-800 p-4"><div className="text-xs uppercase tracking-wide text-slate-500">Release</div><div className="mt-2 font-semibold text-slate-100">{state?.release}</div></div><div className="mt-4 grid gap-3"><div className="rounded-lg border border-slate-800 px-3 py-3">Budget failures <span className="font-semibold text-slate-100">{failing.length}</span></div><div className="rounded-lg border border-slate-800 px-3 py-3">Healthy metrics <span className="font-semibold text-slate-100">{(state?.metrics.length ?? 0) - failing.length}</span></div></div><p className="mt-4 text-slate-400">{state?.lastMessage}</p></article><article className="rounded-xl border border-slate-800 bg-slate-900/60 p-5"><ul className="space-y-3 text-sm text-slate-300">{state?.metrics.map((metric) => <li key={metric.id} className="rounded border border-slate-800 px-3 py-3"><div className="flex items-center justify-between gap-3"><div><div className="font-semibold text-slate-100">{metric.name}</div><div className="mt-1 text-xs uppercase tracking-wide text-slate-500">{metric.owner}</div></div><button onClick={() => void measure(metric.id, Number((metric.value * 0.9).toFixed(2)))} className="rounded bg-sky-600 px-3 py-2 text-xs font-semibold hover:bg-sky-500">Improve by 10%</button></div><div className="mt-3 grid gap-2 md:grid-cols-3"><div className="rounded border border-slate-800 px-3 py-2">value: {metric.value}</div><div className="rounded border border-slate-800 px-3 py-2">budget: {metric.budget}</div><div className="rounded border border-slate-800 px-3 py-2">trend: {metric.trend}</div></div></li>)}</ul></article></section></main>;
+}
