@@ -90,6 +90,12 @@ export default function FeatureDetectionArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/feature-detection-diagram-1.svg"
+        alt="Feature detection decision tree showing capability check leading to enhanced or fallback code path"
+        caption="Figure 1: Feature detection decision flow for adaptive experiences"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -304,23 +310,6 @@ export default function FeatureDetectionArticle() {
           loading architectures that leverage device capability signals.
         </p>
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/feature-detection-diagram-1.svg"
-          alt="Feature detection decision tree showing capability check leading to enhanced or fallback code path"
-          caption="Figure 1: Feature detection decision flow for adaptive experiences"
-        />
-        <p className="mb-4">
-          The decision tree above captures the fundamental runtime branching
-          that feature detection enables. At each capability checkpoint, the
-          application tests a specific API or property. If the test passes, the
-          enhanced code path executes — potentially loading additional modules,
-          enabling richer interactions, or using a native API. If the test
-          fails, a fallback path activates — either a polyfill, a simpler
-          alternative implementation, or a graceful removal of the feature with
-          an appropriate user-facing message. Crucially, both paths must be
-          tested and maintained. A fallback that has never been exercised in QA
-          is indistinguishable from no fallback at all.
-        </p>
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/feature-detection-diagram-2.svg"
           alt="Comparison of user-agent sniffing vs feature detection showing reliability differences"
           caption="Figure 2: User-Agent sniffing vs feature detection reliability"
@@ -335,22 +324,6 @@ export default function FeatureDetectionArticle() {
           eliminates the indirection by testing the capability directly,
           producing a ground-truth result that holds regardless of which
           browser, version, or configuration the user has.
-        </p>
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/feature-detection-diagram-3.svg"
-          alt="Adaptive loading architecture using device capability detection to serve appropriate experience tier"
-          caption="Figure 3: Adaptive loading based on runtime capability detection"
-        />
-        <p>
-          The adaptive loading architecture demonstrates how runtime capability
-          signals — CPU cores, available memory, network speed, and API
-          support — are collected during application initialization and used
-          to select an experience tier. This approach is used at scale by
-          companies like Google and Facebook, where the same URL must serve
-          billions of devices spanning flagship smartphones and low-cost feature
-          phones. The tier selection happens once, early in the page lifecycle,
-          and governs which bundles are loaded, which assets are fetched, and
-          how aggressive prefetching and caching behaviors are.
         </p>
       </section>
 
@@ -672,6 +645,12 @@ export default function FeatureDetectionArticle() {
           player to enable the maximum feature set that each browser supports
           without an all-or-nothing approach.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/feature-detection-diagram-3.svg"
+          alt="Adaptive loading architecture using device capability detection to serve appropriate experience tier"
+          caption="Figure 3: Adaptive loading based on runtime capability detection"
+        />
       </section>
 
       {/* ============================================================

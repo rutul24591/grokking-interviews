@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Synthetic Monitoring vs RUM Comparison Showing Complementary Coverage Areas</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Synthetic Monitoring vs Real User Monitoring (RUM)</text>
+  <text x="450" y="52" text-anchor="middle" font-size="11" fill="#6d5bd0">Complementary Approaches to Performance Visibility</text>
+
+  <!-- Left Column: Synthetic Monitoring -->
+  <rect x="30" y="68" width="405" height="270" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="68" width="405" height="32" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="88" width="405" height="12" fill="#6d5bd0"/>
+  <text x="232" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Synthetic Monitoring</text>
+
+  <text x="50" y="122" font-size="10" font-weight="600" fill="#6d5bd0">Approach</text>
+  <rect x="50" y="130" width="370" height="26" rx="4" fill="#f3f1f8"/>
+  <text x="60" y="147" font-size="9" fill="#1a1822">Scripted, automated tests run from known locations</text>
+
+  <text x="50" y="172" font-size="10" font-weight="600" fill="#6d5bd0">Characteristics</text>
+
+  <rect x="50" y="180" width="176" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="138" y="196" text-anchor="middle" font-size="9" fill="#1a1822">Lab conditions</text>
+
+  <rect x="236" y="180" width="184" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="328" y="196" text-anchor="middle" font-size="9" fill="#1a1822">Consistent baseline</text>
+
+  <rect x="50" y="210" width="176" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="138" y="226" text-anchor="middle" font-size="9" fill="#1a1822">Pre-deployment checks</text>
+
+  <rect x="236" y="210" width="184" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="328" y="226" text-anchor="middle" font-size="9" fill="#1a1822">Limited geographies</text>
+
+  <rect x="50" y="240" width="176" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="138" y="256" text-anchor="middle" font-size="9" fill="#1a1822">Controlled networks</text>
+
+  <rect x="236" y="240" width="184" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="328" y="256" text-anchor="middle" font-size="9" fill="#1a1822">Deterministic results</text>
+
+  <text x="50" y="284" font-size="10" font-weight="600" fill="#4caf50">Best for:</text>
+  <text x="50" y="300" font-size="9" fill="#1a1822">CI/CD gates, regression detection, SLA validation,</text>
+  <text x="50" y="314" font-size="9" fill="#1a1822">competitor benchmarking, uptime monitoring</text>
+
+  <!-- Right Column: RUM -->
+  <rect x="465" y="68" width="405" height="270" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="465" y="68" width="405" height="32" rx="10" fill="#6d5bd0"/>
+  <rect x="465" y="88" width="405" height="12" fill="#6d5bd0"/>
+  <text x="667" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Real User Monitoring (RUM)</text>
+
+  <text x="485" y="122" font-size="10" font-weight="600" fill="#6d5bd0">Approach</text>
+  <rect x="485" y="130" width="370" height="26" rx="4" fill="#f3f1f8"/>
+  <text x="495" y="147" font-size="9" fill="#1a1822">JavaScript SDK captures data from actual user sessions</text>
+
+  <text x="485" y="172" font-size="10" font-weight="600" fill="#6d5bd0">Characteristics</text>
+
+  <rect x="485" y="180" width="176" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="573" y="196" text-anchor="middle" font-size="9" fill="#1a1822">Real-world conditions</text>
+
+  <rect x="671" y="180" width="184" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="763" y="196" text-anchor="middle" font-size="9" fill="#1a1822">Statistical distributions</text>
+
+  <rect x="485" y="210" width="176" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="573" y="226" text-anchor="middle" font-size="9" fill="#1a1822">Post-deployment data</text>
+
+  <rect x="671" y="210" width="184" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="763" y="226" text-anchor="middle" font-size="9" fill="#1a1822">Global coverage</text>
+
+  <rect x="485" y="240" width="176" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="573" y="256" text-anchor="middle" font-size="9" fill="#1a1822">Diverse devices &amp; browsers</text>
+
+  <rect x="671" y="240" width="184" height="24" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="763" y="256" text-anchor="middle" font-size="9" fill="#1a1822">Variable results (P50/P95)</text>
+
+  <text x="485" y="284" font-size="10" font-weight="600" fill="#4caf50">Best for:</text>
+  <text x="485" y="300" font-size="9" fill="#1a1822">Understanding real user experience, geographic analysis,</text>
+  <text x="485" y="314" font-size="9" fill="#1a1822">device/browser segmentation, business impact correlation</text>
+
+  <!-- VS divider -->
+  <circle cx="450" cy="200" r="18" fill="#6d5bd0"/>
+  <text x="450" y="205" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">VS</text>
+
+  <!-- Bottom: Complementary Coverage -->
+  <rect x="30" y="350" width="840" height="135" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="375" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Complementary Coverage: Using Both Together</text>
+
+  <!-- Left side of bottom -->
+  <rect x="48" y="390" width="250" height="82" rx="8" fill="#ffffff" opacity="0.15"/>
+  <text x="173" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Synthetic Catches</text>
+  <text x="173" y="428" text-anchor="middle" font-size="9" fill="#e0daf0">Regressions before users see them</text>
+  <text x="173" y="444" text-anchor="middle" font-size="9" fill="#e0daf0">Availability &amp; uptime issues</text>
+  <text x="173" y="460" text-anchor="middle" font-size="9" fill="#e0daf0">Performance budget violations</text>
+
+  <!-- Center overlap -->
+  <rect x="318" y="390" width="264" height="82" rx="8" fill="#ffffff" opacity="0.25"/>
+  <text x="450" y="410" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Shared Value</text>
+  <text x="450" y="428" text-anchor="middle" font-size="9" fill="#ffffff">Core Web Vitals tracking</text>
+  <text x="450" y="444" text-anchor="middle" font-size="9" fill="#ffffff">Page load performance trends</text>
+  <text x="450" y="460" text-anchor="middle" font-size="9" fill="#ffffff">Alert on threshold violations</text>
+
+  <!-- Right side of bottom -->
+  <rect x="602" y="390" width="250" height="82" rx="8" fill="#ffffff" opacity="0.15"/>
+  <text x="727" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">RUM Catches</text>
+  <text x="727" y="428" text-anchor="middle" font-size="9" fill="#e0daf0">Long-tail user experience issues</text>
+  <text x="727" y="444" text-anchor="middle" font-size="9" fill="#e0daf0">Device/network-specific problems</text>
+  <text x="727" y="460" text-anchor="middle" font-size="9" fill="#e0daf0">Geographic performance gaps</text>
+</svg>

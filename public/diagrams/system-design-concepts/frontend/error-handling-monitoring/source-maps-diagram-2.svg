@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Source map resolution showing minified position mapping to original source location through VLQ decoding</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Source Map Resolution Process</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Mapping a minified error position back to the original source location</text>
+
+  <!-- Arrow marker definitions -->
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#cc4444"/>
+    </marker>
+    <marker id="arrGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4caf50"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Error in minified code -->
+  <rect x="30" y="70" width="250" height="110" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="70" width="250" height="26" rx="8" fill="#cc4444"/>
+  <rect x="30" y="84" width="250" height="12" fill="#cc4444"/>
+  <text x="155" y="89" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">1. Error in Minified Code</text>
+  <text x="45" y="115" font-size="10" fill="#cc4444" font-weight="600">TypeError at bundle.min.js</text>
+  <text x="45" y="135" font-size="10" fill="#1a1822">Line: 1</text>
+  <text x="45" y="150" font-size="10" fill="#1a1822">Column: 45832</text>
+  <text x="45" y="168" font-size="8" fill="#1a1822" opacity="0.5">...a.b(n[0].c)&amp;&amp;void 0!==d.e...</text>
+
+  <!-- Arrow to step 2 -->
+  <line x1="285" y1="125" x2="330" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 2: Source map lookup -->
+  <rect x="335" y="70" width="230" height="110" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="335" y="70" width="230" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="335" y="84" width="230" height="12" fill="#6d5bd0"/>
+  <text x="450" y="89" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">2. Source Map Lookup</text>
+  <text x="350" y="115" font-size="10" fill="#1a1822">Find segment in mappings</text>
+  <text x="350" y="135" font-size="10" fill="#1a1822">containing col 45832</text>
+  <text x="350" y="158" font-size="9" fill="#6d5bd0">Binary search on sorted</text>
+  <text x="350" y="172" font-size="9" fill="#6d5bd0">generated column offsets</text>
+
+  <!-- Arrow to step 3 -->
+  <line x1="570" y1="125" x2="615" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 3: Resolved position -->
+  <rect x="620" y="70" width="255" height="110" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="620" y="70" width="255" height="26" rx="8" fill="#4caf50"/>
+  <rect x="620" y="84" width="255" height="12" fill="#4caf50"/>
+  <text x="747" y="89" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">3. Original Position</text>
+  <text x="635" y="115" font-size="10" fill="#4caf50" font-weight="600">Cart.tsx : line 142, col 8</text>
+  <text x="635" y="135" font-size="10" fill="#1a1822">Name: "addItem"</text>
+  <text x="635" y="158" font-size="8" fill="#1a1822" opacity="0.5">const total = items.reduce(</text>
+  <text x="635" y="172" font-size="8" fill="#1a1822" opacity="0.5">  (sum, item) =&gt; sum + item.price, 0);</text>
+
+  <!-- VLQ Decoding Detail (middle section) -->
+  <rect x="30" y="200" width="840" height="135" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="200" width="840" height="28" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="214" width="840" height="14" fill="#6d5bd0"/>
+  <text x="450" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">VLQ Decoding: How a Segment Maps Positions</text>
+
+  <!-- VLQ encoded string -->
+  <text x="50" y="252" font-size="10" font-weight="600" fill="#1a1822">Mappings string (line 1):</text>
+  <rect x="220" y="238" width="420" height="22" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="230" y="254" font-size="11" fill="#6d5bd0" font-weight="600">AAAA,KACE,SAAS,IAAM,OAAO,GAAG;...</text>
+  <text x="650" y="254" font-size="9" fill="#1a1822" opacity="0.5">Base64 VLQ encoded</text>
+
+  <!-- Decoded segment example -->
+  <text x="50" y="282" font-size="10" font-weight="600" fill="#1a1822">Decoded segment "KACE":</text>
+
+  <rect x="220" y="270" width="110" height="32" rx="5" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="275" y="284" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Gen col offset</text>
+  <text x="275" y="297" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">+5</text>
+
+  <rect x="340" y="270" width="110" height="32" rx="5" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="395" y="284" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Source index</text>
+  <text x="395" y="297" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">0 (Cart.tsx)</text>
+
+  <rect x="460" y="270" width="110" height="32" rx="5" fill="#f0ad4e" opacity="0.12" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="515" y="284" text-anchor="middle" font-size="9" font-weight="600" fill="#f0ad4e">Orig line offset</text>
+  <text x="515" y="297" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">+1</text>
+
+  <rect x="580" y="270" width="110" height="32" rx="5" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="635" y="284" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">Orig col offset</text>
+  <text x="635" y="297" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">+2</text>
+
+  <rect x="700" y="270" width="110" height="32" rx="5" fill="#1a1822" opacity="0.06" stroke="#1a1822" stroke-width="1"/>
+  <text x="755" y="284" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Name index</text>
+  <text x="755" y="297" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">(optional)</text>
+
+  <text x="450" y="325" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">All values are relative (deltas) from the previous segment to save space. Semicolons (;) reset for new generated lines.</text>
+
+  <!-- Sources array connection (bottom section) -->
+  <rect x="30" y="355" width="410" height="130" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="30" y="355" width="410" height="26" rx="10" fill="#1a1822"/>
+  <rect x="30" y="367" width="410" height="14" fill="#1a1822"/>
+  <text x="235" y="374" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">sources[] Array (index lookup)</text>
+
+  <rect x="50" y="395" width="370" height="26" rx="4" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="60" y="413" font-size="10" fill="#4caf50" font-weight="600">[0]</text>
+  <text x="90" y="413" font-size="10" fill="#1a1822">"src/components/Cart.tsx"</text>
+  <text x="410" y="413" text-anchor="end" font-size="9" fill="#4caf50">matched</text>
+
+  <rect x="50" y="428" width="370" height="26" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="446" font-size="10" fill="#6d5bd0" font-weight="600">[1]</text>
+  <text x="90" y="446" font-size="10" fill="#1a1822">"src/components/Header.jsx"</text>
+
+  <rect x="50" y="461" width="370" height="18" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="475" font-size="10" fill="#6d5bd0" font-weight="600">[2]</text>
+  <text x="90" y="475" font-size="10" fill="#1a1822">"src/styles/main.scss"</text>
+
+  <!-- Names array -->
+  <rect x="470" y="355" width="400" height="130" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="470" y="355" width="400" height="26" rx="10" fill="#1a1822"/>
+  <rect x="470" y="367" width="400" height="14" fill="#1a1822"/>
+  <text x="670" y="374" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">names[] Array (symbol lookup)</text>
+
+  <rect x="490" y="395" width="360" height="26" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="500" y="413" font-size="10" fill="#6d5bd0" font-weight="600">[0]</text>
+  <text x="530" y="413" font-size="10" fill="#1a1822">"Cart"</text>
+
+  <rect x="490" y="428" width="360" height="26" rx="4" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="500" y="446" font-size="10" fill="#4caf50" font-weight="600">[1]</text>
+  <text x="530" y="446" font-size="10" fill="#1a1822">"addItem"</text>
+  <text x="840" y="446" text-anchor="end" font-size="9" fill="#4caf50">matched</text>
+
+  <rect x="490" y="461" width="360" height="18" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="500" y="475" font-size="10" fill="#6d5bd0" font-weight="600">[2]</text>
+  <text x="530" y="475" font-size="10" fill="#1a1822">"total"</text>
+</svg>

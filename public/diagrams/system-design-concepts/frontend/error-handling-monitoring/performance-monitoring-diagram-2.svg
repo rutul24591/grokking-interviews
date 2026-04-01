@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Core Web Vitals Measurement Points During Page Load Timeline</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Core Web Vitals Measurement Points</text>
+  <text x="450" y="52" text-anchor="middle" font-size="11" fill="#6d5bd0">Page Load Timeline &amp; Performance Metric Thresholds</text>
+
+  <!-- Timeline bar -->
+  <rect x="40" y="95" width="820" height="6" rx="3" fill="#d7d1e6"/>
+  <!-- Timeline arrow -->
+  <line x1="855" y1="98" x2="875" y2="98" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="875" y="112" text-anchor="end" font-size="8" fill="#1a1822">Time</text>
+
+  <!-- Marker 1: Navigation Start -->
+  <line x1="60" y1="80" x2="60" y2="110" stroke="#1a1822" stroke-width="2"/>
+  <circle cx="60" cy="98" r="5" fill="#1a1822"/>
+  <text x="60" y="75" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Navigation</text>
+  <text x="60" y="125" text-anchor="middle" font-size="8" fill="#1a1822">Start</text>
+  <text x="60" y="137" text-anchor="middle" font-size="8" fill="#6d5bd0">0 ms</text>
+
+  <!-- Marker 2: TTFB -->
+  <line x1="190" y1="80" x2="190" y2="110" stroke="#4caf50" stroke-width="2"/>
+  <circle cx="190" cy="98" r="5" fill="#4caf50"/>
+  <text x="190" y="75" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">TTFB</text>
+  <text x="190" y="125" text-anchor="middle" font-size="8" fill="#1a1822">First Byte</text>
+  <text x="190" y="137" text-anchor="middle" font-size="8" fill="#6d5bd0">~200-800ms</text>
+
+  <!-- Marker 3: FCP -->
+  <line x1="340" y1="80" x2="340" y2="110" stroke="#4caf50" stroke-width="2"/>
+  <circle cx="340" cy="98" r="5" fill="#4caf50"/>
+  <text x="340" y="75" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">FCP</text>
+  <text x="340" y="125" text-anchor="middle" font-size="8" fill="#1a1822">First Contentful</text>
+  <text x="340" y="137" text-anchor="middle" font-size="8" fill="#1a1822">Paint</text>
+
+  <!-- Marker 4: LCP -->
+  <line x1="510" y1="80" x2="510" y2="110" stroke="#6d5bd0" stroke-width="3"/>
+  <circle cx="510" cy="98" r="7" fill="#6d5bd0"/>
+  <text x="510" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">LCP</text>
+  <text x="510" y="125" text-anchor="middle" font-size="8" fill="#1a1822">Largest Contentful</text>
+  <text x="510" y="137" text-anchor="middle" font-size="8" fill="#1a1822">Paint</text>
+
+  <!-- Marker 5: FID / INP -->
+  <line x1="660" y1="80" x2="660" y2="110" stroke="#6d5bd0" stroke-width="3"/>
+  <circle cx="660" cy="98" r="7" fill="#6d5bd0"/>
+  <text x="660" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">INP</text>
+  <text x="660" y="125" text-anchor="middle" font-size="8" fill="#1a1822">Interaction to</text>
+  <text x="660" y="137" text-anchor="middle" font-size="8" fill="#1a1822">Next Paint</text>
+
+  <!-- Marker 6: CLS -->
+  <line x1="810" y1="80" x2="810" y2="110" stroke="#6d5bd0" stroke-width="3"/>
+  <circle cx="810" cy="98" r="7" fill="#6d5bd0"/>
+  <text x="810" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">CLS</text>
+  <text x="810" y="125" text-anchor="middle" font-size="8" fill="#1a1822">Cumulative</text>
+  <text x="810" y="137" text-anchor="middle" font-size="8" fill="#1a1822">Layout Shift</text>
+
+  <!-- CLS note: throughout -->
+  <rect x="745" y="140" width="130" height="16" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="810" y="152" text-anchor="middle" font-size="7" fill="#6d5bd0">Measured throughout session</text>
+
+  <!-- Threshold cards -->
+  <!-- LCP Thresholds -->
+  <rect x="30" y="175" width="270" height="140" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="165" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">LCP - Largest Contentful Paint</text>
+  <text x="165" y="214" text-anchor="middle" font-size="9" fill="#1a1822">Loading performance of main content</text>
+
+  <!-- Good -->
+  <rect x="45" y="225" width="240" height="24" rx="4" fill="#4caf50" opacity="0.15"/>
+  <circle cx="58" cy="237" r="6" fill="#4caf50"/>
+  <text x="72" y="241" font-size="10" font-weight="600" fill="#4caf50">Good</text>
+  <text x="278" y="241" text-anchor="end" font-size="10" fill="#1a1822">&lt; 2.5 seconds</text>
+
+  <!-- Needs Improvement -->
+  <rect x="45" y="254" width="240" height="24" rx="4" fill="#f0ad4e" opacity="0.15"/>
+  <circle cx="58" cy="266" r="6" fill="#f0ad4e"/>
+  <text x="72" y="270" font-size="10" font-weight="600" fill="#f0ad4e">Needs Improvement</text>
+  <text x="278" y="270" text-anchor="end" font-size="10" fill="#1a1822">2.5s - 4.0s</text>
+
+  <!-- Poor -->
+  <rect x="45" y="283" width="240" height="24" rx="4" fill="#cc4444" opacity="0.15"/>
+  <circle cx="58" cy="295" r="6" fill="#cc4444"/>
+  <text x="72" y="299" font-size="10" font-weight="600" fill="#cc4444">Poor</text>
+  <text x="278" y="299" text-anchor="end" font-size="10" fill="#1a1822">&gt; 4.0 seconds</text>
+
+  <!-- INP Thresholds -->
+  <rect x="315" y="175" width="270" height="140" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">INP - Interaction to Next Paint</text>
+  <text x="450" y="214" text-anchor="middle" font-size="9" fill="#1a1822">Responsiveness to user interactions</text>
+
+  <rect x="330" y="225" width="240" height="24" rx="4" fill="#4caf50" opacity="0.15"/>
+  <circle cx="343" cy="237" r="6" fill="#4caf50"/>
+  <text x="357" y="241" font-size="10" font-weight="600" fill="#4caf50">Good</text>
+  <text x="563" y="241" text-anchor="end" font-size="10" fill="#1a1822">&lt; 200 milliseconds</text>
+
+  <rect x="330" y="254" width="240" height="24" rx="4" fill="#f0ad4e" opacity="0.15"/>
+  <circle cx="343" cy="266" r="6" fill="#f0ad4e"/>
+  <text x="357" y="270" font-size="10" font-weight="600" fill="#f0ad4e">Needs Improvement</text>
+  <text x="563" y="270" text-anchor="end" font-size="10" fill="#1a1822">200ms - 500ms</text>
+
+  <rect x="330" y="283" width="240" height="24" rx="4" fill="#cc4444" opacity="0.15"/>
+  <circle cx="343" cy="295" r="6" fill="#cc4444"/>
+  <text x="357" y="299" font-size="10" font-weight="600" fill="#cc4444">Poor</text>
+  <text x="563" y="299" text-anchor="end" font-size="10" fill="#1a1822">&gt; 500 milliseconds</text>
+
+  <!-- CLS Thresholds -->
+  <rect x="600" y="175" width="270" height="140" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="735" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">CLS - Cumulative Layout Shift</text>
+  <text x="735" y="214" text-anchor="middle" font-size="9" fill="#1a1822">Visual stability of page content</text>
+
+  <rect x="615" y="225" width="240" height="24" rx="4" fill="#4caf50" opacity="0.15"/>
+  <circle cx="628" cy="237" r="6" fill="#4caf50"/>
+  <text x="642" y="241" font-size="10" font-weight="600" fill="#4caf50">Good</text>
+  <text x="848" y="241" text-anchor="end" font-size="10" fill="#1a1822">&lt; 0.1 score</text>
+
+  <rect x="615" y="254" width="240" height="24" rx="4" fill="#f0ad4e" opacity="0.15"/>
+  <circle cx="628" cy="266" r="6" fill="#f0ad4e"/>
+  <text x="642" y="270" font-size="10" font-weight="600" fill="#f0ad4e">Needs Improvement</text>
+  <text x="848" y="270" text-anchor="end" font-size="10" fill="#1a1822">0.1 - 0.25 score</text>
+
+  <rect x="615" y="283" width="240" height="24" rx="4" fill="#cc4444" opacity="0.15"/>
+  <circle cx="628" cy="295" r="6" fill="#cc4444"/>
+  <text x="642" y="299" font-size="10" font-weight="600" fill="#cc4444">Poor</text>
+  <text x="848" y="299" text-anchor="end" font-size="10" fill="#1a1822">&gt; 0.25 score</text>
+
+  <!-- Bottom section: What each metric measures -->
+  <rect x="30" y="335" width="840" height="150" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="358" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Measurement Details &amp; Browser APIs Used</text>
+
+  <!-- TTFB -->
+  <rect x="48" y="372" width="150" height="100" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="123" y="390" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">TTFB</text>
+  <text x="123" y="406" text-anchor="middle" font-size="8" fill="#6d5bd0">Navigation Timing API</text>
+  <text x="123" y="422" text-anchor="middle" font-size="8" fill="#1a1822">responseStart -</text>
+  <text x="123" y="434" text-anchor="middle" font-size="8" fill="#1a1822">navigationStart</text>
+  <text x="123" y="452" text-anchor="middle" font-size="8" fill="#4caf50">Good: &lt; 800ms</text>
+
+  <!-- FCP -->
+  <rect x="210" y="372" width="150" height="100" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="285" y="390" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">FCP</text>
+  <text x="285" y="406" text-anchor="middle" font-size="8" fill="#6d5bd0">PerformanceObserver</text>
+  <text x="285" y="422" text-anchor="middle" font-size="8" fill="#1a1822">type: &quot;paint&quot;</text>
+  <text x="285" y="434" text-anchor="middle" font-size="8" fill="#1a1822">first-contentful-paint</text>
+  <text x="285" y="452" text-anchor="middle" font-size="8" fill="#4caf50">Good: &lt; 1.8s</text>
+
+  <!-- LCP -->
+  <rect x="372" y="372" width="150" height="100" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="447" y="390" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">LCP</text>
+  <text x="447" y="406" text-anchor="middle" font-size="8" fill="#6d5bd0">PerformanceObserver</text>
+  <text x="447" y="422" text-anchor="middle" font-size="8" fill="#1a1822">type: &quot;largest-</text>
+  <text x="447" y="434" text-anchor="middle" font-size="8" fill="#1a1822">contentful-paint&quot;</text>
+  <text x="447" y="452" text-anchor="middle" font-size="8" fill="#4caf50">Good: &lt; 2.5s</text>
+
+  <!-- INP -->
+  <rect x="534" y="372" width="150" height="100" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="609" y="390" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">INP</text>
+  <text x="609" y="406" text-anchor="middle" font-size="8" fill="#6d5bd0">PerformanceObserver</text>
+  <text x="609" y="422" text-anchor="middle" font-size="8" fill="#1a1822">type: &quot;event&quot;</text>
+  <text x="609" y="434" text-anchor="middle" font-size="8" fill="#1a1822">Worst interaction</text>
+  <text x="609" y="452" text-anchor="middle" font-size="8" fill="#4caf50">Good: &lt; 200ms</text>
+
+  <!-- CLS -->
+  <rect x="696" y="372" width="150" height="100" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="771" y="390" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">CLS</text>
+  <text x="771" y="406" text-anchor="middle" font-size="8" fill="#6d5bd0">PerformanceObserver</text>
+  <text x="771" y="422" text-anchor="middle" font-size="8" fill="#1a1822">type: &quot;layout-shift&quot;</text>
+  <text x="771" y="434" text-anchor="middle" font-size="8" fill="#1a1822">Session window max</text>
+  <text x="771" y="452" text-anchor="middle" font-size="8" fill="#4caf50">Good: &lt; 0.1</text>
+</svg>

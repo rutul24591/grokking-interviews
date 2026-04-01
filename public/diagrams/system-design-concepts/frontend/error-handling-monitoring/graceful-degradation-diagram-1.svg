@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Degradation Cascade: Full Feature Set Reducing Through Progressive Levels to Minimal Core Functionality</title>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Graceful Degradation Cascade</text>
+
+  <!-- Staircase Steps -->
+  <!-- Level 0 - Full -->
+  <rect x="30" y="60" width="210" height="110" rx="6" fill="#4caf50" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="135" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">LEVEL 0 — FULL</text>
+  <line x1="50" y1="90" x2="220" y2="90" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1"/>
+  <text x="135" y="108" text-anchor="middle" font-size="10.5" fill="#ffffff">All features active</text>
+  <text x="135" y="122" text-anchor="middle" font-size="10.5" fill="#ffffff">Real-time updates (WebSocket)</text>
+  <text x="135" y="136" text-anchor="middle" font-size="10.5" fill="#ffffff">Animations &amp; transitions</text>
+  <text x="135" y="150" text-anchor="middle" font-size="10.5" fill="#ffffff">Rich media &amp; interactivity</text>
+
+  <!-- Trigger arrow 0→1 -->
+  <path d="M240,135 L270,135 L270,195 L280,195" fill="none" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="242" y="148" width="56" height="36" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="270" y="162" text-anchor="middle" font-size="8.5" font-weight="600" fill="#cc4444">TRIGGER</text>
+  <text x="270" y="174" text-anchor="middle" font-size="8" fill="#1a1822">Slow network</text>
+
+  <!-- Level 1 - Reduced -->
+  <rect x="250" y="170" width="210" height="110" rx="6" fill="#8bc34a" stroke="#689f38" stroke-width="1.5"/>
+  <text x="355" y="192" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">LEVEL 1 — REDUCED</text>
+  <line x1="270" y1="200" x2="440" y2="200" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1"/>
+  <text x="355" y="218" text-anchor="middle" font-size="10.5" fill="#ffffff">Static content served</text>
+  <text x="355" y="232" text-anchor="middle" font-size="10.5" fill="#ffffff">Polling replaces WebSocket</text>
+  <text x="355" y="246" text-anchor="middle" font-size="10.5" fill="#ffffff">Simplified UI components</text>
+  <text x="355" y="260" text-anchor="middle" font-size="10.5" fill="#ffffff">Reduced image quality</text>
+
+  <!-- Trigger arrow 1→2 -->
+  <path d="M460,245 L490,245 L490,305 L500,305" fill="none" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="462" y="258" width="56" height="36" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="490" y="272" text-anchor="middle" font-size="8.5" font-weight="600" fill="#cc4444">TRIGGER</text>
+  <text x="490" y="284" text-anchor="middle" font-size="8" fill="#1a1822">JS disabled</text>
+
+  <!-- Level 2 - Basic -->
+  <rect x="470" y="280" width="210" height="110" rx="6" fill="#f0ad4e" stroke="#d4952b" stroke-width="1.5"/>
+  <text x="575" y="302" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">LEVEL 2 — BASIC</text>
+  <line x1="490" y1="310" x2="660" y2="310" stroke="#1a1822" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="575" y="328" text-anchor="middle" font-size="10.5" fill="#1a1822">Server-rendered HTML only</text>
+  <text x="575" y="342" text-anchor="middle" font-size="10.5" fill="#1a1822">No JS interactivity</text>
+  <text x="575" y="356" text-anchor="middle" font-size="10.5" fill="#1a1822">Basic HTML forms</text>
+  <text x="575" y="370" text-anchor="middle" font-size="10.5" fill="#1a1822">Minimal styling</text>
+
+  <!-- Trigger arrow 2→3 -->
+  <path d="M680,355 L710,355 L710,415 L720,415" fill="none" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="682" y="368" width="56" height="36" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="710" y="382" text-anchor="middle" font-size="8.5" font-weight="600" fill="#cc4444">TRIGGER</text>
+  <text x="710" y="394" text-anchor="middle" font-size="8" fill="#1a1822">Offline</text>
+
+  <!-- Level 3 - Minimal -->
+  <rect x="660" y="390" width="210" height="100" rx="6" fill="#cc4444" stroke="#a33636" stroke-width="1.5"/>
+  <text x="765" y="412" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">LEVEL 3 — MINIMAL</text>
+  <line x1="680" y1="420" x2="850" y2="420" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1"/>
+  <text x="765" y="438" text-anchor="middle" font-size="10.5" fill="#ffffff">Text-only content</text>
+  <text x="765" y="452" text-anchor="middle" font-size="10.5" fill="#ffffff">Cached / offline data</text>
+  <text x="765" y="466" text-anchor="middle" font-size="10.5" fill="#ffffff">Essential information only</text>
+
+  <!-- Gradient bar at bottom -->
+  <defs>
+    <linearGradient id="degradeGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4caf50"/>
+      <stop offset="33%" stop-color="#8bc34a"/>
+      <stop offset="66%" stop-color="#f0ad4e"/>
+      <stop offset="100%" stop-color="#cc4444"/>
+    </linearGradient>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Additional trigger labels along the cascade -->
+  <rect x="242" y="80" width="76" height="20" rx="3" fill="#6d5bd0"/>
+  <text x="280" y="94" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">API failure</text>
+
+  <!-- Bottom gradient bar -->
+  <rect x="30" y="480" width="840" height="8" rx="4" fill="url(#degradeGrad)"/>
+  <text x="50" y="476" font-size="9" fill="#4caf50" font-weight="600">Full capability</text>
+  <text x="810" y="476" font-size="9" fill="#cc4444" font-weight="600" text-anchor="end">Minimal core</text>
+</svg>

@@ -99,6 +99,12 @@ export default function GracefulDegradationArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/graceful-degradation-diagram-1.svg"
+        alt="Degradation cascade showing full feature set reducing to core functionality across failure modes"
+        caption="Figure 1: Graceful degradation cascade from full features to core-only mode"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -368,25 +374,6 @@ export default function GracefulDegradationArticle() {
         </p>
 
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/graceful-degradation-diagram-1.svg"
-          alt="Degradation cascade showing full feature set reducing to core functionality across failure modes"
-          caption="Figure 1: Graceful degradation cascade from full features to core-only mode"
-        />
-
-        <p className="mb-4">
-          Figure 1 demonstrates the layered approach to degradation. At the top,
-          all features are active and all services are healthy. As failures
-          accumulate — a recommendation API goes down, then the analytics
-          service, then the network becomes intermittent — the application peels
-          away non-critical features in a deliberate order, ensuring that the
-          core transaction flow (browsing, searching, purchasing) remains
-          available as long as possible. The ordering of which features to shed
-          first is a product decision that should be made collaboratively between
-          engineering, product, and design, and documented as part of the
-          application&apos;s resilience policy.
-        </p>
-
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/graceful-degradation-diagram-2.svg"
           alt="API failure handling flow showing retry, cache fallback, placeholder, and error state progression"
           caption="Figure 2: API failure handling decision tree"
@@ -405,26 +392,6 @@ export default function GracefulDegradationArticle() {
           what is unavailable.
         </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/graceful-degradation-diagram-3.svg"
-          alt="Circuit breaker pattern in frontend showing closed, open, and half-open states for feature availability"
-          caption="Figure 3: Frontend circuit breaker pattern for feature degradation"
-        />
-
-        <p>
-          Figure 3 models the circuit breaker lifecycle. In the{" "}
-          <strong>closed</strong> state, requests flow normally and the breaker
-          tracks the failure rate within a sliding window. When the failure
-          threshold is exceeded (for example, five consecutive failures or a 50%
-          failure rate over 30 seconds), the circuit transitions to{" "}
-          <strong>open</strong>, immediately returning the fallback response
-          without making network requests. After a configurable timeout (30-60
-          seconds), the circuit moves to <strong>half-open</strong>, allowing one
-          probe request through. A successful probe closes the circuit and
-          restores normal operation. A failed probe reopens it. This prevents the
-          user-visible impact of repeated timeouts and provides automatic
-          recovery without manual intervention.
-        </p>
       </section>
 
       {/* ============================================================
@@ -822,6 +789,12 @@ export default function GracefulDegradationArticle() {
           failure boundaries, ensuring that the purchase transaction — the core
           business function — completes whenever physically possible.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/graceful-degradation-diagram-3.svg"
+          alt="Circuit breaker pattern in frontend showing closed, open, and half-open states for feature availability"
+          caption="Figure 3: Frontend circuit breaker pattern for feature degradation"
+        />
       </section>
 
       {/* ============================================================

@@ -96,6 +96,12 @@ export default function LoggingStrategiesArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/logging-strategies-diagram-1.svg"
+        alt="Frontend logging pipeline from log creation through batching, transport, and aggregation"
+        caption="Figure 1: End-to-end frontend logging pipeline"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -307,29 +313,6 @@ export default function LoggingStrategiesArticle() {
         </p>
 
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/logging-strategies-diagram-1.svg"
-          alt="Frontend logging pipeline from log creation through batching, transport, and aggregation"
-          caption="Figure 1: End-to-end frontend logging pipeline"
-        />
-        <p>
-          The pipeline begins when application code calls the logger with a
-          level, message, and optional context. The logger enriches the entry
-          with ambient context — session ID, user ID (if authenticated),
-          current route, device information, and the active trace/span IDs.
-          The enriched entry passes through a PII scrubber that strips or
-          redacts sensitive fields. A level filter then determines whether the
-          entry meets the current verbosity threshold. Entries that pass
-          filtering are serialized to JSON and appended to an in-memory
-          buffer. The transport layer monitors the buffer and flushes it to
-          the backend when a time or size threshold is reached, compressing
-          the payload with gzip for bandwidth efficiency. On the server side,
-          an ingestion endpoint validates and routes entries to the
-          appropriate storage — hot storage (Elasticsearch, ClickHouse) for
-          recent, searchable logs and cold storage (S3, GCS) for long-term
-          retention.
-        </p>
-
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/logging-strategies-diagram-2.svg"
           alt="Log level hierarchy showing filtering at client and server with sampling rates"
           caption="Figure 2: Log level filtering and sampling strategy"
@@ -347,23 +330,6 @@ export default function LoggingStrategiesArticle() {
           while maintaining diagnostic coverage.
         </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/logging-strategies-diagram-3.svg"
-          alt="Structured log enrichment flow adding context at each application layer"
-          caption="Figure 3: Contextual log enrichment across application layers"
-        />
-        <p>
-          Contextual enrichment happens at multiple layers. The global layer
-          adds device, browser, and session metadata. The route layer adds the
-          current path and navigation timing. The component layer adds the
-          component name and relevant props (scrubbed). The operation layer
-          adds the trace ID, span ID, and operation-specific metadata (API
-          endpoint, request duration). This layered approach means individual
-          call sites need only provide the log level and a human-readable
-          message — all structural context is added automatically. This
-          reduces boilerplate, eliminates inconsistency, and ensures every log
-          entry is maximally useful for debugging.
-        </p>
       </section>
 
       {/* ============================================================
@@ -711,6 +677,12 @@ export default function LoggingStrategiesArticle() {
           events, flushing via <code>sendBeacon</code> on page transitions
           and via periodic <code>fetch</code> calls during active sessions.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/logging-strategies-diagram-3.svg"
+          alt="Structured log enrichment flow adding context at each application layer"
+          caption="Figure 3: Contextual log enrichment across application layers"
+        />
       </section>
 
       {/* ============================================================

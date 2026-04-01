@@ -1,0 +1,89 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title>Comparison of User-Agent String Parsing vs Feature Detection Showing Reliability Differences</title>
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">UA String Parsing vs Feature Detection</text>
+  <text x="450" y="50" text-anchor="middle" font-size="12" fill="#6d5bd0">Why Feature Detection Is the Recommended Approach</text>
+
+  <!-- Divider line -->
+  <line x1="450" y1="65" x2="450" y2="430" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="450" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">VS</text>
+
+  <!-- LEFT COLUMN: UA String Parsing -->
+  <rect x="20" y="65" width="410" height="30" rx="6" fill="#cc4444"/>
+  <text x="225" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">User-Agent String Parsing</text>
+
+  <!-- UA approach box -->
+  <rect x="20" y="100" width="410" height="45" rx="6" fill="#ffffff" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="225" y="118" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Approach: Parse navigator.userAgent string</text>
+  <text x="225" y="134" text-anchor="middle" font-size="9" fill="#888">if (navigator.userAgent.indexOf("Chrome") !== -1) { ... }</text>
+
+  <!-- Characteristics -->
+  <rect x="20" y="152" width="410" height="120" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="35" y="170" font-size="11" font-weight="bold" fill="#cc4444">✗ Characteristics</text>
+  <text x="40" y="188" font-size="10" fill="#1a1822">● Brittle — breaks with new browser versions</text>
+  <text x="40" y="204" font-size="10" fill="#1a1822">● Spoofable — users/bots can fake UA strings</text>
+  <text x="40" y="220" font-size="10" fill="#1a1822">● Requires constant maintenance of regex patterns</text>
+  <text x="40" y="236" font-size="10" fill="#1a1822">● Infers capability from identity (unreliable)</text>
+  <text x="40" y="252" font-size="10" fill="#1a1822">● Cannot detect features in embedded webviews</text>
+
+  <!-- Failure scenarios -->
+  <rect x="20" y="280" width="410" height="145" rx="6" fill="#fff0f0" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="35" y="298" font-size="11" font-weight="bold" fill="#cc4444">Failure Scenarios</text>
+
+  <rect x="30" y="306" width="390" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="40" y="318" font-size="9" fill="#cc4444" font-weight="bold">1.</text>
+  <text x="55" y="318" font-size="9" fill="#1a1822">Spoofed UA: Chrome pretending to be Firefox</text>
+  <text x="55" y="330" font-size="9" fill="#888">→ Wrong code path executed, features broken</text>
+
+  <rect x="30" y="340" width="390" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="40" y="352" font-size="9" fill="#cc4444" font-weight="bold">2.</text>
+  <text x="55" y="352" font-size="9" fill="#1a1822">New browser version with changed UA format</text>
+  <text x="55" y="364" font-size="9" fill="#888">→ Regex fails silently, feature wrongly disabled</text>
+
+  <rect x="30" y="374" width="390" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="40" y="386" font-size="9" fill="#cc4444" font-weight="bold">3.</text>
+  <text x="55" y="386" font-size="9" fill="#1a1822">Embedded WebView (Slack, FB, in-app browsers)</text>
+  <text x="55" y="398" font-size="9" fill="#888">→ UA string unrecognized, all features blocked</text>
+
+  <!-- RIGHT COLUMN: Feature Detection -->
+  <rect x="470" y="65" width="410" height="30" rx="6" fill="#4caf50"/>
+  <text x="675" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Feature Detection</text>
+
+  <!-- Feature detection approach box -->
+  <rect x="470" y="100" width="410" height="45" rx="6" fill="#ffffff" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="675" y="118" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Approach: Test actual capability</text>
+  <text x="675" y="134" text-anchor="middle" font-size="9" fill="#888">if ("IntersectionObserver" in window) { ... }</text>
+
+  <!-- Characteristics -->
+  <rect x="470" y="152" width="410" height="120" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="485" y="170" font-size="11" font-weight="bold" fill="#4caf50">✓ Characteristics</text>
+  <text x="490" y="188" font-size="10" fill="#1a1822">● Reliable — tests what the browser can actually do</text>
+  <text x="490" y="204" font-size="10" fill="#1a1822">● Future-proof — works with any browser</text>
+  <text x="490" y="220" font-size="10" fill="#1a1822">● Zero maintenance — no patterns to update</text>
+  <text x="490" y="236" font-size="10" fill="#1a1822">● Cannot be spoofed — checks real APIs</text>
+  <text x="490" y="252" font-size="10" fill="#1a1822">● Works in all contexts (webviews, iframes, etc.)</text>
+
+  <!-- Success scenarios -->
+  <rect x="470" y="280" width="410" height="145" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="485" y="298" font-size="11" font-weight="bold" fill="#4caf50">Success Scenarios</text>
+
+  <rect x="480" y="306" width="390" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="490" y="318" font-size="9" fill="#4caf50" font-weight="bold">1.</text>
+  <text x="505" y="318" font-size="9" fill="#1a1822">Any browser with the feature → detected correctly</text>
+  <text x="505" y="330" font-size="9" fill="#888">→ Same code works in Chrome, Firefox, Safari, Edge</text>
+
+  <rect x="480" y="340" width="390" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="490" y="352" font-size="9" fill="#4caf50" font-weight="bold">2.</text>
+  <text x="505" y="352" font-size="9" fill="#1a1822">Brand-new browser ships with feature support</text>
+  <text x="505" y="364" font-size="9" fill="#888">→ Automatically works, no code changes needed</text>
+
+  <rect x="480" y="374" width="390" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="490" y="386" font-size="9" fill="#4caf50" font-weight="bold">3.</text>
+  <text x="505" y="386" font-size="9" fill="#1a1822">WebView with partial support detected accurately</text>
+  <text x="505" y="398" font-size="9" fill="#888">→ Only unsupported features gracefully degrade</text>
+
+  <!-- Bottom verdict -->
+  <rect x="200" y="440" width="500" height="45" rx="10" fill="#4caf50" stroke="#3d9040" stroke-width="2"/>
+  <text x="450" y="460" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">✓ Verdict: Feature Detection Is the Recommended Approach</text>
+  <text x="450" y="476" text-anchor="middle" font-size="10" fill="#ffffff">Test capabilities, not identities — works everywhere, requires no maintenance</text>
+</svg>

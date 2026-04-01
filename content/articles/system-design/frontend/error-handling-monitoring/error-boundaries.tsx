@@ -105,6 +105,12 @@ export default function ErrorBoundariesArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-boundaries-diagram-1.svg"
+        alt="Error boundary placement strategy showing app-level, route-level, and component-level boundaries"
+        caption="Figure 1: Error boundary granularity strategy across a React application"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -286,27 +292,6 @@ export default function ErrorBoundariesArticle() {
         </p>
 
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-boundaries-diagram-1.svg"
-          alt="Error boundary placement strategy showing app-level, route-level, and component-level boundaries"
-          caption="Figure 1: Error boundary granularity strategy across a React application"
-        />
-
-        <p>
-          In a layered boundary architecture, the outermost boundary wraps the
-          entire application and catches catastrophic failures that bypass all
-          inner boundaries. Inside that, each route or page gets its own
-          boundary, ensuring that a failure in one route does not affect
-          navigation or the application shell. Within routes, high-risk
-          features — those that depend on external data, process user-generated
-          content, or use third-party libraries — receive their own boundaries.
-          This layered approach means that errors are caught at the most
-          specific level possible, maximizing the amount of functional UI that
-          remains available. The key insight is that boundaries should follow
-          organizational and trust boundaries: a feature owned by team A should
-          not be able to crash a feature owned by team B.
-        </p>
-
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-boundaries-diagram-2.svg"
           alt="Error propagation flow from throwing component up through boundary hierarchy"
           caption="Figure 2: Error propagation through the React fiber tree to the nearest error boundary"
@@ -328,27 +313,6 @@ export default function ErrorBoundariesArticle() {
           for debugging.
         </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-boundaries-diagram-3.svg"
-          alt="Recovery flow showing reset mechanisms and retry patterns"
-          caption="Figure 3: Error boundary recovery flow with retry budgets and escalation"
-        />
-
-        <p>
-          The recovery flow demonstrates how a well-designed error boundary
-          handles the complete lifecycle from error detection to resolution.
-          When an error is caught, the boundary logs it to the monitoring
-          service, renders the fallback UI, and waits for a recovery trigger.
-          If the user clicks retry, the boundary checks its retry count against
-          the budget. If retries remain, it clears its error state, increments
-          the counter, and attempts to render children again. If the retry
-          budget is exhausted, the boundary renders a permanent error state
-          directing the user to refresh the page or contact support. External
-          recovery triggers — such as route navigation events detected through{" "}
-          <code>useEffect</code> in parent components — can also reset
-          boundaries automatically, ensuring that navigating away from and back
-          to a failed route provides a fresh attempt.
-        </p>
       </section>
 
       {/* ============================================================
@@ -737,6 +701,12 @@ export default function ErrorBoundariesArticle() {
           buggy app extension cannot compromise a merchant&apos;s ability to
           manage their store.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-boundaries-diagram-3.svg"
+          alt="Recovery flow showing reset mechanisms and retry patterns"
+          caption="Figure 3: Error boundary recovery flow with retry budgets and escalation"
+        />
       </section>
 
       {/* ============================================================

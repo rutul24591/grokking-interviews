@@ -1,0 +1,130 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title>Feature Detection Decision Tree: From Capability Check Through Progressive Enhancement to Polyfill Loading</title>
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Feature Detection Decision Tree</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#6d5bd0">Capability Check → Progressive Enhancement → Polyfill Loading</text>
+
+  <defs>
+    <marker id="arr-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4caf50"/>
+    </marker>
+    <marker id="arr-yellow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e07830"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#cc4444"/>
+    </marker>
+    <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Start node -->
+  <rect x="340" y="70" width="220" height="40" rx="20" fill="#6d5bd0" stroke="#5a49b8" stroke-width="1.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">Check: Does browser support</text>
+
+  <!-- Diamond: Feature X supported? -->
+  <polygon points="450,130 560,175 450,220 340,175" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Feature X</text>
+  <text x="450" y="184" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">supported?</text>
+
+  <!-- YES path (green) → Native implementation -->
+  <line x1="560" y1="175" x2="700" y2="175" stroke="#4caf50" stroke-width="2" marker-end="url(#arr-green)"/>
+  <text x="620" y="167" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">YES</text>
+  <rect x="710" y="155" width="170" height="40" rx="8" fill="#4caf50" stroke="#3d9040" stroke-width="1.5"/>
+  <text x="795" y="172" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Use Native</text>
+  <text x="795" y="186" text-anchor="middle" font-size="10" fill="#ffffff">Implementation ✓</text>
+
+  <!-- Example for native -->
+  <rect x="710" y="202" width="170" height="28" rx="5" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="795" y="220" text-anchor="middle" font-size="9" fill="#2e7d32">e.g., IntersectionObserver</text>
+
+  <!-- NO path down -->
+  <line x1="450" y1="220" x2="450" y2="255" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arr-yellow)"/>
+  <text x="465" y="240" font-size="11" font-weight="bold" fill="#cc4444">NO</text>
+
+  <!-- Diamond: Polyfill available? -->
+  <polygon points="450,255 545,292 450,330 355,292" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="450" y="290" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Polyfill</text>
+  <text x="450" y="302" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">available?</text>
+
+  <!-- YES → Load polyfill -->
+  <line x1="545" y1="292" x2="620" y2="292" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arr-yellow)"/>
+  <text x="575" y="284" text-anchor="middle" font-size="11" font-weight="bold" fill="#f0ad4e">YES</text>
+  <rect x="630" y="272" width="130" height="40" rx="8" fill="#fff3e0" stroke="#f0ad4e" stroke-width="1.5"/>
+  <text x="695" y="289" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Load Polyfill</text>
+  <text x="695" y="303" text-anchor="middle" font-size="10" fill="#1a1822">Dynamically</text>
+
+  <!-- Arrow to polyfilled use -->
+  <line x1="760" y1="292" x2="800" y2="292" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arr-yellow)"/>
+  <rect x="808" y="272" width="80" height="40" rx="8" fill="#f0ad4e" stroke="#d4952e" stroke-width="1.5"/>
+  <text x="848" y="289" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">Use</text>
+  <text x="848" y="302" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">Polyfilled</text>
+
+  <!-- NO path down from polyfill -->
+  <line x1="450" y1="330" x2="450" y2="360" stroke="#e07830" stroke-width="2" marker-end="url(#arr-orange)"/>
+  <text x="465" y="348" font-size="11" font-weight="bold" fill="#cc4444">NO</text>
+
+  <!-- Diamond: Fallback feasible? -->
+  <polygon points="450,360 540,395 450,430 360,395" fill="#ffffff" stroke="#e07830" stroke-width="2"/>
+  <text x="450" y="392" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Fallback</text>
+  <text x="450" y="404" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">feasible?</text>
+
+  <!-- YES → Fallback approach -->
+  <line x1="540" y1="395" x2="700" y2="395" stroke="#e07830" stroke-width="2" marker-end="url(#arr-orange)"/>
+  <text x="610" y="387" text-anchor="middle" font-size="11" font-weight="bold" fill="#e07830">YES</text>
+  <rect x="710" y="375" width="170" height="40" rx="8" fill="#e07830" stroke="#c86820" stroke-width="1.5"/>
+  <text x="795" y="392" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Use Fallback</text>
+  <text x="795" y="406" text-anchor="middle" font-size="10" fill="#ffffff">Approach</text>
+
+  <!-- NO → Graceful degradation -->
+  <line x1="450" y1="430" x2="450" y2="455" stroke="#cc4444" stroke-width="2" marker-end="url(#arr-red)"/>
+  <text x="465" y="445" font-size="11" font-weight="bold" fill="#cc4444">NO</text>
+  <rect x="350" y="455" width="200" height="36" rx="8" fill="#cc4444" stroke="#aa3333" stroke-width="1.5"/>
+  <text x="450" y="472" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Graceful Degradation</text>
+  <text x="450" y="485" text-anchor="middle" font-size="10" fill="#ffffff">Hide Feature Entirely</text>
+
+  <!-- Left panel: Real-world examples -->
+  <rect x="20" y="75" width="280" height="410" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="160" y="98" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">Real-World Examples</text>
+  <line x1="40" y1="108" x2="280" y2="108" stroke="#d7d1e6" stroke-width="1"/>
+
+  <!-- Example 1: IntersectionObserver -->
+  <rect x="35" y="118" width="250" height="80" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="136" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">IntersectionObserver</text>
+  <rect x="45" y="143" width="230" height="18" rx="3" fill="#e8f5e9"/>
+  <text x="160" y="156" text-anchor="middle" font-size="9" fill="#2e7d32">Native → Efficient lazy loading</text>
+  <rect x="45" y="164" width="230" height="18" rx="3" fill="#fff3e0"/>
+  <text x="160" y="177" text-anchor="middle" font-size="9" fill="#e07830">Fallback → scroll event listener</text>
+
+  <!-- Example 2: WebP -->
+  <rect x="35" y="208" width="250" height="80" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="226" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">WebP Image Format</text>
+  <rect x="45" y="233" width="230" height="18" rx="3" fill="#e8f5e9"/>
+  <text x="160" y="246" text-anchor="middle" font-size="9" fill="#2e7d32">Native → Serve WebP (30% smaller)</text>
+  <rect x="45" y="254" width="230" height="18" rx="3" fill="#e07830" opacity="0.15"/>
+  <text x="160" y="267" text-anchor="middle" font-size="9" fill="#e07830">Fallback → Serve PNG/JPEG</text>
+
+  <!-- Example 3: CSS Grid -->
+  <rect x="35" y="298" width="250" height="80" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="316" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">CSS Grid Layout</text>
+  <rect x="45" y="323" width="230" height="18" rx="3" fill="#e8f5e9"/>
+  <text x="160" y="336" text-anchor="middle" font-size="9" fill="#2e7d32">Native → CSS Grid (2D layout)</text>
+  <rect x="45" y="344" width="230" height="18" rx="3" fill="#e07830" opacity="0.15"/>
+  <text x="160" y="357" text-anchor="middle" font-size="9" fill="#e07830">Fallback → Flexbox layout</text>
+
+  <!-- Legend -->
+  <rect x="35" y="392" width="250" height="82" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="410" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">Path Legend</text>
+  <rect x="50" y="418" width="12" height="12" rx="2" fill="#4caf50"/>
+  <text x="70" y="428" font-size="9" fill="#1a1822">Optimal — Native support</text>
+  <rect x="50" y="434" width="12" height="12" rx="2" fill="#f0ad4e"/>
+  <text x="70" y="444" font-size="9" fill="#1a1822">Good — Polyfill loaded</text>
+  <rect x="50" y="450" width="12" height="12" rx="2" fill="#e07830"/>
+  <text x="70" y="460" font-size="9" fill="#1a1822">Acceptable — Fallback used</text>
+  <rect x="160" y="418" width="12" height="12" rx="2" fill="#cc4444"/>
+  <text x="180" y="428" font-size="9" fill="#1a1822">Degraded — Feature hidden</text>
+</svg>

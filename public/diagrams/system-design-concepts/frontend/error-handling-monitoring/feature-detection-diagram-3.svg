@@ -1,0 +1,85 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title>Adaptive loading architecture based on device capability detection and network conditions</title>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Adaptive Loading Architecture</text>
+
+  <!-- Capability Assessment Layer -->
+  <rect x="100" y="50" width="700" height="80" fill="#6d5bd0" rx="10"/>
+  <text x="450" y="72" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Capability Assessment Layer</text>
+
+  <rect x="120" y="82" width="200" height="38" fill="#ffffff" rx="6" opacity="0.9"/>
+  <text x="220" y="97" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Network</text>
+  <text x="220" y="112" text-anchor="middle" font-size="9" fill="#666666">navigator.connection.effectiveType</text>
+
+  <rect x="350" y="82" width="200" height="38" fill="#ffffff" rx="6" opacity="0.9"/>
+  <text x="450" y="97" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Device</text>
+  <text x="450" y="112" text-anchor="middle" font-size="9" fill="#666666">memory, hardwareConcurrency, GPU</text>
+
+  <rect x="580" y="82" width="200" height="38" fill="#ffffff" rx="6" opacity="0.9"/>
+  <text x="680" y="97" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Display</text>
+  <text x="680" y="112" text-anchor="middle" font-size="9" fill="#666666">viewport, devicePixelRatio, gamut</text>
+
+  <!-- Media Queries / Signals -->
+  <rect x="30" y="148" width="840" height="36" fill="#ffffff" rx="8" stroke="#d7d1e6"/>
+  <text x="100" y="170" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Signals:</text>
+  <text x="280" y="170" text-anchor="middle" font-size="10" fill="#1a1822">Save-Data header</text>
+  <text x="450" y="170" text-anchor="middle" font-size="10" fill="#1a1822">prefers-reduced-motion</text>
+  <text x="630" y="170" text-anchor="middle" font-size="10" fill="#1a1822">prefers-reduced-data</text>
+  <text x="790" y="170" text-anchor="middle" font-size="10" fill="#1a1822">@supports</text>
+
+  <!-- Arrows down -->
+  <path d="M250 184 L250 210" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M450 184 L450 210" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M650 184 L650 210" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Tier 1: High-end -->
+  <rect x="30" y="215" width="270" height="260" fill="#ffffff" rx="10" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="215" width="270" height="35" fill="#4caf50" rx="10"/>
+  <rect x="30" y="235" width="270" height="15" fill="#4caf50"/>
+  <text x="165" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">High-End Tier</text>
+  <text x="165" y="270" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold">4G+ | 8GB+ RAM | 4+ cores</text>
+
+  <text x="50" y="295" font-size="11" fill="#1a1822">Full animations &amp; transitions</text>
+  <text x="50" y="315" font-size="11" fill="#1a1822">High-res images (2x, 3x DPR)</text>
+  <text x="50" y="335" font-size="11" fill="#1a1822">Eager prefetching of routes</text>
+  <text x="50" y="355" font-size="11" fill="#1a1822">Video autoplay with sound</text>
+  <text x="50" y="375" font-size="11" fill="#1a1822">WebGL / Canvas effects</text>
+  <text x="50" y="395" font-size="11" fill="#1a1822">Real-time WebSocket updates</text>
+  <text x="50" y="420" font-size="10" fill="#4caf50" font-weight="bold">Full experience — no constraints</text>
+
+  <!-- Tier 2: Mid-range -->
+  <rect x="315" y="215" width="270" height="260" fill="#ffffff" rx="10" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="315" y="215" width="270" height="35" fill="#f0ad4e" rx="10"/>
+  <rect x="315" y="235" width="270" height="15" fill="#f0ad4e"/>
+  <text x="450" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1822">Mid-Range Tier</text>
+  <text x="450" y="270" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="bold">3G | 4GB RAM | 2 cores</text>
+
+  <text x="335" y="295" font-size="11" fill="#1a1822">Reduced animations (opacity only)</text>
+  <text x="335" y="315" font-size="11" fill="#1a1822">Responsive images (srcset)</text>
+  <text x="335" y="335" font-size="11" fill="#1a1822">Lazy loading for below-fold</text>
+  <text x="335" y="355" font-size="11" fill="#1a1822">Video poster only, click-to-play</text>
+  <text x="335" y="375" font-size="11" fill="#1a1822">CSS-only visual effects</text>
+  <text x="335" y="395" font-size="11" fill="#1a1822">Polling instead of WebSocket</text>
+  <text x="335" y="420" font-size="10" fill="#f0ad4e" font-weight="bold">Balanced — selective optimization</text>
+
+  <!-- Tier 3: Low-end -->
+  <rect x="600" y="215" width="270" height="260" fill="#ffffff" rx="10" stroke="#cc4444" stroke-width="2"/>
+  <rect x="600" y="215" width="270" height="35" fill="#cc4444" rx="10"/>
+  <rect x="600" y="235" width="270" height="15" fill="#cc4444"/>
+  <text x="735" y="238" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Low-End Tier</text>
+  <text x="735" y="270" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="bold">2G / Save-Data | 2GB RAM | 1 core</text>
+
+  <text x="620" y="295" font-size="11" fill="#1a1822">No animations at all</text>
+  <text x="620" y="315" font-size="11" fill="#1a1822">Compressed low-res images</text>
+  <text x="620" y="335" font-size="11" fill="#1a1822">Minimal JS, server-rendered</text>
+  <text x="620" y="355" font-size="11" fill="#1a1822">Text-first content loading</text>
+  <text x="620" y="375" font-size="11" fill="#1a1822">No video, static placeholders</text>
+  <text x="620" y="395" font-size="11" fill="#1a1822">Manual refresh for updates</text>
+  <text x="620" y="420" font-size="10" fill="#cc4444" font-weight="bold">Core content only — performance first</text>
+</svg>

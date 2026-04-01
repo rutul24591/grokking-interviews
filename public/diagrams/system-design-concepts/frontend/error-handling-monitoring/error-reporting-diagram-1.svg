@@ -1,0 +1,130 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1822">Error Reporting SDK Pipeline</text>
+
+  <!-- Step 1: Error Occurs -->
+  <rect x="20" y="60" width="120" height="70" rx="10" fill="#e84855" opacity="0.9"/>
+  <text x="80" y="90" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Error</text>
+  <text x="80" y="107" text-anchor="middle" font-size="10" fill="#ffffff">Occurs</text>
+
+  <!-- Arrow 1 -->
+  <line x1="140" y1="95" x2="165" y2="95" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: SDK Captures -->
+  <rect x="168" y="55" width="140" height="80" rx="10" fill="#6d5bd0"/>
+  <text x="238" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">SDK Captures</text>
+  <line x1="188" y1="90" x2="288" y2="90" stroke="#ffffff" stroke-width="0.5" opacity="0.4"/>
+  <text x="238" y="105" text-anchor="middle" font-size="9" fill="#ffffff">Auto: window.onerror</text>
+  <text x="238" y="118" text-anchor="middle" font-size="9" fill="#ffffff">Manual: captureException()</text>
+
+  <!-- Arrow 2 -->
+  <line x1="308" y1="95" x2="333" y2="95" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Breadcrumbs -->
+  <rect x="336" y="55" width="130" height="80" rx="10" fill="#6d5bd0"/>
+  <text x="401" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Breadcrumbs</text>
+  <line x1="351" y1="90" x2="451" y2="90" stroke="#ffffff" stroke-width="0.5" opacity="0.4"/>
+  <text x="401" y="105" text-anchor="middle" font-size="9" fill="#ffffff">Last 100 user actions</text>
+  <text x="401" y="118" text-anchor="middle" font-size="9" fill="#ffffff">clicks, navigations, XHRs</text>
+
+  <!-- Arrow 3 -->
+  <line x1="466" y1="95" x2="491" y2="95" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: Context Enriched -->
+  <rect x="494" y="55" width="130" height="80" rx="10" fill="#6d5bd0"/>
+  <text x="559" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Context Enriched</text>
+  <line x1="509" y1="90" x2="609" y2="90" stroke="#ffffff" stroke-width="0.5" opacity="0.4"/>
+  <text x="559" y="105" text-anchor="middle" font-size="9" fill="#ffffff">user, tags, release</text>
+  <text x="559" y="118" text-anchor="middle" font-size="9" fill="#ffffff">environment, extras</text>
+
+  <!-- Arrow 4 (down) -->
+  <line x1="559" y1="135" x2="559" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5: Sampled -->
+  <rect x="494" y="178" width="130" height="65" rx="10" fill="#6d5bd0"/>
+  <text x="559" y="203" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Sampled</text>
+  <text x="559" y="222" text-anchor="middle" font-size="9" fill="#ffffff">tracesSampleRate: 0.2</text>
+  <text x="559" y="235" text-anchor="middle" font-size="9" fill="#ffffff">beforeSend hook</text>
+
+  <!-- Arrow 5 (left) -->
+  <line x1="494" y1="210" x2="466" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowheadLeft)"/>
+
+  <!-- Step 6: Batched -->
+  <rect x="336" y="178" width="130" height="65" rx="10" fill="#6d5bd0"/>
+  <text x="401" y="203" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Batched</text>
+  <text x="401" y="222" text-anchor="middle" font-size="9" fill="#ffffff">Queued in transport</text>
+  <text x="401" y="235" text-anchor="middle" font-size="9" fill="#ffffff">Retry with backoff</text>
+
+  <!-- Arrow 6 (left) -->
+  <line x1="336" y1="210" x2="308" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowheadLeft)"/>
+
+  <!-- Step 7: Sent -->
+  <rect x="168" y="178" width="140" height="65" rx="10" fill="#6d5bd0"/>
+  <text x="238" y="203" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Transmitted</text>
+  <text x="238" y="222" text-anchor="middle" font-size="9" fill="#ffffff">POST /api/envelope</text>
+  <text x="238" y="235" text-anchor="middle" font-size="9" fill="#ffffff">Compressed payload</text>
+
+  <!-- Arrow 7 (left) -->
+  <line x1="168" y1="210" x2="140" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowheadLeft)"/>
+
+  <!-- Step 8: Server Processes -->
+  <rect x="20" y="170" width="120" height="80" rx="10" fill="#1a1822"/>
+  <text x="80" y="198" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Reporting</text>
+  <text x="80" y="213" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Service</text>
+  <text x="80" y="232" text-anchor="middle" font-size="9" fill="#d7d1e6">Ingest &amp; Process</text>
+
+  <!-- Detail boxes at bottom -->
+  <!-- Auto Capture Detail -->
+  <rect x="30" y="290" width="255" height="190" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="30" y="290" width="255" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="30" y="306" width="255" height="16" fill="#6d5bd0"/>
+  <text x="157" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Auto Capture (Global Handlers)</text>
+  <text x="45" y="345" font-size="10" fill="#1a1822" font-weight="600">window.onerror</text>
+  <text x="55" y="361" font-size="9" fill="#555">Uncaught JS errors</text>
+  <text x="45" y="383" font-size="10" fill="#1a1822" font-weight="600">window.onunhandledrejection</text>
+  <text x="55" y="399" font-size="9" fill="#555">Unhandled Promise rejections</text>
+  <text x="45" y="421" font-size="10" fill="#1a1822" font-weight="600">addEventListener('error')</text>
+  <text x="55" y="437" font-size="9" fill="#555">Resource load failures (img, script)</text>
+  <text x="45" y="459" font-size="10" fill="#1a1822" font-weight="600">console.error override</text>
+  <text x="55" y="475" font-size="9" fill="#555">Captures console errors</text>
+
+  <!-- Manual Capture Detail -->
+  <rect x="315" y="290" width="255" height="190" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="315" y="290" width="255" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="315" y="306" width="255" height="16" fill="#6d5bd0"/>
+  <text x="442" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Manual Capture (SDK API)</text>
+  <text x="330" y="345" font-size="10" fill="#1a1822" font-weight="600">captureException(error)</text>
+  <text x="340" y="361" font-size="9" fill="#555">Caught errors in try/catch blocks</text>
+  <text x="330" y="383" font-size="10" fill="#1a1822" font-weight="600">captureMessage(msg, level)</text>
+  <text x="340" y="399" font-size="9" fill="#555">Custom warnings or info events</text>
+  <text x="330" y="421" font-size="10" fill="#1a1822" font-weight="600">withScope(callback)</text>
+  <text x="340" y="437" font-size="9" fill="#555">Scoped context for specific events</text>
+  <text x="330" y="459" font-size="10" fill="#1a1822" font-weight="600">captureEvent(event)</text>
+  <text x="340" y="475" font-size="9" fill="#555">Fully custom event payload</text>
+
+  <!-- Enrichment Detail -->
+  <rect x="600" y="290" width="280" height="190" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="600" y="290" width="280" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="600" y="306" width="280" height="16" fill="#6d5bd0"/>
+  <text x="740" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Enrichment &amp; Sampling</text>
+  <text x="615" y="345" font-size="10" fill="#1a1822" font-weight="600">Breadcrumbs (max 100)</text>
+  <text x="625" y="361" font-size="9" fill="#555">DOM clicks, console, fetch, navigation</text>
+  <text x="615" y="383" font-size="10" fill="#1a1822" font-weight="600">User Context</text>
+  <text x="625" y="399" font-size="9" fill="#555">id, email, ip_address, username</text>
+  <text x="615" y="421" font-size="10" fill="#1a1822" font-weight="600">Tags &amp; Extra Data</text>
+  <text x="625" y="437" font-size="9" fill="#555">release, environment, custom KV pairs</text>
+  <text x="615" y="459" font-size="10" fill="#1a1822" font-weight="600">Sampling Decision</text>
+  <text x="625" y="475" font-size="9" fill="#555">tracesSampleRate + beforeSend filter</text>
+
+  <!-- Arrowhead markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowheadLeft" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <polygon points="8 0, 0 3, 8 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

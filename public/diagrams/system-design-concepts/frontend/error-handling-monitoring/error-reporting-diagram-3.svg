@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Source map resolution flow from minified stack trace to original source code location</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Source Map Resolution for Stack Traces</text>
+
+  <!-- Minified error -->
+  <rect x="30" y="70" width="280" height="110" rx="10" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">Minified Stack Trace</text>
+  <rect x="50" y="105" width="240" height="22" rx="4" fill="#ffffff"/>
+  <text x="60" y="120" font-size="9" fill="#1a1822" font-weight="600">TypeError: Cannot read property 'map'</text>
+  <rect x="50" y="132" width="240" height="18" rx="4" fill="#ffffff"/>
+  <text x="60" y="145" font-size="9" fill="#cc4444">at e (app.min.js:1:45832)</text>
+  <rect x="50" y="155" width="240" height="18" rx="4" fill="#ffffff"/>
+  <text x="60" y="168" font-size="9" fill="#1a1822" opacity="0.6">at t (vendor.min.js:1:12045)</text>
+
+  <line x1="310" y1="125" x2="350" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSM)"/>
+
+  <!-- Lookup release artifacts -->
+  <rect x="350" y="70" width="200" height="110" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="98" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Artifact Lookup</text>
+  <text x="450" y="120" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.9">Release: v2.3.1</text>
+  <text x="450" y="140" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.9">Match: app.min.js</text>
+  <text x="450" y="158" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">→ app.min.js.map</text>
+
+  <line x1="550" y1="125" x2="590" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSM)"/>
+
+  <!-- Parse source map -->
+  <rect x="590" y="70" width="280" height="110" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="730" y="98" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Parse Source Map</text>
+  <text x="730" y="120" text-anchor="middle" font-size="10" fill="#1a1822">Decode VLQ mappings field</text>
+  <text x="730" y="138" text-anchor="middle" font-size="10" fill="#1a1822">Position: line 1, col 45832</text>
+  <text x="730" y="156" text-anchor="middle" font-size="10" fill="#6d5bd0">→ source index 42, line 142, col 8</text>
+  <text x="730" y="172" text-anchor="middle" font-size="10" fill="#6d5bd0">→ name: "items"</text>
+
+  <!-- Arrow down -->
+  <line x1="730" y1="185" x2="730" y2="220" stroke="#6d5bd0" stroke-width="3" marker-end="url(#arrowSM)"/>
+
+  <!-- Resolved result -->
+  <rect x="250" y="220" width="620" height="130" rx="12" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="560" y="248" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Resolved Stack Trace</text>
+
+  <rect x="270" y="260" width="580" height="22" rx="4" fill="#ffffff"/>
+  <text x="280" y="276" font-size="10" fill="#1a1822" font-weight="600">TypeError: Cannot read property 'map' of undefined</text>
+
+  <rect x="270" y="287" width="580" height="22" rx="4" fill="#ffffff"/>
+  <text x="280" y="303" font-size="10" fill="#4caf50" font-weight="600">at CartItems (src/components/Cart.tsx:142:8)</text>
+
+  <rect x="270" y="314" width="580" height="22" rx="4" fill="#ffffff"/>
+  <text x="280" y="330" font-size="10" fill="#1a1822" opacity="0.6">at CheckoutPage (src/pages/Checkout.tsx:45:12)</text>
+
+  <!-- Code context -->
+  <rect x="30" y="370" width="840" height="115" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="395" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Original Source Context (from sourcesContent)</text>
+
+  <text x="50" y="420" font-size="10" fill="#1a1822" opacity="0.5">140 |   const cartTotal = calculateTotal(items);</text>
+  <text x="50" y="436" font-size="10" fill="#1a1822" opacity="0.5">141 |   return (</text>
+  <rect x="42" y="442" width="820" height="16" rx="2" fill="#cc4444" opacity="0.1"/>
+  <text x="50" y="453" font-size="10" fill="#cc4444" font-weight="600">142 |     items.map(item =&gt; &lt;CartItem key={"{item.id}"} {...{"item"}} /&gt;)</text>
+  <text x="50" y="470" font-size="10" fill="#1a1822" opacity="0.5">143 |   );</text>
+  <text x="115" y="468" font-size="9" fill="#cc4444">^^^^^^^^ items is undefined here</text>
+
+  <!-- CI/CD note -->
+  <rect x="30" y="220" width="200" height="90" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="130" y="245" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">CI/CD Upload</text>
+  <text x="130" y="265" text-anchor="middle" font-size="9" fill="#1a1822">Build generates maps</text>
+  <text x="130" y="280" text-anchor="middle" font-size="9" fill="#1a1822">CLI uploads to Sentry</text>
+  <text x="130" y="295" text-anchor="middle" font-size="9" fill="#cc4444">Maps deleted from deploy</text>
+
+  <defs>
+    <marker id="arrowSM" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

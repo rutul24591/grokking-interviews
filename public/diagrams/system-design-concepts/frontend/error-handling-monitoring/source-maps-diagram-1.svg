@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Source map generation pipeline from original source through build tools to map file output</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Source Map Generation Pipeline</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Build tools generate .map files that link minified output back to original source</text>
+
+  <!-- Stage 1: Original Source Files -->
+  <rect x="30" y="75" width="180" height="160" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="75" width="180" height="28" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="89" width="180" height="14" fill="#6d5bd0"/>
+  <text x="120" y="95" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Original Sources</text>
+
+  <rect x="45" y="115" width="150" height="28" rx="5" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="55" y="133" font-size="11" fill="#1a1822">Cart.tsx</text>
+  <text x="185" y="133" text-anchor="end" font-size="9" fill="#6d5bd0">TypeScript</text>
+
+  <rect x="45" y="150" width="150" height="28" rx="5" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="55" y="168" font-size="11" fill="#1a1822">Header.jsx</text>
+  <text x="185" y="168" text-anchor="end" font-size="9" fill="#6d5bd0">JSX</text>
+
+  <rect x="45" y="185" width="150" height="28" rx="5" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="55" y="203" font-size="11" fill="#1a1822">styles.scss</text>
+  <text x="185" y="203" text-anchor="end" font-size="9" fill="#6d5bd0">SCSS</text>
+
+  <!-- Arrow 1 -->
+  <line x1="215" y1="155" x2="265" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 2: Build Tool -->
+  <rect x="270" y="95" width="160" height="120" rx="10" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="350" y="125" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Build Tool</text>
+  <line x1="290" y1="137" x2="410" y2="137" stroke="#ffffff" stroke-width="0.5" opacity="0.4"/>
+  <text x="350" y="157" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.9">Webpack / Vite</text>
+  <text x="350" y="175" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.9">esbuild / Rollup</text>
+  <text x="350" y="198" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.6">devtool: "source-map"</text>
+
+  <!-- Arrow 2 -->
+  <line x1="435" y1="155" x2="485" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 3: Transformations -->
+  <rect x="490" y="80" width="160" height="150" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="490" y="80" width="160" height="28" rx="10" fill="#1a1822"/>
+  <rect x="490" y="94" width="160" height="14" fill="#1a1822"/>
+  <text x="570" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Transformations</text>
+
+  <text x="510" y="128" font-size="10" fill="#1a1822">1. Transpilation</text>
+  <text x="522" y="143" font-size="9" fill="#1a1822" opacity="0.6">TS/JSX to JS</text>
+  <text x="510" y="163" font-size="10" fill="#1a1822">2. Bundling</text>
+  <text x="522" y="178" font-size="9" fill="#1a1822" opacity="0.6">Merge modules</text>
+  <text x="510" y="198" font-size="10" fill="#1a1822">3. Minification</text>
+  <text x="522" y="213" font-size="9" fill="#1a1822" opacity="0.6">Terser / uglify</text>
+
+  <!-- Arrow 3 -->
+  <line x1="655" y1="155" x2="705" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="655" y1="155" x2="705" y2="185" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Stage 4a: Bundle output -->
+  <rect x="710" y="80" width="170" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="795" y="105" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">bundle.min.js</text>
+  <text x="795" y="122" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">var a=function(n){...}</text>
+  <text x="795" y="140" text-anchor="middle" font-size="8" fill="#6d5bd0">42 KB (minified)</text>
+
+  <!-- Stage 4b: Source map output -->
+  <rect x="710" y="165" width="170" height="70" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="795" y="188" text-anchor="middle" font-size="12" font-weight="600" fill="#4caf50">bundle.min.js.map</text>
+  <text x="795" y="205" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">JSON source map</text>
+  <text x="795" y="222" text-anchor="middle" font-size="8" fill="#4caf50">180 KB (map file)</text>
+
+  <!-- Linking comment -->
+  <path d="M795,150 L795,165" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <rect x="715" y="148" width="160" height="16" rx="3" fill="#f0ad4e" opacity="0.15"/>
+  <text x="795" y="160" text-anchor="middle" font-size="7.5" fill="#f0ad4e">//# sourceMappingURL=bundle.min.js.map</text>
+
+  <!-- Source Map Structure (bottom section) -->
+  <rect x="30" y="260" width="840" height="225" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="260" width="840" height="30" rx="10" fill="#4caf50"/>
+  <rect x="30" y="276" width="840" height="14" fill="#4caf50"/>
+  <text x="450" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Source Map File Structure (bundle.min.js.map)</text>
+
+  <!-- JSON fields -->
+  <text x="55" y="312" font-size="11" font-weight="600" fill="#6d5bd0">version:</text>
+  <text x="130" y="312" font-size="11" fill="#1a1822">3</text>
+  <text x="180" y="312" font-size="9" fill="#1a1822" opacity="0.5">// Source map spec version</text>
+
+  <text x="55" y="337" font-size="11" font-weight="600" fill="#6d5bd0">file:</text>
+  <text x="100" y="337" font-size="11" fill="#1a1822">"bundle.min.js"</text>
+  <text x="260" y="337" font-size="9" fill="#1a1822" opacity="0.5">// Generated file name</text>
+
+  <text x="55" y="362" font-size="11" font-weight="600" fill="#6d5bd0">sources:</text>
+  <text x="130" y="362" font-size="11" fill="#1a1822">["Cart.tsx", "Header.jsx", "styles.scss"]</text>
+  <text x="460" y="362" font-size="9" fill="#1a1822" opacity="0.5">// Original file paths</text>
+
+  <text x="55" y="387" font-size="11" font-weight="600" fill="#6d5bd0">sourcesContent:</text>
+  <text x="180" y="387" font-size="11" fill="#1a1822">["const Cart = () =&gt; {...}", ...]</text>
+  <text x="460" y="387" font-size="9" fill="#1a1822" opacity="0.5">// Full original source text</text>
+
+  <text x="55" y="412" font-size="11" font-weight="600" fill="#6d5bd0">names:</text>
+  <text x="115" y="412" font-size="11" fill="#1a1822">["Cart", "addItem", "total", "price"]</text>
+  <text x="410" y="412" font-size="9" fill="#1a1822" opacity="0.5">// Original symbol names</text>
+
+  <text x="55" y="437" font-size="11" font-weight="600" fill="#6d5bd0">mappings:</text>
+  <text x="140" y="437" font-size="11" fill="#1a1822">"AAAA,SAAS;AACT,OAAO;..."</text>
+  <text x="380" y="437" font-size="9" fill="#1a1822" opacity="0.5">// VLQ-encoded position mappings</text>
+
+  <rect x="55" y="450" width="790" height="25" rx="5" fill="#f0ad4e" opacity="0.1"/>
+  <text x="450" y="467" text-anchor="middle" font-size="9" fill="#f0ad4e">Semicolons (;) separate generated lines &amp; commas (,) separate segments within a line. Each segment is Base64 VLQ encoded.</text>
+
+  <!-- Arrow marker definitions -->
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4caf50"/>
+    </marker>
+  </defs>
+</svg>

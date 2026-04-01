@@ -1,0 +1,99 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Error Capture Hierarchy — Defense in Depth</text>
+
+  <!-- Outer layer: Global Handlers -->
+  <ellipse cx="350" cy="270" rx="310" ry="200" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="350" y="94" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">LAYER 3 — Global Handlers</text>
+  <text x="350" y="112" text-anchor="middle" font-size="11" fill="#6d5bd0">window.onerror &amp; unhandledrejection</text>
+  <text x="350" y="128" text-anchor="middle" font-size="10" fill="#6d5bd0" opacity="0.8">Last line of defense — catches everything that escapes</text>
+
+  <!-- Middle layer: Framework Handlers -->
+  <ellipse cx="350" cy="270" rx="210" ry="140" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="350" y="155" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">LAYER 2 — Framework Handlers</text>
+  <text x="350" y="173" text-anchor="middle" font-size="11" fill="#6d5bd0">React Error Boundaries / Next.js error.tsx</text>
+  <text x="350" y="189" text-anchor="middle" font-size="10" fill="#6d5bd0" opacity="0.8">Catches render errors in component subtree</text>
+
+  <!-- Inner layer: Local try-catch -->
+  <ellipse cx="350" cy="280" rx="110" ry="80" fill="#6d5bd0" opacity="0.22" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="350" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">LAYER 1</text>
+  <text x="350" y="278" text-anchor="middle" font-size="12" fill="#1a1822">Local try-catch</text>
+  <text x="350" y="295" text-anchor="middle" font-size="10" fill="#1a1822">Targeted, specific</text>
+  <text x="350" y="310" text-anchor="middle" font-size="10" fill="#1a1822">error handling</text>
+
+  <!-- Error arrows escaping layers -->
+  <!-- Arrow 1: Error caught at layer 1 -->
+  <g>
+    <circle cx="310" cy="280" r="8" fill="#22c55e" opacity="0.9"/>
+    <text x="310" y="284" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="700">E1</text>
+    <line x1="310" y1="272" x2="310" y2="250" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="310" y="244" text-anchor="middle" font-size="9" fill="#22c55e" font-weight="600">Caught!</text>
+  </g>
+
+  <!-- Arrow 2: Error escapes layer 1, caught at layer 2 -->
+  <g>
+    <circle cx="370" cy="280" r="8" fill="#f59e0b" opacity="0.9"/>
+    <text x="370" y="284" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="700">E2</text>
+    <path d="M370,272 L370,240 L370,200" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#arrowOrange)"/>
+    <text x="395" y="205" font-size="9" fill="#f59e0b" font-weight="600">Escapes L1</text>
+    <text x="395" y="217" font-size="9" fill="#22c55e" font-weight="600">Caught at L2!</text>
+  </g>
+
+  <!-- Arrow 3: Error escapes both, caught at layer 3 -->
+  <g>
+    <circle cx="420" cy="280" r="8" fill="#ef4444" opacity="0.9"/>
+    <text x="420" y="284" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="700">E3</text>
+    <path d="M428,274 L470,220 L510,140" stroke="#ef4444" stroke-width="1.5" fill="none" marker-end="url(#arrowRed)"/>
+    <text x="515" y="138" font-size="9" fill="#ef4444" font-weight="600">Escapes L1 &amp; L2</text>
+    <text x="515" y="150" font-size="9" fill="#22c55e" font-weight="600">Caught at L3!</text>
+  </g>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- Right side: Legend / Summary -->
+  <rect x="680" y="70" width="200" height="390" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="780" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Error Types</text>
+
+  <!-- E1 legend -->
+  <circle cx="700" cy="125" r="8" fill="#22c55e"/>
+  <text x="700" y="129" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="700">E1</text>
+  <text x="718" y="122" font-size="10" font-weight="600" fill="#1a1822">API call failure</text>
+  <text x="718" y="136" font-size="9" fill="#1a1822" opacity="0.7">Handled by local try-catch</text>
+
+  <!-- E2 legend -->
+  <circle cx="700" cy="170" r="8" fill="#f59e0b"/>
+  <text x="700" y="174" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="700">E2</text>
+  <text x="718" y="167" font-size="10" font-weight="600" fill="#1a1822">Render crash</text>
+  <text x="718" y="181" font-size="9" fill="#1a1822" opacity="0.7">Caught by Error Boundary</text>
+
+  <!-- E3 legend -->
+  <circle cx="700" cy="215" r="8" fill="#ef4444"/>
+  <text x="700" y="219" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="700">E3</text>
+  <text x="718" y="212" font-size="10" font-weight="600" fill="#1a1822">Unhandled rejection</text>
+  <text x="718" y="226" font-size="9" fill="#1a1822" opacity="0.7">Caught by global handler</text>
+
+  <line x1="700" y1="250" x2="860" y2="250" stroke="#d7d1e6" stroke-width="1"/>
+
+  <!-- Key insight -->
+  <text x="780" y="275" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Key Principle</text>
+  <text x="780" y="295" text-anchor="middle" font-size="10" fill="#1a1822">Handle errors as close</text>
+  <text x="780" y="310" text-anchor="middle" font-size="10" fill="#1a1822">to the source as possible.</text>
+  <text x="780" y="330" text-anchor="middle" font-size="10" fill="#1a1822">Global handlers are a</text>
+  <text x="780" y="345" text-anchor="middle" font-size="10" fill="#1a1822">safety net, not the</text>
+  <text x="780" y="360" text-anchor="middle" font-size="10" fill="#1a1822">primary strategy.</text>
+
+  <line x1="700" y1="375" x2="860" y2="375" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="780" y="400" text-anchor="middle" font-size="10" fill="#1a1822">Layer 1: ~80% of errors</text>
+  <text x="780" y="418" text-anchor="middle" font-size="10" fill="#1a1822">Layer 2: ~15% of errors</text>
+  <text x="780" y="436" text-anchor="middle" font-size="10" fill="#1a1822">Layer 3: ~5% of errors</text>
+</svg>

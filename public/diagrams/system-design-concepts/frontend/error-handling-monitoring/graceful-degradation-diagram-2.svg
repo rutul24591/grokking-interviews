@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>API Failure Handling Decision Tree: From Initial Request Through Retry, Cache, and Fallback Strategies</title>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4caf50"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">API Failure Handling Decision Tree</text>
+
+  <!-- Node 1: API Request -->
+  <rect x="60" y="52" width="140" height="40" rx="6" fill="#6d5bd0" stroke="#5a4aaf" stroke-width="1.5"/>
+  <text x="130" y="76" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">API Request</text>
+
+  <!-- Arrow to Decision: Success? -->
+  <line x1="200" y1="72" x2="250" y2="72" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Decision: Success? -->
+  <polygon points="320,42 390,72 320,102 250,72" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="320" y="70" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Success?</text>
+  <text x="320" y="82" text-anchor="middle" font-size="8" fill="#6d5bd0">2xx status</text>
+
+  <!-- YES: Render fresh data -->
+  <line x1="390" y1="72" x2="440" y2="72" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="415" y="65" text-anchor="middle" font-size="9" font-weight="700" fill="#4caf50">YES</text>
+  <rect x="440" y="52" width="155" height="40" rx="6" fill="#4caf50" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="517" y="76" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Render Fresh Data</text>
+
+  <!-- NO arrow down -->
+  <line x1="320" y1="102" x2="320" y2="140" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="330" y="125" font-size="9" font-weight="700" fill="#cc4444">NO</text>
+
+  <!-- Decision: Retryable? -->
+  <polygon points="320,140 405,175 320,210 235,175" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="320" y="171" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Retryable?</text>
+  <text x="320" y="184" text-anchor="middle" font-size="7.5" fill="#6d5bd0">5xx / timeout / network</text>
+
+  <!-- YES: Retry -->
+  <line x1="405" y1="175" x2="460" y2="175" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="433" y="168" font-size="9" font-weight="700" fill="#4caf50">YES</text>
+  <rect x="460" y="150" width="190" height="50" rx="6" fill="#6d5bd0" stroke="#5a4aaf" stroke-width="1.5"/>
+  <text x="555" y="170" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Retry with Exponential</text>
+  <text x="555" y="185" text-anchor="middle" font-size="10" fill="#ffffff">Backoff (max 3 attempts)</text>
+
+  <!-- NO: Not retryable (4xx) -->
+  <line x1="235" y1="175" x2="165" y2="175" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="200" y="168" font-size="9" font-weight="700" fill="#cc4444">NO</text>
+  <rect x="40" y="158" width="125" height="35" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="102" y="174" text-anchor="middle" font-size="8.5" fill="#1a1822">4xx: Client error</text>
+  <text x="102" y="186" text-anchor="middle" font-size="8.5" fill="#1a1822">Not retryable</text>
+  <!-- Arrow down to skip to cache check -->
+  <line x1="102" y1="193" x2="102" y2="330" stroke="#1a1822" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="102" y1="330" x2="235" y2="330" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Arrow: Still failing from retry -->
+  <line x1="555" y1="200" x2="555" y2="230" stroke="#1a1822" stroke-width="1"/>
+  <line x1="555" y1="230" x2="320" y2="230" stroke="#1a1822" stroke-width="1"/>
+  <line x1="320" y1="230" x2="320" y2="260" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="440" y="224" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">Still failing</text>
+
+  <!-- Status code reference box -->
+  <rect x="680" y="120" width="195" height="110" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="777" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">HTTP Status Codes</text>
+  <line x1="695" y1="148" x2="860" y2="148" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="700" y="165" font-size="9.5" fill="#4caf50" font-weight="600">2xx</text>
+  <text x="725" y="165" font-size="9.5" fill="#1a1822">Success responses</text>
+  <text x="700" y="181" font-size="9.5" fill="#f0ad4e" font-weight="600">4xx</text>
+  <text x="725" y="181" font-size="9.5" fill="#1a1822">Client errors (don't retry)</text>
+  <text x="700" y="197" font-size="9.5" fill="#cc4444" font-weight="600">5xx</text>
+  <text x="725" y="197" font-size="9.5" fill="#1a1822">Server errors (retry)</text>
+  <text x="700" y="213" font-size="9.5" fill="#cc4444" font-weight="600">0</text>
+  <text x="725" y="213" font-size="9.5" fill="#1a1822">Network failure (retry)</text>
+
+  <!-- Decision: Cache available? -->
+  <polygon points="320,260 405,295 320,330 235,295" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="320" y="291" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Cache</text>
+  <text x="320" y="304" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">available?</text>
+
+  <!-- YES: Serve stale data -->
+  <line x1="405" y1="295" x2="460" y2="295" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="433" y="288" font-size="9" font-weight="700" fill="#4caf50">YES</text>
+  <rect x="460" y="270" width="200" height="50" rx="6" fill="#f0ad4e" stroke="#d4952b" stroke-width="1.5"/>
+  <text x="560" y="290" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Serve Stale Data</text>
+  <text x="560" y="306" text-anchor="middle" font-size="9.5" fill="#1a1822">Show "last updated" badge</text>
+
+  <!-- NO arrow down -->
+  <line x1="320" y1="330" x2="320" y2="368" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="330" y="352" font-size="9" font-weight="700" fill="#cc4444">NO</text>
+
+  <!-- Decision: Fallback UI? -->
+  <polygon points="320,368 405,403 320,438 235,403" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="320" y="399" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Fallback UI</text>
+  <text x="320" y="412" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">available?</text>
+
+  <!-- YES: Show degraded component -->
+  <line x1="405" y1="403" x2="460" y2="403" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="433" y="396" font-size="9" font-weight="700" fill="#4caf50">YES</text>
+  <rect x="460" y="380" width="200" height="46" rx="6" fill="#f0ad4e" stroke="#d4952b" stroke-width="1.5"/>
+  <text x="560" y="400" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Show Degraded Component</text>
+  <text x="560" y="414" text-anchor="middle" font-size="9.5" fill="#1a1822">Static content / placeholder</text>
+
+  <!-- NO: Error state -->
+  <line x1="320" y1="438" x2="320" y2="468" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="330" y="456" font-size="9" font-weight="700" fill="#cc4444">NO</text>
+  <rect x="240" y="460" width="160" height="32" rx="6" fill="#cc4444" stroke="#a33636" stroke-width="1.5"/>
+  <text x="320" y="481" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Error + Retry Button</text>
+
+  <!-- Backoff detail box -->
+  <rect x="680" y="260" width="195" height="90" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="777" y="280" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Exponential Backoff</text>
+  <line x1="695" y1="288" x2="860" y2="288" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="700" y="305" font-size="9.5" fill="#1a1822">Attempt 1: wait 1s</text>
+  <text x="700" y="320" font-size="9.5" fill="#1a1822">Attempt 2: wait 2s</text>
+  <text x="700" y="335" font-size="9.5" fill="#1a1822">Attempt 3: wait 4s + jitter</text>
+</svg>

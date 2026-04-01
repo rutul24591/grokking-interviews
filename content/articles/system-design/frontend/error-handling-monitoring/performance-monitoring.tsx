@@ -79,6 +79,12 @@ export default function PerformanceMonitoringArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/performance-monitoring-diagram-1.svg"
+        alt="RUM data collection pipeline from browser Performance APIs through beacon to analytics dashboard"
+        caption="Figure 1: Real User Monitoring data collection pipeline"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -241,26 +247,6 @@ export default function PerformanceMonitoringArticle() {
         </p>
 
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/performance-monitoring-diagram-1.svg"
-          alt="RUM data collection pipeline from browser Performance APIs through beacon to analytics dashboard"
-          caption="Figure 1: Real User Monitoring data collection pipeline"
-        />
-
-        <p className="mb-4">
-          The data collection pipeline begins with browser Performance APIs emitting entries as the page
-          loads and the user interacts. A RUM library (such as Google&apos;s <code>web-vitals</code>{" "}
-          library, or a commercial SDK from Datadog, New Relic, or SpeedCurve) registers{" "}
-          <code>PerformanceObserver</code> instances for each metric of interest. When metric values
-          finalize — for example, LCP finalizes when the user interacts with the page or navigates away —
-          the library packages the data into a beacon payload. The payload typically includes the metric
-          name and value, the page URL, a session identifier, device and connection metadata (from the{" "}
-          <code>Navigator</code> API and <code>NetworkInformation</code> API), and a timestamp. This
-          payload is transmitted via <code>navigator.sendBeacon()</code> or a <code>fetch()</code> with{" "}
-          <code>keepalive: true</code>, both of which survive page unload — a critical requirement since
-          many metrics finalize only when the user leaves the page.
-        </p>
-
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/performance-monitoring-diagram-2.svg"
           alt="Core Web Vitals measurement points during page lifecycle showing LCP, INP, and CLS triggers"
           caption="Figure 2: Core Web Vitals measurement points in page lifecycle"
@@ -277,22 +263,6 @@ export default function PerformanceMonitoringArticle() {
           unload — making <code>sendBeacon</code> the preferred transport mechanism.
         </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/performance-monitoring-diagram-3.svg"
-          alt="Synthetic vs RUM monitoring comparison showing lab environment vs real user data flow"
-          caption="Figure 3: Synthetic monitoring vs Real User Monitoring comparison"
-        />
-
-        <p>
-          The backend processing pipeline receives raw beacon data and performs several transformations:
-          deduplication (multiple beacons from the same page load), enrichment (resolving IP to geography,
-          mapping user agent to device category), aggregation (computing percentiles over time windows), and
-          anomaly detection (identifying sudden regressions). The processed data feeds into time-series
-          storage (commonly ClickHouse, TimescaleDB, or a managed service like Datadog) optimized for
-          queries like &quot;show me p75 LCP for mobile users in Germany over the past 30 days.&quot;
-          Alerting rules monitor these aggregates and trigger notifications when metrics cross budget
-          thresholds, enabling rapid incident response for performance regressions.
-        </p>
       </section>
 
       {/* ============================================================
@@ -569,6 +539,12 @@ export default function PerformanceMonitoringArticle() {
           their transparent public reporting of their own performance metrics have influenced how many
           organizations approach RUM implementation.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/performance-monitoring-diagram-3.svg"
+          alt="Synthetic vs RUM monitoring comparison showing lab environment vs real user data flow"
+          caption="Figure 3: Synthetic monitoring vs Real User Monitoring comparison"
+        />
       </section>
 
       {/* ============================================================

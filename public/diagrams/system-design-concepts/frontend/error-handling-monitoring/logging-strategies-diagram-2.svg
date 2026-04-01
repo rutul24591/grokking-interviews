@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Log level hierarchy showing filtering at client and server with sampling rates</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Log Level Hierarchy &amp; Sampling Strategy</text>
+
+  <!-- Pyramid -->
+  <polygon points="450,80 180,420 720,420" fill="none" stroke="#d7d1e6" stroke-width="1"/>
+
+  <!-- FATAL -->
+  <polygon points="450,80 410,130 490,130" fill="#cc4444"/>
+  <text x="450" y="115" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">FATAL</text>
+
+  <!-- ERROR -->
+  <polygon points="410,130 370,195 530,195 490,130" fill="#cc4444" opacity="0.7"/>
+  <text x="450" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">ERROR</text>
+
+  <!-- WARN -->
+  <polygon points="370,195 320,270 580,270 530,195" fill="#f0ad4e" opacity="0.6"/>
+  <text x="450" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">WARN</text>
+
+  <!-- INFO -->
+  <polygon points="320,270 260,350 640,350 580,270" fill="#6d5bd0" opacity="0.3"/>
+  <text x="450" y="320" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">INFO</text>
+
+  <!-- DEBUG -->
+  <polygon points="260,350 180,420 720,420 640,350" fill="#d7d1e6" opacity="0.4"/>
+  <text x="450" y="395" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">DEBUG</text>
+
+  <!-- Right side: Sampling rates -->
+  <text x="760" y="80" font-size="13" font-weight="700" fill="#6d5bd0">Production Sampling</text>
+
+  <rect x="740" y="95" width="140" height="35" rx="6" fill="#cc4444"/>
+  <text x="810" y="117" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">100% — Always</text>
+  <line x1="500" y1="105" x2="740" y2="112" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <rect x="740" y="140" width="140" height="35" rx="6" fill="#cc4444" opacity="0.7"/>
+  <text x="810" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">100% — Always</text>
+  <line x1="540" y1="165" x2="740" y2="157" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <rect x="740" y="185" width="140" height="35" rx="6" fill="#f0ad4e"/>
+  <text x="810" y="207" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">50% — Sampled</text>
+  <line x1="590" y1="235" x2="740" y2="202" stroke="#f0ad4e" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <rect x="740" y="230" width="140" height="35" rx="6" fill="#6d5bd0" opacity="0.5"/>
+  <text x="810" y="252" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">10% — Sampled</text>
+  <line x1="650" y1="310" x2="740" y2="247" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <rect x="740" y="275" width="140" height="35" rx="6" fill="#d7d1e6"/>
+  <text x="810" y="297" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">0% — Dev only</text>
+  <line x1="730" y1="385" x2="740" y2="292" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Left side: Use cases -->
+  <text x="30" y="80" font-size="13" font-weight="700" fill="#6d5bd0">When to Use</text>
+
+  <rect x="30" y="95" width="150" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="105" y="115" text-anchor="middle" font-size="9" fill="#1a1822">App crash, data corruption</text>
+  <line x1="180" y1="110" x2="410" y2="105" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <rect x="30" y="140" width="150" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="105" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Failed operations, exceptions</text>
+  <line x1="180" y1="155" x2="370" y2="165" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <rect x="30" y="200" width="150" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="105" y="220" text-anchor="middle" font-size="9" fill="#1a1822">Deprecations, slow queries</text>
+  <line x1="180" y1="215" x2="320" y2="235" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <rect x="30" y="265" width="150" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="105" y="285" text-anchor="middle" font-size="9" fill="#1a1822">User actions, state changes</text>
+  <line x1="180" y1="280" x2="260" y2="310" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <rect x="30" y="330" width="150" height="30" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="105" y="350" text-anchor="middle" font-size="9" fill="#1a1822">Verbose dev diagnostics</text>
+  <line x1="180" y1="345" x2="190" y2="385" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- Key insight -->
+  <rect x="30" y="440" width="840" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="450" y="462" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Key: Configure log level at runtime via feature flag — switch from INFO to DEBUG in production for specific users during incident investigation</text>
+  <text x="450" y="478" text-anchor="middle" font-size="10" fill="#1a1822">This avoids redeployment and provides targeted observability without flooding the logging pipeline</text>
+</svg>

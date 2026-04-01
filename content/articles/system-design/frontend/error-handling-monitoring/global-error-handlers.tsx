@@ -87,6 +87,12 @@ export default function GlobalErrorHandlersArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/global-error-handlers-diagram-1.svg"
+        alt="Error capture hierarchy showing local try-catch, error boundaries, and global handlers as defense layers"
+        caption="Figure 1: Defense-in-depth error capture hierarchy"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -274,26 +280,6 @@ export default function GlobalErrorHandlersArticle() {
         </p>
 
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/global-error-handlers-diagram-1.svg"
-          alt="Error capture hierarchy showing local try-catch, error boundaries, and global handlers as defense layers"
-          caption="Figure 1: Defense-in-depth error capture hierarchy"
-        />
-
-        <p>
-          The defense-in-depth hierarchy illustrated above shows how errors propagate outward
-          through the layers. At the innermost level, a <code>try-catch</code> around a
-          specific API call can retry the request, show a localized error message, or fall back
-          to cached data. If the error escapes that layer (perhaps the catch block itself
-          throws, or the error occurs outside any try-catch), it reaches the framework layer.
-          A React error boundary at this level can replace the failed component subtree with a
-          fallback UI, preventing the entire page from going blank. If the error occurs outside
-          the component tree (in an event handler, a timer callback, or a standalone promise
-          chain), it bypasses error boundaries entirely and reaches the global handler layer.
-          Each layer should log the error to the monitoring system, but only the innermost
-          layer that catches it should attempt user-facing recovery.
-        </p>
-
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/global-error-handlers-diagram-2.svg"
           alt="Error event propagation showing synchronous errors vs promise rejections vs resource load failures"
           caption="Figure 2: Different error types and their capture mechanisms"
@@ -314,30 +300,6 @@ export default function GlobalErrorHandlersArticle() {
           mask entire categories of production issues.
         </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/global-error-handlers-diagram-3.svg"
-          alt="Global error handler pipeline from capture through enrichment to reporting service"
-          caption="Figure 3: Error processing pipeline from capture to reporting"
-        />
-
-        <p>
-          Once an error is captured by a global handler, it enters a processing pipeline before
-          being transmitted to the monitoring service. The first stage is{" "}
-          <strong>normalization</strong>: converting the heterogeneous error formats (Error
-          objects, strings, events, rejection reasons) into a consistent internal
-          representation. The second stage is <strong>enrichment</strong>: attaching contextual
-          metadata such as the current route, user identifier, application version, browser
-          information, and any relevant application state. The third stage is{" "}
-          <strong>deduplication</strong>: comparing the normalized error against a short-lived
-          in-memory cache of recently reported errors to avoid flooding the monitoring service
-          with identical reports when the same error fires in a tight loop. The fourth stage
-          is <strong>rate limiting</strong>: enforcing a maximum number of error reports per
-          time window to protect both the client (from performance degradation due to
-          excessive network requests) and the server (from being overwhelmed by a single
-          misbehaving client). Finally, the error is <strong>transmitted</strong> to the
-          reporting service, typically via <code>navigator.sendBeacon</code> for reliability
-          during page unload or a dedicated error reporting endpoint.
-        </p>
       </section>
 
       {/* ============================================================
@@ -699,6 +661,12 @@ export default function GlobalErrorHandlersArticle() {
           automated remediation, represents the state of the art in production error handling
           at scale.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/global-error-handlers-diagram-3.svg"
+          alt="Global error handler pipeline from capture through enrichment to reporting service"
+          caption="Figure 3: Error processing pipeline from capture to reporting"
+        />
       </section>
 
       {/* ============================================================

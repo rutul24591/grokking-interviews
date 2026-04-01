@@ -1,0 +1,66 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title>Error presentation hierarchy from inline field validation through toast notifications to full-page error states</title>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Error Presentation Hierarchy</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#666666">Least Disruptive → Most Disruptive</text>
+
+  <!-- Arrow along left side -->
+  <rect x="30" y="70" width="6" height="400" fill="#d7d1e6" rx="3"/>
+  <polygon points="33,470 24,450 42,450" fill="#6d5bd0"/>
+  <text x="33" y="488" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="bold">SEVERITY</text>
+
+  <!-- Level 1: Inline -->
+  <rect x="55" y="70" width="820" height="70" fill="#ffffff" rx="8" stroke="#4caf50" stroke-width="1.5"/>
+  <rect x="65" y="80" width="30" height="30" rx="15" fill="#4caf50"/>
+  <text x="80" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">1</text>
+  <text x="110" y="95" font-size="14" font-weight="bold" fill="#4caf50">Inline Validation</text>
+  <text x="110" y="115" font-size="11" fill="#1a1822">Field-level errors next to input. Appears on blur or submit. Least disruptive.</text>
+  <text x="110" y="130" font-size="10" fill="#888888">Example: "Email address is not valid" below email input field</text>
+  <text x="700" y="95" font-size="10" fill="#4caf50" font-weight="bold">Non-blocking</text>
+  <text x="700" y="112" font-size="10" fill="#666666">role="alert"</text>
+  <text x="700" y="128" font-size="10" fill="#666666">aria-describedby</text>
+
+  <!-- Level 2: Banner -->
+  <rect x="55" y="150" width="820" height="70" fill="#ffffff" rx="8" stroke="#8bc34a" stroke-width="1.5"/>
+  <rect x="65" y="160" width="30" height="30" rx="15" fill="#8bc34a"/>
+  <text x="80" y="180" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">2</text>
+  <text x="110" y="175" font-size="14" font-weight="bold" fill="#8bc34a">Form Banner</text>
+  <text x="110" y="195" font-size="11" fill="#1a1822">Summary of form errors at top of form. Lists all issues. Dismissible.</text>
+  <text x="110" y="210" font-size="10" fill="#888888">Example: "Please fix 3 errors below" with linked error list</text>
+  <text x="700" y="175" font-size="10" fill="#8bc34a" font-weight="bold">Non-blocking</text>
+  <text x="700" y="192" font-size="10" fill="#666666">role="alert"</text>
+  <text x="700" y="208" font-size="10" fill="#666666">Focus management</text>
+
+  <!-- Level 3: Toast -->
+  <rect x="55" y="230" width="820" height="70" fill="#ffffff" rx="8" stroke="#f0ad4e" stroke-width="1.5"/>
+  <rect x="65" y="240" width="30" height="30" rx="15" fill="#f0ad4e"/>
+  <text x="80" y="260" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">3</text>
+  <text x="110" y="255" font-size="14" font-weight="bold" fill="#f0ad4e">Toast Notification</text>
+  <text x="110" y="275" font-size="11" fill="#1a1822">Transient message, auto-dismisses after 5-8s. Non-blocking overlay.</text>
+  <text x="110" y="290" font-size="10" fill="#888888">Example: "Failed to save draft. Changes stored locally." in bottom-right corner</text>
+  <text x="700" y="255" font-size="10" fill="#f0ad4e" font-weight="bold">Non-blocking</text>
+  <text x="700" y="272" font-size="10" fill="#666666">role="status"</text>
+  <text x="700" y="288" font-size="10" fill="#666666">aria-live="polite"</text>
+
+  <!-- Level 4: Modal -->
+  <rect x="55" y="310" width="820" height="70" fill="#ffffff" rx="8" stroke="#ff7043" stroke-width="1.5"/>
+  <rect x="65" y="320" width="30" height="30" rx="15" fill="#ff7043"/>
+  <text x="80" y="340" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">4</text>
+  <text x="110" y="335" font-size="14" font-weight="bold" fill="#ff7043">Modal Dialog</text>
+  <text x="110" y="355" font-size="11" fill="#1a1822">Requires user action. Blocks interaction until resolved. Confirmation needed.</text>
+  <text x="110" y="370" font-size="10" fill="#888888">Example: "Unsaved changes will be lost. Continue?" with Cancel / Discard buttons</text>
+  <text x="700" y="335" font-size="10" fill="#ff7043" font-weight="bold">Blocking</text>
+  <text x="700" y="352" font-size="10" fill="#666666">role="alertdialog"</text>
+  <text x="700" y="368" font-size="10" fill="#666666">Focus trap required</text>
+
+  <!-- Level 5: Full Page -->
+  <rect x="55" y="390" width="820" height="70" fill="#ffffff" rx="8" stroke="#cc4444" stroke-width="1.5"/>
+  <rect x="65" y="400" width="30" height="30" rx="15" fill="#cc4444"/>
+  <text x="80" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">5</text>
+  <text x="110" y="415" font-size="14" font-weight="bold" fill="#cc4444">Full Page Error</text>
+  <text x="110" y="435" font-size="11" fill="#1a1822">Complete page replacement. 404/500 error pages. Navigation required to recover.</text>
+  <text x="110" y="450" font-size="10" fill="#888888">Example: "Page not found" with "Go to homepage" link and search suggestion</text>
+  <text x="700" y="415" font-size="10" fill="#cc4444" font-weight="bold">Full Blocking</text>
+  <text x="700" y="432" font-size="10" fill="#666666">Entire viewport</text>
+  <text x="700" y="448" font-size="10" fill="#666666">Navigation to recover</text>
+</svg>

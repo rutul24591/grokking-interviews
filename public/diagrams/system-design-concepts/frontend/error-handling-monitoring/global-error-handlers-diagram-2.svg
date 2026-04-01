@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Error event propagation showing synchronous errors vs promise rejections vs resource load failures</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Error Types &amp; Their Capture Mechanisms</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Different error types require different global handlers</text>
+
+  <!-- Column 1: Sync Errors -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Synchronous Errors</text>
+
+  <rect x="50" y="130" width="230" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">throw new TypeError()</text>
+  <text x="165" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Uncaught runtime exception</text>
+
+  <line x1="165" y1="175" x2="165" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowGEH)"/>
+
+  <rect x="50" y="200" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">window.onerror</text>
+  <text x="165" y="242" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">msg, url, line, col, error</text>
+
+  <line x1="165" y1="255" x2="165" y2="275" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="165" y="270" text-anchor="middle" font-size="8" fill="#6d5bd0">OR</text>
+
+  <rect x="50" y="280" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="302" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">addEventListener("error")</text>
+  <text x="165" y="322" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">ErrorEvent with full error obj</text>
+
+  <rect x="50" y="355" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Info Available:</text>
+  <text x="165" y="393" text-anchor="middle" font-size="9" fill="#1a1822">message, stack, filename, line, col</text>
+
+  <rect x="50" y="420" width="230" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="440" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">return true to suppress</text>
+  <text x="165" y="456" text-anchor="middle" font-size="9" fill="#4caf50">Prevents console error</text>
+
+  <!-- Column 2: Promise Rejections -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="315" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="450" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Promise Rejections</text>
+
+  <rect x="335" y="130" width="230" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Promise.reject() / throw in async</text>
+  <text x="450" y="168" text-anchor="middle" font-size="9" fill="#1a1822">No .catch() handler attached</text>
+
+  <line x1="450" y1="175" x2="450" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowGEH)"/>
+
+  <rect x="335" y="200" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">unhandledrejection</text>
+  <text x="450" y="242" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">PromiseRejectionEvent</text>
+
+  <rect x="335" y="275" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="297" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Info Available:</text>
+  <text x="450" y="315" text-anchor="middle" font-size="9" fill="#1a1822">event.reason (the rejection value)</text>
+
+  <rect x="335" y="350" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="370" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Critical Warning:</text>
+  <text x="450" y="390" text-anchor="middle" font-size="9" fill="#1a1822">Without this handler, rejected</text>
+  <text x="450" y="403" text-anchor="middle" font-size="9" fill="#1a1822">promises fail silently!</text>
+
+  <rect x="335" y="420" width="230" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="440" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">preventDefault() to suppress</text>
+  <text x="450" y="456" text-anchor="middle" font-size="9" fill="#4caf50">Prevents console warning</text>
+
+  <!-- Column 3: Resource Failures -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="600" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="735" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Resource Load Failures</text>
+
+  <rect x="620" y="130" width="230" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">&lt;img&gt;, &lt;script&gt;, &lt;link&gt; fail</text>
+  <text x="735" y="168" text-anchor="middle" font-size="9" fill="#1a1822">CDN down, 404, network error</text>
+
+  <line x1="735" y1="175" x2="735" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowGEH)"/>
+
+  <rect x="620" y="200" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="735" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">addEventListener("error",</text>
+  <text x="735" y="242" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">handler, true) // capture phase!</text>
+
+  <rect x="620" y="275" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="297" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Important:</text>
+  <text x="735" y="315" text-anchor="middle" font-size="9" fill="#1a1822">Does NOT trigger window.onerror</text>
+
+  <rect x="620" y="350" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Info Available:</text>
+  <text x="735" y="390" text-anchor="middle" font-size="9" fill="#1a1822">event.target (the failing element)</text>
+  <text x="735" y="403" text-anchor="middle" font-size="9" fill="#1a1822">No stack trace or error message</text>
+
+  <rect x="620" y="420" width="230" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="440" text-anchor="middle" font-size="10" fill="#1a1822">Check: event instanceof ErrorEvent</text>
+  <text x="735" y="456" text-anchor="middle" font-size="9" fill="#1a1822">to distinguish from JS errors</text>
+
+  <defs>
+    <marker id="arrowGEH" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

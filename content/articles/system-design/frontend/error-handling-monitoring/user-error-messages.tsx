@@ -99,6 +99,12 @@ export default function UserErrorMessagesArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/user-error-messages-diagram-1.svg"
+        alt="Error message taxonomy showing different error types mapped to appropriate message patterns and recovery actions"
+        caption="Figure 1: Error taxonomy with corresponding message and recovery patterns"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -345,25 +351,6 @@ export default function UserErrorMessagesArticle() {
         </p>
 
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/user-error-messages-diagram-1.svg"
-          alt="Error message taxonomy showing different error types mapped to appropriate message patterns and recovery actions"
-          caption="Figure 1: Error taxonomy with corresponding message and recovery patterns"
-        />
-
-        <p className="mb-4">
-          The taxonomy diagram maps each error category — validation, network,
-          authorization, business logic, and system — to its appropriate
-          messaging strategy and recovery mechanism. Validation errors map to
-          inline messages with immediate correction guidance. Network errors
-          map to toast or banner notifications with automatic retry. Authorization
-          errors trigger session recovery flows. Business logic errors receive
-          contextual messages with alternative suggestions. System errors
-          escalate to page-level or modal presentations with support contact
-          options. This mapping serves as the decision framework that developers
-          reference when implementing error handling for any new feature.
-        </p>
-
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/user-error-messages-diagram-2.svg"
           alt="Error presentation hierarchy from inline validation to toast to modal to full-page error states"
           caption="Figure 2: Error presentation escalation hierarchy"
@@ -382,26 +369,6 @@ export default function UserErrorMessagesArticle() {
           component rather than generating multiple toast notifications.
         </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/user-error-messages-diagram-3.svg"
-          alt="Recovery flow showing automatic retry, manual retry, alternative path, and support escalation"
-          caption="Figure 3: User recovery flow from error to resolution"
-        />
-
-        <p>
-          The recovery flow diagram traces the user&apos;s journey from error
-          occurrence to resolution. When an error occurs, the system first
-          determines whether automatic recovery is possible (token refresh,
-          automatic retry). If automatic recovery fails, the user is presented
-          with manual recovery options (retry button, alternative pathway). If
-          manual recovery also fails, the system escalates to human support
-          channels (contact form, live chat, phone). At every stage, the
-          user&apos;s data is preserved so that successful recovery does not
-          require re-entering information. The flow also shows the feedback
-          loops — successful automatic retry results in a subtle success
-          indicator, while escalation to support captures the full error
-          context to give support agents the information they need.
-        </p>
       </section>
 
       {/* ============================================================
@@ -738,6 +705,12 @@ export default function UserErrorMessagesArticle() {
           and recovery options should evolve over time based on the persistence
           of the failure condition.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/user-error-messages-diagram-3.svg"
+          alt="Recovery flow showing automatic retry, manual retry, alternative path, and support escalation"
+          caption="Figure 3: User recovery flow from error to resolution"
+        />
       </section>
 
       {/* ============================================================

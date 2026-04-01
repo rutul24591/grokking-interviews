@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>RUM Data Collection Pipeline from Browser APIs through Aggregation to Analytics Dashboard</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">RUM Data Collection Pipeline</text>
+  <text x="450" y="56" text-anchor="middle" font-size="11" fill="#6d5bd0">Browser Performance APIs &amp; Real User Monitoring Flow</text>
+
+  <!-- Stage 1: Browser Performance APIs -->
+  <rect x="20" y="80" width="175" height="260" rx="10" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="107" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Browser APIs</text>
+
+  <rect x="32" y="112" width="150" height="42" rx="6" fill="#6d5bd0"/>
+  <text x="107" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">PerformanceObserver</text>
+  <text x="107" y="145" text-anchor="middle" font-size="8" fill="#e0daf0">LCP, FID, CLS entries</text>
+
+  <rect x="32" y="162" width="150" height="42" rx="6" fill="#6d5bd0"/>
+  <text x="107" y="180" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Navigation Timing</text>
+  <text x="107" y="195" text-anchor="middle" font-size="8" fill="#e0daf0">TTFB, DOM load, redirect</text>
+
+  <rect x="32" y="212" width="150" height="42" rx="6" fill="#6d5bd0"/>
+  <text x="107" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Resource Timing</text>
+  <text x="107" y="245" text-anchor="middle" font-size="8" fill="#e0daf0">Asset sizes, durations</text>
+
+  <rect x="32" y="262" width="150" height="42" rx="6" fill="#6d5bd0"/>
+  <text x="107" y="280" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Long Tasks API</text>
+  <text x="107" y="295" text-anchor="middle" font-size="8" fill="#e0daf0">Tasks &gt; 50ms blocking</text>
+
+  <!-- Arrow: APIs -> Collection -->
+  <line x1="195" y1="210" x2="230" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 2: Data Collection -->
+  <rect x="230" y="120" width="140" height="180" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="300" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Data Collection</text>
+
+  <text x="300" y="170" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">Metrics Captured:</text>
+  <text x="300" y="186" text-anchor="middle" font-size="9" fill="#1a1822">- Page load timing</text>
+  <text x="300" y="200" text-anchor="middle" font-size="9" fill="#1a1822">- Interaction delays</text>
+  <text x="300" y="214" text-anchor="middle" font-size="9" fill="#1a1822">- Layout shifts</text>
+  <text x="300" y="228" text-anchor="middle" font-size="9" fill="#1a1822">- Resource waterfalls</text>
+  <text x="300" y="242" text-anchor="middle" font-size="9" fill="#1a1822">- JS execution time</text>
+  <text x="300" y="260" text-anchor="middle" font-size="8" fill="#6d5bd0">+ User context metadata</text>
+  <text x="300" y="274" text-anchor="middle" font-size="8" fill="#6d5bd0">+ Session / page info</text>
+
+  <!-- Arrow: Collection -> Aggregation -->
+  <line x1="370" y1="210" x2="405" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 3: Aggregation -->
+  <rect x="405" y="120" width="140" height="180" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="475" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Aggregation</text>
+
+  <rect x="418" y="158" width="114" height="30" rx="5" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="475" y="177" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Batching</text>
+
+  <rect x="418" y="196" width="114" height="30" rx="5" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="475" y="215" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Sampling (1-10%)</text>
+
+  <rect x="418" y="234" width="114" height="30" rx="5" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="475" y="253" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Deduplication</text>
+
+  <text x="475" y="284" text-anchor="middle" font-size="8" fill="#6d5bd0">Reduces payload size</text>
+  <text x="475" y="296" text-anchor="middle" font-size="8" fill="#6d5bd0">by 80-95%</text>
+
+  <!-- Arrow: Aggregation -> Transport -->
+  <line x1="545" y1="210" x2="580" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 4: Transport -->
+  <rect x="580" y="140" width="120" height="140" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="640" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Transport</text>
+
+  <rect x="593" y="178" width="94" height="30" rx="5" fill="#6d5bd0"/>
+  <text x="640" y="197" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Beacon API</text>
+
+  <text x="640" y="226" text-anchor="middle" font-size="8" fill="#1a1822">Non-blocking</text>
+  <text x="640" y="240" text-anchor="middle" font-size="8" fill="#1a1822">Survives unload</text>
+  <text x="640" y="254" text-anchor="middle" font-size="8" fill="#1a1822">POST-only, async</text>
+  <text x="640" y="270" text-anchor="middle" font-size="8" fill="#6d5bd0">Fallback: fetch keepalive</text>
+
+  <!-- Arrow: Transport -> Backend -->
+  <line x1="700" y1="210" x2="720" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 5: Backend + Dashboard -->
+  <rect x="720" y="100" width="160" height="220" rx="10" fill="#6d5bd0"/>
+  <text x="800" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Analytics Backend</text>
+
+  <rect x="733" y="138" width="134" height="42" rx="5" fill="#ffffff" opacity="0.15"/>
+  <text x="800" y="156" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Ingest &amp; Store</text>
+  <text x="800" y="172" text-anchor="middle" font-size="8" fill="#e0daf0">Time-series DB</text>
+
+  <rect x="733" y="188" width="134" height="42" rx="5" fill="#ffffff" opacity="0.15"/>
+  <text x="800" y="206" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Process &amp; Aggregate</text>
+  <text x="800" y="222" text-anchor="middle" font-size="8" fill="#e0daf0">P50, P75, P95, P99</text>
+
+  <rect x="733" y="238" width="134" height="42" rx="5" fill="#ffffff" opacity="0.15"/>
+  <text x="800" y="256" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Dashboard</text>
+  <text x="800" y="272" text-anchor="middle" font-size="8" fill="#e0daf0">Alerts &amp; Visualizations</text>
+
+  <rect x="733" y="288" width="134" height="24" rx="5" fill="#ffffff" opacity="0.15"/>
+  <text x="800" y="305" text-anchor="middle" font-size="8" fill="#e0daf0">Regression detection</text>
+
+  <!-- Bottom: End-to-end flow summary -->
+  <rect x="20" y="360" width="860" height="125" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="385" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">End-to-End Data Flow Summary</text>
+
+  <!-- Flow boxes -->
+  <rect x="40" y="400" width="140" height="34" rx="6" fill="#6d5bd0"/>
+  <text x="110" y="421" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">1. Observe</text>
+
+  <line x1="180" y1="417" x2="200" y2="417" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="200" y="400" width="140" height="34" rx="6" fill="#6d5bd0"/>
+  <text x="270" y="421" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">2. Collect</text>
+
+  <line x1="340" y1="417" x2="360" y2="417" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="360" y="400" width="140" height="34" rx="6" fill="#6d5bd0"/>
+  <text x="430" y="421" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">3. Aggregate</text>
+
+  <line x1="500" y1="417" x2="520" y2="417" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="520" y="400" width="140" height="34" rx="6" fill="#6d5bd0"/>
+  <text x="590" y="421" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">4. Transport</text>
+
+  <line x1="660" y1="417" x2="680" y2="417" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="680" y="400" width="180" height="34" rx="6" fill="#6d5bd0"/>
+  <text x="770" y="421" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">5. Analyze &amp; Alert</text>
+
+  <text x="110" y="452" text-anchor="middle" font-size="8" fill="#1a1822">Browser APIs fire</text>
+  <text x="110" y="464" text-anchor="middle" font-size="8" fill="#1a1822">performance entries</text>
+  <text x="270" y="452" text-anchor="middle" font-size="8" fill="#1a1822">Enrich with user</text>
+  <text x="270" y="464" text-anchor="middle" font-size="8" fill="#1a1822">context metadata</text>
+  <text x="430" y="452" text-anchor="middle" font-size="8" fill="#1a1822">Batch, sample,</text>
+  <text x="430" y="464" text-anchor="middle" font-size="8" fill="#1a1822">deduplicate entries</text>
+  <text x="590" y="452" text-anchor="middle" font-size="8" fill="#1a1822">Beacon API sends</text>
+  <text x="590" y="464" text-anchor="middle" font-size="8" fill="#1a1822">on idle / unload</text>
+  <text x="770" y="452" text-anchor="middle" font-size="8" fill="#1a1822">Percentile analysis,</text>
+  <text x="770" y="464" text-anchor="middle" font-size="8" fill="#1a1822">dashboards &amp; alerts</text>
+</svg>

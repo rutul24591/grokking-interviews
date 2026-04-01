@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Recovery flow showing reset mechanisms and retry patterns</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Error Boundary Recovery Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">From error detection through retry budget to resolution or escalation</text>
+
+  <!-- Flow starts -->
+  <rect x="50" y="80" width="160" height="50" rx="10" fill="#cc4444"/>
+  <text x="130" y="100" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Error Caught</text>
+  <text x="130" y="118" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">componentDidCatch</text>
+
+  <line x1="210" y1="105" x2="260" y2="105" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEB3)"/>
+
+  <!-- Log to monitoring -->
+  <rect x="260" y="80" width="160" height="50" rx="10" fill="#6d5bd0"/>
+  <text x="340" y="100" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Log to Monitoring</text>
+  <text x="340" y="118" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Sentry, LogRocket</text>
+
+  <line x1="420" y1="105" x2="470" y2="105" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEB3)"/>
+
+  <!-- Show fallback -->
+  <rect x="470" y="80" width="160" height="50" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="550" y="100" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Render Fallback UI</text>
+  <text x="550" y="118" text-anchor="middle" font-size="10" fill="#6d5bd0">Error message + retry</text>
+
+  <line x1="630" y1="105" x2="680" y2="105" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEB3)"/>
+
+  <!-- Wait for trigger -->
+  <rect x="680" y="80" width="180" height="50" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="770" y="100" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Await Recovery</text>
+  <text x="770" y="118" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">User action or auto-trigger</text>
+
+  <!-- Three recovery triggers -->
+  <line x1="770" y1="130" x2="770" y2="160" stroke="#d7d1e6" stroke-width="2"/>
+  <line x1="770" y1="160" x2="200" y2="160" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="770" y1="160" x2="500" y2="160" stroke="#d7d1e6" stroke-width="1.5"/>
+
+  <!-- Trigger 1: User clicks retry -->
+  <line x1="200" y1="160" x2="200" y2="190" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowEB3)"/>
+  <rect x="100" y="190" width="200" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="200" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">User Clicks "Retry"</text>
+  <text x="200" y="226" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Manual recovery trigger</text>
+
+  <!-- Trigger 2: Route change -->
+  <line x1="500" y1="160" x2="500" y2="190" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowEB3)"/>
+  <rect x="400" y="190" width="200" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="500" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Route Navigation</text>
+  <text x="500" y="226" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Key change resets boundary</text>
+
+  <!-- Trigger 3: Auto-retry timer -->
+  <line x1="770" y1="160" x2="770" y2="190" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowEB3)"/>
+  <rect x="670" y="190" width="200" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="770" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Auto-Retry Timer</text>
+  <text x="770" y="226" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Exponential backoff</text>
+
+  <!-- Converge to retry check -->
+  <line x1="200" y1="235" x2="200" y2="270" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="500" y1="235" x2="500" y2="270" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="770" y1="235" x2="770" y2="270" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="200" y1="270" x2="770" y2="270" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="450" y1="270" x2="450" y2="295" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEB3)"/>
+
+  <!-- Retry budget check -->
+  <polygon points="450,295 550,340 450,385 350,340" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="335" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Retries</text>
+  <text x="450" y="352" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">remaining?</text>
+
+  <!-- Yes path: retry -->
+  <line x1="350" y1="340" x2="200" y2="340" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowGreenEB)"/>
+  <text x="275" y="332" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Yes</text>
+
+  <rect x="60" y="315" width="140" height="50" rx="8" fill="#4caf50"/>
+  <text x="130" y="337" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Clear Error State</text>
+  <text x="130" y="355" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">retryCount++</text>
+
+  <line x1="130" y1="365" x2="130" y2="400" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowGreenEB)"/>
+
+  <rect x="50" y="400" width="160" height="50" rx="8" fill="#4caf50"/>
+  <text x="130" y="422" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Re-render Children</text>
+  <text x="130" y="440" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Attempt recovery</text>
+
+  <!-- Success/fail from re-render -->
+  <line x1="210" y1="425" x2="310" y2="425" stroke="#4caf50" stroke-width="1.5"/>
+  <rect x="310" y="405" width="130" height="40" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="375" y="422" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Success!</text>
+  <text x="375" y="438" text-anchor="middle" font-size="9" fill="#4caf50">Normal rendering</text>
+
+  <line x1="130" y1="450" x2="130" y2="475" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="145" y="468" font-size="9" fill="#cc4444">Fails again</text>
+  <line x1="130" y1="475" x2="450" y2="475" stroke="#cc4444" stroke-width="1.5"/>
+  <line x1="450" y1="475" x2="450" y2="385" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowRedEB3)"/>
+
+  <!-- No path: exhausted -->
+  <line x1="550" y1="340" x2="640" y2="340" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowRedEB3)"/>
+  <text x="595" y="332" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">No</text>
+
+  <rect x="640" y="310" width="220" height="60" rx="10" fill="#cc4444"/>
+  <text x="750" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Permanent Error State</text>
+  <text x="750" y="355" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.9">"Please refresh the page"</text>
+
+  <line x1="750" y1="370" x2="750" y2="400" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowRedEB3)"/>
+
+  <rect x="640" y="400" width="220" height="55" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="750" y="422" text-anchor="middle" font-size="11" fill="#1a1822">Show support contact link</text>
+  <text x="750" y="440" text-anchor="middle" font-size="11" fill="#1a1822">Log escalation to monitoring</text>
+
+  <defs>
+    <marker id="arrowEB3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGreenEB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="arrowRedEB3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Error message taxonomy mapping technical error types to user-facing message categories</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Error Message Taxonomy</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Mapping technical errors to user-friendly message categories</text>
+
+  <!-- Column Headers -->
+  <text x="100" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">Technical Errors</text>
+  <text x="450" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Classification Layer</text>
+  <text x="750" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">User-Facing Messages</text>
+
+  <!-- Left column: Technical Errors -->
+  <rect x="20" y="95" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="114" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">NetworkError</text>
+
+  <rect x="20" y="130" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="149" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">TimeoutError</text>
+
+  <rect x="20" y="170" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="189" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">401 Unauthorized</text>
+
+  <rect x="20" y="210" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="229" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">403 Forbidden</text>
+
+  <rect x="20" y="250" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="269" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">404 Not Found</text>
+
+  <rect x="20" y="290" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="309" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">422 Unprocessable</text>
+
+  <rect x="20" y="330" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="349" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">TypeError</text>
+
+  <rect x="20" y="370" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="389" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">429 Too Many Requests</text>
+
+  <rect x="20" y="410" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="429" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">500 Internal Server</text>
+
+  <rect x="20" y="450" width="160" height="28" rx="6" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1"/>
+  <text x="100" y="469" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">503 Service Unavailable</text>
+
+  <!-- Middle: Classification funnel -->
+  <rect x="340" y="92" width="220" height="395" rx="14" fill="#6d5bd0" opacity="0.06" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="450" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Error Classifier</text>
+  <text x="450" y="132" text-anchor="middle" font-size="9" fill="#6d5bd0" opacity="0.8">Inspects status code,</text>
+  <text x="450" y="145" text-anchor="middle" font-size="9" fill="#6d5bd0" opacity="0.8">error type, &amp; message</text>
+
+  <!-- Classification boxes in middle -->
+  <rect x="365" y="160" width="170" height="26" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="178" text-anchor="middle" font-size="9" fill="#6d5bd0">Connectivity check</text>
+
+  <rect x="365" y="195" width="170" height="26" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="213" text-anchor="middle" font-size="9" fill="#6d5bd0">Auth token validation</text>
+
+  <rect x="365" y="230" width="170" height="26" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="248" text-anchor="middle" font-size="9" fill="#6d5bd0">Permission mapping</text>
+
+  <rect x="365" y="265" width="170" height="26" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="283" text-anchor="middle" font-size="9" fill="#6d5bd0">Resource resolution</text>
+
+  <rect x="365" y="300" width="170" height="26" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="318" text-anchor="middle" font-size="9" fill="#6d5bd0">Input validation rules</text>
+
+  <rect x="365" y="335" width="170" height="26" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="353" text-anchor="middle" font-size="9" fill="#6d5bd0">Rate limit detection</text>
+
+  <rect x="365" y="370" width="170" height="26" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="388" text-anchor="middle" font-size="9" fill="#6d5bd0">Server health assessment</text>
+
+  <!-- Right column: User-facing categories -->
+  <rect x="620" y="95" width="260" height="42" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="750" y="113" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Connection Issues</text>
+  <text x="750" y="130" text-anchor="middle" font-size="9" fill="#4caf50">"Check your internet connection"</text>
+
+  <rect x="620" y="150" width="260" height="42" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="750" y="168" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Authentication</text>
+  <text x="750" y="185" text-anchor="middle" font-size="9" fill="#4caf50">"Please sign in again"</text>
+
+  <rect x="620" y="205" width="260" height="42" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="750" y="223" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Permission</text>
+  <text x="750" y="240" text-anchor="middle" font-size="9" fill="#4caf50">"You don't have access"</text>
+
+  <rect x="620" y="260" width="260" height="42" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="750" y="278" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Not Found</text>
+  <text x="750" y="295" text-anchor="middle" font-size="9" fill="#4caf50">"This page doesn't exist"</text>
+
+  <rect x="620" y="315" width="260" height="42" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="750" y="333" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Validation</text>
+  <text x="750" y="350" text-anchor="middle" font-size="9" fill="#4caf50">"Please check your input"</text>
+
+  <rect x="620" y="370" width="260" height="42" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="750" y="388" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Rate Limiting</text>
+  <text x="750" y="405" text-anchor="middle" font-size="9" fill="#4caf50">"Please wait and try again"</text>
+
+  <rect x="620" y="425" width="260" height="50" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="750" y="447" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Server Issues</text>
+  <text x="750" y="464" text-anchor="middle" font-size="9" fill="#4caf50">"Something went wrong on our end"</text>
+
+  <!-- Connecting lines: Left to Middle -->
+  <!-- NetworkError, TimeoutError → Connectivity -->
+  <line x1="180" y1="109" x2="340" y2="173" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+  <line x1="180" y1="144" x2="340" y2="173" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- 401 → Auth -->
+  <line x1="180" y1="184" x2="340" y2="208" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- 403 → Permission -->
+  <line x1="180" y1="224" x2="340" y2="243" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- 404 → Resource -->
+  <line x1="180" y1="264" x2="340" y2="278" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- 422, TypeError → Validation -->
+  <line x1="180" y1="304" x2="340" y2="313" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+  <line x1="180" y1="344" x2="340" y2="313" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- 429 → Rate limit -->
+  <line x1="180" y1="384" x2="340" y2="348" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- 500, 503 → Server health -->
+  <line x1="180" y1="424" x2="340" y2="383" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+  <line x1="180" y1="464" x2="340" y2="383" stroke="#cc4444" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Connecting lines: Middle to Right -->
+  <!-- Connectivity → Connection Issues -->
+  <line x1="560" y1="173" x2="620" y2="116" stroke="#4caf50" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Auth → Authentication -->
+  <line x1="560" y1="208" x2="620" y2="171" stroke="#4caf50" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Permission → Permission -->
+  <line x1="560" y1="243" x2="620" y2="226" stroke="#4caf50" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Resource → Not Found -->
+  <line x1="560" y1="278" x2="620" y2="281" stroke="#4caf50" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Validation → Validation -->
+  <line x1="560" y1="313" x2="620" y2="336" stroke="#4caf50" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Rate limit → Rate Limiting -->
+  <line x1="560" y1="348" x2="620" y2="391" stroke="#4caf50" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Server health → Server Issues -->
+  <line x1="560" y1="383" x2="620" y2="450" stroke="#4caf50" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Flow arrows in header area -->
+  <polygon points="285,80 295,75 295,85" fill="#cc4444" opacity="0.6"/>
+  <polygon points="585,80 595,75 595,85" fill="#4caf50" opacity="0.6"/>
+</svg>

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Structured log enrichment flow adding context at each application layer</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Contextual Log Enrichment</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each application layer adds context to the log entry</text>
+
+  <!-- Base log -->
+  <rect x="30" y="85" width="200" height="100" rx="10" fill="#6d5bd0"/>
+  <text x="130" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Base Log Entry</text>
+  <text x="130" y="135" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.9">message: "Payment failed"</text>
+  <text x="130" y="152" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.9">level: "error"</text>
+  <text x="130" y="169" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.9">timestamp: 1711929600</text>
+
+  <line x1="230" y1="135" x2="270" y2="135" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEnrich)"/>
+  <text x="250" y="125" text-anchor="middle" font-size="8" fill="#6d5bd0">+</text>
+
+  <!-- App Layer -->
+  <rect x="270" y="85" width="180" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="360" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">App Layer</text>
+  <text x="360" y="130" text-anchor="middle" font-size="10" fill="#1a1822">+ sessionId: "abc-123"</text>
+  <text x="360" y="147" text-anchor="middle" font-size="10" fill="#1a1822">+ userId: "user_42"</text>
+  <text x="360" y="164" text-anchor="middle" font-size="10" fill="#1a1822">+ appVersion: "2.3.1"</text>
+  <text x="360" y="178" text-anchor="middle" font-size="10" fill="#1a1822">+ environment: "prod"</text>
+
+  <line x1="450" y1="135" x2="490" y2="135" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEnrich)"/>
+  <text x="470" y="125" text-anchor="middle" font-size="8" fill="#6d5bd0">+</text>
+
+  <!-- Router Layer -->
+  <rect x="490" y="85" width="180" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="580" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Router Layer</text>
+  <text x="580" y="130" text-anchor="middle" font-size="10" fill="#1a1822">+ route: "/checkout"</text>
+  <text x="580" y="147" text-anchor="middle" font-size="10" fill="#1a1822">+ params: {"{orderId}"}</text>
+  <text x="580" y="164" text-anchor="middle" font-size="10" fill="#1a1822">+ referrer: "/cart"</text>
+  <text x="580" y="178" text-anchor="middle" font-size="10" fill="#1a1822">+ navigationId: 7</text>
+
+  <line x1="670" y1="135" x2="710" y2="135" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEnrich)"/>
+  <text x="690" y="125" text-anchor="middle" font-size="8" fill="#6d5bd0">+</text>
+
+  <!-- Component Layer -->
+  <rect x="710" y="85" width="170" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="795" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Component Layer</text>
+  <text x="795" y="130" text-anchor="middle" font-size="10" fill="#1a1822">+ component: "PayForm"</text>
+  <text x="795" y="147" text-anchor="middle" font-size="10" fill="#1a1822">+ action: "submit"</text>
+  <text x="795" y="164" text-anchor="middle" font-size="10" fill="#1a1822">+ paymentMethod: "card"</text>
+  <text x="795" y="178" text-anchor="middle" font-size="10" fill="#1a1822">+ retryCount: 2</text>
+
+  <!-- Arrow down to final log -->
+  <line x1="450" y1="195" x2="450" y2="230" stroke="#6d5bd0" stroke-width="3" marker-end="url(#arrowEnrich)"/>
+
+  <!-- Final enriched log -->
+  <rect x="50" y="230" width="800" height="250" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="50" y="230" width="800" height="35" rx="12" fill="#4caf50"/>
+  <rect x="50" y="255" width="800" height="10" fill="#4caf50"/>
+  <text x="450" y="254" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Final Structured Log Entry (JSON)</text>
+
+  <!-- JSON-like representation -->
+  <text x="80" y="290" font-size="11" fill="#6d5bd0" font-weight="600">Core</text>
+  <text x="80" y="310" font-size="10" fill="#1a1822">message: "Payment failed"</text>
+  <text x="80" y="326" font-size="10" fill="#1a1822">level: "error"</text>
+  <text x="80" y="342" font-size="10" fill="#1a1822">timestamp: "2026-03-31T12:00:00Z"</text>
+  <text x="80" y="358" font-size="10" fill="#1a1822">traceId: "trace-xyz-789"</text>
+
+  <line x1="280" y1="278" x2="280" y2="465" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="300" y="290" font-size="11" fill="#6d5bd0" font-weight="600">App Context</text>
+  <text x="300" y="310" font-size="10" fill="#1a1822">sessionId: "abc-123"</text>
+  <text x="300" y="326" font-size="10" fill="#1a1822">userId: "user_42"</text>
+  <text x="300" y="342" font-size="10" fill="#1a1822">appVersion: "2.3.1"</text>
+  <text x="300" y="358" font-size="10" fill="#1a1822">environment: "production"</text>
+
+  <line x1="490" y1="278" x2="490" y2="465" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="510" y="290" font-size="11" fill="#6d5bd0" font-weight="600">Navigation Context</text>
+  <text x="510" y="310" font-size="10" fill="#1a1822">route: "/checkout"</text>
+  <text x="510" y="326" font-size="10" fill="#1a1822">referrer: "/cart"</text>
+  <text x="510" y="342" font-size="10" fill="#1a1822">navigationId: 7</text>
+
+  <line x1="690" y1="278" x2="690" y2="465" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="710" y="290" font-size="11" fill="#6d5bd0" font-weight="600">Component Context</text>
+  <text x="710" y="310" font-size="10" fill="#1a1822">component: "PaymentForm"</text>
+  <text x="710" y="326" font-size="10" fill="#1a1822">action: "submit"</text>
+  <text x="710" y="342" font-size="10" fill="#1a1822">paymentMethod: "card"</text>
+  <text x="710" y="358" font-size="10" fill="#1a1822">retryCount: 2</text>
+
+  <!-- Device context at bottom -->
+  <rect x="70" y="375" width="760" height="40" rx="6" fill="#6d5bd0" opacity="0.05" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="80" y="395" font-size="11" fill="#6d5bd0" font-weight="600">Device Context (auto-collected)</text>
+  <text x="80" y="410" font-size="9" fill="#1a1822">browser: "Chrome 120" | os: "macOS 14.2" | viewport: "1440x900" | connection: "4g" | memory: "8GB"</text>
+
+  <!-- Breadcrumbs -->
+  <rect x="70" y="425" width="760" height="40" rx="6" fill="#6d5bd0" opacity="0.05" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="80" y="445" font-size="11" fill="#6d5bd0" font-weight="600">Breadcrumbs (last 5 actions)</text>
+  <text x="80" y="460" font-size="9" fill="#1a1822">click "Add to Cart" → navigate "/cart" → click "Checkout" → input card number → click "Pay" → ERROR</text>
+
+  <defs>
+    <marker id="arrowEnrich" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

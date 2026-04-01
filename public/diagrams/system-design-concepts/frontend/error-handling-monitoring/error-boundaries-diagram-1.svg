@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Error boundary placement strategy showing app-level, route-level, and component-level boundaries</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Error Boundary Granularity Strategy</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Layered boundaries isolate failures at the most specific level possible</text>
+
+  <!-- App-Level Boundary (outermost) -->
+  <rect x="30" y="75" width="840" height="410" rx="14" fill="none" stroke="#cc4444" stroke-width="3" stroke-dasharray="8,4"/>
+  <rect x="40" y="80" width="160" height="24" rx="4" fill="#cc4444"/>
+  <text x="120" y="97" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">App-Level Boundary</text>
+  <text x="210" y="97" font-size="9" fill="#cc4444">Catches catastrophic failures — last resort</text>
+
+  <!-- App Shell (persistent) -->
+  <rect x="50" y="110" width="810" height="35" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="455" y="132" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">App Shell — Navigation Bar, Sidebar, Theme Provider (always renders)</text>
+
+  <!-- Route-Level Boundaries -->
+  <rect x="50" y="160" width="390" height="310" rx="12" fill="none" stroke="#6d5bd0" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <rect x="58" y="165" width="150" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="133" y="181" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Route: /dashboard</text>
+
+  <rect x="460" y="160" width="390" height="310" rx="12" fill="none" stroke="#6d5bd0" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <rect x="468" y="165" width="150" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="543" y="181" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Route: /settings</text>
+
+  <!-- Dashboard route content -->
+  <!-- Feature-level boundary 1 -->
+  <rect x="70" y="200" width="170" height="120" rx="8" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="76" y="204" width="100" height="18" rx="3" fill="#4caf50"/>
+  <text x="126" y="217" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Feature Boundary</text>
+  <rect x="82" y="230" width="146" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="249" text-anchor="middle" font-size="10" fill="#1a1822">Revenue Chart</text>
+  <text x="155" y="262" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">(3rd-party charting lib)</text>
+  <rect x="82" y="270" width="146" height="40" rx="6" fill="#4caf50" opacity="0.08"/>
+  <text x="155" y="286" text-anchor="middle" font-size="9" fill="#4caf50">Fallback: Static</text>
+  <text x="155" y="300" text-anchor="middle" font-size="9" fill="#4caf50">summary numbers</text>
+
+  <!-- Feature-level boundary 2 -->
+  <rect x="255" y="200" width="170" height="120" rx="8" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="261" y="204" width="100" height="18" rx="3" fill="#4caf50"/>
+  <text x="311" y="217" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Feature Boundary</text>
+  <rect x="267" y="230" width="146" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="249" text-anchor="middle" font-size="10" fill="#1a1822">Activity Feed</text>
+  <text x="340" y="262" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">(real-time WebSocket)</text>
+  <rect x="267" y="270" width="146" height="40" rx="6" fill="#4caf50" opacity="0.08"/>
+  <text x="340" y="286" text-anchor="middle" font-size="9" fill="#4caf50">Fallback: "Feed</text>
+  <text x="340" y="300" text-anchor="middle" font-size="9" fill="#4caf50">temporarily unavailable"</text>
+
+  <!-- Non-bounded component -->
+  <rect x="70" y="340" width="355" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="247" y="362" text-anchor="middle" font-size="11" fill="#1a1822">Static Content — No boundary needed (low risk)</text>
+  <text x="247" y="378" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">Text descriptions, static lists, navigation links</text>
+
+  <!-- Route error note -->
+  <rect x="70" y="405" width="355" height="50" rx="8" fill="#6d5bd0" opacity="0.08"/>
+  <text x="247" y="425" text-anchor="middle" font-size="10" fill="#6d5bd0">Route fallback: "This page encountered an error"</text>
+  <text x="247" y="442" text-anchor="middle" font-size="10" fill="#6d5bd0">+ Retry button + navigation preserved</text>
+
+  <!-- Settings route content -->
+  <rect x="480" y="200" width="350" height="120" rx="8" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="486" y="204" width="100" height="18" rx="3" fill="#4caf50"/>
+  <text x="536" y="217" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Feature Boundary</text>
+  <rect x="486" y="230" width="155" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="563" y="249" text-anchor="middle" font-size="10" fill="#1a1822">Profile Editor</text>
+  <rect x="650" y="230" width="168" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="734" y="249" text-anchor="middle" font-size="10" fill="#1a1822">Avatar Upload</text>
+  <rect x="486" y="270" width="332" height="40" rx="6" fill="#4caf50" opacity="0.08"/>
+  <text x="652" y="290" text-anchor="middle" font-size="9" fill="#4caf50">Fallback: Read-only view of current settings</text>
+
+  <rect x="480" y="340" width="350" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="655" y="362" text-anchor="middle" font-size="11" fill="#1a1822">Notification Preferences (static form)</text>
+  <text x="655" y="378" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">Low risk — simple state, no external dependencies</text>
+
+  <rect x="480" y="405" width="350" height="50" rx="8" fill="#6d5bd0" opacity="0.08"/>
+  <text x="655" y="425" text-anchor="middle" font-size="10" fill="#6d5bd0">Route fallback: "Settings unavailable"</text>
+  <text x="655" y="442" text-anchor="middle" font-size="10" fill="#6d5bd0">+ Retry button + preserve navigation</text>
+</svg>

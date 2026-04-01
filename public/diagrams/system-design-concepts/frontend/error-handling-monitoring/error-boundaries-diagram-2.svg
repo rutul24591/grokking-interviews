@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Error propagation flow from throwing component up through boundary hierarchy</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Error Propagation Through the Fiber Tree</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Errors bubble up through the component tree until caught by the nearest error boundary</text>
+
+  <!-- Component tree -->
+  <!-- App (boundary) -->
+  <rect x="330" y="80" width="240" height="45" rx="10" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="2"/>
+  <text x="450" y="108" text-anchor="middle" font-size="13" font-weight="600" fill="#cc4444">App (Error Boundary)</text>
+
+  <line x1="450" y1="125" x2="450" y2="145" stroke="#d7d1e6" stroke-width="2"/>
+
+  <!-- Layout -->
+  <rect x="350" y="145" width="200" height="40" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="170" text-anchor="middle" font-size="12" fill="#1a1822">Layout</text>
+
+  <line x1="350" y1="185" x2="200" y2="215" stroke="#d7d1e6" stroke-width="2"/>
+  <line x1="550" y1="185" x2="700" y2="215" stroke="#d7d1e6" stroke-width="2"/>
+
+  <!-- Sidebar -->
+  <rect x="120" y="215" width="160" height="40" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="200" y="240" text-anchor="middle" font-size="12" fill="#1a1822">Sidebar</text>
+
+  <!-- Dashboard (boundary) -->
+  <rect x="600" y="215" width="200" height="40" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="700" y="240" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Dashboard (Boundary)</text>
+
+  <line x1="620" y1="255" x2="500" y2="290" stroke="#d7d1e6" stroke-width="2"/>
+  <line x1="780" y1="255" x2="830" y2="290" stroke="#d7d1e6" stroke-width="2"/>
+
+  <!-- Stats Panel -->
+  <rect x="400" y="290" width="200" height="40" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="500" y="315" text-anchor="middle" font-size="12" fill="#1a1822">Stats Panel</text>
+
+  <!-- Chart (boundary) -->
+  <rect x="730" y="290" width="160" height="40" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <text x="810" y="315" text-anchor="middle" font-size="12" font-weight="600" fill="#4caf50">Chart (Boundary)</text>
+
+  <line x1="810" y1="330" x2="810" y2="360" stroke="#d7d1e6" stroke-width="2"/>
+
+  <!-- ChartRenderer (throws!) -->
+  <rect x="720" y="360" width="180" height="45" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="2"/>
+  <text x="810" y="382" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">ChartRenderer</text>
+  <text x="810" y="397" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.9">throws TypeError!</text>
+
+  <!-- Error propagation arrow (upward) -->
+  <path d="M 810 360 L 810 340 L 810 330" fill="none" stroke="#cc4444" stroke-width="3" marker-end="url(#arrowRedEB)"/>
+  <text x="860" y="350" font-size="9" font-weight="600" fill="#cc4444">Error bubbles up</text>
+
+  <!-- Caught indicator at Chart boundary -->
+  <rect x="738" y="272" width="144" height="16" rx="3" fill="#4caf50"/>
+  <text x="810" y="284" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">CAUGHT HERE</text>
+
+  <!-- Result panel on right -->
+  <rect x="30" y="310" width="340" height="175" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="200" y="335" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">What Happens</text>
+
+  <circle cx="55" cy="360" r="10" fill="#4caf50"/>
+  <text x="55" y="364" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">1</text>
+  <text x="75" y="364" font-size="10" fill="#1a1822">Chart boundary catches the error</text>
+
+  <circle cx="55" cy="388" r="10" fill="#4caf50"/>
+  <text x="55" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">2</text>
+  <text x="75" y="392" font-size="10" fill="#1a1822">getDerivedStateFromError sets error state</text>
+
+  <circle cx="55" cy="416" r="10" fill="#4caf50"/>
+  <text x="55" y="420" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">3</text>
+  <text x="75" y="420" font-size="10" fill="#1a1822">componentDidCatch logs to Sentry</text>
+
+  <circle cx="55" cy="444" r="10" fill="#4caf50"/>
+  <text x="55" y="448" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">4</text>
+  <text x="75" y="448" font-size="10" fill="#1a1822">Fallback UI rendered (chart placeholder)</text>
+
+  <circle cx="55" cy="472" r="10" fill="#4caf50"/>
+  <text x="55" y="476" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">5</text>
+  <text x="75" y="476" font-size="10" fill="#1a1822">Rest of dashboard stays functional</text>
+
+  <!-- What stays working -->
+  <rect x="420" y="420" width="280" height="65" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="560" y="442" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Still Working</text>
+  <text x="560" y="460" text-anchor="middle" font-size="10" fill="#1a1822">Sidebar, Stats Panel, Navigation</text>
+  <text x="560" y="476" text-anchor="middle" font-size="10" fill="#1a1822">User can interact with other features</text>
+
+  <defs>
+    <marker id="arrowRedEB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+</svg>

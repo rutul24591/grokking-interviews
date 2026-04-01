@@ -67,6 +67,12 @@ export default function ErrorReportingArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-reporting-diagram-1.svg"
+        alt="Error reporting SDK pipeline from error capture through enrichment, batching, and transmission to reporting service"
+        caption="Figure 1: Error reporting SDK internal pipeline"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -210,24 +216,6 @@ export default function ErrorReportingArticle() {
         </p>
 
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-reporting-diagram-1.svg"
-          alt="Error reporting SDK pipeline from error capture through enrichment, batching, and transmission to reporting service"
-          caption="Figure 1: Error reporting SDK internal pipeline"
-        />
-
-        <p className="mb-4">
-          When an error is captured by a global handler or manual API call, the SDK constructs an event object containing
-          the error type, message, stack trace, breadcrumbs, user context, tags, and environment metadata (browser,
-          OS, device, URL). Before transmission, the event passes through a pipeline of processors: the{" "}
-          <code>beforeSend</code> callback allows you to modify, filter, or drop events (essential for PII scrubbing and
-          noise reduction); the sampling decision determines whether this event should be sent based on the configured
-          sample rate; and the transport layer batches multiple events and sends them to the ingestion endpoint using{" "}
-          <code>fetch</code> or <code>XMLHttpRequest</code> with retry logic for transient network failures. Most SDKs
-          use the Beacon API (<code>navigator.sendBeacon</code>) for events captured during page unload to ensure
-          delivery even when the page is closing.
-        </p>
-
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-reporting-diagram-2.svg"
           alt="Issue grouping flow showing raw events being deduplicated into grouped issues with fingerprints"
           caption="Figure 2: Event-to-issue grouping and deduplication"
@@ -243,20 +231,6 @@ export default function ErrorReportingArticle() {
           alerts.
         </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-reporting-diagram-3.svg"
-          alt="Source map resolution flow from minified stack trace to original source code location"
-          caption="Figure 3: Source map resolution for production stack traces"
-        />
-
-        <p>
-          Source map resolution happens asynchronously after event ingestion. The service matches the event&apos;s{" "}
-          <code>release</code> and <code>dist</code> tags to previously uploaded source map artifacts, then applies the
-          source map to each frame in the stack trace. The resolved stack trace replaces the minified one in the stored
-          event. This is why source maps must be uploaded before errors start arriving for a new release — if the source
-          maps are missing when events are processed, the stack traces remain unresolved and must be manually
-          reprocessed later.
-        </p>
       </section>
 
       {/* ============================================================
@@ -517,6 +491,12 @@ export default function ErrorReportingArticle() {
           correlating client-side error reports with their operational CRDT conflict resolution logs, enabling them to
           determine whether a user-visible glitch was caused by a rendering bug or a synchronization issue.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/error-reporting-diagram-3.svg"
+          alt="Source map resolution flow from minified stack trace to original source code location"
+          caption="Figure 3: Source map resolution for production stack traces"
+        />
       </section>
 
       {/* ============================================================

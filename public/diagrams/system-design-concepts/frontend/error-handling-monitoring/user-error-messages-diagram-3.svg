@@ -1,0 +1,107 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <title>Recovery flow showing automatic retry progression through manual retry to alternative action suggestions</title>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Error Recovery Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4caf50"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- Error Occurs -->
+  <rect x="30" y="55" width="140" height="45" fill="#cc4444" rx="8"/>
+  <text x="100" y="75" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">Error Occurs</text>
+  <text x="100" y="90" text-anchor="middle" font-size="9" fill="#ffffff">Network / 5xx / Timeout</text>
+
+  <!-- Arrow to decision -->
+  <path d="M170 78 L210 78" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+
+  <!-- Retryable? -->
+  <polygon points="280,55 350,78 280,101 210,78" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="280" y="75" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Retryable?</text>
+  <text x="280" y="88" text-anchor="middle" font-size="8" fill="#666666">5xx/timeout/net</text>
+
+  <!-- Yes - Auto retry -->
+  <path d="M350 78 L400 78" stroke="#4caf50" stroke-width="2" fill="none" marker-end="url(#arr-green)"/>
+  <text x="375" y="72" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="bold">Yes</text>
+
+  <!-- Auto Retry Block -->
+  <rect x="400" y="48" width="390" height="60" fill="#ffffff" rx="8" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="595" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="#4caf50">Automatic Retry (Exponential Backoff)</text>
+
+  <!-- Retry timeline -->
+  <circle cx="440" cy="92" r="10" fill="#4caf50"/>
+  <text x="440" y="96" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">1</text>
+  <text x="440" y="84" text-anchor="middle" font-size="7" fill="#666666">1s</text>
+  <line x1="450" y1="92" x2="530" y2="92" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <circle cx="540" cy="92" r="10" fill="#4caf50"/>
+  <text x="540" y="96" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">2</text>
+  <text x="540" y="84" text-anchor="middle" font-size="7" fill="#666666">2s</text>
+  <line x1="550" y1="92" x2="630" y2="92" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <circle cx="640" cy="92" r="10" fill="#4caf50"/>
+  <text x="640" y="96" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">3</text>
+  <text x="640" y="84" text-anchor="middle" font-size="7" fill="#666666">4s</text>
+
+  <!-- Success from auto retry -->
+  <path d="M790 78 L840 78" stroke="#4caf50" stroke-width="2" fill="none" marker-end="url(#arr-green)"/>
+  <rect x="680" y="62" width="115" height="32" fill="#4caf50" rx="6" opacity="0.15"/>
+  <text x="737" y="82" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="bold">Success?</text>
+  <rect x="840" y="60" width="50" height="36" fill="#4caf50" rx="6"/>
+  <text x="865" y="82" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Done</text>
+
+  <!-- All retries fail -->
+  <path d="M737 94 L737 145" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arr-red)"/>
+  <text x="748" y="125" font-size="9" fill="#cc4444" font-weight="bold">All fail</text>
+
+  <!-- Manual Retry -->
+  <rect x="590" y="150" width="295" height="65" fill="#ffffff" rx="8" stroke="#f0ad4e" stroke-width="1.5"/>
+  <text x="737" y="172" text-anchor="middle" font-size="12" font-weight="bold" fill="#f0ad4e">Manual Retry</text>
+  <rect x="670" y="182" width="135" height="25" fill="#f0ad4e" rx="6"/>
+  <text x="737" y="199" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">Try Again</text>
+
+  <!-- Manual retry success -->
+  <path d="M885 182 L885 78" stroke="#4caf50" stroke-width="1.5" fill="none" marker-end="url(#arr-green)" stroke-dasharray="4,3"/>
+  <text x="872" y="135" font-size="8" fill="#4caf50" transform="rotate(-90,872,135)">Success</text>
+
+  <!-- Manual retry fail -->
+  <path d="M737 215 L737 260" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arr-red)"/>
+  <text x="748" y="242" font-size="9" fill="#cc4444" font-weight="bold">Fails</text>
+
+  <!-- Non-retryable path -->
+  <path d="M280 101 L280 265 L390 265" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arr-red)"/>
+  <text x="260" y="135" font-size="9" fill="#cc4444" font-weight="bold">No (4xx)</text>
+  <text x="200" y="155" font-size="8" fill="#888888">400, 401, 403, 404, 422</text>
+
+  <!-- Alternative Actions -->
+  <rect x="390" y="248" width="490" height="230" fill="#ffffff" rx="10" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="635" y="275" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">Alternative Actions</text>
+  <text x="635" y="292" text-anchor="middle" font-size="10" fill="#888888">Show specific guidance based on error type</text>
+
+  <rect x="410" y="305" width="220" height="50" fill="#f3f1f8" rx="6" stroke="#d7d1e6"/>
+  <text x="520" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Check Connection</text>
+  <text x="520" y="345" text-anchor="middle" font-size="9" fill="#666666">Network errors / offline state</text>
+
+  <rect x="645" y="305" width="220" height="50" fill="#f3f1f8" rx="6" stroke="#d7d1e6"/>
+  <text x="755" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Try Different Method</text>
+  <text x="755" y="345" text-anchor="middle" font-size="9" fill="#666666">Payment / auth failures</text>
+
+  <rect x="410" y="370" width="220" height="50" fill="#f3f1f8" rx="6" stroke="#d7d1e6"/>
+  <text x="520" y="390" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Contact Support</text>
+  <text x="520" y="410" text-anchor="middle" font-size="9" fill="#666666">Persistent server errors</text>
+
+  <rect x="645" y="370" width="220" height="50" fill="#f3f1f8" rx="6" stroke="#d7d1e6"/>
+  <text x="755" y="390" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Save Draft &amp; Retry Later</text>
+  <text x="755" y="410" text-anchor="middle" font-size="9" fill="#666666">Data loss prevention</text>
+
+  <rect x="410" y="435" width="455" height="30" fill="#6d5bd0" rx="6" opacity="0.1"/>
+  <text x="637" y="455" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Always include: error context, reference ID, and actionable next step</text>
+</svg>

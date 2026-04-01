@@ -90,6 +90,12 @@ export default function SourceMapsArticle() {
         </p>
       </section>
 
+      <ArticleImage
+        src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/source-maps-diagram-1.svg"
+        alt="Source map generation pipeline from original source through transpilation, bundling, and minification"
+        caption="Figure 1: Source map generation through the build pipeline"
+      />
+
       {/* ============================================================
           SECTION 2: Core Concepts
           ============================================================ */}
@@ -266,21 +272,6 @@ export default function SourceMapsArticle() {
         </p>
 
         <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/source-maps-diagram-1.svg"
-          alt="Source map generation pipeline from original source through transpilation, bundling, and minification"
-          caption="Figure 1: Source map generation through the build pipeline"
-        />
-
-        <p className="mb-4">
-          Figure 1 traces the journey of a source file through the build pipeline. At each stage —
-          TypeScript compilation, bundling, and minification — a new source map is generated. The
-          bundler is responsible for composing intermediate maps so that the final output map traces
-          positions back to the original TypeScript files rather than intermediate JavaScript.
-          The diagram highlights the critical handoff points where source map composition can fail
-          if tools are misconfigured.
-        </p>
-
-        <ArticleImage
           src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/source-maps-diagram-2.svg"
           alt="Source map resolution showing minified position mapped back to original file, line, and column"
           caption="Figure 2: Position mapping from minified code to original source"
@@ -299,21 +290,6 @@ export default function SourceMapsArticle() {
           implement to resolve stack traces.
         </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/source-maps-diagram-3.svg"
-          alt="Production source map security strategies comparing public, hidden, and restricted access approaches"
-          caption="Figure 3: Source map security strategies for production deployment"
-        />
-
-        <p>
-          Figure 3 compares three production deployment strategies. The public approach serves maps
-          alongside bundles — simple but insecure. The hidden approach generates maps during build,
-          uploads them to an error service, and deletes them before deployment — the most common
-          production pattern. The restricted approach serves maps from an authenticated endpoint,
-          enabling real-time debugging for authorized developers. Each strategy has distinct
-          implications for security, debugging capability, operational complexity, and CDN
-          configuration.
-        </p>
       </section>
 
       {/* ============================================================
@@ -709,6 +685,12 @@ export default function SourceMapsArticle() {
           including better error messages for common misconfiguration and a source map debugging
           tool that explains why resolution failed for a specific stack frame.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/error-handling-monitoring/source-maps-diagram-3.svg"
+          alt="Production source map security strategies comparing public, hidden, and restricted access approaches"
+          caption="Figure 3: Source map security strategies for production deployment"
+        />
       </section>
 
       {/* ============================================================
