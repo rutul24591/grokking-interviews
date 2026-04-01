@@ -1,0 +1,145 @@
+<svg viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="650" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Client-Side Validation Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Validation pipeline from input to error display</text>
+  
+  <!-- User Input -->
+  <rect x="30" y="100" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="100" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">User Input</text>
+  <text x="100" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">onChange/onBlur</text>
+  
+  <!-- Arrow to Validation Engine -->
+  <path d="M 170 140 L 210 140" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue-1)" fill="none"/>
+  
+  <!-- Validation Engine -->
+  <rect x="210" y="100" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="300" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Validation Engine</text>
+  <rect x="230" y="145" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <text x="300" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Rule Executor</text>
+  <rect x="230" y="185" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <text x="300" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Dependency Tracker</text>
+  
+  <!-- Split to Sync and Async -->
+  <path d="M 390 160 L 430 160" stroke="#f59e0b" stroke-width="2" fill="none"/>
+  <path d="M 430 160 L 430 130 L 460 130" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple-1)" fill="none"/>
+  <path d="M 430 160 L 430 190 L 460 190" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green-1)" fill="none"/>
+  
+  <!-- Async Validation -->
+  <rect x="460" y="90" width="160" height="80" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="540" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#6b21a8">Async Validation</text>
+  <text x="540" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">API calls</text>
+  <text x="540" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Debouncing</text>
+  
+  <!-- Sync Validation -->
+  <rect x="460" y="190" width="160" height="80" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="540" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#166534">Sync Validation</text>
+  <text x="540" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Format checks</text>
+  <text x="540" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Required fields</text>
+  
+  <!-- Merge back -->
+  <path d="M 620 130 L 660 130 L 660 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray-1)" fill="none"/>
+  <path d="M 620 230 L 660 230 L 660 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray-2)" fill="none"/>
+  
+  <!-- Error State -->
+  <rect x="660" y="120" width="180" height="80" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="750" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#991b1b">Error State</text>
+  <text x="750" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Per-field errors</text>
+  <text x="750" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Form-level errors</text>
+  
+  <!-- Arrow to UI Layer -->
+  <path d="M 840 160 L 880 160 L 880 240 L 750 240" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red-1)" fill="none"/>
+  
+  <!-- UI Layer -->
+  <rect x="580" y="240" width="340" height="140" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+  <text x="750" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">UI Layer - Error Display</text>
+  
+  <!-- Display options -->
+  <rect x="600" y="290" width="90" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="645" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#475569">Inline</text>
+  <text x="645" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">Below field</text>
+  <text x="645" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">Red border</text>
+  
+  <rect x="705" y="290" width="90" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="750" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#475569">Summary</text>
+  <text x="750" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">Top banner</text>
+  <text x="750" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">Error count</text>
+  
+  <rect x="810" y="290" width="90" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="855" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#475569">Toast</text>
+  <text x="855" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">Transient</text>
+  <text x="855" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">Non-blocking</text>
+  
+  <!-- Rule Definitions Section -->
+  <rect x="30" y="300" width="400" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="230" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Rule Definitions</text>
+  
+  <!-- Schema Rules -->
+  <rect x="50" y="350" width="160" height="110" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="130" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">Schema Rules</text>
+  <text x="60" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Required</text>
+  <text x="60" y="410" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Email/Phone</text>
+  <text x="60" y="425" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Min/Max length</text>
+  <text x="60" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Pattern (regex)</text>
+  <text x="60" y="455" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Date ranges</text>
+  
+  <!-- Custom Rules -->
+  <rect x="230" y="350" width="180" height="110" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="320" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">Custom Rules</text>
+  <text x="240" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Cross-field validation</text>
+  <text x="240" y="410" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Business logic</text>
+  <text x="240" y="425" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Async uniqueness</text>
+  <text x="240" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• External API checks</text>
+  <text x="240" y="455" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Conditional rules</text>
+  
+  <!-- Constraint Validation API -->
+  <rect x="30" y="500" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="130" y="530" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#92400e">Constraint Validation API</text>
+  <text x="50" y="555" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• HTML5 attributes</text>
+  <text x="50" y="570" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• checkValidity()</text>
+  <text x="50" y="585" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• setCustomValidity()</text>
+  <text x="50" y="600" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Browser-native</text>
+  <text x="50" y="615" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Limited customization</text>
+  
+  <!-- Schema Libraries -->
+  <rect x="250" y="500" width="200" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="350" y="530" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#166534">Schema Libraries</text>
+  <text x="270" y="555" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Zod (TypeScript)</text>
+  <text x="270" y="570" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Yup (Fluent API)</text>
+  <text x="270" y="585" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Joi (Flexible)</text>
+  <text x="270" y="600" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Valibot (Modular)</text>
+  <text x="270" y="615" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Type inference</text>
+  
+  <!-- Best Practices -->
+  <rect x="470" y="500" width="400" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="670" y="530" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#6b21a8">Best Practices</text>
+  <text x="490" y="555" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Validate early, fail fast (sync before async)</text>
+  <text x="490" y="570" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Debounce async validation (300-500ms)</text>
+  <text x="490" y="585" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Cancel superseded requests (AbortController)</text>
+  <text x="490" y="600" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Actionable error messages</text>
+  <text x="490" y="615" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Graceful degradation on network failures</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-purple-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-green-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-gray-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-gray-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-red-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

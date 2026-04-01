@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="600" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Async Validation Flow with Race Condition Handling</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">State transitions and request lifecycle management</text>
+  
+  <!-- Initial State -->
+  <rect x="30" y="100" width="140" height="70" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="100" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0c4a6e">IDLE</text>
+  <text x="100" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">No validation</text>
+  
+  <!-- User types -->
+  <path d="M 170 135 L 210 135" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue-1)" fill="none"/>
+  <text x="190" y="127" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">input change</text>
+  
+  <!-- Debouncing State -->
+  <rect x="210" y="100" width="140" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="280" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">DEBOUNCING</text>
+  <text x="280" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Waiting 300ms</text>
+  
+  <!-- Timer expires -->
+  <path d="M 350 135 L 390 135" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber-1)" fill="none"/>
+  <text x="370" y="127" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">timer ends</text>
+  
+  <!-- Validating State -->
+  <rect x="390" y="100" width="140" height="70" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="460" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">VALIDATING</text>
+  <text x="460" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">API in flight</text>
+  
+  <!-- Loading indicator visual -->
+  <circle cx="460" cy="145" r="12" fill="none" stroke="#7c3aed" stroke-width="3" stroke-dasharray="20,40">
+    <animateTransform attributeName="transform" type="rotate" from="0 460 145" to="360 460 145" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Split paths for different outcomes -->
+  <path d="M 530 135 L 580 135" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green-1)" fill="none"/>
+  <text x="555" y="127" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">success</text>
+  
+  <path d="M 530 155 L 580 175 L 630 175" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red-1)" fill="none"/>
+  <text x="580" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">error</text>
+  
+  <path d="M 460 170 L 460 210 L 530 210" stroke="#64748b" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-gray-1)" fill="none"/>
+  <text x="495" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">new input (cancel)</text>
+  
+  <!-- Valid State -->
+  <rect x="630" y="90" width="140" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="700" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">VALID ✓</text>
+  <text x="700" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Green indicator</text>
+  <text x="700" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Enable submit</text>
+  
+  <!-- Invalid State -->
+  <rect x="630" y="200" width="140" height="80" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="700" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#991b1b">INVALID ✗</text>
+  <text x="700" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Show error msg</text>
+  <text x="700" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Block submit</text>
+  
+  <!-- Error State (network failure) -->
+  <rect x="630" y="310" width="140" height="80" rx="8" fill="#ffedd5" stroke="#f97316" stroke-width="2"/>
+  <text x="700" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#9a3412">ERROR ⚠</text>
+  <text x="700" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#c2410c">Network failure</text>
+  <text x="700" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#c2410c">Retry option</text>
+  
+  <!-- Retry arrow -->
+  <path d="M 700 390 L 700 420 L 460 420 L 460 170" stroke="#f97316" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-orange-1)" fill="none"/>
+  <text x="580" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#c2410c">user retries</text>
+  
+  <!-- Race Condition Scenario -->
+  <rect x="30" y="470" width="840" height="110" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">Race Condition Example</text>
+  
+  <!-- Timeline for race condition -->
+  <line x1="60" y1="530" x2="840" y2="530" stroke="#94a3b8" stroke-width="2"/>
+  
+  <!-- Request 1 -->
+  <rect x="100" y="515" width="80" height="25" rx="4" fill="#7c3aed" opacity="0.3" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="140" y="532" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Req 1: "john"</text>
+  
+  <!-- Request 2 -->
+  <rect x="200" y="515" width="80" height="25" rx="4" fill="#7c3aed" opacity="0.5" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="240" y="532" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Req 2: "johnny"</text>
+  
+  <!-- Response 2 arrives first -->
+  <path d="M 280 527 L 320 550" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green-2)" fill="none"/>
+  <rect x="300" y="550" width="70" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="335" y="567" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Resp 2: ✓</text>
+  
+  <!-- Response 1 arrives late -->
+  <path d="M 180 540 L 220 580" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-red-2)" fill="none"/>
+  <rect x="200" y="580" width="90" height="25" rx="4" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="245" y="597" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Resp 1: ✗ (IGNORE)</text>
+  
+  <!-- Solution note -->
+  <rect x="500" y="515" width="350" height="55" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="675" y="540" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#166534">Solution: Track Request IDs</text>
+  <text x="520" y="560" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Compare response ID with current request ID - ignore mismatches</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-red-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-gray-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-orange-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="arrow-green-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-red-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

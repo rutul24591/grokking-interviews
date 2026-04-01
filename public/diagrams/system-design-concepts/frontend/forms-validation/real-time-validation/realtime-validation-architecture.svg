@@ -1,0 +1,125 @@
+<svg viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="650" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Real-time Validation Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Data flow from user input to validation feedback</text>
+  
+  <!-- User Input -->
+  <rect x="30" y="100" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="100" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">User Input</text>
+  <text x="100" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">onChange events</text>
+  
+  <!-- Arrow to Debounce -->
+  <path d="M 170 140 L 210 140" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue-1)" fill="none"/>
+  
+  <!-- Debounce Layer -->
+  <rect x="210" y="100" width="160" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="290" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Debounce Layer</text>
+  <text x="290" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">300ms delay</text>
+  <text x="290" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Cancel on new input</text>
+  
+  <!-- Arrow to Validation Engine -->
+  <path d="M 370 140 L 410 140" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber-1)" fill="none"/>
+  
+  <!-- Validation Engine -->
+  <rect x="410" y="100" width="180" height="120" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2.5"/>
+  <text x="500" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Validation Engine</text>
+  
+  <!-- Sync Rules -->
+  <rect x="430" y="145" width="140" height="30" rx="4" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="500" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#166534">Sync Rules</text>
+  
+  <!-- Async Rules -->
+  <rect x="430" y="185" width="140" height="30" rx="4" fill="#7c3aed" opacity="0.2" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="500" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">Async Rules</text>
+  
+  <!-- Split arrows -->
+  <path d="M 590 160 L 630 160" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green-1)" fill="none"/>
+  <path d="M 590 200 L 630 200" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple-1)" fill="none"/>
+  
+  <!-- Sync Result -->
+  <rect x="630" y="120" width="120" height="80" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="690" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">Sync Result</text>
+  <text x="690" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Pass/Fail</text>
+  <text x="690" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Immediate</text>
+  
+  <!-- Async Request Manager -->
+  <rect x="630" y="220" width="160" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="710" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#6b21a8">Async Request</text>
+  <text x="710" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">Manager</text>
+  <text x="710" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• API calls</text>
+  <text x="710" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Cancellation</text>
+  
+  <!-- Arrow to Cache -->
+  <path d="M 710 320 L 710 360" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple-2)" fill="none"/>
+  
+  <!-- Cache -->
+  <rect x="630" y="360" width="160" height="70" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+  <text x="710" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">Result Cache</text>
+  <text x="710" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">TTL-based expiry</text>
+  
+  <!-- Arrow from Cache to State -->
+  <path d="M 710 430 L 710 470 L 500 470 L 500 490" stroke="#a855f7" stroke-width="2" marker-end="url(#arrow-purple-3)" fill="none"/>
+  
+  <!-- State Manager -->
+  <rect x="410" y="490" width="180" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="500" y="520" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#991b1b">State Manager</text>
+  <text x="500" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">• Validation state</text>
+  <text x="500" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">• Error messages</text>
+  <text x="500" y="575" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">• Loading flags</text>
+  
+  <!-- Arrow to UI -->
+  <path d="M 410 540 L 350 540" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrow-red-1)" fill="none"/>
+  
+  <!-- UI Feedback -->
+  <rect x="180" y="490" width="170" height="100" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+  <text x="265" y="520" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b">UI Feedback</text>
+  <text x="265" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Error messages</text>
+  <text x="265" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Loading spinners</text>
+  <text x="265" y="575" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Success indicators</text>
+  
+  <!-- Arrow to Accessibility -->
+  <path d="M 265 590 L 265 620" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray-1)" fill="none"/>
+  
+  <!-- Accessibility -->
+  <rect x="150" y="620" width="230" height="50" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="265" y="645" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#334155">Accessibility (aria-live announcements)</text>
+  <text x="265" y="662" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">Debounced separately (500ms+)</text>
+  
+  <!-- Race Condition Handler note -->
+  <rect x="630" y="500" width="240" height="90" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="750" y="525" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#9a3412">Race Condition Prevention</text>
+  <text x="650" y="550" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#c2410c">• Request IDs</text>
+  <text x="650" y="565" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#c2410c">• AbortController</text>
+  <text x="650" y="580" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#c2410c">• Value comparison</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-purple-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-purple-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-purple-3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a855f7"/>
+    </marker>
+    <marker id="arrow-red-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-gray-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

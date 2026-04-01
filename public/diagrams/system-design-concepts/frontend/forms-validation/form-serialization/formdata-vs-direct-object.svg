@@ -1,0 +1,117 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">FormData vs Direct Object Serialization</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Comparing two primary serialization approaches</text>
+  
+  <!-- Divider -->
+  <path d="M 450 95 L 450 480" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- FormData Approach (Left) -->
+  <rect x="30" y="100" width="400" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="230" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">FormData Approach</text>
+  
+  <!-- FormData Flow -->
+  <rect x="50" y="155" width="360" height="110" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+  
+  <!-- Step 1 -->
+  <rect x="65" y="170" width="100" height="35" rx="4" fill="#f0f9ff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="115" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0c4a6e">1. DOM Form</text>
+  
+  <path d="M 165 187 L 185 187" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-orange-1)" fill="none"/>
+  
+  <!-- Step 2 -->
+  <rect x="185" y="170" width="100" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="235" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">2. FormData</text>
+  
+  <path d="M 285 187 L 305 187" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange-2)" fill="none"/>
+  
+  <!-- Step 3 -->
+  <rect x="305" y="170" width="100" height="35" rx="4" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="355" y="187" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#3730a3">3. Transform</text>
+  <text x="355" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">to Object</text>
+  
+  <!-- FormData Pros/Cons -->
+  <rect x="50" y="280" width="360" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="230" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Pros &amp; Cons</text>
+  <text x="70" y="325" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Auto handles all input types</text>
+  <text x="70" y="342" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ File upload support</text>
+  <text x="70" y="359" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Progressive enhancement</text>
+  <text x="230" y="325" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ All values are strings</text>
+  <text x="230" y="342" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ No nested object support</text>
+  <text x="230" y="359" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Verbose manipulation</text>
+  
+  <!-- Best For -->
+  <rect x="50" y="390" width="360" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="230" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Best For:</text>
+  <text x="230" y="428" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">File uploads, simple forms, uncontrolled components</text>
+  
+  <!-- Direct Object Approach (Right) -->
+  <rect x="470" y="100" width="400" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="670" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#166534">Direct Object Approach</text>
+  
+  <!-- Direct Object Flow -->
+  <rect x="490" y="155" width="360" height="110" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5"/>
+  
+  <!-- Step 1 -->
+  <rect x="505" y="170" width="100" height="35" rx="4" fill="#f0f9ff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="555" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0c4a6e">1. User Input</text>
+  
+  <path d="M 605 187 L 625 187" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-green-1)" fill="none"/>
+  
+  <!-- Step 2 -->
+  <rect x="625" y="170" width="100" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="675" y="187" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#166534">2. State Update</text>
+  <text x="675" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">(controlled)</text>
+  
+  <path d="M 725 187 L 745 187" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green-2)" fill="none"/>
+  
+  <!-- Step 3 -->
+  <rect x="745" y="170" width="100" height="35" rx="4" fill="#22c55e" stroke="#15803d" stroke-width="1.5"/>
+  <text x="795" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">3. JSON Ready</text>
+  
+  <!-- Direct Object Pros/Cons -->
+  <rect x="490" y="280" width="360" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="670" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Pros &amp; Cons</text>
+  <text x="510" y="325" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Type preservation</text>
+  <text x="510" y="342" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Nested objects native</text>
+  <text x="510" y="359" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Easy transformation</text>
+  <text x="670" y="325" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Manual binding required</text>
+  <text x="670" y="342" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ No auto file handling</text>
+  <text x="670" y="359" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ More boilerplate</text>
+  
+  <!-- Best For -->
+  <rect x="490" y="390" width="360" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#166534">Best For:</text>
+  <text x="670" y="428" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Complex forms, APIs, controlled components, TypeScript</text>
+  
+  <!-- Code comparison -->
+  <rect x="30" y="460" width="840" height="70" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="482" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Code Comparison</text>
+  
+  <!-- FormData code -->
+  <rect x="50" y="490" width="380" height="30" rx="4" fill="#1e293b"/>
+  <text x="70" y="510" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#22c55e">const fd = new FormData(form); const obj = Object.fromEntries(fd);</text>
+  
+  <!-- Direct Object code -->
+  <rect x="470" y="490" width="380" height="30" rx="4" fill="#1e293b"/>
+  <text x="490" y="510" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#22c55e">const [values, setValues] = useState({"{"} name: &apos;&apos; {"}"}); // Already structured</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-orange-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-orange-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-green-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>

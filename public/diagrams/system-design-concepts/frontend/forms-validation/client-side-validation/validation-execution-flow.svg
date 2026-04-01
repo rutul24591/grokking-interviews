@@ -1,0 +1,89 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Validation Rule Execution Flow</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Order of validation execution for optimal performance</text>
+  
+  <!-- Step 1: Required Check -->
+  <rect x="30" y="100" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="110" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">1. Required Check</text>
+  <text x="110" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Fastest check</text>
+  <text x="110" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Empty value?</text>
+  <text x="110" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Return early if empty</text>
+  
+  <!-- Arrow -->
+  <path d="M 190 150 L 230 150" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow1)" fill="none"/>
+  <text x="210" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">has value</text>
+  
+  <!-- Step 2: Format Validation -->
+  <rect x="230" y="100" width="160" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="310" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">2. Format Validation</text>
+  <text x="310" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Email pattern</text>
+  <text x="310" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Phone format</text>
+  <text x="310" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">URL pattern</text>
+  
+  <!-- Arrow -->
+  <path d="M 390 150 L 430 150" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow2)" fill="none"/>
+  <text x="410" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">valid format</text>
+  
+  <!-- Step 3: Business Rules -->
+  <rect x="430" y="100" width="160" height="100" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2.5"/>
+  <text x="510" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#3730a3">3. Business Rules</text>
+  <text x="510" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Min/Max length</text>
+  <text x="510" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Date ranges</text>
+  <text x="510" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Cross-field rules</text>
+  
+  <!-- Arrow -->
+  <path d="M 590 150 L 630 150" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arrow3)" fill="none"/>
+  <text x="610" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">sync pass</text>
+  
+  <!-- Step 4: Async Validation -->
+  <rect x="630" y="100" width="180" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="720" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">4. Async Validation</text>
+  <text x="720" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Username availability</text>
+  <text x="720" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Email uniqueness</text>
+  <text x="720" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">API-dependent checks</text>
+  
+  <!-- Early exit arrows -->
+  <path d="M 110 200 L 110 280 L 800 280 L 800 340" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-red)" fill="none"/>
+  <text x="450" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b91c1c">Early Exit on Failure (skip remaining validations)</text>
+  
+  <!-- Result boxes -->
+  <rect x="650" y="340" width="200" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="750" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#166534">Valid ✓</text>
+  <text x="750" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">All checks passed</text>
+  <text x="750" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Enable submit</text>
+  
+  <rect x="50" y="340" width="200" height="80" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="150" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#991b1b">Invalid ✗</text>
+  <text x="150" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Show error</text>
+  <text x="150" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Block submission</text>
+  
+  <!-- Loading state for async -->
+  <rect x="680" y="230" width="80" height="40" rx="6" fill="#f3e8ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="720" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Loading...</text>
+  
+  <!-- Performance note -->
+  <rect x="30" y="450" width="840" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Performance Optimization</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Execute fast sync validations first to avoid unnecessary async API calls. Only proceed to async validation if all sync checks pass.</text>
+  <text x="450" y="520" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">This reduces network traffic and provides faster feedback for obviously invalid input.</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

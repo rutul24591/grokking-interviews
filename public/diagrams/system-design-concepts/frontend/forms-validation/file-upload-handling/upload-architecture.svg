@@ -1,0 +1,156 @@
+<svg viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="650" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">File Upload Architecture Patterns</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Server-mediated vs Direct-to-Cloud upload patterns</text>
+  
+  <!-- Divider -->
+  <path d="M 450 95 L 450 580" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- Server-Mediated Pattern (Left) -->
+  <text x="225" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0284c7">Server-Mediated Upload</text>
+  
+  <!-- User -->
+  <rect x="50" y="145" width="100" height="60" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="100" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">User</text>
+  <text x="100" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Browser</text>
+  
+  <!-- Arrow to App Server -->
+  <path d="M 150 175 L 230 175" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue-1)" fill="none"/>
+  <text x="190" y="167" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">POST file</text>
+  <text x="190" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">multipart</text>
+  
+  <!-- App Server -->
+  <rect x="230" y="145" width="140" height="80" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <text x="300" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">App Server</text>
+  <text x="300" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">Node/Python/etc</text>
+  <text x="300" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#94a3b8">Validates &amp; forwards</text>
+  
+  <!-- Arrow to Storage -->
+  <path d="M 370 185 L 430 185" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow-gray-1)" fill="none"/>
+  <text x="400" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">PUT file</text>
+  
+  <!-- Cloud Storage -->
+  <rect x="430" y="145" width="120" height="80" rx="8" fill="#06b6d4" opacity="0.2" stroke="#06b6d4" stroke-width="2"/>
+  <text x="490" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0e7490">Cloud Storage</text>
+  <text x="490" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0e7490">S3/GCS/Azure</text>
+  
+  <!-- Response flow -->
+  <path d="M 490 225 L 490 260 L 300 260 L 300 230" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green-1)" fill="none"/>
+  <text x="400" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">file URL</text>
+  
+  <path d="M 230 245 L 150 245" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green-2)" fill="none"/>
+  <text x="190" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">200 OK + URL</text>
+  
+  <!-- Pros/Cons -->
+  <rect x="50" y="290" width="350" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="225" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Pros &amp; Cons</text>
+  <text x="70" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Simple implementation</text>
+  <text x="70" y="352" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Server controls everything</text>
+  <text x="70" y="369" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Easy auth integration</text>
+  <text x="200" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Server bandwidth cost</text>
+  <text x="200" y="352" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Doesn't scale well</text>
+  <text x="200" y="369" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Server storage limits</text>
+  
+  <!-- Direct-to-Cloud Pattern (Right) -->
+  <text x="675" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#7c3aed">Direct-to-Cloud Upload</text>
+  
+  <!-- User -->
+  <rect x="500" y="145" width="100" height="60" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="550" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">User</text>
+  <text x="550" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#7e22ce">Browser</text>
+  
+  <!-- Arrow to App Server (get URL) -->
+  <path d="M 600 175 L 650 175" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple-1)" fill="none"/>
+  <text x="625" y="167" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">1. Get URL</text>
+  
+  <!-- App Server -->
+  <rect x="650" y="145" width="120" height="60" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <text x="710" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#ffffff">App Server</text>
+  <text x="710" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#94a3b8">Generates presigned URL</text>
+  
+  <!-- Arrow back with URL -->
+  <path d="M 650 190 L 600 190" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green-3)" fill="none"/>
+  <text x="625" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">2. Presigned URL</text>
+  
+  <!-- Direct upload arrow -->
+  <path d="M 550 205 L 550 280 L 850 280 L 850 230" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple-2)" fill="none"/>
+  <text x="700" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">3. Direct upload to cloud</text>
+  
+  <!-- Cloud Storage -->
+  <rect x="780" y="145" width="140" height="80" rx="8" fill="#06b6d4" opacity="0.2" stroke="#06b6d4" stroke-width="2"/>
+  <text x="850" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0e7490">Cloud Storage</text>
+  <text x="850" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0e7490">S3/GCS/Azure</text>
+  <text x="850" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0e7490">Direct from browser</text>
+  
+  <!-- Callback to server -->
+  <path d="M 780 210 L 720 210" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber-1)" fill="none"/>
+  <text x="750" y="202" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">4. Notify complete</text>
+  
+  <!-- Pros/Cons -->
+  <rect x="500" y="290" width="350" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="675" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Pros &amp; Cons</text>
+  <text x="520" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Scales infinitely</text>
+  <text x="520" y="352" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ No server bandwidth</text>
+  <text x="520" y="369" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Faster uploads</text>
+  <text x="650" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Complex client logic</text>
+  <text x="650" y="352" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ CORS configuration</text>
+  <text x="650" y="369" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Callback handling</text>
+  
+  <!-- Comparison table -->
+  <rect x="30" y="420" width="840" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Pattern Selection Guide</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="465" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Scenario</text>
+  <rect x="250" y="465" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="350" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Recommended</text>
+  <rect x="450" y="465" width="400" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="650" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Rationale</text>
+  
+  <!-- Row 1 -->
+  <text x="60" y="515" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Small files (&lt;10MB), low volume</text>
+  <text x="260" y="515" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">Server-Mediated</text>
+  <text x="460" y="515" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Simplicity outweighs scale concerns</text>
+  
+  <!-- Row 2 -->
+  <text x="60" y="540" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Large files, high volume</text>
+  <text x="260" y="540" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">Direct-to-Cloud</text>
+  <text x="460" y="540" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Avoid server bandwidth bottleneck</text>
+  
+  <!-- Row 3 -->
+  <text x="60" y="565" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Serverless architecture</text>
+  <text x="260" y="565" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">Direct-to-Cloud</text>
+  <text x="460" y="565" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Lambda timeout/payload limits</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-gray-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-green-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-green-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-green-3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-purple-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-purple-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-amber-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

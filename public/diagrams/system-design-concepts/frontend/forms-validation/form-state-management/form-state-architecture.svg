@@ -1,0 +1,103 @@
+<svg viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="650" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1a1a2e">Form State Management Architecture</text>
+  <text x="450" y="72" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#64748b">Layered architecture showing separation of concerns</text>
+  
+  <!-- Orchestration Layer -->
+  <rect x="50" y="100" width="800" height="90" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="450" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Orchestration Layer</text>
+  <text x="450" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#0369a1">Cross-field dependencies, conditional logic, wizard navigation</text>
+  <rect x="100" y="165" width="140" height="20" rx="4" fill="#0284c7" opacity="0.2"/>
+  <text x="170" y="179" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#0c4a6e">Dependency Graph</text>
+  <rect x="260" y="165" width="140" height="20" rx="4" fill="#0284c7" opacity="0.2"/>
+  <text x="330" y="179" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#0c4a6e">Conditional Rules</text>
+  <rect x="420" y="165" width="140" height="20" rx="4" fill="#0284c7" opacity="0.2"/>
+  <text x="490" y="179" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#0c4a6e">Step Management</text>
+  <rect x="580" y="165" width="140" height="20" rx="4" fill="#0284c7" opacity="0.2"/>
+  <text x="650" y="179" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#0c4a6e">Validation Chains</text>
+  
+  <!-- Validation Layer -->
+  <rect x="50" y="210" width="800" height="90" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="450" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Validation Layer</text>
+  <text x="450" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#b45309">Sync/async rules, error generation, validation triggers</text>
+  <rect x="100" y="275" width="120" height="20" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <text x="160" y="289" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#92400e">Sync Rules</text>
+  <rect x="240" y="275" width="120" height="20" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <text x="300" y="289" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#92400e">Async Rules</text>
+  <rect x="380" y="275" width="120" height="20" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <text x="440" y="289" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#92400e">Error State</text>
+  <rect x="520" y="275" width="120" height="20" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <text x="580" y="289" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#92400e">Triggers</text>
+  <rect x="660" y="275" width="120" height="20" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <text x="720" y="289" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#92400e">Debouncing</text>
+  
+  <!-- UI Layer -->
+  <rect x="50" y="320" width="800" height="90" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="450" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#166534">UI Layer</text>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#15803d">Inputs, error display, feedback, loading states</text>
+  <rect x="100" y="385" width="100" height="20" rx="4" fill="#22c55e" opacity="0.2"/>
+  <text x="150" y="399" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#166534">Inputs</text>
+  <rect x="220" y="385" width="100" height="20" rx="4" fill="#22c55e" opacity="0.2"/>
+  <text x="270" y="399" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#166534">Errors</text>
+  <rect x="340" y="385" width="100" height="20" rx="4" fill="#22c55e" opacity="0.2"/>
+  <text x="390" y="399" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#166534">Feedback</text>
+  <rect x="460" y="385" width="100" height="20" rx="4" fill="#22c55e" opacity="0.2"/>
+  <text x="510" y="399" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#166534">Loading</text>
+  <rect x="580" y="385" width="100" height="20" rx="4" fill="#22c55e" opacity="0.2"/>
+  <text x="630" y="399" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#166534">Focus Mgmt</text>
+  <rect x="700" y="385" width="100" height="20" rx="4" fill="#22c55e" opacity="0.2"/>
+  <text x="750" y="399" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#166534">A11y</text>
+  
+  <!-- Persistence Layer -->
+  <rect x="50" y="430" width="800" height="90" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2.5"/>
+  <text x="450" y="458" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#6b21a8">Persistence Layer</text>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#7e22ce">Auto-save, drafts, localStorage, recovery</text>
+  <rect x="100" y="495" width="120" height="20" rx="4" fill="#a855f7" opacity="0.2"/>
+  <text x="160" y="509" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#6b21a8">Auto-Save</text>
+  <rect x="240" y="495" width="120" height="20" rx="4" fill="#a855f7" opacity="0.2"/>
+  <text x="300" y="509" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#6b21a8">Drafts</text>
+  <rect x="380" y="495" width="120" height="20" rx="4" fill="#a855f7" opacity="0.2"/>
+  <text x="440" y="509" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#6b21a8">Local Storage</text>
+  <rect x="520" y="495" width="120" height="20" rx="4" fill="#a855f7" opacity="0.2"/>
+  <text x="580" y="509" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#6b21a8">Recovery</text>
+  <rect x="660" y="495" width="120" height="20" rx="4" fill="#a855f7" opacity="0.2"/>
+  <text x="720" y="509" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#6b21a8">Encryption</text>
+  
+  <!-- Foundation Layer -->
+  <rect x="50" y="540" width="800" height="90" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="450" y="568" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#991b1b">Foundation Layer</text>
+  <text x="450" y="590" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#b91c1c">Raw values, DOM events, refs, controlled/uncontrolled</text>
+  <rect x="100" y="605" width="120" height="20" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="160" y="619" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#991b1b">Values</text>
+  <rect x="240" y="605" width="120" height="20" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="300" y="619" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#991b1b">DOM Events</text>
+  <rect x="380" y="605" width="120" height="20" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="440" y="619" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#991b1b">Refs</text>
+  <rect x="520" y="605" width="120" height="20" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="580" y="619" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#991b1b">Controlled</text>
+  <rect x="660" y="605" width="120" height="20" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="720" y="619" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#991b1b">Uncontrolled</text>
+  
+  <!-- Flow arrows -->
+  <path d="M 450 190 L 450 205" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 450 300 L 450 315" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 450 410 L 450 425" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 450 520 L 450 535" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  
+  <!-- Side label -->
+  <text x="25" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#64748b" transform="rotate(-90 25 350)">State Flow ↓</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="640" width="800" height="30" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="660" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Each layer handles specific concerns, enabling separation of concerns and independent testing</text>
+</svg>

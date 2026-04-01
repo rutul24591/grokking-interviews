@@ -1,0 +1,111 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Nested Structure Transformation</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Converting flat field names to nested objects</text>
+  
+  <!-- Input: Flat Fields -->
+  <rect x="30" y="100" width="300" height="320" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="180" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Flat Form Fields</text>
+  
+  <!-- Field list -->
+  <rect x="50" y="155" width="260" height="250" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="70" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.name</text>
+  <text x="280" y="180" text-anchor="end" font-family="sans-serif" font-size="10" fill="#64748b">"John"</text>
+  
+  <text x="70" y="205" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.email</text>
+  <text x="280" y="205" text-anchor="end" font-family="sans-serif" font-size="10" fill="#64748b">"john@example.com"</text>
+  
+  <text x="70" y="230" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.address.street</text>
+  <text x="280" y="230" text-anchor="end" font-family="sans-serif" font-size="10" fill="#64748b">"123 Main St"</text>
+  
+  <text x="70" y="255" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.address.city</text>
+  <text x="280" y="255" text-anchor="end" font-family="sans-serif" font-size="10" fill="#64748b">"New York"</text>
+  
+  <text x="70" y="280" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.address.zip</text>
+  <text x="280" y="280" text-anchor="end" font-family="sans-serif" font-size="10" fill="#64748b">"10001"</text>
+  
+  <text x="70" y="305" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.phones[0]</text>
+  <text x="280" y="305" text-anchor="end" font-family="sans-serif" font-size="10" fill="#64748b">"555-0100"</text>
+  
+  <text x="70" y="330" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.phones[1]</text>
+  <text x="280" y="330" text-anchor="end" font-family="sans-serif" font-size="10" fill="#64748b">"555-0101"</text>
+  
+  <text x="70" y="355" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.age</text>
+  <text x="280" y="355" text-anchor="end" font-family="sans-serif" font-size="10" fill="#64748b">"25"</text>
+  
+  <!-- Transformation arrow -->
+  <path d="M 330 260 L 390 260" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow-amber-1)" fill="none"/>
+  <text x="360" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Transform</text>
+  <text x="360" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">unflatten()</text>
+  
+  <!-- Output: Nested JSON -->
+  <rect x="410" y="100" width="460" height="320" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <text x="640" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#e2e8f0">Nested JSON Object</text>
+  
+  <!-- JSON structure -->
+  <rect x="430" y="155" width="420" height="250" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  
+  <!-- JSON lines with color coding -->
+  <text x="450" y="185" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#22c55e">{"{"}</text>
+  
+  <text x="465" y="210" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">"user": {"{"}</text>
+  
+  <text x="485" y="235" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">"name": </text>
+  <text x="560" y="235" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#fbbf24">"John"</text>
+  <text x="630" y="235" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">,</text>
+  
+  <text x="485" y="260" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">"email": </text>
+  <text x="560" y="260" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#fbbf24">"john@example.com"</text>
+  <text x="730" y="260" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">,</text>
+  
+  <text x="485" y="285" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">"age": </text>
+  <text x="545" y="285" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#fbbf24">25</text>
+  <text x="570" y="285" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">,</text>
+  
+  <text x="485" y="310" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">"address": {"{"}</text>
+  
+  <text x="505" y="335" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">"street": </text>
+  <text x="595" y="335" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#fbbf24">"123 Main St"</text>
+  <text x="720" y="335" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">,</text>
+  
+  <text x="505" y="360" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">"city": </text>
+  <text x="570" y="360" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#fbbf24">"New York"</text>
+  <text x="660" y="360" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">,</text>
+  
+  <text x="505" y="385" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">"zip": </text>
+  <text x="560" y="385" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#fbbf24">"10001"</text>
+  
+  <text x="485" y="410" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">{"}"}</text>
+  <text x="500" y="410" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">,</text>
+  
+  <text x="485" y="435" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#94a3b8">"phones": [</text>
+  
+  <text x="505" y="460" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#fbbf24">"555-0100"</text>
+  <text x="610" y="460" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">,</text>
+  
+  <text x="505" y="485" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#fbbf24">"555-0101"</text>
+  
+  <text x="485" y="510" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">]</text>
+  
+  <text x="465" y="535" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#e2e8f0">{"}"}</text>
+  
+  <text x="450" y="560" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#22c55e">{"}"}</text>
+  
+  <!-- Transformation algorithm note -->
+  <rect x="30" y="440" width="840" height="90" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Transformation Algorithm</text>
+  
+  <text x="60" y="490" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#475569">1. Split field name by dots: "user.address.city" → ["user", "address", "city"]</text>
+  <text x="60" y="508" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#475569">2. Traverse/create nested path: result.user.address = {}</text>
+  <text x="60" y="526" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#475569">3. Set leaf value: result.user.address.city = "New York"</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-amber-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

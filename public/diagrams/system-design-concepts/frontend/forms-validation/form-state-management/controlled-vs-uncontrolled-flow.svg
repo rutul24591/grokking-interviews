@@ -1,0 +1,129 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Controlled vs Uncontrolled State Flow</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Comparison of data flow patterns</text>
+  
+  <!-- Divider line -->
+  <path d="M 450 95 L 450 480" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- CONTROLLED SIDE (Left) -->
+  <text x="225" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0284c7">Controlled Components</text>
+  <rect x="30" y="135" width="390" height="340" rx="10" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  
+  <!-- User Icon -->
+  <circle cx="80" cy="190" r="25" fill="#0284c7" opacity="0.2"/>
+  <text x="80" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#0c4a6e">👤</text>
+  <text x="80" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0c4a6e">User</text>
+  
+  <!-- Input Element -->
+  <rect x="170" y="165" width="100" height="50" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+  <text x="220" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">Input</text>
+  
+  <!-- React State -->
+  <rect x="320" y="165" width="80" height="50" rx="6" fill="#0284c7" opacity="0.3"/>
+  <text x="360" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#0c4a6e">React</text>
+  <text x="360" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#0c4a6e">State</text>
+  
+  <!-- Flow arrows -->
+  <path d="M 105 190 L 165 190" stroke="#0284c7" stroke-width="2.5" marker-end="url(#ctrl-arrow-1)" fill="none"/>
+  <text x="135" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#0c4a6e">types</text>
+  
+  <path d="M 270 190 L 315 190" stroke="#0284c7" stroke-width="2.5" marker-end="url(#ctrl-arrow-2)" fill="none"/>
+  <text x="292" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#0c4a6e">onChange</text>
+  
+  <!-- Feedback loop -->
+  <path d="M 360 215 L 360 250 L 220 250 L 220 215" stroke="#0284c7" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#ctrl-arrow-3)" fill="none"/>
+  <text x="300" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">value prop update</text>
+  
+  <!-- Re-render indicator -->
+  <rect x="170" y="280" width="100" height="40" rx="6" fill="#0284c7" opacity="0.15" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="220" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0c4a6e">Re-render</text>
+  <text x="220" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">every keystroke</text>
+  
+  <!-- Characteristics -->
+  <rect x="50" y="340" width="350" height="120" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="225" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#0c4a6e">Characteristics</text>
+  <text x="70" y="390" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Single source of truth</text>
+  <text x="70" y="410" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Immediate validation</text>
+  <text x="70" y="430" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Dynamic transformations</text>
+  <text x="220" y="390" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#dc2626">✗ Re-renders on every change</text>
+  <text x="220" y="410" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#dc2626">✗ Performance overhead</text>
+  <text x="220" y="430" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#dc2626">✗ More boilerplate</text>
+  
+  <!-- UNCONTROLLED SIDE (Right) -->
+  <text x="675" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#7c3aed">Uncontrolled Components</text>
+  <rect x="480" y="135" width="390" height="340" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  
+  <!-- User Icon -->
+  <circle cx="530" cy="190" r="25" fill="#7c3aed" opacity="0.2"/>
+  <text x="530" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#6b21a8">👤</text>
+  <text x="530" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">User</text>
+  
+  <!-- Input Element with internal state -->
+  <rect x="620" y="165" width="120" height="50" rx="6" fill="#7c3aed" opacity="0.25" stroke="#7c3aed" stroke-width="2"/>
+  <text x="680" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">Input + State</text>
+  <text x="680" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7e22ce">(DOM manages)</text>
+  
+  <!-- Ref access -->
+  <rect x="800" y="165" width="50" height="50" rx="6" fill="#7c3aed" opacity="0.3"/>
+  <text x="825" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#6b21a8">Ref</text>
+  <text x="825" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#6b21a8">access</text>
+  
+  <!-- Flow arrows -->
+  <path d="M 555 190 L 615 190" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#unctrl-arrow-1)" fill="none"/>
+  <text x="585" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#6b21a8">types</text>
+  
+  <!-- No intermediate flow - DOM handles internally -->
+  <circle cx="680" cy="190" r="35" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="680" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7e22ce">Internal DOM state</text>
+  
+  <!-- Ref access on demand -->
+  <path d="M 740 190 L 795 190" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#unctrl-arrow-2)" fill="none"/>
+  <text x="767" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">on submit</text>
+  
+  <!-- No re-render cycle -->
+  <rect x="620" y="280" width="120" height="40" rx="6" fill="#7c3aed" opacity="0.1" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="680" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">No Re-render</text>
+  <text x="680" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7e22ce">for input changes</text>
+  
+  <!-- Characteristics -->
+  <rect x="500" y="340" width="350" height="120" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="675" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#6b21a8">Characteristics</text>
+  <text x="520" y="390" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#16a34a">✓ Minimal re-renders</text>
+  <text x="520" y="410" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#16a34a">✓ Better performance</text>
+  <text x="520" y="430" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#16a34a">✓ Less boilerplate</text>
+  <text x="670" y="390" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#dc2626">✗ Imperative validation</text>
+  <text x="670" y="410" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#dc2626">✗ No single source of truth</text>
+  <text x="670" y="430" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#dc2626">✗ Harder to transform</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="ctrl-arrow-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="ctrl-arrow-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="ctrl-arrow-3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="unctrl-arrow-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="unctrl-arrow-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+  
+  <!-- Bottom comparison table -->
+  <rect x="30" y="485" width="840" height="55" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="150" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Use Controlled When:</text>
+  <text x="150" y="527" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Validation, transformation, small forms</text>
+  <text x="450" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Use Uncontrolled When:</text>
+  <text x="450" y="527" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Large forms, performance-critical, simple inputs</text>
+  <text x="750" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Hybrid Approach:</text>
+  <text x="750" y="527" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">React Hook Form pattern</text>
+</svg>

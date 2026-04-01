@@ -1,0 +1,137 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="600" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Form Serialization Pipeline</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Data transformation from DOM to API-ready format</text>
+  
+  <!-- Stage 1: Extraction -->
+  <rect x="30" y="100" width="180" height="140" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="120" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">1. Extraction</text>
+  
+  <rect x="50" y="155" width="140" height="70" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="70" y="175" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">FormData API:</text>
+  <text x="60" y="195" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• new FormData(form)</text>
+  <text x="60" y="210" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• .entries() iteration</text>
+  <text x="60" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• .getAll() for arrays</text>
+  
+  <!-- Arrow to Stage 2 -->
+  <path d="M 210 170 L 250 170" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue-1)" fill="none"/>
+  
+  <!-- Stage 2: Transformation -->
+  <rect x="250" y="100" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="350" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">2. Transformation</text>
+  
+  <rect x="270" y="155" width="160" height="70" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="285" y="175" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b45309">Type Conversion:</text>
+  <text x="280" y="192" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• String → Number</text>
+  <text x="280" y="207" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• String → Boolean</text>
+  <text x="280" y="222" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• String → Date</text>
+  
+  <!-- Nested objects note -->
+  <rect x="270" y="235" width="160" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="280" y="250" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#92400e">Nested Objects:</text>
+  <text x="280" y="263" text-anchor="start" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">user.address.city → {"{ user: { address: { city } } }"}</text>
+  
+  <!-- Arrow to Stage 3 -->
+  <path d="M 450 170 L 490 170" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber-1)" fill="none"/>
+  
+  <!-- Stage 3: Validation -->
+  <rect x="490" y="100" width="180" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="580" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">3. Validation</text>
+  
+  <rect x="510" y="155" width="140" height="70" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="525" y="175" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Schema Check:</text>
+  <text x="520" y="195" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• Required fields</text>
+  <text x="520" y="210" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• Type validation</text>
+  <text x="520" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• Format validation</text>
+  
+  <!-- Validation libraries -->
+  <rect x="510" y="235" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="580" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Zod, Yup, Joi</text>
+  
+  <!-- Pass/Fail arrows -->
+  <path d="M 670 170 L 710 170" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green-1)" fill="none"/>
+  <text x="690" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#15803d">valid</text>
+  
+  <path d="M 580 240 L 580 290 L 350 290 L 350 245" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-red-1)" fill="none"/>
+  <text x="470" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">invalid → show errors</text>
+  
+  <!-- Stage 4: Encoding -->
+  <rect x="710" y="100" width="160" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="790" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">4. Encoding</text>
+  
+  <!-- Output format options -->
+  <rect x="730" y="155" width="120" height="30" rx="4" fill="#7c3aed" opacity="0.2" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="790" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">JSON</text>
+  
+  <rect x="730" y="190" width="120" height="30" rx="4" fill="#7c3aed" opacity="0.2" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="790" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">FormData</text>
+  
+  <rect x="730" y="225" width="120" height="30" rx="4" fill="#7c3aed" opacity="0.2" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="790" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">URL-encoded</text>
+  
+  <!-- Arrow to API -->
+  <path d="M 870 170 L 910 170" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple-1)" fill="none"/>
+  
+  <!-- API Destination -->
+  <rect x="750" y="280" width="120" height="60" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <text x="810" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff">API</text>
+  <text x="810" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">POST /submit</text>
+  
+  <!-- Example transformation -->
+  <rect x="30" y="350" width="840" height="230" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Example: Flat Fields → Nested JSON</text>
+  
+  <!-- Input side -->
+  <rect x="50" y="400" width="350" height="160" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="225" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#475569">Raw FormData (Flat)</text>
+  <text x="70" y="450" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.name → "John"</text>
+  <text x="70" y="470" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.email → "john@example.com"</text>
+  <text x="70" y="490" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.address.street → "123 Main St"</text>
+  <text x="70" y="510" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.address.city → "New York"</text>
+  <text x="70" y="530" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.age → "25" (string)</text>
+  <text x="70" y="550" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">user.subscribed → "true" (string)</text>
+  
+  <!-- Transformation arrow -->
+  <path d="M 400 480 L 440 480" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue-2)" fill="none"/>
+  <text x="420" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">Transform</text>
+  
+  <!-- Output side -->
+  <rect x="460" y="400" width="390" height="160" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="655" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#e2e8f0">Serialized JSON (Nested)</text>
+  <text x="480" y="450" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#22c55e">{"{"}</text>
+  <text x="490" y="467" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#e2e8f0">"user": {"{"}</text>
+  <text x="500" y="484" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#94a3b8">"name": "John",</text>
+  <text x="500" y="501" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#94a3b8">"email": "john@example.com",</text>
+  <text x="500" y="518" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#94a3b8">"age": 25,</text>
+  <text x="500" y="535" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#94a3b8">"subscribed": true,</text>
+  <text x="500" y="552" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#94a3b8">"address": {"{"}</text>
+  <text x="510" y="569" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#cbd5e1">"street": "123 Main St",</text>
+  <text x="510" y="586" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#cbd5e1">"city": "New York"</text>
+  <text x="500" y="603" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#94a3b8">{"}"}</text>
+  <text x="480" y="620" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#22c55e">{"}"}</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-blue-2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-red-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-purple-1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+</svg>

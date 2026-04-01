@@ -1,0 +1,128 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Error Display Strategies Comparison</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Different patterns for showing validation errors to users</text>
+  
+  <!-- Inline Errors -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#991b1b">Inline Errors</text>
+  
+  <!-- Form mockup with inline errors -->
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  
+  <!-- Email field with error -->
+  <text x="65" y="175" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Email</text>
+  <rect x="65" y="182" width="200" height="28" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="75" y="201" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">user@example</text>
+  <text x="65" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#ef4444">⚠ Invalid email format</text>
+  
+  <!-- Password field with error -->
+  <text x="65" y="245" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Password</text>
+  <rect x="65" y="252" width="200" height="28" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="75" y="271" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">••••</text>
+  <text x="65" y="275" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#ef4444">⚠ Min 8 characters</text>
+  
+  <!-- Pros/Cons -->
+  <rect x="50" y="320" width="230" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="65" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Clear association</text>
+  <text x="65" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Immediate visibility</text>
+  <text x="65" y="370" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Visual clutter</text>
+  <text x="180" y="370" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Takes space</text>
+  
+  <!-- Summary Errors -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Summary Errors</text>
+  
+  <!-- Form mockup with summary -->
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  
+  <!-- Summary banner -->
+  <rect x="345" y="165" width="210" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="360" y="185" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#92400e">⚠ 3 errors found</text>
+  <text x="360" y="198" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">• Invalid email</text>
+  <text x="430" y="198" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#2563eb" text-decoration="underline">Jump</text>
+  
+  <!-- Fields without inline errors -->
+  <text x="360" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Email</text>
+  <rect x="360" y="232" width="200" height="28" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="370" y="251" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">user@example</text>
+  
+  <!-- Pros/Cons -->
+  <rect x="335" y="320" width="230" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="350" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Overview of all errors</text>
+  <text x="350" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Less visual clutter</text>
+  <text x="350" y="370" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Requires scrolling</text>
+  <text x="465" y="370" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Extra click to find</text>
+  
+  <!-- Toast Errors -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Toast Notifications</text>
+  
+  <!-- Form mockup -->
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  
+  <!-- Fields without errors shown -->
+  <text x="635" y="175" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Email</text>
+  <rect x="635" y="182" width="200" height="28" rx="4" fill="#ffffff" stroke="#9ca3af" stroke-width="1"/>
+  <text x="645" y="201" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">user@example</text>
+  
+  <text x="635" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Password</text>
+  <rect x="635" y="232" width="200" height="28" rx="4" fill="#ffffff" stroke="#9ca3af" stroke-width="1"/>
+  <text x="645" y="251" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">••••</text>
+  
+  <!-- Toast popup -->
+  <rect x="580" y="200" width="220" height="60" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="595" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#ffffff">⚠ Form has errors</text>
+  <text x="595" y="245" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#cbd5e1">Please check your input</text>
+  <rect x="750" y="210" width="40" height="20" rx="3" fill="#334155"/>
+  <text x="770" y="224" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Dismiss</text>
+  
+  <!-- Pros/Cons -->
+  <rect x="620" y="320" width="230" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="635" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Non-blocking</text>
+  <text x="635" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✓ Clean UI</text>
+  <text x="635" y="370" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Easy to miss</text>
+  <text x="745" y="370" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ Disappears</text>
+  
+  <!-- Recommendation table -->
+  <rect x="30" y="420" width="840" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Recommendation by Context</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="460" width="200" height="25" rx="3" fill="#e2e8f0"/>
+  <text x="150" y="477" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Context</text>
+  <rect x="250" y="460" width="200" height="25" rx="3" fill="#e2e8f0"/>
+  <text x="350" y="477" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Recommended</text>
+  <rect x="450" y="460" width="400" height="25" rx="3" fill="#e2e8f0"/>
+  <text x="650" y="477" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Rationale</text>
+  
+  <!-- Row 1 -->
+  <text x="60" y="500" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Complex forms (10+ fields)</text>
+  <text x="260" y="500" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">Summary + Inline</text>
+  <text x="460" y="500" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Overview + specific field guidance</text>
+  
+  <!-- Row 2 -->
+  <text x="60" y="520" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Simple forms (2-5 fields)</text>
+  <text x="260" y="520" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">Inline only</text>
+  <text x="460" y="520" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Direct feedback, minimal overhead</text>
+  
+  <!-- Row 3 -->
+  <text x="60" y="540" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Mobile forms</text>
+  <text x="260" y="540" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">Inline + Focus management</text>
+  <text x="460" y="540" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Scroll to errors, clear association</text>
+  
+  <!-- Row 4 -->
+  <text x="60" y="560" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Critical errors (payment, legal)</text>
+  <text x="260" y="560" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">All three combined</text>
+  <text x="460" y="560" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Maximum visibility, multiple reminders</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="toast-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e293b"/>
+    </marker>
+  </defs>
+</svg>

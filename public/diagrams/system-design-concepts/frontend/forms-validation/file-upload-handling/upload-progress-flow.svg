@@ -1,0 +1,112 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Upload Progress Tracking</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">From file selection to completion with progress feedback</text>
+  
+  <!-- Timeline flow -->
+  <line x1="80" y1="150" x2="820" y2="150" stroke="#e2e8f0" stroke-width="3"/>
+  
+  <!-- Stage 1: Selection -->
+  <circle cx="80" cy="150" r="25" fill="#f0f9ff" stroke="#0284c7" stroke-width="3"/>
+  <text x="80" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0c4a6e">1</text>
+  <rect x="30" y="185" width="100" height="60" rx="6" fill="#f0f9ff" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="80" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0c4a6e">File Select</text>
+  <text x="80" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Drop zone</text>
+  
+  <!-- Stage 2: Validate -->
+  <circle cx="260" cy="150" r="25" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+  <text x="260" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#92400e">2</text>
+  <rect x="210" y="185" width="100" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="260" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Validate</text>
+  <text x="260" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Size, type</text>
+  
+  <!-- Stage 3: Upload -->
+  <circle cx="440" cy="150" r="25" fill="#faf5ff" stroke="#7c3aed" stroke-width="3"/>
+  <text x="440" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#6b21a8">3</text>
+  <rect x="390" y="185" width="100" height="60" rx="6" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="440" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">Upload</text>
+  <text x="440" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7e22ce">Progress</text>
+  
+  <!-- Stage 4: Complete -->
+  <circle cx="620" cy="150" r="25" fill="#f0fdf4" stroke="#22c55e" stroke-width="3"/>
+  <text x="620" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#166534">4</text>
+  <rect x="570" y="185" width="100" height="60" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="620" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#166534">Complete</text>
+  <text x="620" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">URL returned</text>
+  
+  <!-- Stage 5: Form Submit -->
+  <circle cx="800" cy="150" r="25" fill="#1e293b" stroke="#334155" stroke-width="3"/>
+  <text x="800" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#ffffff">5</text>
+  <rect x="750" y="185" width="100" height="60" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="800" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#ffffff">Submit</text>
+  <text x="800" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#94a3b8">With URL</text>
+  
+  <!-- Progress bar visualization -->
+  <rect x="80" y="280" width="740" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Progress Bar States</text>
+  
+  <!-- Pending state -->
+  <rect x="100" y="325" width="140" height="25" rx="4" fill="#e2e8f0"/>
+  <text x="170" y="342" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">Pending...</text>
+  
+  <!-- Uploading state -->
+  <rect x="260" y="325" width="140" height="25" rx="4" fill="#e0e7ff"/>
+  <rect x="265" y="330" width="80" height="15" rx="2" fill="#4f46e5"/>
+  <text x="330" y="342" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#3730a3">62%</text>
+  
+  <!-- Success state -->
+  <rect x="420" y="325" width="140" height="25" rx="4" fill="#dcfce7"/>
+  <rect x="425" y="330" width="130" height="15" rx="2" fill="#22c55e"/>
+  <text x="490" y="342" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#15803d">✓ Complete</text>
+  
+  <!-- Error state -->
+  <rect x="580" y="325" width="140" height="25" rx="4" fill="#fee2e2"/>
+  <rect x="585" y="330" width="60" height="15" rx="2" fill="#ef4444"/>
+  <text x="650" y="342" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#b91c1c">✗ Failed</text>
+  <rect x="685" y="327" width="30" height="21" rx="3" fill="#ef4444"/>
+  <text x="700" y="342" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" font-weight="600" fill="#ffffff">Retry</text>
+  
+  <!-- Multiple file upload -->
+  <rect x="80" y="380" width="350" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="255" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Multiple File Upload</text>
+  
+  <!-- File list -->
+  <rect x="100" y="425" width="290" height="80" rx="6" fill="#ffffff" stroke="#fde68a" stroke-width="1.5"/>
+  
+  <!-- File 1 -->
+  <rect x="115" y="435" width="260" height="20" rx="3" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="130" y="449" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">✓ image1.jpg</text>
+  <text x="350" y="449" text-anchor="end" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">100%</text>
+  
+  <!-- File 2 -->
+  <rect x="115" y="458" width="260" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="130" y="472" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">↑ image2.jpg</text>
+  <rect x="300" y="462" width="70" height="12" rx="2" fill="#f59e0b" opacity="0.3"/>
+  <rect x="300" y="462" width="45" height="12" rx="2" fill="#f59e0b"/>
+  <text x="350" y="472" text-anchor="end" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">65%</text>
+  
+  <!-- Overall progress -->
+  <rect x="115" y="483" width="260" height="15" rx="2" fill="#e2e8f0"/>
+  <rect x="115" y="483" width="200" height="15" rx="2" fill="#0284c7"/>
+  <text x="370" y="494" text-anchor="end" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#475569">Overall: 82%</text>
+  
+  <!-- Error handling -->
+  <rect x="450" y="380" width="420" height="140" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="660" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">Error Handling</text>
+  
+  <rect x="470" y="425" width="380" height="80" rx="6" fill="#ffffff" stroke="#fee2e2" stroke-width="1.5"/>
+  <text x="490" y="450" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#991b1b">Error Types &amp; Actions:</text>
+  <text x="500" y="470" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• Network error → Auto-retry (3 attempts)</text>
+  <text x="500" y="485" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• File too large → Show error, remove file</text>
+  <text x="500" y="500" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">• Server error → Show message, retry button</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="progress-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+  </defs>
+</svg>
