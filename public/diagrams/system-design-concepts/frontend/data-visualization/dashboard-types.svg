@@ -1,0 +1,105 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Dashboard Types and Use Cases</text>
+  
+  <!-- Monitoring Dashboard -->
+  <rect x="50" y="80" width="260" height="220" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="180" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">Monitoring</text>
+  <text x="180" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Real-time tracking</text>
+  
+  <rect x="70" y="165" width="220" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <!-- KPIs -->
+  <rect x="85" y="180" width="90" height="40" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="130" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">CPU: 85%</text>
+  <rect x="185" y="180" width="90" height="40" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="230" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Mem: 92%</text>
+  <!-- Alerts -->
+  <rect x="85" y="230" width="200" height="45" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="185" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#991b1b">⚠ 3 Active Alerts</text>
+  
+  <rect x="70" y="290" width="220" height="40" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="180" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Ops, System Admin</text>
+  
+  <!-- Analysis Dashboard -->
+  <rect x="330" y="80" width="260" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Analysis</text>
+  <text x="460" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Data exploration</text>
+  
+  <rect x="350" y="165" width="220" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <!-- Charts -->
+  <rect x="365" y="180" width="90" height="70" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <path d="M 375 240 L 385 220 L 395 230 L 405 210 L 415 225 L 425 200 L 435 215 L 445 190" stroke="#f59e0b" stroke-width="2" fill="none"/>
+  <rect x="475" y="180" width="80" height="70" rx="4" fill="#f59e0b" opacity="0.2"/>
+  <rect x="485" y="220" width="15" height="25" fill="#f59e0b" opacity="0.6"/>
+  <rect x="505" y="210" width="15" height="35" fill="#f59e0b" opacity="0.6"/>
+  <rect x="525" y="200" width="15" height="45" fill="#f59e0b" opacity="0.6"/>
+  
+  <rect x="350" y="290" width="220" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Analysts, Data Scientists</text>
+  
+  <!-- Decision Support Dashboard -->
+  <rect x="610" y="80" width="260" height="220" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="740" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Decision Support</text>
+  <text x="740" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Strategic decisions</text>
+  
+  <rect x="630" y="165" width="220" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <!-- KPIs with targets -->
+  <rect x="645" y="180" width="190" height="30" rx="4" fill="#10b981" opacity="0.2"/>
+  <text x="740" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Revenue: $1.2M / $1M target ✓</text>
+  <rect x="645" y="215" width="190" height="30" rx="4" fill="#10b981" opacity="0.2"/>
+  <text x="740" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Growth: +15% / +10% target ✓</text>
+  
+  <rect x="630" y="290" width="220" height="40" rx="4" fill="#d1fae5" stroke="#10b981"/>
+  <text x="740" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Executives, Managers</text>
+  
+  <!-- Comparison Table -->
+  <rect x="50" y="320" width="820" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="460" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Dashboard Type Comparison</text>
+  
+  <!-- Table Header -->
+  <rect x="70" y="375" width="180" height="40" rx="4" fill="#e2e8f0"/>
+  <text x="160" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Type</text>
+  <rect x="250" y="375" width="180" height="40" rx="4" fill="#e2e8f0"/>
+  <text x="340" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Update Frequency</text>
+  <rect x="430" y="375" width="180" height="40" rx="4" fill="#e2e8f0"/>
+  <text x="520" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Interactivity</text>
+  <rect x="610" y="375" width="260" height="40" rx="4" fill="#e2e8f0"/>
+  <text x="740" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Key Metrics</text>
+  
+  <!-- Row 1: Monitoring -->
+  <rect x="70" y="415" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="160" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Monitoring</text>
+  <rect x="250" y="415" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="340" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Real-time (&lt;1s)</text>
+  <rect x="430" y="415" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="520" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Low (view only)</text>
+  <rect x="610" y="415" width="260" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="740" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">System health, alerts, SLAs</text>
+  
+  <!-- Row 2: Analysis -->
+  <rect x="70" y="450" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="160" y="472" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Analysis</text>
+  <rect x="250" y="450" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="340" y="472" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">On-demand</text>
+  <rect x="430" y="450" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="520" y="472" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">High (filters, drill-down)</text>
+  <rect x="610" y="450" width="260" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="740" y="472" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Trends, patterns, correlations</text>
+  
+  <!-- Row 3: Decision -->
+  <rect x="70" y="485" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="160" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Decision Support</text>
+  <rect x="250" y="485" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="340" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Periodic (daily/weekly)</text>
+  <rect x="430" y="485" width="180" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="520" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Medium (targets, comparisons)</text>
+  <rect x="610" y="485" width="260" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="740" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">KPIs vs targets, recommendations</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Match dashboard type to user needs: Monitoring for ops (real-time), Analysis for exploration (interactive), Decision Support for strategy (KPIs vs targets)</text>
+</svg>

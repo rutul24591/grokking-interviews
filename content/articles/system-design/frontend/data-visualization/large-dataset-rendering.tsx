@@ -181,6 +181,13 @@ export default function ArticlePage() {
         <p>
           Large dataset techniques involve trade-offs between accuracy, performance, and implementation complexity.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/data-visualization/performance-benchmarks.svg"
+          alt="Performance benchmarks showing FPS and memory usage by technique (GPU, Virtualization, Aggregation, Sampling) for 100K points"
+          caption="Performance benchmarks — GPU: 60 FPS, 50MB | Virtualization: 55 FPS, 75MB | Aggregation: 40 FPS, 150MB | Raw: avoid for 100K+ points"
+        />
+
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">

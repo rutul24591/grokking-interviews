@@ -170,6 +170,13 @@ export default function ArticlePage() {
         <p>
           Canvas vs SVG involves fundamental trade-offs between performance, accessibility, and implementation complexity.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/data-visualization/performance-comparison.svg"
+          alt="Performance comparison showing FPS vs element count chart and memory usage comparison between Canvas and SVG"
+          caption="Performance comparison — Canvas maintains 60fps at 100K+ elements, SVG degrades above 5K elements, Canvas uses 5x less memory for large datasets"
+        />
+
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b-2 border-theme">

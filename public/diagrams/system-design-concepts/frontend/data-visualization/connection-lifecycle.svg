@@ -1,0 +1,113 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Real-Time Connection Lifecycle</text>
+  
+  <!-- Connecting -->
+  <rect x="50" y="80" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="140" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">1. Connect</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">WebSocket / SSE</text>
+  <rect x="70" y="165" width="140" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="140" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Handshake</text>
+  <text x="140" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Authentication</text>
+  
+  <!-- Arrow -->
+  <line x1="230" y1="140" x2="280" y2="140" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow1)"/>
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  
+  <!-- Connected -->
+  <rect x="280" y="80" width="180" height="120" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="370" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">2. Connected</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Receiving Data</text>
+  <rect x="300" y="165" width="140" height="25" rx="4" fill="#10b981" opacity="0.3"/>
+  <text x="370" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Data Stream</text>
+  <text x="370" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Buffer &amp; Render</text>
+  
+  <!-- Arrow -->
+  <line x1="460" y1="140" x2="510" y2="140" stroke="#10b981" stroke-width="3" marker-end="url(#arrow2)"/>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  
+  <!-- Heartbeat -->
+  <rect x="510" y="80" width="180" height="120" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="600" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">3. Heartbeat</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Ping / Pong</text>
+  <rect x="530" y="165" width="140" height="25" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="600" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">Ping every 30s</text>
+  <text x="600" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">Detect stale</text>
+  
+  <!-- Arrow with condition -->
+  <path d="M 690 140 L 740 140" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow3)"/>
+  <defs>
+    <marker id="arrow3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <text x="715" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#3b82f6" font-weight="600">OK</text>
+  
+  <!-- Disconnected path -->
+  <path d="M 600 200 L 600 250 L 450 250 L 450 280" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow4)"/>
+  <defs>
+    <marker id="arrow4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <text x="520" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ef4444" font-weight="600">Timeout</text>
+  
+  <!-- Reconnecting -->
+  <rect x="350" y="280" width="200" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">4. Reconnect</text>
+  <text x="450" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Exponential Backoff</text>
+  <rect x="370" y="360" width="160" height="15" rx="3" fill="#ef4444" opacity="0.3"/>
+  <text x="450" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#7f1d1d">1s → 2s → 4s → 8s</text>
+  
+  <!-- Arrow back to connect -->
+  <path d="M 350 330 L 280 330 L 280 200 L 230 200" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow5)"/>
+  <defs>
+    <marker id="arrow5" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+  
+  <!-- Data Recovery -->
+  <rect x="740" y="80" width="140" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="810" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">5. Recover</text>
+  <text x="810" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Fill Gaps</text>
+  <rect x="760" y="165" width="100" height="25" rx="4" fill="#6366f1" opacity="0.3"/>
+  <text x="810" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">Request missed</text>
+  <text x="810" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">Fill visualization</text>
+  
+  <!-- Arrow from reconnect to recover -->
+  <path d="M 550 300 L 550 140 L 740 140" stroke="#6366f1" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow6)"/>
+  <defs>
+    <marker id="arrow6" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <text x="650" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6366f1" font-weight="600">Success</text>
+  
+  <!-- Error Handling -->
+  <rect x="50" y="420" width="400" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="250" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Error Handling</text>
+  <rect x="70" y="475" width="360" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Validate data, show stale indicator, offer manual reconnect</text>
+  
+  <!-- Best Practices -->
+  <rect x="470" y="420" width="410" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="675" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Best Practices</text>
+  <rect x="490" y="475" width="370" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="675" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Heartbeat every 30s, max 5 reconnects, request missed data by timestamp</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Connection lifecycle: Connect → Connected → Heartbeat → (timeout) → Reconnect (backoff) → Recover data. Handle errors gracefully with validation and user feedback.</text>
+</svg>

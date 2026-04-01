@@ -86,6 +86,12 @@ export default function ArticlePage() {
           <strong>License and cost</strong> — is the library open source or commercial? Commercial libraries offer support but require ongoing costs. Open source libraries rely on community support.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/data-visualization/library-selection-decision-tree.svg"
+          alt="Decision tree for chart library selection: Custom → D3.js, React → Recharts, Quick → Chart.js, Enterprise → Highcharts, Flexible React → Victory"
+          caption="Library selection — decision tree guides library choice based on requirements: customization needs, framework, setup speed, and support requirements"
+        />
+
         <h3>Integration Patterns</h3>
         <p>
           Integration patterns vary by library type. <strong>Component wrapper pattern</strong> wraps chart library in React components. The wrapper handles lifecycle, prop-to-option conversion, and cleanup. This is common for non-React libraries used in React applications.

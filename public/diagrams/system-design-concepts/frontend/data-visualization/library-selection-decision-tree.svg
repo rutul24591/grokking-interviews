@@ -1,0 +1,188 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Chart Library Selection Decision Tree</text>
+  
+  <!-- Start -->
+  <rect x="350" y="60" width="200" height="50" rx="25" fill="#3b82f6" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="90" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Need Chart Library?</text>
+  
+  <!-- Arrow down -->
+  <line x1="450" y1="110" x2="450" y2="140" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Q1: Custom Visualization -->
+  <rect x="300" y="140" width="300" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Need Custom Visualization?</text>
+  
+  <!-- Yes to Custom -->
+  <line x1="300" y1="170" x2="200" y2="170" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowYes)"/>
+  <defs>
+    <marker id="arrowYes" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="250" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">Yes</text>
+  
+  <!-- D3.js -->
+  <rect x="50" y="140" width="130" height="60" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="115" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">D3.js</text>
+  <text x="115" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Maximum flexibility</text>
+  
+  <!-- No to Custom -->
+  <line x1="600" y1="170" x2="700" y2="170" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowNo)"/>
+  <defs>
+    <marker id="arrowNo" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="650" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">No</text>
+  
+  <!-- Q2: React -->
+  <rect x="700" y="140" width="150" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="775" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Using React?</text>
+  
+  <!-- Yes to React -->
+  <line x1="775" y1="200" x2="775" y2="240" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowYes2)"/>
+  <defs>
+    <marker id="arrowYes2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="790" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">Yes</text>
+  
+  <!-- Recharts -->
+  <rect x="700" y="240" width="150" height="60" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="775" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">Recharts</text>
+  <text x="775" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">React components</text>
+  
+  <!-- No to React -->
+  <line x1="850" y1="170" x2="900" y2="170" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowNo2)"/>
+  <defs>
+    <marker id="arrowNo2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="875" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">No</text>
+  
+  <!-- Q3: Quick Setup -->
+  <rect x="900" y="140" width="150" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="975" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Need Quick Setup?</text>
+  
+  <!-- Yes to Quick -->
+  <line x1="975" y1="200" x2="975" y2="240" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowYes3)"/>
+  <defs>
+    <marker id="arrowYes3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="990" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">Yes</text>
+  
+  <!-- Chart.js -->
+  <rect x="900" y="240" width="150" height="60" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="975" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">Chart.js</text>
+  <text x="975" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Configuration-based</text>
+  
+  <!-- No to Quick -->
+  <line x1="1050" y1="170" x2="1100" y2="170" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowNo3)"/>
+  <defs>
+    <marker id="arrowNo3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="1075" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">No</text>
+  
+  <!-- Q4: Enterprise -->
+  <rect x="1100" y="140" width="150" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="1175" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Enterprise/Support?</text>
+  
+  <!-- Yes to Enterprise -->
+  <line x1="1175" y1="200" x2="1175" y2="240" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowYes4)"/>
+  <defs>
+    <marker id="arrowYes4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="1190" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">Yes</text>
+  
+  <!-- Highcharts -->
+  <rect x="1100" y="240" width="150" height="60" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="1175" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">Highcharts</text>
+  <text x="1175" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Commercial, support</text>
+  
+  <!-- No to Enterprise -->
+  <line x1="1250" y1="170" x2="1300" y2="170" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowNo4)"/>
+  <defs>
+    <marker id="arrowNo4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="1275" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">No</text>
+  
+  <!-- Victory -->
+  <rect x="1300" y="140" width="130" height="60" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="1365" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">Victory</text>
+  <text x="1365" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">React, flexible</text>
+  
+  <!-- Library Comparison -->
+  <rect x="50" y="340" width="820" height="190" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="460" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Library Comparison</text>
+  
+  <!-- Table Header -->
+  <rect x="70" y="395" width="150" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="145" y="417" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Library</text>
+  <rect x="220" y="395" width="150" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="295" y="417" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Best For</text>
+  <rect x="370" y="395" width="150" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="445" y="417" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Learning</text>
+  <rect x="520" y="395" width="150" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="595" y="417" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Bundle</text>
+  <rect x="670" y="395" width="200" height="35" rx="4" fill="#e2e8f0"/>
+  <text x="770" y="417" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">License</text>
+  
+  <!-- D3.js Row -->
+  <rect x="70" y="430" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="145" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">D3.js</text>
+  <rect x="220" y="430" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="295" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Custom viz</text>
+  <rect x="370" y="430" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="445" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Steep</text>
+  <rect x="520" y="430" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="595" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">~250 KB</text>
+  <rect x="670" y="430" width="200" height="30" rx="4" fill="#d1fae5" stroke="#10b981"/>
+  <text x="770" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#065f46">ISC (Open Source)</text>
+  
+  <!-- Recharts Row -->
+  <rect x="70" y="460" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="145" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Recharts</text>
+  <rect x="220" y="460" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="295" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">React apps</text>
+  <rect x="370" y="460" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="445" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Moderate</text>
+  <rect x="520" y="460" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="595" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">~80 KB</text>
+  <rect x="670" y="460" width="200" height="30" rx="4" fill="#d1fae5" stroke="#10b981"/>
+  <text x="770" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#065f46">MIT (Open Source)</text>
+  
+  <!-- Chart.js Row -->
+  <rect x="70" y="490" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="145" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Chart.js</text>
+  <rect x="220" y="490" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="295" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Quick setup</text>
+  <rect x="370" y="490" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="445" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Shallow</text>
+  <rect x="520" y="490" width="150" height="30" rx="4" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="595" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">~60 KB</text>
+  <rect x="670" y="490" width="200" height="30" rx="4" fill="#d1fae5" stroke="#10b981"/>
+  <text x="770" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#065f46">MIT (Open Source)</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Decision tree: Custom → D3.js | React → Recharts | Quick → Chart.js | Enterprise → Highcharts | Flexible React → Victory</text>
+</svg>

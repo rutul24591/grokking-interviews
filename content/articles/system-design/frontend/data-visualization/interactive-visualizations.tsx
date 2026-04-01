@@ -156,6 +156,12 @@ export default function ArticlePage() {
           Batch updates when possible. Multiple state changes should trigger single re-render. Use React's batched updates or manual batching for non-React code.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/data-visualization/state-management-flow.svg"
+          alt="State management flow showing Data State + Interaction State → Derived State (memoized) → Render with user interaction loop"
+          caption="State management — Data State (immutable) + Interaction State (user actions) → Derived State (memoized selectors) → Render. User interactions update Interaction State, triggering re-render"
+        />
+
         <h3>Tooltip Architecture</h3>
         <p>
           Tooltips require careful architecture. <strong>Position calculation</strong> determines tooltip position (near cursor, near data point, fixed position). <strong>Content rendering</strong> determines tooltip content (single value, multiple fields, custom component). <strong>Visibility management</strong> determines when tooltip shows/hides (on hover, with delay, sticky).

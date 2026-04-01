@@ -164,6 +164,12 @@ export default function ArticlePage() {
           Implement <strong>data recovery</strong> for missed data. On reconnect, request missed data (by timestamp or sequence number). Fill gap in visualization. This ensures data continuity.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/data-visualization/connection-lifecycle.svg"
+          alt="Connection lifecycle showing Connect → Connected → Heartbeat → (timeout) → Reconnect (backoff) → Recover data flow"
+          caption="Connection lifecycle — Connect → Connected → Heartbeat (ping/pong) → on timeout: Reconnect with exponential backoff → Recover missed data. Handle errors with validation and user feedback"
+        />
+
         <h3>Error Handling</h3>
         <p>
           Real-time systems must handle errors gracefully. <strong>Data validation</strong> validates incoming data. Reject malformed data, log errors, continue processing valid data. Don't let bad data crash visualization.

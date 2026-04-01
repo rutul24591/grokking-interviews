@@ -77,6 +77,12 @@ export default function ArticlePage() {
           <strong>Drill-Down Layout</strong> shows overview with ability to drill into detail. Top level shows summary. Click to see detail. Good for hierarchical data. Enables progressive disclosure.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/data-visualization/dashboard-types.svg"
+          alt="Dashboard types showing Monitoring (real-time, alerts), Analysis (charts, exploration), and Decision Support (KPIs vs targets) with comparison table"
+          caption="Dashboard types — Monitoring for ops (real-time, alerts), Analysis for exploration (interactive charts), Decision Support for strategy (KPIs vs targets). Match type to user needs"
+        />
+
         <h3>Visual Hierarchy</h3>
         <p>
           Visual hierarchy guides user attention. <strong>Size</strong> (larger = more important), <strong>position</strong> (top-left = most important for LTR), <strong>color</strong> (bright = attention), <strong>contrast</strong> (high contrast = prominent), and <strong>white space</strong> (isolation = importance) create hierarchy.
