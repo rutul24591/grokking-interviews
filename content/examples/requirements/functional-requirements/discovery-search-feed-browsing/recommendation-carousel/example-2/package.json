@@ -1,0 +1,1 @@
+{ "name": "recommendation-carousel-example-2", "private": true, "scripts": { "start": "node src/demo.js" } }

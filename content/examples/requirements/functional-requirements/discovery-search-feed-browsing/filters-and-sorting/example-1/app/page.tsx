@@ -1,0 +1,13 @@
+"use client";
+import { useEffect, useState } from "react";
+type Result = { id: string; title: string; popularity: number; recencyHours: number; category: string };
+type FilteringState = { filters: { category: string }; sort: 'popular' | 'recent'; results: Result[]; lastMessage: string };
+export default function Page() {
+  const [state, setState] = useState<FilteringState | null>(null);
+  const [category, setCategory] = useState('all');
+  const [sort, setSort] = useState<'popular' | 'recent'>('popular');
+  async function refresh() { const response = await fetch('/api/filtering/state'); const data = (await response.json()) as FilteringState; setState(data); setCategory(data.filters.category); setSort(data.sort); }
+  async function apply() { const response = await fetch('/api/filtering/apply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ category, sort }) }); setState((await response.json()) as FilteringState); }
+  useEffect(() => { void refresh(); }, []);
+  return <main className="mx-auto max-w-6xl px-6 py-10"><h1 className="text-3xl font-bold">Filters and Sorting</h1><p className="mt-2 text-slate-300">Apply category filters, switch sort order, and inspect how the result set changes in a discovery workflow.</p><section className="mt-8 grid gap-6 lg:grid-cols-[320px,1fr]"><article className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 text-sm text-slate-300"><label className="block">Category</label><select value={category} onChange={(event) => setCategory(event.target.value)} className="mt-2 w-full rounded border border-slate-700 bg-slate-950 px-3 py-2"><option value="all">all</option><option value="frontend">frontend</option><option value="backend">backend</option></select><label className="mt-4 block">Sort</label><select value={sort} onChange={(event) => setSort(event.target.value as 'popular' | 'recent')} className="mt-2 w-full rounded border border-slate-700 bg-slate-950 px-3 py-2"><option value="popular">popular</option><option value="recent">recent</option></select><button onClick={apply} className="mt-4 rounded bg-sky-600 px-4 py-2 text-sm font-semibold hover:bg-sky-500">Apply</button></article><article className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 text-sm text-slate-300"><ul className="space-y-3">{state?.results.map((result) => <li key={result.id} className="rounded-lg border border-slate-800 p-4"><div className="font-semibold text-slate-100">{result.title}</div><div className="mt-1 text-slate-400">{result.category} · popularity {result.popularity} · {result.recencyHours}h ago</div></li>)}</ul><p className="mt-5">{state?.lastMessage}</p></article></section></main>;
+}

@@ -1,0 +1,13 @@
+"use client";
+import { useEffect, useMemo, useState } from "react";
+type Candidate = { id: string; title: string; source: string; score: number };
+type FeedBuilderState = { candidatePool: Candidate[]; generated: string[]; diversityGuard: boolean; lastMessage: string };
+export default function Page() {
+  const [state, setState] = useState<FeedBuilderState | null>(null);
+  const [diversityGuard, setDiversityGuard] = useState(true);
+  async function refresh() { const response = await fetch('/api/feed-builder/state'); const data = (await response.json()) as FeedBuilderState; setState(data); setDiversityGuard(data.diversityGuard); }
+  async function generate() { const response = await fetch('/api/feed-builder/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ diversityGuard }) }); setState((await response.json()) as FeedBuilderState); }
+  useEffect(() => { void refresh(); }, []);
+  const generatedItems = useMemo(() => state?.candidatePool.filter((candidate) => state.generated.includes(candidate.id)) ?? [], [state]);
+  return <main className="mx-auto max-w-6xl px-6 py-10"><h1 className="text-3xl font-bold">Feed Generation</h1><p className="mt-2 text-slate-300">Assemble a feed from multiple candidate sources and compare pure-score ranking with diversity-constrained generation.</p><section className="mt-8 grid gap-6 lg:grid-cols-[320px,1fr]"><article className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 text-sm text-slate-300"><label className="flex items-center gap-2"><input type="checkbox" checked={diversityGuard} onChange={(event) => setDiversityGuard(event.target.checked)} />Apply source diversity guard</label><button onClick={generate} className="mt-4 rounded bg-sky-600 px-4 py-2 text-sm font-semibold hover:bg-sky-500">Generate feed</button><p className="mt-4">{state?.lastMessage}</p></article><article className="rounded-xl border border-slate-800 bg-slate-900/60 p-5"><div className="grid gap-4 md:grid-cols-2"><div><div className="text-sm font-semibold text-slate-100">Candidate pool</div><ul className="mt-3 space-y-2 text-sm text-slate-300">{state?.candidatePool.map((candidate) => <li key={candidate.id} className="rounded border border-slate-800 px-3 py-2">{candidate.title} · {candidate.source} · {candidate.score}</li>)}</ul></div><div><div className="text-sm font-semibold text-slate-100">Generated feed</div><ul className="mt-3 space-y-2 text-sm text-slate-300">{generatedItems.map((candidate) => <li key={candidate.id} className="rounded border border-slate-800 px-3 py-2">{candidate.title} · {candidate.source}</li>)}</ul></div></div></article></section></main>;
+}

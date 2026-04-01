@@ -1,0 +1,1 @@
+{ "name": "search-results-ui-example-2", "private": true, "scripts": { "start": "node src/demo.js" } }
