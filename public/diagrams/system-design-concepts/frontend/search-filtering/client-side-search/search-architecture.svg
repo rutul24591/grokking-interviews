@@ -1,0 +1,134 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="600" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Client-Side Search Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Data flow from loading through indexing to results display</text>
+  
+  <!-- Data Loading Layer -->
+  <rect x="30" y="100" width="170" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="115" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">1. Data Loading</text>
+  <text x="115" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Fetch dataset</text>
+  <text x="115" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Parse JSON</text>
+  <text x="115" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Validate schema</text>
+  
+  <!-- Arrow to Indexing -->
+  <path d="M 200 150 L 240 150" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Indexing Layer -->
+  <rect x="240" y="100" width="170" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="325" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">2. Indexing</text>
+  <text x="325" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Tokenize text</text>
+  <text x="325" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Build inverted index</text>
+  <text x="325" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Store metadata</text>
+  
+  <!-- Arrow to Query Processing -->
+  <path d="M 410 150 L 450 150" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Query Processing Layer -->
+  <rect x="450" y="100" width="170" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="535" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">3. Query Processing</text>
+  <text x="535" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Normalize input</text>
+  <text x="535" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Tokenize query</text>
+  <text x="535" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Remove stopwords</text>
+  
+  <!-- Arrow to Search Execution -->
+  <path d="M 620 150 L 660 150" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <!-- Search Execution Layer -->
+  <rect x="660" y="100" width="170" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="745" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">4. Search Execution</text>
+  <text x="745" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Lookup in index</text>
+  <text x="745" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Score matches</text>
+  <text x="745" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Sort by relevance</text>
+  
+  <!-- Arrow to Results -->
+  <path d="M 830 150 L 870 150" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple)" fill="none"/>
+  
+  <!-- Results Layer -->
+  <rect x="870" y="100" width="170" height="100" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+  <text x="955" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#9d174d">5. Results Display</text>
+  <text x="955" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#9d174d">• Limit count</text>
+  <text x="955" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#9d174d">• Highlight matches</text>
+  <text x="955" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#9d174d">• Render UI</text>
+  
+  <!-- User Input Section -->
+  <rect x="30" y="230" width="400" height="150" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+  <text x="230" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">User Input Flow</text>
+  
+  <rect x="50" y="280" width="360" height="85" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  
+  <!-- Search input visual -->
+  <rect x="65" y="295" width="280" height="35" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="85" y="318" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" fill="#647480">🔍 Search documentation...</text>
+  
+  <!-- Debounce indicator -->
+  <circle cx="360" cy="312" r="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="360" y="317" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#92400e">⏱</text>
+  
+  <text x="65" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Debounce: 200-300ms delay before search executes</text>
+  
+  <!-- Index Structure Section -->
+  <rect x="450" y="230" width="420" height="150" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+  <text x="660" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Inverted Index Structure</text>
+  
+  <rect x="470" y="280" width="380" height="85" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  
+  <!-- Index entries -->
+  <text x="485" y="305" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#0284c7">"react"</text>
+  <text x="540" y="305" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#475569">→ [doc1, doc5, doc12, doc45]</text>
+  
+  <text x="485" y="325" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#0284c7">"component"</text>
+  <text x="565" y="325" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#475569">→ [doc1, doc2, doc5, doc8, doc12]</text>
+  
+  <text x="485" y="345" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#0284c7">"hooks"</text>
+  <text x="540" y="345" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#475569">→ [doc5, doc12, doc23]</text>
+  
+  <!-- Search Execution Detail -->
+  <rect x="30" y="400" width="400" height="180" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="230" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#b91c1c">Search Execution Detail</text>
+  
+  <rect x="50" y="450" width="360" height="115" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1.5"/>
+  
+  <!-- Query processing steps -->
+  <text x="65" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b91c1c">Query: "React Hooks"</text>
+  
+  <path d="M 65 490 L 380 490" stroke="#fee2e2" stroke-width="1"/>
+  
+  <text x="65" y="510" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">1. Normalize: "react hooks"</text>
+  <text x="65" y="527" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">2. Tokenize: ["react", "hooks"]</text>
+  <text x="65" y="544" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">3. Lookup: [doc1,doc5,doc12] ∩ [doc5,doc12,doc23]</text>
+  <text x="65" y="561" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">4. Result: [doc5, doc12] (sorted by score)</text>
+  
+  <!-- Results Display Detail -->
+  <rect x="450" y="400" width="420" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Results Display</text>
+  
+  <rect x="470" y="450" width="380" height="115" rx="6" fill="#ffffff" stroke="#dcfce7" stroke-width="1.5"/>
+  
+  <!-- Result items -->
+  <rect x="485" y="465" width="350" height="40" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+  <text x="500" y="485" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">📄 <tspan font-weight="600">React</tspan> <tspan font-weight="600">Hooks</tspan> Documentation</text>
+  <text x="500" y="500" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b7280">Score: 0.95 | Type: Guide</text>
+  
+  <rect x="485" y="515" width="350" height="40" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+  <text x="500" y="535" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">📄 Building Custom <tspan font-weight="600">Hooks</tspan></text>
+  <text x="500" y="550" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b7280">Score: 0.72 | Type: Tutorial</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+</svg>

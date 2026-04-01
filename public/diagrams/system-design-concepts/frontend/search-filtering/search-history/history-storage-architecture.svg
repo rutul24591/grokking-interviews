@@ -1,0 +1,85 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Search History Storage Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">localStorage, IndexedDB, and server sync options</text>
+  
+  <!-- localStorage -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">localStorage</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Simple API</text>
+  <text x="65" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Synchronous</text>
+  <text x="65" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ 5-10MB storage</text>
+  <text x="65" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Per-origin (not per-user)</text>
+  <text x="65" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Cleared with browser data</text>
+  <text x="165" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Best for: Recent history</text>
+  
+  <!-- IndexedDB -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">IndexedDB</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="350" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Async (non-blocking)</text>
+  <text x="350" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Large storage (GBs)</text>
+  <text x="350" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Complex queries</text>
+  <text x="350" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ More complex API</text>
+  <text x="350" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Browser support varies</text>
+  <text x="450" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Best for: Full history</text>
+  
+  <!-- Server Storage -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Server Storage</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="635" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Synced across devices</text>
+  <text x="635" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Survives browser clear</text>
+  <text x="635" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Analytics possible</text>
+  <text x="635" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Requires auth</text>
+  <text x="635" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Network latency</text>
+  <text x="735" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">Best for: Synced history</text>
+  
+  <!-- Hybrid Architecture -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Hybrid Architecture (Recommended)</text>
+  
+  <!-- Diagram -->
+  <rect x="50" y="370" width="800" height="145" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  
+  <!-- Client side -->
+  <rect x="70" y="390" width="200" height="105" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="170" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">Client (Browser)</text>
+  <text x="85" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">localStorage: Recent 20 searches</text>
+  <text x="85" y="460" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">• Instant access</text>
+  <text x="85" y="480" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">• Works offline</text>
+  
+  <!-- Sync arrow -->
+  <path d="M 280 442 L 340 442" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="310" y="434" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Sync</text>
+  <path d="M 340 462 L 280 462" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="310" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Download</text>
+  
+  <!-- Server side -->
+  <rect x="350" y="390" width="200" height="105" rx="6" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0c4a6e">Server (Database)</text>
+  <text x="365" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Full history (unlimited)</text>
+  <text x="365" y="460" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">• Synced across devices</text>
+  <text x="365" y="480" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">• Survives browser clear</text>
+  
+  <!-- User -->
+  <rect x="600" y="390" width="230" height="105" rx="6" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="715" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#6b21a8">User Benefits</text>
+  <text x="615" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Instant recent searches</text>
+  <text x="615" y="460" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Full history on all devices</text>
+  <text x="615" y="480" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Privacy controls</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+  </defs>
+</svg>

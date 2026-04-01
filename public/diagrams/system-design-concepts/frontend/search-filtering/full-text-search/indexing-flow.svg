@@ -1,0 +1,107 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Search Indexing Flow</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Document processing through tokenization, normalization, and index building</text>
+  
+  <!-- Document Input -->
+  <rect x="30" y="100" width="140" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="100" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Document</text>
+  <rect x="50" y="160" width="100" height="30" rx="4" fill="#ffffff" stroke="#0284c7"/>
+  <text x="100" y="180" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">{"{ id: 1,"}</text>
+  <text x="100" y="195" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">title: "React"}</text>
+  
+  <!-- Arrow -->
+  <path d="M 170 150 L 200 150" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Tokenization -->
+  <rect x="200" y="100" width="140" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="270" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Tokenization</text>
+  <text x="270" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Split on spaces</text>
+  <text x="270" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Remove punctuation</text>
+  <text x="270" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Lowercase</text>
+  
+  <!-- Arrow -->
+  <path d="M 340 150 L 370 150" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Normalization -->
+  <rect x="370" y="100" width="140" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="440" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Normalization</text>
+  <text x="440" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Remove accents</text>
+  <text x="440" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Stemming</text>
+  <text x="440" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Remove stopwords</text>
+  
+  <!-- Arrow -->
+  <path d="M 510 150 L 540 150" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <!-- Index Building -->
+  <rect x="540" y="100" width="140" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="610" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Index Building</text>
+  <text x="610" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Build inverted index</text>
+  <text x="610" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Map terms to docs</text>
+  <text x="610" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Store positions</text>
+  
+  <!-- Arrow -->
+  <path d="M 680 150 L 710 150" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple)" fill="none"/>
+  
+  <!-- Inverted Index -->
+  <rect x="710" y="100" width="160" height="100" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+  <text x="790" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#9d174d">Inverted Index</text>
+  <rect x="730" y="155" width="120" height="35" rx="4" fill="#ffffff" stroke="#f9a8d4"/>
+  <text x="790" y="172" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#9d174d">"react"→[doc1,doc5]</text>
+  <rect x="730" y="195" width="120" height="35" rx="4" fill="#ffffff" stroke="#f9a8d4"/>
+  <text x="790" y="212" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#9d174d">"hook"→[doc5,doc12]</text>
+  
+  <!-- Detailed Example -->
+  <rect x="30" y="230" width="840" height="300" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Indexing Example: "React Hooks Tutorial"</text>
+  
+  <!-- Step by step -->
+  <rect x="50" y="280" width="800" height="235" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  
+  <!-- Original -->
+  <text x="65" y="310" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#475569">Original:</text>
+  <rect x="140" y="295" width="200" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="240" y="315" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#1e293b">"React Hooks Tutorial"</text>
+  
+  <!-- After Tokenization -->
+  <text x="65" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#475569">After Tokenization:</text>
+  <rect x="180" y="335" width="50" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="205" y="355" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#92400e">react</text>
+  <rect x="240" y="335" width="50" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="265" y="355" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#92400e">hooks</text>
+  <rect x="300" y="335" width="60" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="330" y="355" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#92400e">tutorial</text>
+  
+  <!-- After Stemming -->
+  <text x="65" y="390" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#475569">After Stemming:</text>
+  <rect x="180" y="375" width="50" height="30" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="205" y="395" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#15803d">react</text>
+  <rect x="240" y="375" width="50" height="30" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="265" y="395" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#15803d">hook</text>
+  <rect x="300" y="375" width="60" height="30" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="330" y="395" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#15803d">tutori</text>
+  
+  <!-- Index Entry -->
+  <text x="65" y="430" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#475569">Index Entry:</text>
+  <rect x="150" y="415" width="500" height="35" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="400" y="438" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#6b21a8">{"{ term: "hook", documents: [doc5], positions: [1] }"}</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+</svg>

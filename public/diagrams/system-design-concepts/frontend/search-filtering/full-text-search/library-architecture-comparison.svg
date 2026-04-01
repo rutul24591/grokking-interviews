@@ -1,0 +1,90 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Library Architecture Comparison</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Different indexing strategies and data structures</text>
+  
+  <!-- Lunr Architecture -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Lunr.js Architecture</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Inverted index visual -->
+  <text x="65" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">┌─────────────────────┐</text>
+  <text x="65" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">│ Inverted Index │</text>
+  <text x="65" y="210" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">├─────────────────────┤</text>
+  <text x="65" y="225" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">│ react → [1,5,12] │</text>
+  <text x="65" y="240" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">│ hook → [5,12,23] │</text>
+  <text x="65" y="255" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">│ tutorial → [1,5] │</text>
+  <text x="65" y="270" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">└─────────────────────┘</text>
+  
+  <text x="165" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Serialized index, TF-IDF scoring</text>
+  
+  <!-- Fuse Architecture -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Fuse.js Architecture</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <!-- Normalized records visual -->
+  <text x="350" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">┌─────────────────────┐</text>
+  <text x="350" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">│ Normalized Records│</text>
+  <text x="350" y="210" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">├─────────────────────┤</text>
+  <text x="350" y="225" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">│ [doc1]: "react"   │</text>
+  <text x="350" y="240" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">│ [doc5]: "react..."│</text>
+  <text x="350" y="255" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">│ [doc12]: "hook..."│</text>
+  <text x="350" y="270" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">└─────────────────────┘</text>
+  
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Bitwise matching, no true index</text>
+  
+  <!-- FlexSearch Architecture -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">FlexSearch Architecture</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- Context-based index visual -->
+  <text x="635" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">┌─────────────────────┐</text>
+  <text x="635" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">│ Context Indexes   │</text>
+  <text x="635" y="210" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">├─────────────────────┤</text>
+  <text x="635" y="225" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">│ Full words │ Part │</text>
+  <text x="635" y="240" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">│ react      │ rea  │</text>
+  <text x="635" y="255" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">│ hook       │ hoo  │</text>
+  <text x="635" y="270" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">└─────────────────────┘</text>
+  
+  <text x="735" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Multiple indexes, parallel search</text>
+  
+  <!-- Performance Comparison -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Performance Comparison (10K documents)</text>
+  
+  <!-- Indexing Speed -->
+  <text x="60" y="380" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#475569">Indexing Speed:</text>
+  <rect x="200" y="365" width="200" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="300" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">Lunr: ~500ms</text>
+  <rect x="420" y="365" width="200" height="30" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="520" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Fuse: ~800ms</text>
+  <rect x="640" y="365" width="200" height="30" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="740" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0c4a6e">FlexSearch: ~100ms</text>
+  
+  <!-- Search Speed -->
+  <text x="60" y="430" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#475569">Search Speed:</text>
+  <rect x="200" y="415" width="200" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="300" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">Lunr: ~50ms</text>
+  <rect x="420" y="415" width="200" height="30" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="520" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Fuse: ~30ms</text>
+  <rect x="640" y="415" width="200" height="30" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="740" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0c4a6e">FlexSearch: ~5ms</text>
+  
+  <!-- Memory Usage -->
+  <text x="60" y="480" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#475569">Memory Usage:</text>
+  <rect x="200" y="465" width="200" height="30" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="300" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Lunr: High</text>
+  <rect x="420" y="465" width="200" height="30" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="520" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Fuse: Low</text>
+  <rect x="640" y="465" width="200" height="30" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="740" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0c4a6e">FlexSearch: Medium</text>
+</svg>

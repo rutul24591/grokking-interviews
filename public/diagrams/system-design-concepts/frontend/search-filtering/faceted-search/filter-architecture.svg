@@ -1,0 +1,114 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="600" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Faceted Search Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Filter state, facet computation, and results flow</text>
+  
+  <!-- Filter State Manager -->
+  <rect x="30" y="100" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Filter State Manager</text>
+  <text x="130" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Applied filters</text>
+  <text x="130" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Available facets</text>
+  <text x="130" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• UI state</text>
+  <text x="130" y="216" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• URL sync</text>
+  
+  <!-- Arrow to Facet Engine -->
+  <path d="M 230 160 L 270 160" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Facet Computation Engine -->
+  <rect x="270" y="100" width="220" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="380" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Facet Computation Engine</text>
+  <text x="380" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Compute counts</text>
+  <text x="380" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Update availability</text>
+  <text x="380" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Disable zero-count</text>
+  <text x="380" y="216" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Incremental updates</text>
+  
+  <!-- Arrow to Results -->
+  <path d="M 490 160 L 530 160" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Results Manager -->
+  <rect x="530" y="100" width="200" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="630" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Results Manager</text>
+  <text x="630" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Filter items</text>
+  <text x="630" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Sort results</text>
+  <text x="630" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Pagination</text>
+  <text x="630" y="216" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Virtualization</text>
+  
+  <!-- Arrow to UI -->
+  <path d="M 730 160 L 770 160" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <!-- UI Components -->
+  <rect x="770" y="100" width="100" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="820" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">UI</text>
+  <text x="820" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Facets</text>
+  <text x="820" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Results</text>
+  <text x="820" y="209" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Chips</text>
+  
+  <!-- User Interaction Flow -->
+  <rect x="30" y="250" width="840" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">User Interaction Flow</text>
+  
+  <!-- Step 1 -->
+  <rect x="50" y="300" width="180" height="90" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="140" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#475569">1. User selects</text>
+  <text x="140" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#647480">facet value</text>
+  <rect x="100" y="355" width="80" height="25" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="140" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">☑ Nike</text>
+  
+  <!-- Arrow -->
+  <path d="M 230 345 L 250 345" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" fill="none"/>
+  
+  <!-- Step 2 -->
+  <rect x="250" y="300" width="180" height="90" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="340" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#475569">2. State updates</text>
+  <text x="340" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#647480">filter state</text>
+  <rect x="280" y="355" width="120" height="25" rx="4" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="340" y="372" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#6b21a8">brand: ["nike"]</text>
+  
+  <!-- Arrow -->
+  <path d="M 430 345 L 450 345" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" fill="none"/>
+  
+  <!-- Step 3 -->
+  <rect x="450" y="300" width="180" height="90" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="540" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#475569">3. Facets recompute</text>
+  <text x="540" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#647480">update counts</text>
+  <rect x="480" y="355" width="120" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="540" y="372" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#92400e">Adidas: 45→23</text>
+  
+  <!-- Arrow -->
+  <path d="M 630 345 L 650 345" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" fill="none"/>
+  
+  <!-- Step 4 -->
+  <rect x="650" y="300" width="180" height="90" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="740" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#475569">4. Results update</text>
+  <text x="740" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#647480">filter &amp; display</text>
+  <rect x="680" y="355" width="100" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">23 products</text>
+  
+  <!-- URL Sync -->
+  <rect x="30" y="430" width="840" height="150" rx="8" fill="#fff7ed" stroke="#f97316"/>
+  <text x="450" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#9a3412">URL Synchronization</text>
+  
+  <rect x="60" y="480" width="780" height="85" rx="6" fill="#ffffff" stroke="#fed7aa"/>
+  <text x="80" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#9a3412">Query Params:</text>
+  <text x="80" y="530" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#475569">?brand=nike,adidas&amp;price=50-100&amp;rating=4+&amp;sort=relevance</text>
+  <text x="80" y="555" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#9a3412">Benefits: Shareable URLs, bookmarking, back-button support, SEO</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+  </defs>
+</svg>

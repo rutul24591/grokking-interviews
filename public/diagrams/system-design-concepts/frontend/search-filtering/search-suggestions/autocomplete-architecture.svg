@@ -1,0 +1,122 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="600" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Autocomplete Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">From user input to ranked suggestions with keyboard navigation</text>
+  
+  <!-- Input Handler -->
+  <rect x="30" y="100" width="180" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="120" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Input Handler</text>
+  <text x="120" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Capture input</text>
+  <text x="120" y="187" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Debounce (200ms)</text>
+  <text x="120" y="204" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Cancel pending</text>
+  
+  <!-- Arrow -->
+  <path d="M 210 160 L 250 160" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Suggestion Fetcher -->
+  <rect x="250" y="100" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Suggestion Fetcher</text>
+  <text x="350" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Popular queries</text>
+  <text x="350" y="187" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Personal history</text>
+  <text x="350" y="204" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Catalog items</text>
+  
+  <!-- Arrow -->
+  <path d="M 450 160 L 490 160" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Ranker -->
+  <rect x="490" y="100" width="180" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="580" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Ranker</text>
+  <text x="580" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Score suggestions</text>
+  <text x="580" y="187" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Deduplicate</text>
+  <text x="580" y="204" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Limit to 10</text>
+  
+  <!-- Arrow -->
+  <path d="M 670 160 L 710 160" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <!-- UI Component -->
+  <rect x="710" y="100" width="160" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="790" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">UI Component</text>
+  <text x="790" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Display list</text>
+  <text x="790" y="187" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Highlight match</text>
+  <text x="790" y="204" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">• Keyboard nav</text>
+  
+  <!-- Example Dropdown -->
+  <rect x="30" y="250" width="400" height="330" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Example: User types "react"</text>
+  
+  <rect x="50" y="300" width="360" height="265" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  
+  <!-- Search input -->
+  <rect x="65" y="320" width="330" height="40" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="85" y="345" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" fill="#475560">🔍 react</text>
+  
+  <!-- Suggestions dropdown -->
+  <rect x="65" y="370" width="330" height="180" rx="6" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+  
+  <!-- Suggestion 1 (active) -->
+  <rect x="75" y="385" width="310" height="35" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="90" y="408" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#1e40af">
+    <tspan font-weight="700">react</tspan> hooks tutorial
+  </text>
+  
+  <!-- Suggestion 2 -->
+  <rect x="75" y="425" width="310" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="90" y="448" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">
+    <tspan font-weight="700">react</tspan> native
+  </text>
+  
+  <!-- Suggestion 3 -->
+  <rect x="75" y="465" width="310" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="90" y="488" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">
+    <tspan font-weight="700">react</tspan> documentation
+  </text>
+  
+  <!-- Suggestion 4 -->
+  <rect x="75" y="505" width="310" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="90" y="528" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">create <tspan font-weight="700">react</tspan> app</text>
+  
+  <!-- Keyboard hints -->
+  <text x="230" y="570" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">↑↓ Navigate · Enter Select · Esc Close</text>
+  
+  <!-- Ranking Factors -->
+  <rect x="450" y="250" width="420" height="330" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Ranking Factors</text>
+  
+  <rect x="470" y="300" width="380" height="265" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Factor 1 -->
+  <rect x="485" y="320" width="350" height="45" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="500" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Match Quality (40%)</text>
+  <text x="500" y="358" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Prefix match &gt; contains match</text>
+  
+  <!-- Factor 2 -->
+  <rect x="485" y="370" width="350" height="45" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="500" y="390" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Popularity (30%)</text>
+  <text x="500" y="408" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Search frequency from query logs</text>
+  
+  <!-- Factor 3 -->
+  <rect x="485" y="420" width="350" height="45" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="500" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Recency (15%)</text>
+  <text x="500" y="458" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Trending queries weighted higher</text>
+  
+  <!-- Factor 4 -->
+  <rect x="485" y="470" width="350" height="45" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="500" y="490" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Personalization (15%)</text>
+  <text x="500" y="508" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">User&apos;s search history boost</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>

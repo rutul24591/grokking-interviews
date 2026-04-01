@@ -1,0 +1,101 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="600" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Elasticsearch Query Flow</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">From frontend query construction to response rendering</text>
+  
+  <!-- Frontend -->
+  <rect x="30" y="100" width="200" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Frontend</text>
+  
+  <rect x="50" y="155" width="160" height="110" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">User Input:</text>
+  <rect x="65" y="190" width="130" height="25" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="130" y="207" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#475560">"react hooks"</text>
+  <text x="65" y="235" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Filters:</text>
+  <text x="65" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Category: Docs</text>
+  
+  <!-- Arrow to Backend -->
+  <path d="M 230 190 L 280 190" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="255" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">HTTP POST</text>
+  
+  <!-- Backend API -->
+  <rect x="280" y="100" width="220" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="390" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Backend API</text>
+  
+  <rect x="300" y="155" width="180" height="110" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="390" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Query Builder</text>
+  <text x="315" y="205" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#475560">Build Query DSL:</text>
+  <text x="315" y="220" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#475560">• multi_match query</text>
+  <text x="315" y="235" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#475560">• term filter (category)</text>
+  <text x="315" y="250" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#475560">• aggregations (facets)</text>
+  
+  <!-- Arrow to Elasticsearch -->
+  <path d="M 500 190 L 550 190" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="525" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Query DSL</text>
+  
+  <!-- Elasticsearch -->
+  <rect x="550" y="100" width="220" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Elasticsearch</text>
+  
+  <rect x="570" y="155" width="180" height="110" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#15803d">Search Execution</text>
+  <text x="585" y="205" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Query inverted index</text>
+  <text x="585" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Compute aggregations</text>
+  <text x="585" y="235" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Highlight matches</text>
+  <text x="585" y="250" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Score &amp; sort</text>
+  
+  <!-- Arrow back to Backend -->
+  <path d="M 550 250 L 500 250" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="525" y="268" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Results</text>
+  
+  <!-- Arrow back to Frontend -->
+  <path d="M 280 250 L 230 250" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="255" y="268" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">JSON</text>
+  
+  <!-- Response Display -->
+  <rect x="30" y="310" width="400" height="270" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Response Structure</text>
+  
+  <rect x="50" y="360" width="360" height="205" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="385" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">{"{"}</text>
+  <text x="80" y="400" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">"hits": {"{"}</text>
+  <text x="95" y="415" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">"total": 1234,</text>
+  <text x="95" y="430" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">"hits": [...]</text>
+  <text x="80" y="445" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">{"}"},</text>
+  <text x="80" y="460" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">"aggregations": {"{"}</text>
+  <text x="95" y="475" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">"categories": {...},</text>
+  <text x="95" y="490" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">"price_ranges": {...}</text>
+  <text x="80" y="505" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">{"}"}</text>
+  <text x="65" y="530" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">{"}"}</text>
+  
+  <!-- Facets Display -->
+  <rect x="450" y="310" width="420" height="270" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Facets from Aggregations</text>
+  
+  <rect x="470" y="360" width="380" height="205" rx="6" fill="#ffffff" stroke="#e9d5ff"/>
+  
+  <!-- Category facet -->
+  <text x="485" y="385" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">Category</text>
+  <rect x="485" y="395" width="350" height="25" rx="3" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="500" y="412" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Documentation (456)</text>
+  <rect x="485" y="425" width="350" height="25" rx="3" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="500" y="442" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Tutorial (234)</text>
+  <rect x="485" y="455" width="350" height="25" rx="3" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="500" y="472" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">API Reference (189)</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>

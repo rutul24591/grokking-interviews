@@ -1,0 +1,82 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Search Library Comparison</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Lunr.js vs Fuse.js vs FlexSearch feature matrix</text>
+  
+  <!-- Lunr.js -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Lunr.js</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a" stroke-width="1.5"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">📦 Size: ~20KB minified</text>
+  <text x="65" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">⚡ Index: Moderate speed</text>
+  <text x="65" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">🔍 Search: TF-IDF scoring</text>
+  <text x="65" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">✓ Stemming built-in</text>
+  <text x="65" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">✓ Field boosting</text>
+  <text x="65" y="280" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Best for: Documentation search</text>
+  
+  <!-- Fuse.js -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Fuse.js</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7" stroke-width="1.5"/>
+  <text x="350" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">📦 Size: ~15KB minified</text>
+  <text x="350" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">⚡ Index: No true index</text>
+  <text x="350" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">🔍 Search: Bitwise matching</text>
+  <text x="350" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">✓ Fuzzy matching specialist</text>
+  <text x="350" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">✓ Custom tokenizers</text>
+  <text x="350" y="280" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#166534">Best for: Typo-tolerant search</text>
+  
+  <!-- FlexSearch -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">FlexSearch</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+  <text x="635" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">📦 Size: ~25KB minified</text>
+  <text x="635" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">⚡ Index: 100× faster</text>
+  <text x="635" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">🔍 Search: Context-based</text>
+  <text x="635" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">✓ Multiple index types</text>
+  <text x="635" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">✓ Partial matching</text>
+  <text x="635" y="280" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0c4a6e">Best for: Large datasets</text>
+  
+  <!-- Feature Matrix -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Feature Matrix</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Feature</text>
+  <rect x="250" y="365" width="200" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="350" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Lunr.js</text>
+  <rect x="450" y="365" width="200" height="30" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="550" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#166534">Fuse.js</text>
+  <rect x="650" y="365" width="200" height="30" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="750" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0c4a6e">FlexSearch</text>
+  
+  <!-- Row 1: Stemming -->
+  <text x="60" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Stemming</text>
+  <text x="350" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Built-in</text>
+  <text x="550" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Plugin needed</text>
+  <text x="750" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Plugin needed</text>
+  
+  <!-- Row 2: Fuzzy Matching -->
+  <text x="60" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Fuzzy Matching</text>
+  <text x="350" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#f59e0b">~ Basic</text>
+  <text x="550" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Excellent</text>
+  <text x="750" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#f59e0b">~ Via n-grams</text>
+  
+  <!-- Row 3: Field Boosting -->
+  <text x="60" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Field Boosting</text>
+  <text x="350" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Yes</text>
+  <text x="550" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Yes</text>
+  <text x="750" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Yes</text>
+  
+  <!-- Row 4: Phrase Search -->
+  <text x="60" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Phrase Search</text>
+  <text x="350" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Yes</text>
+  <text x="550" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ No</text>
+  <text x="750" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Yes</text>
+</svg>

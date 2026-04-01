@@ -1,0 +1,111 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Suggestion Sources</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Popular queries, personal history, catalog items, and query completions</text>
+  
+  <!-- Popular Queries -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Popular Queries</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">📊 Aggregated from all users</text>
+  <text x="65" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">⏰ Weighted by recency</text>
+  <text x="65" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">🔥 Trending boost</text>
+  
+  <rect x="65" y="240" width="200" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="80" y="263" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">1. react hooks (12,453)</text>
+  <rect x="65" y="280" width="200" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="80" y="303" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">2. react native (8,234)</text>
+  
+  <text x="165" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Best for: Discovery</text>
+  
+  <!-- Personal History -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Personal History</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="350" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">👤 User&apos;s past searches</text>
+  <text x="350" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">⏰ Weighted by recency</text>
+  <text x="350" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Click engagement boost</text>
+  
+  <rect x="350" y="240" width="200" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="365" y="263" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ react tutorial (yesterday)</text>
+  <rect x="350" y="280" width="200" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="365" y="303" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ react hooks guide (last week)</text>
+  
+  <text x="450" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Best for: Returning users</text>
+  
+  <!-- Catalog Items -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Catalog Items</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="635" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">📦 Products/Pages/Docs</text>
+  <text x="635" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">🔍 Full-text match</text>
+  <text x="635" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">📈 Popularity weighted</text>
+  
+  <rect x="635" y="240" width="200" height="35" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="650" y="263" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">📄 React Documentation</text>
+  <rect x="635" y="280" width="200" height="35" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="650" y="303" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">📦 React UI Kit (product)</text>
+  
+  <text x="735" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Best for: Known-item search</text>
+  
+  <!-- Query Completions -->
+  <rect x="30" y="320" width="400" height="210" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="230" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Query Completions</text>
+  
+  <rect x="50" y="370" width="360" height="145" rx="6" fill="#ffffff" stroke="#e9d5ff"/>
+  <text x="65" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">🔮 Common continuations</text>
+  <text x="65" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">📊 Derived from query logs</text>
+  <text x="65" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">💡 "Users who typed X also searched Y"</text>
+  
+  <text x="65" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">Example for "react":</text>
+  <rect x="65" y="480" width="330" height="25" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="80" y="497" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">react + hooks → "react hooks tutorial"</text>
+  <rect x="65" y="510" width="330" height="25" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="80" y="527" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">react + native → "react native vs flutter"</text>
+  
+  <!-- Source Comparison -->
+  <rect x="450" y="320" width="420" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="660" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Source Comparison</text>
+  
+  <rect x="470" y="370" width="380" height="145" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  
+  <!-- Table headers -->
+  <rect x="485" y="385" width="100" height="25" rx="3" fill="#e2e8f0"/>
+  <text x="535" y="402" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1e293b">Source</text>
+  <rect x="585" y="385" width="100" height="25" rx="3" fill="#e2e8f0"/>
+  <text x="635" y="402" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1e293b">Freshness</text>
+  <rect x="685" y="385" width="100" height="25" rx="3" fill="#e2e8f0"/>
+  <text x="735" y="402" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1e293b">Personal</text>
+  <rect x="785" y="385" width="60" height="25" rx="3" fill="#e2e8f0"/>
+  <text x="815" y="402" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1e293b">Speed</text>
+  
+  <!-- Row 1 -->
+  <text x="495" y="430" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Popular</text>
+  <text x="595" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Hours</text>
+  <text x="685" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">No</text>
+  <text x="815" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Fast</text>
+  
+  <!-- Row 2 -->
+  <text x="495" y="455" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">History</text>
+  <text x="595" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Real-time</text>
+  <text x="685" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Yes</text>
+  <text x="815" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Instant</text>
+  
+  <!-- Row 3 -->
+  <text x="495" y="480" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Catalog</text>
+  <text x="595" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Real-time</text>
+  <text x="685" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">No</text>
+  <text x="815" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Medium</text>
+  
+  <!-- Row 4 -->
+  <text x="495" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Completions</text>
+  <text x="595" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Days</text>
+  <text x="685" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">No</text>
+  <text x="815" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Fast</text>
+</svg>

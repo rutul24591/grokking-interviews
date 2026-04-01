@@ -1,0 +1,111 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Search Algorithms Comparison</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Linear search vs Index-based search vs Fuzzy matching</text>
+  
+  <!-- Linear Search -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#b91c1c">Linear Search</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1.5"/>
+  
+  <!-- Visual: scanning through items -->
+  <rect x="65" y="175" width="40" height="30" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="85" y="195" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#b91c1c">1</text>
+  
+  <rect x="115" y="175" width="40" height="30" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="135" y="195" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#b91c1c">2</text>
+  
+  <rect x="165" y="175" width="40" height="30" rx="4" fill="#ef4444" stroke="#b91c1c"/>
+  <text x="185" y="195" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" font-weight="700" fill="#ffffff">✓</text>
+  
+  <rect x="215" y="175" width="40" height="30" rx="4" fill="#f3f4f6" stroke="#9ca3af"/>
+  <text x="235" y="195" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#6b7280">...</text>
+  
+  <text x="165" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6b7280">Check every item sequentially</text>
+  <text x="165" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#dc2626">O(n) time complexity</text>
+  <text x="165" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Best for: &lt;1,000 items</text>
+  
+  <!-- Index-Based Search -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Index-Based Search</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7" stroke-width="1.5"/>
+  
+  <!-- Visual: Index lookup -->
+  <rect x="350" y="175" width="100" height="50" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="400" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Index</text>
+  <text x="400" y="210" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#15803d">"apple"→[1,5,23]</text>
+  
+  <path d="M 455 200 L 495 200" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <rect x="500" y="185" width="50" height="30" rx="4" fill="#22c55e"/>
+  <text x="525" y="205" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" font-weight="700" fill="#ffffff">1,5,23</text>
+  
+  <text x="450" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#16a34a">O(1) or O(log n) lookup</text>
+  <text x="450" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Best for: 1,000-50,000 items</text>
+  
+  <!-- Fuzzy Matching -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#9a3412">Fuzzy Matching</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#ffedd5" stroke-width="1.5"/>
+  
+  <!-- Visual: Edit distance -->
+  <text x="640" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#9a3412">Query: "aple"</text>
+  <text x="640" y="200" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#9a3412">Target: "apple"</text>
+  
+  <rect x="640" y="215" width="190" height="35" rx="4" fill="#ffedd5" stroke="#f97316"/>
+  <text x="735" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#9a3412">Distance: 1 (insert 'p')</text>
+  
+  <text x="735" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#c2410c">O(m×n) per comparison</text>
+  <text x="735" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#9a3412">Best for: Typo tolerance</text>
+  
+  <!-- Comparison Table -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Algorithm Comparison</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Algorithm</text>
+  <rect x="250" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="350" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Time Complexity</text>
+  <rect x="450" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="550" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Best Use Case</text>
+  <rect x="650" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="750" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Limitations</text>
+  
+  <!-- Row 1: Linear -->
+  <text x="60" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b91c1c">Linear Search</text>
+  <text x="260" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">O(n)</text>
+  <text x="460" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Tiny datasets (&lt;1K)</text>
+  <text x="660" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Slow for large data</text>
+  
+  <!-- Row 2: Index -->
+  <text x="60" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Index-Based</text>
+  <text x="260" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">O(1) or O(log n)</text>
+  <text x="460" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Medium datasets (1K-50K)</text>
+  <text x="660" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Indexing overhead</text>
+  
+  <!-- Row 3: Fuzzy -->
+  <text x="60" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#c2410c">Fuzzy Matching</text>
+  <text x="260" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">O(m×n) per item</text>
+  <text x="460" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Typo tolerance needed</text>
+  <text x="660" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Computationally expensive</text>
+  
+  <!-- Row 4: Hybrid -->
+  <text x="60" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#4f46e5">Hybrid Approach</text>
+  <text x="260" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Varies</text>
+  <text x="460" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Production systems</text>
+  <text x="660" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Implementation complexity</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>
