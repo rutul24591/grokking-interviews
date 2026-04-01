@@ -1,0 +1,1 @@
+This example compares SVG and Canvas for the same visualization scene. The UI exposes node-count, accessibility, and hit-testing tradeoffs, then switches rendering strategy without changing the underlying data.

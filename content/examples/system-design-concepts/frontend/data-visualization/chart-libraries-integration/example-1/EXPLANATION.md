@@ -1,0 +1,1 @@
+This example focuses on the integration layer between backend series payloads and a frontend chart abstraction. The UI makes adapter behavior visible through filters, legend changes, and mixed chart types.

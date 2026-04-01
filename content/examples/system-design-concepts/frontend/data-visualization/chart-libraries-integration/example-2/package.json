@@ -1,0 +1,7 @@
+{
+  "name": "demo",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}
