@@ -1,0 +1,15 @@
+{
+  "name": "frontend-nfr-conflict-resolution-ux-example-3-field-merge",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "demo": "tsx src/demo.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}
+

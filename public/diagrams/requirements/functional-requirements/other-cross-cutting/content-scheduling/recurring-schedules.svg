@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .daily { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .weekly { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .monthly { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Daily Recurrence -->
+  <rect class="daily" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Daily Recurrence</text>
+  
+  <rect class="daily" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Every Day at Same Time</text>
+  
+  <rect class="daily" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Simple Pattern</text>
+  
+  <rect class="daily" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">High Frequency</text>
+  
+  <!-- Weekly Recurrence -->
+  <rect class="weekly" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Weekly Recurrence</text>
+  
+  <rect class="weekly" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Specific Days of Week</text>
+  
+  <rect class="weekly" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Monday, Wednesday, Friday</text>
+  
+  <rect class="weekly" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Medium Frequency</text>
+  
+  <!-- Monthly Recurrence -->
+  <rect class="monthly" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Monthly Recurrence</text>
+  
+  <rect class="monthly" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Specific Day of Month</text>
+  
+  <rect class="monthly" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">1st, 15th, Last Day</text>
+  
+  <rect class="monthly" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Low Frequency</text>
+  
+  <!-- Recurrence Management -->
+  <rect class="daily" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Recurring Schedule Management</text>
+  
+  <!-- Management options -->
+  <rect class="daily" x="70" y="330" width="200" height="60" rx="4"/>
+  <text x="170" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Create Recurrence</text>
+  <text x="170" y="375" text-anchor="middle" class="sublabel">Define Pattern</text>
+  
+  <rect class="weekly" x="300" y="330" width="200" height="60" rx="4"/>
+  <text x="400" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Edit Recurrence</text>
+  <text x="400" y="375" text-anchor="middle" class="sublabel">Modify Pattern</text>
+  
+  <rect class="monthly" x="530" y="330" width="200" height="60" rx="4"/>
+  <text x="630" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Skip Occurrence</text>
+  <text x="630" y="375" text-anchor="middle" class="sublabel">Skip Specific</text>
+  
+  <rect class="daily" x="760" y="330" width="200" height="60" rx="4"/>
+  <text x="860" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Cancel Recurrence</text>
+  <text x="860" y="375" text-anchor="middle" class="sublabel">Stop Recurring</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Recurring Schedules</text>
+</svg>

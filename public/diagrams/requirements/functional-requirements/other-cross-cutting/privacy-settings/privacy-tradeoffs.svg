@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .simple { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .granular { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .hybrid { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Simple Privacy -->
+  <rect class="simple" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Simple Privacy</text>
+  
+  <rect class="simple" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Public/Private Toggle</text>
+  
+  <rect class="simple" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Easy to Understand</text>
+  
+  <rect class="simple" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Limited Control</text>
+  
+  <!-- Granular Privacy -->
+  <rect class="granular" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Granular Privacy</text>
+  
+  <rect class="granular" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Per-Content Privacy</text>
+  
+  <rect class="granular" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Fine-Grained Control</text>
+  
+  <rect class="granular" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Complex Management</text>
+  
+  <!-- Hybrid Approach -->
+  <rect class="hybrid" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Hybrid Approach</text>
+  
+  <rect class="hybrid" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel" style="font-weight: 600">Simple Defaults</text>
+  
+  <rect class="hybrid" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Granular Options</text>
+  
+  <rect class="hybrid" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Recommended</text>
+  
+  <!-- Comparison Table -->
+  <rect class="simple" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Privacy Granularity Comparison</text>
+  
+  <!-- Header -->
+  <rect class="simple" x="60" y="320" width="880" height="35" rx="4" fill="#ede7f6"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Approach</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Simplicity</text>
+  <text x="450" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Control</text>
+  <text x="600" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Complexity</text>
+  <text x="800" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Best For</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Simple</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel" fill="#dc2626">Low</text>
+  <text x="600" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Low</text>
+  <text x="800" y="380" text-anchor="middle" class="sublabel">Simple Platforms</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Granular</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel" fill="#dc2626">Low</text>
+  <text x="450" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="600" y="400" text-anchor="middle" class="sublabel" fill="#dc2626">High</text>
+  <text x="800" y="400" text-anchor="middle" class="sublabel">Power Users</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Privacy Trade-offs Comparison</text>
+</svg>

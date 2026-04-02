@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .digest { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .frequency { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .content { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .delivery { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
+  
+  <!-- Digest Service -->
+  <rect class="digest" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Digest Service</text>
+  
+  <rect class="digest" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel">Digest Storage</text>
+  
+  <rect class="digest" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">Digest Retrieval</text>
+  
+  <rect class="digest" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel">Digest Update</text>
+  
+  <!-- Frequency Service -->
+  <rect class="frequency" x="320" y="50" width="200" height="180" rx="8"/>
+  <text x="420" y="80" text-anchor="middle" class="text-label">Frequency Service</text>
+  
+  <rect class="frequency" x="340" y="100" width="160" height="35" rx="4"/>
+  <text x="420" y="122" text-anchor="middle" class="sublabel">Frequency Selection</text>
+  
+  <rect class="frequency" x="340" y="145" width="160" height="35" rx="4"/>
+  <text x="420" y="167" text-anchor="middle" class="sublabel">Frequency Tracking</text>
+  
+  <rect class="frequency" x="340" y="190" width="160" height="35" rx="4"/>
+  <text x="420" y="212" text-anchor="middle" class="sublabel">Frequency Scheduling</text>
+  
+  <!-- Content Service -->
+  <rect class="content" x="590" y="50" width="180" height="180" rx="8"/>
+  <text x="680" y="80" text-anchor="middle" class="text-label">Content Service</text>
+  
+  <rect class="content" x="610" y="100" width="140" height="35" rx="4"/>
+  <text x="680" y="122" text-anchor="middle" class="sublabel">Content Selection</text>
+  
+  <rect class="content" x="610" y="145" width="140" height="35" rx="4"/>
+  <text x="680" y="167" text-anchor="middle" class="sublabel">Content Aggregation</text>
+  
+  <rect class="content" x="610" y="190" width="140" height="35" rx="4"/>
+  <text x="680" y="212" text-anchor="middle" class="sublabel">Content Formatting</text>
+  
+  <!-- Delivery Service -->
+  <rect class="delivery" x="590" y="280" width="330" height="140" rx="8"/>
+  <text x="755" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Delivery Service</text>
+  
+  <rect class="delivery" x="610" y="330" width="140" height="35" rx="4"/>
+  <text x="680" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600">Delivery Time</text>
+  
+  <rect class="delivery" x="765" y="330" width="140" height="35" rx="4"/>
+  <text x="835" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600">Delivery Day</text>
+  
+  <rect class="delivery" x="610" y="375" width="140" height="35" rx="4"/>
+  <text x="680" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600">Delivery Format</text>
+  
+  <rect class="delivery" x="765" y="375" width="140" height="35" rx="4"/>
+  <text x="835" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600">Delivery Scheduling</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 140 L315 140"/>
+  <path class="arrow" d="M520 140 L605 140"/>
+  <path class="arrow" d="M755 230 L755 275"/>
+  <path class="arrow" d="M250 350 L315 350"/>
+  
+  <text x="500" y="480" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 1: Email Digest Preferences Architecture</text>
+</svg>

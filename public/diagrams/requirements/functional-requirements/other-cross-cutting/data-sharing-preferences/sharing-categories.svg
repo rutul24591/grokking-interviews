@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .service { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .analytics { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .advertising { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .research { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Service Providers -->
+  <rect class="service" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Service Providers</text>
+  
+  <rect class="service" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel">Payment Processors</text>
+  
+  <rect class="service" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">Email Providers</text>
+  
+  <rect class="service" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel">Hosting Providers</text>
+  
+  <!-- Analytics -->
+  <rect class="analytics" x="280" y="50" width="200" height="180" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">Analytics</text>
+  
+  <rect class="analytics" x="300" y="100" width="160" height="35" rx="4"/>
+  <text x="380" y="122" text-anchor="middle" class="sublabel">Usage Analytics</text>
+  
+  <rect class="analytics" x="300" y="145" width="160" height="35" rx="4"/>
+  <text x="380" y="167" text-anchor="middle" class="sublabel">Performance</text>
+  
+  <rect class="analytics" x="300" y="190" width="160" height="35" rx="4"/>
+  <text x="380" y="212" text-anchor="middle" class="sublabel">Error Reports</text>
+  
+  <!-- Advertising -->
+  <rect class="advertising" x="510" y="50" width="200" height="180" rx="8"/>
+  <text x="610" y="80" text-anchor="middle" class="text-label">Advertising</text>
+  
+  <rect class="advertising" x="530" y="100" width="160" height="35" rx="4"/>
+  <text x="610" y="122" text-anchor="middle" class="sublabel">Ad Networks</text>
+  
+  <rect class="advertising" x="530" y="145" width="160" height="35" rx="4"/>
+  <text x="610" y="167" text-anchor="middle" class="sublabel">Marketing Partners</text>
+  
+  <rect class="advertising" x="530" y="190" width="160" height="35" rx="4"/>
+  <text x="610" y="212" text-anchor="middle" class="sublabel">Social Platforms</text>
+  
+  <!-- Research -->
+  <rect class="research" x="740" y="50" width="200" height="180" rx="8"/>
+  <text x="840" y="80" text-anchor="middle" class="text-label">Research</text>
+  
+  <rect class="research" x="760" y="100" width="160" height="35" rx="4"/>
+  <text x="840" y="122" text-anchor="middle" class="sublabel">Academic Research</text>
+  
+  <rect class="research" x="760" y="145" width="160" height="35" rx="4"/>
+  <text x="840" y="167" text-anchor="middle" class="sublabel">Internal R&amp;D</text>
+  
+  <rect class="research" x="760" y="190" width="160" height="35" rx="4"/>
+  <text x="840" y="212" text-anchor="middle" class="sublabel">Product Improvement</text>
+  
+  <!-- Consent Requirements -->
+  <rect class="service" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Consent Requirements by Category</text>
+  
+  <!-- Header -->
+  <rect class="service" x="60" y="320" width="880" height="35" rx="4" fill="#ede7f6"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Category</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Consent Type</text>
+  <text x="450" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">GDPR</text>
+  <text x="600" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">CCPA</text>
+  <text x="800" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Can Opt-out</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Service</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel">Opt-out</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Allowed</text>
+  <text x="600" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Allowed</text>
+  <text x="800" y="380" text-anchor="middle" class="sublabel" fill="#dc2626">No</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Analytics</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel">Opt-in</text>
+  <text x="450" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Required</text>
+  <text x="600" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Allowed</text>
+  <text x="800" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Yes</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Sharing Categories</text>
+</svg>

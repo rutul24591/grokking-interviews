@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .trash { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .access { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .undelete { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Delete -->
+  <rect class="trash" x="50" y="50" width="180" height="120" rx="8"/>
+  <text x="140" y="90" text-anchor="middle" class="text-label">Delete Content</text>
+  <text x="140" y="115" text-anchor="middle" class="sublabel">User Deletes</text>
+  <text x="140" y="140" text-anchor="middle" class="sublabel">Soft Delete</text>
+  <text x="140" y="165" text-anchor="middle" class="sublabel">Move to Trash</text>
+  
+  <!-- Trash Access -->
+  <rect class="access" x="280" y="50" width="220" height="150" rx="8"/>
+  <text x="390" y="80" text-anchor="middle" class="text-label">Trash Access</text>
+  <text x="390" y="110" text-anchor="middle" class="sublabel">View Trash</text>
+  <text x="390" y="135" text-anchor="middle" class="sublabel">Browse Deleted</text>
+  <text x="390" y="160" text-anchor="middle" class="sublabel">Select for Restore</text>
+  <text x="390" y="185" text-anchor="middle" class="sublabel">Check Retention</text>
+  
+  <!-- Undelete -->
+  <rect class="undelete" x="550" y="50" width="200" height="150" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">Undelete</text>
+  <text x="650" y="110" text-anchor="middle" class="sublabel">Restore Content</text>
+  <text x="650" y="135" text-anchor="middle" class="sublabel">Choose Location</text>
+  <text x="650" y="160" text-anchor="middle" class="sublabel">Verify Restore</text>
+  <text x="650" y="185" text-anchor="middle" class="sublabel">Notify User</text>
+  
+  <!-- Restoration -->
+  <rect class="trash" x="800" y="75" width="160" height="100" rx="8"/>
+  <text x="880" y="105" text-anchor="middle" class="text-label">Restored</text>
+  <text x="880" y="130" text-anchor="middle" class="sublabel">Content Restored</text>
+  <text x="880" y="155" text-anchor="middle" class="sublabel">Remove from Trash</text>
+  <text x="880" y="180" text-anchor="middle" class="sublabel">Update Status</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 110 L275 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <!-- Undelete Options -->
+  <rect class="trash" x="50" y="250" width="900" height="160" rx="8"/>
+  <text x="500" y="280" text-anchor="middle" class="text-label">Undelete Options</text>
+  
+  <!-- Options -->
+  <rect class="trash" x="70" y="310" width="200" height="80" rx="4"/>
+  <text x="170" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">Restore to Original</text>
+  <text x="170" y="365" text-anchor="middle" class="sublabel">Original Location</text>
+  <text x="170" y="385" text-anchor="middle" class="sublabel">If Available</text>
+  
+  <rect class="access" x="300" y="310" width="200" height="80" rx="4"/>
+  <text x="400" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">Restore to New</text>
+  <text x="400" y="365" text-anchor="middle" class="sublabel">New Location</text>
+  <text x="400" y="385" text-anchor="middle" class="sublabel">Choose Location</text>
+  
+  <rect class="undelete" x="530" y="310" width="200" height="80" rx="4"/>
+  <text x="630" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">Restore as Copy</text>
+  <text x="630" y="365" text-anchor="middle" class="sublabel">Create Copy</text>
+  <text x="630" y="385" text-anchor="middle" class="sublabel">Keep Original</text>
+  
+  <rect class="trash" x="760" y="310" width="200" height="80" rx="4"/>
+  <text x="860" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">Verify & Notify</text>
+  <text x="860" y="365" text-anchor="middle" class="sublabel">Verify Success</text>
+  <text x="860" y="385" text-anchor="middle" class="sublabel">Notify User</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Undelete Flow</text>
+</svg>

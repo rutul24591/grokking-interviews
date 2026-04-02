@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .global { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .channel { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .source { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .type { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Global Mute -->
+  <rect class="global" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Global Mute</text>
+  
+  <rect class="global" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel">All Channels</text>
+  
+  <rect class="global" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">All Types</text>
+  
+  <rect class="global" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel">All Sources</text>
+  
+  <!-- Channel Mute -->
+  <rect class="channel" x="280" y="50" width="200" height="180" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">Channel Mute</text>
+  
+  <rect class="channel" x="300" y="100" width="160" height="35" rx="4"/>
+  <text x="380" y="122" text-anchor="middle" class="sublabel">Email Mute</text>
+  
+  <rect class="channel" x="300" y="145" width="160" height="35" rx="4"/>
+  <text x="380" y="167" text-anchor="middle" class="sublabel">Push Mute</text>
+  
+  <rect class="channel" x="300" y="190" width="160" height="35" rx="4"/>
+  <text x="380" y="212" text-anchor="middle" class="sublabel">SMS Mute</text>
+  
+  <!-- Source Mute -->
+  <rect class="source" x="510" y="50" width="200" height="180" rx="8"/>
+  <text x="610" y="80" text-anchor="middle" class="text-label">Source Mute</text>
+  
+  <rect class="source" x="530" y="100" width="160" height="35" rx="4"/>
+  <text x="610" y="122" text-anchor="middle" class="sublabel">User Mute</text>
+  
+  <rect class="source" x="530" y="145" width="160" height="35" rx="4"/>
+  <text x="610" y="167" text-anchor="middle" class="sublabel">Group Mute</text>
+  
+  <rect class="source" x="530" y="190" width="160" height="35" rx="4"/>
+  <text x="610" y="212" text-anchor="middle" class="sublabel">Topic Mute</text>
+  
+  <!-- Type Mute -->
+  <rect class="type" x="740" y="50" width="200" height="180" rx="8"/>
+  <text x="840" y="80" text-anchor="middle" class="text-label">Type Mute</text>
+  
+  <rect class="type" x="760" y="100" width="160" height="35" rx="4"/>
+  <text x="840" y="122" text-anchor="middle" class="sublabel">Activity Mute</text>
+  
+  <rect class="type" x="760" y="145" width="160" height="35" rx="4"/>
+  <text x="840" y="167" text-anchor="middle" class="sublabel">System Mute</text>
+  
+  <rect class="type" x="760" y="190" width="160" height="35" rx="4"/>
+  <text x="840" y="212" text-anchor="middle" class="sublabel">Marketing Mute</text>
+  
+  <!-- Mute Scope Settings -->
+  <rect class="global" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Mute Scope Settings</text>
+  
+  <!-- Scope options -->
+  <rect class="global" x="70" y="330" width="200" height="60" rx="4"/>
+  <text x="170" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Select Scope</text>
+  <text x="170" y="375" text-anchor="middle" class="sublabel">Choose Scope</text>
+  
+  <rect class="channel" x="300" y="330" width="200" height="60" rx="4"/>
+  <text x="400" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Select Items</text>
+  <text x="400" y="375" text-anchor="middle" class="sublabel">Choose Items</text>
+  
+  <rect class="source" x="530" y="330" width="200" height="60" rx="4"/>
+  <text x="630" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Set Duration</text>
+  <text x="630" y="375" text-anchor="middle" class="sublabel">Choose Duration</text>
+  
+  <rect class="type" x="760" y="330" width="200" height="60" rx="4"/>
+  <text x="860" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Apply Mute</text>
+  <text x="860" y="375" text-anchor="middle" class="sublabel">Activate Mute</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Mute Scope</text>
+</svg>

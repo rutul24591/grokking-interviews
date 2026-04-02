@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .automatic { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .manual { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .hybrid { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Automatic Resolution -->
+  <rect class="automatic" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Automatic Resolution</text>
+  
+  <rect class="automatic" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">No User Burden</text>
+  
+  <rect class="automatic" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Immediate</text>
+  
+  <rect class="automatic" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">May Not Be Correct</text>
+  
+  <!-- Manual Resolution -->
+  <rect class="manual" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Manual Resolution</text>
+  
+  <rect class="manual" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">User Control</text>
+  
+  <rect class="manual" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Correct Decisions</text>
+  
+  <rect class="manual" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">User Burden</text>
+  
+  <!-- Hybrid -->
+  <rect class="hybrid" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Hybrid Approach</text>
+  
+  <rect class="hybrid" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Auto + Manual</text>
+  
+  <rect class="hybrid" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Best of Both</text>
+  
+  <rect class="hybrid" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Recommended</text>
+  
+  <!-- Resolution Timeline -->
+  <rect class="automatic" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Resolution Policy Timeline</text>
+  
+  <!-- Timeline -->
+  <line x1="100" y1="350" x2="900" y2="350" stroke="#1a1822" stroke-width="2"/>
+  
+  <!-- Auto point -->
+  <circle cx="250" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="250" y="385" text-anchor="middle" class="sublabel">Auto</text>
+  <text x="250" y="405" text-anchor="middle" class="sublabel">Immediate</text>
+  
+  <!-- Manual point -->
+  <circle cx="500" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="500" y="385" text-anchor="middle" class="sublabel">Manual</text>
+  <text x="500" y="405" text-anchor="middle" class="sublabel">User Review</text>
+  
+  <!-- Hybrid point -->
+  <circle cx="750" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="750" y="385" text-anchor="middle" class="sublabel">Hybrid</text>
+  <text x="750" y="405" text-anchor="middle" class="sublabel">Balanced</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Resolution Policies</text>
+</svg>

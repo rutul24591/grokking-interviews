@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .trash { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .backup { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .recovery { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .verification { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="500" data-theme="light"/>
+  
+  <!-- Trash Service -->
+  <rect class="trash" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Trash Service</text>
+  
+  <rect class="trash" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel">Soft Delete</text>
+  
+  <rect class="trash" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">Trash Storage</text>
+  
+  <rect class="trash" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel">Trash Retention</text>
+  
+  <!-- Backup Service -->
+  <rect class="backup" x="320" y="50" width="200" height="180" rx="8"/>
+  <text x="420" y="80" text-anchor="middle" class="text-label">Backup Service</text>
+  
+  <rect class="backup" x="340" y="100" width="160" height="35" rx="4"/>
+  <text x="420" y="122" text-anchor="middle" class="sublabel">Backup Creation</text>
+  
+  <rect class="backup" x="340" y="145" width="160" height="35" rx="4"/>
+  <text x="420" y="167" text-anchor="middle" class="sublabel">Backup Storage</text>
+  
+  <rect class="backup" x="340" y="190" width="160" height="35" rx="4"/>
+  <text x="420" y="212" text-anchor="middle" class="sublabel">Backup Scheduling</text>
+  
+  <!-- Recovery Service -->
+  <rect class="recovery" x="590" y="50" width="180" height="180" rx="8"/>
+  <text x="680" y="80" text-anchor="middle" class="text-label">Recovery Service</text>
+  
+  <rect class="recovery" x="610" y="100" width="140" height="35" rx="4"/>
+  <text x="680" y="122" text-anchor="middle" class="sublabel">Undelete</text>
+  
+  <rect class="recovery" x="610" y="145" width="140" height="35" rx="4"/>
+  <text x="680" y="167" text-anchor="middle" class="sublabel">Backup Restore</text>
+  
+  <rect class="recovery" x="610" y="190" width="140" height="35" rx="4"/>
+  <text x="680" y="212" text-anchor="middle" class="sublabel">Disaster Recovery</text>
+  
+  <!-- Verification Service -->
+  <rect class="verification" x="590" y="280" width="330" height="140" rx="8"/>
+  <text x="755" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Verification Service</text>
+  
+  <rect class="verification" x="610" y="330" width="140" height="35" rx="4"/>
+  <text x="680" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600">Recovery Verification</text>
+  
+  <rect class="verification" x="765" y="330" width="140" height="35" rx="4"/>
+  <text x="835" y="352" text-anchor="middle" class="sublabel" style="font-weight: 600">Integrity Check</text>
+  
+  <rect class="verification" x="610" y="375" width="140" height="35" rx="4"/>
+  <text x="680" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600">Service Check</text>
+  
+  <rect class="verification" x="765" y="375" width="140" height="35" rx="4"/>
+  <text x="835" y="397" text-anchor="middle" class="sublabel" style="font-weight: 600">Notification</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M250 140 L315 140"/>
+  <path class="arrow" d="M520 140 L605 140"/>
+  <path class="arrow" d="M755 230 L755 275"/>
+  <path class="arrow" d="M250 350 L315 350"/>
+  
+  <text x="500" y="480" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 1: Content Recovery Architecture</text>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .user { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .grant { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .usage { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .revoke { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- User -->
+  <rect class="user" x="50" y="50" width="180" height="120" rx="8"/>
+  <text x="140" y="90" text-anchor="middle" class="text-label">User</text>
+  <text x="140" y="115" text-anchor="middle" class="sublabel">Permission Owner</text>
+  <text x="140" y="140" text-anchor="middle" class="sublabel">Grant/Revoke</text>
+  <text x="140" y="165" text-anchor="middle" class="sublabel">View Usage</text>
+  
+  <!-- Grant Permission -->
+  <rect class="grant" x="280" y="50" width="220" height="150" rx="8"/>
+  <text x="390" y="80" text-anchor="middle" class="text-label">Grant Permission</text>
+  <text x="390" y="110" text-anchor="middle" class="sublabel">Request Permission</text>
+  <text x="390" y="135" text-anchor="middle" class="sublabel">User Approval</text>
+  <text x="390" y="160" text-anchor="middle" class="sublabel">Store Grant</text>
+  <text x="390" y="185" text-anchor="middle" class="sublabel">Notify Grantee</text>
+  
+  <!-- Permission Usage -->
+  <rect class="usage" x="550" y="50" width="200" height="150" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">Permission Usage</text>
+  <text x="650" y="110" text-anchor="middle" class="sublabel">Access Resource</text>
+  <text x="650" y="135" text-anchor="middle" class="sublabel">Check Permission</text>
+  <text x="650" y="160" text-anchor="middle" class="sublabel">Log Usage</text>
+  <text x="650" y="185" text-anchor="middle" class="sublabel">Enforce Scope</text>
+  
+  <!-- Revoke Permission -->
+  <rect class="revoke" x="800" y="75" width="160" height="100" rx="8"/>
+  <text x="880" y="105" text-anchor="middle" class="text-label">Revoke</text>
+  <text x="880" y="130" text-anchor="middle" class="sublabel">User Revokes</text>
+  <text x="880" y="155" text-anchor="middle" class="sublabel">Remove Grant</text>
+  <text x="880" y="180" text-anchor="middle" class="sublabel">Notify + Cleanup</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 110 L275 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <!-- Permission Flow -->
+  <rect class="user" x="50" y="250" width="900" height="160" rx="8"/>
+  <text x="500" y="280" text-anchor="middle" class="text-label">Permission Lifecycle Flow</text>
+  
+  <!-- Flow boxes -->
+  <rect class="user" x="70" y="310" width="180" height="80" rx="4"/>
+  <text x="160" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">1. Grant</text>
+  <text x="160" y="365" text-anchor="middle" class="sublabel">User Approves</text>
+  <text x="160" y="385" text-anchor="middle" class="sublabel">Permission Stored</text>
+  
+  <rect class="grant" x="280" y="310" width="180" height="80" rx="4"/>
+  <text x="370" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">2. Use</text>
+  <text x="370" y="365" text-anchor="middle" class="sublabel">Grantee Accesses</text>
+  <text x="370" y="385" text-anchor="middle" class="sublabel">Permission Checked</text>
+  
+  <rect class="usage" x="490" y="310" width="180" height="80" rx="4"/>
+  <text x="580" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">3. Track</text>
+  <text x="580" y="365" text-anchor="middle" class="sublabel">Usage Logged</text>
+  <text x="580" y="385" text-anchor="middle" class="sublabel">Audit Trail</text>
+  
+  <rect class="revoke" x="700" y="310" width="180" height="80" rx="4"/>
+  <text x="790" y="340" text-anchor="middle" class="sublabel" style="font-weight: 600">4. Revoke</text>
+  <text x="790" y="365" text-anchor="middle" class="sublabel">User Revokes</text>
+  <text x="790" y="385" text-anchor="middle" class="sublabel">Access Removed</text>
+  
+  <path class="arrow" d="M250 350 L275 350"/>
+  <path class="arrow" d="M460 350 L485 350"/>
+  <path class="arrow" d="M670 350 L695 350"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Permission Grants</text>
+</svg>

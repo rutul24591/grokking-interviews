@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .immediate { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .digest { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .quiet { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Immediate -->
+  <rect class="immediate" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Immediate</text>
+  
+  <rect class="immediate" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Real-time Delivery</text>
+  
+  <rect class="immediate" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">No Delay</text>
+  
+  <rect class="immediate" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Instant Awareness</text>
+  
+  <!-- Digest -->
+  <rect class="digest" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Digest</text>
+  
+  <rect class="digest" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Batch Delivery</text>
+  
+  <rect class="digest" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Daily/Weekly</text>
+  
+  <rect class="digest" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Summarized Content</text>
+  
+  <!-- Quiet Hours -->
+  <rect class="quiet" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Quiet Hours</text>
+  
+  <rect class="quiet" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Define Quiet Time</text>
+  
+  <rect class="quiet" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">No Notifications</text>
+  
+  <rect class="quiet" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Emergency Override</text>
+  
+  <!-- Frequency Timeline -->
+  <rect class="immediate" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Frequency Timeline</text>
+  
+  <!-- Timeline -->
+  <line x1="100" y1="350" x2="900" y2="350" stroke="#1a1822" stroke-width="2"/>
+  
+  <!-- Immediate point -->
+  <circle cx="200" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="200" y="385" text-anchor="middle" class="sublabel">Immediate</text>
+  <text x="200" y="405" text-anchor="middle" class="sublabel">Instant</text>
+  
+  <!-- Digest point -->
+  <circle cx="450" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="450" y="385" text-anchor="middle" class="sublabel">Digest</text>
+  <text x="450" y="405" text-anchor="middle" class="sublabel">Batched</text>
+  
+  <!-- Quiet point -->
+  <rect x="650" y="330" width="100" height="40" rx="4" fill="#ffffff"/>
+  <text x="700" y="355" text-anchor="middle" class="sublabel" fill="#1a1822" style="font-weight: 600">Quiet</text>
+  <text x="700" y="385" text-anchor="middle" class="sublabel">No Notify</text>
+  
+  <!-- Resume point -->
+  <circle cx="850" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="850" y="385" text-anchor="middle" class="sublabel">Resume</text>
+  <text x="850" y="405" text-anchor="middle" class="sublabel">Normal</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Frequency Controls</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .device1 { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .device2 { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .cloud { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Device 1 -->
+  <rect class="device1" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Device 1</text>
+  <text x="150" y="110" text-anchor="middle" class="sublabel">Desktop</text>
+  <text x="150" y="135" text-anchor="middle" class="sublabel">Edit Draft</text>
+  <text x="150" y="160" text-anchor="middle" class="sublabel">Local Save</text>
+  <text x="150" y="185" text-anchor="middle" class="sublabel">Sync to Cloud</text>
+  <text x="150" y="210" text-anchor="middle" class="sublabel">Last Sync: 10:30</text>
+  
+  <!-- Cloud Sync -->
+  <rect class="cloud" x="400" y="50" width="200" height="180" rx="8"/>
+  <text x="500" y="80" text-anchor="middle" class="text-label">Cloud Sync</text>
+  <text x="500" y="110" text-anchor="middle" class="sublabel">Receive Changes</text>
+  <text x="500" y="135" text-anchor="middle" class="sublabel">Merge Changes</text>
+  <text x="500" y="160" text-anchor="middle" class="sublabel">Conflict Detection</text>
+  <text x="500" y="185" text-anchor="middle" class="sublabel">Distribute Changes</text>
+  <text x="500" y="210" text-anchor="middle" class="sublabel">Master Copy</text>
+  
+  <!-- Device 2 -->
+  <rect class="device2" x="750" y="50" width="200" height="180" rx="8"/>
+  <text x="850" y="80" text-anchor="middle" class="text-label">Device 2</text>
+  <text x="850" y="110" text-anchor="middle" class="sublabel">Mobile</text>
+  <text x="850" y="135" text-anchor="middle" class="sublabel">Edit Draft</text>
+  <text x="850" y="160" text-anchor="middle" class="sublabel">Local Save</text>
+  <text x="850" y="185" text-anchor="middle" class="sublabel">Sync to Cloud</text>
+  <text x="850" y="210" text-anchor="middle" class="sublabel">Last Sync: 10:32</text>
+  
+  <!-- Sync Arrows -->
+  <path class="arrow" d="M250 140 L300 140"/>
+  <path class="arrow" d="M300 160 L250 160"/>
+  <path class="arrow" d="M600 140 L650 140"/>
+  <path class="arrow" d="M650 160 L600 160"/>
+  
+  <!-- Sync Flow -->
+  <rect class="device1" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Multi-Device Sync Flow</text>
+  
+  <!-- Flow boxes -->
+  <rect class="device1" x="70" y="330" width="180" height="60" rx="4"/>
+  <text x="160" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">1. Edit</text>
+  <text x="160" y="375" text-anchor="middle" class="sublabel">Device 1 Edits</text>
+  
+  <rect class="cloud" x="280" y="330" width="180" height="60" rx="4"/>
+  <text x="370" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">2. Sync</text>
+  <text x="370" y="375" text-anchor="middle" class="sublabel">Sync to Cloud</text>
+  
+  <rect class="device2" x="490" y="330" width="180" height="60" rx="4"/>
+  <text x="580" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">3. Distribute</text>
+  <text x="580" y="375" text-anchor="middle" class="sublabel">Sync to Device 2</text>
+  
+  <rect class="cloud" x="700" y="330" width="180" height="60" rx="4"/>
+  <text x="790" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">4. Resolve</text>
+  <text x="790" y="375" text-anchor="middle" class="sublabel">Conflict Resolution</text>
+  
+  <path class="arrow" d="M250 360 L275 360"/>
+  <path class="arrow" d="M460 360 L485 360"/>
+  <path class="arrow" d="M670 360 L695 360"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Draft Sync</text>
+</svg>

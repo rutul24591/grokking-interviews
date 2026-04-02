@@ -1,0 +1,16 @@
+{
+  "name": "backend-nfr-cicd-pipelines-example-2-gates",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "demo": "tsx src/demo.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.21.0",
+    "typescript": "^5",
+    "zod": "^3.24.1"
+  }
+}
+

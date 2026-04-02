@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .active { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .archive { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .retrieve { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .delete { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Active Content -->
+  <rect class="active" x="50" y="50" width="180" height="120" rx="8"/>
+  <text x="140" y="90" text-anchor="middle" class="text-label">Active Content</text>
+  <text x="140" y="115" text-anchor="middle" class="sublabel">In Use</text>
+  <text x="140" y="140" text-anchor="middle" class="sublabel">Active Storage</text>
+  <text x="140" y="165" text-anchor="middle" class="sublabel">Fast Access</text>
+  
+  <!-- Archive Creation -->
+  <rect class="archive" x="280" y="50" width="220" height="150" rx="8"/>
+  <text x="390" y="80" text-anchor="middle" class="text-label">Archive Creation</text>
+  <text x="390" y="110" text-anchor="middle" class="sublabel">Archive Trigger</text>
+  <text x="390" y="135" text-anchor="middle" class="sublabel">Move to Archive</text>
+  <text x="390" y="160" text-anchor="middle" class="sublabel">Store Metadata</text>
+  <text x="390" y="185" text-anchor="middle" class="sublabel">Index Archive</text>
+  
+  <!-- Archive Management -->
+  <rect class="retrieve" x="550" y="50" width="200" height="150" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">Archive Management</text>
+  <text x="650" y="110" text-anchor="middle" class="sublabel">Organize Archives</text>
+  <text x="650" y="135" text-anchor="middle" class="sublabel">Search Archives</text>
+  <text x="650" y="160" text-anchor="middle" class="sublabel">Access Control</text>
+  <text x="650" y="185" text-anchor="middle" class="sublabel">Tier Management</text>
+  
+  <!-- Archive Deletion -->
+  <rect class="delete" x="800" y="75" width="160" height="100" rx="8"/>
+  <text x="880" y="105" text-anchor="middle" class="text-label">Archive Deletion</text>
+  <text x="880" y="130" text-anchor="middle" class="sublabel">Retention Expired</text>
+  <text x="880" y="155" text-anchor="middle" class="sublabel">Delete Archive</text>
+  <text x="880" y="180" text-anchor="middle" class="sublabel">Verify Deletion</text>
+  
+  <!-- Arrows -->
+  <path class="arrow" d="M230 110 L275 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <!-- Archive Lifecycle Timeline -->
+  <rect class="active" x="50" y="250" width="900" height="160" rx="8"/>
+  <text x="500" y="280" text-anchor="middle" class="text-label">Archive Lifecycle Timeline</text>
+  
+  <!-- Timeline -->
+  <line x1="100" y1="350" x2="900" y2="350" stroke="#1a1822" stroke-width="2"/>
+  
+  <!-- Active point -->
+  <circle cx="200" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="200" y="385" text-anchor="middle" class="sublabel">Active</text>
+  <text x="200" y="405" text-anchor="middle" class="sublabel">Content Created</text>
+  
+  <!-- Archive point -->
+  <circle cx="400" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="400" y="385" text-anchor="middle" class="sublabel">Archived</text>
+  <text x="400" y="405" text-anchor="middle" class="sublabel">Moved to Archive</text>
+  
+  <!-- Retrieve point -->
+  <circle cx="600" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="600" y="385" text-anchor="middle" class="sublabel">Retrieved</text>
+  <text x="600" y="405" text-anchor="middle" class="sublabel">Accessed</text>
+  
+  <!-- Delete point -->
+  <circle cx="800" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="800" y="385" text-anchor="middle" class="sublabel">Deleted</text>
+  <text x="800" y="405" text-anchor="middle" class="sublabel">Retention Expired</text>
+  
+  <path class="arrow" d="M208 350 L392 350"/>
+  <path class="arrow" d="M408 350 L592 350"/>
+  <path class="arrow" d="M608 350 L792 350"/>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Archive Lifecycle</text>
+</svg>

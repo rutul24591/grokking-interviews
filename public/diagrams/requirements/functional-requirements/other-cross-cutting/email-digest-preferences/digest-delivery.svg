@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .time { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .day { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .format { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Delivery Time -->
+  <rect class="time" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Delivery Time</text>
+  
+  <rect class="time" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Morning Delivery</text>
+  
+  <rect class="time" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Evening Delivery</text>
+  
+  <rect class="time" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Custom Time</text>
+  
+  <!-- Delivery Day -->
+  <rect class="day" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Delivery Day</text>
+  
+  <rect class="day" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Weekday Delivery</text>
+  
+  <rect class="day" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Weekend Delivery</text>
+  
+  <rect class="day" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Custom Day</text>
+  
+  <!-- Delivery Format -->
+  <rect class="format" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Delivery Format</text>
+  
+  <rect class="format" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">HTML Format</text>
+  
+  <rect class="format" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Text Format</text>
+  
+  <rect class="format" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Rich Format</text>
+  
+  <!-- Delivery Timeline -->
+  <rect class="time" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Delivery Timeline</text>
+  
+  <!-- Timeline -->
+  <line x1="100" y1="350" x2="900" y2="350" stroke="#1a1822" stroke-width="2"/>
+  
+  <!-- Time points -->
+  <circle cx="200" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="200" y="385" text-anchor="middle" class="sublabel">Morning</text>
+  <text x="200" y="405" text-anchor="middle" class="sublabel">8 AM</text>
+  
+  <circle cx="400" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="400" y="385" text-anchor="middle" class="sublabel">Afternoon</text>
+  <text x="400" y="405" text-anchor="middle" class="sublabel">2 PM</text>
+  
+  <circle cx="600" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="600" y="385" text-anchor="middle" class="sublabel">Evening</text>
+  <text x="600" y="405" text-anchor="middle" class="sublabel">6 PM</text>
+  
+  <circle cx="800" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="800" y="385" text-anchor="middle" class="sublabel">Night</text>
+  <text x="800" y="405" text-anchor="middle" class="sublabel">10 PM</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Digest Delivery</text>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .blocker { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .system { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .blocked { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Blocker Action -->
+  <rect class="blocker" x="50" y="50" width="200" height="120" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">1. User Blocks</text>
+  <text x="150" y="105" text-anchor="middle" class="sublabel">Block from Profile</text>
+  <text x="150" y="125" text-anchor="middle" class="sublabel">Block from Content</text>
+  <text x="150" y="145" text-anchor="middle" class="sublabel">Block from Conversation</text>
+  
+  <!-- System Check -->
+  <rect class="system" x="300" y="50" width="200" height="120" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label">2. System Check</text>
+  <text x="400" y="105" text-anchor="middle" class="sublabel">Check Block List</text>
+  <text x="400" y="125" text-anchor="middle" class="sublabel">Validate Block</text>
+  <text x="400" y="145" text-anchor="middle" class="sublabel">Store Block Relationship</text>
+  
+  <!-- Enforcement -->
+  <rect class="blocked" x="550" y="50" width="200" height="120" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">3. Enforcement</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">Block Messages</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Block Comments</text>
+  <text x="650" y="145" text-anchor="middle" class="sublabel">Block Mentions</text>
+  
+  <!-- Result -->
+  <rect class="blocker" x="800" y="50" width="170" height="120" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label">4. Result</text>
+  <text x="885" y="105" text-anchor="middle" class="sublabel">Blocker Protected</text>
+  <text x="885" y="125" text-anchor="middle" class="sublabel">Blocked User Restricted</text>
+  <text x="885" y="145" text-anchor="middle" class="sublabel">Sync Across Platforms</text>
+  
+  <!-- Arrows between steps -->
+  <path class="arrow" d="M250 110 L295 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <!-- Interaction Points -->
+  <rect class="system" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Block Enforcement Points</text>
+  
+  <rect class="blocked" x="70" y="270" width="180" height="80" rx="4"/>
+  <text x="160" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Messages</text>
+  <text x="160" y="315" text-anchor="middle" class="sublabel">Direct Messages</text>
+  <text x="160" y="335" text-anchor="middle" class="sublabel">Group Messages</text>
+  
+  <rect class="blocked" x="280" y="270" width="180" height="80" rx="4"/>
+  <text x="370" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Content</text>
+  <text x="370" y="315" text-anchor="middle" class="sublabel">Comments</text>
+  <text x="370" y="335" text-anchor="middle" class="sublabel">Mentions/Tags</text>
+  
+  <!-- Blocked User Experience -->
+  <rect class="blocked" x="550" y="220" width="400" height="150" rx="8"/>
+  <text x="750" y="250" text-anchor="middle" class="text-label">Blocked User Experience</text>
+  
+  <rect class="blocked" x="570" y="270" width="180" height="80" rx="4"/>
+  <text x="660" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Cannot Contact</text>
+  <text x="660" y="315" text-anchor="middle" class="sublabel">Messages Dropped</text>
+  <text x="660" y="335" text-anchor="middle" class="sublabel">Can&apos;t Follow</text>
+  
+  <rect class="system" x="780" y="270" width="150" height="80" rx="4"/>
+  <text x="855" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Visibility</text>
+  <text x="855" y="315" text-anchor="middle" class="sublabel">Can&apos;t See Content</text>
+  <text x="855" y="335" text-anchor="middle" class="sublabel">May/May Not Notify</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Block Enforcement Flow</text>
+</svg>

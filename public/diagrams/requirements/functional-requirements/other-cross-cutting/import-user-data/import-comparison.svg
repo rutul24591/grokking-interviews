@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .json { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .csv { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .proprietary { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .header { fill: #ede7f6; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- JSON Format -->
+  <rect class="json" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">JSON Format</text>
+  
+  <rect class="json" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Machine Readable</text>
+  
+  <rect class="json" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Structured Data</text>
+  
+  <rect class="json" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Not Human Friendly</text>
+  
+  <!-- CSV Format -->
+  <rect class="csv" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">CSV Format</text>
+  
+  <rect class="csv" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Human Readable</text>
+  
+  <rect class="csv" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Spreadsheet Compatible</text>
+  
+  <rect class="csv" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Limited Structure</text>
+  
+  <!-- Proprietary Format -->
+  <rect class="proprietary" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Proprietary Format</text>
+  
+  <rect class="proprietary" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Competitor Data</text>
+  
+  <rect class="proprietary" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Complex Parsing</text>
+  
+  <rect class="proprietary" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">User Onboarding</text>
+  
+  <!-- Comparison Table -->
+  <rect class="json" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Import Formats Comparison</text>
+  
+  <!-- Header -->
+  <rect class="header" x="60" y="320" width="880" height="35" rx="4"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Format</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Readability</text>
+  <text x="450" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Structure</text>
+  <text x="600" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Complexity</text>
+  <text x="800" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Best For</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">JSON</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel" fill="#dc2626">Low</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="600" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Low</text>
+  <text x="800" y="380" text-anchor="middle" class="sublabel">API Import</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">CSV</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="450" y="400" text-anchor="middle" class="sublabel" fill="#dc2626">Low</text>
+  <text x="600" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Low</text>
+  <text x="800" y="400" text-anchor="middle" class="sublabel">Spreadsheets</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Import Formats Comparison</text>
+</svg>

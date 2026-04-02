@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .immediate { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .fixed { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .exponential { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Immediate Retry -->
+  <rect class="immediate" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Immediate Retry</text>
+  
+  <rect class="immediate" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">No Delay</text>
+  
+  <rect class="immediate" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Fast Recovery</text>
+  
+  <rect class="immediate" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">System Load</text>
+  
+  <!-- Fixed Delay Retry -->
+  <rect class="fixed" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Fixed Delay Retry</text>
+  
+  <rect class="fixed" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Fixed Delay</text>
+  
+  <rect class="fixed" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Consistent Retry</text>
+  
+  <rect class="fixed" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Predictable Retry</text>
+  
+  <!-- Exponential Backoff Retry -->
+  <rect class="exponential" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Exponential Backoff</text>
+  
+  <rect class="exponential" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Exponential Delay</text>
+  
+  <rect class="exponential" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Backoff Retry</text>
+  
+  <rect class="exponential" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Optimal Retry</text>
+  
+  <!-- Retry Timeline -->
+  <rect class="immediate" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Retry Strategy Timeline</text>
+  
+  <!-- Timeline -->
+  <line x1="100" y1="350" x2="900" y2="350" stroke="#1a1822" stroke-width="2"/>
+  
+  <!-- Immediate point -->
+  <circle cx="250" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="250" y="385" text-anchor="middle" class="sublabel">Immediate</text>
+  <text x="250" y="405" text-anchor="middle" class="sublabel">No Delay</text>
+  
+  <!-- Fixed point -->
+  <circle cx="500" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="500" y="385" text-anchor="middle" class="sublabel">Fixed</text>
+  <text x="500" y="405" text-anchor="middle" class="sublabel">Constant</text>
+  
+  <!-- Exponential point -->
+  <circle cx="750" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="750" y="385" text-anchor="middle" class="sublabel">Exponential</text>
+  <text x="750" y="405" text-anchor="middle" class="sublabel">Increasing</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Retry Strategies</text>
+</svg>

@@ -1,0 +1,14 @@
+{
+  "rollingBudget": {
+    "remainingPct": 0.12,
+    "consumedPct": 0.88,
+    "total": 1200000,
+    "bad": 2400
+  },
+  "alerts": {
+    "fast": { "firing": false },
+    "slow": { "firing": true },
+    "releaseFreeze": true
+  }
+}
+

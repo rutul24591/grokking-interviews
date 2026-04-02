@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .json { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .csv { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .pdf { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- JSON Format -->
+  <rect class="json" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">JSON Format</text>
+  
+  <rect class="json" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Machine Readable</text>
+  
+  <rect class="json" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Structured</text>
+  
+  <rect class="json" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Large Size</text>
+  
+  <!-- CSV Format -->
+  <rect class="csv" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">CSV Format</text>
+  
+  <rect class="csv" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Human Readable</text>
+  
+  <rect class="csv" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Spreadsheet Compatible</text>
+  
+  <rect class="csv" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Limited Structure</text>
+  
+  <!-- PDF Format -->
+  <rect class="pdf" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">PDF Format</text>
+  
+  <rect class="pdf" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Human Readable</text>
+  
+  <rect class="pdf" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Printable</text>
+  
+  <rect class="pdf" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Not Machine Readable</text>
+  
+  <!-- Format Selection -->
+  <rect class="json" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Export Format Selection</text>
+  
+  <!-- Selection options -->
+  <rect class="json" x="70" y="330" width="200" height="60" rx="4"/>
+  <text x="170" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">JSON</text>
+  <text x="170" y="375" text-anchor="middle" class="sublabel">For Developers</text>
+  
+  <rect class="csv" x="300" y="330" width="200" height="60" rx="4"/>
+  <text x="400" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">CSV</text>
+  <text x="400" y="375" text-anchor="middle" class="sublabel">For Spreadsheets</text>
+  
+  <rect class="pdf" x="530" y="330" width="200" height="60" rx="4"/>
+  <text x="630" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">PDF</text>
+  <text x="630" y="375" text-anchor="middle" class="sublabel">For Reading</text>
+  
+  <rect class="json" x="760" y="330" width="200" height="60" rx="4"/>
+  <text x="860" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">All Formats</text>
+  <text x="860" y="375" text-anchor="middle" class="sublabel">Complete Export</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Export Formats</text>
+</svg>

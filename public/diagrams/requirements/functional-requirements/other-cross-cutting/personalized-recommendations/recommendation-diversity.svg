@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .content { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .source { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .viewpoint { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Content Diversity -->
+  <rect class="content" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Content Diversity</text>
+  
+  <rect class="content" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Content Variety</text>
+  
+  <rect class="content" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Diversity Calculation</text>
+  
+  <rect class="content" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Diversity Enforcement</text>
+  
+  <!-- Source Diversity -->
+  <rect class="source" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Source Diversity</text>
+  
+  <rect class="source" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Source Variety</text>
+  
+  <rect class="source" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Diversity Calculation</text>
+  
+  <rect class="source" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Diversity Enforcement</text>
+  
+  <!-- Viewpoint Diversity -->
+  <rect class="viewpoint" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Viewpoint Diversity</text>
+  
+  <rect class="viewpoint" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Viewpoint Variety</text>
+  
+  <rect class="viewpoint" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Diversity Calculation</text>
+  
+  <rect class="viewpoint" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Diversity Enforcement</text>
+  
+  <!-- Diversity Flow -->
+  <rect class="content" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Diversity Flow</text>
+  
+  <!-- Flow -->
+  <circle cx="150" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="150" y="385" text-anchor="middle" class="sublabel">Recommendations</text>
+  
+  <path class="arrow" d="M158 350 L242 350"/>
+  
+  <rect x="250" y="330" width="100" height="40" rx="4" fill="#ffffff"/>
+  <text x="300" y="355" text-anchor="middle" class="sublabel" fill="#1a1822">Calculate</text>
+  
+  <path class="arrow" d="M350 350 L392 350"/>
+  
+  <circle cx="450" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="450" y="385" text-anchor="middle" class="sublabel">Check</text>
+  
+  <path class="arrow" d="M458 350 L542 350"/>
+  
+  <rect x="550" y="330" width="100" height="40" rx="4" fill="#ffffff"/>
+  <text x="600" y="355" text-anchor="middle" class="sublabel" fill="#1a1822" style="font-weight: 600">Diverse?</text>
+  
+  <path class="arrow" d="M650 350 L692 350"/>
+  <path class="arrow" d="M600 370 L600 390 L650 390"/>
+  
+  <circle cx="750" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="750" y="385" text-anchor="middle" class="sublabel">Use</text>
+  
+  <circle cx="750" cy="390" r="8" fill="#6d5bd0"/>
+  <text x="750" y="425" text-anchor="middle" class="sublabel">Adjust</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Recommendation Diversity</text>
+</svg>

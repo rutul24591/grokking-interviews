@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .public { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .connections { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .private { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .custom { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Public -->
+  <rect class="public" x="50" y="50" width="200" height="180" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">Public</text>
+  
+  <rect class="public" x="70" y="100" width="160" height="35" rx="4"/>
+  <text x="150" y="122" text-anchor="middle" class="sublabel">Anyone Can See</text>
+  
+  <rect class="public" x="70" y="145" width="160" height="35" rx="4"/>
+  <text x="150" y="167" text-anchor="middle" class="sublabel">Search Engines</text>
+  
+  <rect class="public" x="70" y="190" width="160" height="35" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="sublabel">Maximum Discovery</text>
+  
+  <!-- Connections Only -->
+  <rect class="connections" x="280" y="50" width="200" height="180" rx="8"/>
+  <text x="380" y="80" text-anchor="middle" class="text-label">Connections Only</text>
+  
+  <rect class="connections" x="300" y="100" width="160" height="35" rx="4"/>
+  <text x="380" y="122" text-anchor="middle" class="sublabel">Friends/Followers</text>
+  
+  <rect class="connections" x="300" y="145" width="160" height="35" rx="4"/>
+  <text x="380" y="167" text-anchor="middle" class="sublabel">Private Network</text>
+  
+  <rect class="connections" x="300" y="190" width="160" height="35" rx="4"/>
+  <text x="380" y="212" text-anchor="middle" class="sublabel">Balanced Privacy</text>
+  
+  <!-- Private -->
+  <rect class="private" x="510" y="50" width="200" height="180" rx="8"/>
+  <text x="610" y="80" text-anchor="middle" class="text-label">Private</text>
+  
+  <rect class="private" x="530" y="100" width="160" height="35" rx="4"/>
+  <text x="610" y="122" text-anchor="middle" class="sublabel">Approved Only</text>
+  
+  <rect class="private" x="530" y="145" width="160" height="35" rx="4"/>
+  <text x="610" y="167" text-anchor="middle" class="sublabel">No Search Index</text>
+  
+  <rect class="private" x="530" y="190" width="160" height="35" rx="4"/>
+  <text x="610" y="212" text-anchor="middle" class="sublabel">Maximum Privacy</text>
+  
+  <!-- Custom -->
+  <rect class="custom" x="740" y="50" width="200" height="180" rx="8"/>
+  <text x="840" y="80" text-anchor="middle" class="text-label">Custom</text>
+  
+  <rect class="custom" x="760" y="100" width="160" height="35" rx="4"/>
+  <text x="840" y="122" text-anchor="middle" class="sublabel">Per-Section</text>
+  
+  <rect class="custom" x="760" y="145" width="160" height="35" rx="4"/>
+  <text x="840" y="167" text-anchor="middle" class="sublabel">Include/Exclude</text>
+  
+  <rect class="custom" x="760" y="190" width="160" height="35" rx="4"/>
+  <text x="840" y="212" text-anchor="middle" class="sublabel">Granular Control</text>
+  
+  <!-- Visibility Spectrum -->
+  <rect class="public" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Visibility Spectrum</text>
+  
+  <!-- Spectrum line -->
+  <line x1="100" y1="360" x2="900" y2="360" stroke="#6d5bd0" stroke-width="4"/>
+  
+  <!-- Points on spectrum -->
+  <circle cx="150" cy="360" r="10" fill="#ffffff"/>
+  <text x="150" y="395" text-anchor="middle" class="sublabel">Public</text>
+  
+  <circle cx="400" cy="360" r="10" fill="#6d5bd0"/>
+  <text x="400" y="395" text-anchor="middle" class="sublabel">Connections</text>
+  
+  <circle cx="650" cy="360" r="10" fill="#ffffff"/>
+  <text x="650" y="395" text-anchor="middle" class="sublabel">Private</text>
+  
+  <circle cx="850" cy="360" r="10" fill="#6d5bd0" stroke-dasharray="2,2"/>
+  <text x="850" y="395" text-anchor="middle" class="sublabel">Custom</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Visibility Levels</text>
+</svg>

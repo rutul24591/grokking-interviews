@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .access { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .erasure { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .portability { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .header { fill: #ede7f6; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Right to Access -->
+  <rect class="access" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Right to Access</text>
+  
+  <rect class="access" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Data Access</text>
+  
+  <rect class="access" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Transparency</text>
+  
+  <rect class="access" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Processing Overhead</text>
+  
+  <!-- Right to Erasure -->
+  <rect class="erasure" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Right to Erasure</text>
+  
+  <rect class="erasure" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Data Deletion</text>
+  
+  <rect class="erasure" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Privacy Protection</text>
+  
+  <rect class="erasure" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Legal Exceptions</text>
+  
+  <!-- Right to Portability -->
+  <rect class="portability" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Right to Portability</text>
+  
+  <rect class="portability" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Data Export</text>
+  
+  <rect class="portability" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Machine Readable</text>
+  
+  <rect class="portability" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Format Standards</text>
+  
+  <!-- Comparison Table -->
+  <rect class="access" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">GDPR Rights Comparison</text>
+  
+  <!-- Header -->
+  <rect class="header" x="60" y="320" width="880" height="35" rx="4"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Right</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">User Control</text>
+  <text x="450" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Complexity</text>
+  <text x="600" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Timeline</text>
+  <text x="800" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Best For</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Access</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">Low</text>
+  <text x="600" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">30 Days</text>
+  <text x="800" y="380" text-anchor="middle" class="sublabel">Transparency</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Erasure</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="450" y="400" text-anchor="middle" class="sublabel" fill="#dc2626">High</text>
+  <text x="600" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">30 Days</text>
+  <text x="800" y="400" text-anchor="middle" class="sublabel">Privacy</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: GDPR Rights Comparison</text>
+</svg>

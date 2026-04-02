@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .version1 { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .version2 { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .diff { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Version 1 -->
+  <rect class="version1" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Version 1</text>
+  
+  <rect class="version1" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Original Content</text>
+  
+  <rect class="version1" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">Created: Jan 1</text>
+  
+  <rect class="version1" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Author: User A</text>
+  
+  <!-- Version 2 -->
+  <rect class="version2" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Version 2</text>
+  
+  <rect class="version2" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Modified Content</text>
+  
+  <rect class="version2" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">Created: Jan 2</text>
+  
+  <rect class="version2" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Author: User B</text>
+  
+  <!-- Diff View -->
+  <rect class="diff" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Diff View</text>
+  
+  <rect class="diff" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Additions (Green)</text>
+  
+  <rect class="diff" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Deletions (Red)</text>
+  
+  <rect class="diff" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Modifications</text>
+  
+  <!-- Comparison Methods -->
+  <rect class="version1" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Version Comparison Methods</text>
+  
+  <!-- Comparison options -->
+  <rect class="version1" x="70" y="330" width="200" height="60" rx="4"/>
+  <text x="170" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Side-by-Side</text>
+  <text x="170" y="375" text-anchor="middle" class="sublabel">Two Versions</text>
+  
+  <rect class="version2" x="300" y="330" width="200" height="60" rx="4"/>
+  <text x="400" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Inline Diff</text>
+  <text x="400" y="375" text-anchor="middle" class="sublabel">Highlight Changes</text>
+  
+  <rect class="diff" x="530" y="330" width="200" height="60" rx="4"/>
+  <text x="630" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Change Summary</text>
+  <text x="630" y="375" text-anchor="middle" class="sublabel">Summarize Changes</text>
+  
+  <rect class="version1" x="760" y="330" width="200" height="60" rx="4"/>
+  <text x="860" y="355" text-anchor="middle" class="sublabel" style="font-weight: 600">Visual Diff</text>
+  <text x="860" y="375" text-anchor="middle" class="sublabel">Visual Changes</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Version Comparison</text>
+</svg>

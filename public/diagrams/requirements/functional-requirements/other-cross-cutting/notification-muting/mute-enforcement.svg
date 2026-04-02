@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .check { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .filter { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .override { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Mute Check -->
+  <rect class="check" x="50" y="50" width="250" height="150" rx="8"/>
+  <text x="175" y="90" text-anchor="middle" class="text-label">Mute Check</text>
+  <text x="175" y="120" text-anchor="middle" class="sublabel">Check Mute Status</text>
+  <text x="175" y="145" text-anchor="middle" class="sublabel">Check Mute Scope</text>
+  <text x="175" y="170" text-anchor="middle" class="sublabel">Check Mute Duration</text>
+  
+  <!-- Mute Filtering -->
+  <rect class="filter" x="350" y="50" width="250" height="150" rx="8"/>
+  <text x="475" y="90" text-anchor="middle" class="text-label">Mute Filtering</text>
+  <text x="475" y="120" text-anchor="middle" class="sublabel">Filter by Duration</text>
+  <text x="475" y="145" text-anchor="middle" class="sublabel">Filter by Scope</text>
+  <text x="475" y="170" text-anchor="middle" class="sublabel">Filter by Type</text>
+  
+  <!-- Mute Override -->
+  <rect class="override" x="650" y="50" width="250" height="150" rx="8"/>
+  <text x="775" y="90" text-anchor="middle" class="text-label">Mute Override</text>
+  <text x="775" y="120" text-anchor="middle" class="sublabel">Priority Override</text>
+  <text x="775" y="145" text-anchor="middle" class="sublabel">Emergency Override</text>
+  <text x="775" y="170" text-anchor="middle" class="sublabel">Important Override</text>
+  
+  <!-- Enforcement Flow -->
+  <rect class="check" x="50" y="250" width="900" height="160" rx="8"/>
+  <text x="500" y="280" text-anchor="middle" class="text-label">Mute Enforcement Flow</text>
+  
+  <!-- Flow -->
+  <circle cx="150" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="150" y="385" text-anchor="middle" class="sublabel">Check</text>
+  <text x="150" y="405" text-anchor="middle" class="sublabel">Mute Status</text>
+  
+  <path class="arrow" d="M158 350 L242 350"/>
+  
+  <rect x="250" y="330" width="100" height="40" rx="4" fill="#ffffff"/>
+  <text x="300" y="355" text-anchor="middle" class="sublabel" fill="#1a1822">Muted?</text>
+  
+  <path class="arrow" d="M350 350 L392 350"/>
+  <path class="arrow" d="M300 370 L300 390 L350 390"/>
+  
+  <circle cx="450" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="450" y="385" text-anchor="middle" class="sublabel">Filter</text>
+  <text x="450" y="405" text-anchor="middle" class="sublabel">Notification</text>
+  
+  <path class="arrow" d="M458 350 L542 350"/>
+  
+  <rect x="550" y="330" width="100" height="40" rx="4" fill="#ffffff"/>
+  <text x="600" y="355" text-anchor="middle" class="sublabel" fill="#1a1822" style="font-weight: 600">Override?</text>
+  
+  <path class="arrow" d="M650 350 L692 350"/>
+  <path class="arrow" d="M600 370 L600 390 L650 390"/>
+  
+  <circle cx="750" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="750" y="385" text-anchor="middle" class="sublabel">Send</text>
+  <text x="750" y="405" text-anchor="middle" class="sublabel">Notification</text>
+  
+  <path class="arrow" d="M758 350 L842 350"/>
+  
+  <circle cx="900" cy="350" r="8" fill="#6d5bd0"/>
+  <text x="900" y="385" text-anchor="middle" class="sublabel">Block</text>
+  <text x="900" y="405" text-anchor="middle" class="sublabel">Notification</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 3: Mute Enforcement</text>
+</svg>

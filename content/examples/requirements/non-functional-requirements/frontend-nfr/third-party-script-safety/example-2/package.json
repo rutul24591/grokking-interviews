@@ -1,0 +1,18 @@
+{
+  "name": "frontend-nfr-third-party-script-safety-example-2-postmessage-validate",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "demo": "tsx src/demo.ts"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}
+

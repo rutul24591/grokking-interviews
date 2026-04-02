@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .optin { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .optout { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .hybrid { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- Opt-in -->
+  <rect class="optin" x="50" y="50" width="280" height="180" rx="8"/>
+  <text x="190" y="80" text-anchor="middle" class="text-label">Opt-in Consent</text>
+  
+  <rect class="optin" x="70" y="100" width="240" height="35" rx="4"/>
+  <text x="190" y="122" text-anchor="middle" class="sublabel">Explicit Agreement</text>
+  
+  <rect class="optin" x="70" y="145" width="240" height="35" rx="4"/>
+  <text x="190" y="167" text-anchor="middle" class="sublabel">GDPR Compliant</text>
+  
+  <rect class="optin" x="70" y="190" width="240" height="35" rx="4"/>
+  <text x="190" y="212" text-anchor="middle" class="sublabel">Less Data Available</text>
+  
+  <!-- Opt-out -->
+  <rect class="optout" x="380" y="50" width="280" height="180" rx="8"/>
+  <text x="520" y="80" text-anchor="middle" class="text-label">Opt-out Consent</text>
+  
+  <rect class="optout" x="400" y="100" width="240" height="35" rx="4"/>
+  <text x="520" y="122" text-anchor="middle" class="sublabel">Implicit Consent</text>
+  
+  <rect class="optout" x="400" y="145" width="240" height="35" rx="4"/>
+  <text x="520" y="167" text-anchor="middle" class="sublabel">More Data Available</text>
+  
+  <rect class="optout" x="400" y="190" width="240" height="35" rx="4"/>
+  <text x="520" y="212" text-anchor="middle" class="sublabel">Compliance Risk</text>
+  
+  <!-- Hybrid -->
+  <rect class="hybrid" x="710" y="50" width="240" height="180" rx="8"/>
+  <text x="830" y="80" text-anchor="middle" class="text-label">Hybrid Approach</text>
+  
+  <rect class="hybrid" x="730" y="100" width="200" height="35" rx="4"/>
+  <text x="830" y="122" text-anchor="middle" class="sublabel">Risk-based</text>
+  
+  <rect class="hybrid" x="730" y="145" width="200" height="35" rx="4"/>
+  <text x="830" y="167" text-anchor="middle" class="sublabel">Opt-in for Sensitive</text>
+  
+  <rect class="hybrid" x="730" y="190" width="200" height="35" rx="4"/>
+  <text x="830" y="212" text-anchor="middle" class="sublabel">Opt-out for Essential</text>
+  
+  <!-- Comparison Table -->
+  <rect class="optin" x="50" y="280" width="900" height="130" rx="8"/>
+  <text x="500" y="310" text-anchor="middle" class="text-label">Consent Approach Comparison</text>
+  
+  <!-- Header -->
+  <rect class="optin" x="60" y="320" width="880" height="35" rx="4" fill="#ede7f6"/>
+  <text x="150" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Approach</text>
+  <text x="300" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Compliance</text>
+  <text x="450" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Data Available</text>
+  <text x="600" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">User Trust</text>
+  <text x="800" y="342" text-anchor="middle" class="sublabel" style="font-weight: 600">Best For</text>
+  
+  <!-- Row 1 -->
+  <text x="150" y="380" text-anchor="middle" class="sublabel">Opt-in</text>
+  <text x="300" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="450" y="380" text-anchor="middle" class="sublabel" fill="#dc2626">Low</text>
+  <text x="600" y="380" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="800" y="380" text-anchor="middle" class="sublabel">GDPR/Advertising</text>
+  
+  <!-- Row 2 -->
+  <text x="150" y="400" text-anchor="middle" class="sublabel">Opt-out</text>
+  <text x="300" y="400" text-anchor="middle" class="sublabel" fill="#dc2626">Risk</text>
+  <text x="450" y="400" text-anchor="middle" class="sublabel" fill="#059669" font-weight="600">High</text>
+  <text x="600" y="400" text-anchor="middle" class="sublabel" fill="#dc2626">Low</text>
+  <text x="800" y="400" text-anchor="middle" class="sublabel">Service Providers</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 4: Sharing Approaches Comparison</text>
+</svg>

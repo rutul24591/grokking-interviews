@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" class="w-full h-auto">
+  <defs>
+    <style>
+      .bg { fill: #f3f1f8; }
+      .user { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; }
+      .check { fill: #ffffff; stroke: #d7d1e6; stroke-width: 2; }
+      .filter { fill: #ffffff; stroke: #6d5bd0; stroke-width: 2; stroke-dasharray: 4,2; }
+      .result { fill: #ffffff; stroke: #6d5bd0; stroke-width: 3; }
+      .arrow { stroke: #1a1822; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text-label { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #1a1822; font-weight: 700; }
+      .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #6d5bd0; font-weight: 600; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+  
+  <rect class="bg" width="1000" height="450" data-theme="light"/>
+  
+  <!-- User Request -->
+  <rect class="user" x="50" y="50" width="200" height="120" rx="8"/>
+  <text x="150" y="80" text-anchor="middle" class="text-label">1. User Request</text>
+  <text x="150" y="105" text-anchor="middle" class="sublabel">Request Content</text>
+  <text x="150" y="125" text-anchor="middle" class="sublabel">Viewer Identity</text>
+  <text x="150" y="145" text-anchor="middle" class="sublabel">Content ID</text>
+  
+  <!-- Privacy Check -->
+  <rect class="check" x="300" y="50" width="200" height="120" rx="8"/>
+  <text x="400" y="80" text-anchor="middle" class="text-label">2. Privacy Check</text>
+  <text x="400" y="105" text-anchor="middle" class="sublabel">Get Privacy Settings</text>
+  <text x="400" y="125" text-anchor="middle" class="sublabel">Evaluate Audience</text>
+  <text x="400" y="145" text-anchor="middle" class="sublabel">Check Inheritance</text>
+  
+  <!-- Content Filter -->
+  <rect class="filter" x="550" y="50" width="200" height="120" rx="8"/>
+  <text x="650" y="80" text-anchor="middle" class="text-label">3. Content Filter</text>
+  <text x="650" y="105" text-anchor="middle" class="sublabel">Filter by Privacy</text>
+  <text x="650" y="125" text-anchor="middle" class="sublabel">Apply Audience Rules</text>
+  <text x="650" y="145" text-anchor="middle" class="sublabel">Handle Edge Cases</text>
+  
+  <!-- Result -->
+  <rect class="result" x="800" y="50" width="170" height="120" rx="8"/>
+  <text x="885" y="80" text-anchor="middle" class="text-label">4. Result</text>
+  <text x="885" y="105" text-anchor="middle" class="sublabel">Content Visible</text>
+  <text x="885" y="125" text-anchor="middle" class="sublabel">or Access Denied</text>
+  <text x="885" y="145" text-anchor="middle" class="sublabel">Privacy Enforced</text>
+  
+  <!-- Arrows between steps -->
+  <path class="arrow" d="M250 110 L295 110"/>
+  <path class="arrow" d="M500 110 L545 110"/>
+  <path class="arrow" d="M750 110 L795 110"/>
+  
+  <!-- Privacy Levels -->
+  <rect class="user" x="50" y="220" width="450" height="150" rx="8"/>
+  <text x="275" y="250" text-anchor="middle" class="text-label">Privacy Levels</text>
+  
+  <rect class="result" x="70" y="270" width="180" height="80" rx="4"/>
+  <text x="160" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Public</text>
+  <text x="160" y="315" text-anchor="middle" class="sublabel">Anyone Can See</text>
+  <text x="160" y="335" text-anchor="middle" class="sublabel">Including Non-users</text>
+  
+  <rect class="filter" x="280" y="270" width="180" height="80" rx="4"/>
+  <text x="370" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Friends/Followers</text>
+  <text x="370" y="315" text-anchor="middle" class="sublabel">Connected Users Only</text>
+  <text x="370" y="335" text-anchor="middle" class="sublabel">Private Network</text>
+  
+  <!-- Access Control -->
+  <rect class="check" x="550" y="220" width="400" height="150" rx="8"/>
+  <text x="750" y="250" text-anchor="middle" class="text-label">Access Control Decision</text>
+  
+  <rect class="result" x="570" y="270" width="180" height="80" rx="4"/>
+  <text x="660" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Access Granted</text>
+  <text x="660" y="315" text-anchor="middle" class="sublabel">Viewer in Audience</text>
+  <text x="660" y="335" text-anchor="middle" class="sublabel">Content Returned</text>
+  
+  <rect class="user" x="780" y="270" width="150" height="80" rx="4"/>
+  <text x="855" y="295" text-anchor="middle" class="sublabel" style="font-weight: 600">Access Denied</text>
+  <text x="855" y="315" text-anchor="middle" class="sublabel">Viewer Not in Audience</text>
+  <text x="855" y="335" text-anchor="middle" class="sublabel">Content Hidden</text>
+  
+  <text x="500" y="440" text-anchor="middle" class="text-label" style="font-size: 16px">Figure 2: Privacy Enforcement Flow</text>
+</svg>
