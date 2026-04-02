@@ -1,0 +1,9 @@
+{
+  "name": "functional-requirements-duplicate-request-handling-example-2",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "demo": "node src/demo.js"
+  }
+}
