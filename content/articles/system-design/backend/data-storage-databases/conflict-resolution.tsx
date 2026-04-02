@@ -1,5 +1,706 @@
-"use client"; import { ArticleLayout } from "@/components/articles/ArticleLayout";
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import type { ArticleMetadata } from "@/types/article"; export const metadata: ArticleMetadata = { id: "article-backend-conflict-resolution-extensive", title: "Conflict Resolution", description: "In-depth guide to conflict resolution concepts, trade-offs, and operational practice.", category: "backend", subcategory: "data-storage-databases", slug: "conflict-resolution",
-wordCount: 1348, readingTime: 7, lastUpdated: "2026-03-13", tags: ["backend","data-storage"], relatedTopics: [],
-}; export default function ConflictResolutionConciseArticle() { return ( <ArticleLayout metadata={metadata}><section><h2>Definition and Scope</h2><p>Conflict resolution defines how divergent updates are merged in distributed systems. It is critical for multi-writer and eventual consistency designs. It includes automatic resolution, manual reconciliation, and application-specific merge logic.</p><p>Multi-region databases, collaborative apps, and offline-first clients depend on strong conflict resolution.</p></section><section><h2>Core Concepts</h2><ul className="space-y-2"><li>Last-write-wins is simple but can lose updates.</li><li>Vector clocks detect concurrency.</li><li>CRDTs provide deterministic merges.</li><li>Custom merge logic can preserve domain rules.</li><li>Audit logs are essential for debugging conflicts.</li></ul><ArticleImage src="/diagrams/system-design-concepts/backend/data-storage-databases/conflict-vector-clock.svg" alt="Vector clock example" caption="Vector clock example. Source: Wikimedia Commons (Vector_Clock.svg)." /></section><section><h2>How It Works</h2><p>Conflicts arise when concurrent updates occur without a single ordering. Resolution decides which version becomes authoritative.</p><p>Resolution can be done during write (synchronous) or during read repair (asynchronous).</p></section><section><h2>Advanced Implementation Notes</h2><p>Conflict Resolution implementations benefit from explicit boundaries between write paths and read paths. Treat last-write-wins is simple but can lose updates. as a contract, not a suggestion.</p><p>When extending Conflict Resolution, prefer additive changes and parallel validation. This keeps rollback safe while you validate vector clocks detect concurrency. under real traffic.</p></section><section><h2>Architecture and Data Layout</h2><p>Systems with multi-leader replication need built-in conflict handling. CRDTs provide strong guarantees but add complexity.</p><p>For critical data, manual resolution workflows may be required to avoid silent data loss.</p></section><section><h2>Data Governance and Compliance</h2><p>Conflict Resolution often stores regulated or business-critical data. Governance should define ownership, retention, and access policies so that audits are repeatable.</p><p>Use data classification to decide where encryption, masking, or tiering is required. For Conflict Resolution, audit trails must be complete enough to reconstruct who accessed or changed data.</p></section><section><h2>Security and Access Control</h2><p>Conflict Resolution security starts with least-privilege access and explicit ownership. Access should be reviewed regularly, and service accounts must be scoped to the smallest required surface.</p><p>Audit logs should capture read and write access paths. For Conflict Resolution, logs help correlate anomalies with access changes and reduce time-to-diagnosis during incidents.</p></section><section><h2>Failure Modes and Risks</h2><ul className="space-y-2"><li>Last-write-wins overwriting important data.</li><li>Conflict storms during partitions.</li><li>Inconsistent merge logic across services.</li><li>Loss of audit history for merges.</li></ul><ArticleImage src="/diagrams/system-design-concepts/backend/data-storage-databases/conflict-lamport-clock.svg" alt="Lamport clock ordering" caption="Lamport logical clock ordering. Source: Wikimedia Commons (Lamport-Clock-en.svg)." /></section><section><h2>Signals and Observability</h2><ul className="space-y-2"><li>Conflict rate per entity.</li><li>Merge failures and retries.</li><li>Manual resolution backlog.</li><li>Divergence duration between replicas.</li></ul></section><section><h2>SLOs and Monitoring Strategy</h2><p>Define SLOs that match user impact. For Conflict Resolution, SLOs often include Conflict rate per entity. and Merge failures and retries. with explicit burn-rate alerts.</p><p>Monitoring should separate control-plane failures from data-plane failures. This avoids paging the wrong team during last-write-wins overwriting important data. scenarios.</p></section><section><h2>Scaling and Performance</h2><p>Conflict resolution cost grows with write concurrency. Use sharding or partitioning to reduce concurrent writes to the same key.</p><p>CRDTs scale better when operations are small and commutative.</p></section><section><h2>Design Considerations</h2><p>Conflict Resolution design starts with invariants and access patterns. Last-write-wins is simple but can lose updates. and Vector clocks detect concurrency. should be documented as explicit constraints so every service makes the same assumptions.</p><p>Good designs describe how data will be accessed at scale, not just how it is stored. For Conflict Resolution, the model should align with the highest-volume paths and make the most common reads predictable.</p><p>When requirements evolve, the safest path is to add new structures rather than mutate old ones in place. This keeps migrations reversible and avoids long running backfills.</p></section><section><h2>Performance Tuning</h2><p>Performance tuning for Conflict Resolution starts with eliminating obvious bottlenecks such as unbounded scans or hot partitions. Indexing, caching, or pre-aggregation should be tied directly to measured slow paths.</p><p>When tuning, measure both median and tail latency. Improvements that help p50 but worsen p99 can still hurt user experience and error rates.</p></section><section><h2>Operational Playbooks</h2><p>Expose conflict events in logs and metrics. Runbooks should define when to automate versus escalate to manual resolution.</p><p>Regularly review conflict statistics to detect misuse or design flaws.</p><ArticleImage src="/diagrams/system-design-concepts/backend/data-storage-databases/conflict-causal-ordering-violation.png" alt="Causal ordering example" caption="Causal ordering example. Source: GeeksforGeeks (Causalordering01.png)." /></section><section><h2>Failure Response and Recovery</h2><p>When Conflict Resolution fails, the first objective is containment. Failures like Last-write-wins overwriting important data. or Conflict storms during partitions. should trigger a controlled fallback rather than a cascade.</p><p>Recovery depends on observability. Signals such as Conflict rate per entity. and Merge failures and retries. should identify which component is degraded and which action is safe.</p><p>After recovery, validate data correctness with reconciliation jobs or checksums. This prevents silent corruption from lingering after the incident.</p></section><section><h2>Data Quality and Reconciliation</h2><p>Conflict Resolution systems should include periodic reconciliation to detect drift between sources of truth and derived views. Reconciliation jobs catch silent data corruption that is otherwise invisible in request metrics.</p><p>Define the acceptable error budget for data quality and make reconciliation outcomes observable. When reconciliation fails, the system should fail safe rather than continue serving incorrect data.</p></section><section><h2>System Design Scenario</h2><p>Two sales reps update the same account in different regions. The system uses a field-level merge that preserves both updates rather than overwriting.</p><p>For critical fields, the system flags a manual review instead of auto-merge.</p></section><section><h2>Capacity Planning</h2><p>Capacity planning for Conflict Resolution should model peak traffic, data growth, and the cost of rebalancing. The plan should include headroom for failures and maintenance operations.</p><p>Use load tests that mimic real access patterns and measure the point where latency degrades. This informs when to scale, shard, or introduce caching.</p></section><section><h2>Trade-offs and Alternatives</h2><p>Automated merges are fast but can hide subtle data loss. Manual merges are accurate but slow and expensive.</p><p>CRDTs reduce conflicts but require careful data modeling.</p><p>Use single-writer partitions or strong consistency for data that cannot tolerate conflicts.</p></section><section><h2>Integration Patterns</h2><p>Conflict Resolution rarely stands alone. Integration with queues, caches, or analytics pipelines should be explicit so data flow is predictable.</p><p>Define the contract for upstream writes and downstream reads. For example, specify staleness budgets and retry semantics so other services know what to expect.</p></section><section><h2>Cost Management</h2><p>Storage systems grow over time, so cost modeling is part of design. For Conflict Resolution, plan for data growth, replication factors, and retention policies up front.</p><p>Cost reduction should not compromise correctness. Use tiering, compression, and lifecycle rules while keeping recovery paths intact.</p></section><section><h2>Testing and Validation</h2><p>Simulate concurrent writes and verify deterministic outcomes. Validate that merge logic preserves invariants.</p></section><section><h2>Decision Checklist</h2><p>Confirm Last-write-wins is simple but can lose updates. and Vector clocks detect concurrency. are implemented consistently across services that read or write this data.</p><p>Ensure Conflict rate per entity. and Merge failures and retries. are monitored with clear thresholds before launch.</p><p>Document fallback behavior for Conflict Resolution so degraded modes are safe and predictable.</p></section><section><h2>Operational Guardrails</h2><p>Conflict Resolution should ship with guardrails that limit blast radius. Examples include rate limits, quotas, and automatic circuit breaking when Conflict Resolution resources saturate.</p><p>Guardrails should be documented and tested. During incidents, operators should know which switch reduces risk without causing full outages.</p></section><section><h2>Operational Checklist</h2><ul className="space-y-2"><li>Validate backups and restore paths regularly.</li><li>Review Conflict rate per entity. trends after deployments.</li><li>Test recovery from last-write-wins overwriting important data. conditions in staging.</li><li>Confirm data retention and access policies are enforced.</li><li>Track schema or model changes and keep migrations reversible.</li></ul></section><section><h2>Common Misconceptions</h2><p>Conflict resolution is not optional in multi-writer systems. Ignoring it guarantees data loss.</p></section><section><h2>Migration and Evolution</h2><p>Data systems evolve under real traffic. Conflict Resolution migrations should be additive first, then switch reads, then remove old paths.</p><p>Use backfills with checkpoints and rollback plans. If a backfill fails, you should be able to resume without corrupting state.</p></section><section><h2>Interview Questions</h2><div className="space-y-4"><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: Why is last-write-wins risky?</p><p className="mt-2 text-sm">A: It can overwrite valid updates without warning.</p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: What do vector clocks provide?</p><p className="mt-2 text-sm">A: A way to detect concurrent writes.</p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: When do you use CRDTs?</p><p className="mt-2 text-sm">A: When you need deterministic merges without coordination.</p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: How do you observe conflicts?</p><p className="mt-2 text-sm">A: Track conflict rates and merge outcomes.</p></div></div></section><section><h2>Operational Readiness Notes</h2><p>Conflict Resolution should have on-call ownership, clear escalation paths, and defined error budgets. Operational readiness includes verifying dashboards, alerts, and rollback steps before every major change. Runbooks should include validation steps that prove the system is back within its SLOs. Post-incident reviews should feed back into schema or model changes.</p></section><section><h2>Runbook Summary</h2><p>Use this checklist when Conflict Resolution issues show up under production load.</p><ul className="space-y-2"><li><strong>Triage:</strong> Confirm whether the symptom is correctness, latency, or availability; scope impact to specific queries, tenants, or partitions.</li><li><strong>Validate signals:</strong> Check Conflict rate per entity. and Merge failures and retries.; correlate changes with traffic shifts, deploys, and background jobs.</li><li><strong>Identify likely causes:</strong> Look for patterns consistent with Last-write-wins overwriting important data.; Conflict storms during partitions.; capture a minimal repro and the smallest failing dataset or query.</li><li><strong>Contain:</strong> Apply the lowest-risk mitigation first (rate-limit, shed non-critical work, pause batch jobs, route reads, or disable risky paths) to protect the system of record.</li><li><strong>Recover and prevent:</strong> Validate data with targeted checks (constraints, checksums, or reconciliation where applicable), then update alerts, guardrails, and documentation for Conflict Resolution.</li></ul></section><section><h2>Summary</h2><p>Conflict resolution is a core requirement for distributed writes. It must be explicit, testable, and observable.</p></section></ArticleLayout> ); }
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-backend-conflict-resolution-complete",
+  title: "Conflict Resolution",
+  description:
+    "Comprehensive guide to conflict resolution: write-write conflicts, last-write-wins, vector clocks, CRDTs, application merge, and handling conflicts in multi-leader and offline-first systems.",
+  category: "backend",
+  subcategory: "data-storage-databases",
+  slug: "conflict-resolution",
+  wordCount: 5500,
+  readingTime: 25,
+  lastUpdated: "2026-04-01",
+  tags: ["backend", "data-storage", "conflict-resolution", "distributed-systems", "replication"],
+  relatedTopics: [
+    "replication-in-nosql",
+    "consistency-models",
+    "read-replicas",
+    "sharding-strategies",
+  ],
+};
+
+const BASE_PATH = "/diagrams/system-design-concepts/backend/data-storage-databases";
+
+export default function ArticlePage() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      {/* Section 1: Definition & Context */}
+      <section>
+        <h1>Conflict Resolution</h1>
+        <p className="lead">
+          Conflict resolution handles concurrent writes to the same data in distributed systems.
+          When multiple nodes accept writes independently (multi-leader replication, offline-first
+          apps), conflicts occur: two writes to same key, different values. Resolution strategies:
+          <strong>Last Write Wins (LWW)</strong> (highest timestamp wins),
+          <strong>Vector Clocks</strong> (track causality, detect conflicts),
+          <strong>Application Merge</strong> (custom merge logic), <strong>CRDTs</strong>
+          (conflict-free replicated data types, automatic merge). Choice depends on consistency
+          requirements, data types, and acceptable data loss.
+        </p>
+
+        <p>
+          Consider a collaborative document. User A edits paragraph 1 (value: "Hello"), User B
+          edits same paragraph concurrently (value: "Hi"). Both changes replicate to other nodes.
+          Conflict! Resolution: LWW (one wins based on timestamp - data loss), vector clocks
+          (detect conflict, prompt user to merge), CRDTs (automatically merge - "Hello" + "Hi"
+          → combined result).
+        </p>
+
+        <p>
+          Conflicts occur in: <strong>Multi-leader replication</strong> (leaders in different
+          regions accept writes independently), <strong>Offline-first apps</strong> (mobile
+          app works offline, syncs when online), <strong>Collaborative editing</strong>
+          (multiple users edit same document). Without conflict resolution: data corruption
+          (silent overwrites), lost updates (one write overwrites another), inconsistency
+          (different nodes have different values).
+        </p>
+
+        <p>
+          This article provides a comprehensive examination of conflict resolution: conflict
+          types (write-write, read-write, lost updates), resolution strategies (LWW, vector
+          clocks, application merge, CRDTs), and real-world use cases (multi-leader replication,
+          offline-first apps, collaborative editing). We'll explore when each strategy excels
+          (LWW for simplicity, vector clocks for detection, CRDTs for automatic merge) and
+          trade-offs (data loss vs complexity vs storage overhead). We'll also cover best
+          practices (choose strategy per data type, test conflict scenarios) and common
+          pitfalls (clock skew, no merge strategy, assuming single leader).
+        </p>
+
+        <ArticleImage
+          src={`${BASE_PATH}/conflict-resolution-strategies.svg`}
+          caption="Figure 1: Conflict Resolution Strategies showing Conflict Scenarios: Write-Write Conflict (Two writes to same key concurrently), Read-Write Conflict (Read sees uncommitted write), Lost Update (Second write overwrites first). Common in: Multi-leader replication, offline-first apps. Resolution Strategies: Last Write Wins/LWW (Highest timestamp wins), Vector Clocks (Track causality, detect conflicts), Application Merge (Custom merge logic), CRDTs (Conflict-free data types). Key Components: Timestamps (Order events), Version Vectors (Track per-node versions), Merge Functions (Resolve conflicts), Quorum (Consensus for writes). Key characteristics: Write-write conflicts, read-write conflicts, lost updates, LWW, vector clocks, application merge, CRDTs."
+          alt="Conflict resolution strategies"
+        />
+      </section>
+
+      {/* Section 2: Core Concepts */}
+      <section>
+        <h2>Core Concepts: Conflict Types &amp; Resolution</h2>
+
+        <h3>Conflict Types</h3>
+        <p>
+          <strong>Write-write conflict</strong>: Two concurrent writes to same key, different
+          values. Example: Node A writes <code className="inline-code">x = 5</code>, Node B
+          writes <code className="inline-code">x = 10</code> (same time). Which value is
+          correct? Resolution needed.
+        </p>
+
+        <p>
+          <strong>Read-write conflict</strong>: Read sees uncommitted write (dirty read), or
+          write overwrites value that was read (non-repeatable read). Handled by isolation
+          levels (read committed, repeatable read, serializable).
+        </p>
+
+        <p>
+          <strong>Lost update</strong>: Second write overwrites first write (first update
+          lost). Example: A reads <code className="inline-code">x = 5</code>, B reads
+          <code className="inline-code">x = 5</code>, A writes <code className="inline-code">
+          x = 6</code>, B writes <code className="inline-code">x = 7</code>. A's update lost
+          (B overwrites). Resolution: optimistic locking (version check), pessimistic locking
+          (lock before read).
+        </p>
+
+        <h3>Last Write Wins (LWW)</h3>
+        <p>
+          <strong>LWW</strong> resolves conflicts by timestamp: highest timestamp wins.
+          Example: A writes <code className="inline-code">x = 5</code> (timestamp 100),
+          B writes <code className="inline-code">x = 10</code> (timestamp 101). B wins
+          (101 &gt; 100), final value <code className="inline-code">x = 10</code>.
+        </p>
+
+        <p>
+          Benefits: <strong>Simple</strong> (compare timestamps), <strong>Fast</strong>
+          (no coordination), <strong>Deterministic</strong> (same result on all nodes).
+          Trade-offs: <strong>Data loss</strong> (concurrent writes lost), <strong>Clock
+          sync required</strong> (timestamps must be comparable), <strong>No causality</strong>
+          (may violate cause-effect).
+        </p>
+
+        <p>
+          Use for: Non-critical data (cache, session data), where some data loss is acceptable,
+          simple systems (single conflict type).
+        </p>
+
+        <h3>Vector Clocks</h3>
+        <p>
+          <strong>Vector clocks</strong> track causality using vector of counters (one per
+          node). Example: 3 nodes (A, B, C). Vector clock: <code className="inline-code">
+          [A=2, B=1, C=0]</code> means: A has processed 2 events, B has processed 1, C has
+          processed 0.
+        </p>
+
+        <p>
+          Compare vector clocks: <strong>Equal</strong> (same events), <strong>Before</strong>
+          (happened-before), <strong>After</strong> (happened-after), <strong>Concurrent</strong>
+          (neither before nor after - conflict!). Example: <code className="inline-code">
+          [2,1,0]</code> vs <code className="inline-code">[1,2,0]</code> = concurrent
+          (A has more, B has more - conflict!).
+        </p>
+
+        <p>
+          Benefits: <strong>Detect conflicts</strong> (concurrent events), <strong>Track
+          causality</strong> (happened-before relationships), <strong>No data loss</strong>
+          (detect, don't overwrite). Trade-offs: <strong>Storage overhead</strong> (vector
+          per key), <strong>Complexity</strong> (compare vectors), <strong>Still need
+          resolution</strong> (detect conflict, but still need to resolve).
+        </p>
+
+        <p>
+          Use for: Critical data (can't lose updates), systems needing causality tracking,
+          conflict detection (resolve later).
+        </p>
+
+        <h3>Application Merge</h3>
+        <p>
+          <strong>Application merge</strong>: Custom merge logic defined by application.
+          Example: shopping cart - merge by union of items (A adds item 1, B adds item 2 -
+          merged cart has both). Counter - merge by sum (A increments by 1, B increments
+          by 2 - merged counter increments by 3).
+        </p>
+
+        <p>
+          Benefits: <strong>Flexible</strong> (custom logic per data type), <strong>Business
+          logic</strong> (merge makes sense for domain), <strong>No data loss</strong>
+          (merge both values). Trade-offs: <strong>Complex</strong> (define merge for each
+          type), <strong>Application burden</strong> (app must handle merge), <strong>May
+          not be possible</strong> (some conflicts can't merge meaningfully).
+        </p>
+
+        <p>
+          Use for: Domain-specific data (shopping carts, counters), when merge logic is clear,
+          critical data (can't lose updates).
+        </p>
+
+        <h3>CRDTs (Conflict-Free Replicated Data Types)</h3>
+        <p>
+          <strong>CRDTs</strong> are data types with mathematical guarantees: concurrent
+          operations commute (order doesn't matter), always converge to same state. Examples:
+          <strong>G-Counter</strong> (grow-only counter - only increment),
+          <strong>PN-Counter</strong> (positive-negative counter - increment/decrement),
+          <strong>OR-Set</strong> (observed-remove set - add/remove elements),
+          <strong>LWW-Register</strong> (last-write-wins register - LWW for single value).
+        </p>
+
+        <p>
+          Benefits: <strong>Automatic merge</strong> (no coordination), <strong>Guaranteed
+          convergence</strong> (all nodes same state), <strong>No data loss</strong> (merge
+          both values). Trade-offs: <strong>Limited types</strong> (only specific data types),
+          <strong>Storage overhead</strong> (track per-node state), <strong>Complexity</strong>
+          (implement CRDT operations).
+        </p>
+
+        <p>
+          Use for: Collaborative editing (Google Docs), counters (likes, views), sets
+          (tags, followers), when automatic merge is needed.
+        </p>
+
+        <ArticleImage
+          src={`${BASE_PATH}/conflict-resolution-comparison.svg`}
+          caption="Figure 2: LWW vs Vector Clocks vs CRDTs comparing Last Write Wins/LWW (Compare timestamps, Highest wins, Simple to implement, Data loss risk, Clock sync required), Vector Clocks (Vector of counters, Track causality, Detect conflicts, No data loss, More storage overhead), CRDTs (Conflict-free types, Automatic merge, No coordination, Guaranteed convergence, Limited data types). Strategy Comparison: LWW (Simple, data loss), Vector Clocks (Detect conflicts), CRDTs (Auto-merge, limited), App Merge (Custom logic). Key takeaway: LWW is simple but loses data. Vector clocks detect conflicts but need resolution. CRDTs auto-merge but limited types. Choose based on consistency needs and data types."
+          alt="LWW vs vector clocks vs CRDTs comparison"
+        />
+      </section>
+
+      {/* Section 3: Architecture & Flow */}
+      <section>
+        <h2>Architecture &amp; Implementation: Multi-Leader &amp; Offline-First</h2>
+
+        <h3>Multi-Leader Replication</h3>
+        <p>
+          Multi-leader replication: multiple nodes accept writes independently (leaders in
+          different regions). Writes replicate asynchronously to other leaders. Conflicts
+          occur when same key written on different leaders (concurrent writes).
+        </p>
+
+        <p>
+          Resolution: <strong>LWW</strong> (timestamp comparison - simple, data loss),
+          <strong>Vector clocks</strong> (detect conflicts, replicate all versions, resolve
+          on read), <strong>Application merge</strong> (define merge per data type).
+          Example: Cassandra uses LWW (configurable per column), Riak uses vector clocks
+          (detect conflicts, return all versions).
+        </p>
+
+        <p>
+          Implementation: Add metadata to each write (timestamp, vector clock), compare on
+          replication, resolve conflicts (LWW, merge, or return all versions). Trade-offs:
+          LWW (fast, data loss), vector clocks (detect conflicts, more storage), merge
+          (no data loss, complex).
+        </p>
+
+        <h3>Offline-First Applications</h3>
+        <p>
+          Offline-first apps: mobile app works offline (local database), syncs when online
+          (merge with server). Conflicts occur when same data modified offline and on server.
+        </p>
+
+        <p>
+          Resolution: <strong>LWW</strong> (server wins or client wins - simple),
+          <strong>Vector clocks</strong> (detect conflicts, prompt user to merge),
+          <strong>Application merge</strong> (automatic merge per data type). Example:
+          CouchDB uses vector clocks (detect conflicts, return all versions), mobile apps
+          use application merge (sync logic per data type).
+        </p>
+
+        <p>
+          Implementation: Store metadata with local changes (timestamp, version), on sync
+          compare with server version, resolve conflicts (LWW, merge, or prompt user).
+          Trade-offs: LWW (simple, data loss), vector clocks (detect conflicts, user
+          intervention), merge (automatic, complex logic).
+        </p>
+
+        <h3>Collaborative Editing</h3>
+        <p>
+          Collaborative editing: multiple users edit same document simultaneously. Conflicts
+          occur when same text edited concurrently.
+        </p>
+
+        <p>
+          Resolution: <strong>Operational Transform (OT)</strong> (Google Docs - transform
+          operations to preserve intent), <strong>CRDTs</strong> (automatically merge -
+          no coordination). Example: Google Docs uses OT (transform insert/delete operations),
+          CRDT-based editors use CRDTs (automatically merge text).
+        </p>
+
+        <p>
+          Implementation: Track operations (insert, delete), transform operations (OT) or
+          use CRDT operations (automatically commute), apply to document. Trade-offs: OT
+          (complex transformation logic), CRDTs (limited to specific operations, storage
+          overhead).
+        </p>
+
+        <ArticleImage
+          src={`${BASE_PATH}/conflict-resolution-use-cases.svg`}
+          caption="Figure 3: Conflict Resolution Use Cases and Best Practices. Primary Use Cases: Multi-Leader Replication (Regional leaders, Concurrent writes, Async replication, Conflict on merge, Example: Cassandra), Offline-First Apps (Mobile apps offline, Local changes, Sync when online, Merge conflicts, Example: CouchDB), Collaborative Editing (Google Docs, Multiple editors, Real-time merge, Operational transform, CRDTs for text). Best Practices: Use LWW for Simple (Non-critical data), Vector Clocks (Detect conflicts), CRDTs for Text (Collaborative editing), App Merge (Business logic). Anti-patterns: LWW for critical data (data loss), no conflict detection (silent corruption), ignoring clock skew (wrong winner), no merge strategy (manual resolution needed), assuming single leader (multi-leader needs resolution)."
+          alt="Conflict resolution use cases and best practices"
+        />
+      </section>
+
+      {/* Section 4: Trade-offs & Comparison */}
+      <section>
+        <h2>Trade-offs &amp; Comparison: Resolution Strategies</h2>
+
+        <p>
+          Different conflict resolution strategies have trade-offs. Understanding them helps
+          you choose the right strategy for each use case.
+        </p>
+
+        <h3>Last Write Wins (LWW)</h3>
+        <p>
+          <strong>Strengths</strong>: Simple (compare timestamps), fast (no coordination),
+          deterministic (same result on all nodes), low storage (single timestamp per key).
+        </p>
+
+        <p>
+          <strong>Limitations</strong>: Data loss (concurrent writes lost), clock sync required
+          (timestamps must be comparable), no causality (may violate cause-effect relationships).
+        </p>
+
+        <p>
+          <strong>Use for</strong>: Non-critical data (cache, session data), simple systems
+          (single conflict type), where some data loss is acceptable.
+        </p>
+
+        <h3>Vector Clocks</h3>
+        <p>
+          <strong>Strengths</strong>: Detect conflicts (concurrent events), track causality
+          (happened-before relationships), no data loss (detect, don't overwrite).
+        </p>
+
+        <p>
+          <strong>Limitations</strong>: Storage overhead (vector per key - grows with nodes),
+          complexity (compare vectors), still need resolution (detect conflict, but still
+          need to resolve).
+        </p>
+
+        <p>
+          <strong>Use for</strong>: Critical data (can't lose updates), systems needing
+          causality tracking, conflict detection (resolve later).
+        </p>
+
+        <h3>Application Merge</h3>
+        <p>
+          <strong>Strengths</strong>: Flexible (custom logic per data type), business logic
+          (merge makes sense for domain), no data loss (merge both values).
+        </p>
+
+        <p>
+          <strong>Limitations</strong>: Complex (define merge for each type), application
+          burden (app must handle merge), may not be possible (some conflicts can't merge
+          meaningfully).
+        </p>
+
+        <p>
+          <strong>Use for</strong>: Domain-specific data (shopping carts, counters), when
+          merge logic is clear, critical data (can't lose updates).
+        </p>
+
+        <h3>CRDTs</h3>
+        <p>
+          <strong>Strengths</strong>: Automatic merge (no coordination), guaranteed convergence
+          (all nodes same state), no data loss (merge both values), no coordination needed
+          (fully distributed).
+        </p>
+
+        <p>
+          <strong>Limitations</strong>: Limited types (only specific data types - counters,
+          sets, registers), storage overhead (track per-node state), complexity (implement
+          CRDT operations).
+        </p>
+
+        <p>
+          <strong>Use for</strong>: Collaborative editing (Google Docs), counters (likes,
+          views), sets (tags, followers), when automatic merge is needed.
+        </p>
+
+        <h3>Combined Approach</h3>
+        <p>
+          Use <strong>multiple strategies</strong> based on data type:
+        </p>
+
+        <p>
+          <strong>LWW</strong> for: Session data, cache, non-critical data (some loss OK).
+          <strong>Vector clocks</strong> for: Critical data (detect conflicts, resolve later).
+          <strong>Application merge</strong> for: Domain-specific data (shopping carts,
+          counters). <strong>CRDTs</strong> for: Collaborative editing, counters, sets
+          (automatic merge needed).
+        </p>
+
+        <p>
+          Example: E-commerce application. Session data: LWW (simple, loss OK). Shopping
+          cart: Application merge (union of items). Inventory counter: CRDT (PN-Counter -
+          automatic merge). Order data: Vector clocks (detect conflicts, resolve manually).
+        </p>
+      </section>
+
+      {/* Section 5: Best Practices */}
+      <section>
+        <h2>Best Practices for Conflict Resolution</h2>
+
+        <p>
+          <strong>Choose strategy per data type.</strong> Not one-size-fits-all. LWW for
+          non-critical, vector clocks for critical, CRDTs for counters/sets, application
+          merge for domain-specific. Benefits: appropriate resolution per data type.
+        </p>
+
+        <p>
+          <strong>Use synchronized clocks.</strong> For LWW, clocks must be comparable.
+          Use NTP (network time protocol), logical timestamps (vector clocks, hybrid
+          logical clocks). Benefits: correct conflict resolution (right winner).
+        </p>
+
+        <p>
+          <strong>Test conflict scenarios.</strong> Simulate concurrent writes, verify
+          resolution works correctly. Test: LWW (correct timestamp comparison), vector
+          clocks (correct conflict detection), merge (correct merge logic). Benefits:
+          catch bugs before production.
+        </p>
+
+        <p>
+          <strong>Log conflicts.</strong> Log all conflicts (which keys, which values,
+          resolution). Analyze patterns (frequent conflicts? same keys?). Benefits:
+          identify problematic patterns, improve resolution strategy.
+        </p>
+
+        <p>
+          <strong>Consider user intervention.</strong> For critical conflicts, prompt
+          user to resolve (show both versions, let user choose). Benefits: user control
+          (critical data), no data loss. Trade-offs: user burden (must resolve).
+        </p>
+
+        <p>
+          <strong>Use quorum for critical writes.</strong> For critical data, use quorum
+          writes (W + R &gt; N). Ensures reads see latest write. Benefits: consistency
+          (read latest), fewer conflicts. Trade-offs: higher latency (wait for quorum).
+        </p>
+
+        <p>
+          <strong>Document resolution strategy.</strong> Document which strategy for which
+          data type, why chosen, how it works. Benefits: team understanding (consistent
+          implementation), easier debugging (know expected behavior).
+        </p>
+      </section>
+
+      {/* Section 6: Common Pitfalls */}
+      <section>
+        <h2>Common Pitfalls and How to Avoid Them</h2>
+
+        <p>
+          <strong>LWW for critical data.</strong> LWW loses concurrent writes. Using LWW
+          for critical data (financial transactions, inventory) causes data loss. Solution:
+          use vector clocks (detect conflicts) or application merge (merge both values).
+        </p>
+
+        <p>
+          <strong>No conflict detection.</strong> Assuming no conflicts (single leader
+          assumption). Multi-leader systems always have conflicts. Solution: implement
+          conflict detection (vector clocks), handle conflicts (merge or resolve).
+        </p>
+
+        <p>
+          <strong>Ignoring clock skew.</strong> Clocks on different nodes drift (different
+          times). LWW may choose wrong winner (earlier timestamp appears later). Solution:
+          use logical timestamps (vector clocks, hybrid logical clocks), sync clocks (NTP).
+        </p>
+
+        <p>
+          <strong>No merge strategy.</strong> Detecting conflicts but no resolution (manual
+          intervention needed). Solution: define merge strategy per data type (application
+          merge, CRDTs), or prompt user to resolve.
+        </p>
+
+        <p>
+          <strong>Assuming single leader.</strong> Designing for single leader, then adding
+          multi-leader (conflicts appear). Solution: design for conflicts from start
+          (multi-leader assumption), choose resolution strategy early.
+        </p>
+
+        <p>
+          <strong>Over-engineering resolution.</strong> Using complex resolution (CRDTs)
+          for simple data (session data). Solution: choose simplest strategy that works
+          (LWW for non-critical, vector clocks for critical).
+        </p>
+
+        <p>
+          <strong>Not testing conflicts.</strong> Assuming resolution works without testing.
+          Solution: test conflict scenarios (concurrent writes), verify resolution correct
+          (expected winner, correct merge).
+        </p>
+      </section>
+
+      {/* Section 7: Real-World Use Cases */}
+      <section>
+        <h2>Real-World Use Cases</h2>
+
+        <h3>Multi-Leader Database (Cassandra)</h3>
+        <p>
+          Cassandra uses LWW per column (configurable). Each write has timestamp, conflicts
+          resolved by highest timestamp. Benefits: simple, fast, deterministic. Trade-offs:
+          data loss (concurrent writes lost). Configuration: per-column resolution (some
+          columns use LWW, others use custom merge).
+        </p>
+
+        <h3>Offline-First Database (CouchDB)</h3>
+        <p>
+          CouchDB uses vector clocks (revision history). Detects conflicts, returns all
+          conflicting versions. Application resolves (merge or choose). Benefits: no data
+          loss (detect conflicts), flexible resolution. Trade-offs: application burden
+          (must resolve), storage overhead (revision history).
+        </p>
+
+        <h3>Collaborative Editing (Google Docs)</h3>
+        <p>
+          Google Docs uses Operational Transform (OT). Operations (insert, delete)
+          transformed to preserve intent. Example: A inserts "Hello" at position 0, B
+          inserts "World" at position 0. OT transforms operations (both inserts preserved).
+          Benefits: automatic merge (no user intervention), preserves intent. Trade-offs:
+          complex transformation logic.
+        </p>
+
+        <h3>Shopping Cart (E-Commerce)</h3>
+        <p>
+          Shopping cart uses application merge (union of items). User A adds item 1, User B
+          adds item 2 (same cart, different devices). Merged cart has both items. Benefits:
+          no data loss (both items preserved), makes sense for domain (union is correct
+          merge). Trade-offs: custom logic per data type.
+        </p>
+      </section>
+
+      {/* Section 8: Interview Questions & Answers */}
+      <section>
+        <h2>Interview Questions &amp; Answers</h2>
+
+        <div className="space-y-6">
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q1: What are the common conflict resolution strategies? Compare LWW, vector
+              clocks, and CRDTs.
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> LWW (Last Write Wins): Compare timestamps, highest
+              wins. Simple, fast, but data loss (concurrent writes lost). Vector clocks:
+              Vector of counters (one per node), track causality, detect conflicts. No
+              data loss, but storage overhead, still need resolution. CRDTs (Conflict-Free
+              Replicated Data Types): Data types with mathematical guarantees (operations
+              commute), automatic merge. No coordination, guaranteed convergence, but
+              limited types (counters, sets, registers). Choose: LWW for non-critical,
+              vector clocks for critical (detect), CRDTs for automatic merge (counters,
+              collaborative editing).
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> When would you use each? Answer: LWW: Session
+              data, cache (loss OK). Vector clocks: Critical data (detect conflicts,
+              resolve later). CRDTs: Counters (likes, views), sets (tags), collaborative
+              editing (automatic merge needed).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q2: How do vector clocks detect conflicts?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> Vector clock: vector of counters (one per node).
+              Example: 3 nodes (A, B, C), vector <code className="inline-code">[A=2,
+              B=1, C=0]</code> means A processed 2 events, B processed 1, C processed 0.
+              Compare: Equal (same events), Before (happened-before), After (happened-after),
+              Concurrent (neither - conflict!). Example: <code className="inline-code">
+              [2,1,0]</code> vs <code className="inline-code">[1,2,0]</code> = concurrent
+              (A has more, B has more - conflict!). On conflict: return all versions,
+              prompt resolution (merge or choose).
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> What's the storage overhead? Answer: Vector per
+              key (size = number of nodes). 100 nodes = 100 counters per key. Can grow
+              large. Optimization: prune old entries, use dotted version vectors (more
+              compact).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q3: What are CRDTs? Give examples.
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> CRDTs (Conflict-Free Replicated Data Types): Data
+              types with mathematical guarantees (concurrent operations commute, always
+              converge). Examples: G-Counter (grow-only counter - only increment),
+              PN-Counter (positive-negative counter - increment/decrement), OR-Set
+              (observed-remove set - add/remove elements), LWW-Register (last-write-wins
+              register - LWW for single value). Benefits: automatic merge (no coordination),
+              guaranteed convergence (all nodes same state). Trade-offs: limited types
+              (only specific data types), storage overhead (track per-node state).
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> How does PN-Counter work? Answer: Two G-Counters
+              (positive, negative). Value = positive - negative. Increment: increment
+              positive. Decrement: increment negative. Merge: element-wise max (both
+              counters). Example: A increments by 1 (P=1, N=0), B decrements by 2 (P=0,
+              N=2). Merge: P=max(1,0)=1, N=max(0,2)=2. Value = 1-2 = -1.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q4: How do you handle conflicts in offline-first mobile apps?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> Offline-first: app works offline (local database),
+              syncs when online. Conflicts: same data modified offline and on server.
+              Resolution: (1) LWW (server wins or client wins - simple, data loss),
+              (2) Vector clocks (detect conflicts, return all versions, prompt user),
+              (3) Application merge (automatic merge per data type). Implementation:
+              Store metadata with local changes (timestamp, version), on sync compare
+              with server version, resolve conflicts. Example: Shopping cart (merge by
+              union), Notes (prompt user to choose), Counters (CRDT - automatic merge).
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> When do you prompt user vs auto-merge? Answer:
+              Prompt user: critical data (can't decide automatically - user notes,
+              important settings). Auto-merge: non-critical data (shopping cart union,
+              counter increments), clear merge logic (union, sum).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q5: What is operational transform? How does it differ from CRDTs?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> Operational Transform (OT): Transform operations
+              to preserve intent. Example: A inserts "Hello" at position 0, B inserts
+              "World" at position 0. OT transforms B's operation (insert at position 5
+              instead of 0, after A's insert). Both inserts preserved. Used by: Google
+              Docs. CRDTs: Data types with mathematical guarantees (operations commute).
+              No transformation needed (operations automatically commute). Difference:
+              OT transforms operations (complex logic), CRDTs use special data types
+              (limited types, but simpler merge). Both achieve: automatic merge, no
+              coordination.
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> Which is better? Answer: Depends. OT: More
+              flexible (any operation), but complex transformation logic. CRDTs: Simpler
+              (no transformation), but limited to specific data types. Google Docs uses
+              OT (flexible for text editing), CRDT-based editors use CRDTs (simpler
+              implementation).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q6: Your multi-leader database has frequent conflicts. How do you reduce
+              them?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> Reduce conflicts: (1) Use quorum writes (W + R &gt;
+              N - ensures reads see latest, fewer conflicts), (2) Partition by key (same
+              key always goes to same leader - no concurrent writes), (3) Use single
+              leader for hot keys (route hot keys to single leader - no conflicts),
+              (4) Shorten replication lag (faster replication - smaller conflict window),
+              (5) Use application logic (route related writes to same leader). Trade-offs:
+              Quorum (higher latency), Partitioning (may imbalance load), Single leader
+              for hot keys (reduces availability). Choose based on consistency vs
+              availability needs.
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> What if conflicts are unavoidable? Answer:
+              Accept conflicts, handle gracefully: (1) Detect conflicts (vector clocks),
+              (2) Resolve automatically (merge logic, CRDTs), (3) Log conflicts (analyze
+              patterns), (4) Prompt user for critical conflicts (manual resolution).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References */}
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc list-inside space-y-2 text-sm">
+          <li>
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Chapter 5.
+          </li>
+          <li>
+            Shapiro et al., "Conflict-Free Replicated Data Types (CRDTs),"
+            https://hal.inria.fr/inria-00609289/
+          </li>
+          <li>
+            Lamport, "Time, Clocks, and the Ordering of Events,"
+            https://lamport.azurewebsites.net/pubs/time-clocks.pdf
+          </li>
+          <li>
+            Cassandra Documentation, "Conflict Resolution,"
+            https://cassandra.apache.org/doc/
+          </li>
+          <li>
+            CouchDB Documentation, "Conflict Resolution,"
+            https://docs.couchdb.org/en/stable/
+          </li>
+          <li>
+            Riak Documentation, "Vector Clocks,"
+            https://riak.com/product/
+          </li>
+          <li>
+            Google Docs, "Operational Transform,"
+            https://en.wikipedia.org/wiki/Operational_transformation
+          </li>
+          <li>
+            CRDTs Website, "Introduction to CRDTs,"
+            https://crdt.tech/
+          </li>
+          <li>
+            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 11.
+          </li>
+          <li>
+            Percona Blog, "Conflict Resolution in Multi-Master,"
+            https://www.percona.com/blog/
+          </li>
+        </ul>
+      </section>
+    </ArticleLayout>
+  );
+}

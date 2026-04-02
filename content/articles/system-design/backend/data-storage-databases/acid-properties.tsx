@@ -1,5 +1,700 @@
-"use client"; import { ArticleLayout } from "@/components/articles/ArticleLayout";
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import type { ArticleMetadata } from "@/types/article"; export const metadata: ArticleMetadata = { id: "article-backend-acid-properties-extensive", title: "ACID Properties", description: "In-depth guide to acid properties concepts, trade-offs, and operational practice.", category: "backend", subcategory: "data-storage-databases", slug: "acid-properties",
-wordCount: 1569, readingTime: 8, lastUpdated: "2026-03-13", tags: ["backend","data-storage"], relatedTopics: [],
-}; export default function ACIDPropertiesConciseArticle() { return ( <ArticleLayout metadata={metadata}><section><h2>Definition and Scope</h2><p>ACID defines the safety rules for transactions in relational systems. It protects correctness when multiple users write at the same time. The model applies to unit-of-work transactions and the guarantees the database provides under failure.</p><p>Banking transfers, inventory reservations, and order processing rely on ACID to avoid double-spends. It also matters for any system that must never expose partially written data.</p></section><section><h2>Core Concepts</h2><ul className="space-y-2"><li>Atomicity groups changes so they all commit or all rollback.</li><li>Consistency enforces invariants before and after a transaction.</li><li>Isolation controls how concurrent transactions see each other.</li><li>Durability ensures committed data survives crashes.</li><li>Write-ahead logging and checkpoints enforce these guarantees.</li></ul><ArticleImage src="/diagrams/system-design-concepts/backend/data-storage-databases/acid-properties.svg" alt="ACID properties comprehensive diagram" caption="ACID transaction properties (Atomicity, Consistency, Isolation, Durability) with examples, lifecycle, and concurrency anomalies" /></section><section><h2>How It Works</h2><p>Most engines implement ACID with write-ahead logs, locking, and crash recovery. The log is the source of truth during recovery, and commit is defined by log flush semantics.</p><p>Isolation is not a single setting; it is a spectrum from read uncommitted to serializable. The choice directly affects performance, anomalies, and user-visible correctness.</p></section><section><h2>Advanced Implementation Notes</h2><p>ACID Properties implementations benefit from explicit boundaries between write paths and read paths. Treat atomicity groups changes so they all commit or all rollback. as a contract, not a suggestion.</p><p>When extending ACID Properties, prefer additive changes and parallel validation. This keeps rollback safe while you validate consistency enforces invariants before and after a transaction. under real traffic.</p></section><section><h2>Architecture and Data Layout</h2><p>ACID is strongest in single-node or strongly consistent replicas. In distributed systems it is often approximated with two-phase commit or consensus, which adds latency.</p><p>A typical design uses a primary for writes, replicas for reads, and a log-backed recovery path. The log and snapshot cadence determine durability and recovery time objectives.</p></section><section><h2>Data Governance and Compliance</h2><p>ACID Properties often stores regulated or business-critical data. Governance should define ownership, retention, and access policies so that audits are repeatable.</p><p>Use data classification to decide where encryption, masking, or tiering is required. For ACID Properties, audit trails must be complete enough to reconstruct who accessed or changed data.</p></section><section><h2>Security and Access Control</h2><p>ACID Properties security starts with least-privilege access and explicit ownership. Access should be reviewed regularly, and service accounts must be scoped to the smallest required surface.</p><p>Audit logs should capture read and write access paths. For ACID Properties, logs help correlate anomalies with access changes and reduce time-to-diagnosis during incidents.</p></section><section><h2>Failure Modes and Risks</h2><ul className="space-y-2"><li>Lost updates from weak isolation or missing constraints.</li><li>Inconsistent reads due to snapshot bugs or replica lag.</li><li>Partial commits when logs are misconfigured.</li><li>Long lock waits that create cascading timeouts.</li></ul></section><section><h2>Signals and Observability</h2><ul className="space-y-2"><li>Commit latency and fsync time.</li><li>Lock wait time and deadlock rate.</li><li>Replica lag and rollback frequency.</li><li>Error rate for constraint violations.</li></ul></section><section><h2>SLOs and Monitoring Strategy</h2><p>Define SLOs that match user impact. For ACID Properties, SLOs often include Commit latency and fsync time. and Lock wait time and deadlock rate. with explicit burn-rate alerts.</p><p>Monitoring should separate control-plane failures from data-plane failures. This avoids paging the wrong team during lost updates from weak isolation or missing constraints. scenarios.</p></section><section><h2>Scaling and Performance</h2><p>Scaling ACID workloads typically requires careful partitioning and minimizing cross-partition transactions. If cross-shard coordination is frequent, throughput will flatten quickly.</p><p>The safest pattern is to keep transactions scoped to a single partition and use asynchronous workflows for cross-partition steps.</p></section><section><h2>Design Considerations</h2><p>ACID Properties design starts with invariants and access patterns. Atomicity groups changes so they all commit or all rollback. and Consistency enforces invariants before and after a transaction. should be documented as explicit constraints so every service makes the same assumptions.</p><p>Good designs describe how data will be accessed at scale, not just how it is stored. For ACID Properties, the model should align with the highest-volume paths and make the most common reads predictable.</p><p>When requirements evolve, the safest path is to add new structures rather than mutate old ones in place. This keeps migrations reversible and avoids long running backfills.</p></section><section><h2>Performance Tuning</h2><p>Performance tuning for ACID Properties starts with eliminating obvious bottlenecks such as unbounded scans or hot partitions. Indexing, caching, or pre-aggregation should be tied directly to measured slow paths.</p><p>When tuning, measure both median and tail latency. Improvements that help p50 but worsen p99 can still hurt user experience and error rates.</p></section><section><h2>Operational Playbooks</h2><p>Operational playbooks should include log growth monitoring and recovery drills. Teams should regularly simulate crash recovery to validate durability guarantees.</p><p>Transaction timeouts and deadlock handling must be tuned to the workload to avoid false rollbacks under peak load.</p></section><section><h2>Failure Response and Recovery</h2><p>When ACID Properties fails, the first objective is containment. Failures like Lost updates from weak isolation or missing constraints. or Inconsistent reads due to snapshot bugs or replica lag. should trigger a controlled fallback rather than a cascade.</p><p>Recovery depends on observability. Signals such as Commit latency and fsync time. and Lock wait time and deadlock rate. should identify which component is degraded and which action is safe.</p><p>After recovery, validate data correctness with reconciliation jobs or checksums. This prevents silent corruption from lingering after the incident.</p></section><section><h2>Data Quality and Reconciliation</h2><p>ACID Properties systems should include periodic reconciliation to detect drift between sources of truth and derived views. Reconciliation jobs catch silent data corruption that is otherwise invisible in request metrics.</p><p>Define the acceptable error budget for data quality and make reconciliation outcomes observable. When reconciliation fails, the system should fail safe rather than continue serving incorrect data.</p></section><section><h2>System Design Scenario</h2><p>Consider a marketplace that reserves inventory while charging payments. A failed commit that charged but did not reserve stock is unacceptable, so the transaction must be atomic.</p><p>If the payment processor is external, use a saga with compensating actions while keeping the local transaction ACID.</p></section><section><h2>Capacity Planning</h2><p>Capacity planning for ACID Properties should model peak traffic, data growth, and the cost of rebalancing. The plan should include headroom for failures and maintenance operations.</p><p>Use load tests that mimic real access patterns and measure the point where latency degrades. This informs when to scale, shard, or introduce caching.</p></section><section><h2>Trade-offs and Alternatives</h2><p>ACID trades throughput and latency for correctness and recoverability. Stronger isolation reduces anomalies but increases locking and conflicts.</p><p>Relaxing isolation improves throughput but shifts complexity to the application, which must handle anomalies explicitly.</p><p>For analytics and high-write event streams, eventual consistency with idempotent processing may be more appropriate than strict ACID.</p></section><section><h2>Integration Patterns</h2><p>ACID Properties rarely stands alone. Integration with queues, caches, or analytics pipelines should be explicit so data flow is predictable.</p><p>Define the contract for upstream writes and downstream reads. For example, specify staleness budgets and retry semantics so other services know what to expect.</p></section><section><h2>Cost Management</h2><p>Storage systems grow over time, so cost modeling is part of design. For ACID Properties, plan for data growth, replication factors, and retention policies up front.</p><p>Cost reduction should not compromise correctness. Use tiering, compression, and lifecycle rules while keeping recovery paths intact.</p></section><section><h2>Testing and Validation</h2><p>Use concurrency tests that intentionally interleave writes and reads to surface anomalies. Recovery tests should kill the process mid-commit and verify no partial state is visible.</p></section><section><h2>Decision Checklist</h2><p>Confirm Atomicity groups changes so they all commit or all rollback. and Consistency enforces invariants before and after a transaction. are implemented consistently across services that read or write this data.</p><p>Ensure Commit latency and fsync time. and Lock wait time and deadlock rate. are monitored with clear thresholds before launch.</p><p>Document fallback behavior for ACID Properties so degraded modes are safe and predictable.</p></section><section><h2>Operational Guardrails</h2><p>ACID Properties should ship with guardrails that limit blast radius. Examples include rate limits, quotas, and automatic circuit breaking when ACID Properties resources saturate.</p><p>Guardrails should be documented and tested. During incidents, operators should know which switch reduces risk without causing full outages.</p></section><section><h2>Operational Checklist</h2><ul className="space-y-2"><li>Validate backups and restore paths regularly.</li><li>Review Commit latency and fsync time. trends after deployments.</li><li>Test recovery from lost updates from weak isolation or missing constraints. conditions in staging.</li><li>Confirm data retention and access policies are enforced.</li><li>Track schema or model changes and keep migrations reversible.</li></ul></section><section><h2>Common Misconceptions</h2><p>ACID does not mean serializable by default. It also does not guarantee application-level invariants unless constraints are defined.</p></section><section><h2>Migration and Evolution</h2><p>Data systems evolve under real traffic. ACID Properties migrations should be additive first, then switch reads, then remove old paths.</p><p>Use backfills with checkpoints and rollback plans. If a backfill fails, you should be able to resume without corrupting state.</p></section><section><h2>Interview Questions</h2><div className="space-y-4"><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: Why is atomicity important for financial transactions?</p><p className="mt-2 text-sm">A: It prevents partial updates like charging without reserving.</p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: How does durability differ from consistency?</p><p className="mt-2 text-sm">A: Durability is crash survival; consistency is invariant correctness.</p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: What is the cost of serializable isolation?</p><p className="mt-2 text-sm">A: Higher contention and lower throughput due to strict locking.</p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: How do you validate ACID in production?</p><p className="mt-2 text-sm">A: Monitor commit latency, rollback rates, and run recovery drills.</p></div></div></section><section><h2>Operational Readiness Notes</h2><p>ACID Properties should have on-call ownership, clear escalation paths, and defined error budgets. Operational readiness includes verifying dashboards, alerts, and rollback steps before every major change. Runbooks should include validation steps that prove the system is back within its SLOs. Post-incident reviews should feed back into schema or model changes.</p></section><section><h2>Runbook Summary</h2><ul className="space-y-2"><li><strong>Triage:</strong> Confirm whether the symptom is correctness, latency, or availability; scope impact to specific queries, tenants, or partitions.</li><li><strong>Validate signals:</strong> Check Commit latency and fsync time. and Lock wait time and deadlock rate.; correlate changes with deploys and background jobs.</li><li><strong>Identify likely causes:</strong> Look for patterns consistent with Lost updates from weak isolation or missing constraints.; Inconsistent reads due to snapshot bugs or replica lag.; capture a minimal repro and the smallest failing dataset or query.</li><li><strong>Contain:</strong> Apply the lowest-risk mitigation first (rate-limit, shed non-critical work, pause batch jobs, route reads, or disable risky paths) to protect the system of record.</li><li><strong>Recover and prevent:</strong> Validate data with targeted checks (constraints, checksums, or reconciliation where applicable), then update alerts, guardrails, and documentation for ACID Properties.</li></ul></section><section><h2>Summary</h2><p>ACID is the foundation for transactional correctness. Use it when correctness is non-negotiable and design to minimize cross-partition coordination.</p></section></ArticleLayout> ); }
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-backend-acid-properties-complete",
+  title: "ACID Properties",
+  description:
+    "Comprehensive guide to ACID transaction properties: Atomicity, Consistency, Isolation, and Durability with real-world trade-offs and implementation patterns.",
+  category: "backend",
+  subcategory: "data-storage-databases",
+  slug: "acid-properties",
+  wordCount: 5500,
+  readingTime: 25,
+  lastUpdated: "2026-04-01",
+  tags: ["backend", "data-storage", "transactions", "databases"],
+  relatedTopics: [
+    "transaction-isolation-levels",
+    "concurrency-control",
+    "deadlocks",
+    "database-partitioning",
+  ],
+};
+
+const BASE_PATH = "/diagrams/system-design-concepts/backend/data-storage-databases";
+
+export default function ArticlePage() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      {/* Section 1: Definition & Context */}
+      <section>
+        <h1>ACID Properties</h1>
+        <p className="lead">
+          ACID defines the four guarantees that database transactions provide to ensure data integrity
+          even in the face of errors, concurrent access, and system failures. These properties—Atomicity,
+          Consistency, Isolation, and Durability—form the foundation of reliable transactional systems
+          and are critical for any application where data correctness is non-negotiable.
+        </p>
+
+        <p>
+          When you transfer money from your checking to savings account, two operations must happen:
+          debiting one account and crediting another. If the system crashes after the debit but before
+          the credit, you've lost money. ACID transactions prevent this catastrophe by ensuring both
+          operations complete together or neither does. This "all-or-nothing" guarantee is atomicity in
+          action, and it's just one of the four pillars that make databases trustworthy for critical
+          operations.
+        </p>
+
+        <p>
+          Understanding ACID is essential for staff and principal engineers because transaction design
+          decisions directly impact system correctness, performance, and scalability. Choosing the wrong
+          isolation level can cause subtle bugs that corrupt data over months. Overlooking durability
+          requirements can lead to data loss during outages. And misunderstanding the performance
+          implications of ACID can result in systems that are either dangerously fast (skipping safety)
+          or unusably slow (over-protecting).
+        </p>
+
+        <p>
+          This article provides a comprehensive examination of each ACID property, their implementation
+          mechanisms, trade-offs, and real-world applications. We'll explore how databases like PostgreSQL,
+          MySQL, and Oracle implement these guarantees, when you might need to relax them for performance,
+          and how to reason about transactions in distributed systems where ACID becomes significantly
+          more complex.
+        </p>
+
+        <ArticleImage
+          src={`${BASE_PATH}/acid-architecture.svg`}
+          caption="Figure 1: ACID Transaction Architecture showing the relationship between application layer, transaction manager, write-ahead log (WAL), and storage engine. The transaction manager enforces atomicity and isolation through locking and concurrency control, while the WAL ensures durability by persisting changes before acknowledging commits."
+          alt="ACID transaction architecture diagram"
+        />
+      </section>
+
+      {/* Section 2: Core Concepts */}
+      <section>
+        <h2>Core Concepts: The Four Pillars of ACID</h2>
+
+        <h3>Atomicity: All or Nothing</h3>
+        <p>
+          Atomicity guarantees that a transaction is treated as a single, indivisible unit of work.
+          Either all operations within the transaction are applied to the database, or none of them
+          are. There is no partial completion visible to other transactions. This property is
+          fundamental because it allows developers to reason about complex multi-step operations as
+          if they were single operations.
+        </p>
+
+        <p>
+          Consider an e-commerce order placement: inventory must be decremented, an order record
+          created, a payment charged, and a shipping label generated. Without atomicity, a crash
+          after charging payment but before creating the order record would leave the system in an
+          inconsistent state where the customer paid but has no order. Atomicity ensures that if
+          any step fails, all completed steps are rolled back, leaving the database as if the
+          transaction never started.
+        </p>
+
+        <p>
+          Databases implement atomicity through write-ahead logging (WAL) or undo logs. Before
+          modifying any data, the database writes a log record describing the change. If the
+          transaction commits, these log records are flushed to disk before acknowledging the
+          commit. If the transaction aborts or the system crashes, the database uses these logs
+          to undo any partial changes. The key insight is that the log is append-only and
+          sequential, making it much faster than random writes to data pages.
+        </p>
+
+        <h3>Consistency: Preserving Invariants</h3>
+        <p>
+          Consistency ensures that a transaction brings the database from one valid state to another
+          valid state, maintaining all defined invariants. These invariants include schema constraints
+          (NOT NULL, UNIQUE, CHECK), foreign key relationships, and application-level business rules
+          that can be enforced at the database level.
+        </p>
+
+        <p>
+          For example, a bank account balance should never go negative. A CHECK constraint
+          <code className="inline-code">balance &gt;= 0</code> enforces this invariant at the
+          database level. Any transaction that would violate this constraint is rejected entirely.
+          Similarly, foreign key constraints ensure referential integrity—an order cannot reference
+          a non-existent customer.
+        </p>
+
+        <p>
+          It's important to distinguish database consistency from the "C" in CAP theorem. ACID
+          consistency is about preserving invariants defined by schema and application logic. CAP
+          consistency is about all nodes seeing the same data at the same time. A database can be
+          ACID-consistent while being CAP-eventually-consistent in a distributed setup.
+        </p>
+
+        <h3>Isolation: Concurrent Safety</h3>
+        <p>
+          Isolation ensures that concurrent transactions execute as if they were serialized—one after
+          another—even though they may actually be interleaved for performance. Without isolation,
+          transactions could interfere with each other, leading to anomalies like lost updates, dirty
+          reads, or inconsistent analysis.
+        </p>
+
+        <p>
+          Isolation is implemented through locking or multi-version concurrency control (MVCC).
+          Locking blocks conflicting operations until the holding transaction completes. MVCC
+          maintains multiple versions of data, allowing readers to see a consistent snapshot without
+          blocking writers. PostgreSQL and Oracle use MVCC; SQL Server and MySQL (InnoDB) support
+          both approaches depending on isolation level.
+        </p>
+
+        <p>
+          The SQL standard defines four isolation levels, each preventing specific anomalies:
+        </p>
+
+        <ul className="list-disc list-inside space-y-2 my-4">
+          <li><strong>Read Uncommitted</strong> allows dirty reads (reading uncommitted changes)</li>
+          <li><strong>Read Committed</strong> prevents dirty reads but allows non-repeatable reads</li>
+          <li><strong>Repeatable Read</strong> prevents non-repeatable reads but allows phantom reads</li>
+          <li><strong>Serializable</strong> prevents all anomalies but has highest overhead</li>
+        </ul>
+
+        <ArticleImage
+          src={`${BASE_PATH}/acid-isolation-levels.svg`}
+          caption="Figure 2: Transaction Isolation Levels showing which anomalies are allowed (✓) or prevented (✗) at each level. Read Uncommitted allows all anomalies and is rarely used. Read Committed is the default for PostgreSQL and Oracle. Repeatable Read is MySQL's default. Serializable provides strongest guarantees but with performance cost. Examples show concrete scenarios for each anomaly type."
+          alt="Isolation levels comparison matrix"
+        />
+
+        <h3>Durability: Surviving Failures</h3>
+        <p>
+          Durability guarantees that once a transaction commits, its changes persist even in the
+          event of system failure. This is the property that makes databases suitable for storing
+          critical data—you can trust that committed data won't disappear when the power goes out.
+        </p>
+
+        <p>
+          Durability is achieved through write-ahead logging with synchronous disk flushes. When a
+          transaction commits, the database writes log records to a buffer, then calls fsync (or
+          equivalent) to ensure those records are physically on disk before acknowledging the commit.
+          The actual data pages may be written asynchronously later, but the log is durable
+          immediately.
+        </p>
+
+        <p>
+          The performance cost of durability is the fsync latency—typically 5-10ms for spinning
+          disks, 1-3ms for SSDs. This is why high-performance systems sometimes relax durability
+          (group commits, delayed fsync) at the risk of losing recent transactions during crashes.
+          Understanding this trade-off is critical: do you need every transaction durable, or can
+          you tolerate losing the last second of data for 10x throughput?
+        </p>
+
+        <ArticleImage
+          src={`${BASE_PATH}/acid-transaction-flow.svg`}
+          caption="Figure 3: Transaction Lifecycle showing the commit and rollback paths. On commit, changes are written to WAL, fsync'd to disk (durability point), acknowledged to client, then asynchronously checkpointed to data files. On rollback, changes are undone using undo logs. The crash recovery process replays committed transactions from WAL and rolls back uncommitted ones, ensuring no data loss after fsync."
+          alt="Transaction lifecycle flow diagram"
+        />
+      </section>
+
+      {/* Section 3: Architecture & Flow */}
+      <section>
+        <h2>Architecture &amp; Implementation Flow</h2>
+
+        <h3>Write-Ahead Logging: The Foundation of Atomicity and Durability</h3>
+        <p>
+          Write-ahead logging (WAL) is the mechanism that makes ACID possible. The fundamental rule
+          is simple: before modifying any data page, write a log record describing the change. Before
+          acknowledging a commit, ensure all log records for that transaction are durably persisted.
+          This ordering guarantee enables both atomicity (undo uncommitted changes) and durability
+          (redo committed changes after crash).
+        </p>
+
+        <p>
+          A WAL record contains the transaction ID, operation type (insert/update/delete), affected
+          table and row, before-image (for undo), and after-image (for redo). Log records are written
+          sequentially to a circular buffer, which is flushed to disk on commit. Because sequential
+          writes are orders of magnitude faster than random page writes, WAL adds minimal overhead
+          while providing maximum safety.
+        </p>
+
+        <p>
+          Checkpointing is the process of writing dirty pages from the buffer pool to data files.
+          The checkpoint record in the WAL marks the point from which recovery must start. Frequent
+          checkpoints reduce recovery time but increase I/O overhead. Modern databases use fuzzy
+          checkpointing—writing pages gradually rather than all at once—to avoid I/O spikes.
+        </p>
+
+        <h3>Lock Management: Enforcing Isolation</h3>
+        <p>
+          Lock-based concurrency control uses shared (read) and exclusive (write) locks to prevent
+          conflicting operations. A transaction must acquire a shared lock before reading and an
+          exclusive lock before writing. Shared locks are compatible with other shared locks but not
+          with exclusive locks. Exclusive locks are incompatible with everything.
+        </p>
+
+        <p>
+          Two-phase locking (2PL) is the protocol that ensures serializability: a transaction must
+          acquire all locks before releasing any. Strict 2PL holds all locks until commit, preventing
+          cascading rollbacks. The downside is reduced concurrency and potential deadlocks—situations
+          where two transactions wait for each other's locks indefinitely.
+        </p>
+
+        <p>
+          Deadlock detection runs periodically, building a wait-for graph and looking for cycles.
+          When detected, one transaction (the "victim") is aborted to break the cycle. Applications
+          must handle deadlock errors with retry logic using exponential backoff to avoid immediate
+          re-collision.
+        </p>
+
+        <h3>MVCC: Isolation Without Locking</h3>
+        <p>
+          Multi-version concurrency control (MVCC) takes a different approach: instead of blocking
+          readers, maintain multiple versions of each row. When a transaction updates a row, it
+          creates a new version with a transaction timestamp. Readers see the version that was
+          current when their transaction started, providing a consistent snapshot without blocking.
+        </p>
+
+        <p>
+          MVCC dramatically improves read concurrency—readers never block writers, and writers never
+          block readers. The trade-off is storage overhead (multiple versions) and the need for
+          vacuum/cleanup processes to remove old versions. PostgreSQL's VACUUM and Oracle's undo
+          tablespace management are examples of MVCC maintenance.
+        </p>
+
+        <p>
+          MVCC enables snapshot isolation, which prevents many anomalies without the cost of full
+          serializability. However, snapshot isolation can allow write skew—a subtle anomaly where
+          two transactions read overlapping data and make disjoint updates that together violate a
+          constraint. Detecting and preventing write skew requires additional mechanisms like
+          predicate locks or explicit locking.
+        </p>
+
+        <ArticleImage
+          src={`${BASE_PATH}/acid-failure-recovery.svg`}
+          caption="Figure 4: ACID Failure Modes and Recovery showing common failure scenarios (crash mid-transaction, lock timeout, constraint violation) and the four-step recovery process: analysis (scan WAL), redo (replay committed), undo (rollback uncommitted), and checkpoint. Recovery time depends on WAL size since last checkpoint."
+          alt="Failure and recovery process diagram"
+        />
+      </section>
+
+      {/* Section 4: Trade-offs & Comparison */}
+      <section>
+        <h2>Trade-offs &amp; Comparison: ACID vs BASE</h2>
+
+        <p>
+          ACID transactions provide strong guarantees but come with performance costs, especially in
+          distributed systems. The CAP theorem proves that during network partitions, you must choose
+          between consistency (ACID) and availability (BASE). Understanding this trade-off is critical
+          for designing systems that meet business requirements without over-engineering.
+        </p>
+
+        <h3>Performance Costs of ACID</h3>
+        <p>
+          Each ACID property has a performance implication. Atomicity requires WAL writes and fsync
+          calls, adding 5-10ms per commit. Consistency checks (constraint validation) add CPU overhead
+          proportional to constraint complexity. Isolation through locking reduces concurrency; through
+          MVCC increases storage and cleanup overhead. Durability requires synchronous disk writes,
+          the single largest latency component.
+        </p>
+
+        <p>
+          High-throughput systems often relax ACID properties selectively. Group commits batch
+          multiple transactions into one fsync, improving throughput at the risk of losing multiple
+          transactions on crash. Asynchronous replication sacrifices durability (slave can lag) for
+          read scaling. Read uncommitted isolation (with dirty reads) can be acceptable for analytics
+          where approximate results suffice.
+        </p>
+
+        <h3>When to Choose BASE</h3>
+        <p>
+          BASE (Basically Available, Soft state, Eventually consistent) is an alternative model that
+          prioritizes availability and partition tolerance over immediate consistency. Social media
+          feeds, product reviews, and analytics dashboards can tolerate eventual consistency—seeing a
+          like count that's a few seconds stale is acceptable. These workloads benefit from BASE's
+          higher availability and lower latency.
+        </p>
+
+        <p>
+          However, BASE shifts complexity to the application. You must handle conflicts (two users
+          updating the same data), reconcile divergent states, and design UIs that don't confuse
+          users with stale data. ACID keeps this complexity in the database; BASE pushes it to your
+          codebase.
+        </p>
+
+        <h3>Hybrid Approaches</h3>
+        <p>
+          Many production systems use both ACID and BASE for different operations. An e-commerce
+          platform might use ACID transactions for inventory and payments (where correctness is
+          critical) but BASE for product reviews and recommendations (where availability matters
+          more). This hybrid approach requires careful data modeling to separate consistency domains.
+        </p>
+
+        <p>
+          Microservices architectures often face this decision per service. The order service needs
+          ACID; the notification service can be BASE. Event sourcing with CQRS (Command Query
+          Responsibility Segregation) is a pattern that combines ACID writes (to an event store)
+          with BASE reads (from denormalized projections).
+        </p>
+
+        <ArticleImage
+          src={`${BASE_PATH}/acid-vs-base.svg`}
+          caption="Figure 5: ACID vs BASE Trade-off Spectrum showing use cases for each model. ACID is required for financial transactions, inventory management, booking systems, and identity management where correctness is non-negotiable. BASE is suitable for social media feeds, analytics, reviews, and caching where eventual consistency is acceptable. Many systems use both for different operations."
+          alt="ACID vs BASE comparison diagram"
+        />
+      </section>
+
+      {/* Section 5: Best Practices */}
+      <section>
+        <h2>Best Practices for ACID Transactions</h2>
+
+        <p>
+          <strong>Keep transactions short.</strong> Long-running transactions hold locks longer,
+          reducing concurrency and increasing deadlock risk. Move non-essential operations (sending
+          emails, calling external APIs) outside the transaction. Use asynchronous processing for
+          work that doesn't need immediate consistency.
+        </p>
+
+        <p>
+          <strong>Choose the right isolation level.</strong> Start with your database's default
+          (usually Read Committed or Repeatable Read). Only upgrade to Serializable if you can
+          demonstrate a specific anomaly causing data corruption. Most applications work correctly
+          with Read Committed if business logic handles race conditions appropriately.
+        </p>
+
+        <p>
+          <strong>Design for retries.</strong> Deadlocks and serialization failures are normal in
+          concurrent systems. Implement retry logic with exponential backoff and jitter. Make
+          operations idempotent so retries don't cause duplicate effects. Track retry rates as a
+          metric—spikes indicate contention issues.
+        </p>
+
+        <p>
+          <strong>Use constraints liberally.</strong> Database constraints (NOT NULL, UNIQUE,
+          FOREIGN KEY, CHECK) are your last line of defense against bad data. They catch bugs that
+          slip through application validation. The small performance cost is worth the data integrity
+          protection.
+        </p>
+
+        <p>
+          <strong>Monitor transaction metrics.</strong> Track commit latency, rollback rates,
+          deadlock counts, and lock wait times. Set alerts for anomalies. These metrics often
+          indicate problems before users notice. A rising deadlock rate might mean a new feature
+          introduced contention.
+        </p>
+
+        <p>
+          <strong>Test failure scenarios.</strong> Simulate crashes mid-transaction, network
+          partitions, and lock timeouts. Verify that recovery works correctly and no data is lost
+          or corrupted. Chaos engineering principles apply to transactions too.
+        </p>
+      </section>
+
+      {/* Section 6: Common Pitfalls */}
+      <section>
+        <h2>Common Pitfalls and How to Avoid Them</h2>
+
+        <p>
+          <strong>Implicit transactions in ORMs.</strong> Many ORMs wrap each operation in a
+          transaction by default, but complex multi-step workflows may span multiple implicit
+          transactions, losing atomicity. Always use explicit transaction boundaries for operations
+          that must be atomic. In Hibernate, use <code className="inline-code">@Transactional</code>.
+          In SQLAlchemy, use <code className="inline-code">with engine.begin()</code>.
+        </p>
+
+        <p>
+          <strong>N+1 queries within transactions.</strong> Fetching related data in a loop within a
+          transaction extends its duration unnecessarily. Use eager loading or batch queries to
+          minimize time in transaction. A transaction that runs 100 queries in a loop is a deadlock
+          waiting to happen.
+        </p>
+
+        <p>
+          <strong>Ignoring isolation level implications.</strong> Developers often assume Repeatable
+          Read prevents all anomalies. It doesn't prevent phantoms or write skew. If your logic
+          depends on "no new rows matching this condition," you need Serializable isolation or
+          explicit locking (SELECT FOR UPDATE).
+        </p>
+
+        <p>
+          <strong>Assuming durability is guaranteed.</strong> Default database configurations often
+          prioritize safety, but cloud-managed databases sometimes offer "fast commit" options that
+          delay fsync. Verify your durability settings match business requirements. Financial data
+          needs full durability; logging data might not.
+        </p>
+
+        <p>
+          <strong>Not handling deadlocks.</strong> Deadlocks are inevitable in systems with
+          contention. The error is recoverable—retry the transaction. But without retry logic,
+          deadlocks become user-visible failures. Always catch deadlock errors and retry with
+          backoff.
+        </p>
+
+        <p>
+          <strong>Over-constraining the schema.</strong> While constraints are good, excessive
+          constraints (especially cascading foreign keys) can make simple operations trigger
+          complex validation chains, slowing down transactions and increasing deadlock surface.
+          Balance safety with pragmatism.
+        </p>
+      </section>
+
+      {/* Section 7: Real-World Use Cases */}
+      <section>
+        <h2>Real-World Use Cases</h2>
+
+        <h3>Payment Processing (Stripe, PayPal)</h3>
+        <p>
+          Payment systems are the canonical ACID use case. A payment involves debiting the customer,
+          crediting the merchant, recording the transaction, and updating balances. Any partial
+          completion is unacceptable—losing money is bad for business. Stripe uses ACID transactions
+          within their ledger service, with careful idempotency handling to ensure retries don't
+          double-charge.
+        </p>
+
+        <p>
+          The isolation level choice is critical here. Read Committed is insufficient because
+          concurrent payments could read the same balance and both approve, causing overdrafts.
+          Repeatable Read or explicit locking (SELECT FOR UPDATE) ensures the balance check and
+          update are atomic.
+        </p>
+
+        <h3>Inventory Management (Amazon, Shopify)</h3>
+        <p>
+          E-commerce platforms must prevent overselling—selling more units than available inventory.
+          When two customers try to buy the last item simultaneously, only one should succeed. This
+          requires atomic decrement with a check: <code className="inline-code">UPDATE inventory 
+          SET quantity = quantity - 1 WHERE product_id = X AND quantity &gt; 0</code>, then check
+          rows affected.
+        </p>
+
+        <p>
+          Amazon's system uses optimistic locking with version numbers for high-traffic products.
+          Each update increments a version; conflicts are detected and retried. For flash sales,
+          they pre-allocate inventory to regional warehouses, reducing contention scope.
+        </p>
+
+        <h3>Flight Booking Systems (Airbnb, Airlines)</h3>
+        <p>
+          Booking a flight or rental involves reserving a specific resource (seat, car, room) that
+          cannot be double-booked. The reservation must be atomic with payment, and the hold must
+          expire if payment doesn't complete within a timeout window.
+        </p>
+
+        <p>
+          Airlines use Serializable isolation for seat selection to prevent two passengers booking
+          the same seat. The performance cost is acceptable because booking volume is low compared
+          to browsing. Temporary holds use TTL-based expiration, implemented via background jobs
+          that release unclaimed reservations.
+        </p>
+
+        <h3>Banking Core Systems</h3>
+        <p>
+          Core banking systems are perhaps the most demanding ACID workload. Transfers between
+          accounts must be atomic, balances must never go negative (unless overdraft is allowed),
+          and the system must survive any failure without losing money.
+        </p>
+
+        <p>
+          Banks typically use mainframe databases (DB2, IMS) with full ACID compliance and
+          synchronous replication to disaster recovery sites. The latency cost is acceptable
+          because correctness is paramount. Modern fintechs use distributed SQL databases
+          (CockroachDB, Spanner) that provide ACID semantics across regions.
+        </p>
+      </section>
+
+      {/* Section 8: Interview Questions & Answers */}
+      <section>
+        <h2>Interview Questions &amp; Answers</h2>
+
+        <div className="space-y-6">
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q1: Your payment system is seeing occasional double-charges during peak traffic. The
+              code checks balance, then charges. What's the root cause and how do you fix it?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> This is a classic race condition caused by insufficient
+              isolation. Two concurrent requests both read the same balance (say $100), both pass
+              the balance check, and both charge $100—resulting in a $200 charge against a $100
+              balance. The fix is to use proper transaction isolation or explicit locking. With
+              Repeatable Read isolation, the second transaction would see the first transaction's
+              uncommitted change and wait. Alternatively, use{" "}
+              <code className="inline-code">SELECT FOR UPDATE</code> to lock the row during the
+              check, ensuring only one transaction proceeds at a time. A third approach is
+              optimistic locking with a version column, retrying on conflict.
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> What if adding locking causes unacceptable latency?
+              Answer: Pre-authorize amounts, use idempotent charges with unique tokens, or
+              implement a queue-based system that serializes charges per customer.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q2: Explain the difference between Read Committed and Repeatable Read isolation. When
+              would you specifically choose one over the other?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> Read Committed ensures you only see committed data, but
+              repeated reads within a transaction can return different results if another
+              transaction modifies and commits in between. Repeatable Read guarantees that all
+              reads within a transaction see the same snapshot, preventing non-repeatable reads.
+              Choose Read Committed for simple queries where slight inconsistency is acceptable
+              (dashboard metrics, search results). Choose Repeatable Read when your logic depends
+              on consistent reads (calculating totals, generating reports, multi-step workflows
+              that read the same data multiple times). PostgreSQL's default is Read Committed;
+              MySQL's is Repeatable Read.
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> Does Repeatable Read prevent phantom reads? Answer: No,
+              phantom reads (new rows appearing) require Serializable isolation or explicit
+              range locks.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q3: How does write-ahead logging (WAL) enable both atomicity and durability? What
+              happens during crash recovery?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> WAL enables atomicity by logging changes before applying
+              them—if a transaction aborts, the log provides the information needed to undo
+              partial changes. WAL enables durability by flushing log records to disk before
+              acknowledging commit—once the log is durable, the transaction is durable even if
+              data pages aren't written yet. During crash recovery, the database performs three
+              phases: Analysis (scan WAL to identify committed vs uncommitted transactions), Redo
+              (replay all committed transactions from WAL to restore changes), and Undo (rollback
+              uncommitted transactions using undo logs). This ARIES algorithm ensures no committed
+              data is lost and no uncommitted data persists.
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> Why is sequential WAL write faster than random data
+              page writes? Answer: Sequential I/O has much higher throughput (100s of MB/s)
+              compared to random I/O (especially on spinning disks), and fsync on a small log
+              is faster than fsync on many scattered pages.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q4: Your team wants to use Serializable isolation for all transactions to "be safe."
+              What are the risks, and how would you push back?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> Serializable isolation has significant performance costs:
+              increased lock contention, higher deadlock rates, and reduced throughput. It's
+              overkill for most operations—reading a user's profile doesn't need serializability.
+              I'd push back by asking for specific anomalies they're trying to prevent, then
+              propose targeted solutions: use Repeatable Read for most transactions, add explicit
+              locking only where needed, and implement application-level checks for edge cases.
+              I'd also suggest monitoring for actual anomalies at lower isolation levels before
+              escalating. The goal is appropriate safety, not maximum safety regardless of cost.
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> When is Serializable actually worth the cost? Answer:
+              Financial transfers, inventory allocation, seat booking—any operation where
+              concurrent modification would cause business-critical errors that can't be
+              detected at the application level.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q5: Design a system to prevent overselling during a flash sale where 10,000 users
+              try to buy 100 items simultaneously. How do you ensure exactly 100 sales?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> This is a high-contention ACID problem. Approach 1:
+              Database locking with{" "}
+              <code className="inline-code">UPDATE inventory SET qty = qty - 1 WHERE id = X AND qty &gt; 0</code>,
+              checking rows affected. Only 100 updates succeed. Add retry logic for deadlocks.
+              Approach 2: Pre-allocate inventory to a Redis queue with 100 tokens; users dequeue
+              a token to purchase. Redis is faster than DB for this contention. Approach 3: Use
+              a distributed lock per product, serializing all purchases (simplest but highest
+              latency). I'd choose Approach 2 for flash sales—Redis handles the contention, and
+              we asynchronously sync sales to the database. Key insight: move the contention
+              point to a system optimized for it.
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> What if Redis fails mid-sale? Answer: Use Redis
+              persistence (AOF), have a fallback to database locking, or pre-reserve inventory
+              with a timeout for release.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <p className="font-semibold text-lg">
+              Q6: Explain write skew anomaly with an example. How do you prevent it?
+            </p>
+            <p className="mt-3 text-sm">
+              <strong>Answer:</strong> Write skew occurs when two transactions read overlapping
+              data, make disjoint updates based on what they read, and together violate a
+              constraint. Classic example: Two doctors on call. Rule: at least one must be on
+              call. Both read "two doctors on call," both decide to go off call (disjoint
+              updates), result: zero doctors on call—constraint violated. This happens at
+              Repeatable Read because each transaction's read was consistent, but they didn't
+              see each other's writes. Prevention: use Serializable isolation, or explicitly
+              lock the rows you read (<code className="inline-code">SELECT FOR UPDATE</code>),
+              or add a constraint that the database can enforce (CHECK constraint on count).
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              <strong>Follow-up:</strong> Is write skew common in practice? Answer: Less common
+              than lost updates, but critical when it occurs—usually in scheduling, availability,
+              or quota systems where a global invariant depends on multiple rows.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References */}
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://www.postgresql.org/docs/current/transaction-iso.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Transaction Isolation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-model.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — InnoDB Transaction Model
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/transactions.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Oracle Documentation — Transactions
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cloud.google.com/spanner/docs/transactions"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Cloud Spanner — Transaction Model
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://martin.kleppmann.com/2016/02/08/isolation-eventual-consistency.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Martin Kleppmann — Isolation and Eventual Consistency
+            </a>
+          </li>
+        </ul>
+      </section>
+    </ArticleLayout>
+  );
+}
