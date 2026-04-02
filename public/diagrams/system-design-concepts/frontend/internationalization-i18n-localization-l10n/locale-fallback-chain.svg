@@ -1,0 +1,86 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Locale Fallback Chain</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Specific locale (es-MX) falls back to base language (es), then to default (en)</text>
+  
+  <!-- Fallback Progression -->
+  <rect x="30" y="100" width="840" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Fallback Progression Example</text>
+  
+  <!-- es-MX -->
+  <rect x="50" y="150" width="180" height="60" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="140" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#15803d">es-MX</text>
+  <text x="140" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Mexican Spanish</text>
+  <text x="140" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">Not supported ✗</text>
+  
+  <!-- Arrow -->
+  <path d="M 230 180 L 270 180" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="250" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fallback</text>
+  
+  <!-- es -->
+  <rect x="270" y="150" width="180" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="360" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">es</text>
+  <text x="360" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">Spanish (base)</text>
+  <text x="360" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Supported ✓</text>
+  
+  <!-- Arrow (if not supported) -->
+  <path d="M 450 180 L 490 180" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="470" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">If not supported</text>
+  
+  <!-- en (default) -->
+  <rect x="490" y="150" width="180" height="60" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="580" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#b91c1c">en</text>
+  <text x="580" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">English (default)</text>
+  <text x="580" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Final fallback ✓</text>
+  
+  <!-- Translation Key Example -->
+  <rect x="30" y="240" width="400" height="150" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="230" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Translation Key Lookup</text>
+  
+  <rect x="50" y="290" width="360" height="85" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Key: "welcome.message"</text>
+  <text x="65" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">es-MX: Not found ✗</text>
+  <text x="65" y="352" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">es: "Bienvenido" ✓</text>
+  <text x="65" y="369" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Result: Use Spanish translation</text>
+  
+  <!-- Partial Fallback Example -->
+  <rect x="450" y="240" width="420" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Partial Translation Fallback</text>
+  
+  <rect x="465" y="290" width="390" height="85" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="480" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Some keys missing in es:</text>
+  <text x="480" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">"welcome.message" → es: "Bienvenido" ✓</text>
+  <text x="480" y="352" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">"new_feature.title" → es: Not found ✗</text>
+  <text x="480" y="369" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">"new_feature.title" → en: "New Feature" ✓</text>
+  
+  <!-- Fallback Configuration -->
+  <rect x="30" y="410" width="400" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">react-i18next Configuration</text>
+  
+  <rect x="50" y="460" width="360" height="60" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="65" y="485" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">fallbackLng: {'{'}</text>
+  <text x="80" y="500" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">  es: ['en'],</text>
+  <text x="80" y="515" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">  default: ['en']</text>
+  <text x="65" y="527" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">{'}'}</text>
+  
+  <!-- Best Practices -->
+  <rect x="450" y="410" width="420" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="660" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Fallback Best Practices</text>
+  
+  <rect x="465" y="460" width="390" height="60" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="480" y="485" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Always support base language (es, not just es-ES)</text>
+  <text x="480" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Log missing translations for future addition</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

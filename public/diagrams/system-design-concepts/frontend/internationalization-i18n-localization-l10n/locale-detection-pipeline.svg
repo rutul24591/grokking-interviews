@@ -1,0 +1,115 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Locale Detection Pipeline</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Priority order of detection signals with fallback progression</text>
+  
+  <!-- Step 1: User Override -->
+  <rect x="30" y="100" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="110" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">1. User Override</text>
+  <text x="110" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Manual selection</text>
+  <text x="110" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Highest priority</text>
+  
+  <!-- Arrow -->
+  <path d="M 190 150 L 220 150" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="205" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">If set</text>
+  
+  <!-- Step 2: User Profile -->
+  <rect x="220" y="100" width="160" height="100" rx="8" fill="#dbeafe" stroke="#0284c7" stroke-width="2"/>
+  <text x="300" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0369a1">2. User Profile</text>
+  <text x="300" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Authenticated user</text>
+  <text x="300" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Stored preference</text>
+  
+  <!-- Arrow -->
+  <path d="M 380 150 L 410 150" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="395" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">If auth</text>
+  
+  <!-- Step 3: URL Path -->
+  <rect x="410" y="100" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="490" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">3. URL Path</text>
+  <text x="490" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">/en/, /es/, /fr/</text>
+  <text x="490" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">Explicit in URL</text>
+  
+  <!-- Arrow -->
+  <path d="M 570 150 L 600 150" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="585" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">If present</text>
+  
+  <!-- Step 4: Cookie -->
+  <rect x="600" y="100" width="160" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="680" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">4. Cookie/Storage</text>
+  <text x="680" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#166534">Previous visit</text>
+  <text x="680" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">localStorage</text>
+  
+  <!-- Arrow -->
+  <path d="M 760 150 L 790 150" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="775" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">If exists</text>
+  
+  <!-- Step 5: Browser -->
+  <rect x="790" y="100" width="80" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="830" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#b91c1c">5. Browser</text>
+  <text x="830" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">navigator.language</text>
+  
+  <!-- Arrow to Default -->
+  <path d="M 830 200 L 830 240" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrow-red)" fill="none"/>
+  
+  <!-- Default Locale -->
+  <rect x="780" y="240" width="100" height="60" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+  <text x="830" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#475560">Default</text>
+  <text x="830" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">en-US</text>
+  
+  <!-- Example Flow -->
+  <rect x="30" y="230" width="720" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="390" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Example Detection Flow</text>
+  
+  <!-- Scenario 1: New User -->
+  <rect x="50" y="280" width="330" height="95" rx="6" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="215" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0c4a6e">Scenario 1: First-Time Visitor</text>
+  <text x="65" y="330" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">1. No override ✗</text>
+  <text x="65" y="347" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">2. Not authenticated ✗</text>
+  <text x="65" y="364" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">3. URL: / (no locale) ✗</text>
+  <text x="65" y="381" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">4. No cookie ✗</text>
+  <text x="65" y="398" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">5. Browser: es-ES ✓ → Use Spanish</text>
+  
+  <!-- Scenario 2: Returning User -->
+  <rect x="400" y="280" width="330" height="95" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="565" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">Scenario 2: Returning Visitor</text>
+  <text x="415" y="330" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">1. No override ✗</text>
+  <text x="415" y="347" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">2. Not authenticated ✗</text>
+  <text x="415" y="364" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">3. URL: / (no locale) ✗</text>
+  <text x="415" y="381" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">4. Cookie: locale=fr ✓ → Use French</text>
+  <text x="415" y="398" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">(Browser is de-DE, ignored)</text>
+  
+  <!-- Fallback Chain Example -->
+  <rect x="30" y="410" width="400" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Fallback Chain Example</text>
+  
+  <rect x="50" y="460" width="360" height="60" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="65" y="485" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">User prefers: es-MX (Mexican Spanish)</text>
+  <text x="65" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Supported: es, en → Fallback: es-MX → es ✓</text>
+  
+  <!-- No Base Language Support -->
+  <rect x="450" y="410" width="420" height="120" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="660" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#b91c1c">No Base Language Support</text>
+  
+  <rect x="465" y="460" width="390" height="60" rx="6" fill="#fecaca" stroke="#ef4444"/>
+  <text x="480" y="485" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">User prefers: es-MX</text>
+  <text x="480" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Supported: en, fr → Fallback: es-MX → es ✗ → en (default) ✓</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

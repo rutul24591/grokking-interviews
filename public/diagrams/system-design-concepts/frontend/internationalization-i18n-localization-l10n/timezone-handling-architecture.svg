@@ -1,0 +1,90 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Timezone Handling Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">UTC storage, timezone conversion, and local display flow</text>
+  
+  <!-- Database Layer -->
+  <rect x="30" y="100" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Database</text>
+  
+  <rect x="50" y="155" width="160" height="50" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">TIMESTAMP WITH</text>
+  <text x="65" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">TIME ZONE (UTC)</text>
+  
+  <!-- Arrow to API -->
+  <path d="M 230 160 L 280 160" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="255" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">ISO 8601</text>
+  
+  <!-- API Layer -->
+  <rect x="280" y="100" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="380" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">API Response</text>
+  
+  <rect x="300" y="155" width="160" height="50" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="315" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">"2026-04-02T14:30:00Z"</text>
+  <text x="315" y="195" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Always UTC with Z</text>
+  
+  <!-- Arrow to Frontend -->
+  <path d="M 480 160 L 530 160" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="505" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">JSON</text>
+  
+  <!-- Frontend Layer -->
+  <rect x="530" y="100" width="340" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="700" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Frontend Display</text>
+  
+  <rect x="550" y="155" width="300" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="565" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Convert to user timezone:</text>
+  <text x="565" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">Intl.DateTimeFormat(locale, { timeZone })</text>
+  
+  <!-- User Timezone Options -->
+  <rect x="550" y="230" width="300" height="80" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="700" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">Timezone Source</text>
+  <text x="565" y="280" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Browser timezone (auto)</text>
+  <text x="565" y="300" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• User profile preference</text>
+  
+  <!-- Example Display -->
+  <rect x="30" y="250" width="400" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Display Examples (Same UTC Time)</text>
+  
+  <rect x="50" y="300" width="360" height="75" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="65" y="325" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">UTC: 2026-04-02T14:30:00Z</text>
+  <text x="65" y="345" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">New York: Apr 2, 2026, 10:30 AM EDT</text>
+  <text x="65" y="365" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Tokyo: 2026/04/02 23:30 JST</text>
+  
+  <!-- DST Handling -->
+  <rect x="450" y="250" width="420" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">DST Transition Handling</text>
+  
+  <rect x="465" y="300" width="390" height="75" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="480" y="325" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Spring Forward (2 AM → 3 AM):</text>
+  <text x="480" y="345" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">2:30 AM doesn&apos;t exist → adjust to 3:30 AM</text>
+  <text x="480" y="365" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Fall Back (2 AM → 1 AM): 1:30 AM ambiguous → use isDST flag</text>
+  
+  <!-- Best Practices -->
+  <rect x="30" y="410" width="840" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Best Practices</text>
+  
+  <rect x="50" y="460" width="240" height="60" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="170" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#15803d">✓ Store UTC</text>
+  <text x="170" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Convert at display</text>
+  
+  <rect x="305" y="460" width="240" height="60" rx="6" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="425" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0369a1">✓ Use IANA timezone</text>
+  <text x="425" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">America/New_York</text>
+  
+  <rect x="560" y="460" width="240" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="680" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">✓ Show timezone</text>
+  <text x="680" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">for future events</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

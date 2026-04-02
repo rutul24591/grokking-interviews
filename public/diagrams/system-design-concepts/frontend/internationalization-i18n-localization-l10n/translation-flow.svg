@@ -1,0 +1,98 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Translation Flow</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Key lookup, interpolation, pluralization, and rendering</text>
+  
+  <!-- Step 1: Component Request -->
+  <rect x="30" y="100" width="180" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="120" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">1. Component</text>
+  
+  <rect x="50" y="155" width="140" height="50" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">{`t('items.count',`}</text>
+  <text x="65" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">{`{ count: 5 })`}</text>
+  
+  <!-- Arrow -->
+  <path d="M 210 160 L 260 160" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Step 2: Key Lookup -->
+  <rect x="260" y="100" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">2. Key Lookup</text>
+  
+  <rect x="280" y="155" width="140" height="50" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="295" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#92400e">items.count →</text>
+  <text x="295" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#92400e">"{count} items"</text>
+  
+  <!-- Arrow -->
+  <path d="M 440 160 L 490 160" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Step 3: Interpolation -->
+  <rect x="490" y="100" width="180" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="580" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">3. Interpolation</text>
+  
+  <rect x="510" y="155" width="140" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="525" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">{`"{count}" → 5`}</text>
+  <text x="525" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">"5 items"</text>
+  
+  <!-- Arrow -->
+  <path d="M 670 160 L 720 160" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <!-- Step 4: Render -->
+  <rect x="720" y="100" width="150" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="795" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">4. Render</text>
+  
+  <rect x="740" y="155" width="110" height="50" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="795" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6b21a8">5 items</text>
+  
+  <!-- Pluralization Example -->
+  <rect x="30" y="250" width="400" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Pluralization Example</text>
+  
+  <rect x="50" y="300" width="360" height="75" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="325" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">ICU Format:</text>
+  <text x="65" y="342" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">{`"{count, plural, =0 {no items}"`}</text>
+  <text x="65" y="357" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">{`"one {# item} other {# items}}"`}</text>
+  <text x="65" y="372" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">count=0 → "no items"</text>
+  
+  <!-- Gender Example -->
+  <rect x="450" y="250" width="420" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Gender Agreement Example</text>
+  
+  <rect x="465" y="300" width="390" height="75" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="480" y="325" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#6b21a8">ICU Select:</text>
+  <text x="480" y="342" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">{`"{gender, select, male {He}"`}</text>
+  <text x="480" y="357" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">{`"female {She} other {They}}"`}</text>
+  <text x="480" y="372" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">gender=female → "She"</text>
+  
+  <!-- Context Example -->
+  <rect x="30" y="410" width="400" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="230" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Translation Context</text>
+  
+  <rect x="50" y="460" width="360" height="60" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="65" y="485" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Same word, different translations:</text>
+  <text x="65" y="505" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">file.noun → "archivo" (Spanish)</text>
+  <text x="220" y="505" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">file.verb → "presentar"</text>
+  
+  <!-- Interpolation Order -->
+  <rect x="450" y="410" width="420" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="660" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Interpolation Order Matters</text>
+  
+  <rect x="465" y="460" width="390" height="60" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="480" y="485" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">English: "Hello {'{'}name{'}'}, welcome!"</text>
+  <text x="480" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Japanese: "{'{'}name{'}'}さん、ようこそ!"</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,88 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">RTL Implementation Strategies</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Comparing logical properties, directional classes, and CSS-in-JS approaches</text>
+  
+  <!-- Logical Properties -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Logical Properties</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Automatic RTL handling</text>
+  <text x="65" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Cleaner CSS</text>
+  <text x="65" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Future-proof standard</text>
+  <text x="65" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Needs autoprefixer</text>
+  <text x="65" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Learning curve</text>
+  <text x="165" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">Best for: New projects</text>
+  
+  <!-- Directional Classes -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Directional Classes</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="350" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Explicit control</text>
+  <text x="350" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Works everywhere</text>
+  <text x="350" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Doubles CSS rules</text>
+  <text x="350" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Error-prone</text>
+  <text x="350" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Hard to maintain</text>
+  <text x="450" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b45309">Best for: Legacy migration</text>
+  
+  <!-- CSS-in-JS -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">CSS-in-JS + RTL</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="635" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Automatic mirroring</text>
+  <text x="635" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Collocated styles</text>
+  <text x="635" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Runtime overhead</text>
+  <text x="635" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Library-specific</text>
+  <text x="635" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Bundle size</text>
+  <text x="735" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Best for: React apps</text>
+  
+  <!-- Example Comparison -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Implementation Example: Card Component</text>
+  
+  <!-- Logical Properties Example -->
+  <rect x="50" y="370" width="250" height="145" rx="6" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="175" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0c4a6e">Logical Properties</text>
+  
+  <rect x="60" y="410" width="230" height="95" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="70" y="430" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#0369a1">.card {'{'}</text>
+  <text x="70" y="445" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#0369a1">  margin-inline-start: 16px;</text>
+  <text x="70" y="460" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#0369a1">  padding-inline-end: 12px;</text>
+  <text x="70" y="475" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#0369a1">  text-align: start;</text>
+  <text x="70" y="490" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#0369a1">{'}'}</text>
+  <text x="70" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Auto RTL support!</text>
+  
+  <!-- Directional Classes Example -->
+  <rect x="315" y="370" width="250" height="145" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="440" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">Directional Classes</text>
+  
+  <rect x="325" y="410" width="230" height="95" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="335" y="430" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#b45309">.ltr .card {'{'}</text>
+  <text x="335" y="445" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#b45309">  margin-left: 16px;</text>
+  <text x="335" y="460" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#b45309">{'}'}</text>
+  <text x="335" y="475" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#b45309">.rtl .card {'{'}</text>
+  <text x="335" y="490" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#b45309">  margin-right: 16px;</text>
+  <text x="335" y="505" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#b45309">{'}'}</text>
+  
+  <!-- CSS-in-JS Example -->
+  <rect x="580" y="370" width="270" height="145" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="715" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">CSS-in-JS (styled-components)</text>
+  
+  <rect x="590" y="410" width="250" height="95" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="600" y="430" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#15803d">const Card = styled.div`</text>
+  <text x="600" y="445" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#15803d">  margin-inline-start: 16px;</text>
+  <text x="600" y="460" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#15803d">  ${"({ theme }) => theme.isRTL"} </text>
+  <text x="600" y="475" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#15803d">    ? transform: scaleX(-1)</text>
+  <text x="600" y="490" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#15803d">    : '';</text>
+  <text x="600" y="505" text-anchor="start" font-family="monospace, sans-serif" font-size="7" fill="#15803d">`;</text>
+  
+  <!-- Recommendation -->
+  <rect x="30" y="545" width="840" height="30" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="565" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Recommendation: Use logical properties for new projects, CSS-in-JS for React apps, directional classes only for legacy migration</text>
+</svg>

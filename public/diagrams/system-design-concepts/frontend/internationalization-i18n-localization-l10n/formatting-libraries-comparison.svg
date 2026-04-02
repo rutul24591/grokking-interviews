@@ -1,0 +1,114 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Date/Time Formatting Libraries Comparison</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Intl API, date-fns, Day.js, Luxon, and Moment.js features</text>
+  
+  <!-- Intl API -->
+  <rect x="30" y="100" width="200" height="160" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Intl API</text>
+  
+  <rect x="50" y="155" width="160" height="90" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Native (0KB bundle)</text>
+  <text x="65" y="197" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Always updated</text>
+  <text x="65" y="214" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Formatting only</text>
+  <text x="65" y="231" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ No manipulation</text>
+  <text x="65" y="248" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ Verbose syntax</text>
+  
+  <!-- date-fns -->
+  <rect x="245" y="100" width="200" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="345" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">date-fns</text>
+  
+  <rect x="265" y="155" width="160" height="90" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="280" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Tree-shakeable</text>
+  <text x="280" y="197" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Functional API</text>
+  <text x="280" y="214" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ 200+ functions</text>
+  <text x="280" y="231" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ ~80KB full</text>
+  <text x="280" y="248" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ Immutable only</text>
+  
+  <!-- Day.js -->
+  <rect x="460" y="100" width="200" height="160" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="560" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Day.js</text>
+  
+  <rect x="480" y="155" width="160" height="90" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="495" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ 2KB minified</text>
+  <text x="495" y="197" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Moment-compatible</text>
+  <text x="495" y="214" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Plugin system</text>
+  <text x="495" y="231" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ Mutable default</text>
+  <text x="495" y="248" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ Plugins add size</text>
+  
+  <!-- Luxon -->
+  <rect x="675" y="100" width="200" height="160" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="775" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Luxon</text>
+  
+  <rect x="695" y="155" width="160" height="90" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="710" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Immutable</text>
+  <text x="710" y="197" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Timezone support</text>
+  <text x="710" y="214" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">✓ Intl integration</text>
+  <text x="710" y="231" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ ~65KB bundle</text>
+  <text x="710" y="248" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ Learning curve</text>
+  
+  <!-- Feature Comparison Table -->
+  <rect x="30" y="280" width="840" height="250" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Feature Comparison</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="325" width="150" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="125" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Feature</text>
+  <rect x="200" y="325" width="120" height="30" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="260" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#0369a1">Intl API</text>
+  <rect x="320" y="325" width="120" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="380" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#92400e">date-fns</text>
+  <rect x="440" y="325" width="120" height="30" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="500" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#15803d">Day.js</text>
+  <rect x="560" y="325" width="120" height="30" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="620" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#6b21a8">Luxon</text>
+  <rect x="680" y="325" width="200" height="30" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="780" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#b91c1c">Moment.js</text>
+  
+  <!-- Row 1: Bundle Size -->
+  <text x="60" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Bundle Size</text>
+  <text x="205" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">0KB (native)</text>
+  <text x="325" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b">~80KB full</text>
+  <text x="445" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">2KB core</text>
+  <text x="565" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b">~65KB</text>
+  <text x="685" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">~300KB (legacy)</text>
+  
+  <!-- Row 2: Timezone -->
+  <text x="60" y="405" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Timezone</text>
+  <text x="205" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Via options</text>
+  <text x="325" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b">~ Plugin</text>
+  <text x="445" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b">~ Plugin</text>
+  <text x="565" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Built-in</text>
+  <text x="685" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b">~ moment-timezone</text>
+  
+  <!-- Row 3: Manipulation -->
+  <text x="60" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Manipulation</text>
+  <text x="205" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ Format only</text>
+  <text x="325" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Full</text>
+  <text x="445" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Full</text>
+  <text x="565" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Full</text>
+  <text x="685" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Full</text>
+  
+  <!-- Row 4: Locale Support -->
+  <text x="60" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Locales</text>
+  <text x="205" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ All (browser)</text>
+  <text x="325" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ 90+</text>
+  <text x="445" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ 100+</text>
+  <text x="565" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Via Intl</text>
+  <text x="685" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ 100+</text>
+  
+  <!-- Row 5: Maintenance -->
+  <text x="60" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Status</text>
+  <text x="205" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Standard</text>
+  <text x="325" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Active</text>
+  <text x="445" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Active</text>
+  <text x="565" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Active</text>
+  <text x="685" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">✗ Maintenance</text>
+  
+  <!-- Recommendation -->
+  <rect x="30" y="545" width="840" height="30" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="565" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Recommendation: Intl API for formatting-only, date-fns for manipulation, Luxon for timezone-heavy apps, avoid Moment.js for new projects</text>
+</svg>

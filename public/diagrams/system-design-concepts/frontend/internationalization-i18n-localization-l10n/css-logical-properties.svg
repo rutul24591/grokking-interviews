@@ -1,0 +1,102 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">CSS Logical Properties</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Physical vs logical property mapping for automatic RTL support</text>
+  
+  <!-- Physical Properties (LTR) -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Physical (LTR)</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">margin-left: 16px</text>
+  <text x="65" y="200" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">margin-right: 8px</text>
+  <text x="65" y="220" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">padding-left: 12px</text>
+  <text x="65" y="240" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">left: 0</text>
+  <text x="65" y="260" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">text-align: left</text>
+  <text x="65" y="280" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Fixed directions</text>
+  
+  <!-- Arrow to Logical -->
+  <path d="M 300 200 L 350 200" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="325" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Convert</text>
+  
+  <!-- Logical Properties -->
+  <rect x="350" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="485" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Logical Properties</text>
+  
+  <rect x="370" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="385" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">margin-inline-start</text>
+  <text x="385" y="200" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">margin-inline-end</text>
+  <text x="385" y="220" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">padding-inline-start</text>
+  <text x="385" y="240" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">inset-inline-start</text>
+  <text x="385" y="260" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">text-align: start</text>
+  <text x="385" y="280" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Direction-aware</text>
+  
+  <!-- Arrow to Resolution -->
+  <path d="M 620 200 L 670 200" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="645" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Resolve</text>
+  
+  <!-- LTR Resolution -->
+  <rect x="670" y="100" width="200" height="90" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="770" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">In LTR</text>
+  
+  <rect x="685" y="145" width="170" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="770" y="168" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">inline-start = left</text>
+  
+  <!-- RTL Resolution -->
+  <rect x="670" y="210" width="200" height="90" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="770" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#b91c1c">In RTL</text>
+  
+  <rect x="685" y="255" width="170" height="35" rx="4" fill="#fecaca" stroke="#ef4444"/>
+  <text x="770" y="278" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">inline-start = right</text>
+  
+  <!-- Property Mapping Table -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Physical to Logical Property Mapping</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Physical</text>
+  <rect x="250" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="350" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Logical (Inline)</text>
+  <rect x="450" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="550" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Logical (Block)</text>
+  <rect x="650" y="365" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="750" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Description</text>
+  
+  <!-- Row 1: Margin -->
+  <text x="60" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">margin-left/right</text>
+  <text x="255" y="415" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">margin-inline-start/end</text>
+  <text x="455" y="415" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">margin-block-start/end</text>
+  <text x="655" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Horizontal/vertical margin</text>
+  
+  <!-- Row 2: Padding -->
+  <text x="60" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">padding-left/right</text>
+  <text x="255" y="445" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">padding-inline-start/end</text>
+  <text x="455" y="445" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">padding-block-start/end</text>
+  <text x="655" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Horizontal/vertical padding</text>
+  
+  <!-- Row 3: Position -->
+  <text x="60" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">left/right</text>
+  <text x="255" y="475" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">inset-inline-start/end</text>
+  <text x="455" y="475" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">inset-block-start/end</text>
+  <text x="655" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Position offsets</text>
+  
+  <!-- Row 4: Border -->
+  <text x="60" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">border-left/right</text>
+  <text x="255" y="505" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">border-inline-start/end</text>
+  <text x="455" y="505" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">border-block-start/end</text>
+  <text x="655" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Border sides</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

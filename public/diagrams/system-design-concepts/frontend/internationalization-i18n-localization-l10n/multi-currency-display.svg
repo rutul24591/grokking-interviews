@@ -1,0 +1,75 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Multi-Currency Display Patterns</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Primary and secondary currency display patterns for e-commerce</text>
+  
+  <!-- Pattern 1: Single Currency -->
+  <rect x="30" y="100" width="270" height="160" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Single Currency</text>
+  
+  <rect x="50" y="155" width="230" height="90" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- Product card example -->
+  <rect x="65" y="175" width="200" height="55" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="165" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Product Name</text>
+  <text x="165" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#0369a1">$99.00</text>
+  
+  <text x="165" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">✓ Clean, simple</text>
+  <text x="165" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ No transparency for intl customers</text>
+  
+  <!-- Pattern 2: Dual Currency -->
+  <rect x="315" y="100" width="270" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Dual Currency</text>
+  
+  <rect x="335" y="155" width="230" height="90" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Product card example -->
+  <rect x="350" y="175" width="200" height="55" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Product Name</text>
+  <text x="450" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#b45309">€92.00 ($100.00)</text>
+  
+  <text x="450" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Transparent, helpful for travelers</text>
+  <text x="450" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ More UI space, potential confusion</text>
+  
+  <!-- Pattern 3: Currency Selector -->
+  <rect x="600" y="100" width="270" height="160" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Currency Selector</text>
+  
+  <rect x="620" y="155" width="230" height="90" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <!-- Product card with selector -->
+  <rect x="635" y="175" width="200" height="55" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="735" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Currency: USD ▼</text>
+  <text x="735" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#0369a1">$99.00</text>
+  
+  <text x="735" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">✓ Customer control, clear intent</text>
+  <text x="735" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">✗ Requires selector UI, state management</text>
+  
+  <!-- Currency Selector Dropdown -->
+  <rect x="30" y="280" width="400" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Currency Selector Implementation</text>
+  
+  <rect x="50" y="330" width="360" height="75" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="65" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Common currencies: USD, EUR, GBP, JPY, CAD, AUD</text>
+  <text x="65" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Store selection in: localStorage + user profile</text>
+  <text x="65" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Update prices on currency change (re-fetch converted prices)</text>
+  
+  <!-- Rate Disclaimer -->
+  <rect x="450" y="280" width="420" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Exchange Rate Disclaimer</text>
+  
+  <rect x="465" y="330" width="390" height="75" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="480" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Always display rate timestamp:</text>
+  <text x="480" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">✓ "Rates as of 2:30 PM UTC"</text>
+  <text x="480" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">✓ "Converted prices are approximate"</text>
+  
+  <!-- Checkout Best Practices -->
+  <rect x="30" y="440" width="840" height="90" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Checkout Best Practices</text>
+  
+  <rect x="50" y="490" width="800" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Clearly state charge currency: "You will be charged €92.00 EUR" — avoid ambiguity about which currency is charged</text>
+</svg>

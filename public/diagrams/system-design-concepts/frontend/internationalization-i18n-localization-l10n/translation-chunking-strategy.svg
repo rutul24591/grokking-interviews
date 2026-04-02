@@ -1,0 +1,101 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Translation Chunking Strategy</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">How translations are split into loadable chunks</text>
+  
+  <!-- Full Bundle (Before) -->
+  <rect x="30" y="100" width="200" height="180" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#b91c1c">Before: Full Bundle</text>
+  
+  <rect x="50" y="155" width="160" height="110" rx="6" fill="#ffffff" stroke="#fecaca"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">All locales bundled:</text>
+  <text x="65" y="200" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b91c1c">en.json (50KB)</text>
+  <text x="65" y="215" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b91c1c">es.json (52KB)</text>
+  <text x="65" y="230" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b91c1c">fr.json (51KB)</text>
+  <text x="65" y="245" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b91c1c">... (25 more)</text>
+  <text x="65" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#dc2626">Total: 800KB+</text>
+  
+  <!-- Arrow -->
+  <path d="M 230 190 L 280 190" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="255" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Split</text>
+  
+  <!-- Chunked Bundle (After) -->
+  <rect x="280" y="100" width="590" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="575" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">After: Chunked by Locale + Namespace</text>
+  
+  <!-- Initial Load -->
+  <rect x="300" y="155" width="140" height="110" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="370" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#15803d">Initial Load</text>
+  <text x="315" y="205" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">en/common.json</text>
+  <text x="315" y="220" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">en/errors.json</text>
+  <text x="315" y="235" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#15803d">~50KB total</text>
+  
+  <!-- Arrow -->
+  <path d="M 440 210 L 470 210" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Lazy Chunks -->
+  <rect x="470" y="155" width="390" height="110" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="665" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#475560">Lazy Loaded Chunks</text>
+  
+  <rect x="485" y="195" width="80" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="525" y="212" text-anchor="middle" font-family="monospace, sans-serif" font-size="7" fill="#b45309">es/*.json</text>
+  
+  <rect x="575" y="195" width="80" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="615" y="212" text-anchor="middle" font-family="monospace, sans-serif" font-size="7" fill="#b45309">fr/*.json</text>
+  
+  <rect x="665" y="195" width="80" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="705" y="212" text-anchor="middle" font-family="monospace, sans-serif" font-size="7" fill="#b45309">de/*.json</text>
+  
+  <rect x="755" y="195" width="80" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="795" y="212" text-anchor="middle" font-family="monospace, sans-serif" font-size="7" fill="#b45309">... (25 more)</text>
+  
+  <rect x="485" y="230" width="150" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="560" y="247" text-anchor="middle" font-family="monospace, sans-serif" font-size="7" fill="#647480">en/settings.json (lazy)</text>
+  
+  <rect x="645" y="230" width="150" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="720" y="247" text-anchor="middle" font-family="monospace, sans-serif" font-size="7" fill="#647480">en/dashboard.json (lazy)</text>
+  
+  <!-- Namespace Breakdown -->
+  <rect x="30" y="300" width="400" height="130" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Namespace Breakdown Example</text>
+  
+  <rect x="50" y="350" width="360" height="70" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="65" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">common.json: Navigation, buttons, labels (always loaded)</text>
+  <text x="65" y="392" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">errors.json: Error messages (always loaded)</text>
+  <text x="65" y="409" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">settings.json: Settings page (lazy, on navigation)</text>
+  
+  <!-- Loading Timeline -->
+  <rect x="450" y="300" width="420" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Loading Timeline</text>
+  
+  <rect x="465" y="350" width="390" height="70" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Timeline -->
+  <line x1="480" y1="385" x2="840" y2="385" stroke="#f59e0b" stroke-width="2"/>
+  
+  <circle cx="480" cy="385" r="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="480" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#15803d">T=0ms</text>
+  <text x="480" y="418" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#15803d">Load en/common</text>
+  
+  <circle cx="600" cy="385" r="6" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="600" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">T=500ms</text>
+  <text x="600" y="418" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#b45309">Navigate</text>
+  
+  <circle cx="720" cy="385" r="6" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="720" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">T=600ms</text>
+  <text x="720" y="418" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#b45309">Load settings</text>
+  
+  <circle cx="840" cy="385" r="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="840" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#647480">T=2000ms</text>
+  <text x="840" y="418" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#647480">User switches locale</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+  </defs>
+</svg>

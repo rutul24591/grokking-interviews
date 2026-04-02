@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Date/Time Formatting Locale Variations</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Same UTC timestamp displays differently across locales</text>
+  
+  <!-- UTC Timestamp -->
+  <rect x="30" y="100" width="840" height="60" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="450" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">UTC Timestamp (Stored in Database)</text>
+  <text x="450" y="148" text-anchor="middle" font-family="monospace, sans-serif" font-size="16" fill="#0369a1">2026-04-02T14:30:00Z</text>
+  
+  <!-- Locale Variations -->
+  <rect x="30" y="180" width="170" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="115" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">en-US</text>
+  <text x="115" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">4/2/2026, 2:30 PM</text>
+  <text x="115" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">MM/DD/YYYY, 12-hour</text>
+  <text x="115" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">$1,234.56</text>
+  
+  <rect x="210" y="180" width="170" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="295" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">en-GB</text>
+  <text x="295" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">02/04/2026, 14:30</text>
+  <text x="295" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">DD/MM/YYYY, 24-hour</text>
+  <text x="295" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">£1,234.56</text>
+  
+  <rect x="390" y="180" width="170" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="475" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">de-DE</text>
+  <text x="475" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#7e22ce">02.04.2026, 14:30</text>
+  <text x="475" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">DD.MM.YYYY, 24-hour</text>
+  <text x="475" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">1.234,56 €</text>
+  
+  <rect x="570" y="180" width="170" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="655" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#b91c1c">ja-JP</text>
+  <text x="655" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b91c1c">2026/04/02 14:30</text>
+  <text x="655" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">YYYY/MM/DD, 24-hour</text>
+  <text x="655" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">¥1,234</text>
+  
+  <rect x="750" y="180" width="120" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="810" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0c4a6e">ar-SA</text>
+  <text x="810" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1" lang="ar" dir="rtl">٢/٤/٢٠٢٦ ٢:٣٠ م</text>
+  <text x="810" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">DD/MM/YYYY, Arabic</text>
+  <text x="810" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">١٬٢٣٤٫٥٦ ر.س</text>
+  
+  <!-- Number Formatting Examples -->
+  <rect x="30" y="300" width="400" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Number Formatting Variations</text>
+  
+  <rect x="50" y="350" width="360" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Same number (1234.56) formatted:</text>
+  <text x="65" y="395" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">en-US: 1,234.56 (comma = thousands)</text>
+  <text x="65" y="412" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">de-DE: 1.234,56 (dot = thousands, comma = decimal)</text>
+  
+  <!-- Timezone Display -->
+  <rect x="450" y="300" width="420" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Timezone Display Examples</text>
+  
+  <rect x="465" y="350" width="390" height="70" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="480" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Same UTC time displayed in different timezones:</text>
+  <text x="480" y="395" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">New York: 10:30 AM EDT (UTC-4)</text>
+  <text x="480" y="412" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">London: 3:30 PM BST (UTC+1)</text>
+  <text x="480" y="429" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">Tokyo: 11:30 PM JST (UTC+9)</text>
+  
+  <!-- Key Takeaway -->
+  <rect x="30" y="450" width="840" height="80" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#15803d">Key Takeaway</text>
+  <text x="450" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Store in canonical format (UTC, raw numbers), format at display layer using locale-aware APIs (Intl.DateTimeFormat, Intl.NumberFormat)</text>
+</svg>

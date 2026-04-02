@@ -1,0 +1,81 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">RTL Layout Mirroring</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">LTR vs RTL layout comparison — navigation, margins, and icons flip horizontally</text>
+  
+  <!-- LTR Layout -->
+  <rect x="30" y="100" width="400" height="280" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="230" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">LTR (Left-to-Right)</text>
+  
+  <rect x="50" y="155" width="360" height="210" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- LTR Header -->
+  <rect x="65" y="170" width="330" height="40" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="80" y="195" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Logo</text>
+  <text x="350" y="195" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Nav Items →</text>
+  
+  <!-- LTR Sidebar -->
+  <rect x="65" y="220" width="80" height="130" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="105" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Sidebar</text>
+  <text x="75" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="8" fill="#647480">← margin-right</text>
+  
+  <!-- LTR Content -->
+  <rect x="155" y="220" width="240" height="130" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="275" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Main Content</text>
+  <text x="385" y="240" text-anchor="end" font-family="system-ui, sans-serif" font-size="8" fill="#647480">margin-left →</text>
+  
+  <!-- LTR Arrow Icon -->
+  <path d="M 200 340 L 220 350 L 200 360" stroke="#0284c7" stroke-width="2" fill="none"/>
+  <text x="250" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Arrow points right</text>
+  
+  <!-- RTL Layout -->
+  <rect x="470" y="100" width="400" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">RTL (Right-to-Left)</text>
+  
+  <rect x="490" y="155" width="360" height="210" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- RTL Header -->
+  <rect x="505" y="170" width="330" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="790" y="195" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Logo</text>
+  <text x="520" y="195" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">← Nav Items</text>
+  
+  <!-- RTL Sidebar -->
+  <rect x="725" y="220" width="80" height="130" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="765" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">Sidebar</text>
+  <text x="815" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">margin-left →</text>
+  
+  <!-- RTL Content -->
+  <rect x="515" y="220" width="200" height="130" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="615" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">Main Content</text>
+  <text x="525" y="240" text-anchor="end" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">← margin-right</text>
+  
+  <!-- RTL Arrow Icon (flipped) -->
+  <path d="M 670 340 L 650 350 L 670 360" stroke="#f59e0b" stroke-width="2" fill="none"/>
+  <text x="620" y="355" text-anchor="end" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Arrow points left</text>
+  
+  <!-- Mirroring Indicators -->
+  <path d="M 430 250 L 470 250" stroke="#647480" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-gray)" fill="none"/>
+  <text x="450" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Mirror</text>
+  
+  <!-- Key Differences -->
+  <rect x="30" y="400" width="840" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">What Flips in RTL</text>
+  
+  <rect x="50" y="450" width="360" height="65" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="230" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">Flips (Directional)</text>
+  <text x="230" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Navigation, margins, arrows, chevrons, progress</text>
+  
+  <rect x="430" y="450" width="360" height="65" rx="6" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="610" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#b91c1c">Does Not Flip</text>
+  <text x="610" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Close (X), search, home, numbers, URLs</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

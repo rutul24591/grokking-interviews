@@ -1,0 +1,78 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Translation File Structure</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Locale-based organization with namespaces for lazy loading</text>
+  
+  <!-- File Tree Structure -->
+  <rect x="30" y="100" width="400" height="280" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="230" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">File Structure</text>
+  
+  <rect x="50" y="155" width="360" height="210" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#0369a1">locales/</text>
+  <text x="80" y="200" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">en/</text>
+  <text x="95" y="218" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">common.json (always loaded)</text>
+  <text x="95" y="235" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">errors.json (always loaded)</text>
+  <text x="95" y="252" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">dashboard.json (lazy)</text>
+  <text x="95" y="269" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">settings.json (lazy)</text>
+  <text x="80" y="290" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">es/</text>
+  <text x="95" y="308" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">common.json</text>
+  <text x="95" y="325" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">errors.json</text>
+  <text x="95" y="342" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">dashboard.json</text>
+  <text x="95" y="359" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">settings.json</text>
+  
+  <!-- Namespace Content Example -->
+  <rect x="450" y="100" width="420" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Namespace: common.json</text>
+  
+  <rect x="465" y="155" width="390" height="70" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="480" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#92400e">{`{`}</text>
+  <text x="480" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#92400e">{`"save": "Save",`}</text>
+  <text x="480" y="210" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#92400e">{`"cancel": "Cancel",`}</text>
+  <text x="480" y="225" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#92400e">{`"loading": "Loading..."`}</text>
+  <text x="480" y="240" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#92400e">{`}`}</text>
+  
+  <!-- Lazy Loading Flow -->
+  <rect x="30" y="400" width="840" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Lazy Loading Strategy</text>
+  
+  <!-- Initial Load -->
+  <rect x="50" y="450" width="250" height="65" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="175" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">Initial Load</text>
+  <text x="175" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">common + errors namespaces</text>
+  
+  <!-- Arrow -->
+  <path d="M 300 482 L 340 482" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- On Navigation -->
+  <rect x="340" y="450" width="250" height="65" rx="6" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="465" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0369a1">On Navigation</text>
+  <text x="465" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Load feature namespace</text>
+  
+  <!-- Arrow -->
+  <path d="M 590 482 L 630 482" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Cached -->
+  <rect x="630" y="450" width="250" height="65" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="755" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">Cached</text>
+  <text x="755" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Reuse on revisit</text>
+  
+  <!-- Key Naming Best Practices -->
+  <rect x="450" y="260" width="420" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="660" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Key Naming Best Practices</text>
+  
+  <rect x="465" y="310" width="390" height="60" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="480" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">✓ DO:</text>
+  <text x="480" y="352" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">errors.network_failed (descriptive)</text>
+  <text x="480" y="367" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">✗ DON'T:</text>
+  <text x="480" y="384" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#dc2626">errors.could_not_connect (uses English)</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+  </defs>
+</svg>

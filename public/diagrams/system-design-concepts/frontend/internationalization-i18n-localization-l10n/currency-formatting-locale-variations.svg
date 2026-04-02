@@ -1,0 +1,82 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Currency Formatting Locale Variations</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Same amount (1234.56 USD) displays differently across locales</text>
+  
+  <!-- en-US -->
+  <rect x="30" y="100" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">en-US</text>
+  <text x="130" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#0369a1">$1,234.56</text>
+  <text x="130" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Symbol before, period decimal</text>
+  
+  <!-- en-GB -->
+  <rect x="250" y="100" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">en-GB</text>
+  <text x="350" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#b45309">£1,234.56</text>
+  <text x="350" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Symbol before, period decimal</text>
+  
+  <!-- de-DE -->
+  <rect x="470" y="100" width="200" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="570" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">de-DE</text>
+  <text x="570" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#15803d">1.234,56 €</text>
+  <text x="570" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Symbol after, comma decimal</text>
+  
+  <!-- ja-JP -->
+  <rect x="690" y="100" width="180" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="780" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">ja-JP</text>
+  <text x="780" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#7e22ce">￥1,235</text>
+  <text x="780" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">No decimals, symbol before</text>
+  
+  <!-- ar-SA -->
+  <rect x="30" y="240" width="200" height="120" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#b91c1c">ar-SA</text>
+  <text x="130" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#b91c1c" lang="ar" dir="rtl">١٬٢٣٤٫٥٦ ر.س</text>
+  <text x="130" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Arabic numerals, RTL</text>
+  
+  <!-- fr-CA -->
+  <rect x="250" y="240" width="200" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="350" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#15803d">fr-CA</text>
+  <text x="350" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#15803d">1 234,56 $</text>
+  <text x="350" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Space separator, symbol after</text>
+  
+  <!-- CNY -->
+  <rect x="470" y="240" width="200" height="120" rx="8" fill="#dbeafe" stroke="#0284c7" stroke-width="2"/>
+  <text x="570" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">zh-CN</text>
+  <text x="570" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#1e40af">¥1,234.56</text>
+  <text x="570" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Same symbol as JPY, different</text>
+  
+  <!-- Key Differences Table -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Key Currency Formatting Differences</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="425" width="180" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="140" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Aspect</text>
+  <rect x="230" y="425" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="330" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Variations</text>
+  <rect x="430" y="425" width="440" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="650" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Examples</text>
+  
+  <!-- Row 1: Symbol Position -->
+  <text x="60" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Symbol Position</text>
+  <text x="240" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Before or after amount</text>
+  <text x="440" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">$100 (US) | 100 € (DE) | 100$ (CA-FR)</text>
+  
+  <!-- Row 2: Decimal Separator -->
+  <text x="60" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Decimal Separator</text>
+  <text x="240" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Period or comma</text>
+  <text x="440" y="505" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">100.50 (US/UK) | 100,50 (DE/FR)</text>
+  
+  <!-- Row 3: Thousands Separator -->
+  <text x="60" y="535" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Thousands Separator</text>
+  <text x="240" y="535" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Comma, period, space, or none</text>
+  <text x="440" y="535" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">1,000 (US) | 1.000 (DE) | 1 000 (FR)</text>
+  
+  <!-- Row 4: Decimal Precision -->
+  <text x="60" y="565" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Decimal Precision</text>
+  <text x="240" y="565" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">0, 2, or 3 decimals</text>
+  <text x="440" y="565" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">¥1,000 (JPY-0) | $10.00 (USD-2) | 10.000 KD (KWD-3)</text>
+</svg>

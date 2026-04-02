@@ -1,0 +1,96 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Translation Workflow Pipeline</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Extraction, TMS, review, and deployment pipeline</text>
+  
+  <!-- Step 1: Code -->
+  <rect x="30" y="100" width="140" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="100" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">1. Code</text>
+  <text x="100" y="175" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#0369a1">t('welcome')</text>
+  
+  <!-- Arrow -->
+  <path d="M 170 150 L 210 150" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Step 2: Extract -->
+  <rect x="210" y="100" width="140" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="280" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">2. Extract</text>
+  <text x="280" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">i18next-parser</text>
+  <text x="280" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">CLI/GitHub Action</text>
+  
+  <!-- Arrow -->
+  <path d="M 350 150 L 390 150" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Step 3: TMS -->
+  <rect x="390" y="100" width="160" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="470" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">3. TMS</text>
+  <text x="470" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Crowdin/Transifex</text>
+  <text x="470" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Translate + Review</text>
+  
+  <!-- Arrow -->
+  <path d="M 550 150 L 590 150" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <!-- Step 4: QA -->
+  <rect x="590" y="100" width="140" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="660" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">4. QA</text>
+  <text x="660" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Placeholder check</text>
+  <text x="660" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Character limits</text>
+  
+  <!-- Arrow -->
+  <path d="M 730 150 L 770 150" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple)" fill="none"/>
+  
+  <!-- Step 5: Deploy -->
+  <rect x="770" y="100" width="100" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="820" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#b91c1c">5. Deploy</text>
+  <text x="820" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">CDN</text>
+  <text x="820" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Production</text>
+  
+  <!-- Continuous Localization -->
+  <rect x="30" y="230" width="840" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Continuous Localization Flow</text>
+  
+  <rect x="50" y="280" width="800" height="75" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="305" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Developer commits code → CI extracts new strings → Syncs to TMS → Translators notified</text>
+  <text x="65" y="325" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">→ Translations reviewed → Sync back to Git → Auto-merge → Deploy</text>
+  <text x="65" y="345" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Result: Translations keep pace with development, no release blocking</text>
+  
+  <!-- TMS Features -->
+  <rect x="30" y="390" width="270" height="140" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="165" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Translation Memory</text>
+  <rect x="50" y="440" width="230" height="75" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Stores previous translations</text>
+  <text x="65" y="482" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Suggests matches for new strings</text>
+  <text x="65" y="499" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Reduces cost, improves consistency</text>
+  
+  <rect x="315" y="390" width="270" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Glossary</text>
+  <rect x="335" y="440" width="230" height="75" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="350" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Approved terms (brand, features)</text>
+  <text x="350" y="482" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Highlighted during translation</text>
+  <text x="350" y="499" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Ensures consistent terminology</text>
+  
+  <rect x="600" y="390" width="270" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="735" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Context &amp; Screenshots</text>
+  <rect x="620" y="440" width="230" height="75" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="635" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Screenshots show UI context</text>
+  <text x="635" y="482" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Character limits, descriptions</text>
+  <text x="635" y="499" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Better translation quality</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+</svg>
