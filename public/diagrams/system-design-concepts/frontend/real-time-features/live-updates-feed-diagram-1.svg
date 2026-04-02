@@ -1,0 +1,89 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Live Feed Update Patterns</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Prepend, append, and scroll position management</text>
+  
+  <!-- Pattern 1: Prepend (Social Feed) -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Prepend (Social Feed)</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- Feed items -->
+  <rect x="65" y="175" width="200" height="30" rx="3" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="165" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">New item (prepended)</text>
+  
+  <rect x="65" y="210" width="200" height="30" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="165" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Existing item</text>
+  
+  <rect x="65" y="245" width="200" height="30" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="165" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Existing item</text>
+  
+  <text x="165" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Use when: Chronological, newest-first</text>
+  
+  <!-- Pattern 2: Append (Chat/Log) -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Append (Chat/Log)</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Chat items -->
+  <rect x="350" y="175" width="200" height="30" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Existing message</text>
+  
+  <rect x="350" y="210" width="200" height="30" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Existing message</text>
+  
+  <rect x="350" y="245" width="200" height="30" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">New message (appended)</text>
+  
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Use when: Append-only, auto-scroll</text>
+  
+  <!-- Pattern 3: Batch Update -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Batch Update</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <!-- Buffer -->
+  <rect x="635" y="175" width="200" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="735" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Buffer incoming events</text>
+  
+  <path d="M 735 215 L 735 240" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <rect x="655" y="240" width="160" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="735" y="262" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Render every 100ms</text>
+  
+  <text x="735" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Use when: High-frequency updates</text>
+  
+  <!-- Scroll Position Management -->
+  <rect x="30" y="320" width="840" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Scroll Position Management</text>
+  
+  <rect x="50" y="370" width="800" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">At top: Prepend normally | Scrolled down: Show "N new items" banner, don't auto-scroll</text>
+  
+  <!-- "New Items" Banner -->
+  <rect x="30" y="440" width="400" height="90" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">&quot;N New Items&quot; Banner Pattern</text>
+  
+  <rect x="50" y="490" width="360" height="30" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="230" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Buffer items, show banner, scroll to top on click</text>
+  
+  <!-- Virtualization -->
+  <rect x="450" y="440" width="420" height="90" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Virtualization for Large Feeds</text>
+  
+  <rect x="465" y="490" width="390" height="30" rx="4" fill="#fef3c7" stroke="#fde68a"/>
+  <text x="660" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Render only visible items (windowing), maintain scroll position</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>

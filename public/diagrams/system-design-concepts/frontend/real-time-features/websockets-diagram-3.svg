@@ -1,0 +1,108 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">WebSocket Reconnection Flow</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Exponential backoff, jitter, and message replay for gap recovery</text>
+  
+  <!-- Timeline -->
+  <line x1="60" y1="120" x2="840" y2="120" stroke="#e2e8f0" stroke-width="3"/>
+  <text x="850" y="125" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#647480">Time &#8594;</text>
+  
+  <!-- Connected State -->
+  <rect x="60" y="90" width="120" height="60" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="120" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">Connected</text>
+  <text x="120" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Active WebSocket</text>
+  
+  <!-- Connection Drop -->
+  <path d="M 180 120 L 200 120" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="5,5" marker-end="url(#arrow-red)" fill="none"/>
+  <text x="190" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Connection lost</text>
+  
+  <!-- Disconnected State -->
+  <rect x="200" y="90" width="120" height="60" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="260" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#991b1b">Disconnected</text>
+  <text x="260" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">onclose fired</text>
+  
+  <!-- Retry 1 -->
+  <path d="M 320 120 L 350 120" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="335" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Retry 1</text>
+  
+  <rect x="350" y="90" width="80" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="390" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#92400e">1s</text>
+  <text x="390" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">+jitter</text>
+  
+  <!-- Retry 2 -->
+  <path d="M 430 120 L 460 120" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="445" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Retry 2</text>
+  
+  <rect x="460" y="90" width="80" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="500" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#92400e">2s</text>
+  <text x="500" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">+jitter</text>
+  
+  <!-- Retry 3 -->
+  <path d="M 540 120 L 570 120" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="555" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Retry 3</text>
+  
+  <rect x="570" y="90" width="80" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="610" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#92400e">4s</text>
+  <text x="610" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">+jitter</text>
+  
+  <!-- Reconnected -->
+  <path d="M 650 120 L 680 120" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="665" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Success!</text>
+  
+  <rect x="680" y="90" width="120" height="60" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="740" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">Reconnected</text>
+  <text x="740" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Gap fill requested</text>
+  
+  <!-- Message Queue Detail -->
+  <rect x="30" y="180" width="400" height="180" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Client-Side Message Queue</text>
+  
+  <rect x="50" y="230" width="360" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  
+  <!-- Outbound queue -->
+  <text x="65" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#475560">Outbound Queue (during disconnect):</text>
+  <rect x="65" y="270" width="330" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="80" y="287" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">msg1: {"type": "chat", text: "Hello"}</text>
+  <rect x="65" y="300" width="330" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="80" y="317" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#92400e">msg2: {"type": "chat", text: "How are you?"}</text>
+  <text x="65" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Queued messages flushed after reconnection</text>
+  
+  <!-- Gap Fill Detail -->
+  <rect x="450" y="180" width="420" height="180" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Gap Fill Protocol</text>
+  
+  <rect x="470" y="230" width="380" height="115" rx="6" fill="#ffffff" stroke="#e9d5ff"/>
+  
+  <text x="485" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">On Reconnection:</text>
+  <rect x="485" y="270" width="350" height="25" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="500" y="287" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#6b21a8">Client: {"type": "sync", lastSeq: 1234}</text>
+  <rect x="485" y="300" width="350" height="25" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="500" y="317" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#6b21a8">Server: {"type": "replay", messages: [...]}</text>
+  <text x="485" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Server replays messages sent while client was offline</text>
+  
+  <!-- Best Practices -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#b91c1c">Reconnection Best Practices</text>
+  
+  <rect x="50" y="430" width="800" height="85" rx="6" fill="#ffffff" stroke="#fecaca"/>
+  <text x="65" y="455" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b91c1c">Exponential Backoff:</text>
+  <text x="65" y="472" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">1s &#8594; 2s &#8594; 4s &#8594; 8s &#8594; 16s &#8594; 30s (cap at 30s)</text>
+  <text x="65" y="492" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b91c1c">Jitter:</text>
+  <text x="65" y="509" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Add ±25% random jitter to prevent thundering herd</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>

@@ -148,15 +148,15 @@
             { "name": "Communication", "slug": "communication" },
             {
               "name": "Transactions / State Changes",
-              "slug": "transactions-state-changes"
+              "slug": "transactions-state"
             },
             {
               "name": "Administration & Moderation",
-              "slug": "administration-moderation"
+              "slug": "admin-moderation"
             },
             {
               "name": "Other (Cross-cutting Functional Requirements)",
-              "slug": "other-cross-cutting-functional-requirements"
+              "slug": "other-cross-cutting"
             }
           ]
         },
@@ -174,6 +174,12 @@
           ]
         }
       ]
+    },
+    {
+      "name": "System-Design Problems",
+      "slug": "system-design-problems",
+      "categories": [],
+      "comingSoon": true
     },
     {
       "name": "Languages",

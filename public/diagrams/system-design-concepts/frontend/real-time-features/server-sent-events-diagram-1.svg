@@ -1,0 +1,75 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Server-Sent Events Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">One-way server-to-client streaming over HTTP</text>
+  
+  <!-- Client -->
+  <rect x="50" y="120" width="150" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="125" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Client</text>
+  <text x="125" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">EventSource API</text>
+  
+  <!-- HTTP Connection -->
+  <path d="M 200 170 L 300 170" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="250" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">1. HTTP GET</text>
+  <text x="250" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Accept: text/event-stream</text>
+  
+  <!-- Server -->
+  <rect x="300" y="120" width="150" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="375" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Server</text>
+  <text x="375" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">SSE Endpoint</text>
+  
+  <!-- SSE Stream -->
+  <path d="M 450 170 L 550 170" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="5,5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="500" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b45309">2. Keep-Alive</text>
+  <text x="500" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">text/event-stream</text>
+  
+  <!-- Event Stream -->
+  <rect x="550" y="120" width="300" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="700" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Event Stream</text>
+  
+  <rect x="570" y="170" width="260" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="585" y="190" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">data: {"type": "update", ...}</text>
+  
+  <!-- Event Format Detail -->
+  <rect x="50" y="250" width="400" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="250" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">SSE Event Format</text>
+  
+  <rect x="65" y="300" width="370" height="75" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="80" y="325" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">event: message</text>
+  <text x="80" y="340" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">data: {"id": 123, "text": "Hello"}</text>
+  <text x="80" y="355" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">id: 123</text>
+  <text x="80" y="370" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">retry: 3000</text>
+  
+  <!-- Reconnection Flow -->
+  <rect x="470" y="250" width="380" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Automatic Reconnection</text>
+  
+  <rect x="485" y="300" width="350" height="75" rx="6" fill="#ffffff" stroke="#e9d5ff"/>
+  <text x="500" y="325" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">On Connection Loss:</text>
+  <text x="500" y="345" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">1. Wait retry interval (default 3s)</text>
+  <text x="500" y="362" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">2. Send Last-Event-ID header</text>
+  <text x="500" y="379" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">3. Server replays missed events</text>
+  
+  <!-- Comparison Table -->
+  <rect x="50" y="410" width="800" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">SSE vs WebSocket Comparison</text>
+  
+  <rect x="65" y="455" width="770" height="65" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="80" y="480" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">SSE (Server-Sent Events):</text>
+  <text x="80" y="497" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Simple, auto-reconnect, HTTP/2 friendly | ✗ Server&#8594;Client only</text>
+  <text x="80" y="514" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">WebSocket:</text>
+  <text x="80" y="531" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">✓ Full-duplex, low latency | ✗ Complex, manual reconnect, Layer 4 LB</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

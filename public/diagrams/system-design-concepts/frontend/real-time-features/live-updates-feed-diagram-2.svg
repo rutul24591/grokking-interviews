@@ -1,0 +1,78 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Feed Reconciliation &amp; Deduplication</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Merging API results, real-time events, and optimistic inserts</text>
+  
+  <!-- Data Sources -->
+  <rect x="30" y="100" width="260" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="160" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Data Sources</text>
+  
+  <rect x="50" y="155" width="220" height="35" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="160" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">API Response (paginated)</text>
+  
+  <rect x="50" y="195" width="220" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="160" y="217" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Real-time Push (WebSocket)</text>
+  
+  <rect x="50" y="235" width="220" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="160" y="257" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Optimistic Inserts (local)</text>
+  
+  <!-- Arrow to Reconciliation -->
+  <path d="M 290 190 L 350 190" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Reconciliation Layer -->
+  <rect x="350" y="120" width="240" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="470" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Reconciliation Layer</text>
+  
+  <rect x="370" y="185" width="200" height="60" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="470" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Deduplicate by item ID</text>
+  <text x="470" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Merge by correlation ID</text>
+  
+  <!-- Arrow to Feed Store -->
+  <path d="M 590 190 L 650 190" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple)" fill="none"/>
+  
+  <!-- Feed Store -->
+  <rect x="650" y="120" width="220" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="760" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Feed Store</text>
+  
+  <rect x="670" y="185" width="180" height="60" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="760" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Ordered items</text>
+  <text x="760" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">(by timestamp/sort key)</text>
+  
+  <!-- Deduplication Example -->
+  <rect x="30" y="300" width="400" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Deduplication by Item ID</text>
+  
+  <rect x="50" y="350" width="360" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">API returns: item_id=123, text="Hello"</text>
+  <text x="65" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Real-time: item_id=123, text="Hello" (same item)</text>
+  <text x="65" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">&#8594; Keep one, discard duplicate</text>
+  
+  <!-- Correlation ID Example -->
+  <rect x="450" y="300" width="420" height="130" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Optimistic &#8594; Server Reconciliation</text>
+  
+  <rect x="465" y="350" width="390" height="70" rx="6" fill="#ffffff" stroke="#e9d5ff"/>
+  <text x="480" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">1. Client inserts optimistically with corr_id=abc</text>
+  <text x="480" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">2. Server broadcasts created item with corr_id=abc</text>
+  <text x="480" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">&#8594; Replace optimistic with server version</text>
+  
+  <!-- Gap Detection -->
+  <rect x="30" y="450" width="840" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Gap Detection &amp; Fill</text>
+  
+  <rect x="50" y="495" width="800" height="25" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="450" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Detect gaps between paginated data and real-time events, fill via API request</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+</svg>

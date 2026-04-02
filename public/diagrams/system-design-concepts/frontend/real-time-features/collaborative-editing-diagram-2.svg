@@ -1,0 +1,60 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">CRDT: Character Insertion &amp; Convergence</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Unique IDs, position references, and deterministic ordering</text>
+  
+  <!-- Initial State -->
+  <rect x="30" y="100" width="270" height="140" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Initial State</text>
+  
+  <rect x="50" y="155" width="230" height="70" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#0369a1">"H e l l o"</text>
+  <text x="65" y="205" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#647480">IDs: (A,1)(A,2)(A,3)(A,4)(A,5)</text>
+  
+  <!-- Concurrent Inserts -->
+  <rect x="315" y="100" width="270" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Concurrent Inserts</text>
+  
+  <rect x="335" y="155" width="230" height="70" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="350" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">User A inserts "X" after "He"</text>
+  <text x="350" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">User B inserts "Y" after "He"</text>
+  <text x="350" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Same position, different clients</text>
+  
+  <!-- Resolution -->
+  <rect x="600" y="100" width="270" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Converged State</text>
+  
+  <rect x="620" y="155" width="230" height="70" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="635" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="11" fill="#15803d">"H e X Y l l o"</text>
+  <text x="635" y="205" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#647480">IDs: (A,1)(A,2)(A,6)(B,1)(A,3)...</text>
+  <text x="635" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Both replicas converge!</text>
+  
+  <!-- ID Structure Detail -->
+  <rect x="30" y="260" width="400" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Character ID Structure</text>
+  
+  <rect x="50" y="310" width="360" height="75" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="65" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Each character: (client_id, logical_clock)</text>
+  <text x="65" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Example: (A, 3) = Client A, 3rd operation</text>
+  <text x="65" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Ordering: Compare IDs lexicographically</text>
+  
+  <!-- Position Reference Detail -->
+  <rect x="450" y="260" width="420" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Position Referencing</text>
+  
+  <rect x="465" y="310" width="390" height="75" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="480" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Insert references left &amp; right neighbor IDs</text>
+  <text x="480" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">If conflict (same neighbors), use client ID as tiebreaker</text>
+  <text x="480" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Lower client ID wins &#8594; deterministic ordering</text>
+  
+  <!-- Convergence Guarantee -->
+  <rect x="30" y="420" width="840" height="110" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">CRDT Convergence Guarantee</text>
+  
+  <rect x="50" y="465" width="800" height="55" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Regardless of operation order, all replicas converge to the same final state</text>
+  <text x="450" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">No central coordination required — works P2P, offline-first, with network partitions</text>
+</svg>

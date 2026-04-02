@@ -1,0 +1,89 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Virtual Scroll &amp; Performance Optimization</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Windowing, batching, and render optimization for high-frequency updates</text>
+  
+  <!-- Virtual Scroll -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Virtual Scrolling</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- Viewport -->
+  <rect x="65" y="175" width="200" height="80" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="165" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Visible viewport</text>
+  <text x="165" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">(10 items rendered)</text>
+  
+  <rect x="65" y="260" width="200" height="15" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="165" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#647480">Buffer zone (overscan)</text>
+  
+  <text x="165" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">10,000 items &#8594; only 10-15 DOM nodes</text>
+  
+  <!-- Batch Rendering -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Batch Rendering</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Event buffer -->
+  <rect x="350" y="175" width="200" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Buffer incoming events</text>
+  
+  <path d="M 450 215 L 450 240" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <rect x="370" y="240" width="160" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="262" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Render every 100ms</text>
+  
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">1000 events/sec &#8594; 10 renders/sec</text>
+  
+  <!-- Memoization -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">React.memo / useMemo</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <!-- Item comparison -->
+  <rect x="635" y="175" width="200" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="735" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Shallow compare props</text>
+  
+  <path d="M 735 215 L 735 240" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <rect x="655" y="240" width="160" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="735" y="262" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Skip unchanged items</text>
+  
+  <text x="735" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Only re-render modified items</text>
+  
+  <!-- Performance Metrics -->
+  <rect x="30" y="320" width="840" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Performance Impact</text>
+  
+  <rect x="50" y="370" width="800" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Without optimization: 1000 DOM updates/frame &#8594; Jank | With optimization: 10-15 DOM nodes, batched updates &#8594; 60fps</text>
+  
+  <!-- Key Techniques Summary -->
+  <rect x="30" y="440" width="400" height="90" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Key Techniques</text>
+  
+  <rect x="50" y="490" width="360" height="30" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="230" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Virtual scroll + Batch rendering + Memoization</text>
+  
+  <!-- Libraries -->
+  <rect x="450" y="440" width="420" height="90" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Recommended Libraries</text>
+  
+  <rect x="465" y="490" width="390" height="30" rx="4" fill="#fef3c7" stroke="#fde68a"/>
+  <text x="660" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">react-virtuoso, TanStack Virtual, react-window</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>

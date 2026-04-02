@@ -1,0 +1,106 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">WebRTC Connection States</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">ICE gathering, connectivity checks, and state transitions</text>
+  
+  <!-- State Machine -->
+  <rect x="30" y="100" width="840" height="200" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">ICE Connection State Machine</text>
+  
+  <!-- New State -->
+  <rect x="60" y="155" width="100" height="60" rx="30" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+  <text x="110" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#475560">new</text>
+  
+  <!-- Gathering State -->
+  <path d="M 160 185 L 200 185" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="180" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">gather</text>
+  
+  <rect x="200" y="155" width="100" height="60" rx="30" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="250" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">gathering</text>
+  
+  <!-- Checking State -->
+  <path d="M 300 185 L 340 185" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="320" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">check</text>
+  
+  <rect x="340" y="155" width="100" height="60" rx="30" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="390" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">checking</text>
+  
+  <!-- Connected State -->
+  <path d="M 440 185 L 480 185" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="460" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">success</text>
+  
+  <rect x="480" y="155" width="100" height="60" rx="30" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="530" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">connected</text>
+  
+  <!-- Completed State -->
+  <path d="M 580 185 L 620 185" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="600" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">nominate</text>
+  
+  <rect x="620" y="155" width="100" height="60" rx="30" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">completed</text>
+  
+  <!-- Failed State -->
+  <path d="M 390 215 L 390 260 L 720 260 L 720 215" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-red)" fill="none"/>
+  <text x="550" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">timeout/failure</text>
+  
+  <rect x="670" y="155" width="100" height="60" rx="30" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="720" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#b91c1c">failed</text>
+  
+  <!-- Closed State -->
+  <path d="M 720 215 L 720 240" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)" fill="none"/>
+  
+  <rect x="670" y="240" width="100" height="60" rx="30" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+  <text x="720" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#475560">closed</text>
+  
+  <!-- Disconnected (transient) -->
+  <rect x="530" y="240" width="100" height="40" rx="20" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="580" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#92400e">disconnected</text>
+  <path d="M 530 185 L 530 240" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-amber)" fill="none"/>
+  <path d="M 580 280 L 580 300 L 480 300 L 480 215" stroke="#22c55e" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="520" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">reconnect</text>
+  
+  <!-- Network Quality Impact -->
+  <rect x="30" y="320" width="400" height="110" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="230" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Network Quality Adaptation</text>
+  
+  <rect x="50" y="370" width="360" height="50" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Good network &#8594; High bitrate, low latency codec</text>
+  <text x="65" y="412" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Poor network &#8594; Lower bitrate, more FEC, PLI requests</text>
+  
+  <!-- Codec Selection -->
+  <rect x="450" y="320" width="420" height="110" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Codec Negotiation</text>
+  
+  <rect x="465" y="370" width="390" height="50" rx="6" fill="#ffffff" stroke="#e9d5ff"/>
+  <text x="480" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Offer: OPUS, VP8, VP9, H264</text>
+  <text x="480" y="412" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Answer: Selected codec based on support &amp; preference</text>
+  
+  <!-- Key Metrics -->
+  <rect x="30" y="450" width="840" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Key WebRTC Metrics to Monitor</text>
+  
+  <rect x="50" y="495" width="800" height="25" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="450" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">RTT (Round-Trip Time) | Jitter | Packet Loss | Bitrate | Frame Rate | Resolution | Codec</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

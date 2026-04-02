@@ -1,0 +1,102 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">WebRTC Peer-to-Peer Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Direct browser-to-browser media and data channels</text>
+  
+  <!-- Peer A -->
+  <rect x="50" y="120" width="180" height="140" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="140" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Peer A</text>
+  <text x="140" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Browser/Client</text>
+  <text x="140" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">RTCPeerConnection</text>
+  <text x="140" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">RTCDataChannel</text>
+  
+  <!-- Peer B -->
+  <rect x="670" y="120" width="180" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="760" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Peer B</text>
+  <text x="760" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Browser/Client</text>
+  <text x="760" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">RTCPeerConnection</text>
+  <text x="760" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">RTCDataChannel</text>
+  
+  <!-- Signaling Server -->
+  <rect x="380" y="320" width="140" height="80" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="450" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">Signaling</text>
+  <text x="450" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce">Server (HTTP/WS)</text>
+  
+  <!-- STUN/TURN Server -->
+  <rect x="380" y="100" width="140" height="80" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">STUN/TURN</text>
+  <text x="450" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">NAT Traversal</text>
+  
+  <!-- Connection Flow -->
+  <!-- Peer A to Signaling -->
+  <path d="M 140 260 L 140 350 L 380 350" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="150" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Offer</text>
+  
+  <!-- Signaling to Peer B -->
+  <path d="M 520 350 L 760 350 L 760 260" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="770" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Offer</text>
+  
+  <!-- Peer B to Signaling -->
+  <path d="M 760 260 L 760 370 L 520 370" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="530" y="380" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Answer</text>
+  
+  <!-- Signaling to Peer A -->
+  <path d="M 380 370 L 140 370 L 140 260" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="150" y="380" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Answer</text>
+  
+  <!-- ICE Candidates -->
+  <path d="M 140 260 L 300 260 L 300 140 L 380 140" stroke="#0284c7" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="250" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">ICE Candidates</text>
+  
+  <path d="M 520 140 L 600 140 L 600 260 L 760 260" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="650" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">ICE Candidates</text>
+  
+  <!-- Direct P2P Connection -->
+  <path d="M 230 190 L 670 190" stroke="#22c55e" stroke-width="3" stroke-dasharray="8,4" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="450" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#15803d">Direct P2P Connection</text>
+  <text x="450" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Media + Data (encrypted)</text>
+  
+  <!-- TURN Fallback -->
+  <path d="M 230 190 L 230 140 L 380 140 L 380 180" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-red)" fill="none"/>
+  <path d="M 520 180 L 520 140 L 670 140 L 670 190" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-red)" fill="none"/>
+  <text x="450" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">TURN relay (if P2P fails)</text>
+  
+  <!-- Protocol Stack -->
+  <rect x="50" y="440" width="380" height="90" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="240" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">WebRTC Protocol Stack</text>
+  
+  <rect x="65" y="490" width="350" height="30" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="240" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Application (Media/Data)</text>
+  
+  <rect x="65" y="525" width="350" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="240" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">SRTP/SCTP (Encrypted Transport)</text>
+  
+  <!-- Key Points -->
+  <rect x="470" y="440" width="380" height="90" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Key Characteristics</text>
+  
+  <rect x="485" y="490" width="350" height="30" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="660" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Signaling: Application-defined (WebSocket/HTTP)</text>
+  
+  <rect x="485" y="525" width="350" height="30" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="660" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Media: DTLS-SRTP encrypted, UDP-based</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

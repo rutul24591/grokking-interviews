@@ -1,0 +1,82 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Real-time Features Technology Selection</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Choosing between WebSockets, SSE, WebRTC, and polling</text>
+  
+  <!-- Decision Matrix -->
+  <rect x="30" y="100" width="840" height="430" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  
+  <!-- Table headers -->
+  <rect x="50" y="120" width="180" height="40" rx="4" fill="#e2e8f0"/>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Technology</text>
+  <rect x="230" y="120" width="180" height="40" rx="4" fill="#e2e8f0"/>
+  <text x="320" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Direction</text>
+  <rect x="410" y="120" width="200" height="40" rx="4" fill="#e2e8f0"/>
+  <text x="510" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Best Use Cases</text>
+  <rect x="610" y="120" width="260" height="40" rx="4" fill="#e2e8f0"/>
+  <text x="740" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Limitations</text>
+  
+  <!-- Row 1: WebSockets -->
+  <rect x="50" y="160" width="180" height="40" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="140" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0369a1">WebSockets</text>
+  <rect x="230" y="160" width="180" height="40" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="320" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Full-duplex</text>
+  <rect x="410" y="160" width="200" height="40" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="510" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Chat, gaming, collab editing</text>
+  <rect x="610" y="160" width="260" height="40" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="740" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Complex, manual reconnect</text>
+  
+  <!-- Row 2: SSE -->
+  <rect x="50" y="200" width="180" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="140" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#b45309">SSE</text>
+  <rect x="230" y="200" width="180" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="320" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Server&#8594;Client</text>
+  <rect x="410" y="200" width="200" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="510" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Notifications, live feeds</text>
+  <rect x="610" y="200" width="260" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="740" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">No client&#8594;server, HTTP/1.1 limits</text>
+  
+  <!-- Row 3: WebRTC -->
+  <rect x="50" y="240" width="180" height="40" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="140" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#15803d">WebRTC</text>
+  <rect x="230" y="240" width="180" height="40" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="320" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">P2P full-duplex</text>
+  <rect x="410" y="240" width="200" height="40" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="510" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Video calls, P2P file transfer</text>
+  <rect x="610" y="240" width="260" height="40" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="740" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Complex, NAT traversal, scaling</text>
+  
+  <!-- Row 4: Long Polling -->
+  <rect x="50" y="280" width="180" height="40" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="140" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">Long Polling</text>
+  <rect x="230" y="280" width="180" height="40" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="320" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Client-initiated</text>
+  <rect x="410" y="280" width="200" height="40" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="510" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Legacy fallback</text>
+  <rect x="610" y="280" width="260" height="40" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="740" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">High latency, connection overhead</text>
+  
+  <!-- Row 5: Short Polling -->
+  <rect x="50" y="320" width="180" height="40" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="140" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#b91c1c">Short Polling</text>
+  <rect x="230" y="320" width="180" height="40" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="320" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Client-initiated</text>
+  <rect x="410" y="320" width="200" height="40" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="510" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Simple, infrequent updates</text>
+  <rect x="610" y="320" width="260" height="40" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="740" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Wasteful, high latency, not real-time</text>
+  
+  <!-- Selection Guide -->
+  <rect x="50" y="380" width="820" height="130" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Quick Selection Guide</text>
+  
+  <text x="70" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Need bidirectional? &#8594; WebSockets or WebRTC</text>
+  <text x="70" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Server-push only? &#8594; SSE (simpler) or WebSockets (more control)</text>
+  <text x="70" y="490" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Video/audio P2P? &#8594; WebRTC</text>
+  <text x="450" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Need auto-reconnect? &#8594; SSE (built-in) or WebSockets (manual)</text>
+  <text x="450" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">HTTP/2 environment? &#8594; SSE works well</text>
+  <text x="450" y="490" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Legacy browser support? &#8594; Long polling fallback</text>
+</svg>

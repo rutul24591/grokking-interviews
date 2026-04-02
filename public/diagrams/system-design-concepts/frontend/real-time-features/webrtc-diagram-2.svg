@@ -1,0 +1,115 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">SFU Group Call Architecture</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Selective Forwarding Unit for scalable multi-party calls</text>
+  
+  <!-- Participants -->
+  <circle cx="100" cy="150" r="40" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="100" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0c4a6e">P1</text>
+  
+  <circle cx="200" cy="100" r="40" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="200" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">P2</text>
+  
+  <circle cx="300" cy="150" r="40" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="300" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">P3</text>
+  
+  <circle cx="200" cy="200" r="40" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">P4</text>
+  
+  <!-- Upload arrows to SFU -->
+  <path d="M 140 150 L 400 150" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="270" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Upload</text>
+  
+  <path d="M 200 140 L 400 140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <path d="M 260 150 L 400 150" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <path d="M 200 160 L 400 160" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)" fill="none"/>
+  
+  <!-- SFU Server -->
+  <rect x="400" y="100" width="180" height="100" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+  <text x="490" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">SFU Server</text>
+  <text x="490" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Selective Forwarding</text>
+  <text x="490" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">No transcoding</text>
+  
+  <!-- Download arrows from SFU -->
+  <path d="M 580 130 L 700 100" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-blue)" fill="none"/>
+  <text x="640" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">P2,P3,P4</text>
+  
+  <path d="M 580 145 L 700 145" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="640" y="137" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">P1,P3,P4</text>
+  
+  <path d="M 580 160 L 700 180" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="640" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">P1,P2,P4</text>
+  
+  <path d="M 580 175 L 700 210" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)" fill="none"/>
+  <text x="640" y="187" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">P1,P2,P3</text>
+  
+  <!-- Receiving Participants -->
+  <circle cx="700" cy="100" r="40" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="700" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0c4a6e">P1</text>
+  
+  <circle cx="700" cy="150" r="40" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="700" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">P2</text>
+  
+  <circle cx="700" cy="200" r="40" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="700" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">P3</text>
+  
+  <!-- Simulcast Detail -->
+  <rect x="50" y="280" width="400" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="250" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Simulcast: Multiple Quality Layers</text>
+  
+  <rect x="65" y="330" width="370" height="75" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Quality layers -->
+  <rect x="80" y="345" width="100" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="130" y="359" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">High (1080p)</text>
+  
+  <rect x="80" y="370" width="100" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="130" y="384" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">Medium (720p)</text>
+  
+  <rect x="80" y="395" width="100" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="130" y="409" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">Low (360p)</text>
+  
+  <path d="M 190 380 L 250 380" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <rect x="260" y="345" width="160" height="70" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="340" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">SFU selects layer</text>
+  <text x="340" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">per subscriber</text>
+  <text x="340" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e">based on bandwidth</text>
+  
+  <!-- Bandwidth Comparison -->
+  <rect x="470" y="280" width="380" height="140" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="660" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Bandwidth: Mesh vs SFU</text>
+  
+  <rect x="485" y="330" width="350" height="75" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <text x="500" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">Mesh (N participants):</text>
+  <text x="500" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Upload: (N-1) streams × bitrate</text>
+  <text x="500" y="392" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Download: (N-1) streams × bitrate</text>
+  <text x="500" y="409" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">O(N²) total bandwidth</text>
+  
+  <text x="500" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">SFU (N participants):</text>
+  <text x="500" y="455" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Upload: 1 stream × bitrate</text>
+  <text x="500" y="472" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Download: (N-1) streams × bitrate</text>
+  <text x="500" y="489" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">O(N) total bandwidth</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+</svg>
