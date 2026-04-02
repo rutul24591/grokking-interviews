@@ -1,0 +1,65 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Viewport Meta Tag Properties</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">width=device-width matches viewport to screen, initial-scale=1.0 starts at 100% zoom</text>
+  
+  <!-- Meta Tag Example -->
+  <rect x="30" y="100" width="840" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="450" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Standard Viewport Meta Tag</text>
+  
+  <rect x="50" y="145" width="800" height="25" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="450" y="162" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#0369a1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</text>
+  
+  <!-- Property Breakdown -->
+  <rect x="30" y="200" width="270" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="165" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">width</text>
+  
+  <rect x="50" y="250" width="230" height="95" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="65" y="275" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Controls viewport width</text>
+  <text x="65" y="295" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">device-width</text>
+  <text x="65" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Matches screen width</text>
+  <text x="65" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Recommended: always use</text>
+  
+  <rect x="315" y="200" width="270" height="160" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">initial-scale</text>
+  
+  <rect x="335" y="250" width="230" height="95" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="350" y="275" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Controls initial zoom</text>
+  <text x="350" y="295" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">1.0 = 100% zoom</text>
+  <text x="350" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Recommended: 1.0</text>
+  
+  <rect x="600" y="200" width="270" height="160" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="735" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">user-scalable</text>
+  
+  <rect x="620" y="250" width="230" height="95" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="635" y="275" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Allows user zoom</text>
+  <text x="635" y="295" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#6b21a8">yes (default)</text>
+  <text x="635" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">⚠ Don't set to no!</text>
+  <text x="635" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Accessibility requirement</text>
+  
+  <!-- Scale Options -->
+  <rect x="30" y="380" width="400" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Scale Properties</text>
+  
+  <rect x="50" y="430" width="360" height="85" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="455" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">minimum-scale: Minimum zoom level</text>
+  <text x="65" y="475" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">maximum-scale: Maximum zoom level</text>
+  <text x="65" y="495" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">Recommended: min=1, max=5 (allow zoom)</text>
+  
+  <!-- Common Configurations -->
+  <rect x="450" y="380" width="420" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Common Configurations</text>
+  
+  <rect x="465" y="430" width="390" height="85" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="480" y="455" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">✓ Recommended:</text>
+  <text x="480" y="470" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">width=device-width, initial-scale=1.0</text>
+  <text x="480" y="485" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#dc2626">✗ Avoid:</text>
+  <text x="480" y="500" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#dc2626">user-scalable=no (accessibility violation)</text>
+  
+  <!-- Visual Example -->
+  <rect x="30" y="545" width="840" height="30" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="565" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Without viewport meta tag: Mobile shows desktop site zoomed out (tiny text). With viewport: Proper responsive layout.</text>
+</svg>

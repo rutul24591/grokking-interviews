@@ -1,0 +1,93 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Motion Sensor Applications</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Gaming, AR, fitness tracking, and creative interactions</text>
+  
+  <!-- Gaming -->
+  <rect x="30" y="100" width="270" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Gaming</text>
+  
+  <rect x="50" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- Racing game -->
+  <rect x="65" y="175" width="200" height="40" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="165" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Racing: Tilt to steer</text>
+  
+  <!-- Maze game -->
+  <rect x="65" y="220" width="200" height="40" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="165" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Maze: Roll ball with tilt</text>
+  
+  <text x="165" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Gamma (left-right) → steering</text>
+  <text x="165" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Beta (front-back) → accelerate</text>
+  
+  <!-- Augmented Reality -->
+  <rect x="315" y="100" width="270" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Augmented Reality</text>
+  
+  <rect x="335" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- AR viewport -->
+  <rect x="350" y="175" width="200" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Device as viewport</text>
+  
+  <!-- 3D anchoring -->
+  <rect x="350" y="220" width="200" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">3D content anchored</text>
+  
+  <text x="450" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Alpha → compass direction</text>
+  <text x="450" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Beta/Gamma → viewport angle</text>
+  
+  <!-- Fitness Tracking -->
+  <rect x="600" y="100" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="735" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Fitness Tracking</text>
+  
+  <rect x="620" y="155" width="230" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <!-- Step counting -->
+  <rect x="635" y="175" width="200" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="735" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Step counting</text>
+  
+  <!-- Rep counting -->
+  <rect x="635" y="220" width="200" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="735" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Rep counting</text>
+  
+  <text x="735" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Acceleration → steps</text>
+  <text x="735" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Orientation → exercise form</text>
+  
+  <!-- Creative Interactions -->
+  <rect x="30" y="320" width="400" height="210" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Creative Interactions</text>
+  
+  <rect x="50" y="375" width="360" height="140" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  
+  <!-- Parallax -->
+  <rect x="65" y="395" width="160" height="35" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="145" y="418" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Parallax effects</text>
+  
+  <!-- 360 content -->
+  <rect x="240" y="395" width="160" height="35" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="320" y="418" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">360° photos/videos</text>
+  
+  <!-- Interactive art -->
+  <rect x="65" y="440" width="160" height="35" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="145" y="463" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Interactive art</text>
+  
+  <!-- Music apps -->
+  <rect x="240" y="440" width="160" height="35" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="320" y="463" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Music apps (theremin)</text>
+  
+  <!-- Accessibility Note -->
+  <rect x="450" y="320" width="420" height="210" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="660" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#b91c1c">Accessibility Considerations</text>
+  
+  <rect x="465" y="375" width="390" height="140" rx="6" fill="#ffffff" stroke="#fecaca"/>
+  <text x="480" y="405" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b91c1c">Always Provide Alternatives:</text>
+  <text x="480" y="430" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">• Not all devices have sensors</text>
+  <text x="480" y="450" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">• Not all users can tilt devices</text>
+  <text x="480" y="470" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">• Motor impairments prevent tilt</text>
+  <text x="480" y="490" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">• Provide button/touch controls</text>
+  <text x="480" y="510" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">• Orientation enhances, doesn't replace</text>
+</svg>

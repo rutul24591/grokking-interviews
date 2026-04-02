@@ -1,0 +1,95 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Code Splitting Strategy</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Route-based and component-based splitting for mobile optimization</text>
+  
+  <!-- Without Code Splitting -->
+  <rect x="30" y="100" width="400" height="200" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="230" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#b91c1c">Without Code Splitting</text>
+  
+  <rect x="50" y="155" width="360" height="130" rx="6" fill="#ffffff" stroke="#fecaca"/>
+  
+  <!-- Single large bundle -->
+  <rect x="70" y="175" width="320" height="90" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="230" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#b91c1c">Single Bundle (500KB)</text>
+  <text x="230" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">All routes + all components</text>
+  
+  <text x="230" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">Mobile loads everything upfront — slow!</text>
+  
+  <!-- Arrow -->
+  <path d="M 430 200 L 480 200" stroke="#647480" stroke-width="2.5" marker-end="url(#arrow-gray)" fill="none"/>
+  <text x="455" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Optimize</text>
+  
+  <!-- With Route-Based Splitting -->
+  <rect x="480" y="100" width="390" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="675" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#15803d">With Route-Based Splitting</text>
+  
+  <rect x="500" y="155" width="350" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <!-- Common chunk -->
+  <rect x="520" y="175" width="310" height="30" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="675" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Common Chunk (50KB) - Shared code</text>
+  
+  <!-- Route chunks -->
+  <rect x="520" y="215" width="95" height="60" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="568" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">Home</text>
+  <text x="568" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">(80KB)</text>
+  
+  <rect x="625" y="215" width="95" height="60" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="673" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">Products</text>
+  <text x="673" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">(120KB)</text>
+  
+  <rect x="730" y="215" width="95" height="60" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="778" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">Checkout</text>
+  <text x="778" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">(100KB)</text>
+  
+  <text x="675" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Mobile loads only current route — faster!</text>
+  
+  <!-- Component-Based Splitting -->
+  <rect x="30" y="320" width="400" height="210" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="230" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Component-Based Splitting</text>
+  
+  <rect x="50" y="375" width="360" height="140" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  
+  <!-- Main app -->
+  <rect x="70" y="395" width="320" height="40" rx="3" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="230" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Main App (eager load)</text>
+  
+  <!-- Lazy components -->
+  <rect x="70" y="445" width="100" height="60" rx="3" fill="#f0f9ff" stroke="#0284c7" stroke-dasharray="4,4"/>
+  <text x="120" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Chart</text>
+  <text x="120" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">(Lazy)</text>
+  
+  <rect x="180" y="445" width="100" height="60" rx="3" fill="#f0f9ff" stroke="#0284c7" stroke-dasharray="4,4"/>
+  <text x="230" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Editor</text>
+  <text x="230" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">(Lazy)</text>
+  
+  <rect x="290" y="445" width="100" height="60" rx="3" fill="#f0f9ff" stroke="#0284c7" stroke-dasharray="4,4"/>
+  <text x="340" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Modal</text>
+  <text x="340" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">(Lazy)</text>
+  
+  <!-- Mobile Impact -->
+  <rect x="450" y="320" width="420" height="210" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Mobile Impact</text>
+  
+  <rect x="465" y="375" width="390" height="140" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <text x="480" y="400" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Initial Load (No Splitting):</text>
+  <text x="480" y="420" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#dc2626">500KB → ~15 seconds on 3G</text>
+  
+  <text x="480" y="450" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Initial Load (With Splitting):</text>
+  <text x="480" y="470" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">50KB common + 80KB route = 130KB</text>
+  <text x="480" y="490" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">~4 seconds on 3G (73% faster!)</text>
+  
+  <text x="480" y="515" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Other routes loaded on-demand</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

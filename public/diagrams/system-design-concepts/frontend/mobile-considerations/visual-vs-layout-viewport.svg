@@ -1,0 +1,79 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Visual vs Layout Viewport</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Visual viewport is what user sees, layout viewport is CSS coordinate system</text>
+  
+  <!-- Mobile Device with Viewports -->
+  <rect x="100" y="100" width="280" height="400" rx="20" fill="#f1f5f9" stroke="#647480" stroke-width="3"/>
+  <text x="240" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Mobile Device</text>
+  
+  <!-- Layout Viewport (larger, includes browser UI area) -->
+  <rect x="120" y="155" width="240" height="320" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="240" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">Layout Viewport</text>
+  <text x="240" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">(CSS coordinate system)</text>
+  
+  <!-- Browser UI (Address Bar) -->
+  <rect x="120" y="380" width="240" height="60" rx="4" fill="#e2e8f0" stroke="#94a3b8"/>
+  <text x="240" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Browser UI (Address Bar)</text>
+  
+  <!-- Visual Viewport (smaller, what user actually sees) -->
+  <rect x="120" y="155" width="240" height="260" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="240" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">Visual Viewport</text>
+  <text x="240" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">(What user sees)</text>
+  
+  <!-- Content Area -->
+  <rect x="140" y="200" width="200" height="150" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="240" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Page Content</text>
+  <text x="240" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">(100% of layout viewport)</text>
+  
+  <!-- Arrows and Labels -->
+  <path d="M 380 285 L 420 285" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="400" y="277" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Visible</text>
+  
+  <path d="M 380 400 L 420 400" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  <text x="400" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Hidden by</text>
+  <text x="400" y="408" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">browser UI</text>
+  
+  <!-- Key Differences Table -->
+  <rect x="450" y="100" width="420" height="200" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="660" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Key Differences</text>
+  
+  <rect x="465" y="150" width="390" height="135" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  
+  <!-- Visual Viewport row -->
+  <rect x="480" y="170" width="360" height="50" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="495" y="195" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#15803d">Visual Viewport:</text>
+  <text x="495" y="212" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">• What user actually sees</text>
+  
+  <!-- Layout Viewport row -->
+  <rect x="480" y="230" width="360" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="495" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Layout Viewport:</text>
+  <text x="495" y="272" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">• CSS coordinate system</text>
+  
+  <!-- vh unit behavior -->
+  <rect x="480" y="290" width="360" height="50" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="495" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0369a1">100vh includes:</text>
+  <text x="495" y="332" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Area behind browser UI (layout viewport)</text>
+  
+  <!-- Address Bar Behavior -->
+  <rect x="450" y="320" width="420" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Address Bar Behavior</text>
+  
+  <rect x="465" y="370" width="390" height="75" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="480" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Address bar collapses on scroll → visual viewport grows</text>
+  <text x="480" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Address bar expands on scroll up → visual viewport shrinks</text>
+  <text x="480" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Use 100dvh for dynamic viewport height</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

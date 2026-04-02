@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Mobile Performance Budget</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Set maximum sizes for each resource type, enforce in CI/CD</text>
+  
+  <!-- Budget Categories -->
+  <rect x="30" y="100" width="200" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">JavaScript</text>
+  
+  <rect x="50" y="155" width="160" height="110" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#0369a1">Budget: 170KB</text>
+  <text x="65" y="205" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">(compressed)</text>
+  <text x="65" y="230" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Mobile: 150KB</text>
+  <text x="65" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">⚠ Parse time matters!</text>
+  
+  <rect x="250" y="100" width="200" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Images</text>
+  
+  <rect x="270" y="155" width="160" height="110" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="285" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#b45309">Budget: 500KB</text>
+  <text x="285" y="205" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">per page</text>
+  <text x="285" y="230" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Mobile: 300KB</text>
+  <text x="285" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">50%+ of page weight!</text>
+  
+  <rect x="470" y="100" width="200" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="570" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">CSS</text>
+  
+  <rect x="490" y="155" width="160" height="110" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="505" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#15803d">Budget: 50KB</text>
+  <text x="505" y="205" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">(compressed)</text>
+  <text x="505" y="230" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Mobile: 40KB</text>
+  <text x="505" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Critical CSS inline</text>
+  
+  <rect x="690" y="100" width="180" height="180" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="780" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Total Page</text>
+  
+  <rect x="710" y="155" width="140" height="110" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="780" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">Budget: 1MB</text>
+  <text x="780" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Desktop</text>
+  <text x="780" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6b21a8">Mobile: 500KB</text>
+  <text x="780" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Target: &lt;3s load</text>
+  
+  <!-- CI/CD Enforcement -->
+  <rect x="30" y="300" width="840" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">CI/CD Enforcement</text>
+  
+  <rect x="50" y="350" width="800" height="60" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">1. Build step analyzes bundle sizes</text>
+  <text x="65" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">2. Compare against budget</text>
+  <text x="65" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">3. Fail build if budget exceeded</text>
+  <text x="450" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Tools: webpack-bundle-analyzer, Lighthouse CI</text>
+  
+  <!-- Impact on Load Time -->
+  <rect x="30" y="440" width="400" height="90" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="230" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Impact on 3G Network</text>
+  
+  <rect x="50" y="490" width="360" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="230" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">170KB JS = ~5 seconds on 3G (parse + execute)</text>
+  
+  <rect x="450" y="440" width="420" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="660" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#15803d">Best Practices</text>
+  
+  <rect x="465" y="490" width="390" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Set mobile budgets stricter than desktop. Review quarterly. Track trends over time.</text>
+</svg>

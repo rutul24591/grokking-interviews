@@ -1,0 +1,74 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Content Prioritization (Mobile-First)</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Mobile screen constraints force decisions: essential content first, secondary content deferred</text>
+  
+  <!-- Mobile View -->
+  <rect x="50" y="100" width="280" height="380" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="190" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Mobile (Essential Only)</text>
+  
+  <!-- Mobile content stack -->
+  <rect x="70" y="150" width="240" height="50" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="190" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Navigation (Hamburger)</text>
+  
+  <rect x="70" y="210" width="240" height="80" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="190" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Primary Content</text>
+  <text x="190" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">(Article, Product)</text>
+  
+  <rect x="70" y="300" width="240" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="190" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#166534">Primary Action (CTA)</text>
+  
+  <rect x="70" y="360" width="240" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-dasharray="4,4"/>
+  <text x="190" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Secondary (load on demand)</text>
+  
+  <text x="190" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Single column, essential content only</text>
+  
+  <!-- Arrow -->
+  <path d="M 330 290 L 380 290" stroke="#647480" stroke-width="2" marker-end="url(#arrow-gray)" fill="none"/>
+  <text x="355" y="282" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Expand</text>
+  
+  <!-- Desktop View -->
+  <rect x="380" y="100" width="480" height="380" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="620" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Desktop (Enhanced)</text>
+  
+  <!-- Desktop content grid -->
+  <rect x="400" y="150" width="440" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="620" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Full Navigation (Horizontal)</text>
+  
+  <rect x="400" y="210" width="280" height="140" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="540" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Primary Content</text>
+  
+  <rect x="690" y="210" width="150" height="140" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="765" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#166534">Sidebar</text>
+  <text x="765" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">(Related, Ads)</text>
+  
+  <rect x="400" y="360" width="280" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="540" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Primary Action (CTA)</text>
+  
+  <rect x="690" y="360" width="150" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="765" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Secondary Content</text>
+  
+  <rect x="400" y="420" width="440" height="50" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="620" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6b21a8">Footer (Full Links)</text>
+  
+  <text x="620" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Multi-column, enhanced with secondary content</text>
+  
+  <!-- Content Priority Legend -->
+  <rect x="50" y="500" width="280" height="35" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="80" y="522" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#15803d">■</text>
+  <text x="95" y="522" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560"> Essential</text>
+  <text x="160" y="522" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#166534">■</text>
+  <text x="175" y="522" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560"> Important</text>
+  <text x="240" y="522" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#647480">■</text>
+  <text x="255" y="522" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560"> Secondary</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

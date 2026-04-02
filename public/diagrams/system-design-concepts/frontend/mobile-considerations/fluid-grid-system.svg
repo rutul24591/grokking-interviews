@@ -1,0 +1,75 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Fluid Grid System</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Columns defined as percentages automatically resize with viewport</text>
+  
+  <!-- Fixed Grid (Bad) -->
+  <rect x="30" y="100" width="400" height="200" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="230" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#b91c1c">Fixed Grid (Avoid)</text>
+  
+  <rect x="50" y="155" width="360" height="130" rx="6" fill="#ffffff" stroke="#fecaca"/>
+  
+  <!-- Fixed columns -->
+  <rect x="65" y="175" width="110" height="90" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="120" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">300px</text>
+  <text x="120" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Column 1</text>
+  
+  <rect x="185" y="175" width="110" height="90" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="240" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">300px</text>
+  <text x="240" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Column 2</text>
+  
+  <rect x="305" y="175" width="110" height="90" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="360" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">300px</text>
+  <text x="360" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Column 3</text>
+  
+  <text x="230" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">Total: 900px fixed — breaks on small screens!</text>
+  
+  <!-- Fluid Grid (Good) -->
+  <rect x="470" y="100" width="400" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#15803d">Fluid Grid (Recommended)</text>
+  
+  <rect x="490" y="155" width="360" height="130" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <!-- Fluid columns on desktop -->
+  <rect x="505" y="175" width="110" height="90" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="560" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">33.33%</text>
+  <text x="560" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Column 1</text>
+  
+  <rect x="625" y="175" width="110" height="90" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="680" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">33.33%</text>
+  <text x="680" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Column 2</text>
+  
+  <rect x="745" y="175" width="110" height="90" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="800" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">33.33%</text>
+  <text x="800" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Column 3</text>
+  
+  <text x="670" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Columns scale with viewport — always fits!</text>
+  
+  <!-- Fluid Grid on Mobile -->
+  <rect x="470" y="320" width="400" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Fluid Grid on Mobile</text>
+  
+  <rect x="490" y="375" width="360" height="70" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Stacked columns -->
+  <rect x="505" y="390" width="330" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="670" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">100% — Column 1 (stacked)</text>
+  
+  <rect x="505" y="435" width="330" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="670" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">100% — Column 2 (stacked)</text>
+  
+  <text x="670" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">@media (max-width: 600px) {'{'} columns stack vertically {'}'}</text>
+  
+  <!-- CSS Code Example -->
+  <rect x="30" y="320" width="420" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="240" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">CSS Grid Example</text>
+  
+  <rect x="50" y="375" width="380" height="75" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="400" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">.grid {'{'}</text>
+  <text x="80" y="415" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">display: grid;</text>
+  <text x="80" y="430" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">grid-template-columns: repeat(3, 1fr);</text>
+  <text x="80" y="445" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#475560">{'}'}</text>
+</svg>

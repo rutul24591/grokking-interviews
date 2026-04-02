@@ -1,0 +1,102 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Responsive vs Adaptive Design</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Responsive uses same HTML with CSS adapting, adaptive uses different HTML per device</text>
+  
+  <!-- Responsive Design -->
+  <rect x="30" y="100" width="400" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="230" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Responsive Design</text>
+  
+  <rect x="50" y="155" width="360" height="150" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- Same HTML -->
+  <rect x="65" y="175" width="330" height="40" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="230" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Same HTML for all devices</text>
+  
+  <!-- CSS adapts -->
+  <path d="M 230 225 L 230 265" stroke="#0284c7" stroke-width="2" fill="none"/>
+  <text x="240" y="250" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">CSS adapts</text>
+  
+  <!-- Mobile view -->
+  <rect x="65" y="275" width="100" height="20" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="115" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Mobile</text>
+  
+  <!-- Tablet view -->
+  <rect x="180" y="275" width="100" height="20" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="230" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Tablet</text>
+  
+  <!-- Desktop view -->
+  <rect x="295" y="275" width="100" height="20" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="345" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Desktop</text>
+  
+  <text x="230" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">One codebase, maintains easily</text>
+  
+  <!-- Adaptive Design -->
+  <rect x="470" y="100" width="400" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Adaptive Design</text>
+  
+  <rect x="490" y="155" width="360" height="150" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Server detects -->
+  <rect x="505" y="175" width="330" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="670" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Server detects device</text>
+  
+  <!-- Different HTML -->
+  <path d="M 670 225 L 670 265" stroke="#f59e0b" stroke-width="2" fill="none"/>
+  <text x="680" y="250" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Different HTML</text>
+  
+  <!-- Mobile HTML -->
+  <rect x="505" y="275" width="100" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="555" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">Mobile HTML</text>
+  
+  <!-- Tablet HTML -->
+  <rect x="620" y="275" width="100" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="670" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">Tablet HTML</text>
+  
+  <!-- Desktop HTML -->
+  <rect x="735" y="275" width="100" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="785" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b45309">Desktop HTML</text>
+  
+  <text x="670" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Multiple codebases, complex</text>
+  
+  <!-- Comparison Table -->
+  <rect x="30" y="340" width="840" height="190" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Comparison</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="385" width="180" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="140" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Aspect</text>
+  <rect x="230" y="385" width="200" height="30" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="330" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">Responsive</text>
+  <rect x="430" y="385" width="200" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="530" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Adaptive</text>
+  <rect x="630" y="385" width="250" height="30" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="755" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Recommendation</text>
+  
+  <!-- Row 1: Codebases -->
+  <text x="60" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Codebases</text>
+  <text x="235" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">One (maintainable)</text>
+  <text x="435" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Multiple (complex)</text>
+  <text x="635" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Responsive for most</text>
+  
+  <!-- Row 2: Performance -->
+  <text x="60" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Performance</text>
+  <text x="235" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b">Mobile downloads desktop HTML</text>
+  <text x="435" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Optimized per device</text>
+  <text x="635" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">~ Use RESS for balance</text>
+  
+  <!-- Row 3: SEO -->
+  <text x="60" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">SEO</text>
+  <text x="235" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Single URL (good)</text>
+  <text x="435" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Multiple URLs (complex)</text>
+  <text x="635" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Responsive preferred</text>
+  
+  <!-- Row 4: Best For -->
+  <text x="60" y="525" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Best For</text>
+  <text x="235" y="525" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Most websites</text>
+  <text x="435" y="525" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Legacy mobile sites</text>
+  <text x="635" y="525" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">✓ Responsive is standard</text>
+</svg>

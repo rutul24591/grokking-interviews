@@ -1,0 +1,83 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Mobile Browser Viewport Comparison</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">iOS Safari and Android Chrome handle viewport differently</text>
+  
+  <!-- iOS Safari -->
+  <rect x="30" y="100" width="400" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="230" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">iOS Safari</text>
+  
+  <!-- iOS Address Bar Bottom (iOS 15+) -->
+  <rect x="50" y="155" width="360" height="150" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- iOS viewport with bottom address bar -->
+  <rect x="70" y="175" width="320" height="80" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="230" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Visual Viewport</text>
+  
+  <rect x="70" y="260" width="320" height="35" rx="4" fill="#e2e8f0" stroke="#94a3b8"/>
+  <text x="230" y="282" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Address Bar (Bottom, iOS 15+)</text>
+  
+  <text x="70" y="305" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">• vh includes address bar area</text>
+  <text x="70" y="322" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">• Input focus: auto-zoom if font &lt; 16px</text>
+  
+  <!-- Android Chrome -->
+  <rect x="470" y="100" width="400" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">Android Chrome</text>
+  
+  <!-- Android viewport with top address bar -->
+  <rect x="490" y="155" width="360" height="150" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <rect x="510" y="175" width="320" height="35" rx="4" fill="#e2e8f0" stroke="#94a3b8"/>
+  <text x="670" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Address Bar (Top)</text>
+  
+  <rect x="510" y="220" width="320" height="80" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="670" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Visual Viewport</text>
+  
+  <text x="510" y="305" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">• vh more reliable than iOS</text>
+  <text x="510" y="322" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">• No auto-zoom on input focus</text>
+  
+  <!-- Key Differences Table -->
+  <rect x="30" y="340" width="840" height="190" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Browser Differences</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="385" width="200" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="150" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Feature</text>
+  <rect x="250" y="385" width="200" height="30" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="350" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">iOS Safari</text>
+  <rect x="450" y="385" width="200" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="550" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Android Chrome</text>
+  <rect x="650" y="385" width="220" height="30" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="760" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Solution</text>
+  
+  <!-- Row 1: Address Bar -->
+  <text x="60" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Address Bar</text>
+  <text x="255" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Bottom (iOS 15+)</text>
+  <text x="455" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Top</text>
+  <text x="655" y="435" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Test both positions</text>
+  
+  <!-- Row 2: vh Unit -->
+  <text x="60" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">vh Unit</text>
+  <text x="255" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">Includes address bar</text>
+  <text x="455" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b">More reliable</text>
+  <text x="655" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Use 100dvh</text>
+  
+  <!-- Row 3: Input Zoom -->
+  <text x="60" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Input Focus</text>
+  <text x="255" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#dc2626">Auto-zoom if font &lt; 16px</text>
+  <text x="455" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">No auto-zoom</text>
+  <text x="655" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Use 16px minimum</text>
+  
+  <!-- Row 4: Safe Area -->
+  <text x="60" y="525" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Notch/Home</text>
+  <text x="255" y="525" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Yes (iPhone X+)</text>
+  <text x="455" y="525" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Some devices</text>
+  <text x="655" y="525" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Use env(safe-area-inset)</text>
+  
+  <!-- Solutions -->
+  <rect x="30" y="545" width="840" height="25" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Best practice: Test on both iOS Safari and Android Chrome. Use 100dvh, 16px input font, safe-area-inset for notches.</text>
+</svg>

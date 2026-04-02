@@ -1,0 +1,110 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Gesture Recognition Flow</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Raw touch coordinates tracked over time, interpreted as gestures based on movement patterns</text>
+  
+  <!-- Raw Input -->
+  <rect x="30" y="100" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Raw Touch Input</text>
+  
+  <rect x="50" y="155" width="160" height="50" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">pointerdown: (100, 200)</text>
+  <text x="65" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">pointermove: (110, 205)</text>
+  
+  <!-- Arrow -->
+  <path d="M 230 160 L 280 160" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Coordinate Tracking -->
+  <rect x="280" y="100" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="380" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Coordinate Tracking</text>
+  
+  <rect x="300" y="155" width="160" height="50" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="315" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">startX: 100, startY: 200</text>
+  <text x="315" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">currentX: 110, currentY: 205</text>
+  
+  <!-- Arrow -->
+  <path d="M 480 160 L 530 160" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Gesture Detection -->
+  <rect x="530" y="100" width="200" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="630" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Gesture Detection</text>
+  
+  <rect x="550" y="155" width="160" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="565" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">deltaX = currentX - startX</text>
+  <text x="565" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">deltaY = currentY - startY</text>
+  
+  <!-- Arrow -->
+  <path d="M 730 160 L 780 160" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  
+  <!-- Recognized Gesture -->
+  <rect x="780" y="100" width="90" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="825" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">Action</text>
+  <text x="825" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6b21a8">Swipe Right</text>
+  
+  <!-- Gesture Types -->
+  <rect x="30" y="240" width="200" height="140" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="130" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Tap</text>
+  
+  <rect x="50" y="290" width="160" height="75" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Touch down + up</text>
+  <text x="65" y="332" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Same location</text>
+  <text x="65" y="349" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• &lt; 300ms</text>
+  
+  <rect x="250" y="240" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="350" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Swipe</text>
+  
+  <rect x="270" y="290" width="160" height="75" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="285" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Horizontal movement</text>
+  <text x="285" y="332" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• |deltaX| &gt; threshold</text>
+  <text x="285" y="349" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• |deltaY| &lt; threshold</text>
+  
+  <rect x="470" y="240" width="200" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="570" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Pinch</text>
+  
+  <rect x="490" y="290" width="160" height="75" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="505" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Two touch points</text>
+  <text x="505" y="332" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Track distance change</text>
+  <text x="505" y="349" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Scale = newDist / oldDist</text>
+  
+  <rect x="690" y="240" width="180" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="780" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Rotate</text>
+  
+  <rect x="710" y="290" width="140" height="75" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="725" y="315" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Two touch points</text>
+  <text x="725" y="332" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Track angle change</text>
+  <text x="725" y="349" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Rotation = newAngle - old</text>
+  
+  <!-- Gesture Libraries -->
+  <rect x="30" y="400" width="400" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Gesture Recognition Libraries</text>
+  
+  <rect x="50" y="450" width="360" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Hammer.js, react-use-gesture, react-swipeable</text>
+  <text x="65" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Pre-built gestures, tested, maintained</text>
+  <text x="65" y="515" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Use for complex gesture needs</text>
+  
+  <!-- Performance Considerations -->
+  <rect x="450" y="400" width="420" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Performance Considerations</text>
+  
+  <rect x="465" y="450" width="390" height="70" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="480" y="475" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Use requestAnimationFrame for smooth updates</text>
+  <text x="480" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Throttle touchmove events (fire too frequently)</text>
+  <text x="480" y="515" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Use passive listeners for scroll (not gestures)</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+</svg>

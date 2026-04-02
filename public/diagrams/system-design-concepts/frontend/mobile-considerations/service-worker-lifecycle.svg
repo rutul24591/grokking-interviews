@@ -1,0 +1,104 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Service Worker Lifecycle</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Install → Activate → Fetch handling phases</text>
+  
+  <!-- Install Phase -->
+  <rect x="30" y="100" width="270" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">1. Install</text>
+  
+  <rect x="50" y="155" width="230" height="110" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="65" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Triggered on first visit</text>
+  <text x="65" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">or update available</text>
+  <text x="65" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">Actions:</text>
+  <text x="65" y="245" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">• Cache app shell</text>
+  <text x="65" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">• Cache static assets</text>
+  
+  <!-- Arrow -->
+  <path d="M 300 190 L 350 190" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Activate Phase -->
+  <rect x="350" y="100" width="270" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="485" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">2. Activate</text>
+  
+  <rect x="370" y="155" width="230" height="110" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="385" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Triggered after install</text>
+  <text x="385" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">completes</text>
+  <text x="385" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b45309">Actions:</text>
+  <text x="385" y="245" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">• Clean old caches</text>
+  <text x="385" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">• Claim clients</text>
+  
+  <!-- Arrow -->
+  <path d="M 620 190 L 670 190" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Fetch Phase -->
+  <rect x="670" y="100" width="200" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="770" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">3. Fetch</text>
+  
+  <rect x="690" y="155" width="160" height="110" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="770" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Handles all requests</text>
+  <text x="770" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Intercept &amp; respond</text>
+  <text x="770" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Strategies:</text>
+  <text x="770" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Cache-first</text>
+  <text x="770" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Network-first</text>
+  
+  <!-- Request Flow Diagram -->
+  <rect x="30" y="300" width="840" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Request Flow</text>
+  
+  <!-- Request -->
+  <rect x="50" y="350" width="100" height="60" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="100" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Request</text>
+  
+  <!-- Arrow -->
+  <path d="M 150 380 L 190 380" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Service Worker Decision -->
+  <rect x="190" y="350" width="140" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="260" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">In Cache?</text>
+  
+  <!-- Yes path -->
+  <path d="M 330 380 L 370 380" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arrow-green)" fill="none"/>
+  <text x="350" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Yes</text>
+  
+  <!-- Cache response -->
+  <rect x="370" y="350" width="100" height="60" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="420" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Cache</text>
+  
+  <!-- No path -->
+  <path d="M 260 410 L 260 450 L 420 450" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrow-red)" fill="none"/>
+  <text x="270" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">No</text>
+  
+  <!-- Network -->
+  <rect x="420" y="420" width="100" height="60" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="470" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Network</text>
+  
+  <!-- Fallback to cache -->
+  <path d="M 520 450 L 560 450" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple)" fill="none"/>
+  
+  <!-- Fallback cache -->
+  <rect x="560" y="420" width="100" height="60" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="610" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Offline</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+</svg>

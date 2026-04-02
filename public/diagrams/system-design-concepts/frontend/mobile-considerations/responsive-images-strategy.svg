@@ -1,0 +1,78 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Responsive Images Strategy</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">srcset provides multiple image files, sizes tells browser which to load</text>
+  
+  <!-- Image Sources -->
+  <rect x="30" y="100" width="280" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="170" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Image Sources</text>
+  
+  <rect x="50" y="155" width="240" height="110" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <rect x="65" y="175" width="210" height="25" rx="3" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="80" y="192" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">small.jpg (400w, 50KB)</text>
+  
+  <rect x="65" y="205" width="210" height="25" rx="3" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="80" y="222" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">medium.jpg (800w, 150KB)</text>
+  
+  <rect x="65" y="235" width="210" height="25" rx="3" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="80" y="252" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">large.jpg (1600w, 400KB)</text>
+  
+  <!-- HTML Code -->
+  <rect x="330" y="100" width="280" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="470" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#92400e">HTML srcset + sizes</text>
+  
+  <rect x="350" y="155" width="240" height="110" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="365" y="180" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">&lt;img</text>
+  <text x="365" y="195" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">  src=&quot;medium.jpg&quot;</text>
+  <text x="365" y="210" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">  srcset=&quot;small.jpg 400w,</text>
+  <text x="365" y="225" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">    medium.jpg 800w,</text>
+  <text x="365" y="240" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">    large.jpg 1600w&quot;</text>
+  <text x="365" y="255" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">  sizes=&quot;(max-width: 600px)</text>
+  <text x="365" y="270" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#b45309">    400px, 800px&quot;&gt;</text>
+  
+  <!-- Browser Selection -->
+  <rect x="630" y="100" width="240" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="750" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#166534">Browser Selection</text>
+  
+  <rect x="650" y="155" width="200" height="110" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <text x="665" y="180" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Mobile (320px viewport):</text>
+  <rect x="665" y="195" width="170" height="20" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="675" y="209" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">→ Loads small.jpg (50KB)</text>
+  
+  <text x="665" y="230" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Desktop (1200px viewport):</text>
+  <rect x="665" y="245" width="170" height="20" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="675" y="259" text-anchor="start" font-family="monospace, sans-serif" font-size="8" fill="#15803d">→ Loads large.jpg (400KB)</text>
+  
+  <!-- Pixel Density -->
+  <rect x="30" y="300" width="420" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="240" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Pixel Density ( DPR )</text>
+  
+  <rect x="50" y="355" width="380" height="75" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="65" y="380" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">1x display: 400px CSS = 400 physical pixels</text>
+  <text x="65" y="400" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">2x display (Retina): 400px CSS = 800 physical pixels</text>
+  <text x="65" y="420" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Browser selects higher resolution for sharp images on Retina</text>
+  
+  <!-- Performance Impact -->
+  <rect x="470" y="300" width="400" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="670" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Performance Impact</text>
+  
+  <rect x="485" y="355" width="370" height="75" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Without srcset -->
+  <rect x="500" y="375" width="340" height="20" rx="3" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="515" y="389" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Without srcset: Mobile loads 400KB desktop image</text>
+  
+  <!-- With srcset -->
+  <rect x="500" y="400" width="340" height="20" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="515" y="414" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">With srcset: Mobile loads 50KB optimized image (87% savings!)</text>
+  
+  <!-- Picture Element for Art Direction -->
+  <rect x="30" y="460" width="840" height="70" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Art Direction with &lt;picture&gt;: Different crops for different viewports (mobile: vertical crop, desktop: horizontal crop)</text>
+  <text x="450" y="510" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#475560">&lt;picture&gt;&lt;source media=&quot;(min-width: 800px)&quot; srcset=&quot;wide.jpg&quot;&gt;&lt;img src=&quot;tall.jpg&quot;&gt;&lt;/picture&gt;</text>
+</svg>

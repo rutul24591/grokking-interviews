@@ -1,0 +1,55 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Progressive Enhancement Layers</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Core HTML content works everywhere, CSS adds layout, JavaScript adds interactivity</text>
+  
+  <!-- Layer 1: HTML -->
+  <rect x="50" y="100" width="800" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="3"/>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Layer 1: HTML (Content)</text>
+  <text x="450" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Semantic HTML — works in all browsers, screen readers, text-only browsers</text>
+  <text x="450" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">&lt;article&gt;, &lt;nav&gt;, &lt;button&gt;, &lt;form&gt;</text>
+  
+  <!-- Arrow -->
+  <path d="M 450 200 L 450 230" stroke="#0284c7" stroke-width="3" marker-end="url(#arrow-blue)" fill="none"/>
+  
+  <!-- Layer 2: CSS -->
+  <rect x="80" y="230" width="740" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+  <text x="450" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Layer 2: CSS (Presentation)</text>
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Layout, colors, typography — enhances visual experience</text>
+  <text x="450" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Mobile-first media queries, responsive grid, touch-friendly targets</text>
+  
+  <!-- Arrow -->
+  <path d="M 450 330 L 450 360" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow-amber)" fill="none"/>
+  
+  <!-- Layer 3: JavaScript -->
+  <rect x="110" y="360" width="680" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="3"/>
+  <text x="450" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#166534">Layer 3: JavaScript (Behavior)</text>
+  <text x="450" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Interactivity, dynamic loading, animations — enhances functionality</text>
+  <text x="450" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Form validation, lazy loading, smooth transitions</text>
+  
+  <!-- Device Support -->
+  <rect x="50" y="480" width="260" height="50" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="180" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Old Browser</text>
+  <text x="180" y="525" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">HTML only — still works!</text>
+  
+  <rect x="320" y="480" width="260" height="50" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Modern Browser</text>
+  <text x="450" y="525" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">HTML + CSS + JS — full experience</text>
+  
+  <rect x="590" y="480" width="260" height="50" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="720" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Screen Reader</text>
+  <text x="720" y="525" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Semantic HTML — accessible</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>
