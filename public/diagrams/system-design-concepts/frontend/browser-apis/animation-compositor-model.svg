@@ -1,0 +1,30 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Animation Compositor Model</text>
+  <rect x="50" y="80" width="380" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Main Thread Animations</text>
+  <rect x="70" y="140" width="340" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Animate width, height, top, left</text>
+  <rect x="70" y="185" width="340" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Triggers layout recalculation</text>
+  <rect x="70" y="230" width="340" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Causes jank, poor performance</text>
+  <rect x="470" y="80" width="380" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Compositor Thread Animations</text>
+  <rect x="490" y="140" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Animate transform, opacity</text>
+  <rect x="490" y="185" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Runs on GPU, no layout</text>
+  <rect x="490" y="230" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Smooth 60fps animations</text>
+  <rect x="50" y="300" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Property Classification</text>
+  <rect x="70" y="350" width="360" height="40" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="250" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Expensive: width, height, top, left, margin</text>
+  <rect x="470" y="350" width="360" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="650" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Cheap: transform, opacity</text>
+  <rect x="50" y="410" width="800" height="110" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Best Practice</text>
+  <rect x="70" y="460" width="760" height="45" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="487" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Only animate transform and opacity | Use will-change to hint browser | Avoid animating layout properties</text>
+</svg>

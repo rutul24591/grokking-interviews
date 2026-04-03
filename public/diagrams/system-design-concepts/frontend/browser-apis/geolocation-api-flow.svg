@@ -1,0 +1,78 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Geolocation API Flow</text>
+  
+  <!-- User Device -->
+  <rect x="50" y="70" width="180" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="140" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">User Device</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Mobile/Desktop</text>
+  <text x="140" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">with GPS/WiFi</text>
+  
+  <!-- Arrow to Permission -->
+  <path d="M 230 130 L 280 130" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="255" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Request</text>
+  
+  <!-- Permission Dialog -->
+  <rect x="280" y="70" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="380" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Permission</text>
+  
+  <rect x="300" y="135" width="160" height="40" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="380" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Allow location access?</text>
+  
+  <!-- Arrow to Sources -->
+  <path d="M 480 130 L 530 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="505" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Granted</text>
+  
+  <!-- Location Sources -->
+  <rect x="530" y="70" width="200" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="630" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Location Sources</text>
+  
+  <rect x="550" y="135" width="160" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="630" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">GPS / WiFi / Cell</text>
+  
+  <!-- Arrow to Position -->
+  <path d="M 730 130 L 780 130" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <!-- Position Callback -->
+  <rect x="780" y="70" width="100" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="830" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">Position</text>
+  <text x="830" y="145" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">latitude</text>
+  <text x="830" y="160" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">longitude</text>
+  <text x="830" y="175" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">accuracy</text>
+  
+  <!-- Location Sources Detail -->
+  <rect x="50" y="210" width="400" height="170" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="250" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Location Source Accuracy</text>
+  
+  <rect x="70" y="260" width="360" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="250" y="282" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">GPS: 1-10m accuracy, slow, high power</text>
+  
+  <rect x="70" y="300" width="360" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="250" y="322" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">WiFi: 10-100m accuracy, fast, medium power</text>
+  
+  <rect x="70" y="340" width="360" height="35" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="250" y="362" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Cell: 100-1000m accuracy, fast, low power</text>
+  
+  <!-- Options -->
+  <rect x="470" y="210" width="380" height="170" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">getCurrentPosition Options</text>
+  
+  <rect x="490" y="260" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="282" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#b45309">enableHighAccuracy: false (default)</text>
+  
+  <rect x="490" y="300" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="322" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#b45309">timeout: 10000 (10 seconds)</text>
+  
+  <rect x="490" y="340" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="362" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#b45309">maximumAge: 0 (no cached)</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

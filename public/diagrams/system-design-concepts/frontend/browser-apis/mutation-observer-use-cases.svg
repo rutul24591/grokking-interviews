@@ -1,0 +1,69 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Mutation Observer Use Cases</text>
+  
+  <!-- Dynamic Content -->
+  <rect x="50" y="70" width="260" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Dynamic Content</text>
+  
+  <rect x="70" y="120" width="220" height="60" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="180" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Infinite Scroll Container</text>
+  
+  <path d="M 180 190 L 180 220" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="70" y="230" width="220" height="60" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Detect &amp; Initialize</text>
+  
+  <text x="70" y="310" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Lazy load images</text>
+  <text x="70" y="330" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Attach event listeners</text>
+  <text x="70" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Send analytics</text>
+  
+  <!-- Third-Party Widgets -->
+  <rect x="330" y="70" width="260" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Third-Party Widgets</text>
+  
+  <rect x="350" y="120" width="220" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Chat Widget Container</text>
+  
+  <path d="M 460 190 L 460 220" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="350" y="230" width="220" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Resize &amp; Apply Styles</text>
+  
+  <text x="350" y="310" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Chat, ads, social buttons</text>
+  <text x="350" y="330" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Detect when loaded</text>
+  <text x="350" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Apply parent styles</text>
+  
+  <!-- Accessibility -->
+  <rect x="610" y="70" width="240" height="220" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Accessibility</text>
+  
+  <rect x="630" y="120" width="200" height="60" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="730" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">aria-expanded="false"</text>
+  
+  <path d="M 730 190 L 730 220" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="630" y="230" width="200" height="60" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">aria-expanded="true"</text>
+  
+  <text x="630" y="310" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Monitor ARIA changes</text>
+  <text x="630" y="330" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Sync UI with state</text>
+  <text x="630" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Screen reader announcements</text>
+  
+  <!-- Best Practices -->
+  <rect x="50" y="310" width="800" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Best Practices</text>
+  
+  <rect x="70" y="360" width="760" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Observe specific targets | Filter mutations early | Disconnect on cleanup</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

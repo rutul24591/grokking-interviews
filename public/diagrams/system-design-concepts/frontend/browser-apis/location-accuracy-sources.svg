@@ -1,0 +1,95 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Location Accuracy Sources</text>
+  <text x="450" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">GPS (1-10m), WiFi (10-100m), Cell towers (100-1000m), IP (city-level)</text>
+  
+  <!-- GPS -->
+  <rect x="30" y="100" width="200" height="220" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#15803d">GPS</text>
+  
+  <rect x="50" y="155" width="160" height="150" rx="6" fill="#ffffff" stroke="#dcfce7"/>
+  
+  <!-- Satellite icon representation -->
+  <circle cx="130" cy="190" r="30" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="130" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">GPS</text>
+  
+  <text x="65" y="250" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#15803d">Accuracy: 1-10m</text>
+  <text x="65" y="270" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Most accurate</text>
+  <text x="65" y="287" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Slow (seconds-minutes)</text>
+  <text x="65" y="304" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• High battery drain</text>
+  
+  <!-- WiFi -->
+  <rect x="250" y="100" width="200" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#b45309">WiFi</text>
+  
+  <rect x="270" y="155" width="160" height="150" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- WiFi icon representation -->
+  <path d="M 320 200 Q 350 170 380 200" stroke="#f59e0b" stroke-width="3" fill="none"/>
+  <path d="M 330 210 Q 350 190 370 210" stroke="#f59e0b" stroke-width="3" fill="none"/>
+  <circle cx="350" cy="220" r="5" fill="#f59e0b"/>
+  
+  <text x="285" y="250" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b45309">Accuracy: 10-100m</text>
+  <text x="285" y="270" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Good accuracy</text>
+  <text x="285" y="287" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Fast (seconds)</text>
+  <text x="285" y="304" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Medium battery</text>
+  
+  <!-- Cell Towers -->
+  <rect x="470" y="100" width="200" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="570" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0369a1">Cell Towers</text>
+  
+  <rect x="490" y="155" width="160" height="150" rx="6" fill="#ffffff" stroke="#bae6fd"/>
+  
+  <!-- Cell tower representation -->
+  <rect x="555" y="175" width="30" height="80" rx="3" fill="#dbeafe" stroke="#0284c7"/>
+  <circle cx="570" cy="170" r="15" fill="#dbeafe" stroke="#0284c7"/>
+  
+  <text x="505" y="250" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#0369a1">Accuracy: 100-1000m</text>
+  <text x="505" y="270" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Moderate accuracy</text>
+  <text x="505" y="287" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Fast (seconds)</text>
+  <text x="505" y="304" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Low battery</text>
+  
+  <!-- IP-based -->
+  <rect x="690" y="100" width="180" height="220" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="780" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">IP Address</text>
+  
+  <rect x="710" y="155" width="140" height="150" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+  
+  <!-- IP representation -->
+  <rect x="730" y="175" width="100" height="60" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="780" y="210" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#6b21a8">192.168.1.1</text>
+  
+  <text x="725" y="250" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6b21a8">Accuracy: City-level</text>
+  <text x="725" y="270" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Least accurate</text>
+  <text x="725" y="287" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• Instant</text>
+  <text x="725" y="304" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">• No battery impact</text>
+  
+  <!-- Use Cases -->
+  <rect x="30" y="340" width="420" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="240" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">When to Use Each</text>
+  
+  <rect x="50" y="390" width="380" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="65" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475560">GPS: Navigation, fitness tracking | WiFi: Nearby businesses | Cell: Approximate location | IP: Local content fallback</text>
+  
+  <!-- Accuracy Comparison -->
+  <rect x="470" y="340" width="400" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="670" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Accuracy vs. Speed Trade-off</text>
+  
+  <rect x="485" y="390" width="370" height="40" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  
+  <!-- Accuracy scale -->
+  <line x1="500" y1="410" x2="840" y2="410" stroke="#f59e0b" stroke-width="2"/>
+  <circle cx="500" cy="410" r="5" fill="#22c55e"/>
+  <text x="500" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#15803d">Accurate</text>
+  <circle cx="840" cy="410" r="5" fill="#7c3aed"/>
+  <text x="840" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#6b21a8">Fast</text>
+  <text x="670" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">GPS = accurate but slow | IP = fast but inaccurate</text>
+  
+  <!-- Key Takeaway -->
+  <rect x="30" y="460" width="840" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">Best Practice</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Use enableHighAccuracy: false by default (WiFi/cell). Only use GPS when precise location needed (navigation, fitness).</text>
+</svg>

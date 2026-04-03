@@ -1,0 +1,66 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">DOM Mutation Types</text>
+  
+  <!-- childList -->
+  <rect x="50" y="70" width="260" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">childList</text>
+  
+  <rect x="70" y="120" width="100" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="120" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Parent</text>
+  
+  <path d="M 180 145 L 210 145" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="220" y="120" width="100" height="50" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="270" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Parent + Child</text>
+  
+  <text x="70" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Nodes added/removed</text>
+  <text x="70" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• addedNodes, removedNodes</text>
+  
+  <!-- attributes -->
+  <rect x="330" y="70" width="260" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">attributes</text>
+  
+  <rect x="350" y="120" width="100" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="400" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">class="old"</text>
+  
+  <path d="M 460 145 L 490 145" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="500" y="120" width="100" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="550" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">class="new"</text>
+  
+  <text x="350" y="200" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Attribute changed</text>
+  <text x="350" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• attributeName, oldValue</text>
+  
+  <!-- characterData -->
+  <rect x="610" y="70" width="240" height="220" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">characterData</text>
+  
+  <rect x="630" y="120" width="170" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="715" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">"Hello"</text>
+  
+  <path d="M 715 180 L 715 210" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="630" y="220" width="170" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="715" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">"Hello World"</text>
+  
+  <text x="630" y="300" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Text content changed</text>
+  <text x="630" y="320" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• target.data has new value</text>
+  
+  <!-- Options -->
+  <rect x="50" y="310" width="800" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Observer Options</text>
+  
+  <rect x="70" y="360" width="760" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="390" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#475560">observer.observe(target, { childList: true, attributes: true, characterData: true, subtree: true })</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,59 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Responsive Component Patterns</text>
+  
+  <!-- Wide Container -->
+  <rect x="50" y="70" width="380" height="280" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="240" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Wide Container (800px+)</text>
+  
+  <!-- Wide Layout -->
+  <rect x="70" y="120" width="200" height="120" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="170" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Main Content</text>
+  
+  <rect x="280" y="120" width="120" height="120" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="340" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Sidebar</text>
+  
+  <rect x="70" y="260" width="330" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="235" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Full controls visible</text>
+  
+  <!-- Arrow -->
+  <path d="M 430 210 L 480 210" stroke="#647480" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  <text x="455" y="202" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Container resizes</text>
+  
+  <!-- Narrow Container -->
+  <rect x="480" y="70" width="370" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Narrow Container (&lt;400px)</text>
+  
+  <!-- Narrow Layout -->
+  <rect x="500" y="120" width="330" height="80" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="665" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Main Content (full width)</text>
+  
+  <rect x="500" y="210" width="330" height="40" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="665" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Sidebar (stacked below)</text>
+  
+  <rect x="500" y="260" width="330" height="30" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="665" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#b91c1c">Simplified controls</text>
+  
+  <!-- CSS vs JS -->
+  <rect x="50" y="370" width="400" height="80" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="250" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">CSS Container Queries</text>
+  
+  <rect x="70" y="420" width="360" height="50" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="250" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Handles style changes based on container size</text>
+  
+  <rect x="470" y="370" width="380" height="80" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="660" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Resize Observer (JS)</text>
+  
+  <rect x="490" y="420" width="340" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Handles JavaScript logic based on container size</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

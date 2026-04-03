@@ -1,0 +1,30 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Clipboard Security Model</text>
+  <rect x="50" y="80" width="380" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Write Security</text>
+  <rect x="70" y="140" width="340" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">User gesture required (click, tap)</text>
+  <rect x="70" y="185" width="340" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Cannot write on page load</text>
+  <rect x="70" y="230" width="340" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">HTTPS required for secure context</text>
+  <rect x="470" y="80" width="380" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Read Security</text>
+  <rect x="490" y="140" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Explicit permission prompt required</text>
+  <rect x="490" y="185" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Cannot read without user consent</text>
+  <rect x="490" y="230" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">HTTPS required for secure context</text>
+  <rect x="50" y="300" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Attack Prevention</text>
+  <rect x="70" y="350" width="360" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="250" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Prevents clipboard injection attacks</text>
+  <rect x="470" y="350" width="360" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="650" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Prevents silent clipboard reading</text>
+  <rect x="50" y="420" width="800" height="100" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Security Best Practices</text>
+  <rect x="70" y="470" width="760" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Always use HTTPS | Request permission on user action | Provide fallback for denied permission | Never silently read clipboard</text>
+</svg>

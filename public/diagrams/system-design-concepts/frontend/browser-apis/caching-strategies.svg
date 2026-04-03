@@ -1,0 +1,82 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Caching Strategies</text>
+  
+  <!-- Cache-First -->
+  <rect x="50" y="70" width="260" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Cache-First</text>
+  
+  <rect x="70" y="130" width="220" height="60" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="180" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Request</text>
+  
+  <path d="M 180 200 L 180 230" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="70" y="240" width="220" height="60" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Cache → Network fallback</text>
+  
+  <text x="70" y="310" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Static assets (JS, CSS)</text>
+  <text x="70" y="330" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Images</text>
+  <text x="70" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Offline-first</text>
+  
+  <!-- Network-First -->
+  <rect x="330" y="70" width="260" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Network-First</text>
+  
+  <rect x="350" y="130" width="220" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Request</text>
+  
+  <path d="M 460 200 L 460 230" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="350" y="240" width="220" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Network → Cache fallback</text>
+  
+  <text x="350" y="310" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• API responses</text>
+  <text x="350" y="330" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Dynamic content</text>
+  <text x="350" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Fresh when online</text>
+  
+  <!-- Stale-While-Revalidate -->
+  <rect x="610" y="70" width="240" height="220" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Stale-While-Revalidate</text>
+  
+  <rect x="630" y="130" width="200" height="60" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="730" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Request</text>
+  
+  <path d="M 730 200 L 730 230" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="630" y="240" width="200" height="60" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Cache + Update background</text>
+  
+  <text x="630" y="310" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Frequently updated</text>
+  <text x="630" y="330" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• News feeds</text>
+  <text x="630" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Fast + eventually fresh</text>
+  
+  <!-- Performance Comparison -->
+  <rect x="50" y="310" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Performance Comparison</text>
+  
+  <rect x="70" y="365" width="240" height="60" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="190" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Cache-First: Fastest</text>
+  <text x="190" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Offline support</text>
+  
+  <rect x="330" y="365" width="240" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Network-First: Fresh</text>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Requires network</text>
+  
+  <rect x="590" y="365" width="240" height="60" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="710" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Stale-While-Revalidate</text>
+  <text x="710" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Best of both</text>
+  
+  <!-- Key Takeaway -->
+  <rect x="50" y="430" width="800" height="60" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="450" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">Key Takeaway: Use different strategies for different resource types based on freshness requirements</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

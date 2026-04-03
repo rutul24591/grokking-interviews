@@ -1,0 +1,81 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Web Animations API Flow</text>
+  
+  <!-- Define Keyframes -->
+  <rect x="50" y="70" width="180" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="140" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Define Keyframes</text>
+  <text x="140" y="145" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">[{ opacity: 0 },</text>
+  <text x="140" y="165" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#0369a1">{ opacity: 1 }]</text>
+  
+  <!-- Arrow to Timing -->
+  <path d="M 230 130 L 280 130" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <!-- Set Timing -->
+  <rect x="280" y="70" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="370" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Set Timing</text>
+  <text x="370" y="145" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#b45309">duration: 1000</text>
+  <text x="370" y="165" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#b45309">easing: ease-in-out</text>
+  
+  <!-- Arrow to Create -->
+  <path d="M 460 130 L 510 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <!-- Create Animation -->
+  <rect x="510" y="70" width="180" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="600" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Create Animation</text>
+  <text x="600" y="145" text-anchor="middle" font-family="monospace, sans-serif" font-size="8" fill="#15803d">element.animate()</text>
+  
+  <!-- Arrow to Control -->
+  <path d="M 690 130 L 740 130" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <!-- Control Playback -->
+  <rect x="740" y="70" width="140" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="810" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">Control</text>
+  <text x="810" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">play()</text>
+  <text x="810" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">pause()</text>
+  <text x="810" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">reverse()</text>
+  
+  <!-- Animation Control -->
+  <rect x="50" y="210" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Animation Control</text>
+  
+  <rect x="70" y="265" width="180" height="60" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="160" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">play()</text>
+  <text x="160" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Start animation</text>
+  
+  <rect x="270" y="265" width="180" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="360" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">pause()</text>
+  <text x="360" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Pause animation</text>
+  
+  <rect x="470" y="265" width="180" height="60" rx="4" fill="#dbeafe" stroke="#0284c7"/>
+  <text x="560" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">reverse()</text>
+  <text x="560" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Reverse direction</text>
+  
+  <rect x="670" y="265" width="180" height="60" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="760" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">cancel()</text>
+  <text x="760" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Stop &amp; reset</text>
+  
+  <!-- Use Cases -->
+  <rect x="50" y="330" width="400" height="100" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="250" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Use Cases</text>
+  
+  <rect x="70" y="380" width="360" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="250" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Complex animations | Programmatic control | Sync with JS</text>
+  
+  <!-- Performance -->
+  <rect x="470" y="330" width="380" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Performance</text>
+  
+  <rect x="490" y="380" width="340" height="40" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Animate transform &amp; opacity | Avoid layout properties</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

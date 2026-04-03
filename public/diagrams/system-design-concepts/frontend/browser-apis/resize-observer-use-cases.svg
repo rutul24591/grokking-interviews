@@ -1,0 +1,79 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Resize Observer Use Cases</text>
+  
+  <!-- Responsive Canvas -->
+  <rect x="50" y="70" width="260" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Responsive Canvas</text>
+  
+  <rect x="70" y="120" width="220" height="80" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="180" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#647480">Canvas Element</text>
+  
+  <path d="M 180 210 L 180 240" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="70" y="250" width="220" height="80" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Canvas Resized</text>
+  
+  <text x="70" y="320" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Match container size</text>
+  <text x="70" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Update for high-DPI</text>
+  <text x="70" y="360" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">• Chart.js, D3 charts</text>
+  
+  <!-- Container-Based Logic -->
+  <rect x="330" y="70" width="260" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Container-Based Logic</text>
+  
+  <rect x="350" y="120" width="100" height="80" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Wide: Full view</text>
+  
+  <rect x="460" y="120" width="100" height="80" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="510" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Narrow: Compact</text>
+  
+  <path d="M 460 210 L 460 240" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="350" y="250" width="220" height="80" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Behavior Changed</text>
+  
+  <text x="350" y="320" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Change behavior by size</text>
+  <text x="350" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Sidebar vs main content</text>
+  <text x="350" y="360" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">• Component libraries</text>
+  
+  <!-- Layout Calculations -->
+  <rect x="610" y="70" width="240" height="220" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Layout Calculations</text>
+  
+  <rect x="630" y="120" width="80" height="60" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="670" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Target</text>
+  
+  <rect x="730" y="120" width="100" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="780" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#15803d">Tooltip</text>
+  
+  <path d="M 710 150 L 730 150" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <text x="630" y="220" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Position tooltips</text>
+  <text x="630" y="240" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Calculate scroll progress</text>
+  <text x="630" y="260" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Dynamic positioning</text>
+  
+  <!-- Virtual Scrolling -->
+  <rect x="50" y="310" width="400" height="80" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="250" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">Virtual Scrolling</text>
+  
+  <rect x="70" y="360" width="360" height="50" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="250" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Recalculate visible items when container resizes</text>
+  
+  <!-- Best Practices -->
+  <rect x="470" y="310" width="380" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Best Practices</text>
+  
+  <rect x="490" y="360" width="340" height="50" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Don't resize observed element | Use provided size info</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

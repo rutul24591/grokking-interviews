@@ -1,0 +1,77 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Service Worker Lifecycle</text>
+  
+  <!-- Install Phase -->
+  <rect x="50" y="70" width="260" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Install</text>
+  
+  <rect x="70" y="130" width="220" height="60" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Cache static assets</text>
+  
+  <path d="M 180 200 L 180 230" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="70" y="240" width="220" height="60" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Worker installed</text>
+  
+  <!-- Arrow to Activate -->
+  <path d="M 310 270 L 360 270" stroke="#647480" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  
+  <!-- Activate Phase -->
+  <rect x="360" y="70" width="260" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="490" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Activate</text>
+  
+  <rect x="380" y="130" width="220" height="60" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="490" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Clean old caches</text>
+  
+  <path d="M 490 200 L 490 230" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="380" y="240" width="220" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="490" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Worker active</text>
+  
+  <!-- Arrow to Fetch -->
+  <path d="M 620 270 L 670 270" stroke="#647480" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  
+  <!-- Fetch Phase -->
+  <rect x="670" y="70" width="260" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="800" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Fetch</text>
+  
+  <rect x="690" y="130" width="220" height="60" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="800" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Intercept requests</text>
+  
+  <path d="M 800 200 L 800 230" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  
+  <rect x="690" y="240" width="220" height="60" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="800" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Serve from cache/network</text>
+  
+  <!-- Update Flow -->
+  <rect x="50" y="290" width="800" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Update Flow</text>
+  
+  <rect x="70" y="345" width="760" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">New Service Worker installs alongside old one | Waits until all tabs closed before activating</text>
+  
+  <!-- Caching Strategies -->
+  <rect x="50" y="430" width="400" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="250" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">Caching Strategies</text>
+  
+  <rect x="70" y="480" width="360" height="40" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="250" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Cache-first | Network-first | Stale-while-revalidate</text>
+  
+  <!-- Best Practices -->
+  <rect x="470" y="430" width="380" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Best Practices</text>
+  
+  <rect x="490" y="480" width="340" height="40" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="660" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Version caches | Clean old caches on activate</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>
