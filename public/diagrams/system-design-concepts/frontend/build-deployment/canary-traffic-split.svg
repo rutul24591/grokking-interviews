@@ -1,0 +1,37 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Canary Traffic Split</text>
+  <rect x="50" y="80" width="160" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="130" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">1% Canary</text>
+  <text x="130" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Initial test</text>
+  <rect x="50" y="170" width="160" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="130" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">5% Canary</text>
+  <text x="130" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Expanded test</text>
+  <rect x="50" y="260" width="160" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">10% Canary</text>
+  <text x="130" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Broader exposure</text>
+  <rect x="50" y="350" width="160" height="80" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="130" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">25% Canary</text>
+  <text x="130" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Significant exposure</text>
+  <rect x="230" y="80" width="160" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="310" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">50% Canary</text>
+  <text x="310" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Half traffic</text>
+  <rect x="230" y="170" width="160" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="310" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">100% Rollout</text>
+  <text x="310" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Full deployment</text>
+  <rect x="410" y="80" width="450" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="635" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Traffic Distribution</text>
+  <rect x="430" y="130" width="410" height="30" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="635" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Old Version: 99% (1% stage) → 95% (5%) → 90% (10%) → 75% (25%) → 50% (50%) → 0% (100%)</text>
+  <rect x="430" y="170" width="410" height="30" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="635" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">New Version: 1% (1% stage) → 5% (5%) → 10% (10%) → 25% (25%) → 50% (50%) → 100% (100%)</text>
+  <rect x="410" y="260" width="450" height="160" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="635" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Rollout Decision</text>
+  <rect x="430" y="310" width="410" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="635" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">If metrics healthy → proceed to next stage</text>
+  <rect x="430" y="360" width="410" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="635" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">If metrics degraded → halt and rollback</text>
+  <rect x="50" y="450" width="820" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Key Principle</text>
+  <text x="450" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Each stage runs for a defined duration to allow metrics to stabilize. Traffic increases gradually to catch issues before they affect all users.</text>
+</svg>

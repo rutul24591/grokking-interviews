@@ -1,0 +1,43 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Webpack Pipeline</text>
+  <rect x="50" y="80" width="180" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="140" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Entry Resolution</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">app.tsx, vendor.ts</text>
+  <path d="M 230 130 L 280 130" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="280" y="80" width="180" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="370" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Dependency Graph</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Resolve all imports</text>
+  <path d="M 460 130 L 510 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="510" y="80" width="180" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="600" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Loader Transform</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">TS, CSS, assets</text>
+  <path d="M 690 130 L 740 130" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="740" y="80" width="130" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="805" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">Bundling</text>
+  <text x="805" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Merge modules</text>
+  <rect x="50" y="200" width="820" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Plugin Optimization Stage</text>
+  <rect x="70" y="250" width="240" height="50" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="190" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Tree-shaking (remove dead code)</text>
+  <rect x="330" y="250" width="240" height="50" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Minification (Terser, CSS minify)</text>
+  <rect x="590" y="250" width="260" height="50" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="720" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Code splitting (chunk extraction)</text>
+  <rect x="50" y="340" width="820" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Output Generation</text>
+  <rect x="70" y="390" width="240" height="40" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="190" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">app.abc123.js (main bundle)</text>
+  <rect x="330" y="390" width="240" height="40" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">vendor.def456.js (shared libs)</text>
+  <rect x="590" y="390" width="260" height="40" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="720" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">lazy-chunk.ghi789.js (on-demand)</text>
+  <rect x="50" y="460" width="820" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Content Hashing</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Filenames change only when content changes, enabling long-term browser caching with Cache-Control: max-age=31536000</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

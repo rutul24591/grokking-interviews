@@ -1,0 +1,51 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Deployment Workflow</text>
+  <rect x="50" y="80" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="150" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">Pull Request</text>
+  <text x="150" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Developer pushes code</text>
+  <text x="150" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Creates PR for review</text>
+  <path d="M 250 140 L 300 140" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="275" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">CI triggers</text>
+  <rect x="300" y="80" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">CI Pipeline</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Build + Test + Analyze</text>
+  <text x="400" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Quality gates enforced</text>
+  <path d="M 500 140 L 550 140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="525" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">CI passes</text>
+  <rect x="550" y="80" width="160" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="630" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#166534">Merge</text>
+  <text x="630" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Code reviewed</text>
+  <text x="630" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Merged to main</text>
+  <path d="M 710 140 L 760 140" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="735" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">CD triggers</text>
+  <rect x="760" y="80" width="110" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="815" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">CD Pipeline</text>
+  <text x="815" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Deploy</text>
+  <rect x="50" y="220" width="820" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">CD Deployment Flow</text>
+  <rect x="70" y="270" width="240" height="70" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="190" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">1. Production build</text>
+  <text x="190" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">2. E2E tests on build</text>
+  <path d="M 310 305 L 360 305" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="360" y="270" width="240" height="70" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="480" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">3. Deploy to staging</text>
+  <text x="480" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">4. Manual QA review</text>
+  <path d="M 600 305 L 650 305" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="650" y="270" width="200" height="70" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="750" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">5. Deploy to production</text>
+  <text x="750" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">6. Health checks</text>
+  <rect x="50" y="380" width="820" height="140" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Deployment Strategies</text>
+  <rect x="70" y="430" width="240" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Blue-Green: Zero-downtime</text>
+  <rect x="330" y="430" width="240" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Canary: Gradual rollout</text>
+  <rect x="590" y="430" width="260" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="720" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Rolling: Incremental replacement</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,36 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Rollback Decision Tree</text>
+  <rect x="350" y="80" width="200" height="80" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Issue Detected</text>
+  <text x="450" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Metric alert or report</text>
+  <path d="M 450 160 L 450 200" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="350" y="200" width="200" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Is it deployment-related?</text>
+  <text x="450" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Yes → Rollback. No → Investigate</text>
+  <path d="M 350 240 L 200 240 L 200 320" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="260" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Yes</text>
+  <rect x="50" y="320" width="300" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="200" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Execute Rollback</text>
+  <text x="200" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Traffic switch, redeploy, or flag disable</text>
+  <text x="200" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Based on deployment strategy</text>
+  <path d="M 550 240 L 700 240 L 700 320" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="640" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">No</text>
+  <rect x="550" y="320" width="300" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="700" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Investigate Root Cause</text>
+  <text x="700" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">External service, network, config</text>
+  <text x="700" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Fix root cause, do not rollback</text>
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Rollback Method Selection</text>
+  <rect x="70" y="485" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Blue-Green: Traffic switch (instant)</text>
+  <rect x="330" y="485" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">CI/CD: Redeploy (minutes)</text>
+  <rect x="590" y="485" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Feature Flags: Disable flag (instant)</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

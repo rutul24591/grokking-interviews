@@ -1,0 +1,33 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Rollback Database Compatibility</text>
+  <rect x="50" y="80" width="380" height="180" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Expand-Contract Pattern</text>
+  <rect x="70" y="130" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Phase 1: Expand schema (add new columns, keep old)</text>
+  <rect x="70" y="165" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Phase 2: Deploy new version (uses new columns)</text>
+  <rect x="70" y="200" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Phase 3: Contract schema (remove old columns)</text>
+  <rect x="470" y="80" width="380" height="180" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Non-Compatible Schema Change</text>
+  <rect x="490" y="130" width="340" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="660" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Remove old column, add new column</text>
+  <rect x="490" y="165" width="340" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="660" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Previous version fails (column missing)</text>
+  <rect x="490" y="200" width="340" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="660" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Rollback blocked</text>
+  <rect x="50" y="280" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Rollback-Safe Schema Changes</text>
+  <rect x="70" y="330" width="240" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="190" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Add columns (never remove)</text>
+  <rect x="330" y="330" width="240" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Make columns nullable</text>
+  <rect x="590" y="330" width="240" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="710" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Keep old columns during transition</text>
+  <rect x="50" y="400" width="800" height="120" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Rollback Verification</text>
+  <rect x="70" y="450" width="760" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Before rollback: verify previous version is compatible with current schema. Test previous version against current schema in staging before production rollback.</text>
+  <text x="450" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">After rollback: verify application functions correctly, metrics return to baseline, no data loss occurred.</text>
+</svg>

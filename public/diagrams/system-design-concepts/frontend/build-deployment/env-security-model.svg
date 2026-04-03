@@ -1,0 +1,36 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Environment Variable Security Model</text>
+  <rect x="50" y="80" width="380" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#166534">Public Variables (Safe)</text>
+  <rect x="70" y="130" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">API endpoints (api.example.com)</text>
+  <rect x="70" y="175" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Analytics IDs (GA-123456)</text>
+  <rect x="70" y="220" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Feature flags (enableNewUI: true)</text>
+  <rect x="70" y="265" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="287" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Public API keys (maps, payments)</text>
+  <rect x="470" y="80" width="380" height="200" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#b91c1c">Secret Variables (Backend Only)</text>
+  <rect x="490" y="130" width="340" height="35" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="660" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Database credentials</text>
+  <rect x="490" y="175" width="340" height="35" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="660" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">OAuth client secrets</text>
+  <rect x="490" y="220" width="340" height="35" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="660" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Private API keys</text>
+  <rect x="490" y="265" width="340" height="35" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="660" y="287" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Encryption keys, passwords</text>
+  <rect x="50" y="300" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Security Controls</text>
+  <rect x="70" y="350" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Variable prefixing (VITE_)</text>
+  <rect x="330" y="350" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Code review checks</text>
+  <rect x="590" y="350" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">CI/CD secret scanning</text>
+  <rect x="50" y="420" width="800" height="110" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Rule of Thumb</text>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">If it should be secret, it should not be in the frontend. Keep it on the backend and access via authenticated API calls.</text>
+  <text x="450" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">All frontend environment variables are embedded in the bundle and visible to anyone who inspects the source.</text>
+</svg>

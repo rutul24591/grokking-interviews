@@ -1,0 +1,40 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Optimization Strategies</text>
+  <rect x="50" y="80" width="260" height="160" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Tree-Shaking</text>
+  <rect x="70" y="130" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">ES module imports only</text>
+  <rect x="70" y="175" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">sideEffects: false</text>
+  <rect x="70" y="220" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Production mode required</text>
+  <rect x="330" y="80" width="260" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Code Splitting</text>
+  <rect x="350" y="130" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Dynamic imports</text>
+  <rect x="350" y="175" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Route-based chunks</text>
+  <rect x="350" y="220" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Vendor chunk separation</text>
+  <rect x="610" y="80" width="240" height="160" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Minification</text>
+  <rect x="630" y="130" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Terser (JavaScript)</text>
+  <rect x="630" y="175" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">CSS minification</text>
+  <rect x="630" y="220" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Gzip/Brotli compression</text>
+  <rect x="50" y="260" width="800" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Caching Strategies</text>
+  <rect x="70" y="310" width="240" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Content-hashed filenames</text>
+  <rect x="330" y="310" width="240" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Long-term Cache-Control</text>
+  <rect x="590" y="310" width="240" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Incremental build caching</text>
+  <rect x="50" y="400" width="800" height="120" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Combined Impact</text>
+  <rect x="70" y="450" width="760" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Tree-shaking: 30-50% reduction | Code splitting: 50-70% initial load reduction | Minification: 50-70% size reduction | Caching: instant repeat visits</text>
+</svg>

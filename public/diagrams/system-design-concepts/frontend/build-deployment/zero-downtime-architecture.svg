@@ -1,0 +1,26 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Zero-Downtime Architecture</text>
+  <rect x="50" y="80" width="350" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="225" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Old Version (Active)</text>
+  <text x="225" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#15803d">v1.0 serving 100% traffic</text>
+  <rect x="70" y="160" width="310" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Static assets (HTML, CSS, JS v1)</text>
+  <rect x="70" y="210" width="310" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">CDN cached v1 assets</text>
+  <rect x="500" y="80" width="350" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="675" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">New Version (Deployed)</text>
+  <text x="675" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#0369a1">v2.0 deployed, tested, ready</text>
+  <rect x="520" y="160" width="310" height="40" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="675" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Static assets (HTML, CSS, JS v2)</text>
+  <rect x="520" y="210" width="310" height="40" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="675" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Health checks passed</text>
+  <rect x="300" y="300" width="300" height="80" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="450" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">Traffic Router</text>
+  <text x="450" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Currently routing to v1</text>
+  <rect x="50" y="400" width="800" height="120" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Zero-Downtime Guarantee</text>
+  <text x="450" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Both versions run simultaneously. Traffic switches only after new version is verified healthy.</text>
+  <text x="450" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">At every point during deployment, at least one healthy version serves traffic. Users never experience downtime.</text>
+  <text x="450" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Versioned asset URLs ensure old HTML gets old assets and new HTML gets new assets.</text>
+</svg>

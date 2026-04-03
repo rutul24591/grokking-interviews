@@ -1,0 +1,33 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Canary vs Blue-Green Deployment</text>
+  <rect x="50" y="80" width="380" height="220" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Canary Releases</text>
+  <rect x="70" y="130" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Gradual traffic increase (1% → 100%)</text>
+  <rect x="70" y="165" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Limited blast radius (issues affect few users)</text>
+  <rect x="70" y="200" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Metrics-driven promotion decisions</text>
+  <rect x="70" y="235" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Slower deployment (gradual stages)</text>
+  <rect x="470" y="80" width="380" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Blue-Green Deployment</text>
+  <rect x="490" y="130" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">All-at-once traffic switch</text>
+  <rect x="490" y="165" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Instant rollback (switch back instantly)</text>
+  <rect x="490" y="200" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">All users impacted if issues occur</text>
+  <rect x="490" y="235" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Simple deployment logic</text>
+  <rect x="50" y="320" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">When to Use Each</text>
+  <rect x="70" y="370" width="360" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="250" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Canary: High-risk, minimize user impact</text>
+  <rect x="470" y="370" width="360" height="40" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="650" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Blue-Green: Well-tested, instant rollback needed</text>
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Frontend Applications</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Canary is ideal for UI changes and new features (validate with real users). Blue-green is ideal for bug fixes and infrastructure updates.</text>
+</svg>

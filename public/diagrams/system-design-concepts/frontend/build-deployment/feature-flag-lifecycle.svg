@@ -1,0 +1,38 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Feature Flag Lifecycle</text>
+  <rect x="50" y="80" width="160" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">1. Create Flag</text>
+  <text x="130" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Name, description</text>
+  <text x="130" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Default state</text>
+  <path d="M 210 140 L 260 140" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="260" y="80" width="160" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="340" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">2. Configure Targeting</text>
+  <text x="340" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Percentage, segments</text>
+  <text x="340" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">A/B test variants</text>
+  <path d="M 420 140 L 470 140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="470" y="80" width="160" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="550" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#166534">3. Gradual Rollout</text>
+  <text x="550" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">1% → 5% → 10%</text>
+  <text x="550" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Monitor metrics</text>
+  <path d="M 630 140 L 680 140" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="680" y="80" width="160" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="760" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">4. Full Release</text>
+  <text x="760" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">100% users</text>
+  <text x="760" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Feature stabilized</text>
+  <rect x="50" y="220" width="800" height="100" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Kill Switch (Any Stage)</text>
+  <text x="450" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b91c1c">If issues detected → instantly disable flag → feature removed for all users</text>
+  <rect x="50" y="340" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">5. Cleanup</text>
+  <text x="450" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">After feature is stable (e.g., 2 weeks at 100%), remove flag from codebase and flag management system.</text>
+  <text x="450" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Prevents flag debt accumulation and code complexity.</text>
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Best Practice</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Schedule cleanup as part of rollout process. Use tools to identify unused flags (enabled at 100% for 30+ days).</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

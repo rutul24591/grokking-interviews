@@ -1,0 +1,40 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Feature Flag Strategies</text>
+  <rect x="50" y="80" width="260" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Percentage Rollout</text>
+  <rect x="70" y="130" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Enable for X% of users</text>
+  <rect x="70" y="175" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Gradually increase</text>
+  <rect x="70" y="220" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Sticky user assignment</text>
+  <rect x="330" y="80" width="260" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Segment Targeting</text>
+  <rect x="350" y="130" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Internal users first</text>
+  <rect x="350" y="175" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Beta testers second</text>
+  <rect x="350" y="220" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">All users last</text>
+  <rect x="610" y="80" width="240" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">A/B Testing</text>
+  <rect x="630" y="130" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Control vs treatment</text>
+  <rect x="630" y="175" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Track variant metrics</text>
+  <rect x="630" y="220" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Statistical significance</text>
+  <rect x="50" y="280" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Targeting Comparison</text>
+  <rect x="70" y="330" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Percentage: Simple, gradual</text>
+  <rect x="330" y="330" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Segment: Controlled, staged</text>
+  <rect x="590" y="330" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">A/B: Data-driven decisions</text>
+  <rect x="50" y="400" width="800" height="120" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Combining Strategies</text>
+  <text x="450" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Common pattern: Start with segment targeting (internal users) → percentage rollout (1% → 5% → 10% → 100%) → A/B test if needed.</text>
+  <text x="450" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">This combines the benefits of each strategy for safe, data-driven feature release.</text>
+</svg>

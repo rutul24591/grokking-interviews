@@ -1,0 +1,51 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Build Tool Comparison</text>
+  <rect x="50" y="80" width="260" height="260" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Webpack</text>
+  <rect x="70" y="130" width="220" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Mature ecosystem</text>
+  <rect x="70" y="175" width="220" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Module Federation</text>
+  <rect x="70" y="220" width="220" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Granular control</text>
+  <rect x="70" y="265" width="220" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="180" y="287" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Slow dev server startup</text>
+  <rect x="70" y="310" width="220" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="180" y="332" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Complex configuration</text>
+  <rect x="330" y="80" width="260" height="260" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#166534">Vite</text>
+  <rect x="350" y="130" width="220" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Instant dev server</text>
+  <rect x="350" y="175" width="220" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Instant HMR</text>
+  <rect x="350" y="220" width="220" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Zero-config presets</text>
+  <rect x="350" y="265" width="220" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="460" y="287" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Younger ecosystem</text>
+  <rect x="350" y="310" width="220" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="460" y="332" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">CommonJS edge cases</text>
+  <rect x="610" y="80" width="240" height="260" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Rollup</text>
+  <rect x="630" y="130" width="200" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Flat bundle output</text>
+  <rect x="630" y="175" width="200" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Pioneered tree-shaking</text>
+  <rect x="630" y="220" width="200" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Library-optimized</text>
+  <rect x="630" y="265" width="200" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="730" y="287" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">No dev server</text>
+  <rect x="630" y="310" width="200" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="730" y="332" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">App bundling limited</text>
+  <rect x="50" y="360" width="800" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">When to Use</text>
+  <rect x="70" y="410" width="240" height="40" rx="4" fill="#f0f9ff" stroke="#bae6fd"/>
+  <text x="190" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Webpack: Enterprise apps</text>
+  <rect x="330" y="410" width="240" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Vite: New projects, DX focus</text>
+  <rect x="590" y="410" width="240" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="710" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Rollup: Libraries, packages</text>
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Note</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Vite uses native ES modules during development and Rollup for production builds — best of both worlds</text>
+</svg>

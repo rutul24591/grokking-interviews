@@ -1,0 +1,33 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Environment Variable Lifecycle</text>
+  <rect x="50" y="80" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="150" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">1. Definition</text>
+  <rect x="70" y="140" width="160" height="40" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="150" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">.env files, CI secrets</text>
+  <path d="M 250 140 L 300 140" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="300" y="80" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">2. Build-Time Injection</text>
+  <rect x="320" y="140" width="160" height="40" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Replace refs with values</text>
+  <path d="M 500 140 L 550 140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="550" y="80" width="150" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="625" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">3. Bundle</text>
+  <rect x="570" y="140" width="110" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="625" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Hardcoded values</text>
+  <path d="M 700 140 L 750 140" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="750" y="80" width="120" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="810" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">4. Runtime</text>
+  <rect x="770" y="140" width="80" height="40" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+  <text x="810" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#6b21a8">Read from bundle</text>
+  <rect x="50" y="220" width="800" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Key Insight</text>
+  <rect x="70" y="270" width="760" height="70" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">After the build, environment variables no longer exist as variables — they are hardcoded values in the bundle.</text>
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">Changing a variable requires rebuilding and redeploying the application.</text>
+  <rect x="50" y="380" width="800" height="140" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Security Rule</text>
+  <rect x="70" y="430" width="760" height="70" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">All frontend environment variables are PUBLIC — visible to anyone who inspects the bundle source.</text>
+  <text x="450" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Never include secrets (API keys, passwords, database credentials) in frontend environment variables.</text>
+</svg>

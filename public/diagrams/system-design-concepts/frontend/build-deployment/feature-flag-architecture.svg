@@ -1,0 +1,46 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Feature Flag Architecture</text>
+  <rect x="50" y="80" width="260" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Flag Management System</text>
+  <rect x="70" y="130" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Stores flag states</text>
+  <rect x="70" y="175" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Targeting rules</text>
+  <rect x="70" y="220" width="220" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Analytics &amp; audit logs</text>
+  <path d="M 310 170 L 360 170" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="360" y="80" width="200" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Frontend SDK</text>
+  <rect x="380" y="130" width="160" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Fetches flag states</text>
+  <rect x="380" y="175" width="160" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Caches locally</text>
+  <rect x="380" y="220" width="160" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Evaluates flags</text>
+  <path d="M 560 170 L 610 170" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="610" y="80" width="240" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Feature Code</text>
+  <rect x="630" y="130" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">if (flag.enabled) runFeature()</text>
+  <rect x="630" y="175" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">else runFallback()</text>
+  <rect x="630" y="220" width="200" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Instant enable/disable</text>
+  <rect x="50" y="280" width="800" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Flag Types</text>
+  <rect x="70" y="330" width="240" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Release flags (gradual rollout)</text>
+  <rect x="330" y="330" width="240" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Experiment flags (A/B testing)</text>
+  <rect x="590" y="330" width="240" height="50" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Kill switch flags (instant disable)</text>
+  <rect x="50" y="420" width="800" height="110" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Key Benefits</text>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Decouple deployment from release | Gradual rollout with real-user validation | Instant kill switch for risk mitigation | A/B testing for data-driven decisions</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

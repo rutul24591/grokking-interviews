@@ -1,0 +1,40 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Pipeline Optimization</text>
+  <rect x="50" y="80" width="260" height="160" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Caching</text>
+  <rect x="70" y="130" width="220" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">node_modules cache</text>
+  <rect x="70" y="165" width="220" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Build tool cache</text>
+  <rect x="70" y="200" width="220" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">E2E browser cache</text>
+  <rect x="330" y="80" width="260" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Parallelization</text>
+  <rect x="350" y="130" width="220" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Unit tests in parallel</text>
+  <rect x="350" y="165" width="220" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">E2E tests sharded</text>
+  <rect x="350" y="200" width="220" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Concurrent jobs</text>
+  <rect x="610" y="80" width="240" height="160" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Incremental Builds</text>
+  <rect x="630" y="130" width="200" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Only rebuild changed</text>
+  <rect x="630" y="165" width="200" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Skip unchanged modules</text>
+  <rect x="630" y="200" width="200" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">File-level caching</text>
+  <rect x="50" y="260" width="820" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Pipeline Duration Impact</text>
+  <rect x="70" y="310" width="240" height="50" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="190" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Without optimization: 30+ min</text>
+  <rect x="330" y="310" width="240" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">With caching: 10-15 min</text>
+  <rect x="590" y="310" width="260" height="50" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="720" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Full optimization: 2-5 min</text>
+  <rect x="50" y="400" width="820" height="120" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Optimization Checklist</text>
+  <rect x="70" y="450" width="780" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Cache dependencies | Parallelize independent jobs | Run fast checks first | Use incremental builds | Monitor pipeline metrics | Fix flaky tests</text>
+</svg>

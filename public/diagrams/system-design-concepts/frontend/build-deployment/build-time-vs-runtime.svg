@@ -1,0 +1,33 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Build-time vs Runtime Configuration</text>
+  <rect x="50" y="80" width="380" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Build-Time Injection</text>
+  <rect x="70" y="130" width="340" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="240" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Zero runtime overhead</text>
+  <rect x="70" y="175" width="340" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="240" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Simple implementation</text>
+  <rect x="70" y="220" width="340" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="240" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Fast application startup</text>
+  <rect x="70" y="265" width="340" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="240" y="287" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Requires rebuild for changes</text>
+  <rect x="470" y="80" width="380" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Runtime Configuration</text>
+  <rect x="490" y="130" width="340" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="660" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Change config without rebuild</text>
+  <rect x="490" y="175" width="340" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="660" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Multi-tenant support</text>
+  <rect x="490" y="220" width="340" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="660" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Dynamic feature toggling</text>
+  <rect x="490" y="265" width="340" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="660" y="287" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Adds fetch complexity</text>
+  <rect x="50" y="320" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">When to Use Each</text>
+  <rect x="70" y="370" width="360" height="40" rx="4" fill="#f0f9ff" stroke="#bae6fd"/>
+  <text x="250" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Build-time: API URLs, analytics IDs (rarely change)</text>
+  <rect x="470" y="370" width="360" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="650" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Runtime: Multi-tenant, A/B tests (frequently change)</text>
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Hybrid Approach</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Use build-time for stable config (API endpoints) and runtime for dynamic config (feature flags, customer-specific settings)</text>
+</svg>

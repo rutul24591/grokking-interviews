@@ -1,0 +1,33 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Blue-Green Architecture</text>
+  <rect x="50" y="80" width="350" height="220" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="225" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Blue Environment</text>
+  <text x="225" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#15803d">Version 1.0 (Active)</text>
+  <rect x="70" y="155" width="310" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Static assets (HTML, CSS, JS)</text>
+  <rect x="70" y="205" width="310" height="40" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">CDN cached content</text>
+  <rect x="500" y="80" width="350" height="220" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="675" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Green Environment</text>
+  <text x="675" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#0369a1">Version 2.0 (Inactive)</text>
+  <rect x="520" y="155" width="310" height="40" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="675" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Static assets (HTML, CSS, JS)</text>
+  <rect x="520" y="205" width="310" height="40" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="675" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Deployed, tested, ready</text>
+  <rect x="300" y="320" width="300" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="450" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">Traffic Router</text>
+  <text x="450" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">DNS / Load Balancer / CDN</text>
+  <text x="450" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Currently routing to BLUE</text>
+  <path d="M 300 370 L 225 300" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <path d="M 600 370 L 675 300" stroke="#647480" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">After Switch</text>
+  <text x="450" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Traffic router switches to GREEN. Blue remains available for instant rollback. Green becomes the new active environment.</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Next deployment will deploy to Blue (now inactive), and switch back.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

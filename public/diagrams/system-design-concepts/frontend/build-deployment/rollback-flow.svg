@@ -1,0 +1,41 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Rollback Flow</text>
+  <rect x="50" y="80" width="200" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="150" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Issue Detected</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Metric alert or report</text>
+  <path d="M 250 130 L 300 130" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="300" y="80" width="200" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Trigger Evaluated</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Automated or manual</text>
+  <path d="M 500 130 L 550 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="550" y="80" width="200" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="650" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Rollback Executed</text>
+  <text x="650" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Traffic switch/redeploy</text>
+  <path d="M 750 130 L 800 130" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="800" y="80" width="80" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="840" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">Verified</text>
+  <text x="840" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Metrics normal</text>
+  <rect x="50" y="200" width="800" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Rollback Methods</text>
+  <rect x="70" y="250" width="240" height="70" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="190" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">Traffic Switch</text>
+  <text x="190" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Instant (seconds)</text>
+  <rect x="330" y="250" width="240" height="70" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">CI/CD Redeploy</text>
+  <text x="450" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Fast (minutes)</text>
+  <rect x="590" y="250" width="240" height="70" rx="4" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="710" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">Flag Disable</text>
+  <text x="710" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Instant (milliseconds)</text>
+  <rect x="50" y="360" width="800" height="80" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Post-Rollback Verification</text>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Confirm metrics return to baseline | Verify user complaints stop | Ensure no new issues introduced by rollback</text>
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Root Cause Analysis</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">After rollback, investigate root cause. Fix issue, test thoroughly, redeploy with confidence.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

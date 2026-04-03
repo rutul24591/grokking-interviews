@@ -1,0 +1,38 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Pipeline Quality Gates</text>
+  <rect x="50" y="80" width="260" height="160" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Test Coverage</text>
+  <rect x="70" y="130" width="220" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="180" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Minimum 80% coverage</text>
+  <rect x="70" y="175" width="220" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="180" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Block merge if below</text>
+  <rect x="70" y="220" width="220" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="180" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Track coverage trend</text>
+  <rect x="330" y="80" width="260" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Bundle Size</text>
+  <rect x="350" y="130" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Maximum 200KB initial</text>
+  <rect x="350" y="175" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Alert on growth</text>
+  <rect x="350" y="220" width="220" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Analyze composition</text>
+  <rect x="610" y="80" width="240" height="160" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Performance</text>
+  <rect x="630" y="130" width="200" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="730" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Lighthouse > 90</text>
+  <rect x="630" y="175" width="200" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="730" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Core Web Vitals pass</text>
+  <rect x="630" y="220" width="200" height="35" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="730" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Load time budget</text>
+  <rect x="50" y="260" width="820" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Security Gate</text>
+  <rect x="70" y="310" width="380" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="260" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Zero known vulnerabilities in dependencies</text>
+  <rect x="470" y="310" width="380" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="660" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Dependency audit (npm audit, yarn audit)</text>
+  <rect x="50" y="400" width="820" height="120" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Gate Enforcement</text>
+  <rect x="70" y="450" width="760" height="50" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b91c1c">If any quality gate fails, the pipeline stops and the merge is blocked. This ensures degraded code never reaches production.</text>
+</svg>
