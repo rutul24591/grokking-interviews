@@ -1,0 +1,7 @@
+{
+  "name": "app-like-experience-pwa-example-3",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}

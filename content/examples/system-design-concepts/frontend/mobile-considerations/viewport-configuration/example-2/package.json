@@ -1,0 +1,7 @@
+{
+  "name": "viewport-configuration-example-2",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}

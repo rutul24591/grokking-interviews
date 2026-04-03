@@ -1,0 +1,7 @@
+{
+  "name": "mobile-first-design-example-2",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}
