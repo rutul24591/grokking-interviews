@@ -1,0 +1,7 @@
+{
+  "name": "real-time-notifications-example-2",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}

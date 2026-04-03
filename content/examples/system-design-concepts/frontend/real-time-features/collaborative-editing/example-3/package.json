@@ -1,0 +1,7 @@
+{
+  "name": "collaborative-editing-example-3",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}
