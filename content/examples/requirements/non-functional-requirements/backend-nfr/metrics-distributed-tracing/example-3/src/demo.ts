@@ -1,15 +1,18 @@
-type TraceSegment = { name: string; hasSpanId: boolean; durationMs: number; sampled: boolean };
+type Span = { service: string; traceId: string | null; parentId: string | null; durationMs: number };
 
-function analyzeTrace(trace: TraceSegment[]) {
-  return trace.map((segment) => ({
-    segment: segment.name,
-    issue: !segment.hasSpanId ? 'missing-span-id' : !segment.sampled && segment.durationMs > 400 ? 'unsampled-slow-hop' : 'none',
-  }));
+function inspectSpan(span: Span) {
+  const broken = !span.traceId || (span.service !== 'gateway' && !span.parentId);
+  return {
+    service: span.service,
+    broken,
+    fix: broken ? 'restore-propagation-and-sampling-config' : 'healthy',
+  };
 }
 
-const analysis = analyzeTrace([
-  { name: 'gateway', hasSpanId: true, durationMs: 40, sampled: true },
-  { name: 'recommendations', hasSpanId: false, durationMs: 520, sampled: false },
-]);
-console.table(analysis);
-if (!analysis.some((row) => row.issue === 'missing-span-id')) throw new Error('Expected missing span issue');
+const results = [
+  { service: 'gateway', traceId: 'abc', parentId: null, durationMs: 20 },
+  { service: 'worker', traceId: 'abc', parentId: null, durationMs: 420 },
+].map(inspectSpan);
+
+console.table(results);
+if (!results[1].broken) throw new Error('Worker span without parent should be flagged');

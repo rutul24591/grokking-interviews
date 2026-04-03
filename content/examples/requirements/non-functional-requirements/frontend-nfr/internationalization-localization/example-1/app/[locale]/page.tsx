@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LocaleSchema, getMessages, t, formatCurrency, formatDateTime, plural } from "@/lib/i18n";
+import { ReviewNote } from "../../components/ReviewNote";
 
 export default async function LocaleHome({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: rawLocale } = await params;
@@ -74,7 +75,54 @@ export default async function LocaleHome({ params }: { params: Promise<{ locale:
           </li>
         </ul>
       </section>
-    </main>
+    
+      <section className="rounded-2xl border border-slate-700 bg-slate-900/50 p-5 space-y-5">
+        <div>
+          <h2 className="text-lg font-semibold text-white">Decision rubric</h2>
+          <p className="mt-1 text-sm text-slate-400">
+            Use this rubric to judge whether internationalization localization is ready for production review. The point is not simply to see a
+            successful response, but to confirm the example explains the operational tradeoffs that senior engineers
+            would debate during design review, rollout approval, or incident response.
+          </p>
+          <p className="mt-3 text-sm text-slate-400">
+            A strong non-functional example should make the protection boundary, the degraded path, and the operator's
+            next safe action obvious. If those three things are hidden, the workflow is still too shallow.
+          </p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          <ReviewNote
+            title="Primary signal"
+            detail="For internationalization localization, verify that the UI exposes the one or two signals an operator would trust first when deciding whether the system is healthy."
+          />
+          <ReviewNote
+            title="Safe fallback"
+            detail="For internationalization localization, validate that the fallback path is explicit, bounded, and consistent with the business priority rather than an accidental side effect."
+          />
+          <ReviewNote
+            title="Review evidence"
+            detail="For internationalization localization, confirm that the output is detailed enough for another engineer to audit the behavior without re-running the scenario from scratch."
+          />
+        </div>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-xl border border-slate-800 bg-black/30 p-4 text-sm text-slate-300">
+            <div className="font-semibold text-white">Questions to ask in review</div>
+            <ul className="mt-3 space-y-2 text-slate-400">
+              <li>• What fails first when demand, latency, or invalid input spikes?</li>
+              <li>• Which state transitions are safe to retry and which require human intervention?</li>
+              <li>• How does the operator know the fallback reduced risk instead of hiding it?</li>
+            </ul>
+          </div>
+          <div className="rounded-xl border border-slate-800 bg-black/30 p-4 text-sm text-slate-300">
+            <div className="font-semibold text-white">Why this matters for Internationalization Localization</div>
+            <p className="mt-3">
+              These checks push the example beyond a static demo. They turn it into a review artifact that teaches the
+              production contract, the recovery posture, and the evidence needed to defend the design under scrutiny.
+            </p>
+          </div>
+        </div>
+      </section>
+
+</main>
   );
 }
 

@@ -1,14 +1,18 @@
-type Cfg = { apiBaseUrl: string; logLevel: "info" | "debug" | "warn" };
+type Deployment = { commit: string; previewHealthy: boolean; assetMismatch: boolean; rollbackReady: boolean };
 
-function merge(defaults: Cfg, env: Partial<Cfg>, remote: Partial<Cfg>) {
-  // Precedence: defaults < env < remote (can be reversed depending on org policy)
-  return { ...defaults, ...env, ...remote };
+function decidePromotion(input: Deployment) {
+  const promotable = input.previewHealthy && !input.assetMismatch && input.rollbackReady;
+  return {
+    commit: input.commit,
+    promotable,
+    action: promotable ? 'promote-to-production' : 'hold-and-investigate',
+  };
 }
 
-const defaults: Cfg = { apiBaseUrl: "https://api.example.com", logLevel: "info" };
-const env = { logLevel: "debug" as const };
-const remote = { apiBaseUrl: "https://api-canary.example.com" };
+const results = [
+  { commit: 'abc123', previewHealthy: true, assetMismatch: false, rollbackReady: true },
+  { commit: 'def456', previewHealthy: true, assetMismatch: true, rollbackReady: true },
+].map(decidePromotion);
 
-console.log(JSON.stringify({ merged: merge(defaults, env, remote) }, null, 2));
-console.log(JSON.stringify({ ok: true }, null, 2));
-
+console.table(results);
+if (results[1].action !== 'hold-and-investigate') throw new Error('Asset mismatch should block promotion');

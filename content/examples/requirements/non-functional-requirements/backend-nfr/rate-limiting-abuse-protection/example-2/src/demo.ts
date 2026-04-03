@@ -1,19 +1,17 @@
-class FixedWindow {
-  private windowStartMs = Date.now();
-  private count = 0;
-  constructor(private readonly limit: number, private readonly windowMs: number) {}
+type Client = { name: string; rpm: number; authenticated: boolean; trustScore: number };
 
-  allow() {
-    const now = Date.now();
-    if (now - this.windowStartMs >= this.windowMs) {
-      this.windowStartMs = now;
-      this.count = 0;
-    }
-    this.count++;
-    return { allowed: this.count <= this.limit, count: this.count };
-  }
+function chooseRateBucket(client: Client) {
+  return {
+    client: client.name,
+    bucket: client.authenticated && client.trustScore > 80 ? 'premium' : client.rpm > 120 ? 'abuse-watch' : 'standard',
+    action: client.rpm > 120 ? 'tighten-threshold-and-challenge' : 'allow',
+  };
 }
 
-const w = new FixedWindow(3, 1000);
-console.log([w.allow(), w.allow(), w.allow(), w.allow()]);
+const results = [
+  { name: 'trusted-mobile', rpm: 40, authenticated: true, trustScore: 92 },
+  { name: 'anonymous-burst', rpm: 180, authenticated: false, trustScore: 12 },
+].map(chooseRateBucket);
 
+console.table(results);
+if (results[1].bucket !== 'abuse-watch') throw new Error('Burst traffic should go to abuse watch');

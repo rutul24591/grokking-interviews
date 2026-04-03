@@ -1,16 +1,18 @@
-function recommendInstances(params: { rps: number; perInstanceRps: number; targetUtil: number; headroom: number }) {
-  const effectivePerInstance = params.perInstanceRps * params.targetUtil;
-  const raw = params.rps / effectivePerInstance;
-  return Math.ceil(raw * (1 + params.headroom));
+type ResizePlan = { currentShards: number; projectedKeys: number; rebalancePct: number };
+
+function assessResize(plan: ResizePlan) {
+  const needResize = plan.projectedKeys / plan.currentShards > 250_000;
+  return {
+    ...plan,
+    needResize,
+    action: needResize && plan.rebalancePct < 0.2 ? 'increase-shards-now' : needResize ? 'stage-dual-write-migration' : 'hold-capacity',
+  };
 }
 
-console.log(
-  JSON.stringify(
-    {
-      instances: recommendInstances({ rps: 20_000, perInstanceRps: 1500, targetUtil: 0.6, headroom: 0.2 })
-    },
-    null,
-    2
-  )
-);
+const results = [
+  { currentShards: 4, projectedKeys: 1_200_000, rebalancePct: 0.18 },
+  { currentShards: 8, projectedKeys: 900_000, rebalancePct: 0.28 },
+].map(assessResize);
 
+console.table(results);
+if (results[0].action !== 'increase-shards-now') throw new Error('Four-shard cluster should scale immediately');

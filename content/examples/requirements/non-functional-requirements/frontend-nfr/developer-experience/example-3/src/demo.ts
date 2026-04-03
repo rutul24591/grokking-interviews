@@ -1,15 +1,18 @@
-function redact(message: string) {
-  return message.replaceAll(/(token|apikey|password)=([^\\s]+)/gi, "$1=REDACTED");
+type ValidationRun = { environment: 'dev' | 'prod'; warnings: number; errors: number; requestIdPresent: boolean };
+
+function assessDeveloperFeedback(run: ValidationRun) {
+  const actionable = run.requestIdPresent && (run.warnings + run.errors) > 0;
+  return {
+    env: run.environment,
+    actionable,
+    releaseGate: run.errors > 0 && run.environment === 'prod' ? 'block-deploy' : 'allow-with-feedback',
+  };
 }
 
-function handleError(err: unknown, requestId: string) {
-  const msg = err instanceof Error ? err.message : String(err);
-  const safe = redact(msg);
-  return { error: "internal", requestId, safeMessage: safe };
-}
+const results = [
+  { environment: 'dev', warnings: 2, errors: 0, requestIdPresent: true },
+  { environment: 'prod', warnings: 1, errors: 2, requestIdPresent: true },
+].map(assessDeveloperFeedback);
 
-const requestId = "req_" + Math.random().toString(16).slice(2);
-const out = handleError(new Error("upstream failed token=abc123"), requestId);
-console.log(JSON.stringify(out, null, 2));
-console.log(JSON.stringify({ ok: true }, null, 2));
-
+console.table(results);
+if (results[1].releaseGate !== 'block-deploy') throw new Error('Prod config errors should block deploy');

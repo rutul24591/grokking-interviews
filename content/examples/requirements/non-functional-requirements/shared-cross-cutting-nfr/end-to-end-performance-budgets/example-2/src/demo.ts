@@ -1,15 +1,18 @@
-type RouteBudget = { route: string; businessCritical: boolean; renderMs: number; backendMs: number; bytesKb: number };
+type Route = { path: string; lcpMs: number; ttfbMs: number; jsKb: number };
 
-function assessBudget(route: RouteBudget) {
-  const total = route.renderMs + route.backendMs;
-  const withinBudget = total <= (route.businessCritical ? 700 : 1200) && route.bytesKb <= (route.businessCritical ? 200 : 320);
-  return { route: route.route, total, withinBudget, action: withinBudget ? 'ship' : 'trim-or-defer' };
+function evaluateRoute(route: Route) {
+  const failed = route.lcpMs > 2500 || route.ttfbMs > 500 || route.jsKb > 220;
+  return {
+    path: route.path,
+    failed,
+    action: failed ? 'optimize-before-release' : 'ship',
+  };
 }
 
 const results = [
-  { route: '/pricing', businessCritical: false, renderMs: 380, backendMs: 420, bytesKb: 210 },
-  { route: '/checkout', businessCritical: true, renderMs: 410, backendMs: 390, bytesKb: 240 },
-].map(assessBudget);
+  { path: '/home', lcpMs: 1800, ttfbMs: 220, jsKb: 180 },
+  { path: '/checkout', lcpMs: 2800, ttfbMs: 540, jsKb: 260 },
+].map(evaluateRoute);
 
 console.table(results);
-if (results[1].action !== 'trim-or-defer') throw new Error('Checkout budget should fail on oversized payload');
+if (results[1].action !== 'optimize-before-release') throw new Error('Checkout should fail budget gate');

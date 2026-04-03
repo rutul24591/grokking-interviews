@@ -1,16 +1,18 @@
-type Field = { name: string; required: boolean };
+type Change = { field: string; change: 'add_optional' | 'remove' | 'type_change'; required: boolean };
 
-function backwardCompatible(prev: Field[], next: Field[]) {
-  const p = new Map(prev.map((f) => [f.name, f]));
-  const n = new Map(next.map((f) => [f.name, f]));
-  for (const name of p.keys()) if (!n.has(name)) return { ok: false, reason: `removed ${name}` };
-  for (const [name, pf] of p.entries()) {
-    const nf = n.get(name)!;
-    if (!pf.required && nf.required) return { ok: false, reason: `optional->required ${name}` };
-  }
-  for (const [name, nf] of n.entries()) if (!p.has(name) && nf.required) return { ok: false, reason: `added required ${name}` };
-  return { ok: true };
+function assessCompatibility(change: Change) {
+  const compatible = change.change === 'add_optional';
+  return {
+    field: change.field,
+    compatible,
+    action: compatible ? 'allow-new-version' : 'require-new-major-or-migration-plan',
+  };
 }
 
-console.log(backwardCompatible([{ name: "id", required: true }], [{ name: "id", required: true }, { name: "x", required: false }]));
+const results = [
+  { field: 'discountCode', change: 'add_optional', required: false },
+  { field: 'status', change: 'type_change', required: true },
+].map(assessCompatibility);
 
+console.table(results);
+if (results[1].action !== 'require-new-major-or-migration-plan') throw new Error('Type changes must be gated');

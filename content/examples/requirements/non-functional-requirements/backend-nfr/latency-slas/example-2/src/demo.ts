@@ -1,14 +1,20 @@
-function percentile(values: number[], p: number) {
-  const sorted = [...values].sort((a, b) => a - b);
-  const idx = Math.ceil((p / 100) * sorted.length) - 1;
-  return sorted[Math.max(0, Math.min(sorted.length - 1, idx))]!;
+type Dependency = { name: string; estimatedMs: number; optional: boolean; remainingBudgetMs: number };
+
+function decideDependencyBudget(dep: Dependency) {
+  const affordable = dep.remainingBudgetMs >= dep.estimatedMs;
+  return {
+    dependency: dep.name,
+    affordable,
+    decision: affordable ? 'execute' : dep.optional ? 'skip-and-serve-degraded' : 'fail-fast',
+  };
 }
 
-const latenciesMs = [80, 90, 95, 100, 105, 110, 115, 140, 220, 260, 420];
-const targetP95 = 250;
+const decisions = [
+  { name: 'cache', estimatedMs: 20, optional: true, remainingBudgetMs: 40 },
+  { name: 'recommendations', estimatedMs: 120, optional: true, remainingBudgetMs: 35 },
+  { name: 'auth', estimatedMs: 45, optional: false, remainingBudgetMs: 30 },
+].map(decideDependencyBudget);
 
-const p95 = percentile(latenciesMs, 95);
-const p99 = percentile(latenciesMs, 99);
-
-console.log(JSON.stringify({ p95, p99, targetP95, within: p95 <= targetP95 }, null, 2));
-
+console.table(decisions);
+if (decisions[1].decision !== 'skip-and-serve-degraded') throw new Error('Optional recommendations should be skipped');
+if (decisions[2].decision !== 'fail-fast') throw new Error('Required auth should fail fast');

@@ -1,16 +1,18 @@
-type OutboxEvent = { id: string; type: string; payload: unknown };
+type ChargeAttempt = { idempotencyKey: string; bodyHashMatches: boolean; replayWindowMinutes: number };
 
-class Publisher {
-  private published = new Set<string>();
-  publish(e: OutboxEvent) {
-    if (this.published.has(e.id)) return { published: false };
-    this.published.add(e.id);
-    return { published: true };
-  }
+function classifyReplay(attempt: ChargeAttempt) {
+  const conflict = !attempt.bodyHashMatches;
+  return {
+    key: attempt.idempotencyKey,
+    conflict,
+    action: conflict ? 'reject-key-reuse-with-different-body' : attempt.replayWindowMinutes > 10 ? 'expire-and-reissue-key' : 'return-original-response',
+  };
 }
 
-const publisher = new Publisher();
-const event: OutboxEvent = { id: "evt-1", type: "charge.created", payload: { chargeId: "ch_1" } };
+const results = [
+  { idempotencyKey: 'k-1', bodyHashMatches: true, replayWindowMinutes: 3 },
+  { idempotencyKey: 'k-1', bodyHashMatches: false, replayWindowMinutes: 3 },
+].map(classifyReplay);
 
-console.log(JSON.stringify({ first: publisher.publish(event), retry: publisher.publish(event) }, null, 2));
-
+console.table(results);
+if (results[1].action !== 'reject-key-reuse-with-different-body') throw new Error('Body mismatch should be rejected');

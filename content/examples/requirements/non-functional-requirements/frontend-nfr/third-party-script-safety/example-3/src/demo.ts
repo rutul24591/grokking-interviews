@@ -1,16 +1,18 @@
-function csp(directives: Record<string, string[]>) {
-  return Object.entries(directives)
-    .map(([k, v]) => `${k} ${v.join(" ")}`)
-    .join("; ");
+type ScriptIncident = { name: string; integrityMissing: boolean; longTaskMs: number; consentGranted: boolean };
+
+function classifyThirdPartyRisk(input: ScriptIncident) {
+  const risky = input.integrityMissing || input.longTaskMs > 200 || !input.consentGranted;
+  return {
+    script: input.name,
+    risky,
+    action: risky ? 'quarantine-or-lazy-load' : 'allow-standard-load',
+  };
 }
 
-const header = csp({
-  "default-src": ["'self'"],
-  "script-src": ["'self'"],
-  "object-src": ["'none'"],
-  "base-uri": ["'none'"],
-  "frame-ancestors": ["'none'"]
-});
+const results = [
+  { name: 'analytics', integrityMissing: false, longTaskMs: 90, consentGranted: true },
+  { name: 'ad-network', integrityMissing: true, longTaskMs: 260, consentGranted: false },
+].map(classifyThirdPartyRisk);
 
-console.log(JSON.stringify({ header }, null, 2));
-
+console.table(results);
+if (results[1].action !== 'quarantine-or-lazy-load') throw new Error('Risky script should be quarantined');

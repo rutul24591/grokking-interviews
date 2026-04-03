@@ -1,14 +1,17 @@
-type Issue = { path: string; message: string };
+type ConfigError = { key: string; kind: 'missing' | 'format' | 'secret-exposed'; blocking: boolean };
 
-function formatIssues(issues: Issue[]) {
-  return issues.map((i) => `- ${i.path}: ${i.message}`).join("\n");
+function formatAction(item: ConfigError) {
+  return {
+    key: item.key,
+    severity: item.blocking ? 'error' : 'warn',
+    action: item.kind === 'secret-exposed' ? 'redact-before-logging' : item.kind === 'missing' ? 'add-required-config' : 'fix-invalid-format',
+  };
 }
 
-const issues: Issue[] = [
-  { path: "publicBaseUrl", message: "Invalid url" },
-  { path: "apiKey", message: "String must contain at least 10 character(s)" },
-];
+const results = [
+  { key: 'API_KEY', kind: 'secret-exposed', blocking: true },
+  { key: 'PUBLIC_BASE_URL', kind: 'format', blocking: true },
+].map(formatAction);
 
-console.log(formatIssues(issues));
-console.log(JSON.stringify({ ok: true }, null, 2));
-
+console.table(results);
+if (results[0].action !== 'redact-before-logging') throw new Error('Secrets must be redacted');

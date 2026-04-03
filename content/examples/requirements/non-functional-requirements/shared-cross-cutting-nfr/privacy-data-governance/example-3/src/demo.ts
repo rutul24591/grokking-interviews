@@ -1,13 +1,18 @@
-type Item = { id: string; createdAt: number; legalHold: boolean };
+type Request = { type: 'delete' | 'export'; identityVerified: boolean; legalHold: boolean; datasetCount: number };
 
-const now = Date.now();
-const items: Item[] = [
-  { id: "a", createdAt: now - 40 * 24 * 3600 * 1000, legalHold: false },
-  { id: "b", createdAt: now - 40 * 24 * 3600 * 1000, legalHold: true },
-  { id: "c", createdAt: now - 5 * 24 * 3600 * 1000, legalHold: false },
-];
+function decideRequestHandling(request: Request) {
+  const blocked = !request.identityVerified || (request.type === 'delete' && request.legalHold);
+  return {
+    type: request.type,
+    blocked,
+    action: blocked ? 'hold-and-manual-review' : request.datasetCount > 20 ? 'queue-batched-fulfillment' : 'fulfill-directly',
+  };
+}
 
-const retentionDays = 30;
-const kept = items.filter((i) => i.legalHold || now - i.createdAt <= retentionDays * 24 * 3600 * 1000);
-console.log({ kept: kept.map((k) => k.id) });
+const results = [
+  { type: 'export', identityVerified: true, legalHold: false, datasetCount: 8 },
+  { type: 'delete', identityVerified: true, legalHold: true, datasetCount: 12 },
+].map(decideRequestHandling);
 
+console.table(results);
+if (results[1].action !== 'hold-and-manual-review') throw new Error('Delete under legal hold should be reviewed');

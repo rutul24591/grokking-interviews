@@ -1,14 +1,17 @@
-type Decision = { active: boolean; exp: number; revokedAt?: number };
+type IntrospectionCache = { token: string; revoked: boolean; cachedAllow: boolean; ttlSec: number };
 
-function shouldCache(decision: Decision) {
-  // Example policy: cache only active decisions and never beyond min(5s, time-to-expiry).
-  if (!decision.active) return { ttlMs: 0, reason: "do_not_cache_denies" };
-  const timeToExpiry = Math.max(0, decision.exp - Date.now());
-  return { ttlMs: Math.min(5000, timeToExpiry), reason: "bounded_by_expiry" };
+function detectStaleAuthDecision(entry: IntrospectionCache) {
+  return {
+    token: entry.token,
+    staleAllow: entry.revoked && entry.cachedAllow && entry.ttlSec > 0,
+    mitigation: entry.revoked ? 'purge-cache-and-recheck' : 'keep-cached-decision',
+  };
 }
 
-const active = { active: true, exp: Date.now() + 12_000 };
-const revoked = { active: false, exp: Date.now() + 12_000, revokedAt: Date.now() };
+const results = [
+  { token: 'tok-a', revoked: false, cachedAllow: true, ttlSec: 30 },
+  { token: 'tok-b', revoked: true, cachedAllow: true, ttlSec: 120 },
+].map(detectStaleAuthDecision);
 
-console.log(JSON.stringify({ active: shouldCache(active), revoked: shouldCache(revoked) }, null, 2));
-
+console.table(results);
+if (!results[1].staleAllow) throw new Error('Revoked token should be treated as stale allow');

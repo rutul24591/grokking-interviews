@@ -1,15 +1,18 @@
-const deps = [
-  { name: "next", version: "16.1.6", purl: "pkg:npm/next@16.1.6" },
-  { name: "react", version: "19.2.3", purl: "pkg:npm/react@19.2.3" },
-];
+type Failure = { dependency: string; criticalPath: boolean; fallbackAvailable: boolean; vendorOutage: boolean };
 
-const sbom = {
-  bomFormat: "CycloneDX",
-  specVersion: "1.5",
-  version: 1,
-  metadata: { timestamp: new Date().toISOString(), component: { name: "demo-app", version: "0.1.0" } },
-  components: deps.map((d) => ({ type: "library", name: d.name, version: d.version, purl: d.purl })),
-};
+function chooseDependencyMitigation(input: Failure) {
+  return {
+    dependency: input.dependency,
+    mitigation: input.vendorOutage && input.criticalPath && !input.fallbackAvailable ? 'enter-degraded-mode-and-page-owner' : input.vendorOutage ? 'switch-to-fallback' : 'keep-current-provider',
+  };
+}
 
-console.log(JSON.stringify(sbom, null, 2));
+const results = [
+  { dependency: 'search-api', criticalPath: false, fallbackAvailable: true, vendorOutage: true },
+  { dependency: 'payments-gateway', criticalPath: true, fallbackAvailable: false, vendorOutage: true },
+].map(chooseDependencyMitigation);
 
+console.table(results);
+if (results[1].mitigation !== 'enter-degraded-mode-and-page-owner') throw new Error('Critical vendor outage should trigger degraded mode');
+
+console.log(JSON.stringify({ ok: true }, null, 2));

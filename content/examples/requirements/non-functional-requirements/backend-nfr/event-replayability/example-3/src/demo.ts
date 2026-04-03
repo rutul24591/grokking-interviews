@@ -1,16 +1,18 @@
-type Update = { key: string; value: string; offset: number };
+type ReplayCase = { consumer: string; replayFrom: number; latestOffset: number; sideEffecting: boolean };
 
-function compact(updates: Update[]) {
-  const latest = new Map<string, Update>();
-  for (const u of updates) latest.set(u.key, u);
-  return [...latest.values()].sort((a, b) => a.key.localeCompare(b.key));
+function assessReplayGuard(caseInfo: ReplayCase) {
+  const fullReplay = caseInfo.replayFrom === 0;
+  return {
+    consumer: caseInfo.consumer,
+    fullReplay,
+    mitigation: fullReplay && caseInfo.sideEffecting ? 'disable-side-effects-and-rebuild-projection' : 'safe-to-replay',
+  };
 }
 
-const updates: Update[] = [
-  { key: "a", value: "1", offset: 1 },
-  { key: "b", value: "1", offset: 2 },
-  { key: "a", value: "2", offset: 3 }
-];
+const results = [
+  { consumer: 'analytics', replayFrom: 0, latestOffset: 1200, sideEffecting: false },
+  { consumer: 'billing-webhook', replayFrom: 0, latestOffset: 1200, sideEffecting: true },
+].map(assessReplayGuard);
 
-console.log(JSON.stringify({ compacted: compact(updates) }, null, 2));
-
+console.table(results);
+if (results[1].mitigation !== 'disable-side-effects-and-rebuild-projection') throw new Error('Billing replay should disable side effects');

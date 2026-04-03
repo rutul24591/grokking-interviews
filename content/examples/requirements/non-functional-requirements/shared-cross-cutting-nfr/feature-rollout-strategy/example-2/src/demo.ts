@@ -1,15 +1,18 @@
-import { createHash } from "node:crypto";
+type Rollout = { cohortPct: number; errorsPerMinute: number; conversionDropPct: number };
 
-function bucket01(userId: string, salt: string) {
-  const h = createHash("sha256").update(`${salt}:${userId}`).digest();
-  return h.readUInt32BE(0) / 0xffffffff;
+function assessRollout(rollout: Rollout) {
+  const rollback = rollout.errorsPerMinute > 20 || rollout.conversionDropPct > 5;
+  return {
+    cohortPct: rollout.cohortPct,
+    rollback,
+    action: rollback ? 'freeze-and-rollback' : 'continue-ramp',
+  };
 }
 
-function eligible(userId: string, salt: string, pct: number) {
-  return bucket01(userId, salt) < pct / 100;
-}
+const results = [
+  { cohortPct: 10, errorsPerMinute: 2, conversionDropPct: 0.8 },
+  { cohortPct: 50, errorsPerMinute: 28, conversionDropPct: 6.4 },
+].map(assessRollout);
 
-for (const pct of [1, 10, 50]) {
-  console.log({ pct, user1: eligible("user-1", "v1", pct), user2: eligible("user-2", "v1", pct) });
-}
-
+console.table(results);
+if (results[1].action !== 'freeze-and-rollback') throw new Error('Bad rollout should be rolled back');

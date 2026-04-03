@@ -1,87 +1,127 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-async function json<T>(input: RequestInfo | URL, init?: RequestInit): Promise<{ status: number; body: T }> {
-  const res = await fetch(input, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
+import { SignalCard } from "../components/SignalCard";
+
+const presets = {
+  broken: { env: "dev", publicBaseUrl: "not-a-url", apiKey: "dev_only_change_me_12345", rumSampleRate: 1.5 },
+  fixed: { env: "prod", publicBaseUrl: "https://viewer.example.com", apiKey: "prod_redacted_secret", rumSampleRate: 0.1 },
+};
+
+async function validate(config: unknown) {
+  const res = await fetch("/api/validate", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ config }),
   });
-  const text = await res.text();
-  const body = text ? (JSON.parse(text) as T) : (undefined as T);
+  const body = await res.json();
   return { status: res.status, body };
 }
 
-export default function Page() {
-  const [configText, setConfigText] = useState(
-    JSON.stringify(
-      { env: "dev", publicBaseUrl: "http://localhost:3000", apiKey: "dev_only_change_me_12345", rumSampleRate: 0.1 },
-      null,
-      2,
-    ),
-  );
-  const [out, setOut] = useState<any>(null);
-  const [error, setError] = useState("");
+const reviewPrompts = [
+  "Does the validator show precise, actionable errors instead of generic build failures?",
+  "Are secrets redacted from logs and error output before they reach a shared channel?",
+  "Can a developer compare a bad preset with a production-safe preset without leaving the page?",
+];
 
-  async function run() {
+export default function Page() {
+  const [configText, setConfigText] = useState(JSON.stringify(presets.broken, null, 2));
+  const [history, setHistory] = useState<any[]>([]);
+  const [error, setError] = useState("");
+  const latest = useMemo(() => history[0] ?? null, [history]);
+  const summary = useMemo(
+    () => [
+      {
+        label: "Latest status",
+        value: latest ? String(latest.status) : "Not run",
+        hint: "Developer-experience tooling should shorten diagnosis time, not add another opaque layer.",
+      },
+      {
+        label: "Captured runs",
+        value: String(history.length),
+        hint: "Keeping the latest runs visible makes regressions and recovery behavior easier to compare.",
+      },
+      {
+        label: "Selected preset",
+        value: configText.includes("not-a-url") ? "Broken" : "Production-safe",
+        hint: "Switching between presets should immediately demonstrate what changed and why it matters.",
+      },
+    ],
+    [configText, history.length, latest],
+  );
+
+  async function run(label = "Manual validation") {
     setError("");
     try {
-      const cfg = JSON.parse(configText) as Record<string, unknown>;
-      const r = await json("/api/validate", { method: "POST", body: JSON.stringify({ config: cfg }) });
-      setOut(r.body);
-      if (r.status !== 200) setError("Config invalid (see output).");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      const result = await validate(JSON.parse(configText));
+      setHistory((previous) => [{ label, ...result }, ...previous].slice(0, 6));
+      if (result.status !== 200) {
+        setError("Validation failed. Review the redacted payload and the structured findings.");
+      }
+    } catch (event) {
+      setError(event instanceof Error ? event.message : String(event));
     }
   }
 
   useEffect(() => {
-    run().catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    run("Initial broken preset").catch(() => {});
   }, []);
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold">Config Doctor</h1>
-        <p className="mt-2 text-slate-300">
-          DX improvement: validate runtime config, return actionable errors, and redact secrets before logs/UI.
+    <main className="mx-auto max-w-7xl space-y-8 px-6 py-10">
+      <header className="space-y-3">
+        <h1 className="text-3xl font-bold text-white">Developer Experience Config Doctor</h1>
+        <p className="max-w-3xl text-sm text-slate-300">
+          Validate runtime configuration the same way a staff engineer would during an incident or failed rollout: by
+          comparing a broken preset with a production-safe one, checking redaction behavior, and reviewing errors in a
+          format that gives a clear next action.
         </p>
-        {error ? (
-          <div className="mt-4 rounded border border-amber-500/30 bg-amber-500/10 p-3 text-sm">{error}</div>
-        ) : null}
       </header>
 
-      <section className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-slate-700 bg-slate-900/50 p-5">
-          <h2 className="text-lg font-semibold">Input config</h2>
-          <textarea
-            value={configText}
-            onChange={(e) => setConfigText(e.target.value)}
-            rows={14}
-            className="mt-4 w-full rounded border border-slate-700 bg-black/30 px-3 py-2 font-mono text-xs"
-          />
-          <button
-            type="button"
-            onClick={run}
-            className="mt-4 rounded bg-emerald-600 px-4 py-2 text-sm font-semibold hover:bg-emerald-500"
-          >
-            Validate
-          </button>
-          <p className="mt-3 text-xs text-slate-400">
-            Try breaking it (e.g., delete <span className="font-mono">apiKey</span>, or set{" "}
-            <span className="font-mono">publicBaseUrl</span> to a non-URL).
-          </p>
+      <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
+        <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-5 space-y-5">
+          <div>
+            <h2 className="text-lg font-semibold text-white">Runtime config under review</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Toggle between a broken preset and a production-safe preset, then validate after editing the payload.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button className="rounded bg-slate-800 px-3 py-2 text-sm hover:bg-slate-700" onClick={() => setConfigText(JSON.stringify(presets.broken, null, 2))}>Broken preset</button>
+            <button className="rounded bg-slate-800 px-3 py-2 text-sm hover:bg-slate-700" onClick={() => setConfigText(JSON.stringify(presets.fixed, null, 2))}>Production preset</button>
+            <button className="ml-auto rounded bg-emerald-600 px-4 py-2 text-sm font-semibold hover:bg-emerald-500" onClick={() => run()}>Validate</button>
+          </div>
+          <textarea rows={16} className="w-full rounded border border-slate-700 bg-black/30 px-3 py-2 font-mono text-xs" value={configText} onChange={(event) => setConfigText(event.target.value)} />
+          {error ? <div className="rounded border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-100">{error}</div> : null}
+          <div className="rounded-xl border border-slate-800 bg-black/30 p-4 text-sm text-slate-300">
+            <div className="font-semibold text-white">DX review prompts</div>
+            <ul className="mt-3 space-y-2 text-slate-400">
+              {reviewPrompts.map((prompt) => (
+                <li key={prompt}>• {prompt}</li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <div className="rounded-xl border border-slate-700 bg-slate-900/50 p-5">
-          <h2 className="text-lg font-semibold">Output</h2>
-          <pre className="mt-4 overflow-auto rounded bg-black/40 p-3 text-xs text-slate-100">
-            {JSON.stringify(out, null, 2)}
-          </pre>
+        <div className="space-y-5">
+          <div className="grid gap-4 md:grid-cols-3">
+            {summary.map((item) => (
+              <SignalCard key={item.label} {...item} />
+            ))}
+          </div>
+          <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-5 space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-white">Validation history</h2>
+              <p className="mt-1 text-sm text-slate-400">
+                A developer-facing validator should leave behind structured evidence: what failed, what was redacted,
+                and whether the fix actually cleared the issue on the next run.
+              </p>
+            </div>
+            <pre className="overflow-auto rounded-xl border border-slate-700 bg-black/40 p-4 text-xs text-slate-100">{JSON.stringify(history, null, 2)}</pre>
+          </div>
         </div>
       </section>
     </main>
   );
 }
-

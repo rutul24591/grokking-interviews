@@ -1,16 +1,17 @@
-type Req = { path: string; headers: Record<string, string> };
+type CacheResponse = { etagMatches: boolean; ttlExpired: boolean; versionChanged: boolean };
 
-function cacheKey(req: Req, vary: string[]): string {
-  const parts = [req.path];
-  for (const h of vary) parts.push(h + "=" + (req.headers[h.toLowerCase()] || ""));
-  return parts.join("|");
+function chooseRefreshStrategy(input: CacheResponse) {
+  const stale = input.ttlExpired || input.versionChanged;
+  return {
+    stale,
+    action: input.etagMatches && !stale ? 'serve-from-edge' : stale ? 'revalidate-with-origin' : 'conditional-hit',
+  };
 }
 
-const vary = ["accept-language"];
+const results = [
+  { etagMatches: true, ttlExpired: false, versionChanged: false },
+  { etagMatches: true, ttlExpired: true, versionChanged: true },
+].map(chooseRefreshStrategy);
 
-const a: Req = { path: "/home", headers: { "accept-language": "en-US" } };
-const b: Req = { path: "/home", headers: { "accept-language": "fr-FR" } };
-
-console.log(JSON.stringify({ keyA: cacheKey(a, vary), keyB: cacheKey(b, vary) }, null, 2));
-console.log(JSON.stringify({ ok: true }, null, 2));
-
+console.table(results);
+if (results[1].action !== 'revalidate-with-origin') throw new Error('Expired changed asset should revalidate');

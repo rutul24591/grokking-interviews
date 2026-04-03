@@ -14,3 +14,5 @@ const policies = [
 
 console.table(policies);
 if (policies[1].policy !== 'event-invalidation-with-version-key') throw new Error('Inventory should use event invalidation');
+
+console.log(JSON.stringify({ ok: true }, null, 2));

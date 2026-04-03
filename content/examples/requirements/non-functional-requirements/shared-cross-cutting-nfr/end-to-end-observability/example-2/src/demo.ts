@@ -1,14 +1,18 @@
-import { randomBytes } from "node:crypto";
-import { shouldSample } from "./sampling";
+type Signal = { service: string; hasLogs: boolean; hasMetrics: boolean; hasTraceLink: boolean };
 
-const rate = 0.1;
-let sampled = 0;
-const total = 1000;
-
-for (let i = 0; i < total; i++) {
-  const traceId = randomBytes(16).toString("hex");
-  if (shouldSample(traceId, rate)) sampled++;
+function assessObservability(signal: Signal) {
+  const triageable = signal.hasLogs && signal.hasMetrics && signal.hasTraceLink;
+  return {
+    service: signal.service,
+    triageable,
+    action: triageable ? 'ready-for-oncall' : 'instrument-missing-signal',
+  };
 }
 
-console.log({ total, rate, sampled, approx: sampled / total });
+const results = [
+  { service: 'checkout', hasLogs: true, hasMetrics: true, hasTraceLink: true },
+  { service: 'search', hasLogs: true, hasMetrics: false, hasTraceLink: false },
+].map(assessObservability);
 
+console.table(results);
+if (results[1].action !== 'instrument-missing-signal') throw new Error('Search should add missing signals');

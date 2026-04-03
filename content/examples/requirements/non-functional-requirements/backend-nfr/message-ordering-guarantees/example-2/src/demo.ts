@@ -1,15 +1,18 @@
-function hash(s: string) {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
-  return Math.abs(h);
+type StreamSnapshot = { nextExpected: number; bufferedSeqs: number[]; processedSeqs: number[] };
+
+function classifyOrdering(snapshot: StreamSnapshot) {
+  const gapOpen = snapshot.bufferedSeqs.some((seq) => seq > snapshot.nextExpected);
+  return {
+    nextExpected: snapshot.nextExpected,
+    gapOpen,
+    action: gapOpen ? 'hold-buffer-and-alert-publisher' : 'drain-normally',
+  };
 }
 
-function partition(key: string, partitions: number) {
-  return hash(key) % partitions;
-}
+const results = [
+  { nextExpected: 3, bufferedSeqs: [3, 4], processedSeqs: [1, 2] },
+  { nextExpected: 3, bufferedSeqs: [4, 5], processedSeqs: [1, 2] },
+].map(classifyOrdering);
 
-const keys = ["user:1", "user:2", "post:9", "post:10"];
-const partitions = 4;
-
-console.log(JSON.stringify({ partitions, mapping: keys.map((k) => ({ key: k, partition: partition(k, partitions) })) }, null, 2));
-
+console.table(results);
+if (results[1].action !== 'hold-buffer-and-alert-publisher') throw new Error('Missing sequence should hold the buffer');

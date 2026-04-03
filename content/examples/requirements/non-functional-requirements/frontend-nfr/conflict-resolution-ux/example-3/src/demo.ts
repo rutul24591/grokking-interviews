@@ -1,16 +1,18 @@
-type Field<T> = { v: T; ts: number };
-type Record = { title: Field<string>; body: Field<string> };
+type MergeCase = { localEdits: number; remoteEdits: number; sameFieldConflict: boolean };
 
-function merge(a: Record, b: Record): Record {
+function chooseConflictUx(input: MergeCase) {
   return {
-    title: a.title.ts >= b.title.ts ? a.title : b.title,
-    body: a.body.ts >= b.body.ts ? a.body : b.body,
+    ...input,
+    strategy: input.sameFieldConflict ? 'show-side-by-side-merge' : input.remoteEdits > 0 ? 'auto-merge-and-highlight' : 'save-directly',
   };
 }
 
-const local: Record = { title: { v: "Local", ts: 200 }, body: { v: "L", ts: 50 } };
-const remote: Record = { title: { v: "Remote", ts: 100 }, body: { v: "R", ts: 300 } };
+const results = [
+  { localEdits: 2, remoteEdits: 0, sameFieldConflict: false },
+  { localEdits: 3, remoteEdits: 4, sameFieldConflict: true },
+].map(chooseConflictUx);
 
-console.log(JSON.stringify({ merged: merge(local, remote) }, null, 2));
+console.table(results);
+if (results[1].strategy !== 'show-side-by-side-merge') throw new Error('Field conflict should show merge UI');
+
 console.log(JSON.stringify({ ok: true }, null, 2));
-

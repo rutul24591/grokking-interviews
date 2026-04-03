@@ -1,13 +1,18 @@
-function bump(from: string, to: string) {
-  const a = from.split(".").map(Number);
-  const b = to.split(".").map(Number);
-  if (a[0] !== b[0]) return "major";
-  if (a[1] !== b[1]) return "minor";
-  if (a[2] !== b[2]) return "patch";
-  return "none";
+type Dependency = { name: string; outdatedMajor: boolean; criticalCvss: number; ownerAssigned: boolean };
+
+function triageDependency(dep: Dependency) {
+  const urgent = dep.criticalCvss >= 9 || (dep.outdatedMajor && !dep.ownerAssigned);
+  return {
+    dependency: dep.name,
+    urgent,
+    action: urgent ? 'open-upgrade-incident' : 'schedule-normal-upgrade',
+  };
 }
 
-console.log(bump("1.2.3", "2.0.0"));
-console.log(bump("1.2.3", "1.3.0"));
-console.log(bump("1.2.3", "1.2.4"));
+const results = [
+  { name: 'next', outdatedMajor: false, criticalCvss: 4.3, ownerAssigned: true },
+  { name: 'image-lib', outdatedMajor: true, criticalCvss: 9.8, ownerAssigned: false },
+].map(triageDependency);
 
+console.table(results);
+if (results[1].action !== 'open-upgrade-incident') throw new Error('Critical vulnerable dependency should be urgent');
