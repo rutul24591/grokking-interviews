@@ -1,0 +1,7 @@
+{
+  "name": "full-text-search-libraries-example-2",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}

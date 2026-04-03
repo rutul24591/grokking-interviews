@@ -1,0 +1,7 @@
+{
+  "name": "client-side-search-implementation-example-2",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}
