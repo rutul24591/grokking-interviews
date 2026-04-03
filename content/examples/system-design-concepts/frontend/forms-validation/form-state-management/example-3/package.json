@@ -1,0 +1,7 @@
+{
+  "name": "form-state-management-example-3",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}

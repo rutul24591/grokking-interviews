@@ -1,0 +1,7 @@
+{
+  "name": "multi-step-forms-example-3",
+  "private": true,
+  "scripts": {
+    "start": "node src/demo.js"
+  }
+}
