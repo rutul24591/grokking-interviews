@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Data Warehouses Use Cases</title>
+  <desc id="desc">When to use data warehouses and real-world examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Data Warehouses Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Data Warehouses</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="280" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: BI/Reporting -->
+  <rect x="70" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">BI &amp; Reporting</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Executive dashboards</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• KPI tracking</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Consistent metrics</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Scheduled reports</text>
+  <text x="155" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Self-service BI</text>
+  <text x="155" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Tableau, Power BI</text>
+  
+  <!-- Use Case 2: Historical Analysis -->
+  <rect x="255" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Historical Analysis</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multi-year trends</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• YoY comparisons</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Seasonal analysis</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Time-series analysis</text>
+  <text x="340" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Cohort analysis</text>
+  <text x="340" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Long-term trends</text>
+  
+  <!-- Use Case 3: Regulatory -->
+  <rect x="70" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Regulatory Reporting</text>
+  <text x="155" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• SOX compliance</text>
+  <text x="155" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• GDPR reporting</text>
+  <text x="155" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Financial audits</text>
+  <text x="155" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Data lineage</text>
+  <text x="155" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Audit trails</text>
+  <text x="155" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Governed, auditable</text>
+  
+  <!-- Use Case 4: Analytics -->
+  <rect x="255" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Advanced Analytics</text>
+  <text x="340" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Ad-hoc analysis</text>
+  <text x="340" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex joins</text>
+  <text x="340" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Window functions</text>
+  <text x="340" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Statistical analysis</text>
+  <text x="340" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Data mining</text>
+  <text x="340" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">SQL-based analysis</text>
+  
+  <!-- When NOT to Use (Right Column) -->
+  <rect x="465" y="85" width="385" height="280" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use Data Warehouses</text>
+  
+  <!-- Anti-Pattern 1: Raw Data -->
+  <rect x="485" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Raw Data Storage</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Unstructured data</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Schema flexibility</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Data exploration</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use data lake</text>
+  <text x="570" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Schema-on-read</text>
+  <text x="570" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use data lake</text>
+  
+  <!-- Anti-Pattern 2: ML Training -->
+  <rect x="670" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">ML Training Data</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Feature engineering</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Raw data access</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Diverse formats</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Spark/TensorFlow</text>
+  <text x="755" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use data lake</text>
+  <text x="755" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use data lake</text>
+  
+  <!-- Anti-Pattern 3: Real-Time -->
+  <rect x="485" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Real-Time Operations</text>
+  <text x="570" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Sub-second latency</text>
+  <text x="570" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• OLTP workloads</text>
+  <text x="570" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Transactions</text>
+  <text x="570" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• High concurrency</text>
+  <text x="570" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use operational DB</text>
+  <text x="570" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use operational DB</text>
+  
+  <!-- Anti-Pattern 4: Small Data -->
+  <rect x="670" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Small Data Volume</text>
+  <text x="755" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• &lt;100 GB total</text>
+  <text x="755" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single source</text>
+  <text x="755" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple queries</text>
+  <text x="755" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No complex joins</text>
+  <text x="755" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use operational DB</text>
+  <text x="755" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Over-engineering</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  
+  <!-- Retail -->
+  <rect x="70" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Retail: Sales Analytics</text>
+  <text x="190" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Snowflake for BI</text>
+  <text x="190" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Sales trends, margins</text>
+  <text x="190" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Inventory analysis</text>
+  <text x="190" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Executive dashboards</text>
+  <text x="190" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Data-driven decisions</text>
+  
+  <!-- Finance -->
+  <rect x="325" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Finance: Risk Analysis</text>
+  <text x="445" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• BigQuery for analytics</text>
+  <text x="445" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Risk metrics, P&amp;L</text>
+  <text x="445" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Regulatory reporting</text>
+  <text x="445" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Audit trails</text>
+  <text x="445" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Compliance &amp; insights</text>
+  
+  <!-- Healthcare -->
+  <rect x="580" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Healthcare: Patient Analytics</text>
+  <text x="700" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Redshift for analysis</text>
+  <text x="700" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Patient outcomes</text>
+  <text x="700" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Treatment effectiveness</text>
+  <text x="700" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• HIPAA-compliant reporting</text>
+  <text x="700" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Better patient care</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

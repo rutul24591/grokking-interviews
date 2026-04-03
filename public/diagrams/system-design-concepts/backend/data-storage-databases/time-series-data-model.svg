@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Time Series Data Model</title>
+  <desc id="desc">Time series database structure with measurements, tags, fields, and timestamps</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Time Series Data Model</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Measurements, Tags, Fields, and Timestamps</text>
+  
+  <!-- Data Point Structure (Top Left) -->
+  <rect x="50" y="85" width="400" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Single Data Point Structure</text>
+  
+  <!-- Measurement -->
+  <rect x="70" y="125" width="360" height="35" rx="4" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="250" y="147" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Measurement: cpu_usage</text>
+  <text x="250" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">The metric name (what is being measured)</text>
+  
+  <!-- Tags -->
+  <rect x="70" y="170" width="175" height="45" rx="4" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+  <text x="157" y="190" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Tags (Indexed)</text>
+  <text x="157" y="205" text-anchor="middle" font-size="7" font-weight="600" fill="#6ee7b7">host=server1, region=us-east</text>
+  
+  <!-- Fields -->
+  <rect x="255" y="170" width="175" height="45" rx="4" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
+  <text x="342" y="190" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Fields (Values)</text>
+  <text x="342" y="205" text-anchor="middle" font-size="7" font-weight="600" fill="#fef3c7">value=75.5, unit=percent</text>
+  
+  <!-- Timestamp -->
+  <rect x="70" y="225" width="360" height="35" rx="4" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="250" y="247" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Timestamp: 1640000000000000000 (nanoseconds)</text>
+  <text x="250" y="262" text-anchor="middle" font-size="7" font-weight="600" fill="#e9d5ff">Provides sort order for range queries</text>
+  
+  <!-- Series Concept (Top Right) -->
+  <rect x="465" y="85" width="385" height="180" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Series: Measurement + Tags</text>
+  
+  <!-- Series Examples -->
+  <rect x="485" y="125" width="345" height="130" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="657" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Each unique combination = One Series</text>
+  
+  <rect x="500" y="165" width="315" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="657" y="182" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Series 1: cpu_usage {host=server1, region=us-east}</text>
+  
+  <rect x="500" y="195" width="315" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="657" y="212" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Series 2: cpu_usage {host=server2, region=us-east}</text>
+  
+  <rect x="500" y="225" width="315" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="657" y="242" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Series 3: cpu_usage {host=server1, region=us-west}</text>
+  
+  <text x="657" y="265" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Each series stored contiguously on disk</text>
+  
+  <!-- Downsampling & Retention (Bottom) -->
+  <rect x="50" y="275" width="800" height="260" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="300" text-anchor="middle" font-size="14" font-weight="700" fill="#0369a1">Downsampling &amp; Retention Policies</text>
+  
+  <!-- Raw Data -->
+  <rect x="70" y="315" width="230" height="205" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="185" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Raw Data (1-second intervals)</text>
+  
+  <!-- Raw data points -->
+  <rect x="85" y="355" width="200" height="150" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <!-- Data points visualization -->
+  <line x1="95" y1="480" x2="275" y2="480" stroke="#cbd5e1" stroke-width="1"/>
+  <line x1="95" y1="370" x2="95" y2="480" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <!-- Raw data points -->
+  <circle cx="105" cy="450" r="3" fill="#2563eb"/>
+  <circle cx="120" cy="430" r="3" fill="#2563eb"/>
+  <circle cx="135" cy="460" r="3" fill="#2563eb"/>
+  <circle cx="150" cy="420" r="3" fill="#2563eb"/>
+  <circle cx="165" cy="440" r="3" fill="#2563eb"/>
+  <circle cx="180" cy="410" r="3" fill="#2563eb"/>
+  <circle cx="195" cy="435" r="3" fill="#2563eb"/>
+  <circle cx="210" cy="425" r="3" fill="#2563eb"/>
+  <circle cx="225" cy="445" r="3" fill="#2563eb"/>
+  <circle cx="240" cy="415" r="3" fill="#2563eb"/>
+  <circle cx="255" cy="430" r="3" fill="#2563eb"/>
+  <circle cx="270" cy="420" r="3" fill="#2563eb"/>
+  
+  <text x="185" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Retention: 7 days</text>
+  <text x="185" y="522" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">~600K points/day/series</text>
+  
+  <!-- Arrow to 1-min -->
+  <line x1="305" y1="417" x2="335" y2="417" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="320" y="407" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Downsample</text>
+  <text x="320" y="437" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">(AVG per minute)</text>
+  
+  <!-- 1-minute aggregates -->
+  <rect x="350" y="315" width="230" height="205" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="465" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">1-Minute Averages</text>
+  
+  <rect x="365" y="355" width="200" height="150" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <line x1="375" y1="480" x2="555" y2="480" stroke="#cbd5e1" stroke-width="1"/>
+  <line x1="375" y1="370" x2="375" y2="480" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <!-- Aggregated points (fewer) -->
+  <circle cx="395" cy="445" r="4" fill="#d97706"/>
+  <circle cx="435" cy="430" r="4" fill="#d97706"/>
+  <circle cx="475" cy="440" r="4" fill="#d97706"/>
+  <circle cx="515" cy="425" r="4" fill="#d97706"/>
+  <circle cx="555" cy="435" r="4" fill="#d97706"/>
+  
+  <text x="465" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Retention: 30 days</text>
+  <text x="465" y="522" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">~43K points/day/series</text>
+  
+  <!-- Arrow to 1-hour -->
+  <line x1="585" y1="417" x2="615" y2="417" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="600" y="407" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Downsample</text>
+  <text x="600" y="437" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">(AVG per hour)</text>
+  
+  <!-- 1-hour aggregates -->
+  <rect x="630" y="315" width="205" height="205" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="732" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#065f46">1-Hour Averages</text>
+  
+  <rect x="645" y="355" width="175" height="150" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <line x1="655" y1="480" x2="805" y2="480" stroke="#cbd5e1" stroke-width="1"/>
+  <line x1="655" y1="370" x2="655" y2="480" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <!-- Hourly points (even fewer) -->
+  <circle cx="685" cy="440" r="5" fill="#16a34a"/>
+  <circle cx="735" cy="435" r="5" fill="#16a34a"/>
+  <circle cx="785" cy="445" r="5" fill="#16a34a"/>
+  
+  <text x="732" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Retention: 1 year</text>
+  <text x="732" y="522" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">~720 points/day/series</text>
+  
+  <!-- Key Characteristics -->
+  <rect x="70" y="540" width="760" height="0" rx="0" fill="none" stroke="none"/>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

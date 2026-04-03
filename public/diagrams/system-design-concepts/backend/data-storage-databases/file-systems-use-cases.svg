@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">File Systems Use Cases</title>
+  <desc id="desc">When to use file systems and real-world examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">File Systems Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use File Storage</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="280" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: Shared Files -->
+  <rect x="70" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Shared File Access</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multiple servers</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Same files needed</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• POSIX operations</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• File locking</text>
+  <text x="155" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Concurrent access</text>
+  <text x="155" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">EFS for web servers</text>
+  
+  <!-- Use Case 2: Home Directories -->
+  <rect x="255" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Home Directories</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User files</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Accessible anywhere</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Per-user quotas</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Backup integration</text>
+  <text x="340" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Standard paths</text>
+  <text x="340" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">NFS home dirs</text>
+  
+  <!-- Use Case 3: CMS -->
+  <rect x="70" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Content Management</text>
+  <text x="155" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Shared media library</text>
+  <text x="155" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• WordPress uploads</text>
+  <text x="155" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multiple web servers</text>
+  <text x="155" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Standard file ops</text>
+  <text x="155" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Legacy app support</text>
+  <text x="155" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">EFS for WordPress</text>
+  
+  <!-- Use Case 4: Dev Environments -->
+  <rect x="255" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Dev Environments</text>
+  <text x="340" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Shared code repos</text>
+  <text x="340" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Build artifacts</text>
+  <text x="340" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Team collaboration</text>
+  <text x="340" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Version control</text>
+  <text x="340" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• CI/CD integration</text>
+  <text x="340" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Shared dev storage</text>
+  
+  <!-- When NOT to Use (Right Column) -->
+  <rect x="465" y="85" width="385" height="280" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use File Storage</text>
+  
+  <!-- Anti-Pattern 1: Database Storage -->
+  <rect x="485" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Database Storage</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Higher latency</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Network overhead</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Not optimized for DB</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use block storage</text>
+  <text x="570" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• EBS for databases</text>
+  <text x="570" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use block storage</text>
+  
+  <!-- Anti-Pattern 2: Massive Scale -->
+  <rect x="670" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Massive Unstructured Data</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Billions of files</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Directory limits</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• LIST operations slow</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use object storage</text>
+  <text x="755" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• S3 for scale</text>
+  <text x="755" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use object storage</text>
+  
+  <!-- Anti-Pattern 3: HTTP Access -->
+  <rect x="485" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">HTTP/REST Access Needed</text>
+  <text x="570" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Web APIs needed</text>
+  <text x="570" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• CDN integration</text>
+  <text x="570" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Browser access</text>
+  <text x="570" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use object storage</text>
+  <text x="570" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• S3 + CloudFront</text>
+  <text x="570" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use object storage</text>
+  
+  <!-- Anti-Pattern 4: Cost-Sensitive -->
+  <rect x="670" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Cost-Sensitive Archives</text>
+  <text x="755" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• File storage expensive</text>
+  <text x="755" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Per-GB pricing</text>
+  <text x="755" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Infrequent access</text>
+  <text x="755" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use object storage</text>
+  <text x="755" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Glacier for archives</text>
+  <text x="755" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use archive tiers</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  
+  <!-- WordPress -->
+  <rect x="70" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">WordPress: Shared Uploads</text>
+  <text x="190" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• EFS for wp-content/uploads</text>
+  <text x="190" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multiple web servers</text>
+  <text x="190" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Shared media library</text>
+  <text x="190" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• POSIX file ops</text>
+  <text x="190" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Scalable WordPress cluster</text>
+  
+  <!-- Enterprise Home Dirs -->
+  <rect x="325" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Enterprise: Home Directories</text>
+  <text x="445" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• NFS for user homes</text>
+  <text x="445" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Accessible from any machine</text>
+  <text x="445" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Quotas per user</text>
+  <text x="445" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Backup integration</text>
+  <text x="445" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Centralized user storage</text>
+  
+  <!-- Media Processing -->
+  <rect x="580" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Media: Processing Pipeline</text>
+  <text x="700" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Shared input/output dirs</text>
+  <text x="700" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multiple processing nodes</text>
+  <text x="700" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• File-based workflows</text>
+  <text x="700" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Legacy app compatibility</text>
+  <text x="700" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Parallel media processing</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

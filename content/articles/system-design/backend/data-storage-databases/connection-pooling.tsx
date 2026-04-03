@@ -623,26 +623,56 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            HikariCP Documentation, "Configuration," "Performance,"
-            https://github.com/brettwooldridge/HikariCP
+            <a
+              href="https://github.com/brettwooldridge/HikariCP"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HikariCP Documentation — Configuration &amp; Performance
+            </a>
           </li>
           <li>
-            PgBouncer Documentation, "Connection Pooling,"
-            https://www.pgbouncer.org/
+            <a
+              href="https://www.pgbouncer.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PgBouncer Documentation — Connection Pooling
+            </a>
           </li>
           <li>
-            PostgreSQL Documentation, "Connection Pooling,"
-            https://www.postgresql.org/docs/current/connection-pooling.html
+            <a
+              href="https://www.postgresql.org/docs/current/connection-pooling.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Connection Pooling
+            </a>
           </li>
           <li>
-            MySQL Documentation, "Connection Pooling,"
-            https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connpooling.html
+            <a
+              href="https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connpooling.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — Connection Pooling
+            </a>
           </li>
           <li>
-            Oracle Documentation, "Connection Pooling,"
-            https://docs.oracle.com/en/database/oracle/oracle-database/
+            <a
+              href="https://docs.oracle.com/en/database/oracle/oracle-database/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Oracle Documentation — Connection Pooling
+            </a>
           </li>
           <li>
             Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
@@ -652,16 +682,34 @@ export default function ArticlePage() {
             Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 3.
           </li>
           <li>
-            Stack Overflow, "Database Connection Pool Best Practices,"
-            https://stackoverflow.com/questions/tagged/connection-pooling
+            <a
+              href="https://stackoverflow.com/questions/tagged/connection-pooling"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Stack Overflow — Database Connection Pool Best Practices
+            </a>
           </li>
           <li>
-            HikariCP Wiki, "Pool Size,"
-            https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
+            <a
+              href="https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HikariCP Wiki — Pool Size
+            </a>
           </li>
           <li>
-            AWS Documentation, "RDS Connection Limits,"
-            https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html
+            <a
+              href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS Documentation — RDS Connection Limits
+            </a>
           </li>
         </ul>
       </section>

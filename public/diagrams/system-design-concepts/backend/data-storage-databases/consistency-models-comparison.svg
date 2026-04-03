@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Consistency Models Comparison</title>
+  <desc id="desc">Detailed comparison of consistency models</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Consistency Models Comparison</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Linearizable vs Sequential vs Causal vs Eventual</text>
+  
+  <rect x="50" y="85" width="800" height="240" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Consistency Model Comparison</text>
+  
+  <rect x="70" y="125" width="140" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="140" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Model</text>
+  <rect x="220" y="125" width="140" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="290" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Guarantee</text>
+  <rect x="370" y="125" width="140" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="440" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Latency</text>
+  <rect x="520" y="125" width="140" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="590" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Availability</text>
+  <rect x="670" y="125" width="160" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="750" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Use Case</text>
+  
+  <rect x="70" y="153" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="175" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Linearizable</text>
+  <rect x="220" y="153" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="290" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Real-time ordering</text>
+  <rect x="370" y="153" width="140" height="35" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="440" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Highest</text>
+  <rect x="520" y="153" width="140" height="35" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="590" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Lowest</text>
+  <rect x="670" y="153" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Financial, locks</text>
+  
+  <rect x="70" y="191" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="213" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Sequential</text>
+  <rect x="220" y="191" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="290" y="213" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Per-client order</text>
+  <rect x="370" y="191" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="440" y="213" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Medium</text>
+  <rect x="520" y="191" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="590" y="213" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Medium</text>
+  <rect x="670" y="191" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="213" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Session state</text>
+  
+  <rect x="70" y="229" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="251" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Causal</text>
+  <rect x="220" y="229" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="290" y="251" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Cause-effect order</text>
+  <rect x="370" y="229" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="440" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Low</text>
+  <rect x="520" y="229" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="590" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">High</text>
+  <rect x="670" y="229" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Social feeds</text>
+  
+  <rect x="70" y="267" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="289" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Eventual</text>
+  <rect x="220" y="267" width="140" height="35" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="290" y="289" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Converge eventually</text>
+  <rect x="370" y="267" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="440" y="289" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Lowest</text>
+  <rect x="520" y="267" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="590" y="289" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Highest</text>
+  <rect x="670" y="267" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="289" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">DNS, CDNs, caches</text>
+  
+  <rect x="50" y="335" width="800" height="100" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="12" font-weight="700" fill="#0369a1">Key Differences</text>
+  <rect x="70" y="375" width="360" height="50" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="395" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Linearizable: Global real-time order (strongest)</text>
+  <text x="250" y="410" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">All clients see operations in same real-time order</text>
+  
+  <rect x="445" y="375" width="360" height="50" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="625" y="395" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Eventual: No ordering guarantee (weakest)</text>
+  <text x="625" y="410" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">All replicas converge to same value eventually</text>
+  
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">Practical Guidance</text>
+  <rect x="70" y="485" width="240" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="190" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Financial: Linearizable</text>
+  
+  <rect x="325" y="485" width="240" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="445" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Sessions: Sequential</text>
+  
+  <rect x="580" y="485" width="240" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="700" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Social: Causal or Eventual</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

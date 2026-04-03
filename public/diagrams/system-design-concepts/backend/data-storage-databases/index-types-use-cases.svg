@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Index Types Use Cases</title>
+  <desc id="desc">When to use each index type</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Index Types Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Each Index Type</text>
+  
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">B-Tree Index</text>
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Default for most databases</text>
+  <text x="180" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Equality: WHERE email = ?</text>
+  <text x="180" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Range: WHERE age BETWEEN 18 AND 65</text>
+  <text x="180" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Sorting: ORDER BY created_at</text>
+  <text x="180" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Use for: Most queries</text>
+  <text x="180" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Examples: Primary keys, foreign keys</text>
+  <text x="180" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Default in PostgreSQL, MySQL, Oracle</text>
+  
+  <rect x="320" y="85" width="260" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Hash Index</text>
+  <rect x="335" y="125" width="230" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Equality-only lookups</text>
+  <text x="450" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• WHERE session_id = ?</text>
+  <text x="450" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• WHERE token = ?</text>
+  <text x="450" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• O(1) lookup (faster than B-Tree)</text>
+  <text x="450" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Use for: Exact match only</text>
+  <text x="450" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cannot: range queries, sorting</text>
+  <text x="450" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Memory: Redis, PostgreSQL (in-memory)</text>
+  
+  <rect x="590" y="85" width="260" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">GIN Index</text>
+  <rect x="605" y="125" width="230" height="150" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Arrays, JSON, Full-Text</text>
+  <text x="720" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• WHERE tags @&gt; &apos;{red,blue}&apos;</text>
+  <text x="720" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• WHERE doc @@ to_tsquery(&apos;search&apos;)</text>
+  <text x="720" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• JSON containment queries</text>
+  <text x="720" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Use for: Complex data types</text>
+  <text x="720" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Examples: PostgreSQL GIN indexes</text>
+  <text x="720" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Trade-off: Slower writes, larger size</text>
+  
+  <rect x="50" y="295" width="800" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Specialized Index Types</text>
+  
+  <rect x="70" y="335" width="240" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">GiST Index</text>
+  <text x="190" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Geometric data, ranges</text>
+  <text x="190" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">PostgreSQL: circles, polygons</text>
+  <text x="190" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">PostGIS: spatial queries</text>
+  <text x="190" y="420" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Use for: Location-based queries</text>
+  
+  <rect x="325" y="335" width="240" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">BRIN Index</text>
+  <text x="445" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Block Range INdex</text>
+  <text x="445" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Very small index size</text>
+  <text x="445" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: Large, naturally ordered</text>
+  <text x="445" y="420" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Use for: Time-series, logs</text>
+  
+  <rect x="580" y="335" width="240" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Bitmap Index</text>
+  <text x="700" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Low cardinality columns</text>
+  <text x="700" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Gender, status, boolean</text>
+  <text x="700" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Efficient for AND/OR queries</text>
+  <text x="700" y="420" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Use for: Data warehouses</text>
+  
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Index Selection Guide</text>
+  <rect x="70" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="185" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Most queries → B-Tree (default)</text>
+  
+  <rect x="315" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="430" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Exact match only → Hash</text>
+  
+  <rect x="560" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="675" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Arrays/JSON/Text → GIN</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

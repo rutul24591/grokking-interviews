@@ -675,44 +675,86 @@ SELECT * FROM tree ORDER BY depth, name;`}
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 5.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 5.
           </li>
           <li>
-            PostgreSQL Documentation, "Recursive Queries,"
-            https://www.postgresql.org/docs/current/queries-with.html
+            <a
+              href="https://www.postgresql.org/docs/current/queries-with.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Recursive Queries
+            </a>
           </li>
           <li>
-            MySQL Documentation, "WITH Syntax,"
-            https://dev.mysql.com/doc/refman/8.0/en/with.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/with.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — WITH Syntax
+            </a>
           </li>
           <li>
-            SQL Server Documentation, "Recursive Queries Using CTEs,"
-            https://docs.microsoft.com/en-us/sql/relational-databases/queries/recursive-queries-using-common-table-expressions
+            <a
+              href="https://docs.microsoft.com/en-us/sql/relational-databases/queries/recursive-queries-using-common-table-expressions"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SQL Server Documentation — Recursive Queries Using CTEs
+            </a>
           </li>
           <li>
-            Joe Celko, "Trees and Hierarchies in SQL for Smarties," Morgan Kaufmann, 2012.
+            Joe Celko, <em>Trees and Hierarchies in SQL for Smarties</em>, Morgan Kaufmann, 2012.
           </li>
           <li>
-            Use The Index, Luke, "JOIN Operations,"
-            https://use-the-index-luke.com/sql/join
+            <a
+              href="https://use-the-index-luke.com/sql/join"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Use The Index, Luke — JOIN Operations
+            </a>
           </li>
           <li>
-            Rails Guides, "Active Record Query Interface,"
-            https://guides.rubyonrails.org/active_record_querying.html
+            <a
+              href="https://guides.rubyonrails.org/active_record_querying.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Rails Guides — Active Record Query Interface
+            </a>
           </li>
           <li>
-            Django Documentation, "Database Optimization,"
-            https://docs.djangoproject.com/en/stable/topics/db/optimization/
+            <a
+              href="https://docs.djangoproject.com/en/stable/topics/db/optimization/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Django Documentation — Database Optimization
+            </a>
           </li>
           <li>
-            Hibernate Documentation, "Fetching Strategies,"
-            https://docs.jboss.org/hibernate/orm/
+            <a
+              href="https://docs.jboss.org/hibernate/orm/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Hibernate Documentation — Fetching Strategies
+            </a>
           </li>
         </ul>
       </section>

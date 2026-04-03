@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Column-Family Store Use Cases</title>
+  <desc id="desc">When to use column-family stores and real-world applications</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Column-Family Store Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Column-Family Stores</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: Time-Series Data -->
+  <rect x="70" y="125" width="170" height="85" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Time-Series Data</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• IoT sensor readings</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Server metrics</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Stock prices</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Sequential writes, time-range queries</text>
+  
+  <!-- Use Case 2: Messaging -->
+  <rect x="255" y="125" width="170" height="85" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Messaging Systems</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Email inboxes</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Chat history</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Activity feeds</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Wide rows, chronological access</text>
+  
+  <!-- Use Case 3: Event Logging -->
+  <rect x="70" y="220" width="170" height="95" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Event Logging</text>
+  <text x="155" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Clickstream data</text>
+  <text x="155" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Audit logs</text>
+  <text x="155" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User activity tracking</text>
+  <text x="155" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Application events</text>
+  <text x="155" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: High write throughput, append-only</text>
+  
+  <!-- Use Case 4: Content Storage -->
+  <rect x="255" y="220" width="170" height="95" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Content Storage</text>
+  <text x="340" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Blog posts</text>
+  <text x="340" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Product catalogs</text>
+  <text x="340" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User profiles</text>
+  <text x="340" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Media metadata</text>
+  <text x="340" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Sparse data, flexible schema</text>
+  
+  <!-- Real-World Examples (Right Column) -->
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Real-World Implementations</text>
+  
+  <!-- Facebook Messenger -->
+  <rect x="485" y="125" width="170" height="85" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Facebook Messenger</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Inbox storage (HBase)</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Message history per user</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Billions of messages/day</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Low-latency message retrieval</text>
+  
+  <!-- Netflix -->
+  <rect x="670" y="125" width="170" height="85" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Netflix</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Viewing history (Cassandra)</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User activity tracking</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Recommendation data</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: 200M+ users, global scale</text>
+  
+  <!-- Apple iMessage -->
+  <rect x="485" y="220" width="170" height="95" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="570" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Apple iMessage</text>
+  <text x="570" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Message storage</text>
+  <text x="570" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Delivery tracking</text>
+  <text x="570" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Sync across devices</text>
+  <text x="570" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• End-to-end encryption metadata</text>
+  <text x="570" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Billions of messages daily</text>
+  
+  <!-- Craigslist -->
+  <rect x="670" y="220" width="170" height="95" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="755" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Craigslist</text>
+  <text x="755" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Classified listings</text>
+  <text x="755" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User postings</text>
+  <text x="755" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Category-based queries</text>
+  <text x="755" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Geographic filtering</text>
+  <text x="755" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Simple, fast, reliable</text>
+  
+  <!-- When NOT to Use (Bottom Left) -->
+  <rect x="50" y="335" width="400" height="120" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">When NOT to Use</text>
+  
+  <rect x="70" y="375" width="170" height="70" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="155" y="395" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Complex Queries</text>
+  <text x="155" y="412" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Joins across tables</text>
+  <text x="155" y="425" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Aggregations</text>
+  <text x="155" y="438" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use relational database</text>
+  
+  <rect x="255" y="375" width="170" height="70" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="340" y="395" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Transactions</text>
+  <text x="340" y="412" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multi-row transactions</text>
+  <text x="340" y="425" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• ACID requirements</text>
+  <text x="340" y="438" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use relational or NewSQL</text>
+  
+  <!-- Key Characteristics (Bottom Right) -->
+  <rect x="465" y="335" width="385" height="120" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="657" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Key Characteristics</text>
+  
+  <rect x="485" y="375" width="170" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="570" y="395" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Strengths</text>
+  <text x="570" y="412" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ High write throughput</text>
+  <text x="570" y="425" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Horizontal scaling</text>
+  <text x="570" y="438" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Flexible schema</text>
+  <text x="570" y="451" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Time-range queries</text>
+  
+  <rect x="670" y="375" width="170" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="755" y="395" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Limitations</text>
+  <text x="755" y="412" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ No joins</text>
+  <text x="755" y="425" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ Limited transactions</text>
+  <text x="755" y="438" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ Eventual consistency</text>
+  <text x="755" y="451" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ Complex queries difficult</text>
+  
+  <!-- Decision Framework (Bottom) -->
+  <rect x="50" y="465" width="800" height="70" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="487" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Decision Framework: Choose Column-Family When...</text>
+  <text x="450" y="507" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Write-heavy workload (10K+ writes/sec)</text>
+  <text x="450" y="520" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Time-ordered data (metrics, events, logs)</text>
+  <text x="450" y="533" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Sparse data (varying columns per row)</text>
+  <text x="450" y="546" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Horizontal scaling required (TB+ data)</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

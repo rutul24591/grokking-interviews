@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">NoSQL Modeling Principles</title>
+  <desc id="desc">Query-first design, denormalization, and aggregation patterns</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">NoSQL Data Modeling Principles</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Query-First Design and Denormalization</text>
+  
+  <!-- Query-First Design (Top Left) -->
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Query-First Design</text>
+  
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Step 1: Identify Queries</text>
+  <text x="180" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• What queries will you run?</text>
+  <text x="180" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Access patterns first</text>
+  <text x="180" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Latency requirements</text>
+  
+  <text x="180" y="225" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Step 2: Model for Queries</text>
+  <text x="180" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Design data to match queries</text>
+  <text x="180" y="260" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Don't model after entities</text>
+  
+  <text x="180" y="280" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Optimize for reads</text>
+  <text x="180" y="295" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Relational: model entities first</text>
+  
+  <!-- Denormalization Strategies (Top Right) -->
+  <rect x="320" y="85" width="530" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="585" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Denormalization Strategies</text>
+  
+  <!-- Embedding -->
+  <rect x="335" y="125" width="160" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="415" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Embedding</text>
+  <text x="415" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• One-to-few relationships</text>
+  <text x="415" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Store related data together</text>
+  <text x="415" y="200" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single query retrieves all</text>
+  
+  <rect x="350" y="215" width="130" height="50" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="415" y="235" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Order:</text>
+  <text x="415" y="248" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  id, date, total</text>
+  <text x="415" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  items: [...]</text>
+  
+  <!-- Referencing -->
+  <rect x="510" y="125" width="160" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="590" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Referencing</text>
+  <text x="590" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• One-to-many relationships</text>
+  <text x="590" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Store IDs, fetch separately</text>
+  <text x="590" y="200" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Unbounded collections</text>
+  
+  <rect x="525" y="215" width="130" height="50" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="590" y="235" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">User:</text>
+  <text x="590" y="248" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  id, name</text>
+  <text x="590" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  order_ids: [1,2,3]</text>
+  
+  <!-- Duplication -->
+  <rect x="685" y="125" width="160" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="765" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Duplication</text>
+  <text x="765" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Read optimization</text>
+  <text x="765" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Copy data for queries</text>
+  <text x="765" y="200" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Trade write cost for read speed</text>
+  
+  <rect x="700" y="215" width="130" height="50" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="765" y="235" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Orders by user:</text>
+  <text x="765" y="248" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  user_id, orders...</text>
+  <text x="765" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Orders by date:</text>
+  
+  <!-- Aggregation Patterns (Bottom) -->
+  <rect x="50" y="295" width="800" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Aggregation Patterns</text>
+  
+  <!-- Computed Summaries -->
+  <rect x="70" y="335" width="240" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="190" y="360" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Computed Summaries</text>
+  <text x="190" y="380" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Pre-aggregated counts</text>
+  <text x="190" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Update on write</text>
+  
+  <rect x="85" y="410" width="210" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="190" y="430" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">User: {name: "Alice", order_count: 5}</text>
+  <text x="190" y="445" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Increment counter on each order</text>
+  
+  <text x="190" y="475" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Fast reads</text>
+  <text x="190" y="490" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use for: Dashboard counters</text>
+  <text x="190" y="505" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Trade-off: Write amplification</text>
+  
+  <!-- Materialized Views -->
+  <rect x="325" y="335" width="240" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="445" y="360" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Materialized Views</text>
+  <text x="445" y="380" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Pre-computed query results</text>
+  <text x="445" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Periodic refresh</text>
+  
+  <rect x="340" y="410" width="210" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="445" y="430" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Daily sales: {date, total, count}</text>
+  <text x="445" y="445" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Refreshed nightly via batch job</text>
+  
+  <text x="445" y="475" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Fast complex queries</text>
+  <text x="445" y="490" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use for: Reports, analytics</text>
+  <text x="445" y="505" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Trade-off: Stale between refreshes</text>
+  
+  <!-- Bucket Pattern -->
+  <rect x="580" y="335" width="240" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="700" y="360" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Bucket Pattern</text>
+  <text x="700" y="380" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Group items into buckets</text>
+  <text x="700" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Limit bucket size</text>
+  
+  <rect x="595" y="410" width="210" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="700" y="430" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Sensor: {id, readings: [100 values]}</text>
+  <text x="700" y="445" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">New bucket when full (100 readings)</text>
+  
+  <text x="700" y="475" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Bounded document size</text>
+  <text x="700" y="490" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use for: Time-series, logs</text>
+  <text x="700" y="505" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Trade-off: Multiple docs per series</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

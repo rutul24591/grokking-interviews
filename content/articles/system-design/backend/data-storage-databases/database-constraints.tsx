@@ -662,45 +662,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            PostgreSQL Documentation, "Constraints,"
-            https://www.postgresql.org/docs/current/ddl-constraints.html
+            <a
+              href="https://www.postgresql.org/docs/current/ddl-constraints.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Constraints
+            </a>
           </li>
           <li>
-            MySQL Documentation, "Constraints,"
-            https://dev.mysql.com/doc/refman/8.0/en/create-table.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/create-table.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — Constraints
+            </a>
           </li>
           <li>
-            SQL Server Documentation, "Constraints,"
-            https://docs.microsoft.com/en-us/sql/relational-databases/tables/about-constraints
+            <a
+              href="https://docs.microsoft.com/en-us/sql/relational-databases/tables/about-constraints"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SQL Server Documentation — Constraints
+            </a>
           </li>
           <li>
-            Oracle Documentation, "Constraints,"
-            https://docs.oracle.com/en/database/oracle/oracle-database/
+            <a
+              href="https://docs.oracle.com/en/database/oracle/oracle-database/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Oracle Documentation — Constraints
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 3.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 3.
           </li>
           <li>
-            Use The Index, Luke, "Constraints and Indexes,"
-            https://use-the-index-luke.com/
+            <a
+              href="https://use-the-index-luke.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Use The Index, Luke — Constraints and Indexes
+            </a>
           </li>
           <li>
-            CMU Database Group, "Constraints and Triggers" (YouTube lectures),
-            https://www.youtube.com/c/CMUDatabaseGroup
+            <a
+              href="https://www.youtube.com/c/CMUDatabaseGroup"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CMU Database Group — Constraints and Triggers (YouTube lectures)
+            </a>
           </li>
           <li>
-            Brent Ozar, "SQL Server Foreign Keys,"
-            https://www.brentozar.com/archive/sql-server-foreign-keys/
+            <a
+              href="https://www.brentozar.com/archive/sql-server-foreign-keys/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Brent Ozar — SQL Server Foreign Keys
+            </a>
           </li>
           <li>
-            Percona Blog, "Foreign Key Best Practices,"
-            https://www.percona.com/blog/
+            <a
+              href="https://www.percona.com/blog/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Percona Blog — Foreign Key Best Practices
+            </a>
           </li>
         </ul>
       </section>

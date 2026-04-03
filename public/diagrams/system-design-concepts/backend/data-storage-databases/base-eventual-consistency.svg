@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">BASE Eventual Consistency</title>
+  <desc id="desc">Eventual consistency showing convergence and conflict resolution</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Eventual Consistency</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Convergence and conflict resolution mechanisms</text>
+  
+  <!-- Convergence Timeline -->
+  <rect x="50" y="85" width="400" height="220" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#0369a1">Convergence Timeline</text>
+  
+  <!-- T=0: Write -->
+  <rect x="70" y="125" width="100" height="60" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="120" y="150" text-anchor="middle" font-size="9" fill="white">T=0: Write</text>
+  <text x="120" y="170" text-anchor="middle" font-size="8" fill="#bfdbfe">X=10 to Node A</text>
+  
+  <!-- Arrow -->
+  <line x1="175" y1="155" x2="205" y2="155" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- T=1: Replicating -->
+  <rect x="210" y="125" width="100" height="60" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="260" y="150" text-anchor="middle" font-size="9" fill="white">T+Δ: Replicating</text>
+  <text x="260" y="170" text-anchor="middle" font-size="8" fill="#fef3c7">Node B,C stale</text>
+  
+  <!-- Arrow -->
+  <line x1="315" y1="155" x2="345" y2="155" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- T+ε: Converged -->
+  <rect x="350" y="125" width="80" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="390" y="150" text-anchor="middle" font-size="9" fill="white">T+ε:</text>
+  <text x="390" y="170" text-anchor="middle" font-size="8" fill="white">Converged</text>
+  
+  <!-- Nodes state -->
+  <rect x="70" y="200" width="360" height="90" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <text x="250" y="225" text-anchor="middle" font-size="10" font-weight="bold" fill="#64748b">Node States During Convergence</text>
+  
+  <rect x="90" y="240" width="90" height="40" rx="3" fill="#3b82f6"/>
+  <text x="135" y="260" text-anchor="middle" font-size="8" fill="white">Node A</text>
+  <text x="135" y="275" text-anchor="middle" font-size="8" fill="#bfdbfe">X=10 (current)</text>
+  
+  <rect x="205" y="240" width="90" height="40" rx="3" fill="#f59e0b"/>
+  <text x="250" y="260" text-anchor="middle" font-size="8" fill="white">Node B</text>
+  <text x="250" y="275" text-anchor="middle" font-size="8" fill="#fef3c7">X=5 (stale)</text>
+  
+  <rect x="320" y="240" width="90" height="40" rx="3" fill="#f59e0b"/>
+  <text x="365" y="260" text-anchor="middle" font-size="8" fill="white">Node C</text>
+  <text x="365" y="275" text-anchor="middle" font-size="8" fill="#fef3c7">X=5 (stale)</text>
+  
+  <!-- Conflict Resolution Section -->
+  <rect x="470" y="85" width="380" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Conflict Resolution</text>
+  
+  <!-- LWW -->
+  <rect x="490" y="125" width="340" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="660" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309">Last Write Wins (LWW)</text>
+  <text x="660" y="165" text-anchor="middle" font-size="8" fill="#64748b">Highest timestamp wins, may lose data</text>
+  
+  <!-- Vector Clocks -->
+  <rect x="490" y="180" width="340" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="660" y="205" text-anchor="middle" font-size="10" font-weight="bold" fill="#3b82f6">Vector Clocks</text>
+  <text x="660" y="220" text-anchor="middle" font-size="8" fill="#64748b">Track causality, detect concurrent writes</text>
+  
+  <!-- CRDTs -->
+  <rect x="490" y="235" width="340" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="660" y="260" text-anchor="middle" font-size="10" font-weight="bold" fill="#10b981">CRDTs</text>
+  <text x="660" y="275" text-anchor="middle" font-size="8" fill="#64748b">Mathematical guarantee of convergence</text>
+  
+  <!-- Read Repair -->
+  <rect x="490" y="290" width="340" height="10" rx="2" fill="#8b5cf6"/>
+  <text x="660" y="302" text-anchor="middle" font-size="8" fill="#64748b">Read Repair: Fix stale data on read</text>
+  
+  <!-- Anti-Entropy -->
+  <rect x="50" y="320" width="400" height="110" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="250" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Anti-Entropy Mechanisms</text>
+  
+  <rect x="70" y="360" width="360" height="60" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <rect x="90" y="375" width="320" height="35" rx="3" fill="#3b82f6"/>
+  <text x="250" y="397" text-anchor="middle" font-size="9" fill="white">Merkle Trees: Detect divergent data efficiently</text>
+  
+  <rect x="90" y="415" width="320" height="35" rx="3" fill="#10b981"/>
+  <text x="250" y="437" text-anchor="middle" font-size="9" fill="white">Hinted Handoff: Temporarily store for unreachable nodes</text>
+  
+  <!-- Tunable Consistency -->
+  <rect x="470" y="320" width="380" height="110" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="660" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Tunable Consistency</text>
+  
+  <rect x="490" y="360" width="340" height="60" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  
+  <text x="660" y="385" text-anchor="middle" font-size="9" fill="#64748b">Quorum Formula: W + R &gt; N</text>
+  <text x="660" y="400" text-anchor="middle" font-size="8" fill="#64748b">W=Write quorum, R=Read quorum, N=Replicas</text>
+  <text x="660" y="415" text-anchor="middle" font-size="8" fill="#b91c1c">Strong: W=N, R=1 | High avail: W=1, R=N</text>
+  
+  <!-- Key Insight -->
+  <rect x="50" y="445" width="800" height="85" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="bold" fill="#047857">Key Insight</text>
+  <rect x="70" y="480" width="760" height="40" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="450" y="500" text-anchor="middle" font-size="9" fill="#64748b">Eventual consistency is NOT "no consistency"—it guarantees convergence through anti-entropy mechanisms</text>
+  <text x="450" y="515" text-anchor="middle" font-size="9" fill="#64748b">The staleness window (Δ) is the trade-off for high availability during partitions</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Blob Storage Use Cases</title>
+  <desc id="desc">When to use blob storage and real-world examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Blob Storage Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Blob Storage</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="280" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: VM Disks -->
+  <rect x="70" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">VM Disks (Page Blobs)</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• VHD/VHDX files</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Random read/write</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• OS and data disks</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Snapshots</text>
+  <text x="155" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 512-byte offset access</text>
+  <text x="155" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Azure VMs use page blobs</text>
+  
+  <!-- Use Case 2: Logging -->
+  <rect x="255" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Logging (Append Blobs)</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Application logs</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Telemetry data</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Audit trails</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Efficient appends</text>
+  <text x="340" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No file rewrites</text>
+  <text x="340" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Append blobs optimized for logs</text>
+  
+  <!-- Use Case 3: Media -->
+  <rect x="70" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Media Storage</text>
+  <text x="155" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User uploads</text>
+  <text x="155" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Documents, images</text>
+  <text x="155" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Video files</text>
+  <text x="155" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Block blobs</text>
+  <text x="155" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• CDN integration</text>
+  <text x="155" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Block blobs for general files</text>
+  
+  <!-- Use Case 4: Backup -->
+  <rect x="255" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Backup &amp; Snapshots</text>
+  <text x="340" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• VM snapshots</text>
+  <text x="340" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Database backups</text>
+  <text x="340" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Point-in-time copies</text>
+  <text x="340" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Immutable backups</text>
+  <text x="340" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Lifecycle policies</text>
+  <text x="340" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Snapshot for recovery points</text>
+  
+  <!-- When NOT to Use (Right Column) -->
+  <rect x="465" y="85" width="385" height="280" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use Blob Storage</text>
+  
+  <!-- Anti-Pattern 1: Database Storage -->
+  <rect x="485" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Database Storage</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Not for DB data files</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• High latency vs block</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No file system ops</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use block storage</text>
+  <text x="570" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• EBS for databases</text>
+  <text x="570" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use block storage for DBs</text>
+  
+  <!-- Anti-Pattern 2: Shared File Access -->
+  <rect x="670" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Shared File Access</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No POSIX semantics</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No file locking</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No directory structure</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use file storage</text>
+  <text x="755" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• NFS/EFS for sharing</text>
+  <text x="755" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use file storage for sharing</text>
+  
+  <!-- Anti-Pattern 3: Frequent Updates -->
+  <rect x="485" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Frequent Updates</text>
+  <text x="570" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Block blobs immutable</text>
+  <text x="570" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Updates = new upload</text>
+  <text x="570" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Versioning overhead</text>
+  <text x="570" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use block storage</text>
+  <text x="570" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Or page blobs for VM</text>
+  <text x="570" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use block storage for updates</text>
+  
+  <!-- Anti-Pattern 4: Small Files -->
+  <rect x="670" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Millions of Tiny Files</text>
+  <text x="755" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Metadata overhead</text>
+  <text x="755" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• LIST operations slow</text>
+  <text x="755" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Inefficient for tiny</text>
+  <text x="755" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Archive/zip first</text>
+  <text x="755" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use database or FS</text>
+  <text x="755" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Bundle small files</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  
+  <!-- Azure VMs -->
+  <rect x="70" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Azure: VM Disks</text>
+  <text x="190" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• OS disks as page blobs</text>
+  <text x="190" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Data disks for apps</text>
+  <text x="190" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Snapshots for backup</text>
+  <text x="190" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Random I/O optimized</text>
+  <text x="190" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Millions of VMs running</text>
+  
+  <!-- Application Logging -->
+  <rect x="325" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Enterprise: Log Aggregation</text>
+  <text x="445" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Append blobs for logs</text>
+  <text x="445" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Efficient append-only</text>
+  <text x="445" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No file rewrites</text>
+  <text x="445" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Lifecycle to archive</text>
+  <text x="445" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Centralized logging</text>
+  
+  <!-- Media Uploads -->
+  <rect x="580" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">SaaS: User Uploads</text>
+  <text x="700" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Block blobs for files</text>
+  <text x="700" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• SAS tokens for access</text>
+  <text x="700" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• CDN for delivery</text>
+  <text x="700" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Metadata for search</text>
+  <text x="700" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Scalable file hosting</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Connection Pooling Architecture</title>
+  <desc id="desc">Connection pool architecture showing borrow/return flow and lifecycle</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Connection Pooling Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Pool Lifecycle and Connection Reuse</text>
+  
+  <rect x="50" y="85" width="400" height="200" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Without Pooling</text>
+  <rect x="70" y="125" width="100" height="80" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="120" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">App 1</text>
+  <text x="120" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Creates conn</text>
+  <text x="120" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">50-100ms overhead</text>
+  <rect x="185" y="125" width="100" height="80" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="235" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">App 2</text>
+  <text x="235" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Creates conn</text>
+  <text x="235" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">50-100ms overhead</text>
+  <rect x="300" y="125" width="100" height="80" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="350" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">App N</text>
+  <text x="350" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Creates conn</text>
+  <text x="350" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">50-100ms overhead</text>
+  <line x1="120" y1="210" x2="120" y2="250" stroke="#374151" stroke-width="2"/>
+  <line x1="235" y1="210" x2="235" y2="250" stroke="#374151" stroke-width="2"/>
+  <line x1="350" y1="210" x2="350" y2="250" stroke="#374151" stroke-width="2"/>
+  <rect x="70" y="255" width="330" height="20" rx="3" fill="#dc2626" stroke="#b91c1c" stroke-width="1"/>
+  <text x="235" y="270" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Database Connection Limit (100)</text>
+  <text x="250" y="290" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">High overhead, connection exhaustion</text>
+  
+  <rect x="465" y="85" width="385" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">With Pooling</text>
+  <rect x="485" y="125" width="100" height="60" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="535" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">App 1</text>
+  <text x="535" y="160" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Borrow (1-5ms)</text>
+  <rect x="600" y="125" width="100" height="60" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="650" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">App 2</text>
+  <text x="650" y="160" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Borrow (1-5ms)</text>
+  <rect x="715" y="125" width="100" height="60" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="765" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">App N</text>
+  <text x="765" y="160" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Borrow (1-5ms)</text>
+  <line x1="535" y1="190" x2="535" y2="220" stroke="#374151" stroke-width="2"/>
+  <line x1="650" y1="190" x2="650" y2="220" stroke="#374151" stroke-width="2"/>
+  <line x1="765" y1="190" x2="765" y2="220" stroke="#374151" stroke-width="2"/>
+  <rect x="485" y="225" width="330" height="50" rx="4" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="650" y="245" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Connection Pool (10-20 connections)</text>
+  <text x="650" y="262" text-anchor="middle" font-size="8" font-weight="600" fill="#6ee7b7">Reusable, controlled, validated</text>
+  <text x="650" y="277" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">90-99% less overhead</text>
+  
+  <rect x="50" y="295" width="800" height="240" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Connection Pool Lifecycle</text>
+  
+  <rect x="70" y="335" width="180" height="100" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="160" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">1. Create Pool</text>
+  <text x="160" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Initialize N connections</text>
+  <text x="160" y="390" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">TCP handshake, auth</text>
+  <text x="160" y="403" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">One-time setup cost</text>
+  <text x="160" y="420" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Startup overhead</text>
+  
+  <line x1="255" y1="385" x2="285" y2="385" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="290" y="335" width="180" height="100" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="380" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">2. Borrow Connection</text>
+  <text x="380" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Get from pool (1-5ms)</text>
+  <text x="380" y="390" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Validate if stale</text>
+  <text x="380" y="403" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Queue if pool exhausted</text>
+  <text x="380" y="420" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Fast, no TCP overhead</text>
+  
+  <line x1="475" y1="385" x2="505" y2="385" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="510" y="335" width="180" height="100" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="600" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">3. Execute Query</text>
+  <text x="600" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Run SQL, get result</text>
+  <text x="600" y="390" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Connection in use</text>
+  <text x="600" y="403" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Mark as borrowed</text>
+  <text x="600" y="420" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Normal DB operation</text>
+  
+  <line x1="695" y1="385" x2="725" y2="385" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="730" y="335" width="100" height="100" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="780" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">4. Return</text>
+  <text x="780" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Back to pool</text>
+  <text x="780" y="390" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Available for reuse</text>
+  <text x="780" y="403" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">No close overhead</text>
+  <text x="780" y="420" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Reusable</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

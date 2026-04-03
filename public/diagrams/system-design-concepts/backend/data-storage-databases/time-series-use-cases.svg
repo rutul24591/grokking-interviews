@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Time Series Database Use Cases</title>
+  <desc id="desc">When to use time series databases and real-world applications</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Time Series Database Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Time Series Databases</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="280" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: Infrastructure Monitoring -->
+  <rect x="70" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Infrastructure Monitoring</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Server metrics (CPU, memory)</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Network metrics</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Application performance</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Container metrics</text>
+  <text x="155" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Database metrics</text>
+  <text x="155" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Tools: Prometheus, InfluxDB, Grafana</text>
+  
+  <!-- Use Case 2: IoT -->
+  <rect x="255" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">IoT &amp; Sensors</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Sensor readings</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Smart home devices</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Industrial IoT</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Vehicle telemetry</text>
+  <text x="340" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Environmental monitoring</text>
+  <text x="340" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">High volume, time-ordered writes</text>
+  
+  <!-- Use Case 3: Financial Data -->
+  <rect x="70" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Financial Data</text>
+  <text x="155" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Stock prices</text>
+  <text x="155" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Trading data</text>
+  <text x="155" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Market data feeds</text>
+  <text x="155" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Cryptocurrency prices</text>
+  <text x="155" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Exchange rates</text>
+  <text x="155" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Time-range queries, aggregations</text>
+  
+  <!-- Use Case 4: Application Metrics -->
+  <rect x="255" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Application Metrics</text>
+  <text x="340" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Request latency</text>
+  <text x="340" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Error rates</text>
+  <text x="340" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User activity</text>
+  <text x="340" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• API call counts</text>
+  <text x="340" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Business metrics</text>
+  <text x="340" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Real-time dashboards, alerting</text>
+  
+  <!-- Real-World Examples (Right Column) -->
+  <rect x="465" y="85" width="385" height="280" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Real-World Implementations</text>
+  
+  <!-- GitHub -->
+  <rect x="485" y="125" width="170" height="105" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">GitHub: Infrastructure Monitoring</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Prometheus + Grafana</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 100K+ metrics/second</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Real-time alerting</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Capacity planning</text>
+  <text x="570" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Incident response</text>
+  <text x="570" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Proactive issue detection</text>
+  
+  <!-- Uber -->
+  <rect x="670" y="125" width="170" height="105" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Uber: Trip Telemetry</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Trip tracking (M3DB)</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Driver location streaming</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• ETA calculations</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Pricing surge detection</text>
+  <text x="755" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Millions of events/second</text>
+  <text x="755" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Real-time trip tracking</text>
+  
+  <!-- Netflix -->
+  <rect x="485" y="240" width="170" height="115" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="570" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Netflix: Streaming Analytics</text>
+  <text x="570" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Playback metrics</text>
+  <text x="570" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Quality of experience</text>
+  <text x="570" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• CDN performance</text>
+  <text x="570" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Error tracking</text>
+  <text x="570" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 200M+ users globally</text>
+  <text x="570" y="345" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Atlas (open-source TSDB)</text>
+  <text x="570" y="358" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Optimal streaming quality</text>
+  
+  <!-- Tesla -->
+  <rect x="670" y="240" width="170" height="115" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="755" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Tesla: Vehicle Telemetry</text>
+  <text x="755" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Battery metrics</text>
+  <text x="755" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Charging data</text>
+  <text x="755" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Autopilot telemetry</text>
+  <text x="755" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Fleet analytics</text>
+  <text x="755" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Predictive maintenance</text>
+  <text x="755" y="345" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Millions of vehicles</text>
+  <text x="755" y="358" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Data-driven improvements</text>
+  
+  <!-- When NOT to Use (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">When NOT to Use Time Series Database</text>
+  
+  <rect x="70" y="415" width="180" height="110" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="160" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Non-Time-Series Data</text>
+  <text x="160" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User profiles</text>
+  <text x="160" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Product catalogs</text>
+  <text x="160" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Relational data</text>
+  <text x="160" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Content management</text>
+  <text x="160" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use document or relational DB</text>
+  
+  <rect x="265" y="415" width="180" height="110" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="355" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Complex Transactions</text>
+  <text x="355" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multi-row transactions</text>
+  <text x="355" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• ACID requirements</text>
+  <text x="355" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Financial transactions</text>
+  <text x="355" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Inventory management</text>
+  <text x="355" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use relational database</text>
+  
+  <rect x="460" y="415" width="180" height="110" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="550" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Complex Joins</text>
+  <text x="550" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multi-table joins</text>
+  <text x="550" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Aggregations across entities</text>
+  <text x="550" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex queries</text>
+  <text x="550" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Ad-hoc analysis</text>
+  <text x="550" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use relational or data warehouse</text>
+  
+  <rect x="655" y="415" width="180" height="110" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="745" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Low-Volume Data</text>
+  <text x="745" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Small datasets</text>
+  <text x="745" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Infrequent writes</text>
+  <text x="745" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple queries</text>
+  <text x="745" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No time-range needs</text>
+  <text x="745" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use simpler database (SQLite, etc.)</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

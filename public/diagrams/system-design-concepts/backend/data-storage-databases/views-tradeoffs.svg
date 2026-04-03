@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Views Trade-offs</title>
+  <desc id="desc">When to use views vs materialized views vs base tables</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Views Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Choosing Between Views, Materialized Views, and Base Tables</text>
+  
+  <!-- When to Use Standard Views (Left) -->
+  <rect x="50" y="85" width="260" height="240" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Use Standard Views When:</text>
+  
+  <rect x="65" y="125" width="230" height="190" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Security:</text>
+  <text x="180" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Row-level security</text>
+  <text x="180" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Column filtering</text>
+  <text x="180" y="196" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Grant view access, not table</text>
+  
+  <text x="180" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Simplification:</text>
+  <text x="180" y="240" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex joins encapsulated</text>
+  <text x="180" y="253" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple interface for apps</text>
+  
+  <text x="180" y="275" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Always Current:</text>
+  <text x="180" y="295" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Real-time data needed</text>
+  <text x="180" y="308" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple underlying query</text>
+  
+  <!-- When to Use Materialized Views (Middle) -->
+  <rect x="320" y="85" width="260" height="240" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Use Materialized Views When:</text>
+  
+  <rect x="335" y="125" width="230" height="190" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Performance:</text>
+  <text x="450" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Expensive aggregations</text>
+  <text x="450" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex joins</text>
+  <text x="450" y="196" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Dashboard queries</text>
+  
+  <text x="450" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Staleness OK:</text>
+  <text x="450" y="240" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Hourly/daily reports</text>
+  <text x="450" y="253" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Analytics (not real-time)</text>
+  
+  <text x="450" y="275" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Indexing Needed:</text>
+  <text x="450" y="295" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Need indexes on results</text>
+  <text x="450" y="308" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Fast lookups on aggregates</text>
+  
+  <!-- When to Use Base Tables (Right) -->
+  <rect x="590" y="85" width="260" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Use Base Tables When:</text>
+  
+  <rect x="605" y="125" width="230" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Simple Queries:</text>
+  <text x="720" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single table access</text>
+  <text x="720" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No complex joins</text>
+  <text x="720" y="196" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Fast enough without view</text>
+  
+  <text x="720" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Write-Heavy:</text>
+  <text x="720" y="240" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Frequent updates</text>
+  <text x="720" y="253" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• MV refresh overhead</text>
+  
+  <text x="720" y="275" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">No Abstraction Needed:</text>
+  <text x="720" y="295" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Direct table access OK</text>
+  <text x="720" y="308" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single application</text>
+  
+  <!-- Decision Framework (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Decision Framework</text>
+  
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Need Security/Simplification?</text>
+  <line x1="190" y1="415" x2="190" y2="445" stroke="#374151" stroke-width="2"/>
+  <text x="100" y="470" text-anchor="start" font-size="8" font-weight="700" fill="#059669">YES → Standard View</text>
+  <text x="100" y="485" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">(encapsulate, secure)</text>
+  <text x="250" y="470" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">NO → Next question</text>
+  
+  <rect x="325" y="375" width="240" height="150" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="445" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Query Expensive + Staleness OK?</text>
+  <line x1="445" y1="415" x2="445" y2="445" stroke="#374151" stroke-width="2"/>
+  <text x="355" y="470" text-anchor="start" font-size="8" font-weight="700" fill="#059669">YES → Materialized View</text>
+  <text x="355" y="485" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">(pre-compute, index)</text>
+  <text x="505" y="470" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">NO → Next question</text>
+  
+  <rect x="580" y="375" width="240" height="150" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="700" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Simple Query + Fast Enough?</text>
+  <line x1="700" y1="415" x2="700" y2="445" stroke="#374151" stroke-width="2"/>
+  <text x="610" y="470" text-anchor="start" font-size="8" font-weight="700" fill="#059669">YES → Base Table</text>
+  <text x="610" y="485" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">(direct access)</text>
+  <text x="760" y="470" text-anchor="start" font-size="8" font-weight="700" fill="#059669">NO → Optimize query first</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Key-Value Store Use Cases</title>
+  <desc id="desc">Common use cases and patterns for key-value stores</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Key-Value Store Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Real-World Applications and Implementation Patterns</text>
+  
+  <!-- Primary Use Cases (Left Column) -->
+  <rect x="50" y="85" width="270" height="280" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="185" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Primary Use Cases</text>
+  
+  <!-- Session Management -->
+  <rect x="65" y="125" width="240" height="70" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Session Management</text>
+  <text x="185" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Key: session:{session_id}</text>
+  <text x="185" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Value: {user_id, roles, cart}</text>
+  <text x="185" y="188" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">TTL: 30 minutes</text>
+  <text x="185" y="200" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Auto-expire, fast lookup</text>
+  
+  <!-- Caching -->
+  <rect x="65" y="205" width="240" height="70" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="225" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Caching Layer</text>
+  <text x="185" y="242" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Key: cache:{query_hash}</text>
+  <text x="185" y="255" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Pattern: Cache-aside</text>
+  <text x="185" y="268" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">1. Check cache → 2. DB miss → 3. Populate</text>
+  <text x="185" y="280" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Reduces DB load 90%+</text>
+  
+  <!-- Rate Limiting -->
+  <rect x="65" y="285" width="240" height="70" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="305" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Rate Limiting</text>
+  <text x="185" y="322" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Key: rate:{user_id}:minute</text>
+  <text x="185" y="335" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">INCR + EXPIRE 60</text>
+  <text x="185" y="348" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Sliding window counter</text>
+  <text x="185" y="360" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Atomic, O(1) operations</text>
+  
+  <!-- Feature Flags -->
+  <rect x="65" y="365" width="240" height="55" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="385" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Feature Flags</text>
+  <text x="185" y="400" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Key: feature:{flag_name}</text>
+  <text x="185" y="413" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Value: enabled/disabled + config</text>
+  <text x="185" y="425" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Instant rollout/rollback</text>
+  
+  <!-- Advanced Patterns (Middle Column) -->
+  <rect x="330" y="85" width="270" height="280" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="465" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Advanced Patterns</text>
+  
+  <!-- Leaderboard -->
+  <rect x="345" y="125" width="240" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="465" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Leaderboard (Sorted Set)</text>
+  <text x="465" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">ZADD game:1001 player1 5000</text>
+  <text x="465" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">ZREVRANGE game:1001 0 9</text>
+  <text x="465" y="188" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">ZRANK game:1001 player1</text>
+  <text x="465" y="200" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ O(log N) operations</text>
+  
+  <!-- Shopping Cart -->
+  <rect x="345" y="205" width="240" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="465" y="225" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Shopping Cart (Hash)</text>
+  <text x="465" y="242" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">HSET cart:{user_id} item123 2</text>
+  <text x="465" y="255" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">HGETALL cart:{user_id}</text>
+  <text x="465" y="268" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">TTL: 7 days (abandoned cart)</text>
+  <text x="465" y="280" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Partial updates, structured</text>
+  
+  <!-- Pub/Sub Messaging -->
+  <rect x="345" y="285" width="240" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="465" y="305" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Pub/Sub Messaging</text>
+  <text x="465" y="322" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">PUBLISH notifications "New order!"</text>
+  <text x="465" y="335" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SUBSCRIBE notifications</text>
+  <text x="465" y="348" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Real-time fanout to subscribers</text>
+  <text x="465" y="360" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Instant delivery, no persistence</text>
+  
+  <!-- Distributed Lock -->
+  <rect x="345" y="365" width="240" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="465" y="385" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Distributed Lock (Redlock)</text>
+  <text x="465" y="402" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SET lock:resource uuid NX EX 30</text>
+  <text x="465" y="415" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Acquire: NX (only if not exists)</text>
+  <text x="465" y="428" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Release: Lua script (check uuid)</text>
+  <text x="465" y="440" text-anchor="middle" font-size="7" font-weight="700" fill="#d97706">⚠ Auto-release on TTL expiry</text>
+  
+  <!-- Real-World Examples (Right Column) -->
+  <rect x="610" y="85" width="240" height="280" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Real-World Examples</text>
+  
+  <!-- Twitter -->
+  <rect x="625" y="125" width="210" height="60" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="730" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Twitter: Timeline Cache</text>
+  <text x="730" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Redis caches user timelines</text>
+  <text x="730" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Pre-computed home timelines</text>
+  <text x="730" y="185" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Handles 100K+ req/sec</text>
+  
+  <!-- GitHub -->
+  <rect x="625" y="195" width="210" height="60" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="730" y="215" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">GitHub: Session Store</text>
+  <text x="730" y="232" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Redis for user sessions</text>
+  <text x="730" y="245" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Fast authentication lookups</text>
+  <text x="730" y="255" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Sub-ms session validation</text>
+  
+  <!-- Stack Overflow -->
+  <rect x="625" y="265" width="210" height="60" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="730" y="285" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Stack Overflow: Caching</text>
+  <text x="730" y="302" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Redis for question/answer cache</text>
+  <text x="730" y="315" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Tag pages, user profiles</text>
+  <text x="730" y="325" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ 95%+ cache hit rate</text>
+  
+  <!-- Instagram -->
+  <rect x="625" y="335" width="210" height="60" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="730" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Instagram: Feed Ranking</text>
+  <text x="730" y="372" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Sorted sets for feed scores</text>
+  <text x="730" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Real-time ranking updates</text>
+  <text x="730" y="395" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Personalized, low-latency</text>
+  
+  <!-- When to Use / When NOT to Use (Bottom Left) -->
+  <rect x="50" y="375" width="400" height="160" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">When to Use vs When NOT to Use</text>
+  
+  <!-- Use KV -->
+  <rect x="70" y="415" width="170" height="110" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="155" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">USE KEY-VALUE WHEN:</text>
+  <text x="155" y="452" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple key-based access</text>
+  <text x="155" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Microsecond latency needed</text>
+  <text x="155" y="478" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• High write throughput</text>
+  <text x="155" y="491" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Horizontal scaling required</text>
+  <text x="155" y="504" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple data structures</text>
+  <text x="155" y="517" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Examples: Cache, sessions, counters</text>
+  
+  <!-- Don't Use KV -->
+  <rect x="255" y="415" width="170" height="110" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="340" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">AVOID KEY-VALUE WHEN:</text>
+  <text x="340" y="452" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex queries needed</text>
+  <text x="340" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Relationships between data</text>
+  <text x="340" y="478" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multi-key transactions</text>
+  <text x="340" y="491" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Ad-hoc filtering/search</text>
+  <text x="340" y="504" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Joins across keys</text>
+  <text x="340" y="517" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Use: Relational or document DB</text>
+  
+  <!-- Implementation Checklist (Bottom Right) -->
+  <rect x="465" y="375" width="385" height="160" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="657" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Implementation Checklist</text>
+  
+  <rect x="485" y="415" width="345" height="110" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  
+  <text x="500" y="435" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">□ Design key schema (prefixes, separators)</text>
+  <text x="500" y="450" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">□ Choose TTL strategy (per-key, global)</text>
+  <text x="500" y="465" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">□ Plan for persistence (AOF, RDB, replication)</text>
+  <text x="500" y="480" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">□ Set up monitoring (memory, hit rate, latency)</text>
+  <text x="500" y="495" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">□ Implement connection pooling</text>
+  <text x="500" y="510" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">□ Plan sharding strategy (consistent hashing)</text>
+  <text x="500" y="525" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">□ Define eviction policy (LRU, LFU, TTL)</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Conflict Resolution Use Cases</title>
+  <desc id="desc">When to use each conflict resolution strategy</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Conflict Resolution Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Each Strategy</text>
+  
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Multi-Leader Replication</text>
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Leaders in different regions</text>
+  <text x="180" y="165" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Accept writes independently</text>
+  <text x="180" y="180" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Conflicts on replication</text>
+  <text x="180" y="200" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">LWW for simple data</text>
+  <text x="180" y="215" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Custom merge for complex</text>
+  <text x="180" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Example: DynamoDB, Cassandra</text>
+  <text x="180" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Vector clocks for causality</text>
+  <text x="180" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Application merge for business logic</text>
+  
+  <rect x="320" y="85" width="260" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Offline-First Apps</text>
+  <rect x="335" y="125" width="230" height="150" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Mobile app works offline</text>
+  <text x="450" y="165" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Syncs when online</text>
+  <text x="450" y="180" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Concurrent edits possible</text>
+  <text x="450" y="200" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">CRDTs for auto-merge</text>
+  <text x="450" y="215" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">LWW for simple fields</text>
+  <text x="450" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Example: Notes app, todo lists</text>
+  <text x="450" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Operational transforms</text>
+  <text x="450" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Conflict-free for common ops</text>
+  
+  <rect x="590" y="85" width="260" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Collaborative Editing</text>
+  <rect x="605" y="125" width="230" height="150" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Multiple users edit same doc</text>
+  <text x="720" y="165" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Real-time sync required</text>
+  <text x="720" y="180" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">No data loss acceptable</text>
+  <text x="720" y="200" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">CRDTs (Yjs, Automerge)</text>
+  <text x="720" y="215" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Operational transforms</text>
+  <text x="720" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Example: Google Docs, Figma</text>
+  <text x="720" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Automatic merge guaranteed</text>
+  <text x="720" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Converge to same state</text>
+  
+  <rect x="50" y="295" width="800" height="140" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Real-World Examples</text>
+  
+  <rect x="70" y="335" width="240" height="90" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">DynamoDB: Multi-Region</text>
+  <text x="190" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LWW for global tables</text>
+  <text x="190" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Last writer wins by timestamp</text>
+  <text x="190" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Simple, predictable behavior</text>
+  
+  <rect x="325" y="335" width="240" height="90" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="445" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Riak: Vector Clocks</text>
+  <text x="445" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Detects concurrent writes</text>
+  <text x="445" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Returns siblings to client</text>
+  <text x="445" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Application resolves conflict</text>
+  
+  <rect x="580" y="335" width="240" height="90" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="700" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Redis: CRDTs</text>
+  <text x="700" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">RedisJSON with CRDTs</text>
+  <text x="700" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Active-Active replication</text>
+  <text x="700" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Automatic conflict resolution</text>
+  
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">Best Practices</text>
+  <rect x="70" y="485" width="760" height="40" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="450" y="505" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Choose strategy per data type (not one-size-fits-all)</text>
+  <text x="450" y="520" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Test conflict scenarios extensively before production</text>
+  <text x="450" y="535" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Log conflicts for analysis and debugging</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

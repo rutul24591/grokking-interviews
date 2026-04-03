@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Graph Database Trade-offs</title>
+  <desc id="desc">When to use graph databases vs other database types</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Graph Database Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Graph vs Other Databases</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases for Graph</text>
+  
+  <!-- Use Case 1: Social Networks -->
+  <rect x="70" y="125" width="170" height="85" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Social Networks</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Friend recommendations</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Network analysis</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Influence tracking</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Deep relationship traversals</text>
+  
+  <!-- Use Case 2: Fraud Detection -->
+  <rect x="255" y="125" width="170" height="85" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Fraud Detection</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Ring detection</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Pattern matching</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Identity linking</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Find hidden connections</text>
+  
+  <!-- Use Case 3: Recommendations -->
+  <rect x="70" y="220" width="170" height="95" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Recommendations</text>
+  <text x="155" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• "People who bought..."</text>
+  <text x="155" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Content recommendations</text>
+  <text x="155" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Similar users/items</text>
+  <text x="155" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Collaborative filtering</text>
+  <text x="155" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Graph algorithms (PageRank)</text>
+  
+  <!-- Use Case 4: Knowledge Graph -->
+  <rect x="255" y="220" width="170" height="95" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Knowledge Graph</text>
+  <text x="340" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Entity relationships</text>
+  <text x="340" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Semantic search</text>
+  <text x="340" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Ontology management</text>
+  <text x="340" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Master data management</text>
+  <text x="340" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Rich relationship semantics</text>
+  
+  <!-- When NOT to Use (Right Column) -->
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use Graph</text>
+  
+  <!-- Anti-Pattern 1: Simple CRUD -->
+  <rect x="485" y="125" width="170" height="85" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Simple CRUD Operations</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Basic key-value lookups</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple aggregations</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Bulk operations</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use relational or document DB</text>
+  
+  <!-- Anti-Pattern 2: Analytics -->
+  <rect x="670" y="125" width="170" height="85" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Heavy Analytics</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Large aggregations</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• OLAP queries</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Data warehousing</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use data warehouse</text>
+  
+  <!-- Anti-Pattern 3: High Volume Writes -->
+  <rect x="485" y="220" width="170" height="95" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">High-Volume Writes</text>
+  <text x="570" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Millions of writes/sec</text>
+  <text x="570" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Time-series data</text>
+  <text x="570" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Event logging</text>
+  <text x="570" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Metrics collection</text>
+  <text x="570" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use time-series or column-family</text>
+  
+  <!-- Anti-Pattern 4: Simple Hierarchies -->
+  <rect x="670" y="220" width="170" height="95" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Simple Hierarchies</text>
+  <text x="755" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single parent-child</text>
+  <text x="755" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Tree structures</text>
+  <text x="755" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Category hierarchies</text>
+  <text x="755" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Org charts</text>
+  <text x="755" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use document or relational DB</text>
+  
+  <!-- Database Comparison (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Database Selection by Use Case</text>
+  
+  <!-- Graph -->
+  <rect x="70" y="375" width="180" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="160" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Graph Database</text>
+  <text x="160" y="415" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Best for:</text>
+  <text x="160" y="430" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Relationship-heavy queries</text>
+  <text x="160" y="443" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Pattern matching</text>
+  <text x="160" y="456" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Network analysis</text>
+  <text x="160" y="471" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Path finding</text>
+  <text x="160" y="486" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Recommendations</text>
+  <text x="160" y="503" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Examples: Neo4j, Neptune</text>
+  
+  <!-- Relational -->
+  <rect x="265" y="375" width="180" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="355" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Relational Database</text>
+  <text x="355" y="415" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Best for:</text>
+  <text x="355" y="430" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• ACID transactions</text>
+  <text x="355" y="443" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex aggregations</text>
+  <text x="355" y="456" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Structured data</text>
+  <text x="355" y="469" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Joins (shallow)</text>
+  <text x="355" y="482" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Financial systems</text>
+  <text x="355" y="499" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Examples: PostgreSQL, MySQL</text>
+  
+  <!-- Document -->
+  <rect x="460" y="375" width="180" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="550" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Document Database</text>
+  <text x="550" y="415" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Best for:</text>
+  <text x="550" y="430" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Hierarchical data</text>
+  <text x="550" y="443" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Flexible schema</text>
+  <text x="550" y="456" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Content management</text>
+  <text x="550" y="469" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User profiles</text>
+  <text x="550" y="482" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Product catalogs</text>
+  <text x="550" y="499" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Examples: MongoDB, CouchDB</text>
+  
+  <!-- Column-Family -->
+  <rect x="655" y="375" width="180" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="745" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Column-Family</text>
+  <text x="745" y="415" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Best for:</text>
+  <text x="745" y="430" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Write-heavy workloads</text>
+  <text x="745" y="443" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Time-series data</text>
+  <text x="745" y="456" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Event logging</text>
+  <text x="745" y="469" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Messaging systems</text>
+  <text x="745" y="482" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Sparse data</text>
+  <text x="745" y="499" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Examples: Cassandra, HBase</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

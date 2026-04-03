@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">ACID Failure Recovery</title>
+  <desc id="desc">How databases recover from failures using WAL and transaction logs</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">ACID Failure Recovery</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">WAL, Checkpoints, and Crash Recovery</text>
+  
+  <rect x="50" y="85" width="400" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Write-Ahead Log (WAL)</text>
+  <rect x="70" y="125" width="360" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">All changes logged BEFORE data modified</text>
+  <rect x="85" y="165" width="330" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="182" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">1. Write change to WAL (sequential)</text>
+  <rect x="85" y="195" width="330" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="212" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">2. fsync WAL to disk (durability)</text>
+  <rect x="85" y="225" width="330" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="242" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">3. Modify data pages (async)</text>
+  <text x="250" y="265" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">If crash: replay WAL to recover</text>
+  
+  <rect x="465" y="85" width="385" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Checkpoint Process</text>
+  <rect x="485" y="125" width="345" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="657" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Periodic flush of dirty pages to disk</text>
+  <text x="657" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">1. Write checkpoint start record to WAL</text>
+  <text x="657" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">2. Flush all dirty pages to data files</text>
+  <text x="657" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">3. Write checkpoint end record to WAL</text>
+  <text x="657" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Recovery only needs WAL after last checkpoint</text>
+  <text x="657" y="240" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Reduces recovery time significantly</text>
+  <text x="657" y="255" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Fuzzy checkpoints avoid I/O spikes</text>
+  
+  <rect x="50" y="295" width="800" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Crash Recovery Process (ARIES Algorithm)</text>
+  <rect x="70" y="335" width="240" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="190" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">1. Analysis Phase</text>
+  <text x="190" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Scan WAL from last checkpoint</text>
+  <text x="190" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Identify active transactions at crash</text>
+  <text x="190" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Build dirty page table</text>
+  
+  <rect x="325" y="335" width="240" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="445" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">2. Redo Phase</text>
+  <text x="445" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Replay all logged changes</text>
+  <text x="445" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Restore database to crash state</text>
+  <text x="445" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Committed AND uncommitted changes</text>
+  <text x="445" y="420" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Idempotent (safe to replay)</text>
+  
+  <rect x="580" y="335" width="240" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="700" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">3. Undo Phase</text>
+  <text x="700" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Rollback uncommitted transactions</text>
+  <text x="700" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use undo log (before images)</text>
+  <text x="700" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Reverse changes in reverse order</text>
+  <text x="700" y="420" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Database returns to consistent state</text>
+  
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#0369a1">Key Properties Ensured by Recovery</text>
+  <rect x="70" y="485" width="180" height="40" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="160" y="505" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Atomicity</text>
+  <text x="160" y="518" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Undo uncommitted</text>
+  
+  <rect x="265" y="485" width="180" height="40" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="355" y="505" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Consistency</text>
+  <text x="355" y="518" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Valid state restored</text>
+  
+  <rect x="460" y="485" width="180" height="40" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="550" y="505" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Isolation</text>
+  <text x="550" y="518" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Lock state recovered</text>
+  
+  <rect x="655" y="485" width="180" height="40" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="745" y="505" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Durability</text>
+  <text x="745" y="518" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Committed changes survive</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

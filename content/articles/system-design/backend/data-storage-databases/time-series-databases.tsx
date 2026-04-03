@@ -621,41 +621,77 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            InfluxDB Documentation, "Data Model," "Downsampling," "Retention Policies,"
-            https://docs.influxdata.com/
+            <a
+              href="https://docs.influxdata.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              InfluxDB Documentation — Data Model, Downsampling, Retention Policies
+            </a>
           </li>
           <li>
-            Prometheus Documentation, "Data Model," "Querying,"
-            https://prometheus.io/docs/
+            <a
+              href="https://prometheus.io/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Prometheus Documentation — Data Model, Querying
+            </a>
           </li>
           <li>
-            TimescaleDB Documentation, "Hypertables," "Continuous Aggregates,"
-            https://docs.timescale.com/
+            <a
+              href="https://docs.timescale.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              TimescaleDB Documentation — Hypertables, Continuous Aggregates
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 13.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 13.
           </li>
           <li>
-            Google, "Monarch: Google's Planet-Scale Index-Free Time Series Database,"
+            Google, "Monarch: Google&apos;s Planet-Scale Index-Free Time Series Database,"
             USENIX ATC 2020.
           </li>
           <li>
-            Netflix Tech Blog, "Atlas: Netflix's Time Series Database,"
-            https://netflixtechblog.com/
+            <a
+              href="https://netflixtechblog.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Netflix Tech Blog — Atlas: Netflix&apos;s Time Series Database
+            </a>
           </li>
           <li>
-            QuestDB Documentation, "Architecture,"
-            https://questdb.io/docs/
+            <a
+              href="https://questdb.io/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              QuestDB Documentation — Architecture
+            </a>
           </li>
           <li>
-            Kdb+ Documentation, "Time Series Features,"
-            https://code.kx.com/
+            <a
+              href="https://code.kx.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Kdb+ Documentation — Time Series Features
+            </a>
           </li>
           <li>
             Daniel Lemire, "Gorilla: Faster Time Series Compression," Various blog posts.

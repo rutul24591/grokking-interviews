@@ -593,45 +593,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            PostgreSQL Documentation, "Indexes,"
-            https://www.postgresql.org/docs/current/indexes.html
+            <a
+              href="https://www.postgresql.org/docs/current/indexes.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Indexes
+            </a>
           </li>
           <li>
-            PostgreSQL Documentation, "GIN Indexes,"
-            https://www.postgresql.org/docs/current/gin.html
+            <a
+              href="https://www.postgresql.org/docs/current/gin.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — GIN Indexes
+            </a>
           </li>
           <li>
-            PostgreSQL Documentation, "GiST Indexes,"
-            https://www.postgresql.org/docs/current/gist.html
+            <a
+              href="https://www.postgresql.org/docs/current/gist.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — GiST Indexes
+            </a>
           </li>
           <li>
-            PostgreSQL Documentation, "BRIN Indexes,"
-            https://www.postgresql.org/docs/current/brin.html
+            <a
+              href="https://www.postgresql.org/docs/current/brin.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — BRIN Indexes
+            </a>
           </li>
           <li>
-            MySQL Documentation, "InnoDB Index Types,"
-            https://dev.mysql.com/doc/refman/8.0/en/innodb-index-types.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/innodb-index-types.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — InnoDB Index Types
+            </a>
           </li>
           <li>
-            Use The Index, Luke, "The WHERE Clause,"
-            https://use-the-index-luke.com/sql/where-clause
+            <a
+              href="https://use-the-index-luke.com/sql/where-clause"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Use The Index, Luke — The WHERE Clause
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 5.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 5.
           </li>
           <li>
-            CMU Database Group, "Advanced Indexing" (YouTube lectures),
-            https://www.youtube.com/c/CMUDatabaseGroup
+            <a
+              href="https://www.youtube.com/c/CMUDatabaseGroup"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CMU Database Group — Advanced Indexing (YouTube lectures)
+            </a>
           </li>
           <li>
-            Percona Blog, "PostgreSQL Index Types,"
-            https://www.percona.com/blog/
+            <a
+              href="https://www.percona.com/blog/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Percona Blog — PostgreSQL Index Types
+            </a>
           </li>
         </ul>
       </section>

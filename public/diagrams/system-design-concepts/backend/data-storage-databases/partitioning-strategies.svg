@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Database Partitioning Strategies</title>
+  <desc id="desc">Horizontal vs vertical partitioning, range vs hash methods</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Database Partitioning Strategies</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Horizontal vs Vertical, Range vs Hash</text>
+  
+  <!-- Horizontal Partitioning (Top Left) -->
+  <rect x="50" y="85" width="400" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Horizontal Partitioning (Sharding)</text>
+  
+  <rect x="70" y="125" width="360" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <!-- Original table -->
+  <rect x="85" y="140" width="100" height="120" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="135" y="160" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Original Table</text>
+  <text x="135" y="180" text-anchor="middle" font-size="6" font-weight="600" fill="#dbeafe">1M rows</text>
+  <text x="135" y="195" text-anchor="middle" font-size="6" font-weight="600" fill="#dbeafe">user_id: 1-1M</text>
+  <text x="135" y="210" text-anchor="middle" font-size="6" font-weight="600" fill="#dbeafe">50 columns</text>
+  <text x="135" y="225" text-anchor="middle" font-size="6" font-weight="600" fill="#dbeafe">10 GB</text>
+  
+  <!-- Arrow -->
+  <line x1="190" y1="200" x2="220" y2="200" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="205" y="190" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Partition</text>
+  <text x="205" y="205" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">by user_id</text>
+  
+  <!-- Shard 1 -->
+  <rect x="235" y="140" width="80" height="55" rx="3" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="275" y="160" text-anchor="middle" font-size="7" font-weight="700" fill="#1e3a8a">Shard 1</text>
+  <text x="275" y="175" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">user_id:</text>
+  <text x="275" y="185" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">1-500K</text>
+  <text x="275" y="195" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">5 GB</text>
+  
+  <!-- Shard 2 -->
+  <rect x="235" y="205" width="80" height="55" rx="3" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="275" y="225" text-anchor="middle" font-size="7" font-weight="700" fill="#1e3a8a">Shard 2</text>
+  <text x="275" y="240" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">user_id:</text>
+  <text x="275" y="250" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">500K-1M</text>
+  <text x="275" y="260" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">5 GB</text>
+  
+  <text x="350" y="200" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Same schema,</text>
+  <text x="350" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">rows distributed</text>
+  
+  <!-- Vertical Partitioning (Top Right) -->
+  <rect x="465" y="85" width="385" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Vertical Partitioning</text>
+  
+  <rect x="485" y="125" width="345" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <!-- Original wide table -->
+  <rect x="500" y="140" width="100" height="120" rx="3" fill="#d97706" stroke="#b45309" stroke-width="2"/>
+  <text x="550" y="160" text-anchor="middle" font-size="8" font-weight="700" fill="#78350f">Original Table</text>
+  <text x="550" y="180" text-anchor="middle" font-size="6" font-weight="600" fill="#fef3c7">50 columns</text>
+  <text x="550" y="195" text-anchor="middle" font-size="6" font-weight="600" fill="#fef3c7">10 frequently</text>
+  <text x="550" y="205" text-anchor="middle" font-size="6" font-weight="600" fill="#fef3c7">40 rarely used</text>
+  <text x="550" y="220" text-anchor="middle" font-size="6" font-weight="600" fill="#fef3c7">Wide rows</text>
+  <text x="550" y="235" text-anchor="middle" font-size="6" font-weight="600" fill="#fef3c7">Slow queries</text>
+  
+  <!-- Arrow -->
+  <line x1="605" y1="200" x2="635" y2="200" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="620" y="190" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Split by</text>
+  <text x="620" y="205" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">access pattern</text>
+  
+  <!-- Core table -->
+  <rect x="650" y="140" width="80" height="55" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="690" y="160" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">Core Table</text>
+  <text x="690" y="175" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">10 columns</text>
+  <text x="690" y="185" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Frequently</text>
+  <text x="690" y="195" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">accessed</text>
+  
+  <!-- Extended table -->
+  <rect x="650" y="205" width="80" height="55" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="690" y="225" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">Extended</text>
+  <text x="690" y="240" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">40 columns</text>
+  <text x="690" y="250" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Rarely used</text>
+  <text x="690" y="260" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Lazy load</text>
+  
+  <text x="760" y="200" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Same rows,</text>
+  <text x="760" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">columns split</text>
+  
+  <!-- Partitioning Methods (Bottom) -->
+  <rect x="50" y="295" width="800" height="240" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#0369a1">Partitioning Methods</text>
+  
+  <!-- Range-Based -->
+  <rect x="70" y="335" width="240" height="190" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="360" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Range-Based</text>
+  
+  <rect x="85" y="375" width="210" height="60" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Partition by value ranges:</text>
+  <text x="190" y="410" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• user_id 1-100K → Shard A</text>
+  <text x="190" y="423" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• user_id 100K-200K → Shard B</text>
+  <text x="190" y="436" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• date 2024-Q1 → Partition 1</text>
+  
+  <text x="190" y="465" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Efficient range queries</text>
+  <text x="190" y="480" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Uneven distribution risk</text>
+  <text x="190" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: Time-series, ordered data</text>
+  
+  <!-- Hash-Based -->
+  <rect x="325" y="335" width="240" height="190" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="360" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Hash-Based</text>
+  
+  <rect x="340" y="375" width="210" height="60" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Partition by hash value:</text>
+  <text x="445" y="410" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• shard = hash(user_id) % N</text>
+  <text x="445" y="423" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Even distribution guaranteed</text>
+  <text x="445" y="436" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No hot spots</text>
+  
+  <text x="445" y="465" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Even distribution</text>
+  <text x="445" y="480" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Range queries inefficient</text>
+  <text x="445" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: User data, random access</text>
+  
+  <!-- List-Based -->
+  <rect x="580" y="335" width="240" height="190" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="360" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">List-Based</text>
+  
+  <rect x="595" y="375" width="210" height="60" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Partition by explicit values:</text>
+  <text x="700" y="410" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• region='US' → Shard US</text>
+  <text x="700" y="423" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• region='EU' → Shard EU</text>
+  <text x="700" y="436" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• region='APAC' → Shard APAC</text>
+  
+  <text x="700" y="465" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Natural isolation</text>
+  <text x="700" y="480" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Manual partition management</text>
+  <text x="700" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: Multi-tenant, geographic</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

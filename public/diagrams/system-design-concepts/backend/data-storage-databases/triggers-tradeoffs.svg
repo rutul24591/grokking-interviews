@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Triggers Trade-offs</title>
+  <desc id="desc">Benefits and drawbacks of using database triggers</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Triggers Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Benefits vs Drawbacks</text>
+  
+  <!-- Benefits (Left) -->
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Benefits</text>
+  
+  <rect x="70" y="125" width="360" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Automatic Execution:</text>
+  <text x="250" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• No application code needed</text>
+  <text x="250" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Always fires (can't forget)</text>
+  <text x="250" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Consistent across all apps</text>
+  
+  <text x="250" y="230" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Data Integrity:</text>
+  <text x="250" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Enforce complex rules</text>
+  <text x="250" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Maintain derived data</text>
+  <text x="250" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Audit trails automatically</text>
+  
+  <text x="250" y="310" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Centralized Logic:</text>
+  <text x="250" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Single source of truth</text>
+  <text x="250" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• All apps benefit</text>
+  
+  <!-- Drawbacks (Right) -->
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Drawbacks</text>
+  
+  <rect x="485" y="125" width="345" height="190" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <text x="657" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Hidden Logic:</text>
+  <text x="657" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• App doesn't see trigger firing</text>
+  <text x="657" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Unexpected side effects</text>
+  <text x="657" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Hard to debug</text>
+  
+  <text x="657" y="230" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Performance Overhead:</text>
+  <text x="657" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Runs on every operation</text>
+  <text x="657" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Slow triggers block operations</text>
+  <text x="657" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Batch operations amplified</text>
+  
+  <text x="657" y="310" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Maintenance:</text>
+  <text x="657" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Hard to test</text>
+  <text x="657" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Version control challenges</text>
+  
+  <!-- Best Practices (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Best Practices</text>
+  
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Keep Triggers Simple</text>
+  <text x="190" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Minimal logic</text>
+  <text x="190" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• No external calls</text>
+  <text x="190" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Fast execution</text>
+  <text x="190" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Single responsibility</text>
+  <text x="190" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Log, validate, derive</text>
+  
+  <rect x="325" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Document Well</text>
+  <text x="445" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Name triggers clearly</text>
+  <text x="445" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Comment purpose</text>
+  <text x="445" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• List affected tables</text>
+  <text x="445" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Document in schema docs</text>
+  <text x="445" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Make triggers visible</text>
+  
+  <rect x="580" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Avoid Recursion</text>
+  <text x="700" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• No circular triggers</text>
+  <text x="700" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Set recursion limits</text>
+  <text x="700" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Test trigger chains</text>
+  <text x="700" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Monitor trigger count</text>
+  <text x="700" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Prevent infinite loops</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

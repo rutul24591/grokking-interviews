@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Partitioning Use Cases</title>
+  <desc id="desc">When to use partitioning and real-world examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Partitioning Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Partition and Real-World Examples</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: Large Tables -->
+  <rect x="70" y="125" width="170" height="85" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Large Tables</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• &gt;100M rows</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• &gt;10 GB data</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Slow queries</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: Logs, events, audit trails</text>
+  
+  <!-- Use Case 2: High Write Throughput -->
+  <rect x="255" y="125" width="170" height="85" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">High Write Throughput</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 10K+ writes/sec</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single DB bottleneck</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Write-heavy workload</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: IoT, clickstream</text>
+  
+  <!-- Use Case 3: Multi-Tenant -->
+  <rect x="70" y="220" width="170" height="95" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Multi-Tenant SaaS</text>
+  <text x="155" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Tenant isolation</text>
+  <text x="155" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Per-tenant performance</text>
+  <text x="155" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Enterprise customers</text>
+  <text x="155" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Data residency</text>
+  <text x="155" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: tenant_id partitioning</text>
+  
+  <!-- Use Case 4: Time-Series -->
+  <rect x="255" y="220" width="170" height="95" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Time-Series Data</text>
+  <text x="340" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Metrics, events</text>
+  <text x="340" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Partition by date</text>
+  <text x="340" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Easy archival</text>
+  <text x="340" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Drop old partitions</text>
+  <text x="340" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: metrics by month</text>
+  
+  <!-- When NOT to Partition (Right Column) -->
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Partition</text>
+  
+  <!-- Anti-Pattern 1: Small Tables -->
+  <rect x="485" y="125" width="170" height="85" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Small Tables</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• &lt;10M rows</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• &lt;1 GB data</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Fast queries</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Partitioning adds complexity</text>
+  
+  <!-- Anti-Pattern 2: Cross-Partition Joins -->
+  <rect x="670" y="125" width="170" height="85" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Frequent Cross-Partition Joins</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex queries</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multi-table joins</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Aggregations across shards</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Very slow, avoid</text>
+  
+  <!-- Anti-Pattern 3: No Clear Key -->
+  <rect x="485" y="220" width="170" height="95" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">No Clear Shard Key</text>
+  <text x="570" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No natural partition</text>
+  <text x="570" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• All queries span data</text>
+  <text x="570" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No access pattern</text>
+  <text x="570" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Random access</text>
+  <text x="570" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Will cause hot spots</text>
+  
+  <!-- Anti-Pattern 4: Operational Overhead -->
+  <rect x="670" y="220" width="170" height="95" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Can't Handle Ops Overhead</text>
+  <text x="755" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No monitoring</text>
+  <text x="755" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No rebalancing plan</text>
+  <text x="755" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No backup strategy</text>
+  <text x="755" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Small team</text>
+  <text x="755" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Start with read replicas</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="14" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  
+  <!-- Uber -->
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Uber: Trip Partitioning</text>
+  <text x="190" y="420" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Partition by city/region</text>
+  <text x="190" y="435" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Geographic isolation</text>
+  <text x="190" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low latency per region</text>
+  <text x="190" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Millions of trips/day</text>
+  <text x="190" y="485" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Global ride-sharing at scale</text>
+  
+  <!-- Slack -->
+  <rect x="325" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Slack: Workspace Partitioning</text>
+  <text x="445" y="420" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Partition by workspace_id</text>
+  <text x="445" y="435" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Each workspace isolated</text>
+  <text x="445" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Messages, channels, users</text>
+  <text x="445" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 10M+ workspaces</text>
+  <text x="445" y="485" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Multi-tenant messaging at scale</text>
+  
+  <!-- Airbnb -->
+  <rect x="580" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Airbnb: Listing Partitioning</text>
+  <text x="700" y="420" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Partition by geographic region</text>
+  <text x="700" y="435" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Listings by city/neighborhood</text>
+  <text x="700" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Search optimized by location</text>
+  <text x="700" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 7M+ listings globally</text>
+  <text x="700" y="485" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Fast location-based search</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

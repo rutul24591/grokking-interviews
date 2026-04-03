@@ -552,45 +552,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Amazon EFS Documentation, "How It Works," "Performance," "Security,"
-            https://docs.aws.amazon.com/efs/
+            <a
+              href="https://docs.aws.amazon.com/efs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Amazon EFS Documentation — How It Works, Performance, Security
+            </a>
           </li>
           <li>
-            Azure Files Documentation, "Introduction," "Protocols,"
-            https://docs.microsoft.com/en-us/azure/storage/files/
+            <a
+              href="https://docs.microsoft.com/en-us/azure/storage/files/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Azure Files Documentation — Introduction, Protocols
+            </a>
           </li>
           <li>
-            Google Filestore Documentation, "Overview," "Tiers,"
-            https://cloud.google.com/filestore/docs
+            <a
+              href="https://cloud.google.com/filestore/docs"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Filestore Documentation — Overview, Tiers
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 3.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 3.
           </li>
           <li>
-            NFS Documentation, "NFSv4 Protocol,"
-            https://www.rfc-editor.org/rfc/rfc7530.txt
+            <a
+              href="https://www.rfc-editor.org/rfc/rfc7530.txt"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              NFSv4 Protocol Specification (RFC 7530)
+            </a>
           </li>
           <li>
-            SMB Documentation, "SMB Protocol,"
-            https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/
+            <a
+              href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SMB Protocol Specification
+            </a>
           </li>
           <li>
-            HDFS Documentation, "HDFS Architecture,"
-            https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/
+            <a
+              href="https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HDFS Documentation — HDFS Architecture
+            </a>
           </li>
           <li>
-            Ceph Documentation, "Ceph File System,"
-            https://docs.ceph.com/
+            <a
+              href="https://docs.ceph.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ceph Documentation — Ceph File System
+            </a>
           </li>
           <li>
-            Linux Documentation, "File Systems," "Mount Options,"
-            https://www.kernel.org/doc/
+            <a
+              href="https://www.kernel.org/doc/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Linux Kernel Documentation — File Systems, Mount Options
+            </a>
           </li>
         </ul>
       </section>

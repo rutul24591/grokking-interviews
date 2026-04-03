@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Partitioning Shard Key Selection</title>
+  <desc id="desc">How to choose the right shard key for partitioning</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Shard Key Selection</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Choosing the Right Partition Key</text>
+  
+  <!-- Good Shard Keys (Left) -->
+  <rect x="50" y="85" width="400" height="220" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Good Shard Keys</text>
+  
+  <rect x="70" y="125" width="360" height="170" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Characteristics:</text>
+  <text x="250" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• High cardinality (many unique values)</text>
+  <text x="250" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Even distribution (no hot spots)</text>
+  <text x="250" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Frequently used in queries</text>
+  <text x="250" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Immutable (doesn't change)</text>
+  
+  <text x="250" y="250" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Examples:</text>
+  <text x="250" y="270" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• user_id (user data)</text>
+  <text x="250" y="285" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• order_id (order data)</text>
+  <text x="250" y="300" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• tenant_id (multi-tenant SaaS)</text>
+  
+  <text x="250" y="320" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Results in balanced partitions</text>
+  
+  <!-- Bad Shard Keys (Right) -->
+  <rect x="465" y="85" width="385" height="220" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Bad Shard Keys</text>
+  
+  <rect x="485" y="125" width="345" height="170" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <text x="657" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Characteristics:</text>
+  <text x="657" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Low cardinality (few unique values)</text>
+  <text x="657" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Causes hot spots (uneven load)</text>
+  <text x="657" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Monotonically increasing</text>
+  <text x="657" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Changes frequently</text>
+  
+  <text x="657" y="250" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Examples:</text>
+  <text x="657" y="270" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• status (active/inactive = 2 values)</text>
+  <text x="657" y="285" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• created_at (all new writes to one shard)</text>
+  <text x="657" y="300" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• boolean flags (true/false)</text>
+  
+  <text x="657" y="320" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Results in unbalanced partitions</text>
+  
+  <!-- Hot Spot Example (Bottom Left) -->
+  <rect x="50" y="315" width="400" height="220" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Hot Spot Example: Bad Key</text>
+  
+  <rect x="70" y="355" width="360" height="170" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <!-- Uneven distribution -->
+  <text x="250" y="380" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Shard Key: status (active/inactive)</text>
+  
+  <rect x="85" y="395" width="60" height="100" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="115" y="450" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Shard A</text>
+  <text x="115" y="465" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">status=active</text>
+  <text x="115" y="478" text-anchor="middle" font-size="8" font-weight="700" fill="#dc2626">90% traffic</text>
+  <text x="115" y="493" text-anchor="middle" font-size="8" font-weight="700" fill="#dc2626">OVERLOADED</text>
+  
+  <rect x="165" y="460" width="60" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="195" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#92400e">Shard B</text>
+  <text x="195" y="493" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">status=inactive</text>
+  <text x="195" y="506" text-anchor="middle" font-size="8" font-weight="600" fill="#d97706">10% traffic</text>
+  
+  <text x="300" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Problem:</text>
+  <text x="300" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Most users are active</text>
+  <text x="300" y="478" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">All writes go to Shard A</text>
+  <text x="300" y="491" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Shard B is underutilized</text>
+  
+  <!-- Solution Example (Bottom Right) -->
+  <rect x="465" y="315" width="385" height="220" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="657" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Solution: Good Key</text>
+  
+  <rect x="485" y="355" width="345" height="170" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="657" y="380" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Shard Key: hash(user_id) % N</text>
+  
+  <rect x="500" y="395" width="80" height="100" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="540" y="445" text-anchor="middle" font-size="7" font-weight="700" fill="#15803d">Shard 0</text>
+  <text x="540" y="460" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">hash % 3 = 0</text>
+  <text x="540" y="475" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">33% traffic</text>
+  <text x="540" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">BALANCED</text>
+  
+  <rect x="595" y="395" width="80" height="100" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="635" y="445" text-anchor="middle" font-size="7" font-weight="700" fill="#15803d">Shard 1</text>
+  <text x="635" y="460" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">hash % 3 = 1</text>
+  <text x="635" y="475" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">34% traffic</text>
+  <text x="635" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">BALANCED</text>
+  
+  <rect x="690" y="395" width="80" height="100" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="730" y="445" text-anchor="middle" font-size="7" font-weight="700" fill="#15803d">Shard 2</text>
+  <text x="730" y="460" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">hash % 3 = 2</text>
+  <text x="730" y="475" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">33% traffic</text>
+  <text x="730" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">BALANCED</text>
+  
+  <text x="750" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Result:</text>
+  <text x="750" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Even distribution</text>
+  <text x="750" y="478" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">No hot spots</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

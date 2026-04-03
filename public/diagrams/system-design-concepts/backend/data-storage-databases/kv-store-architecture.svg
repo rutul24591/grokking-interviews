@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Key-Value Store Architecture</title>
+  <desc id="desc">Key-value store architecture showing operations and data structures</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Key-Value Store Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Basic Operations and Data Structures</text>
+  
+  <!-- Basic KV Flow (Top Left) -->
+  <rect x="50" y="85" width="260" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">Basic Operations</text>
+  
+  <!-- Client -->
+  <rect x="70" y="120" width="80" height="40" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="110" y="140" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Client</text>
+  
+  <!-- Arrows -->
+  <line x1="155" y1="130" x2="185" y2="130" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="185" y1="150" x2="155" y2="150" stroke="#374151" stroke-width="2" marker-end="url(#arrow-left)"/>
+  
+  <!-- KV Store -->
+  <rect x="190" y="120" width="100" height="40" rx="4" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="240" y="140" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">KV Store</text>
+  
+  <!-- Operations -->
+  <text x="180" y="175" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">GET key → value</text>
+  <text x="180" y="190" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">SET key value → OK</text>
+  <text x="180" y="205" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">DELETE key → OK</text>
+  <text x="180" y="220" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">TTL key → seconds</text>
+  
+  <!-- Hash Table Internals (Top Middle) -->
+  <rect x="320" y="85" width="260" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Hash Table Internals</text>
+  
+  <!-- Hash Function -->
+  <rect x="335" y="120" width="230" height="95" rx="4" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  
+  <text x="450" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">hash(key) % num_buckets → index</text>
+  
+  <!-- Buckets -->
+  <rect x="350" y="155" width="40" height="25" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="370" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">0</text>
+  
+  <rect x="395" y="155" width="40" height="25" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="415" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">1</text>
+  
+  <rect x="440" y="155" width="40" height="25" rx="2" fill="#fbbf24" stroke="#b45309" stroke-width="2"/>
+  <text x="460" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">2</text>
+  <text x="460" y="185" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">→ "user:123"</text>
+  
+  <rect x="485" y="155" width="40" height="25" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="505" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">3</text>
+  
+  <rect x="530" y="155" width="40" height="25" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="550" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">4</text>
+  
+  <text x="450" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">O(1) average lookup time</text>
+  
+  <!-- Redis Data Structures (Top Right) -->
+  <rect x="590" y="85" width="260" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">Redis Data Structures</text>
+  
+  <rect x="605" y="120" width="230" height="95" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  
+  <!-- Structure Grid -->
+  <rect x="615" y="135" width="65" height="30" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="647" y="150" text-anchor="middle" font-size="7" font-weight="700" fill="#065f46">String</text>
+  <text x="647" y="162" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Counters</text>
+  
+  <rect x="690" y="135" width="65" height="30" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="722" y="150" text-anchor="middle" font-size="7" font-weight="700" fill="#065f46">List</text>
+  <text x="722" y="162" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Queues</text>
+  
+  <rect x="765" y="135" width="65" height="30" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="797" y="150" text-anchor="middle" font-size="7" font-weight="700" fill="#065f46">Set</text>
+  <text x="797" y="162" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Unique</text>
+  
+  <rect x="615" y="170" width="65" height="30" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="647" y="185" text-anchor="middle" font-size="7" font-weight="700" fill="#065f46">Hash</text>
+  <text x="647" y="197" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Objects</text>
+  
+  <rect x="690" y="170" width="65" height="30" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="722" y="185" text-anchor="middle" font-size="7" font-weight="700" fill="#065f46">ZSet</text>
+  <text x="722" y="197" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Leaderboards</text>
+  
+  <rect x="765" y="170" width="65" height="30" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="797" y="185" text-anchor="middle" font-size="7" font-weight="700" fill="#065f46">Bitmap</text>
+  <text x="797" y="197" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Bit ops</text>
+  
+  <!-- Use Cases (Bottom Left) -->
+  <rect x="50" y="235" width="400" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Common Use Cases</text>
+  
+  <!-- Use Case 1: Sessions -->
+  <rect x="70" y="275" width="170" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="155" y="295" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Session Storage</text>
+  <text x="155" y="315" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Key: session:{id}</text>
+  <text x="155" y="328" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Value: {user_id, prefs}</text>
+  <text x="155" y="343" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">TTL: 30 min expiration</text>
+  <text x="155" y="358" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Fast lookup, auto-expire</text>
+  
+  <!-- Use Case 2: Caching -->
+  <rect x="255" y="275" width="170" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="340" y="295" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Caching Layer</text>
+  <text x="340" y="315" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Key: cache:{query_hash}</text>
+  <text x="340" y="328" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Value: serialized result</text>
+  <text x="340" y="343" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Pattern: cache-aside</text>
+  <text x="340" y="358" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Reduces DB load</text>
+  
+  <!-- Use Cases Row 2 -->
+  <rect x="70" y="375" width="170" height="55" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="155" y="395" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Rate Limiting</text>
+  <text x="155" y="410" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Key: rate:{user_ip}</text>
+  <text x="155" y="423" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">INCR + TTL = counter</text>
+  
+  <rect x="255" y="375" width="170" height="55" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="340" y="395" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Feature Flags</text>
+  <text x="340" y="410" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Key: feature:{flag_name}</text>
+  <text x="340" y="423" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Value: enabled/disabled</text>
+  
+  <!-- Scaling Patterns (Bottom Right) -->
+  <rect x="465" y="235" width="385" height="195" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Scaling Patterns</text>
+  
+  <!-- Consistent Hashing -->
+  <rect x="485" y="275" width="170" height="145" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="570" y="295" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Consistent Hashing</text>
+  
+  <!-- Hash Ring -->
+  <circle cx="570" cy="345" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="570" y="330" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Node A</text>
+  <text x="570" y="365" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Node B</text>
+  <text x="595" y="350" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Node C</text>
+  
+  <text x="570" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Minimal rehashing</text>
+  <text x="570" y="417" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Easy scaling</text>
+  
+  <!-- Sharding -->
+  <rect x="670" y="275" width="160" height="145" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="750" y="295" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Key Sharding</text>
+  
+  <rect x="685" y="310" width="130" height="25" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="750" y="327" text-anchor="middle" font-size="7" font-weight="700" fill="#1f2937">shard = hash(key) % N</text>
+  
+  <rect x="685" y="340" width="60" height="30" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="715" y="355" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Shard 0</text>
+  <text x="715" y="365" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">keys 0-M</text>
+  
+  <rect x="755" y="340" width="60" height="30" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="785" y="355" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Shard 1</text>
+  <text x="785" y="365" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">keys N-Z</text>
+  
+  <text x="750" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Horizontal scale</text>
+  <text x="750" y="417" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">✗ Cross-shard ops slow</text>
+  
+  <!-- Trade-offs (Bottom) -->
+  <rect x="465" y="440" width="385" height="95" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="657" y="465" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Trade-offs</text>
+  
+  <rect x="485" y="475" width="170" height="50" rx="3" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="570" y="495" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Advantages</text>
+  <text x="570" y="510" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Simple API</text>
+  <text x="570" y="520" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Microsecond latency</text>
+  
+  <rect x="665" y="475" width="170" height="50" rx="3" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="750" y="495" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Limitations</text>
+  <text x="750" y="510" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ No complex queries</text>
+  <text x="750" y="520" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ No relationships</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-left" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

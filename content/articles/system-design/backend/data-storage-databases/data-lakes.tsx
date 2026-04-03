@@ -577,44 +577,86 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Bill Inmon, "Building the Data Lake," O'Reilly, 2016.
+            Bill Inmon, <em>Building the Data Lake</em>, O&apos;Reilly, 2016.
           </li>
           <li>
-            Databricks, "Lakehouse Architecture,"
-            https://www.databricks.com/glossary/data-lakehouse
+            <a
+              href="https://www.databricks.com/glossary/data-lakehouse"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Databricks — Lakehouse Architecture
+            </a>
           </li>
           <li>
-            AWS, "What is a Data Lake?"
-            https://aws.amazon.com/big-data/datalakes-and-analytics/what-is-a-data-lake/
+            <a
+              href="https://aws.amazon.com/big-data/datalakes-and-analytics/what-is-a-data-lake/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS — What is a Data Lake?
+            </a>
           </li>
           <li>
-            Azure, "Introduction to Azure Data Lake Storage,"
-            https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction
+            <a
+              href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Azure — Introduction to Azure Data Lake Storage
+            </a>
           </li>
           <li>
-            Delta Lake Documentation, "What is Delta Lake,"
-            https://delta.io/
+            <a
+              href="https://delta.io/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Delta Lake Documentation — What is Delta Lake
+            </a>
           </li>
           <li>
-            Apache Iceberg Documentation, "Iceberg Specification,"
-            https://iceberg.apache.org/
+            <a
+              href="https://iceberg.apache.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Apache Iceberg Documentation — Iceberg Specification
+            </a>
           </li>
           <li>
-            Apache Hudi Documentation, "Introduction,"
-            https://hudi.apache.org/
+            <a
+              href="https://hudi.apache.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Apache Hudi Documentation — Introduction
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Ralph Kimball, "The Data Warehouse Toolkit," Wiley, 2013.
+            Ralph Kimball, <em>The Data Warehouse Toolkit</em>, Wiley, 2013.
           </li>
           <li>
-            Google Cloud, "Data Lake vs Data Warehouse,"
-            https://cloud.google.com/blog/products/data-analytics/data-lake-vs-data-warehouse
+            <a
+              href="https://cloud.google.com/blog/products/data-analytics/data-lake-vs-data-warehouse"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Cloud — Data Lake vs Data Warehouse
+            </a>
           </li>
         </ul>
       </section>

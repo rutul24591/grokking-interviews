@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Block Storage Use Cases</title>
+  <desc id="desc">When to use block storage and real-world examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Block Storage Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Block Storage</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="280" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: Databases -->
+  <rect x="70" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Databases</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Random I/O patterns</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low latency required</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Data pages at offsets</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• WAL/journal files</text>
+  <text x="155" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Sub-ms latency</text>
+  <text x="155" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">RDS, self-managed DBs</text>
+  
+  <!-- Use Case 2: Boot Volumes -->
+  <rect x="255" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Boot Volumes</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• OS installation</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• System files</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Persistent across reboots</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Snapshots for backup</text>
+  <text x="340" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• AMI/VM templates</text>
+  <text x="340" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">EC2 root volumes</text>
+  
+  <!-- Use Case 3: File Systems -->
+  <rect x="70" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">File Systems</text>
+  <text x="155" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Format with ext4/XFS</text>
+  <text x="155" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Application data</text>
+  <text x="155" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Log files</text>
+  <text x="155" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Temporary storage</text>
+  <text x="155" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single-instance access</text>
+  <text x="155" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Application data storage</text>
+  
+  <!-- Use Case 4: High Performance -->
+  <rect x="255" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">High-Performance Apps</text>
+  <text x="340" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Real-time processing</text>
+  <text x="340" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low-latency trading</text>
+  <text x="340" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• In-memory DB persistence</text>
+  <text x="340" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Provisioned IOPS</text>
+  <text x="340" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Predictable performance</text>
+  <text x="340" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">io2 Block Express volumes</text>
+  
+  <!-- When NOT to Use (Right Column) -->
+  <rect x="465" y="85" width="385" height="280" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use Block Storage</text>
+  
+  <!-- Anti-Pattern 1: Unstructured Data -->
+  <rect x="485" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Unstructured Data at Scale</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Media files, backups</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Billions of files</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• HTTP access needed</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use object storage</text>
+  <text x="570" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• S3 for media</text>
+  <text x="570" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use object storage</text>
+  
+  <!-- Anti-Pattern 2: Shared Access -->
+  <rect x="670" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Shared File Access</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multiple instances</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Need POSIX semantics</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• File locking needed</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use file storage</text>
+  <text x="755" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• EFS/NFS for sharing</text>
+  <text x="755" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use file storage</text>
+  
+  <!-- Anti-Pattern 3: Multi-Region -->
+  <rect x="485" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Multi-Region Access</text>
+  <text x="570" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Tied to single AZ</text>
+  <text x="570" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Cross-region slow</text>
+  <text x="570" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No global namespace</text>
+  <text x="570" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use object storage</text>
+  <text x="570" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• S3 is global</text>
+  <text x="570" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use object storage</text>
+  
+  <!-- Anti-Pattern 4: Cost-Sensitive -->
+  <rect x="670" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Cost-Sensitive Archives</text>
+  <text x="755" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Block storage expensive</text>
+  <text x="755" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Pay for provisioned</text>
+  <text x="755" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Infrequent access</text>
+  <text x="755" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use object storage</text>
+  <text x="755" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Glacier for archives</text>
+  <text x="755" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use archive tiers</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  
+  <!-- RDS -->
+  <rect x="70" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">AWS RDS: Database Storage</text>
+  <text x="190" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• EBS volumes for DB data</text>
+  <text x="190" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Provisioned IOPS for MySQL</text>
+  <text x="190" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Snapshots to S3</text>
+  <text x="190" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multi-AZ for HA</text>
+  <text x="190" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Managed databases at scale</text>
+  
+  <!-- EC2 Boot -->
+  <rect x="325" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">EC2: Boot Volumes</text>
+  <text x="445" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Root volume for OS</text>
+  <text x="445" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• gp3 for general purpose</text>
+  <text x="445" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• AMI from snapshots</text>
+  <text x="445" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Persistent across stops</text>
+  <text x="445" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Millions of VMs running</text>
+  
+  <!-- High-Frequency Trading -->
+  <rect x="580" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Finance: Trading Systems</text>
+  <text x="700" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• io2 Block Express</text>
+  <text x="700" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 256K IOPS, sub-ms latency</text>
+  <text x="700" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Predictable performance</text>
+  <text x="700" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Critical for trading</text>
+  <text x="700" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Microsecond trading decisions</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

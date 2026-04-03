@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Transaction Isolation Levels Matrix</title>
+  <desc id="desc">Matrix showing which anomalies are allowed or prevented at each isolation level</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Transaction Isolation Levels</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Anomaly prevention across four isolation levels</text>
+  
+  <!-- Matrix Header -->
+  <rect x="50" y="85" width="800" height="40" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="110" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">Isolation Level</text>
+  <text x="300" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Dirty Read</text>
+  <text x="300" y="120" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">Uncommitted data</text>
+  <text x="470" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Non-Repeatable Read</text>
+  <text x="470" y="120" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">Different result</text>
+  <text x="670" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Phantom Read</text>
+  <text x="670" y="120" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">New rows appear</text>
+  
+  <!-- Read Uncommitted Row -->
+  <rect x="50" y="130" width="800" height="60" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="150" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Read Uncommitted</text>
+  <text x="150" y="172" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">Weakest isolation</text>
+  <rect x="270" y="140" width="60" height="40" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="300" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">✓</text>
+  <rect x="440" y="140" width="60" height="40" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="470" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">✓</text>
+  <rect x="640" y="140" width="60" height="40" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="670" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">✓</text>
+  <text x="750" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#374151">Rarely used</text>
+  
+  <!-- Read Committed Row -->
+  <rect x="50" y="195" width="800" height="60" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="150" y="220" text-anchor="middle" font-size="13" font-weight="700" fill="#15803d">Read Committed</text>
+  <text x="150" y="237" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">PostgreSQL, Oracle default</text>
+  <rect x="270" y="205" width="60" height="40" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+  <text x="300" y="230" text-anchor="middle" font-size="16" font-weight="700" fill="#15803d">✗</text>
+  <rect x="440" y="205" width="60" height="40" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="470" y="230" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">✓</text>
+  <rect x="640" y="205" width="60" height="40" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="670" y="230" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">✓</text>
+  <text x="750" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#374151">Most common default</text>
+  
+  <!-- Repeatable Read Row -->
+  <rect x="50" y="260" width="800" height="60" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="150" y="285" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">Repeatable Read</text>
+  <text x="150" y="302" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">MySQL (InnoDB) default</text>
+  <rect x="270" y="270" width="60" height="40" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+  <text x="300" y="295" text-anchor="middle" font-size="16" font-weight="700" fill="#15803d">✗</text>
+  <rect x="440" y="270" width="60" height="40" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+  <text x="470" y="295" text-anchor="middle" font-size="16" font-weight="700" fill="#15803d">✗</text>
+  <rect x="640" y="270" width="60" height="40" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="670" y="295" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">✓</text>
+  <text x="750" y="295" text-anchor="middle" font-size="10" font-weight="600" fill="#374151">Stable reads within txn</text>
+  
+  <!-- Serializable Row -->
+  <rect x="50" y="325" width="800" height="60" rx="4" fill="#e0e7ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="150" y="350" text-anchor="middle" font-size="13" font-weight="700" fill="#6d28d9">Serializable</text>
+  <text x="150" y="367" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">Strongest isolation</text>
+  <rect x="270" y="335" width="60" height="40" rx="3" fill="#c7d2fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="300" y="360" text-anchor="middle" font-size="16" font-weight="700" fill="#6d28d9">✗</text>
+  <rect x="440" y="335" width="60" height="40" rx="3" fill="#c7d2fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="470" y="360" text-anchor="middle" font-size="16" font-weight="700" fill="#6d28d9">✗</text>
+  <rect x="640" y="335" width="60" height="40" rx="3" fill="#c7d2fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="670" y="360" text-anchor="middle" font-size="16" font-weight="700" fill="#6d28d9">✗</text>
+  <text x="750" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#374151">Highest performance cost</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="405" width="200" height="60" rx="4" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="150" y="425" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Legend</text>
+  <rect x="70" y="435" width="30" height="25" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+  <text x="85" y="452" text-anchor="middle" font-size="14" font-weight="700" fill="#15803d">✗</text>
+  <text x="115" y="452" font-size="9" font-weight="600" fill="#1f2937">Prevented</text>
+  <rect x="170" y="435" width="30" height="25" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="185" y="452" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">✓</text>
+  <text x="215" y="452" font-size="9" font-weight="600" fill="#1f2937">Allowed (can occur)</text>
+  
+  <!-- Example Scenarios -->
+  <rect x="270" y="405" width="580" height="125" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text x="560" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Example Scenarios</text>
+  
+  <!-- Dirty Read Example -->
+  <rect x="285" y="435" width="175" height="80" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="372" y="452" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Dirty Read</text>
+  <text x="372" y="467" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1: UPDATE balance=500</text>
+  <text x="372" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T2: SELECT balance (sees 500)</text>
+  <text x="372" y="493" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1: ROLLBACK</text>
+  <text x="372" y="507" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">T2 read data that never existed!</text>
+  
+  <!-- Non-Repeatable Read Example -->
+  <rect x="470" y="435" width="175" height="80" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="557" y="452" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Non-Repeatable Read</text>
+  <text x="557" y="467" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1: SELECT balance (1000)</text>
+  <text x="557" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T2: UPDATE balance=500, COMMIT</text>
+  <text x="557" y="493" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1: SELECT balance (500)</text>
+  <text x="557" y="507" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Same query, different result!</text>
+  
+  <!-- Phantom Read Example -->
+  <rect x="655" y="435" width="180" height="80" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="745" y="452" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Phantom Read</text>
+  <text x="745" y="467" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1: SELECT COUNT(*) WHERE status=&apos;pending&apos; (5)</text>
+  <text x="745" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T2: INSERT order (pending), COMMIT</text>
+  <text x="745" y="493" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1: SELECT COUNT(*) WHERE status=&apos;pending&apos; (6)</text>
+  <text x="745" y="507" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">New row appeared!</text>
+</svg>

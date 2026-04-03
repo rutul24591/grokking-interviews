@@ -648,45 +648,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            PostgreSQL Documentation, "Using EXPLAIN,"
-            https://www.postgresql.org/docs/current/using-explain.html
+            <a
+              href="https://www.postgresql.org/docs/current/using-explain.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Using EXPLAIN
+            </a>
           </li>
           <li>
-            MySQL Documentation, "Optimizing Queries with EXPLAIN,"
-            https://dev.mysql.com/doc/refman/8.0/en/explain.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/explain.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — Optimizing Queries with EXPLAIN
+            </a>
           </li>
           <li>
-            SQL Server Documentation, "Query Execution Plans,"
-            https://docs.microsoft.com/en-us/sql/relational-databases/query-execution-plan-guide
+            <a
+              href="https://docs.microsoft.com/en-us/sql/relational-databases/query-execution-plan-guide"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SQL Server Documentation — Query Execution Plans
+            </a>
           </li>
           <li>
-            Oracle Documentation, "SQL Tuning,"
-            https://docs.oracle.com/en/database/oracle/oracle-database/
+            <a
+              href="https://docs.oracle.com/en/database/oracle/oracle-database/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Oracle Documentation — SQL Tuning
+            </a>
           </li>
           <li>
-            Use The Index, Luke, "The WHERE Clause,"
-            https://use-the-index-luke.com/sql/where-clause
+            <a
+              href="https://use-the-index-luke.com/sql/where-clause"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Use The Index, Luke — The WHERE Clause
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 5.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 5.
           </li>
           <li>
-            CMU Database Group, "Query Optimization" (YouTube lectures),
-            https://www.youtube.com/c/CMUDatabaseGroup
+            <a
+              href="https://www.youtube.com/c/CMUDatabaseGroup"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CMU Database Group — Query Optimization (YouTube lectures)
+            </a>
           </li>
           <li>
-            Brent Ozar, "SQL Server Query Tuning,"
-            https://www.brentozar.com/archive/sql-server-query-tuning/
+            <a
+              href="https://www.brentozar.com/archive/sql-server-query-tuning/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Brent Ozar — SQL Server Query Tuning
+            </a>
           </li>
           <li>
-            Percona Blog, "Query Optimization Best Practices,"
-            https://www.percona.com/blog/
+            <a
+              href="https://www.percona.com/blog/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Percona Blog — Query Optimization Best Practices
+            </a>
           </li>
         </ul>
       </section>

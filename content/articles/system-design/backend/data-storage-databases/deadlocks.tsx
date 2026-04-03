@@ -653,45 +653,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            PostgreSQL Documentation, "Explicit Locking," "Deadlocks,"
-            https://www.postgresql.org/docs/current/explicit-locking.html
+            <a
+              href="https://www.postgresql.org/docs/current/explicit-locking.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Explicit Locking, Deadlocks
+            </a>
           </li>
           <li>
-            MySQL Documentation, "InnoDB Locking," "Deadlocks,"
-            https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — InnoDB Locking, Deadlocks
+            </a>
           </li>
           <li>
-            SQL Server Documentation, "Deadlocks,"
-            https://docs.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide
+            <a
+              href="https://docs.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SQL Server Documentation — Transaction Locking and Row Versioning Guide
+            </a>
           </li>
           <li>
-            Oracle Documentation, "Deadlocks,"
-            https://docs.oracle.com/en/database/oracle/oracle-database/
+            <a
+              href="https://docs.oracle.com/en/database/oracle/oracle-database/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Oracle Documentation — Deadlocks
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 7.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 7.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 7.
           </li>
           <li>
-            Wikipedia, "Deadlock,"
-            https://en.wikipedia.org/wiki/Deadlock
+            <a
+              href="https://en.wikipedia.org/wiki/Deadlock"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia — Deadlock
+            </a>
           </li>
           <li>
-            Wikipedia, "Wait-for Graph,"
-            https://en.wikipedia.org/wiki/Wait-for_graph
+            <a
+              href="https://en.wikipedia.org/wiki/Wait-for_graph"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia — Wait-for Graph
+            </a>
           </li>
           <li>
-            CMU Database Group, "Concurrency Control" (YouTube lectures),
-            https://www.youtube.com/c/CMUDatabaseGroup
+            <a
+              href="https://www.youtube.com/c/CMUDatabaseGroup"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CMU Database Group — Concurrency Control (YouTube lectures)
+            </a>
           </li>
           <li>
-            Percona Blog, "Deadlock Analysis,"
-            https://www.percona.com/blog/
+            <a
+              href="https://www.percona.com/blog/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Percona Blog — Deadlock Analysis
+            </a>
           </li>
         </ul>
       </section>

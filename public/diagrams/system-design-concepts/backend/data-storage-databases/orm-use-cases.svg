@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">ORM Use Cases</title>
+  <desc id="desc">When to use ORM vs raw SQL</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">ORM Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use ORM vs Raw SQL</text>
+  
+  <!-- When to Use ORM (Left Column) -->
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Use ORM When:</text>
+  
+  <rect x="70" y="125" width="360" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Rapid Development:</text>
+  <text x="250" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• CRUD applications</text>
+  <text x="250" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Prototypes, MVPs</text>
+  <text x="250" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Small to medium teams</text>
+  
+  <text x="250" y="230" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Team Productivity:</text>
+  <text x="250" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Less SQL boilerplate</text>
+  <text x="250" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Consistent patterns</text>
+  <text x="250" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Database abstraction</text>
+  
+  <text x="250" y="310" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Simple Queries:</text>
+  <text x="250" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Basic CRUD operations</text>
+  <text x="250" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Single-table queries</text>
+  <text x="250" y="360" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Simple relationships</text>
+  
+  <!-- When NOT to Use ORM (Right Column) -->
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Avoid ORM When:</text>
+  
+  <rect x="485" y="125" width="345" height="190" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <text x="657" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Complex Queries:</text>
+  <text x="657" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Analytics, reporting</text>
+  <text x="657" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Complex joins, aggregations</text>
+  <text x="657" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Window functions, CTEs</text>
+  
+  <text x="657" y="230" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">High Performance:</text>
+  <text x="657" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Real-time systems</text>
+  <text x="657" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Bulk operations</text>
+  <text x="657" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• ORM overhead too high</text>
+  
+  <text x="657" y="310" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Database-Specific Features:</text>
+  <text x="657" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Stored procedures</text>
+  <text x="657" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Custom types, extensions</text>
+  <text x="657" y="360" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">→ Use raw SQL or query builder</text>
+  
+  <!-- Hybrid Approach (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Hybrid Approach (Recommended)</text>
+  
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">ORM for CRUD</text>
+  <text x="190" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• User management</text>
+  <text x="190" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Simple relationships</text>
+  <text x="190" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Basic queries</text>
+  <text x="190" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Rapid development</text>
+  <text x="190" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Productivity</text>
+  
+  <rect x="325" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Query Builder for Complex</text>
+  <text x="445" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Multi-table joins</text>
+  <text x="445" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Aggregations</text>
+  <text x="445" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Subqueries</text>
+  <text x="445" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Better control than ORM</text>
+  <text x="445" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Balance</text>
+  
+  <rect x="580" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Raw SQL for Performance</text>
+  <text x="700" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Analytics queries</text>
+  <text x="700" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Bulk operations</text>
+  <text x="700" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Database-specific features</text>
+  <text x="700" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Maximum performance</text>
+  <text x="700" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Performance</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

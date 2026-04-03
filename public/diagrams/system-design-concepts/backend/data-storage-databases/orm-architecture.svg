@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">ORM Architecture and Patterns</title>
+  <desc id="desc">ORM layer showing object-table mapping and common patterns</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">ORM Architecture &amp; Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Object-Relational Mapping Layer</text>
+  
+  <!-- ORM Layer (Top) -->
+  <rect x="50" y="85" width="800" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">ORM Layer (Object-Relational Mapping)</text>
+  
+  <!-- Application Objects -->
+  <rect x="70" y="125" width="200" height="90" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="170" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Application Objects</text>
+  <text x="170" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">class User:</text>
+  <text x="170" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">  id: int</text>
+  <text x="170" y="196" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">  name: str</text>
+  <text x="170" y="209" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">  email: str</text>
+  
+  <!-- Arrow -->
+  <line x1="275" y1="170" x2="305" y2="170" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="290" y="160" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Maps to</text>
+  
+  <!-- ORM Mapper -->
+  <rect x="320" y="125" width="200" height="90" rx="4" fill="#7c3aed" stroke="#6d28d9" stroke-width="2"/>
+  <text x="420" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">ORM Mapper</text>
+  <text x="420" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#e9d5ff">User → users table</text>
+  <text x="420" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#e9d5ff">id → id (PK)</text>
+  <text x="420" y="196" text-anchor="middle" font-size="7" font-weight="600" fill="#e9d5ff">name → name (VARCHAR)</text>
+  <text x="420" y="209" text-anchor="middle" font-size="7" font-weight="600" fill="#e9d5ff">email → email (VARCHAR)</text>
+  
+  <!-- Arrow -->
+  <line x1="525" y1="170" x2="555" y2="170" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="540" y="160" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Generates SQL</text>
+  
+  <!-- Database Tables -->
+  <rect x="570" y="125" width="200" height="90" rx="4" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="670" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Database Tables</text>
+  <text x="670" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#6ee7b7">TABLE users</text>
+  <text x="670" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#6ee7b7">  id INT PRIMARY KEY</text>
+  <text x="670" y="196" text-anchor="middle" font-size="7" font-weight="600" fill="#6ee7b7">  name VARCHAR(255)</text>
+  <text x="670" y="209" text-anchor="middle" font-size="7" font-weight="600" fill="#6ee7b7">  email VARCHAR(255)</text>
+  
+  <!-- Common ORM Patterns (Bottom) -->
+  <rect x="50" y="235" width="800" height="300" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Common ORM Patterns</text>
+  
+  <!-- Active Record -->
+  <rect x="70" y="275" width="240" height="250" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="300" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Active Record</text>
+  
+  <rect x="85" y="315" width="210" height="80" rx="3" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="190" y="335" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Object + DB logic combined</text>
+  <text x="190" y="350" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">user = User.find(1)</text>
+  <text x="190" y="363" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">user.name = "New"</text>
+  <text x="190" y="376" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">user.save()</text>
+  <text x="190" y="391" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">→ Generates UPDATE SQL</text>
+  
+  <text x="190" y="420" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Simple, intuitive</text>
+  <text x="190" y="435" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Tight coupling</text>
+  <text x="190" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Examples: Rails AR, Laravel</text>
+  
+  <!-- Data Mapper -->
+  <rect x="325" y="275" width="240" height="250" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="445" y="300" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Data Mapper</text>
+  
+  <rect x="340" y="315" width="210" height="80" rx="3" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="445" y="335" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Separate mapper layer</text>
+  <text x="445" y="350" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">user = User(name="Alice")</text>
+  <text x="445" y="363" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">mapper.save(user)</text>
+  <text x="445" y="376" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">→ Mapper generates SQL</text>
+  <text x="445" y="391" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Object unaware of DB</text>
+  
+  <text x="445" y="420" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Decoupled, testable</text>
+  <text x="445" y="435" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ More complex</text>
+  <text x="445" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Examples: Hibernate, SQLAlchemy</text>
+  
+  <!-- Unit of Work -->
+  <rect x="580" y="275" width="240" height="250" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="700" y="300" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Unit of Work</text>
+  
+  <rect x="595" y="315" width="210" height="80" rx="3" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="700" y="335" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Track changes, commit once</text>
+  <text x="700" y="350" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">uow.begin()</text>
+  <text x="700" y="363" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">user.name = "New"</text>
+  <text x="700" y="376" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">order.items.add(item)</text>
+  <text x="700" y="391" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">uow.commit() → single transaction</text>
+  
+  <text x="700" y="420" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Efficient, atomic</text>
+  <text x="700" y="435" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Must manage lifecycle</text>
+  <text x="700" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Examples: Doctrine, EF Core</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

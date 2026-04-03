@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">EXPLAIN Query Plan Analysis</title>
+  <desc id="desc">Understanding EXPLAIN output for query optimization</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">EXPLAIN Query Plan Analysis</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Reading and Understanding Query Execution Plans</text>
+  
+  <!-- EXPLAIN Output Example (Left) -->
+  <rect x="50" y="85" width="400" height="280" rx="8" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">EXPLAIN ANALYZE Output</text>
+  
+  <rect x="65" y="125" width="370" height="230" rx="4" fill="#111827" stroke="#374151" stroke-width="1"/>
+  
+  <text x="80" y="150" text-anchor="start" font-size="7" font-weight="600" fill="#10b981">QUERY:</text>
+  <text x="80" y="165" text-anchor="start" font-size="7" font-weight="600" fill="#ffffff">SELECT * FROM orders WHERE customer_id = 123</text>
+  <text x="80" y="180" text-anchor="start" font-size="7" font-weight="600" fill="#10b981">PLAN:</text>
+  <text x="80" y="195" text-anchor="start" font-size="7" font-weight="600" fill="#f59e0b">Index Scan using idx_orders_customer on orders</text>
+  <text x="80" y="210" text-anchor="start" font-size="7" font-weight="600" fill="#ffffff">  Index Cond: (customer_id = 123)</text>
+  <text x="80" y="225" text-anchor="start" font-size="7" font-weight="600" fill="#ffffff">  Rows Removed by Filter: 0</text>
+  <text x="80" y="240" text-anchor="start" font-size="7" font-weight="600" fill="#3b82f6">Planning Time: 0.5 ms</text>
+  <text x="80" y="255" text-anchor="start" font-size="7" font-weight="600" fill="#10b981">Execution Time: 2.3 ms</text>
+  
+  <text x="250" y="350" text-anchor="middle" font-size="8" font-weight="700" fill="#10b981">✓ Using Index Scan (good!)</text>
+  <text x="250" y="365" text-anchor="middle" font-size="8" font-weight="600" fill="#f59e0b">⚠ Execution Time: 2.3ms</text>
+  
+  <!-- Seq Scan vs Index Scan (Top Right) -->
+  <rect x="465" y="85" width="385" height="130" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Scan Types: Good vs Bad</text>
+  
+  <!-- Seq Scan (Bad) -->
+  <rect x="485" y="125" width="170" height="80" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Seq Scan (Bad)</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Scans entire table</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• O(n) complexity</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 10M rows = 10M comparisons</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Fix: Add index</text>
+  
+  <!-- Index Scan (Good) -->
+  <rect x="670" y="125" width="170" height="80" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Index Scan (Good)</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Uses B-Tree index</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• O(log n) complexity</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 10M rows = ~20 comparisons</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">1000x faster!</text>
+  
+  <!-- Key Metrics to Watch (Bottom Right) -->
+  <rect x="465" y="225" width="385" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="657" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Key Metrics to Watch</text>
+  
+  <rect x="485" y="265" width="345" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="500" y="290" text-anchor="start" font-size="8" font-weight="700" fill="#1e3a8a">Planning Time:</text>
+  <text x="620" y="290" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">&lt;1ms (good), &gt;10ms (complex query)</text>
+  
+  <text x="500" y="310" text-anchor="start" font-size="8" font-weight="700" fill="#1e3a8a">Execution Time:</text>
+  <text x="620" y="310" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Compare with expected latency</text>
+  
+  <text x="500" y="330" text-anchor="start" font-size="8" font-weight="700" fill="#1e3a8a">Actual Rows vs Estimated:</text>
+  <text x="620" y="330" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Large difference = stale statistics</text>
+  <text x="620" y="343" text-anchor="start" font-size="7" font-weight="600" fill="#059669">Fix: ANALYZE table</text>
+  
+  <!-- Optimization Workflow (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Query Optimization Workflow</text>
+  
+  <!-- Step 1 -->
+  <rect x="70" y="415" width="180" height="110" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="160" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">1. Run EXPLAIN ANALYZE</text>
+  <text x="160" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Identify slow queries</text>
+  <text x="160" y="470" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Check scan type</text>
+  <text x="160" y="485" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Note execution time</text>
+  <text x="160" y="505" text-anchor="middle" font-size="7" font-weight="700" fill="#2563eb">→ Find bottlenecks</text>
+  
+  <!-- Step 2 -->
+  <rect x="265" y="415" width="180" height="110" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="355" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">2. Identify Issues</text>
+  <text x="355" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Seq Scan on large table?</text>
+  <text x="355" y="470" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Missing index?</text>
+  <text x="355" y="485" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Wrong join order?</text>
+  <text x="355" y="505" text-anchor="middle" font-size="7" font-weight="700" fill="#2563eb">→ Root cause analysis</text>
+  
+  <!-- Step 3 -->
+  <rect x="460" y="415" width="180" height="110" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="550" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">3. Apply Fixes</text>
+  <text x="550" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Add missing index</text>
+  <text x="550" y="470" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Rewrite query</text>
+  <text x="550" y="485" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Update statistics</text>
+  <text x="550" y="505" text-anchor="middle" font-size="7" font-weight="700" fill="#2563eb">→ Implement solution</text>
+  
+  <!-- Step 4 -->
+  <rect x="655" y="415" width="180" height="110" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="745" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">4. Verify Improvement</text>
+  <text x="745" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Re-run EXPLAIN ANALYZE</text>
+  <text x="745" y="470" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Compare execution times</text>
+  <text x="745" y="485" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Monitor in production</text>
+  <text x="745" y="505" text-anchor="middle" font-size="7" font-weight="700" fill="#16a34a">→ Confirm fix works</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

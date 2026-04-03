@@ -615,46 +615,106 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Cloudflare Documentation, "How CDNs Work," "Cache-Control,"
-            https://developers.cloudflare.com/
+            <a
+              href="https://developers.cloudflare.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cloudflare Documentation — How CDNs Work, Cache-Control
+            </a>
           </li>
           <li>
-            AWS CloudFront Documentation, "Caching," "Lambda@Edge,"
-            https://docs.aws.amazon.com/cloudfront/
+            <a
+              href="https://docs.aws.amazon.com/cloudfront/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS CloudFront Documentation — Caching, Lambda@Edge
+            </a>
           </li>
           <li>
-            Fastly Documentation, "Caching," "Edge Computing,"
-            https://developer.fastly.com/
+            <a
+              href="https://developer.fastly.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Fastly Documentation — Caching, Edge Computing
+            </a>
           </li>
           <li>
-            Akamai Documentation, "CDN," "Edge Workers,"
-            https://developer.akamai.com/
+            <a
+              href="https://developer.akamai.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Akamai Documentation — CDN, Edge Workers
+            </a>
           </li>
           <li>
-            MDN, "HTTP Caching," "Cache-Control,"
-            https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN — HTTP Caching, Cache-Control
+            </a>
           </li>
           <li>
-            Google Developers, "Web Fundamentals: Performance,"
-            https://developers.google.com/web/fundamentals/performance/
+            <a
+              href="https://developers.google.com/web/fundamentals/performance/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Developers — Web Fundamentals: Performance
+            </a>
           </li>
           <li>
-            Netflix Tech Blog, "Open Connect CDN,"
-            https://netflixtechblog.com/
+            <a
+              href="https://netflixtechblog.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Netflix Tech Blog — Open Connect CDN
+            </a>
           </li>
           <li>
-            Shopify Engineering Blog, "CDN at Shopify,"
-            https://shopify.engineering/
+            <a
+              href="https://shopify.engineering/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Shopify Engineering Blog — CDN at Shopify
+            </a>
           </li>
           <li>
-            Vercel Documentation, "Edge Functions,"
-            https://vercel.com/docs
+            <a
+              href="https://vercel.com/docs"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Vercel Documentation — Edge Functions
+            </a>
           </li>
           <li>
-            W3C, "HTTP/2 Specification,"
-            https://www.w3.org/TR/http2/
+            <a
+              href="https://www.w3.org/TR/http2/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              W3C — HTTP/2 Specification
+            </a>
           </li>
         </ul>
       </section>

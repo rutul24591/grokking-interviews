@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">CAP Theorem Misconceptions</title>
+  <desc id="desc">Common misconceptions about the CAP theorem</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">CAP Theorem Misconceptions</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">What CAP Theorem Does NOT Say</text>
+  
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Misconception 1</text>
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">&quot;Pick 2 of 3 permanently&quot;</text>
+  <text x="180" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Reality: CAP only applies during</text>
+  <text x="180" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">network partitions. During normal</text>
+  <text x="180" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">operation, you can have all three.</text>
+  <text x="180" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Truth: Choice is only forced</text>
+  <text x="180" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">when the network fails.</text>
+  <text x="180" y="255" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Well-designed systems have all 3</text>
+  <text x="180" y="270" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">99.9% of the time.</text>
+  
+  <rect x="320" y="85" width="260" height="200" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Misconception 2</text>
+  <rect x="335" y="125" width="230" height="150" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">&quot;Partition tolerance is optional&quot;</text>
+  <text x="450" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Reality: In distributed systems,</text>
+  <text x="450" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">network partitions WILL happen.</text>
+  <text x="450" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">You cannot opt out of P. The real</text>
+  <text x="450" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Truth: Distributed systems must</text>
+  <text x="450" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">choose between C and A during</text>
+  <text x="450" y="255" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">partitions. CA is only possible</text>
+  <text x="450" y="270" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">for single-node (non-distributed)</text>
+  <text x="450" y="285" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">systems.</text>
+  
+  <rect x="590" y="85" width="260" height="200" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Misconception 3</text>
+  <rect x="605" y="125" width="230" height="150" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">&quot;Consistency is binary&quot;</text>
+  <text x="720" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Reality: Consistency is a spectrum,</text>
+  <text x="720" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">not binary. Systems offer tunable</text>
+  <text x="720" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">consistency: strong, quorum,</text>
+  <text x="720" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Truth: Modern systems let you</text>
+  <text x="720" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">choose consistency per operation.</text>
+  <text x="720" y="255" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">DynamoDB: consistent reads option.</text>
+  <text x="720" y="270" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cassandra: QUORUM vs ONE.</text>
+  
+  <rect x="50" y="295" width="800" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">CAP vs PACELC Extension</text>
+  <rect x="70" y="335" width="760" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="450" y="360" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">PACELC: If Partition (P), choose Availability (A) or Consistency (C); Else (E), choose Latency (L) or Consistency (C)</text>
+  <text x="450" y="380" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">CAP only addresses the partition case. PACELC extends CAP to also address the latency-consistency trade-off during normal operation.</text>
+  <text x="450" y="400" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Most systems face latency vs consistency trade-offs even without partitions. This is the more common design decision.</text>
+  <text x="450" y="420" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Example: DynamoDB chooses latency over consistency by default (eventual reads), but offers consistent reads (higher latency) when needed.</text>
+  
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">Key Takeaway</text>
+  <rect x="70" y="485" width="760" height="40" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="505" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">CAP is often misunderstood. It&apos;s not about permanently choosing 2 of 3. It&apos;s about how your system behaves during network failures.</text>
+  <text x="450" y="520" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Modern systems offer tunable consistency, letting you choose per operation rather than per system.</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

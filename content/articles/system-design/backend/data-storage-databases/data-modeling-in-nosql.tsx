@@ -619,44 +619,86 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapters 2-6.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapters 13-14.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapters 13-14.
           </li>
           <li>
             Vaughn Vernon, <em>Implementing Domain-Driven Design</em>, Addison-Wesley, 2013.
           </li>
           <li>
-            MongoDB Documentation, "Data Modeling,"
-            https://www.mongodb.com/docs/manual/data-modeling/
+            <a
+              href="https://www.mongodb.com/docs/manual/data-modeling/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MongoDB Documentation — Data Modeling
+            </a>
           </li>
           <li>
-            Amazon DynamoDB Documentation, "Best Practices,"
-            https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html
+            <a
+              href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Amazon DynamoDB Documentation — Best Practices
+            </a>
           </li>
           <li>
-            Neo4j Documentation, "Data Modeling,"
-            https://neo4j.com/docs/
+            <a
+              href="https://neo4j.com/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Neo4j Documentation — Data Modeling
+            </a>
           </li>
           <li>
-            DataStax, "Cassandra Data Modeling Best Practices,"
-            https://www.datastax.com/resources/cassandra-data-modeling-best-practices
+            <a
+              href="https://www.datastax.com/resources/cassandra-data-modeling-best-practices"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              DataStax — Cassandra Data Modeling Best Practices
+            </a>
           </li>
           <li>
-            InfluxDB Documentation, "Schema and Data Organization,"
-            https://docs.influxdata.com/
+            <a
+              href="https://docs.influxdata.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              InfluxDB Documentation — Schema and Data Organization
+            </a>
           </li>
           <li>
-            Martin Fowler, "Polyglot Persistence,"
-            https://martinfowler.com/bliki/PolyglotPersistence.html
+            <a
+              href="https://martinfowler.com/bliki/PolyglotPersistence.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Martin Fowler — Polyglot Persistence
+            </a>
           </li>
           <li>
-            Greg Young, "CQRS and Event Sourcing,"
-            https://www.youtube.com/watch?v=JHGkaShoyNs
+            <a
+              href="https://www.youtube.com/watch?v=JHGkaShoyNs"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Greg Young — CQRS and Event Sourcing
+            </a>
           </li>
         </ul>
       </section>

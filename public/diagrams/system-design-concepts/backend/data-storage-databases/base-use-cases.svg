@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">BASE Properties Use Cases</title>
+  <desc id="desc">When to use BASE systems and real-world examples</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">BASE Properties Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Choose Eventual Consistency</text>
+  
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases for BASE</text>
+  <rect x="70" y="125" width="360" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Social Media Feeds</text>
+  <text x="250" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Stale feed is acceptable, unavailable is not</text>
+  <text x="250" y="190" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Shopping Carts</text>
+  <text x="250" y="210" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Union merge is safe, always available</text>
+  <text x="250" y="230" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Product Reviews &amp; Ratings</text>
+  <text x="250" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Stale count is acceptable, always writable</text>
+  <text x="250" y="270" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Content Delivery (CDNs)</text>
+  <text x="250" y="290" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cached content, eventual propagation</text>
+  <text x="250" y="310" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Key: Availability over immediate consistency</text>
+  
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use BASE</text>
+  <rect x="485" y="125" width="345" height="190" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="500" y="150" text-anchor="start" font-size="10" font-weight="700" fill="#b91c1c">Financial Transactions</text>
+  <text x="500" y="170" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Double-spend is catastrophic</text>
+  <text x="500" y="190" text-anchor="start" font-size="10" font-weight="700" fill="#b91c1c">Inventory Management</text>
+  <text x="500" y="210" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Overselling destroys customer trust</text>
+  <text x="500" y="230" text-anchor="start" font-size="10" font-weight="700" fill="#b91c1c">Booking Systems</text>
+  <text x="500" y="250" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Double-booking is unacceptable</text>
+  <text x="500" y="270" text-anchor="start" font-size="10" font-weight="700" fill="#b91c1c">Access Control Lists</text>
+  <text x="500" y="290" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Stale permissions are security risk</text>
+  <text x="500" y="310" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Key: Consistency over availability</text>
+  
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World BASE Examples</text>
+  
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Amazon: Shopping Cart</text>
+  <text x="190" y="415" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">DynamoDB for cart storage</text>
+  <text x="190" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Eventually consistent reads</text>
+  <text x="190" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cart items merged across regions</text>
+  <text x="190" y="460" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Union merge: all items preserved</text>
+  <text x="190" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Checkout uses strong consistency</text>
+  <text x="190" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Different consistency per operation</text>
+  
+  <rect x="325" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Netflix: Viewing History</text>
+  <text x="445" y="415" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cassandra for history storage</text>
+  <text x="445" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Eventual consistency across regions</text>
+  <text x="445" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Stale history is acceptable</text>
+  <text x="445" y="460" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Recommendations tolerate staleness</text>
+  <text x="445" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Always available for viewing</text>
+  <text x="445" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">High availability prioritized</text>
+  
+  <rect x="580" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Twitter: Tweet Timeline</text>
+  <text x="700" y="415" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Manhattan for tweet storage</text>
+  <text x="700" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Eventual consistency for reads</text>
+  <text x="700" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Timeline may have gaps briefly</text>
+  <text x="700" y="460" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Write availability always maintained</text>
+  <text x="700" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Eventual propagation to all nodes</text>
+  <text x="700" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">User experience over strict consistency</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

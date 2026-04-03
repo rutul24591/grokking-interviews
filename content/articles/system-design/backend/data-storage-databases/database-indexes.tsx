@@ -673,45 +673,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            PostgreSQL Documentation, "Indexes,"
-            https://www.postgresql.org/docs/current/indexes.html
+            <a
+              href="https://www.postgresql.org/docs/current/indexes.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Indexes
+            </a>
           </li>
           <li>
-            MySQL Documentation, "Optimization and Indexes,"
-            https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — Optimization and Indexes
+            </a>
           </li>
           <li>
-            Oracle Documentation, "Database Indexing Guide,"
-            https://docs.oracle.com/en/database/oracle/oracle-database/
+            <a
+              href="https://docs.oracle.com/en/database/oracle/oracle-database/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Oracle Documentation — Database Indexing Guide
+            </a>
           </li>
           <li>
-            SQL Server Documentation, "Indexes,"
-            https://docs.microsoft.com/en-us/sql/relational-databases/indexes/
+            <a
+              href="https://docs.microsoft.com/en-us/sql/relational-databases/indexes/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SQL Server Documentation — Indexes
+            </a>
           </li>
           <li>
-            Use The Index, Luke, "Database Indexing Best Practices,"
-            https://use-the-index-luke.com/
+            <a
+              href="https://use-the-index-luke.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Use The Index, Luke — Database Indexing Best Practices
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 5.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 5.
           </li>
           <li>
-            CMU Database Group, "Database Indexing" (YouTube lectures),
-            https://www.youtube.com/c/CMUDatabaseGroup
+            <a
+              href="https://www.youtube.com/c/CMUDatabaseGroup"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CMU Database Group — Database Indexing (YouTube lectures)
+            </a>
           </li>
           <li>
-            Brent Ozar, "SQL Server Indexing,"
-            https://www.brentozar.com/archive/sql-server-indexing/
+            <a
+              href="https://www.brentozar.com/archive/sql-server-indexing/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Brent Ozar — SQL Server Indexing
+            </a>
           </li>
           <li>
-            Percona Blog, "MySQL Indexing Best Practices,"
-            https://www.percona.com/blog/
+            <a
+              href="https://www.percona.com/blog/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Percona Blog — MySQL Indexing Best Practices
+            </a>
           </li>
         </ul>
       </section>

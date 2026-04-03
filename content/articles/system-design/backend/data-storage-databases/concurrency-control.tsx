@@ -636,10 +636,11 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Philip A. Bernstein, Vassos Hadzilacos, and Nathan Goodman, <em>Concurrency Control
-            and Recovery in Database Systems</em>, Addison-Wesley, 1987.
+            Philip A. Bernstein, Vassos Hadzilacos, and Nathan Goodman,
+            <em>Concurrency Control and Recovery in Database Systems</em>,
+            Addison-Wesley, 1987.
           </li>
           <li>
             Jim Gray and Andreas Reuter, <em>Transaction Processing: Concepts and Techniques</em>,
@@ -650,31 +651,55 @@ export default function ArticlePage() {
             Concepts</em>, 6th Edition, McGraw-Hill, 2010.
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapters 7-9.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapters 8-10.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapters 8-10.
           </li>
           <li>
-            PostgreSQL Documentation, "Transaction Isolation" and "MVCC,"
-            https://www.postgresql.org/docs/current/transaction-iso.html
+            <a
+              href="https://www.postgresql.org/docs/current/transaction-iso.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Transaction Isolation and MVCC
+            </a>
           </li>
           <li>
-            MySQL Documentation, "InnoDB Locking and Transaction Model,"
-            https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-model.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-model.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — InnoDB Locking and Transaction Model
+            </a>
           </li>
           <li>
-            Oracle Documentation, "Concurrency Control,"
-            https://docs.oracle.com/en/database/oracle/oracle-database/
+            <a
+              href="https://docs.oracle.com/en/database/oracle/oracle-database/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Oracle Documentation — Concurrency Control
+            </a>
           </li>
           <li>
             Peter Bailis et al., "Coordination Avoidance in Database Systems," <em>VLDB</em>,
             2014.
           </li>
           <li>
-            Kyle Kingsbury (aphyr), "The Jepsen Series" (distributed systems failure analysis),
-            https://jepsen.io/
+            <a
+              href="https://jepsen.io/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Kyle Kingsbury (aphyr) — The Jepsen Series (Distributed Systems Failure Analysis)
+            </a>
           </li>
         </ul>
       </section>

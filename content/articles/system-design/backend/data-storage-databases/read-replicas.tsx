@@ -622,45 +622,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 5.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 11.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 11.
           </li>
           <li>
-            MySQL Documentation, "Replication,"
-            https://dev.mysql.com/doc/refman/8.0/en/replication.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/replication.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — Replication
+            </a>
           </li>
           <li>
-            PostgreSQL Documentation, "Replication,"
-            https://www.postgresql.org/docs/current/runtime-config-replication.html
+            <a
+              href="https://www.postgresql.org/docs/current/runtime-config-replication.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Replication
+            </a>
           </li>
           <li>
-            MongoDB Documentation, "Replication,"
-            https://www.mongodb.com/docs/manual/replication/
+            <a
+              href="https://www.mongodb.com/docs/manual/replication/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MongoDB Documentation — Replication
+            </a>
           </li>
           <li>
-            Redis Documentation, "Replication,"
-            https://redis.io/docs/management/replication/
+            <a
+              href="https://redis.io/docs/management/replication/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Redis Documentation — Replication
+            </a>
           </li>
           <li>
-            AWS RDS Documentation, "Read Replicas,"
-            https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html
+            <a
+              href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS RDS Documentation — Read Replicas
+            </a>
           </li>
           <li>
-            Google Cloud SQL Documentation, "Read Replicas,"
-            https://cloud.google.com/sql/docs/mysql/replication
+            <a
+              href="https://cloud.google.com/sql/docs/mysql/replication"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Cloud SQL Documentation — Read Replicas
+            </a>
           </li>
           <li>
-            Shopify Engineering Blog, "Scaling MySQL at Shopify,"
-            https://shopify.engineering/
+            <a
+              href="https://shopify.engineering/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Shopify Engineering Blog — Scaling MySQL at Shopify
+            </a>
           </li>
           <li>
-            GitHub Engineering Blog, "MySQL High Availability at GitHub,"
-            https://github.blog/engineering/
+            <a
+              href="https://github.blog/engineering/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub Engineering Blog — MySQL High Availability at GitHub
+            </a>
           </li>
         </ul>
       </section>

@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">CDN and Edge Storage Use Cases</title>
+  <desc id="desc">When to use CDNs and real-world examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">CDN and Edge Storage Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use CDNs</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="280" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: Static Assets -->
+  <rect x="70" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Static Assets</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• CSS, JavaScript</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Images, fonts</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• HTML pages</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Long TTLs</text>
+  <text x="155" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Versioned URLs</text>
+  <text x="155" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">99%+ cache hit rate</text>
+  
+  <!-- Use Case 2: Media Delivery -->
+  <rect x="255" y="125" width="170" height="105" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Media Delivery</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Video streaming</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Audio files</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Large downloads</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Image optimization</text>
+  <text x="340" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Adaptive bitrate</text>
+  <text x="340" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Global delivery at scale</text>
+  
+  <!-- Use Case 3: Global Websites -->
+  <rect x="70" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Global Websites</text>
+  <text x="155" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• E-commerce sites</text>
+  <text x="155" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• News portals</text>
+  <text x="155" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• SaaS dashboards</text>
+  <text x="155" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low latency globally</text>
+  <text x="155" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• DDoS protection</text>
+  <text x="155" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Fast worldwide</text>
+  
+  <!-- Use Case 4: API Acceleration -->
+  <rect x="255" y="240" width="170" height="115" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">API Acceleration</text>
+  <text x="340" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Cache API responses</text>
+  <text x="340" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Route to nearest origin</text>
+  <text x="340" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Edge computing</text>
+  <text x="340" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Request coalescing</text>
+  <text x="340" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• TLS termination</text>
+  <text x="340" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Reduced origin load</text>
+  
+  <!-- When NOT to Use (Right Column) -->
+  <rect x="465" y="85" width="385" height="280" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use CDN</text>
+  
+  <!-- Anti-Pattern 1: Highly Dynamic -->
+  <rect x="485" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Highly Dynamic Content</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Per-user personalization</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Real-time data</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No cache benefit</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• CDN adds hop</text>
+  <text x="570" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Direct to origin</text>
+  <text x="570" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Skip CDN for dynamic</text>
+  
+  <!-- Anti-Pattern 2: Sensitive Data -->
+  <rect x="670" y="125" width="170" height="105" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Sensitive Data</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• PII, financial data</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Accidental caching risk</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Compliance concerns</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use private endpoints</text>
+  <text x="755" y="217" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No-cache headers</text>
+  <text x="755" y="230" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Avoid caching sensitive data</text>
+  
+  <!-- Anti-Pattern 3: Small Traffic -->
+  <rect x="485" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Small Traffic Sites</text>
+  <text x="570" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low visitor count</text>
+  <text x="570" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single region users</text>
+  <text x="570" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Origin is fast enough</text>
+  <text x="570" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• CDN cost not justified</text>
+  <text x="570" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple hosting OK</text>
+  <text x="570" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Skip CDN if not needed</text>
+  
+  <!-- Anti-Pattern 4: Complex Invalidation -->
+  <rect x="670" y="240" width="170" height="115" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Frequent Content Updates</text>
+  <text x="755" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Content changes often</text>
+  <text x="755" y="293" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex invalidation</text>
+  <text x="755" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Cache miss penalty</text>
+  <text x="755" y="319" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Short TTLs needed</text>
+  <text x="755" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use versioned URLs</text>
+  <text x="755" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Version URLs instead</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  
+  <!-- Netflix -->
+  <rect x="70" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Netflix: Video Streaming</text>
+  <text x="190" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Open Connect CDN</text>
+  <text x="190" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Edge servers at ISPs</text>
+  <text x="190" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Adaptive bitrate streaming</text>
+  <text x="190" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 200M+ users globally</text>
+  <text x="190" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Buffer-free streaming</text>
+  
+  <!-- Shopify -->
+  <rect x="325" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Shopify: E-commerce CDN</text>
+  <text x="445" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Product images via CDN</text>
+  <text x="445" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Theme assets cached</text>
+  <text x="445" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• DDoS protection</text>
+  <text x="445" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Fast storefronts globally</text>
+  <text x="445" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Fast checkout experience</text>
+  
+  <!-- Cloudflare -->
+  <rect x="580" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Cloudflare: Edge Platform</text>
+  <text x="700" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 200+ PoPs worldwide</text>
+  <text x="700" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Edge computing (Workers)</text>
+  <text x="700" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• DDoS mitigation</text>
+  <text x="700" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Image optimization</text>
+  <text x="700" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Full edge platform</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Stored Procedures Trade-offs</title>
+  <desc id="desc">When to use stored procedures vs application logic</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Stored Procedures Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Database Logic vs Application Logic</text>
+  
+  <!-- When to Use Stored Procedures (Left) -->
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Use Stored Procedures When:</text>
+  
+  <rect x="70" y="125" width="360" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Performance-Critical Operations:</text>
+  <text x="250" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Batch processing (thousands of rows)</text>
+  <text x="250" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Complex calculations near data</text>
+  <text x="250" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Reduce network round-trips</text>
+  
+  <text x="250" y="230" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Data Integrity:</text>
+  <text x="250" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Complex validation rules</text>
+  <text x="250" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Atomic multi-table operations</text>
+  <text x="250" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Centralized business rules</text>
+  
+  <text x="250" y="310" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Security:</text>
+  <text x="250" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Definer's rights (controlled access)</text>
+  <text x="250" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Audit logging at database level</text>
+  
+  <!-- When NOT to Use (Right) -->
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Avoid Stored Procedures When:</text>
+  
+  <rect x="485" y="125" width="345" height="190" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <text x="657" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Complex Business Logic:</text>
+  <text x="657" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• External API integration</text>
+  <text x="657" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Complex workflows</text>
+  <text x="657" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Need version control/testing</text>
+  
+  <text x="657" y="230" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Portability Needs:</text>
+  <text x="657" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Multi-database support</text>
+  <text x="657" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Database migration planned</text>
+  <text x="657" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Procedures are DB-specific</text>
+  
+  <text x="657" y="310" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Team Skills:</text>
+  <text x="657" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Team knows app language, not SQL</text>
+  <text x="657" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Harder to debug/test procedures</text>
+  
+  <!-- Decision Framework (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Decision Framework</text>
+  
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Database Logic</text>
+  <text x="190" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Data-centric operations</text>
+  <text x="190" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Performance-critical</text>
+  <text x="190" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Simple validation</text>
+  <text x="190" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Batch operations</text>
+  <text x="190" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Examples: Audit logging, data cleanup</text>
+  
+  <rect x="325" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Application Logic</text>
+  <text x="445" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Complex workflows</text>
+  <text x="445" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ External integrations</text>
+  <text x="445" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Easy testing/versioning</text>
+  <text x="445" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Team familiarity</text>
+  <text x="445" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Examples: User auth, payment processing</text>
+  
+  <rect x="580" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Hybrid Approach</text>
+  <text x="700" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Simple rules in DB</text>
+  <text x="700" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Complex logic in app</text>
+  <text x="700" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Best of both worlds</text>
+  <text x="700" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Clear boundaries</text>
+  <text x="700" y="490" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Most common in modern systems</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

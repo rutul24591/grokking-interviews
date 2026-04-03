@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Conflict Resolution Strategies</title>
+  <desc id="desc">Write-write conflicts, LWW, vector clocks, CRDTs</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Conflict Resolution Strategies</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Handling Concurrent Writes in Distributed Systems</text>
+  
+  <rect x="50" y="85" width="400" height="140" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Write-Write Conflict</text>
+  <rect x="70" y="125" width="360" height="90" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="250" y="150" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Two writes to same key concurrently:</text>
+  <text x="250" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Node A: key = &quot;Hello&quot; (t=100)</text>
+  <text x="250" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Node B: key = &quot;Hi&quot; (t=101)</text>
+  <text x="250" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Conflict! Both replicate to each other</text>
+  <text x="250" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Common in: Multi-leader replication, offline-first apps</text>
+  
+  <rect x="465" y="85" width="385" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Lost Update</text>
+  <rect x="485" y="125" width="345" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="657" y="150" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Second write overwrites first without seeing it:</text>
+  <text x="657" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1: Read x=10, Write x=11</text>
+  <text x="657" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T2: Read x=10, Write x=12 (overwrites T1&apos;s change)</text>
+  <text x="657" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Result: x=12, T1&apos;s increment lost!</text>
+  
+  <rect x="50" y="235" width="260" height="180" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="180" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Last Write Wins (LWW)</text>
+  <rect x="65" y="275" width="230" height="130" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="180" y="300" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Highest timestamp wins</text>
+  <text x="180" y="315" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Node A: &quot;Hello&quot; (t=100)</text>
+  <text x="180" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Node B: &quot;Hi&quot; (t=101)</text>
+  <text x="180" y="350" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Winner: &quot;Hi&quot; (t=101 &gt; 100)</text>
+  <text x="180" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Simple, fast</text>
+  <text x="180" y="385" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✗ Data loss (Hello lost)</text>
+  <text x="180" y="400" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✗ Clock skew issues</text>
+  
+  <rect x="320" y="235" width="260" height="180" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Vector Clocks</text>
+  <rect x="335" y="275" width="230" height="130" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="300" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Track causality per node</text>
+  <text x="450" y="315" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Node A: {A:1, B:0} → &quot;Hello&quot;</text>
+  <text x="450" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Node B: {A:0, B:1} → &quot;Hi&quot;</text>
+  <text x="450" y="350" text-anchor="middle" font-size="9" font-weight="700" fill="#f59e0b">Concurrent! Detect conflict</text>
+  <text x="450" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Detects conflicts precisely</text>
+  <text x="450" y="385" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✗ Storage overhead</text>
+  <text x="450" y="400" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✗ Needs merge strategy</text>
+  
+  <rect x="590" y="235" width="260" height="180" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="720" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">CRDTs</text>
+  <rect x="605" y="275" width="230" height="130" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="720" y="300" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Conflict-free data types</text>
+  <text x="720" y="315" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Automatic merge, no conflicts</text>
+  <text x="720" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">G-Counter: increment only</text>
+  <text x="720" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LWW-Register: last write wins</text>
+  <text x="720" y="365" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">OR-Set: add/remove with tags</text>
+  <text x="720" y="385" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Automatic resolution</text>
+  <text x="720" y="400" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✗ Complex to implement</text>
+  
+  <rect x="50" y="425" width="800" height="110" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="450" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Strategy Selection</text>
+  <rect x="70" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="160" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Simple data</text>
+  <text x="160" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">LWW (counters, flags)</text>
+  <text x="160" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Accept data loss</text>
+  
+  <rect x="265" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="355" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Detect conflicts</text>
+  <text x="355" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Vector clocks</text>
+  <text x="355" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Prompt user to merge</text>
+  
+  <rect x="460" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="550" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Auto-merge</text>
+  <text x="550" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">CRDTs</text>
+  <text x="550" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Collaborative editing</text>
+  
+  <rect x="655" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="745" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Application Merge</text>
+  <text x="745" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Custom merge logic</text>
+  <text x="745" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Business-specific rules</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

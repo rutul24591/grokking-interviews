@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Consistency Models Use Cases</title>
+  <desc id="desc">When to use each consistency model</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Consistency Models Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Each Consistency Model</text>
+  
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Linearizable</text>
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Strongest Consistency</text>
+  <text x="180" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Financial transactions</text>
+  <text x="180" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Distributed locks</text>
+  <text x="180" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Leader election</text>
+  <text x="180" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Use when: Correctness is critical</text>
+  <text x="180" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Examples: etcd, ZooKeeper, Spanner</text>
+  <text x="180" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Trade-off: High latency, lower availability</text>
+  
+  <rect x="320" y="85" width="260" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Sequential</text>
+  <rect x="335" y="125" width="230" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Per-Client Ordering</text>
+  <text x="450" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Session state management</text>
+  <text x="450" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• User preference updates</text>
+  <text x="450" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Shopping cart updates</text>
+  <text x="450" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Use when: Per-user ordering matters</text>
+  <text x="450" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Examples: Redis, session stores</text>
+  <text x="450" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Trade-off: Medium latency, good availability</text>
+  
+  <rect x="590" y="85" width="260" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Eventual</text>
+  <rect x="605" y="125" width="230" height="150" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Weakest but Fastest</text>
+  <text x="720" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• DNS resolution</text>
+  <text x="720" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• CDN content</text>
+  <text x="720" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Social media feeds</text>
+  <text x="720" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">Use when: Availability > consistency</text>
+  <text x="720" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Examples: DynamoDB, Cassandra</text>
+  <text x="720" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Trade-off: Low latency, highest availability</text>
+  
+  <rect x="50" y="295" width="800" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World: Tunable Consistency</text>
+  <rect x="70" y="335" width="360" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">DynamoDB: Per-Operation Choice</text>
+  <text x="250" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Writes: Always consistent (strong)</text>
+  <text x="250" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Reads: Eventual (default) or Consistent (option)</text>
+  <text x="250" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best of both: fast reads when ok, strong when needed</text>
+  
+  <rect x="445" y="335" width="360" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="625" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Cassandra: Quorum Configuration</text>
+  <text x="625" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">ONE: Fast, eventual consistency</text>
+  <text x="625" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">QUORUM: Strong consistency</text>
+  <text x="625" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Choose per query based on needs</text>
+  
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">Decision Framework</text>
+  <rect x="70" y="485" width="180" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="160" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Money/Critical → Linearizable</text>
+  
+  <rect x="265" y="485" width="180" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="355" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">User Session → Sequential</text>
+  
+  <rect x="460" y="485" width="180" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="550" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Social Feed → Causal</text>
+  
+  <rect x="655" y="485" width="180" height="40" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="745" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">CDN/DNS → Eventual</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

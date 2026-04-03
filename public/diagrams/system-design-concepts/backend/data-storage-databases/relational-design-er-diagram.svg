@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Relational Database ER Diagram</title>
+  <desc id="desc">Entity-relationship diagram showing tables, primary keys, foreign keys, and relationships</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Relational Database Design</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Entity-Relationship Diagram with Foreign Keys</text>
+  
+  <!-- Customers Table -->
+  <rect x="50" y="85" width="220" height="140" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <rect x="50" y="85" width="220" height="35" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="160" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">customers</text>
+  
+  <rect x="65" y="130" width="190" height="25" rx="2" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="75" y="147" text-anchor="start" font-size="8" font-weight="700" fill="#1e3a8a">PK</text>
+  <text x="100" y="147" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">customer_id (INT)</text>
+  
+  <rect x="65" y="158" width="190" height="25" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="100" y="175" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">name (VARCHAR)</text>
+  
+  <rect x="65" y="186" width="190" height="25" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="100" y="203" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">email (VARCHAR)</text>
+  
+  <!-- Orders Table -->
+  <rect x="340" y="85" width="220" height="170" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <rect x="340" y="85" width="220" height="35" rx="4" fill="#d97706" stroke="#b45309" stroke-width="2"/>
+  <text x="450" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">orders</text>
+  
+  <rect x="355" y="130" width="190" height="25" rx="2" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="370" y="147" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">PK</text>
+  <text x="395" y="147" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">order_id (INT)</text>
+  
+  <rect x="355" y="158" width="190" height="25" rx="2" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="370" y="175" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">FK</text>
+  <text x="395" y="175" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">customer_id → customers</text>
+  
+  <rect x="355" y="186" width="190" height="25" rx="2" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="395" y="203" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">order_date (DATE)</text>
+  
+  <rect x="355" y="214" width="190" height="25" rx="2" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="395" y="231" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">total_amount (DECIMAL)</text>
+  
+  <!-- Order Items Table -->
+  <rect x="630" y="85" width="220" height="170" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <rect x="630" y="85" width="220" height="35" rx="4" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="740" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">order_items</text>
+  
+  <rect x="645" y="130" width="190" height="25" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="660" y="147" text-anchor="start" font-size="8" font-weight="700" fill="#065f46">PK,FK</text>
+  <text x="710" y="147" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">order_id → orders</text>
+  
+  <rect x="645" y="158" width="190" height="25" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="660" y="175" text-anchor="start" font-size="8" font-weight="700" fill="#065f46">PK,FK</text>
+  <text x="710" y="175" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">product_id → products</text>
+  
+  <rect x="645" y="186" width="190" height="25" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="695" y="203" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">quantity (INT)</text>
+  
+  <rect x="645" y="214" width="190" height="25" rx="2" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="695" y="231" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">price (DECIMAL)</text>
+  
+  <!-- Products Table -->
+  <rect x="340" y="300" width="220" height="140" rx="4" fill="#e0e7ff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="340" y="300" width="220" height="35" rx="4" fill="#7c3aed" stroke="#6d28d9" stroke-width="2"/>
+  <text x="450" y="323" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">products</text>
+  
+  <rect x="355" y="345" width="190" height="25" rx="2" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="370" y="362" text-anchor="start" font-size="8" font-weight="700" fill="#6d28d9">PK</text>
+  <text x="395" y="362" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">product_id (INT)</text>
+  
+  <rect x="355" y="373" width="190" height="25" rx="2" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="395" y="390" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">name (VARCHAR)</text>
+  
+  <rect x="355" y="401" width="190" height="25" rx="2" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="395" y="418" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">price (DECIMAL)</text>
+  
+  <!-- Relationships -->
+  <!-- customers → orders (1:N) -->
+  <path d="M 275 155 L 335 155" stroke="#374151" stroke-width="2"/>
+  <text x="305" y="145" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">1</text>
+  <text x="305" y="165" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">N</text>
+  
+  <!-- orders → order_items (1:N) -->
+  <path d="M 565 175 L 625 175" stroke="#374151" stroke-width="2"/>
+  <text x="595" y="165" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">1</text>
+  <text x="595" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">N</text>
+  
+  <!-- products → order_items (1:N) -->
+  <path d="M 450 260 L 450 285 L 740 285 L 740 260" stroke="#374151" stroke-width="2" fill="none"/>
+  <text x="460" y="275" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">N</text>
+  <text x="730" y="275" text-anchor="end" font-size="8" font-weight="700" fill="#1f2937">1</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="300" width="260" height="120" rx="4" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="180" y="325" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Legend</text>
+  
+  <rect x="65" y="340" width="230" height="25" rx="2" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="80" y="357" text-anchor="start" font-size="8" font-weight="700" fill="#2563eb">PK</text>
+  <text x="110" y="357" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Primary Key (unique, not null)</text>
+  
+  <rect x="65" y="370" width="230" height="25" rx="2" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="80" y="387" text-anchor="start" font-size="8" font-weight="700" fill="#d97706">FK</text>
+  <text x="110" y="387" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Foreign Key (references another table)</text>
+  
+  <line x1="65" y1="405" x2="105" y2="405" stroke="#374151" stroke-width="2"/>
+  <text x="115" y="408" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Relationship (1:N = one-to-many)</text>
+  
+  <!-- Normalization Benefits -->
+  <rect x="50" y="435" width="800" height="100" rx="4" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="460" text-anchor="middle" font-size="12" font-weight="700" fill="#0369a1">Benefits of Relational Design</text>
+  
+  <rect x="70" y="475" width="180" height="50" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="160" y="495" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Data Integrity</text>
+  <text x="160" y="510" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Foreign keys enforce validity</text>
+  
+  <rect x="265" y="475" width="180" height="50" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="355" y="495" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">No Redundancy</text>
+  <text x="355" y="510" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Normalized to 3NF</text>
+  
+  <rect x="460" y="475" width="180" height="50" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="550" y="495" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Query Flexibility</text>
+  <text x="550" y="510" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">JOINs across tables</text>
+  
+  <rect x="655" y="475" width="180" height="50" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="745" y="495" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">ACID Transactions</text>
+  <text x="745" y="510" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Strong consistency</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

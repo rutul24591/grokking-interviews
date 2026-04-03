@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Graph Database Fundamentals</title>
+  <desc id="desc">Graph database showing nodes, edges, properties, and traversal patterns</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Graph Database Fundamentals</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Nodes, Edges, Properties, and Traversals</text>
+  
+  <!-- Graph Structure (Left) -->
+  <rect x="50" y="85" width="500" height="280" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="300" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Property Graph Model</text>
+  
+  <!-- Nodes -->
+  <circle cx="150" cy="180" r="40" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="150" y="175" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Person</text>
+  <text x="150" y="188" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Alice</text>
+  
+  <circle cx="350" cy="150" r="35" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+  <text x="350" y="145" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Person</text>
+  <text x="350" y="158" text-anchor="middle" font-size="7" font-weight="600" fill="#6ee7b7">Bob</text>
+  
+  <circle cx="350" cy="280" r="35" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
+  <text x="350" y="275" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Product</text>
+  <text x="350" y="288" text-anchor="middle" font-size="7" font-weight="600" fill="#fef3c7">Laptop</text>
+  
+  <circle cx="150" cy="300" r="35" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="150" y="295" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Company</text>
+  <text x="150" y="308" text-anchor="middle" font-size="7" font-weight="600" fill="#e9d5ff">TechCorp</text>
+  
+  <!-- Edges -->
+  <!-- Alice KNOWS Bob -->
+  <path d="M 185 165 Q 265 140 315 155" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="250" y="145" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">KNOWS</text>
+  <text x="250" y="157" text-anchor="middle" font-size="6" font-weight="600" fill="#64748b">since: 2020</text>
+  
+  <!-- Alice WORKS_AT TechCorp -->
+  <path d="M 150 220 L 150 260" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="165" y="245" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">WORKS_AT</text>
+  <text x="165" y="257" text-anchor="start" font-size="6" font-weight="600" fill="#64748b">since: 2019</text>
+  
+  <!-- Bob PURCHASED Laptop -->
+  <path d="M 350 190 L 350 240" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="370" y="220" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">PURCHASED</text>
+  <text x="370" y="232" text-anchor="start" font-size="6" font-weight="600" fill="#64748b">date: 2024-01</text>
+  
+  <!-- Alice RECOMMENDED Bob -->
+  <path d="M 190 180 Q 270 200 310 175" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,3" fill="none" marker-end="url(#arrow)"/>
+  <text x="250" y="205" text-anchor="middle" font-size="7" font-weight="700" fill="#2563eb">RECOMMENDED</text>
+  
+  <!-- Node Properties Detail (Top Right) -->
+  <rect x="565" y="85" width="285" height="130" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="707" y="110" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Node Properties</text>
+  
+  <rect x="580" y="125" width="255" height="80" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="707" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Person: Alice</text>
+  <text x="595" y="165" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Labels: [Person, Customer]</text>
+  <text x="595" y="178" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Properties:</text>
+  <text x="610" y="191" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">- name: "Alice Smith"</text>
+  <text x="610" y="201" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">- email: "alice@example.com"</text>
+  <text x="610" y="211" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">- age: 32</text>
+  
+  <!-- Edge Properties Detail (Bottom Right) -->
+  <rect x="565" y="225" width="285" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="707" y="250" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">Edge (Relationship) Properties</text>
+  
+  <rect x="580" y="265" width="255" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="707" y="285" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">PURCHASED Relationship</text>
+  <text x="595" y="305" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Type: PURCHASED (verb)</text>
+  <text x="595" y="318" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Direction: Bob → Laptop</text>
+  <text x="595" y="331" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Properties:</text>
+  <text x="610" y="344" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">- date: "2024-01-15"</text>
+  <text x="610" y="354" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">- quantity: 1</text>
+  <text x="610" y="364" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">- price: $999.99</text>
+  
+  <!-- Traversal Example (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Graph Traversal Example</text>
+  
+  <!-- Query -->
+  <rect x="70" y="415" width="350" height="110" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="245" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Cypher Query: Find products purchased by Alice's friends</text>
+  
+  <rect x="85" y="450" width="320" height="65" rx="3" fill="#1f2937" stroke="#000000" stroke-width="1"/>
+  <text x="245" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#10b981">MATCH (alice:Person {name: "Alice"})</text>
+  <text x="245" y="485" text-anchor="middle" font-size="8" font-weight="600" fill="#10b981">-[:KNOWS]-&gt;(friend)-[:PURCHASED]-&gt;(product)</text>
+  <text x="245" y="500" text-anchor="middle" font-size="8" font-weight="600" fill="#10b981">RETURN product.name, product.price</text>
+  
+  <!-- Traversal Path -->
+  <rect x="440" y="415" width="395" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="637" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Traversal Path (Depth 2)</text>
+  
+  <!-- Path visualization -->
+  <circle cx="480" cy="465" r="20" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="480" y="468" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">Alice</text>
+  
+  <line x1="500" y1="465" x2="540" y2="465" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="520" y="455" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">KNOWS</text>
+  
+  <circle cx="570" cy="465" r="20" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+  <text x="570" y="468" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">Bob</text>
+  
+  <line x1="590" y1="465" x2="630" y2="465" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="610" y="455" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">PURCHASED</text>
+  
+  <circle cx="660" cy="465" r="20" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
+  <text x="660" y="468" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">Laptop</text>
+  
+  <text x="637" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ O(1) edge traversal</text>
+  <text x="637" y="518" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cost grows with connections, not graph size</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

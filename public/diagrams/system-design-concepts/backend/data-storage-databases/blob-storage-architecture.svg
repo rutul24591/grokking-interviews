@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Blob Storage Architecture</title>
+  <desc id="desc">Block, page, and append blobs with containers and metadata</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Blob Storage Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Block, Page, and Append Blobs</text>
+  
+  <!-- Three Blob Types (Top) -->
+  <rect x="50" y="85" width="800" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Three Blob Types</text>
+  
+  <!-- Block Blob -->
+  <rect x="70" y="125" width="240" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Block Blob</text>
+  
+  <rect x="85" y="165" width="210" height="35" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="182" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Upload in blocks, reassemble</text>
+  <text x="190" y="195" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Up to 4.75 TB</text>
+  
+  <text x="190" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use: General files, media</text>
+  <text x="190" y="235" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Example: Images, videos, docs</text>
+  <text x="190" y="255" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Optimized for upload/download</text>
+  
+  <!-- Page Blob -->
+  <rect x="325" y="125" width="240" height="150" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="445" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Page Blob</text>
+  
+  <rect x="340" y="165" width="210" height="35" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="445" y="182" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Random read/write at 512B offsets</text>
+  <text x="445" y="195" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Up to 8 TB</text>
+  
+  <text x="445" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use: VM disks, VHD files</text>
+  <text x="445" y="235" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Example: Azure VM OS disks</text>
+  <text x="445" y="255" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Random I/O, low latency</text>
+  
+  <!-- Append Blob -->
+  <rect x="580" y="125" width="240" height="150" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="700" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#065f46">Append Blob</text>
+  
+  <rect x="595" y="165" width="210" height="35" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="700" y="182" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Optimized for append operations</text>
+  <text x="700" y="195" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Up to 195 GB</text>
+  
+  <text x="700" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use: Logs, telemetry data</text>
+  <text x="700" y="235" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Example: Application logs</text>
+  <text x="700" y="255" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Efficient appends, no rewrites</text>
+  
+  <!-- Container Structure (Bottom) -->
+  <rect x="50" y="295" width="800" height="240" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Container Structure</text>
+  
+  <!-- Container -->
+  <rect x="70" y="335" width="340" height="190" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="240" y="360" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Container (like S3 Bucket)</text>
+  
+  <rect x="85" y="375" width="310" height="35" rx="3" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="240" y="397" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Container: images</text>
+  
+  <!-- Blobs in container -->
+  <rect x="85" y="420" width="140" height="30" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="155" y="440" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">photo1.jpg (Block)</text>
+  
+  <rect x="240" y="420" width="140" height="30" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="310" y="440" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">photo2.png (Block)</text>
+  
+  <rect x="85" y="460" width="140" height="30" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="155" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">app.log (Append)</text>
+  
+  <rect x="240" y="460" width="140" height="30" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="310" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">error.log (Append)</text>
+  
+  <!-- Metadata and Access Tiers (Right) -->
+  <rect x="425" y="335" width="400" height="190" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="625" y="360" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Metadata &amp; Access Tiers</text>
+  
+  <rect x="440" y="375" width="370" height="60" rx="3" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="625" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Metadata: name-value pairs (content-type, custom tags)</text>
+  <text x="625" y="410" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Stored separately from blob data, queryable</text>
+  <text x="625" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Example: content-type=image/jpeg, author=alice</text>
+  
+  <rect x="440" y="445" width="370" height="70" rx="3" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="625" y="465" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Access Tiers:</text>
+  <text x="625" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Hot (frequent), Cool (30+ days), Cold (90+ days), Archive (180+ days)</text>
+  <text x="625" y="495" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Automatic lifecycle transitions based on access patterns</text>
+  <text x="625" y="510" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Snapshots: Point-in-time read-only copies</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

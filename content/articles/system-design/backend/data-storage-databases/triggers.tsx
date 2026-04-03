@@ -712,45 +712,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            PostgreSQL Documentation, "Triggers,"
-            https://www.postgresql.org/docs/current/sql-createtrigger.html
+            <a
+              href="https://www.postgresql.org/docs/current/sql-createtrigger.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Triggers
+            </a>
           </li>
           <li>
-            MySQL Documentation, "Triggers,"
-            https://dev.mysql.com/doc/refman/8.0/en/triggers.html
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/triggers.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — Triggers
+            </a>
           </li>
           <li>
-            SQL Server Documentation, "Triggers,"
-            https://docs.microsoft.com/en-us/sql/relational-databases/triggers/
+            <a
+              href="https://docs.microsoft.com/en-us/sql/relational-databases/triggers/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SQL Server Documentation — Triggers
+            </a>
           </li>
           <li>
-            Oracle Documentation, "Database Triggers,"
-            https://docs.oracle.com/en/database/oracle/oracle-database/
+            <a
+              href="https://docs.oracle.com/en/database/oracle/oracle-database/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Oracle Documentation — Database Triggers
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 5.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 5.
           </li>
           <li>
-            Use The Index, Luke, "Triggers,"
-            https://use-the-index-luke.com/
+            <a
+              href="https://use-the-index-luke.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Use The Index, Luke — Triggers
+            </a>
           </li>
           <li>
-            CMU Database Group, "Triggers" (YouTube lectures),
-            https://www.youtube.com/c/CMUDatabaseGroup
+            <a
+              href="https://www.youtube.com/c/CMUDatabaseGroup"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CMU Database Group — Triggers (YouTube lectures)
+            </a>
           </li>
           <li>
-            Brent Ozar, "SQL Server Triggers,"
-            https://www.brentozar.com/archive/sql-server-triggers/
+            <a
+              href="https://www.brentozar.com/archive/sql-server-triggers/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Brent Ozar — SQL Server Triggers
+            </a>
           </li>
           <li>
-            Percona Blog, "Trigger Best Practices,"
-            https://www.percona.com/blog/
+            <a
+              href="https://www.percona.com/blog/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Percona Blog — Trigger Best Practices
+            </a>
           </li>
         </ul>
       </section>

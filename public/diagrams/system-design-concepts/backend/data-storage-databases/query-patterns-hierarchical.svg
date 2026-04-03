@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Hierarchical Query Patterns</title>
+  <desc id="desc">Tree structures, recursive CTEs, and hierarchical data traversal</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Hierarchical Query Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Tree Structures and Recursive Queries</text>
+  
+  <rect x="50" y="85" width="260" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Adjacency List</text>
+  <rect x="65" y="125" width="230" height="130" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">parent_id column</text>
+  <rect x="80" y="165" width="200" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="182" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">id, name, parent_id</text>
+  <rect x="80" y="195" width="200" height="55" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">WITH RECURSIVE tree AS (</text>
+  <text x="180" y="228" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  SELECT * FROM categories</text>
+  <text x="180" y="241" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  WHERE parent_id IS NULL</text>
+  <text x="180" y="254" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  UNION ALL ...</text>
+  <text x="180" y="275" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Simple, flexible</text>
+  <text x="180" y="290" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Recursive queries slow</text>
+  
+  <rect x="320" y="85" width="260" height="180" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Path Enumeration</text>
+  <rect x="335" y="125" width="230" height="130" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Path column</text>
+  <rect x="350" y="165" width="200" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="182" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">id, name, path</text>
+  <rect x="350" y="195" width="200" height="55" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Electronics: &apos;1/&apos;</text>
+  <text x="450" y="228" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Phones: &apos;1/5/&apos;</text>
+  <text x="450" y="241" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">iPhone: &apos;1/5/23/&apos;</text>
+  <text x="450" y="275" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Fast reads, simple queries</text>
+  <text x="450" y="290" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Path updates on move</text>
+  
+  <rect x="590" y="85" width="260" height="180" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Closure Table</text>
+  <rect x="605" y="125" width="230" height="130" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Ancestor-Descendant table</text>
+  <rect x="620" y="165" width="200" height="25" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="182" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">ancestor_id, descendant_id, depth</text>
+  <rect x="620" y="195" width="200" height="55" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">(1, 5, 1) Electronics-Phones</text>
+  <text x="720" y="228" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">(1, 23, 2) Electronics-iPhone</text>
+  <text x="720" y="241" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">(5, 23, 1) Phones-iPhone</text>
+  <text x="720" y="275" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Fast queries, flexible depth</text>
+  <text x="720" y="290" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Extra table, maintenance</text>
+  
+  <rect x="50" y="275" width="800" height="260" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Tree Traversal Queries</text>
+  
+  <rect x="70" y="315" width="240" height="100" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="335" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Find All Descendants</text>
+  <text x="190" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Recursive CTE with UNION ALL</text>
+  <text x="190" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Start from root, traverse down</text>
+  <text x="190" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Use: Category browsing</text>
+  <text x="190" y="400" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: Product categories</text>
+  
+  <rect x="325" y="315" width="240" height="100" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="335" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Find Path to Root</text>
+  <text x="445" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Recursive CTE upward</text>
+  <text x="445" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Follow parent_id to root</text>
+  <text x="445" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Use: Breadcrumbs</text>
+  <text x="445" y="400" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: Org chart paths</text>
+  
+  <rect x="580" y="315" width="240" height="100" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="335" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Find Siblings</text>
+  <text x="700" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Same parent_id</text>
+  <text x="700" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT WHERE parent_id = X</text>
+  <text x="700" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Use: Related items</text>
+  <text x="700" y="400" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: Subcategories</text>
+  
+  <rect x="70" y="425" width="760" height="100" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="450" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Best Practices</text>
+  <text x="450" y="465" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Limit recursion depth (prevent infinite loops)</text>
+  <text x="450" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Index parent_id column for fast lookups</text>
+  <text x="450" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Consider materialized paths for read-heavy trees</text>
+  <text x="450" y="510" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use closure tables for complex hierarchical queries</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

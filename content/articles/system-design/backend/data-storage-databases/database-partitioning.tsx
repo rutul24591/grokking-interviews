@@ -630,45 +630,86 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
-            Chapters 5-6.
+            <a
+              href="https://cassandra.apache.org/doc/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cassandra Documentation — Data Modeling &amp; Partitioning
+            </a>
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapters 11-12.
+            <a
+              href="https://www.cockroachlabs.com/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CockroachDB Documentation — Partitioning &amp; Sharding
+            </a>
           </li>
           <li>
-            Cassandra Documentation, "Data Modeling," "Partitioning,"
-            https://cassandra.apache.org/doc/
+            <a
+              href="https://www.mongodb.com/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MongoDB Documentation — Sharding &amp; Partitioning
+            </a>
           </li>
           <li>
-            CockroachDB Documentation, "Partitioning," "Sharding,"
-            https://www.cockroachlabs.com/docs/
+            <a
+              href="https://www.postgresql.org/docs/current/ddl-partitioning.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Table Partitioning
+            </a>
           </li>
           <li>
-            MongoDB Documentation, "Sharding," "Partitioning,"
-            https://www.mongodb.com/docs/
+            <a
+              href="https://dev.mysql.com/doc/refman/8.0/en/partitioning.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MySQL Documentation — Partitioning
+            </a>
           </li>
           <li>
-            PostgreSQL Documentation, "Table Partitioning,"
-            https://www.postgresql.org/docs/current/ddl-partitioning.html
+            <a
+              href="https://cloud.google.com/spanner/docs"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Spanner Documentation — Data Model &amp; Partitioning
+            </a>
           </li>
           <li>
-            MySQL Documentation, "Partitioning,"
-            https://dev.mysql.com/doc/refman/8.0/en/partitioning.html
+            <a
+              href="https://shopify.engineering/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Shopify Engineering Blog — Scaling MySQL at Shopify
+            </a>
           </li>
           <li>
-            Google Spanner Documentation, "Data Model," "Partitioning,"
-            https://cloud.google.com/spanner/docs
-          </li>
-          <li>
-            Shopify Engineering Blog, "Scaling MySQL at Shopify,"
-            https://shopify.engineering/
-          </li>
-          <li>
-            Twitter Engineering Blog, "Tweet Storage at Scale,"
-            https://blog.twitter.com/engineering
+            <a
+              href="https://blog.twitter.com/engineering"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Twitter Engineering Blog — Tweet Storage at Scale
+            </a>
           </li>
         </ul>
       </section>

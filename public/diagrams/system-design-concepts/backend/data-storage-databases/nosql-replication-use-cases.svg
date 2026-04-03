@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">NoSQL Replication Use Cases</title>
+  <desc id="desc">When to use each replication pattern</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Replication Pattern Selection</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Choosing the Right Replication Strategy</text>
+  
+  <!-- Single Leader Use Cases (Left) -->
+  <rect x="50" y="85" width="260" height="240" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Single Leader: Best For</text>
+  
+  <rect x="65" y="125" width="230" height="190" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Simple Applications:</text>
+  <text x="180" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No conflict resolution needed</text>
+  <text x="180" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single region deployment</text>
+  
+  <text x="180" y="210" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Read-Heavy Workloads:</text>
+  <text x="180" y="230" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Many replicas for reads</text>
+  <text x="180" y="243" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Leader handles writes only</text>
+  
+  <text x="180" y="270" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Strong Consistency:</text>
+  <text x="180" y="290" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Financial transactions</text>
+  <text x="180" y="303" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Inventory management</text>
+  
+  <text x="180" y="325" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Examples: MySQL, PostgreSQL</text>
+  
+  <!-- Multi Leader Use Cases (Middle) -->
+  <rect x="320" y="85" width="260" height="240" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Multi Leader: Best For</text>
+  
+  <rect x="335" y="125" width="230" height="190" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Geographic Distribution:</text>
+  <text x="450" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Users in multiple regions</text>
+  <text x="450" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low latency writes per region</text>
+  
+  <text x="450" y="210" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Offline-First Apps:</text>
+  <text x="450" y="230" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Mobile apps with sync</text>
+  <text x="450" y="243" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Occasional connectivity</text>
+  
+  <text x="450" y="270" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Collaborative Apps:</text>
+  <text x="450" y="290" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Google Docs-style editing</text>
+  <text x="450" y="303" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Conflict resolution built-in</text>
+  
+  <text x="450" y="325" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Examples: Cassandra, CouchDB</text>
+  
+  <!-- Leaderless Use Cases (Right) -->
+  <rect x="590" y="85" width="260" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Leaderless: Best For</text>
+  
+  <rect x="605" y="125" width="230" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">High Availability:</text>
+  <text x="720" y="170" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No single point of failure</text>
+  <text x="720" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Always writable</text>
+  
+  <text x="720" y="210" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Eventual Consistency OK:</text>
+  <text x="720" y="230" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Social media feeds</text>
+  <text x="720" y="243" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Product reviews</text>
+  
+  <text x="720" y="270" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">High Write Throughput:</text>
+  <text x="720" y="290" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• IoT sensor data</text>
+  <text x="720" y="303" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Clickstream logging</text>
+  
+  <text x="720" y="325" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Examples: DynamoDB, Riak</text>
+  
+  <!-- Decision Framework (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Decision Framework</text>
+  
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Need Strong Consistency?</text>
+  <line x1="190" y1="410" x2="190" y2="440" stroke="#374151" stroke-width="2"/>
+  <text x="100" y="460" text-anchor="start" font-size="8" font-weight="700" fill="#059669">YES → Single Leader</text>
+  <text x="100" y="475" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">(MySQL, PostgreSQL)</text>
+  <text x="250" y="460" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">NO → Next question</text>
+  
+  <rect x="330" y="375" width="240" height="150" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="450" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Multi-Region Writes?</text>
+  <line x1="450" y1="410" x2="450" y2="440" stroke="#374151" stroke-width="2"/>
+  <text x="360" y="460" text-anchor="start" font-size="8" font-weight="700" fill="#059669">YES → Multi Leader</text>
+  <text x="360" y="475" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">(Cassandra, CouchDB)</text>
+  <text x="510" y="460" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">NO → Next question</text>
+  
+  <rect x="590" y="375" width="240" height="150" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="710" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Need High Availability?</text>
+  <line x1="710" y1="410" x2="710" y2="440" stroke="#374151" stroke-width="2"/>
+  <text x="620" y="460" text-anchor="start" font-size="8" font-weight="700" fill="#059669">YES → Leaderless</text>
+  <text x="620" y="475" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">(DynamoDB, Riak)</text>
+  <text x="770" y="460" text-anchor="start" font-size="8" font-weight="700" fill="#059669">NO → Single Leader</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -71,7 +71,7 @@ export default function ArticlePage() {
         </p>
 
         <ArticleImage
-          src={`${BASE_PATH}/consistency-models-spectrum.svg`}
+          src={`${BASE_PATH}/consistency-spectrum.svg`}
           caption="Figure 1: Consistency Models Spectrum showing Consistency Spectrum (Strong → Weak): Linearizable (Strongest, real-time guarantee), Sequential (Per-client order), Causal (Cause-effect preserved), Eventual (Weakest, converge eventually). Strong: High latency, low availability. Weak: Low latency, high availability. CAP Theorem (Choose 2 of 3): Consistency (All nodes same data), Availability (Every request gets response), Partition Tolerance (System works despite network failures). Key characteristics: Linearizable (strongest, real-time), Sequential (per-client order), Causal (cause-effect), Eventual (converge eventually)."
           alt="Consistency models spectrum"
         />

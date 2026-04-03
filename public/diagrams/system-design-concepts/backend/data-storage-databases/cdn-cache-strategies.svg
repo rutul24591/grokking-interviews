@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">CDN Cache Strategies</title>
+  <desc id="desc">TTL-based caching, cache invalidation, and versioned URLs</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">CDN Cache Strategies</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">TTL, Invalidation, and Versioned URLs</text>
+  
+  <!-- TTL-Based Caching (Top Left) -->
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">TTL-Based Caching</text>
+  
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Cache-Control Headers:</text>
+  
+  <rect x="80" y="165" width="200" height="30" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Cache-Control: public, max-age=3600</text>
+  
+  <rect x="80" y="200" width="200" height="30" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="220" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Cache for 1 hour (3600 seconds)</text>
+  
+  <rect x="80" y="235" width="200" height="30" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="255" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">s-maxage for shared caches</text>
+  
+  <text x="180" y="280" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Simple, automatic</text>
+  <text x="180" y="295" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: Static assets, images</text>
+  
+  <!-- Cache Invalidation (Top Middle) -->
+  <rect x="320" y="85" width="260" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Cache Invalidation</text>
+  
+  <rect x="335" y="125" width="230" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Purge Strategies:</text>
+  
+  <rect x="350" y="165" width="200" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="182" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Purge by URL (single file)</text>
+  
+  <rect x="350" y="195" width="200" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="212" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Purge by pattern (/images/*)</text>
+  
+  <rect x="350" y="225" width="200" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="242" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Purge all (entire cache)</text>
+  
+  <text x="450" y="270" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Immediate invalidation</text>
+  <text x="450" y="285" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Cache miss until repopulated</text>
+  <text x="450" y="300" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: Updated content, deployments</text>
+  
+  <!-- Versioned URLs (Top Right) -->
+  <rect x="590" y="85" width="260" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Versioned URLs</text>
+  
+  <rect x="605" y="125" width="230" height="150" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Immutable URLs:</text>
+  
+  <rect x="620" y="165" width="200" height="30" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">/assets/app.v1.2.3.js</text>
+  
+  <rect x="620" y="200" width="200" height="30" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="220" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">/assets/app.v1.2.4.js</text>
+  
+  <text x="720" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">New version = new URL</text>
+  <text x="720" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Old version stays cached</text>
+  
+  <text x="720" y="285" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ No invalidation needed</text>
+  <text x="720" y="300" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: JS/CSS bundles, deployments</text>
+  
+  <!-- Stale-While-Revalidate (Bottom Left) -->
+  <rect x="50" y="295" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Stale-While-Revalidate</text>
+  
+  <rect x="70" y="335" width="360" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  
+  <text x="250" y="360" text-anchor="middle" font-size="9" font-weight="700" fill="#0369a1">Cache-Control: stale-while-revalidate=60</text>
+  
+  <text x="250" y="385" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Serve stale content while fetching fresh version in background</text>
+  <text x="250" y="400" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">User gets instant response, cache updates asynchronously</text>
+  
+  <text x="250" y="420" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ No user-visible latency during refresh</text>
+  <text x="250" y="435" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: Frequently accessed content</text>
+  
+  <!-- Cache Hit Ratio Optimization (Bottom Right) -->
+  <rect x="465" y="295" width="385" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Cache Hit Ratio Optimization</text>
+  
+  <rect x="485" y="335" width="345" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="500" y="360" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">Improve Hit Ratio:</text>
+  <text x="500" y="378" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Normalize query strings (?utm_source=...)</text>
+  <text x="500" y="393" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Use consistent URLs (no timestamps)</text>
+  <text x="500" y="408" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Set appropriate TTLs per content type</text>
+  <text x="500" y="423" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Use compression (gzip, brotli)</text>
+  
+  <!-- Cache Strategies Comparison (Bottom) -->
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Strategy Selection</text>
+  
+  <rect x="70" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="185" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Static assets → Long TTL + Versioned URLs</text>
+  
+  <rect x="315" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="430" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Dynamic content → Short TTL + SWR</text>
+  
+  <rect x="560" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="675" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">User-specific → No cache or edge compute</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Query Patterns Use Cases</title>
+  <desc id="desc">When to use each query pattern and real-world examples</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Query Patterns Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Each Pattern</text>
+  
+  <rect x="50" y="85" width="400" height="220" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Pattern Selection Guide</text>
+  <rect x="70" y="125" width="360" height="170" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="250" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Master-Detail: Order → Items, Invoice → Line Items</text>
+  <text x="250" y="170" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Hierarchical: Categories, Org charts, Bill of materials</text>
+  <text x="250" y="190" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Many-to-Many: Users ↔ Roles, Tags ↔ Posts</text>
+  <text x="250" y="210" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Polymorphic: Comments (Post/User/Video)</text>
+  <text x="250" y="235" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Avoid: EAV (use JSON), N+1 (use JOIN), SELECT *</text>
+  <text x="250" y="260" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Use CTEs for complex queries, window functions for analytics</text>
+  <text x="250" y="280" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Eager loading fixes N+1, JSON columns replace EAV</text>
+  
+  <rect x="465" y="85" width="385" height="220" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Anti-Patterns to Avoid</text>
+  <rect x="485" y="125" width="345" height="170" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="500" y="150" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">EAV (Entity-Attribute-Value)</text>
+  <text x="500" y="170" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Flexible but complex queries, poor performance</text>
+  <text x="500" y="185" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Solution: JSON columns or wide tables</text>
+  <text x="500" y="210" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">N+1 Query Pattern</text>
+  <text x="500" y="230" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">1 query + N queries = slow</text>
+  <text x="500" y="245" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Solution: JOIN or eager loading</text>
+  <text x="500" y="270" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">SELECT *</text>
+  <text x="500" y="290" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Fetches unnecessary columns</text>
+  <text x="500" y="305" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Solution: Specify needed columns</text>
+  
+  <rect x="50" y="315" width="800" height="220" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  <rect x="70" y="355" width="240" height="170" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">E-commerce</text>
+  <text x="190" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Master-Detail: Order→Items</text>
+  <text x="190" y="410" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Many-to-Many: Products↔Tags</text>
+  <text x="190" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Hierarchical: Categories</text>
+  <text x="190" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Polymorphic: Reviews (Product/User)</text>
+  <text x="190" y="460" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Efficient queries for shopping</text>
+  
+  <rect x="325" y="355" width="240" height="170" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Social Media</text>
+  <text x="445" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Many-to-Many: Users↔Groups</text>
+  <text x="445" y="410" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Polymorphic: Likes (Post/Comment)</text>
+  <text x="445" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Hierarchical: Comment threads</text>
+  <text x="445" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Master-Detail: Post→Comments</text>
+  <text x="445" y="460" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Social graph queries</text>
+  
+  <rect x="580" y="355" width="240" height="170" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Enterprise Apps</text>
+  <text x="700" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Hierarchical: Org charts</text>
+  <text x="700" y="410" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Many-to-Many: Employees↔Projects</text>
+  <text x="700" y="425" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Master-Detail: Invoice→Lines</text>
+  <text x="700" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Polymorphic: Attachments</text>
+  <text x="700" y="460" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Complex business relationships</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

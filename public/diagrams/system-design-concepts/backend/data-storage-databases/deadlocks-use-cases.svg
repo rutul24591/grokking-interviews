@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Deadlocks Use Cases</title>
+  <desc id="desc">When deadlocks occur and real-world examples</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Deadlocks Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When Deadlocks Occur and How to Handle Them</text>
+  
+  <rect x="50" y="85" width="400" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Common Deadlock Scenarios</text>
+  <rect x="70" y="125" width="360" height="150" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Banking Transfers</text>
+  <text x="250" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">TxA: Debit A, Credit B</text>
+  <text x="250" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">TxB: Debit B, Credit A</text>
+  <text x="250" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Classic circular wait!</text>
+  <text x="250" y="225" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Inventory Updates</text>
+  <text x="250" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Concurrent order processing</text>
+  <text x="250" y="260" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Multiple items updated in different order</text>
+  
+  <rect x="465" y="85" width="385" height="200" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">High-Risk Operations</text>
+  <rect x="485" y="125" width="345" height="150" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="500" y="150" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">Foreign Key Operations</text>
+  <text x="500" y="170" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Concurrent inserts with FK checks</text>
+  <text x="500" y="185" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Index FK columns to reduce lock time</text>
+  <text x="500" y="210" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">Batch Updates</text>
+  <text x="500" y="230" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Updating same rows in different order</text>
+  <text x="500" y="245" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Sort rows before batch update</text>
+  <text x="500" y="265" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">Serializable Isolation Level</text>
+  <text x="500" y="285" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">More locks = more deadlock risk</text>
+  
+  <rect x="50" y="295" width="800" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Application-Level Deadlock Handling</text>
+  <rect x="70" y="335" width="360" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Retry Pattern</text>
+  <text x="250" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Catch deadlock exception</text>
+  <text x="250" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Retry with exponential backoff</text>
+  <text x="250" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Log deadlock for analysis</text>
+  <text x="250" y="420" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Max retries: 3-5 attempts</text>
+  
+  <rect x="445" y="335" width="360" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="625" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Idempotent Operations</text>
+  <text x="625" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Safe to retry without side effects</text>
+  <text x="625" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use unique request IDs</text>
+  <text x="625" y="405" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Check before retrying</text>
+  <text x="625" y="420" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Prevents duplicate operations</text>
+  
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Real-World Examples</text>
+  <rect x="70" y="485" width="240" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">E-commerce: Order processing deadlocks</text>
+  
+  <rect x="325" y="485" width="240" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="445" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Banking: Transfer transaction deadlocks</text>
+  
+  <rect x="580" y="485" width="240" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="700" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Gaming: Inventory update conflicts</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

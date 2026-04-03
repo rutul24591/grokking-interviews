@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">NoSQL Replication Lag</title>
+  <desc id="desc">Replication lag causes, impact, and mitigation strategies</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Replication Lag</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Causes, Impact, and Mitigation</text>
+  
+  <!-- Replication Lag Visualization (Top) -->
+  <rect x="50" y="85" width="800" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Replication Lag: Follower Behind Leader</text>
+  
+  <!-- Timeline -->
+  <line x1="70" y1="150" x2="830" y2="150" stroke="#374151" stroke-width="2"/>
+  <text x="70" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T-10s</text>
+  <text x="830" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Now</text>
+  
+  <!-- Leader position -->
+  <rect x="780" y="130" width="40" height="40" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="800" y="150" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Leader</text>
+  <text x="800" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">T=0 (current)</text>
+  
+  <!-- Follower position -->
+  <rect x="580" y="130" width="40" height="40" rx="4" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="600" y="150" text-anchor="middle" font-size="7" font-weight="600" fill="#1e3a8a">Follower</text>
+  <text x="600" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">T-5s (5s behind)</text>
+  
+  <!-- Lag arrow -->
+  <line x1="625" y1="150" x2="775" y2="150" stroke="#dc2626" stroke-width="3" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="700" y="140" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">5 second lag</text>
+  
+  <!-- Causes of Lag (Middle Left) -->
+  <rect x="50" y="235" width="400" height="180" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Causes of Replication Lag</text>
+  
+  <rect x="70" y="275" width="360" height="130" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <text x="85" y="300" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">1. Network Latency:</text>
+  <text x="85" y="315" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Cross-region replication adds delay</text>
+  
+  <text x="85" y="335" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">2. Heavy Write Load:</text>
+  <text x="85" y="350" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Follower can't keep up with leader</text>
+  
+  <text x="250" y="300" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">3. Long Transactions:</text>
+  <text x="250" y="315" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Large batch operations block replication</text>
+  
+  <text x="250" y="335" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">4. Resource Contention:</text>
+  <text x="250" y="350" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Follower serving reads while replicating</text>
+  
+  <!-- Impact (Middle Right) -->
+  <rect x="465" y="235" width="385" height="180" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Impact of Replication Lag</text>
+  
+  <rect x="485" y="275" width="345" height="130" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="500" y="300" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">Read-Your-Writes Violation:</text>
+  <text x="500" y="318" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">User updates profile, reads stale data</text>
+  
+  <text x="500" y="340" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">Inconsistent Analytics:</text>
+  <text x="500" y="358" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Dashboard shows outdated metrics</text>
+  
+  <text x="500" y="380" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">Race Conditions:</text>
+  <text x="500" y="398" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Two users see different data</text>
+  
+  <!-- Mitigation Strategies (Bottom) -->
+  <rect x="50" y="425" width="800" height="110" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="450" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Mitigation Strategies</text>
+  
+  <rect x="70" y="465" width="180" height="60" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="160" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Read-Your-Writes</text>
+  <text x="160" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Route to leader after write</text>
+  <text x="160" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">For N seconds</text>
+  
+  <rect x="265" y="465" width="180" height="60" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="355" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Staleness Window</text>
+  <text x="355" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Accept N seconds lag</text>
+  <text x="355" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">For non-critical reads</text>
+  
+  <rect x="460" y="465" width="180" height="60" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="550" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Semi-Sync Replication</text>
+  <text x="550" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Wait for 1 follower ack</text>
+  <text x="550" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Reduces lag window</text>
+  
+  <rect x="655" y="465" width="180" height="60" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="745" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Monitor Lag</text>
+  <text x="745" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Alert on high lag</text>
+  <text x="745" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Auto-failover if needed</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

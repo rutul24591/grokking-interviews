@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Read Replicas Use Cases</title>
+  <desc id="desc">When to use read replicas and real-world examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Read Replicas Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Read Replicas</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: Read-Heavy -->
+  <rect x="70" y="125" width="170" height="85" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Read-Heavy Workloads</text>
+  <text x="155" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• 10:1 read:write ratio</text>
+  <text x="155" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Content feeds</text>
+  <text x="155" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• E-commerce catalogs</text>
+  <text x="155" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: News sites, blogs</text>
+  
+  <!-- Use Case 2: Geographic -->
+  <rect x="255" y="125" width="170" height="85" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Geographic Distribution</text>
+  <text x="340" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Global user base</text>
+  <text x="340" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low latency reads</text>
+  <text x="340" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Regional replicas</text>
+  <text x="340" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: CDN-like DB access</text>
+  
+  <!-- Use Case 3: Analytics -->
+  <rect x="70" y="220" width="170" height="95" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Analytics/Reporting</text>
+  <text x="155" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Heavy aggregation queries</text>
+  <text x="155" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Dashboard queries</text>
+  <text x="155" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• BI tools</text>
+  <text x="155" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Batch reporting</text>
+  <text x="155" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Run on replica, not primary</text>
+  
+  <!-- Use Case 4: Backup/DR -->
+  <rect x="255" y="220" width="170" height="95" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Backup / Disaster Recovery</text>
+  <text x="340" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Hot standby</text>
+  <text x="340" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Fast failover</text>
+  <text x="340" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Point-in-time recovery</text>
+  <text x="340" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Cross-region backup</text>
+  <text x="340" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Minimal RTO/RPO</text>
+  
+  <!-- When NOT to Use (Right Column) -->
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use Read Replicas</text>
+  
+  <!-- Anti-Pattern 1: Write-Heavy -->
+  <rect x="485" y="125" width="170" height="85" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Write-Heavy Workloads</text>
+  <text x="570" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Replication lag increases</text>
+  <text x="570" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Followers can't keep up</text>
+  <text x="570" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No read scaling benefit</text>
+  <text x="570" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use sharding instead</text>
+  
+  <!-- Anti-Pattern 2: Strong Consistency -->
+  <rect x="670" y="125" width="170" height="85" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Strong Consistency Required</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Financial transactions</text>
+  <text x="755" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Inventory counts</text>
+  <text x="755" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Booking systems</text>
+  <text x="755" y="204" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Read from primary only</text>
+  
+  <!-- Anti-Pattern 3: Small Dataset -->
+  <rect x="485" y="220" width="170" height="95" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="570" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Small Dataset</text>
+  <text x="570" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• &lt;10 GB total</text>
+  <text x="570" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low read traffic</text>
+  <text x="570" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Single region</text>
+  <text x="570" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Simple queries</text>
+  <text x="570" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Single DB is simpler</text>
+  
+  <!-- Anti-Pattern 4: No Ops Maturity -->
+  <rect x="670" y="220" width="170" height="95" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">No Ops Maturity</text>
+  <text x="755" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No monitoring</text>
+  <text x="755" y="273" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No lag alerting</text>
+  <text x="755" y="286" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• No failover testing</text>
+  <text x="755" y="299" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Small team</text>
+  <text x="755" y="312" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Build ops first</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="14" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  
+  <!-- GitHub -->
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">GitHub: Read Replicas</text>
+  <text x="190" y="420" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Primary: MySQL (writes)</text>
+  <text x="190" y="435" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multiple replicas (reads)</text>
+  <text x="190" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Read-your-writes routing</text>
+  <text x="190" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Analytics on dedicated replica</text>
+  <text x="190" y="485" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Handles millions of reads/day</text>
+  
+  <!-- Shopify -->
+  <rect x="325" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Shopify: Multi-Region</text>
+  <text x="445" y="420" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Primary: us-east (writes)</text>
+  <text x="445" y="435" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Replicas: us-west, eu, asia</text>
+  <text x="445" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low latency per region</text>
+  <text x="445" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Failover to nearest replica</text>
+  <text x="445" y="485" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Global e-commerce platform</text>
+  
+  <!-- Twitter -->
+  <rect x="580" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">Twitter: Timeline Reads</text>
+  <text x="700" y="420" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Tweets: sharded DB (writes)</text>
+  <text x="700" y="435" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Timelines: cached + replicas</text>
+  <text x="700" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Read-heavy: 1000:1 ratio</text>
+  <text x="700" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Fanout service writes, replicas read</text>
+  <text x="700" y="485" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: 500M+ tweets/day served</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

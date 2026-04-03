@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Document Database Use Cases</title>
+  <desc id="desc">When to use document databases and real-world application patterns</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Document Database Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Document Databases</text>
+  
+  <!-- Ideal Use Cases (Left Column) -->
+  <rect x="50" y="85" width="400" height="220" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  
+  <!-- Use Case 1: Content Management -->
+  <rect x="70" y="125" width="175" height="80" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="157" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Content Management</text>
+  <text x="157" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Blog posts with metadata</text>
+  <text x="157" y="177" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Product catalogs</text>
+  <text x="157" y="189" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Media libraries</text>
+  <text x="157" y="201" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Flexible schema, nested data</text>
+  
+  <!-- Use Case 2: User Profiles -->
+  <rect x="260" y="125" width="175" height="80" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="347" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">User Profiles</text>
+  <text x="347" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User preferences</text>
+  <text x="347" y="177" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Session data</text>
+  <text x="347" y="189" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Activity feeds</text>
+  <text x="347" y="201" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: One-to-few, read-heavy</text>
+  
+  <!-- Use Case 3: E-commerce -->
+  <rect x="70" y="220" width="175" height="75" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="157" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">E-commerce</text>
+  <text x="157" y="255" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Order management</text>
+  <text x="157" y="267" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Shopping carts</text>
+  <text x="157" y="279" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Inventory (simple)</text>
+  <text x="157" y="291" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Hierarchical order data</text>
+  
+  <!-- Use Case 4: IoT -->
+  <rect x="260" y="220" width="175" height="75" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="347" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">IoT / Events</text>
+  <text x="347" y="255" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Sensor data</text>
+  <text x="347" y="267" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Event logs</text>
+  <text x="347" y="279" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Time-series (simple)</text>
+  <text x="347" y="291" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Why: Write-heavy, append-only</text>
+  
+  <!-- When NOT to Use (Right Column) -->
+  <rect x="465" y="85" width="385" height="220" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">When NOT to Use</text>
+  
+  <!-- Anti-Pattern 1: Complex Joins -->
+  <rect x="485" y="125" width="175" height="80" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="572" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Complex Joins</text>
+  <text x="572" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Multi-table relationships</text>
+  <text x="572" y="177" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Many-to-many queries</text>
+  <text x="572" y="189" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Complex aggregations</text>
+  <text x="572" y="201" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use relational database</text>
+  
+  <!-- Anti-Pattern 2: Transactions -->
+  <rect x="675" y="125" width="160" height="80" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Multi-Document Transactions</text>
+  <text x="755" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Financial transfers</text>
+  <text x="755" y="177" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Inventory accounting</text>
+  <text x="755" y="189" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Booking systems</text>
+  <text x="755" y="201" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use relational or NewSQL</text>
+  
+  <!-- Anti-Pattern 3: Reporting -->
+  <rect x="485" y="220" width="175" height="75" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="572" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Complex Reporting</text>
+  <text x="572" y="255" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• OLAP queries</text>
+  <text x="572" y="267" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Ad-hoc analytics</text>
+  <text x="572" y="279" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Data warehousing</text>
+  <text x="572" y="291" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use data warehouse</text>
+  
+  <!-- Anti-Pattern 4: Fixed Schema -->
+  <rect x="675" y="220" width="160" height="75" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="755" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Fixed Schema Required</text>
+  <text x="755" y="255" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Regulatory compliance</text>
+  <text x="755" y="267" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Strict data validation</text>
+  <text x="755" y="279" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• ACID requirements</text>
+  <text x="755" y="291" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">→ Use relational database</text>
+  
+  <!-- Real-World Examples (Middle) -->
+  <rect x="50" y="315" width="800" height="120" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Real-World Application Patterns</text>
+  
+  <!-- Example 1: MongoDB at Forbes -->
+  <rect x="70" y="355" width="240" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Forbes: Article Platform</text>
+  <text x="190" y="392" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Stores articles with metadata</text>
+  <text x="190" y="404" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Flexible schema for content types</text>
+  <text x="190" y="416" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: 3x faster development</text>
+  
+  <!-- Example 2: eBay: Product Catalog -->
+  <rect x="330" y="355" width="240" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="450" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">eBay: Product Catalog</text>
+  <text x="450" y="392" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Millions of products</text>
+  <text x="450" y="404" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Varying attributes per category</text>
+  <text x="450" y="416" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Handles 100M+ products</text>
+  
+  <!-- Example 3: Airbnb: User Sessions -->
+  <rect x="590" y="355" width="240" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="710" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Airbnb: User Sessions</text>
+  <text x="710" y="392" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Session storage</text>
+  <text x="710" y="404" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• User preferences</text>
+  <text x="710" y="416" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Low-latency reads globally</text>
+  
+  <!-- Decision Framework (Bottom) -->
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="467" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Decision Framework</text>
+  
+  <rect x="70" y="480" width="180" height="45" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="160" y="500" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">USE DOCUMENT DB</text>
+  <text x="160" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Schema evolves rapidly</text>
+  <text x="160" y="525" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Hierarchical data</text>
+  
+  <rect x="265" y="480" width="180" height="45" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="355" y="500" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">USE RELATIONAL DB</text>
+  <text x="355" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Complex joins needed</text>
+  <text x="355" y="525" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Multi-document transactions</text>
+  
+  <rect x="460" y="480" width="180" height="45" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="550" y="500" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">USE BOTH (Polyglot)</text>
+  <text x="550" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Document for content</text>
+  <text x="550" y="525" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Relational for transactions</text>
+  
+  <rect x="655" y="480" width="180" height="45" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="745" y="500" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">CONSIDER SCALE</text>
+  <text x="745" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Horizontal scaling needed</text>
+  <text x="745" y="525" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ High write throughput</text>
+</svg>

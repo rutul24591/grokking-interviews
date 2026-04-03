@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Stored Procedures Architecture</title>
+  <desc id="desc">Stored procedures showing application calling database procedures, execution context, and result flow</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Stored Procedures Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Application-to-Database Procedure Execution</text>
+  
+  <!-- Application Layer (Top) -->
+  <rect x="50" y="85" width="800" height="100" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Application Layer</text>
+  
+  <!-- App calling procedure -->
+  <rect x="100" y="125" width="200" height="50" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="200" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Application Code</text>
+  <text x="200" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">CALL transfer_funds(...)</text>
+  
+  <!-- Arrow -->
+  <line x1="305" y1="150" x2="335" y2="150" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="320" y="140" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Network call</text>
+  
+  <!-- Database Layer (Middle) -->
+  <rect x="50" y="195" width="800" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="220" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Database Server</text>
+  
+  <!-- Procedure execution -->
+  <rect x="100" y="235" width="200" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="200" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Stored Procedure</text>
+  <text x="200" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">transfer_funds(from, to, amt)</text>
+  
+  <rect x="115" y="295" width="170" height="30" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="200" y="315" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">1. Validate inputs</text>
+  
+  <rect x="115" y="330" width="170" height="30" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="200" y="350" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">2. Check balance</text>
+  
+  <rect x="115" y="365" width="170" height="30" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="200" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">3. Debit source account</text>
+  
+  <!-- Arrow -->
+  <line x1="305" y1="315" x2="335" y2="315" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- SQL execution -->
+  <rect x="350" y="235" width="200" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">SQL Execution</text>
+  
+  <rect x="365" y="275" width="170" height="30" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="295" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">UPDATE accounts SET...</text>
+  
+  <rect x="365" y="310" width="170" height="30" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="330" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">INSERT transactions...</text>
+  
+  <rect x="365" y="345" width="170" height="30" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="365" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">COMMIT transaction</text>
+  
+  <!-- Arrow -->
+  <line x1="555" y1="315" x2="585" y2="315" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Result -->
+  <rect x="600" y="235" width="200" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="700" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Result Set</text>
+  
+  <rect x="615" y="275" width="170" height="40" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="700" y="295" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">SUCCESS</text>
+  <text x="700" y="310" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Transaction ID: 12345</text>
+  
+  <rect x="615" y="325" width="170" height="40" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="700" y="345" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">ERROR</text>
+  <text x="700" y="360" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Insufficient funds</text>
+  
+  <!-- Return arrow -->
+  <path d="M 700 395 L 700 430 L 200 430 L 200 190" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="450" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Return result to application</text>
+  
+  <!-- Key Benefits (Bottom) -->
+  <rect x="50" y="405" width="800" height="130" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="430" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Key Benefits</text>
+  
+  <rect x="70" y="445" width="180" height="80" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="160" y="465" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Reduced Network Calls</text>
+  <text x="160" y="485" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">One call vs multiple</text>
+  <text x="160" y="500" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Lower latency</text>
+  <text x="160" y="515" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Performance gain</text>
+  
+  <rect x="265" y="445" width="180" height="80" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="355" y="465" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Atomic Operations</text>
+  <text x="355" y="485" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">All-or-nothing</text>
+  <text x="355" y="500" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Transaction semantics</text>
+  <text x="355" y="515" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Data integrity</text>
+  
+  <rect x="460" y="445" width="180" height="80" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="550" y="465" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Centralized Logic</text>
+  <text x="550" y="485" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Single source of truth</text>
+  <text x="550" y="500" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Consistent across apps</text>
+  <text x="550" y="515" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Maintainability</text>
+  
+  <rect x="655" y="445" width="180" height="80" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="745" y="465" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Security</text>
+  <text x="745" y="485" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Definer's rights</text>
+  <text x="745" y="500" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Controlled access</text>
+  <text x="745" y="515" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Access control</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

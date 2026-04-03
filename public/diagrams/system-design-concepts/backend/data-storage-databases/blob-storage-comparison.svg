@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Blob Storage vs Object Storage Comparison</title>
+  <desc id="desc">Comparison of blob storage and object storage</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Blob Storage vs Object Storage</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Key Differences</text>
+  
+  <!-- Blob Storage (Left) -->
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Blob Storage (Azure)</text>
+  
+  <rect x="70" y="125" width="360" height="190" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Characteristics:</text>
+  <text x="250" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Specialized blob types (block, page, append)</text>
+  <text x="250" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Page blobs for VM disks (random I/O)</text>
+  <text x="250" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Append blobs for logs</text>
+  <text x="250" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• SAS tokens for secure access</text>
+  <text x="250" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Lease mechanism for locking</text>
+  <text x="250" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Snapshot support</text>
+  
+  <text x="250" y="280" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Specialized for diverse workloads</text>
+  <text x="250" y="295" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: Azure ecosystems, VM disks, logs</text>
+  
+  <!-- Object Storage (Right) -->
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Object Storage (S3)</text>
+  
+  <rect x="485" y="125" width="345" height="190" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="657" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Characteristics:</text>
+  <text x="657" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Single object type (immutable blobs)</text>
+  <text x="657" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• No random I/O (write-once)</text>
+  <text x="657" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Versioning support</text>
+  <text x="657" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Lifecycle policies</text>
+  <text x="657" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Event notifications</text>
+  <text x="657" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Cross-region replication</text>
+  
+  <text x="657" y="280" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Simple, massive scale</text>
+  <text x="657" y="295" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: AWS ecosystems, media, backups</text>
+  
+  <!-- Comparison Table (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Feature Comparison</text>
+  
+  <!-- Header -->
+  <rect x="70" y="375" width="180" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="160" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#0369a1">Feature</text>
+  <rect x="260" y="375" width="180" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="350" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Blob Storage</text>
+  <rect x="450" y="375" width="180" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Object Storage</text>
+  <rect x="640" y="375" width="190" height="25" rx="3" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="735" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Use When</text>
+  
+  <!-- Row 1 -->
+  <rect x="70" y="403" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="417" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Blob Types</text>
+  <rect x="260" y="403" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="417" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Block, Page, Append</text>
+  <rect x="450" y="403" width="180" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="417" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Single object type</text>
+  <rect x="640" y="403" width="190" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="735" y="417" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Need VM disks? → Blob</text>
+  
+  <!-- Row 2 -->
+  <rect x="70" y="426" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Random I/O</text>
+  <rect x="260" y="426" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="440" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">✓ (Page blobs)</text>
+  <rect x="450" y="426" width="180" height="20" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="540" y="440" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ (Immutable)</text>
+  <rect x="640" y="426" width="190" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="735" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Need random writes? → Blob</text>
+  
+  <!-- Row 3 -->
+  <rect x="70" y="449" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="463" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Append Operations</text>
+  <rect x="260" y="449" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="463" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">✓ (Append blobs)</text>
+  <rect x="450" y="449" width="180" height="20" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="540" y="463" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ (New version)</text>
+  <rect x="640" y="449" width="190" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="735" y="463" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Logging? → Blob</text>
+  
+  <!-- Row 4 -->
+  <rect x="70" y="472" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="486" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Ecosystem</text>
+  <rect x="260" y="472" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="486" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Azure</text>
+  <rect x="450" y="472" width="180" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="486" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">AWS, GCP, Multi-cloud</text>
+  <rect x="640" y="472" width="190" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="735" y="486" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cloud provider choice</text>
+  
+  <!-- Row 5 -->
+  <rect x="70" y="495" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="509" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Access Control</text>
+  <rect x="260" y="495" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="509" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">SAS tokens, RBAC</text>
+  <rect x="450" y="495" width="180" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="509" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">IAM, presigned URLs</text>
+  <rect x="640" y="495" width="190" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="735" y="509" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Both support fine-grained access</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

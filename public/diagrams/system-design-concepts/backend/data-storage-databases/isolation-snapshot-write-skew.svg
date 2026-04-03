@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Snapshot Isolation and Write Skew Anomaly</title>
+  <desc id="desc">Diagram showing how write skew anomaly occurs despite snapshot isolation</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Snapshot Isolation &amp; Write Skew</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">A subtle anomaly that snapshot isolation doesn't prevent</text>
+  
+  <!-- Snapshot Isolation Overview (Left) -->
+  <rect x="50" y="85" width="380" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Snapshot Isolation</text>
+  
+  <rect x="70" y="125" width="340" height="90" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  
+  <!-- Timeline -->
+  <line x1="85" y1="155" x2="395" y2="155" stroke="#6b7280" stroke-width="2"/>
+  <circle cx="85" cy="155" r="5" fill="#2563eb"/>
+  <text x="85" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1 Start</text>
+  <circle cx="200" cy="155" r="5" fill="#16a34a"/>
+  <text x="200" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1 Read</text>
+  <circle cx="315" cy="155" r="5" fill="#d97706"/>
+  <text x="315" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">T1 Commit</text>
+  
+  <text x="240" y="200" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">T1 sees snapshot at start time</text>
+  <text x="240" y="212" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">All reads return data as of t=0</text>
+  
+  <!-- What Snapshot Prevents -->
+  <rect x="70" y="230" width="340" height="65" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="240" y="248" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Prevents:</text>
+  <text x="240" y="265" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Dirty Reads (uncommitted data)</text>
+  <text x="240" y="278" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Non-Repeatable Reads (same query, different result)</text>
+  <text x="240" y="291" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Some Phantom Reads</text>
+  
+  <!-- Write Skew Problem (Right Top) -->
+  <rect x="470" y="85" width="380" height="140" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Does NOT Prevent: Write Skew</text>
+  
+  <rect x="490" y="125" width="340" height="90" rx="4" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="660" y="145" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Write skew occurs when two transactions:</text>
+  <text x="660" y="160" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">1. Read overlapping data</text>
+  <text x="660" y="175" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">2. Make disjoint updates</text>
+  <text x="660" y="190" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">3. Together violate a constraint</text>
+  <text x="660" y="207" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">No direct conflict detected!</text>
+  
+  <!-- Write Skew Example - Doctors on Call (Right Bottom) -->
+  <rect x="470" y="235" width="380" height="180" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text x="660" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Example: Doctors on Call</text>
+  
+  <!-- Constraint Box -->
+  <rect x="490" y="270" width="170" height="50" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="575" y="290" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">CONSTRAINT</text>
+  <text x="575" y="305" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">At least 1 doctor</text>
+  <text x="575" y="317" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">must be on call</text>
+  
+  <!-- Initial State -->
+  <rect x="680" y="270" width="150" height="50" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="755" y="290" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Initial State</text>
+  <text x="755" y="305" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Alice: ON call</text>
+  <text x="755" y="317" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Bob: ON call</text>
+  
+  <!-- Transaction Alice -->
+  <rect x="490" y="330" width="170" height="75" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="575" y="348" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Transaction Alice</text>
+  <text x="575" y="363" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">1. Read: Alice=ON, Bob=ON</text>
+  <text x="575" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">2. Check: Count = 2 ✓</text>
+  <text x="575" y="387" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">3. Update: Alice=OFF</text>
+  <text x="575" y="399" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">4. COMMIT</text>
+  
+  <!-- Transaction Bob -->
+  <rect x="680" y="330" width="150" height="75" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="755" y="348" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Transaction Bob</text>
+  <text x="755" y="363" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">1. Read: Alice=ON, Bob=ON</text>
+  <text x="755" y="375" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">2. Check: Count = 2 ✓</text>
+  <text x="755" y="387" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">3. Update: Bob=OFF</text>
+  <text x="755" y="399" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">4. COMMIT</text>
+  
+  <!-- Final State -->
+  <rect x="470" y="420" width="380" height="55" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="660" y="442" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">Final State: CONSTRAINT VIOLATED!</text>
+  <text x="660" y="458" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Alice: OFF call | Bob: OFF call | Count = 0 ✗</text>
+  
+  <!-- Prevention Strategies (Bottom) -->
+  <rect x="50" y="240" width="400" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="265" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Prevention Strategies</text>
+  
+  <!-- Strategy 1: Serializable -->
+  <rect x="70" y="280" width="165" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="152" y="300" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">1. Serializable Isolation</text>
+  <text x="152" y="318" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Database detects conflict</text>
+  <text x="152" y="332" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Aborts one transaction</text>
+  <text x="152" y="346" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Retry succeeds</text>
+  <rect x="80" y="355" width="145" height="10" rx="2" fill="#2563eb"/>
+  <text x="152" y="363" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">✓ Prevents write skew</text>
+  <text x="152" y="372" text-anchor="middle" font-size="7" font-weight="600" fill="#93c5fd">✗ Highest performance cost</text>
+  
+  <!-- Strategy 2: Explicit Locking -->
+  <rect x="250" y="280" width="165" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="332" y="300" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">2. Explicit Locking</text>
+  <text x="332" y="318" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">SELECT ... FOR UPDATE</text>
+  <text x="332" y="332" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Lock all relevant rows</text>
+  <text x="332" y="346" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Second txn blocks</text>
+  <rect x="260" y="355" width="150" height="10" rx="2" fill="#2563eb"/>
+  <text x="335" y="363" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">✓ Fine-grained control</text>
+  <text x="335" y="372" text-anchor="middle" font-size="7" font-weight="600" fill="#93c5fd">✗ Manual lock management</text>
+  
+  <!-- Strategy 3: Materialized Constraint -->
+  <rect x="70" y="385" width="165" height="50" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="152" y="403" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">3. Materialized Constraint</text>
+  <text x="152" y="417" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Maintain counter column</text>
+  <text x="152" y="429" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">CHECK on_call_count &gt;= 1</text>
+  <rect x="80" y="438" width="145" height="8" rx="2" fill="#2563eb"/>
+  <text x="152" y="444" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">✓ Database enforces</text>
+  
+  <!-- Strategy 4: Application Logic -->
+  <rect x="250" y="385" width="165" height="50" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="332" y="403" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">4. Application Logic</text>
+  <text x="332" y="417" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Re-read before commit</text>
+  <text x="332" y="429" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Retry if changed</text>
+  <rect x="260" y="438" width="150" height="8" rx="2" fill="#f59e0b"/>
+  <text x="335" y="444" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">✗ Complex, error-prone</text>
+  
+  <!-- Isolation Levels Table -->
+  <rect x="470" y="485" width="380" height="50" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="660" y="505" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Which Isolation Levels Prevent Write Skew?</text>
+  
+  <rect x="490" y="515" width="80" height="15" rx="2" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="530" y="526" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Read Uncommitted</text>
+  <text x="580" y="526" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ NO</text>
+  
+  <rect x="590" y="515" width="80" height="15" rx="2" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="630" y="526" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Read Committed</text>
+  <text x="680" y="526" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ NO</text>
+  
+  <rect x="700" y="515" width="70" height="15" rx="2" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="735" y="526" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Repeatable Read</text>
+  <text x="780" y="526" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ NO</text>
+  
+  <rect x="790" y="515" width="50" height="15" rx="2" fill="#c7d2fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="815" y="526" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Serializable</text>
+  <text x="855" y="526" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ YES</text>
+</svg>

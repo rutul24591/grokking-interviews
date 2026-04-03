@@ -613,45 +613,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Elasticsearch Documentation, "Getting Started,"
-            https://www.elastic.co/guide/en/elasticsearch/reference/current/
+            <a
+              href="https://www.elastic.co/guide/en/elasticsearch/reference/current/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Elasticsearch Documentation — Getting Started
+            </a>
           </li>
           <li>
-            Apache Solr Documentation, "Quick Start,"
-            https://solr.apache.org/guide/
+            <a
+              href="https://solr.apache.org/guide/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Apache Solr Documentation — Quick Start
+            </a>
           </li>
           <li>
-            PostgreSQL Documentation, "Full Text Search,"
-            https://www.postgresql.org/docs/current/textsearch.html
+            <a
+              href="https://www.postgresql.org/docs/current/textsearch.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PostgreSQL Documentation — Full Text Search
+            </a>
           </li>
           <li>
-            Lucene Documentation, "Search Basics,"
-            https://lucene.apache.org/core/
+            <a
+              href="https://lucene.apache.org/core/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Lucene Documentation — Search Basics
+            </a>
           </li>
           <li>
-            Manning, "Elasticsearch in Action," 3rd Edition, 2021.
+            Manning, <em>Elasticsearch in Action</em>, 3rd Edition, 2021.
           </li>
           <li>
-            O'Reilly, "Elasticsearch: The Definitive Guide,"
-            https://www.elastic.co/guide/en/elasticsearch/guide/current/
+            <a
+              href="https://www.elastic.co/guide/en/elasticsearch/guide/current/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              O&apos;Reilly — Elasticsearch: The Definitive Guide
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Wikipedia, "Inverted Index,"
-            https://en.wikipedia.org/wiki/Search_engine_indexing
+            <a
+              href="https://en.wikipedia.org/wiki/Search_engine_indexing"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia — Inverted Index
+            </a>
           </li>
           <li>
-            Wikipedia, "TF-IDF,"
-            https://en.wikipedia.org/wiki/Tf%E2%80%93idf
+            <a
+              href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia — TF-IDF
+            </a>
           </li>
           <li>
-            Wikipedia, "Okapi BM25,"
-            https://en.wikipedia.org/wiki/Okapi_BM25
+            <a
+              href="https://en.wikipedia.org/wiki/Okapi_BM25"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia — Okapi BM25
+            </a>
           </li>
         </ul>
       </section>

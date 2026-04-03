@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Deadlocks Architecture</title>
+  <desc id="desc">Deadlock conditions, detection, and resolution</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Deadlocks Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Circular Wait, Detection, and Resolution</text>
+  
+  <rect x="50" y="85" width="400" height="180" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Deadlock Example (Circular Wait)</text>
+  <rect x="70" y="125" width="150" height="130" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="145" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Transaction A</text>
+  <text x="145" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Holds: Row 1 (lock)</text>
+  <text x="145" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Waits for: Row 2</text>
+  <text x="145" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Blocked by: TxB</text>
+  <text x="145" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cannot proceed</text>
+  <text x="145" y="240" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Stuck waiting...</text>
+  <rect x="240" y="125" width="150" height="130" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="315" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Transaction B</text>
+  <text x="315" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Holds: Row 2 (lock)</text>
+  <text x="315" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Waits for: Row 1</text>
+  <text x="315" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Blocked by: TxA</text>
+  <text x="315" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cannot proceed</text>
+  <text x="315" y="240" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Stuck waiting...</text>
+  <line x1="225" y1="180" x2="235" y2="180" stroke="#dc2626" stroke-width="2"/>
+  <line x1="235" y1="210" x2="225" y2="210" stroke="#dc2626" stroke-width="2"/>
+  <text x="230" y="170" text-anchor="middle" font-size="6" font-weight="600" fill="#b91c1c">waits</text>
+  <text x="230" y="218" text-anchor="middle" font-size="6" font-weight="600" fill="#b91c1c">waits</text>
+  <text x="250" y="270" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Circular dependency - neither can proceed!</text>
+  
+  <rect x="465" y="85" width="385" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Deadlock Detection (Wait-For Graph)</text>
+  <rect x="485" y="125" width="345" height="130" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="657" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Nodes = Transactions, Edges = Waits</text>
+  <circle cx="560" cy="200" r="25" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="560" y="205" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">TxA</text>
+  <circle cx="760" cy="200" r="25" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="760" y="205" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">TxB</text>
+  <path d="M 585 195 Q 660 170 735 195" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 735 205 Q 660 230 585 205" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="660" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">waits for</text>
+  <text x="660" y="240" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">waits for</text>
+  <text x="657" y="265" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Cycle detected = DEADLOCK!</text>
+  
+  <rect x="50" y="275" width="800" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Deadlock Resolution</text>
+  <rect x="70" y="315" width="360" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="250" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Victim Selection</text>
+  <text x="250" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Database selects one transaction to rollback</text>
+  <text x="250" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Criteria: least work done, lowest priority</text>
+  <text x="250" y="385" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Victim is rolled back, other proceeds</text>
+  <text x="250" y="400" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Application must catch deadlock error and retry</text>
+  
+  <rect x="445" y="315" width="360" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="625" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Coffman Conditions (All 4 Required)</text>
+  <text x="625" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">1. Mutual exclusion (resource held by one txn)</text>
+  <text x="625" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">2. Hold and wait (hold resource, wait for another)</text>
+  <text x="625" y="385" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">3. No preemption (can&apos;t forcibly take resource)</text>
+  <text x="625" y="400" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">4. Circular wait (circular chain of waiting)</text>
+  
+  <rect x="50" y="425" width="800" height="110" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="450" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">Prevention Strategies</text>
+  <rect x="70" y="465" width="180" height="60" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="160" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Lock Ordering</text>
+  <text x="160" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Always lock in same order</text>
+  <text x="160" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Breaks circular wait</text>
+  
+  <rect x="265" y="465" width="180" height="60" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="355" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Short Transactions</text>
+  <text x="355" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Hold locks briefly</text>
+  <text x="355" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Reduce deadlock window</text>
+  
+  <rect x="460" y="465" width="180" height="60" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="550" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Retry Logic</text>
+  <text x="550" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Catch deadlock error</text>
+  <text x="550" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Retry with backoff</text>
+  
+  <rect x="655" y="465" width="180" height="60" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="745" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Lower Isolation</text>
+  <text x="745" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Read Committed vs Serializable</text>
+  <text x="745" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Fewer locks = fewer deadlocks</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

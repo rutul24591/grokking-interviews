@@ -554,45 +554,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Amazon EBS Documentation, "Volume Types," "Snapshots," "Encryption,"
-            https://docs.aws.amazon.com/ebs/
+            <a
+              href="https://docs.aws.amazon.com/ebs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Amazon EBS Documentation — Volume Types, Snapshots, Encryption
+            </a>
           </li>
           <li>
-            Azure Disk Storage Documentation, "Disk Types," "Snapshots,"
-            https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types
+            <a
+              href="https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Azure Disk Storage Documentation — Disk Types, Snapshots
+            </a>
           </li>
           <li>
-            Google Persistent Disk Documentation, "Disk Types," "Snapshots,"
-            https://cloud.google.com/compute/docs/disks
+            <a
+              href="https://cloud.google.com/compute/docs/disks"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Persistent Disk Documentation — Disk Types, Snapshots
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 3.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 3.
           </li>
           <li>
-            AWS Whitepaper, "Amazon EBS Volume Types,"
-            https://aws.amazon.com/ebs/volume-types/
+            <a
+              href="https://aws.amazon.com/ebs/volume-types/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS Whitepaper — Amazon EBS Volume Types
+            </a>
           </li>
           <li>
-            Microsoft Azure, "Azure Managed Disks,"
-            https://azure.microsoft.com/en-us/services/storage/disks/
+            <a
+              href="https://azure.microsoft.com/en-us/services/storage/disks/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Microsoft Azure — Azure Managed Disks
+            </a>
           </li>
           <li>
-            Backblaze, "B2 Cloud Storage vs Block Storage,"
-            https://www.backblaze.com/
+            <a
+              href="https://www.backblaze.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Backblaze — B2 Cloud Storage vs Block Storage
+            </a>
           </li>
           <li>
-            Ceph Documentation, "RBD (RADOS Block Device),"
-            https://docs.ceph.com/
+            <a
+              href="https://docs.ceph.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ceph Documentation — RBD (RADOS Block Device)
+            </a>
           </li>
           <li>
-            Linux Documentation, "Block Devices," "File Systems,"
-            https://www.kernel.org/doc/
+            <a
+              href="https://www.kernel.org/doc/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Linux Kernel Documentation — Block Devices, File Systems
+            </a>
           </li>
         </ul>
       </section>

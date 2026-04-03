@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">In-Memory Database Data Structures</title>
+  <desc id="desc">Redis data structures showing strings, hashes, lists, sets, sorted sets, and their use cases</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">In-Memory Database Data Structures</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Redis Data Structures and Use Cases</text>
+  
+  <!-- Strings (Top Left) -->
+  <rect x="50" y="85" width="260" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Strings</text>
+  
+  <rect x="65" y="125" width="230" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Basic key-value pairs</text>
+  <text x="180" y="165" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">SET user:1 "Alice"</text>
+  <text x="180" y="180" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">GET user:1 → "Alice"</text>
+  <text x="180" y="195" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">INCR counter → 1, 2, 3...</text>
+  <text x="180" y="210" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Caching, counters, sessions</text>
+  
+  <!-- Hashes (Top Middle) -->
+  <rect x="320" y="85" width="260" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Hashes</text>
+  
+  <rect x="335" y="125" width="230" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Object-like structures</text>
+  <text x="450" y="165" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">HSET user:1 name "Alice" age 30</text>
+  <text x="450" y="180" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">HGET user:1 name → "Alice"</text>
+  <text x="450" y="195" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">HGETALL user:1 → {name, age}</text>
+  <text x="450" y="210" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ User profiles, objects</text>
+  
+  <!-- Lists (Top Right) -->
+  <rect x="590" y="85" width="260" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Lists</text>
+  
+  <rect x="605" y="125" width="230" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Ordered collections (queues)</text>
+  <text x="720" y="165" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LPUSH queue "job1" "job2"</text>
+  <text x="720" y="180" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">BRPOP queue → "job2"</text>
+  <text x="720" y="195" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LRANGE list 0 -1 → all items</text>
+  <text x="720" y="210" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Message queues, timelines</text>
+  
+  <!-- Sets (Bottom Left) -->
+  <rect x="50" y="235" width="260" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="180" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Sets</text>
+  
+  <rect x="65" y="275" width="230" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="180" y="300" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Unique unordered items</text>
+  <text x="180" y="315" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">SADD tags "redis" "db" "cache"</text>
+  <text x="180" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">SINTER tags1 tags2 → common</text>
+  <text x="180" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">SUNION tags1 tags2 → all unique</text>
+  <text x="180" y="360" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Tags, unique visitors</text>
+  
+  <!-- Sorted Sets (Bottom Middle) -->
+  <rect x="320" y="235" width="260" height="140" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Sorted Sets</text>
+  
+  <rect x="335" y="275" width="230" height="90" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="450" y="300" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Ranked by score</text>
+  <text x="450" y="315" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">ZADD leaderboard 100 "Alice"</text>
+  <text x="450" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">ZREVRANGE leaderboard 0 9 → top 10</text>
+  <text x="450" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">ZRANK leaderboard "Alice" → rank</text>
+  <text x="450" y="360" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Leaderboards, rankings</text>
+  
+  <!-- Bitmaps (Bottom Right) -->
+  <rect x="590" y="235" width="260" height="140" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="720" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Bitmaps</text>
+  
+  <rect x="605" y="275" width="230" height="90" rx="4" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="720" y="300" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Bit-level operations</text>
+  <text x="720" y="315" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">SETBIT daily_active 100 1</text>
+  <text x="720" y="330" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">BITCOUNT daily_active → count</text>
+  <text x="720" y="345" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">BITOP AND/OR multiple bitmaps</text>
+  <text x="720" y="360" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ DAU tracking, feature flags</text>
+  
+  <!-- HyperLogLog (Bottom) -->
+  <rect x="50" y="385" width="400" height="70" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="410" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">HyperLogLog (Cardinality Estimation)</text>
+  <text x="250" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">PFADD visitors "user1" "user2" ...</text>
+  <text x="250" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">PFCOUNT visitors → ~unique count (1.5% error)</text>
+  
+  <!-- Streams (Bottom Right) -->
+  <rect x="465" y="385" width="385" height="70" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="410" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Streams (Event Logs)</text>
+  <text x="657" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">XADD mystream * field1 value1 field2 value2</text>
+  <text x="657" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">XREAD STREAMS mystream 0 → read events</text>
+  
+  <!-- Key Characteristics (Bottom) -->
+  <rect x="50" y="465" width="800" height="70" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="490" text-anchor="middle" font-size="11" font-weight="700" fill="#065f46">Key Characteristics</text>
+  <text x="450" y="510" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ Atomic operations on all data structures</text>
+  <text x="450" y="525" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">✓ O(1) or O(log N) complexity for most operations</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

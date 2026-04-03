@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Graph Database Architecture</title>
+  <desc id="desc">Graph database architecture showing nodes, edges, indexes, and query execution</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Graph Database Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Storage, Indexing, and Query Execution</text>
+  
+  <!-- Storage Layer (Top Left) -->
+  <rect x="50" y="85" width="270" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="185" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Storage Layer</text>
+  
+  <!-- Node Store -->
+  <rect x="70" y="125" width="230" height="50" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="185" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Node Store</text>
+  <text x="185" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Node ID, labels, property pointers</text>
+  <text x="185" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Outgoing relationship pointers</text>
+  
+  <!-- Relationship Store -->
+  <rect x="70" y="185" width="230" height="50" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="185" y="205" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Relationship Store</text>
+  <text x="185" y="222" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Start node, end node, type</text>
+  <text x="185" y="235" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Property pointers, prev/next rel</text>
+  
+  <!-- Property Store -->
+  <rect x="70" y="245" width="230" height="35" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="267" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Property Store</text>
+  <text x="185" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Key-value pairs for nodes/relationships</text>
+  
+  <!-- Index Layer (Top Right) -->
+  <rect x="335" y="85" width="270" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="470" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Index Layer</text>
+  
+  <!-- Label Index -->
+  <rect x="355" y="125" width="230" height="45" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="470" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Label Index</text>
+  <text x="470" y="160" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Person → [node1, node2, node3]</text>
+  <text x="470" y="173" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Product → [node10, node11]</text>
+  
+  <!-- Property Index -->
+  <rect x="355" y="180" width="230" height="45" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="470" y="200" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Property Index (B-tree/Lucene)</text>
+  <text x="470" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">name:"Alice" → node1</text>
+  <text x="470" y="228" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">email:"alice@..." → node1</text>
+  
+  <!-- Query Execution (Bottom Left) -->
+  <rect x="50" y="295" width="555" height="240" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="327" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Query Execution: Index-Free Adjacency</text>
+  
+  <!-- Step 1: Index Lookup -->
+  <rect x="70" y="335" width="150" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="145" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Step 1: Index Lookup</text>
+  <text x="145" y="375" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Find Alice via index</text>
+  <text x="145" y="388" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">O(log n) lookup</text>
+  <text x="145" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Fast starting point</text>
+  
+  <!-- Arrow -->
+  <line x1="225" y1="375" x2="255" y2="375" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 2: Traverse -->
+  <rect x="260" y="335" width="150" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="335" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Step 2: Traverse Edges</text>
+  <text x="335" y="375" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Follow KNOWS edges</text>
+  <text x="335" y="388" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">O(1) per hop</text>
+  <text x="335" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Direct pointers</text>
+  
+  <!-- Arrow -->
+  <line x1="415" y1="375" x2="445" y2="375" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 3: Filter -->
+  <rect x="450" y="335" width="140" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="520" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Step 3: Filter &amp; Return</text>
+  <text x="520" y="375" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Apply predicates</text>
+  <text x="520" y="388" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Return results</text>
+  <text x="520" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Efficient filtering</text>
+  
+  <!-- Traversal Visualization -->
+  <rect x="70" y="430" width="520" height="90" rx="4" fill="#ffffff" stroke="#38bdf8" stroke-width="1"/>
+  
+  <!-- Node Alice -->
+  <circle cx="120" cy="475" r="25" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="120" y="478" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Alice</text>
+  
+  <!-- Edge to Bob -->
+  <line x1="145" y1="475" x2="185" y2="475" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="165" y="465" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">KNOWS</text>
+  
+  <!-- Node Bob -->
+  <circle cx="215" cy="475" r="25" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+  <text x="215" y="478" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Bob</text>
+  
+  <!-- Edge to Carol -->
+  <line x1="240" y1="475" x2="280" y2="475" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="260" y="465" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">KNOWS</text>
+  
+  <!-- Node Carol -->
+  <circle cx="310" cy="475" r="25" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="310" y="478" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Carol</text>
+  
+  <!-- Edge to Product -->
+  <line x1="335" y1="475" x2="375" y2="475" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="355" y="465" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">PURCHASED</text>
+  
+  <!-- Node Product -->
+  <circle cx="405" cy="475" r="25" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
+  <text x="405" y="478" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Laptop</text>
+  
+  <text x="470" y="470" text-anchor="start" font-size="7" font-weight="700" fill="#059669">✓ Result found!</text>
+  <text x="470" y="485" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">Depth: 3 hops</text>
+  
+  <!-- Key Advantages (Bottom Right) -->
+  <rect x="620" y="295" width="230" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="735" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Key Advantages</text>
+  
+  <rect x="635" y="335" width="200" height="185" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="735" y="360" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Index-Free Adjacency</text>
+  <text x="735" y="380" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Edges stored as physical pointers</text>
+  <text x="735" y="393" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Traversal is O(1) per hop</text>
+  <text x="735" y="406" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Cost depends on subgraph size</text>
+  <text x="735" y="419" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Not total graph size!</text>
+  
+  <text x="735" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Vs Relational (Joins)</text>
+  <text x="735" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Relational: O(log n) per join</text>
+  <text x="735" y="478" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Deep joins = exponential cost</text>
+  <text x="735" y="491" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Graph: O(k) for k hops</text>
+  <text x="735" y="504" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Linear traversal cost</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

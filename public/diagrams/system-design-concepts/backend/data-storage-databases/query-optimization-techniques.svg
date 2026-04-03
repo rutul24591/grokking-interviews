@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Query Optimization Techniques</title>
+  <desc id="desc">Common query optimization strategies and techniques</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Query Optimization Techniques</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Strategies for Faster Queries</text>
+  
+  <!-- Use Indexes (Top Left) -->
+  <rect x="50" y="85" width="260" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">1. Use Indexes Effectively</text>
+  
+  <rect x="65" y="125" width="230" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Before:</text>
+  <text x="180" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users WHERE email = ?</text>
+  <text x="180" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">5000ms (full table scan)</text>
+  
+  <text x="180" y="195" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">After:</text>
+  <text x="180" y="210" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">CREATE INDEX ON users(email)</text>
+  <text x="180" y="223" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">5ms (index lookup)</text>
+  
+  <!-- Avoid SELECT * (Top Middle) -->
+  <rect x="320" y="85" width="260" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">2. Avoid SELECT *</text>
+  
+  <rect x="335" y="125" width="230" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Bad:</text>
+  <text x="450" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users</text>
+  <text x="450" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Transfers unused data</text>
+  <text x="450" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Cannot use covering indexes</text>
+  
+  <text x="450" y="210" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Good:</text>
+  <text x="450" y="225" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT id, name, email FROM users</text>
+  <text x="450" y="238" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">• Less data transfer</text>
+  <text x="450" y="251" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">• Enables covering indexes</text>
+  
+  <!-- Use LIMIT (Top Right) -->
+  <rect x="590" y="85" width="260" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">3. Use LIMIT for Pagination</text>
+  
+  <rect x="605" y="125" width="230" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Bad:</text>
+  <text x="720" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM orders</text>
+  <text x="720" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Returns all rows (memory issue)</text>
+  
+  <text x="720" y="195" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Good:</text>
+  <text x="720" y="210" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM orders LIMIT 100</text>
+  <text x="720" y="225" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">OFFSET 0 for page 1</text>
+  <text x="720" y="238" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">• Bounded result set</text>
+  
+  <!-- Optimize JOINs (Middle Left) -->
+  <rect x="50" y="235" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">4. Optimize JOINs</text>
+  
+  <rect x="70" y="275" width="360" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  
+  <text x="250" y="300" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Best Practices:</text>
+  <text x="85" y="320" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Index foreign key columns</text>
+  <text x="85" y="335" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• JOIN on indexed columns</text>
+  <text x="85" y="350" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Filter before JOIN (WHERE first)</text>
+  <text x="250" y="365" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Use INNER JOIN when possible (faster than LEFT)</text>
+  
+  <!-- Use EXPLAIN (Middle Right) -->
+  <rect x="465" y="235" width="385" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">5. Use EXPLAIN ANALYZE</text>
+  
+  <rect x="485" y="275" width="345" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="657" y="300" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Analyze query execution plan:</text>
+  <text x="500" y="320" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">EXPLAIN ANALYZE SELECT * FROM users WHERE email = ?</text>
+  
+  <text x="500" y="345" text-anchor="start" font-size="7" font-weight="600" fill="#059669">Look for:</text>
+  <text x="500" y="358" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Index Scan (good) vs Seq Scan (bad)</text>
+  <text x="500" y="371" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Actual rows vs estimated rows</text>
+  
+  <!-- Common Anti-patterns (Bottom) -->
+  <rect x="50" y="385" width="800" height="150" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Common Anti-patterns to Avoid</text>
+  
+  <!-- N+1 Query -->
+  <rect x="70" y="425" width="240" height="100" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="190" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">N+1 Query Problem</text>
+  <text x="190" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">for user in users:</text>
+  <text x="190" y="478" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">  orders = user.orders  # 1 query each</text>
+  <text x="190" y="493" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Result: 1 + N queries</text>
+  <text x="190" y="508" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Fix: Eager loading (JOIN)</text>
+  
+  <!-- Function on Column -->
+  <rect x="325" y="425" width="240" height="100" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="445" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Function on Indexed Column</text>
+  <text x="445" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">WHERE LOWER(email) = ?</text>
+  <text x="445" y="478" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">✗ Index not used!</text>
+  <text x="445" y="493" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">Fix: Store normalized value</text>
+  <text x="445" y="508" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">Or: Use functional index</text>
+  
+  <!-- Leading Wildcard -->
+  <rect x="580" y="425" width="240" height="100" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="700" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Leading Wildcard LIKE</text>
+  <text x="700" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">WHERE name LIKE '%john%'</text>
+  <text x="700" y="478" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">✗ Cannot use index</text>
+  <text x="700" y="493" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">Fix: Use 'john%' (prefix)</text>
+  <text x="700" y="508" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">Or: Use full-text search</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

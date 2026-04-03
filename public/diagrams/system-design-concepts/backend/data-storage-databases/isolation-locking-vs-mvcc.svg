@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Locking vs MVCC Implementation Patterns</title>
+  <desc id="desc">Comparison of pessimistic locking and MVCC for transaction isolation</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Isolation Implementation: Locking vs MVCC</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Two approaches to achieving transaction isolation</text>
+  
+  <!-- Pessimistic Locking Section (Left) -->
+  <rect x="50" y="85" width="380" height="220" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Pessimistic Locking (2PL)</text>
+  
+  <!-- Locking Timeline -->
+  <rect x="70" y="125" width="340" height="165" rx="4" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  
+  <!-- T1 Timeline -->
+  <text x="85" y="145" text-anchor="start" font-size="10" font-weight="700" fill="#1f2937">Transaction 1:</text>
+  <rect x="85" y="155" width="140" height="25" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="155" y="172" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">SELECT FOR UPDATE</text>
+  <text x="155" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Acquires lock on row</text>
+  
+  <rect x="240" y="155" width="60" height="25" rx="3" fill="#fbbf24" stroke="#b45309" stroke-width="2"/>
+  <text x="270" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Holds lock</text>
+  
+  <rect x="310" y="155" width="80" height="25" rx="3" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="350" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">COMMIT</text>
+  <text x="350" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Releases lock</text>
+  
+  <!-- T2 Timeline -->
+  <text x="85" y="210" text-anchor="start" font-size="10" font-weight="700" fill="#1f2937">Transaction 2:</text>
+  <rect x="85" y="220" width="140" height="25" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="155" y="237" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">SELECT FOR UPDATE</text>
+  <text x="155" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Requests same lock</text>
+  
+  <rect x="240" y="220" width="60" height="25" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="270" y="237" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">BLOCKED</text>
+  <text x="270" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Waits for T1</text>
+  
+  <rect x="310" y="220" width="80" height="25" rx="3" fill="#9ca3af" stroke="#4b5563" stroke-width="2"/>
+  <text x="350" y="237" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">UPDATE</text>
+  <text x="350" y="250" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">After T1 commits</text>
+  
+  <!-- Locking Characteristics -->
+  <rect x="70" y="260" width="340" height="35" rx="3" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="240" y="280" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Simple to reason about</text>
+  <text x="240" y="292" text-anchor="middle" font-size="9" font-weight="600" fill="#b91c1c">✗ Readers block writers, writers block readers</text>
+  <text x="240" y="304" text-anchor="middle" font-size="9" font-weight="600" fill="#b91c1c">✗ Deadlocks possible</text>
+  
+  <!-- MVCC Section (Right) -->
+  <rect x="470" y="85" width="380" height="220" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">MVCC (Multi-Version Concurrency Control)</text>
+  
+  <!-- MVCC Version Chain -->
+  <rect x="490" y="125" width="340" height="165" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  
+  <!-- Initial Version -->
+  <rect x="505" y="140" width="100" height="50" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="555" y="160" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Version 1</text>
+  <text x="555" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#dbeafe">balance=1000</text>
+  <text x="555" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">txn_id=100</text>
+  
+  <!-- Arrow -->
+  <line x1="610" y1="165" x2="630" y2="165" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Second Version -->
+  <rect x="635" y="140" width="100" height="50" rx="4" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="685" y="160" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Version 2</text>
+  <text x="685" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#6ee7b7">balance=500</text>
+  <text x="685" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#6ee7b7">txn_id=101</text>
+  
+  <!-- Arrow -->
+  <line x1="740" y1="165" x2="760" y2="165" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Third Version -->
+  <rect x="765" y="140" width="100" height="50" rx="4" fill="#d97706" stroke="#92400e" stroke-width="2"/>
+  <text x="815" y="160" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Version 3</text>
+  <text x="815" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#fef3c7">balance=750</text>
+  <text x="815" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#fef3c7">txn_id=102</text>
+  
+  <!-- Reader Views -->
+  <rect x="505" y="205" width="150" height="70" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="580" y="222" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Reader at t1</text>
+  <text x="580" y="237" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Sees Version 1</text>
+  <text x="580" y="250" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">balance=1000</text>
+  <text x="580" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#059669">Snapshot at txn start</text>
+  
+  <rect x="665" y="205" width="150" height="70" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text x="740" y="222" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Reader at t2</text>
+  <text x="740" y="237" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Sees Version 2</text>
+  <text x="740" y="250" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">balance=500</text>
+  <text x="740" y="265" text-anchor="middle" font-size="8" font-weight="600" fill="#b45309">Snapshot at txn start</text>
+  
+  <!-- MVCC Characteristics -->
+  <rect x="490" y="260" width="340" height="35" rx="3" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="660" y="280" text-anchor="middle" font-size="9" font-weight="600" fill="#065f46">✓ Readers never block writers</text>
+  <text x="660" y="292" text-anchor="middle" font-size="9" font-weight="600" fill="#065f46">✓ Writers never block readers</text>
+  <text x="660" y="304" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">✗ Storage overhead for versions</text>
+  
+  <!-- Comparison Table -->
+  <rect x="50" y="320" width="800" height="110" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Implementation Comparison</text>
+  
+  <!-- Table Header -->
+  <rect x="70" y="355" width="180" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="160" y="372" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Characteristic</text>
+  <rect x="260" y="355" width="180" height="25" rx="3" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="350" y="372" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Locking (2PL)</text>
+  <rect x="450" y="355" width="180" height="25" rx="3" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="540" y="372" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">MVCC</text>
+  <rect x="640" y="355" width="210" height="25" rx="3" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="745" y="372" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Best For</text>
+  
+  <!-- Row 1: Concurrency -->
+  <rect x="70" y="385" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="399" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Read Concurrency</text>
+  <rect x="260" y="385" width="180" height="20" rx="2" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="350" y="399" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Low (readers block)</text>
+  <rect x="450" y="385" width="180" height="20" rx="2" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="540" y="399" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">High (no blocking)</text>
+  <rect x="640" y="385" width="210" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="745" y="399" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">MVCC for read-heavy workloads</text>
+  
+  <!-- Row 2: Write Concurrency -->
+  <rect x="70" y="408" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="422" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Write Concurrency</text>
+  <rect x="260" y="408" width="180" height="20" rx="2" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="350" y="422" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Medium (deadlocks)</text>
+  <rect x="450" y="408" width="180" height="20" rx="2" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="540" y="422" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Medium (conflicts)</text>
+  <rect x="640" y="408" width="210" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="745" y="422" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Both need conflict resolution</text>
+  
+  <!-- Row 3: Storage -->
+  <rect x="70" y="431" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Storage Overhead</text>
+  <rect x="260" y="431" width="180" height="20" rx="2" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="350" y="445" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Low (lock table only)</text>
+  <rect x="450" y="431" width="180" height="20" rx="2" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="540" y="445" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">High (multiple versions)</text>
+  <rect x="640" y="431" width="210" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="745" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Locking for storage-constrained</text>
+  
+  <!-- Key Insight -->
+  <rect x="50" y="445" width="800" height="85" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">Key Insight</text>
+  <rect x="70" y="480" width="760" height="40" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="450" y="500" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">MVCC is the foundation for Repeatable Read and Snapshot Isolation in modern databases (PostgreSQL, Oracle, MySQL InnoDB).</text>
+  <text x="450" y="515" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Locking is still used for explicit locks (SELECT FOR UPDATE) and at Serializable isolation level.</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

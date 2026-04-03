@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Search Engines Architecture</title>
+  <desc id="desc">Inverted index, tokenization, and search pipeline</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Search Engines Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Inverted Index and Search Pipeline</text>
+  
+  <!-- Inverted Index (Top) -->
+  <rect x="50" y="85" width="800" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Inverted Index: Term → Documents</text>
+  
+  <!-- Documents -->
+  <rect x="70" y="125" width="280" height="130" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="210" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Documents</text>
+  
+  <rect x="85" y="160" width="250" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="210" y="177" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Doc 1: "running shoes for men"</text>
+  
+  <rect x="85" y="190" width="250" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="210" y="207" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Doc 2: "running shoes for women"</text>
+  
+  <rect x="85" y="220" width="250" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="210" y="237" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Doc 3: "hiking boots for men"</text>
+  
+  <!-- Arrow -->
+  <line x1="355" y1="190" x2="385" y2="190" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="370" y="180" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Index</text>
+  
+  <!-- Inverted Index -->
+  <rect x="400" y="125" width="200" height="130" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="500" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Inverted Index</text>
+  
+  <rect x="415" y="160" width="170" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="425" y="175" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">running → [1, 2]</text>
+  
+  <rect x="415" y="183" width="170" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="425" y="198" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">shoes → [1, 2]</text>
+  
+  <rect x="415" y="206" width="170" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="425" y="221" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">men → [1, 3]</text>
+  
+  <rect x="415" y="229" width="170" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="425" y="244" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">women → [2]</text>
+  
+  <!-- Arrow -->
+  <line x1="605" y1="190" x2="635" y2="190" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="620" y="180" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Search</text>
+  
+  <!-- Search Results -->
+  <rect x="650" y="125" width="180" height="130" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="740" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Query: "running men"</text>
+  
+  <rect x="665" y="160" width="150" height="30" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="740" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">running → [1, 2]</text>
+  
+  <rect x="665" y="195" width="150" height="30" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="740" y="213" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">men → [1, 3]</text>
+  
+  <rect x="665" y="230" width="150" height="20" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+  <text x="740" y="244" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Result: Doc 1 (both terms)</text>
+  
+  <!-- Search Pipeline (Bottom) -->
+  <rect x="50" y="275" width="800" height="260" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Search Pipeline</text>
+  
+  <!-- Step 1: Tokenization -->
+  <rect x="70" y="315" width="180" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="160" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">1. Tokenization</text>
+  <text x="160" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Split text into tokens</text>
+  <text x="160" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">"Running Shoes!" →</text>
+  <text x="160" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">["running", "shoes"]</text>
+  <text x="160" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Lowercase, remove punctuation</text>
+  
+  <!-- Arrow -->
+  <line x1="255" y1="365" x2="275" y2="365" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 2: Analysis -->
+  <rect x="280" y="315" width="180" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="370" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">2. Analysis</text>
+  <text x="370" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Normalize, stem, filter</text>
+  <text x="370" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">"running" → "run" (stem)</text>
+  <text x="370" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Remove stop words ("the")</text>
+  <text x="370" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Synonyms, stemming</text>
+  
+  <!-- Arrow -->
+  <line x1="465" y1="365" x2="485" y2="365" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 3: Index Lookup -->
+  <rect x="490" y="315" width="180" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="580" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">3. Index Lookup</text>
+  <text x="580" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Query inverted index</text>
+  <text x="580" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Find matching documents</text>
+  <text x="580" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">O(1) term lookup</text>
+  <text x="580" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Fast document retrieval</text>
+  
+  <!-- Arrow -->
+  <line x1="675" y1="365" x2="695" y2="365" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 4: Ranking -->
+  <rect x="700" y="315" width="130" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="765" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">4. Ranking</text>
+  <text x="765" y="355" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Score by relevance</text>
+  <text x="765" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">TF-IDF, BM25</text>
+  <text x="765" y="385" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Sort results</text>
+  <text x="765" y="405" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Best matches first</text>
+  
+  <!-- Key Characteristics (Bottom) -->
+  <rect x="70" y="425" width="760" height="100" rx="4" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="450" y="450" text-anchor="middle" font-size="11" font-weight="700" fill="#0369a1">Key Search Engine Features</text>
+  
+  <text x="85" y="475" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Full-text search (search within text content)</text>
+  <text x="85" y="490" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Relevance ranking (TF-IDF, BM25)</text>
+  <text x="85" y="505" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Fuzzy matching (typos, variations)</text>
+  <text x="450" y="475" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Faceted search (filter by category, price)</text>
+  <text x="450" y="490" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Autocomplete (suggest as you type)</text>
+  <text x="450" y="505" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Synonyms (sneakers = shoes)</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

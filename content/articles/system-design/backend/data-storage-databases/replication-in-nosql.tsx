@@ -662,45 +662,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 5.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 11.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 11.
           </li>
           <li>
-            Cassandra Documentation, "Replication,"
-            https://cassandra.apache.org/doc/latest/cassandra/architecture/dynamo.html
+            <a
+              href="https://cassandra.apache.org/doc/latest/cassandra/architecture/dynamo.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cassandra Documentation — Replication
+            </a>
           </li>
           <li>
-            MongoDB Documentation, "Replication,"
-            https://www.mongodb.com/docs/manual/replication/
+            <a
+              href="https://www.mongodb.com/docs/manual/replication/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MongoDB Documentation — Replication
+            </a>
           </li>
           <li>
-            DynamoDB Documentation, "How It Works,"
-            https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+            <a
+              href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              DynamoDB Documentation — How It Works
+            </a>
           </li>
           <li>
-            Riak Documentation, "Replication,"
-            https://riak.com/product/
+            <a
+              href="https://riak.com/product/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Riak Documentation — Replication
+            </a>
           </li>
           <li>
-            CouchDB Documentation, "Replication,"
-            https://docs.couchdb.org/en/stable/replication/index.html
+            <a
+              href="https://docs.couchdb.org/en/stable/replication/index.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CouchDB Documentation — Replication
+            </a>
           </li>
           <li>
-            Google Docs, "Operational Transformation,"
-            https://en.wikipedia.org/wiki/Operational_transformation
+            <a
+              href="https://en.wikipedia.org/wiki/Operational_transformation"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Operational Transformation (Wikipedia)
+            </a>
           </li>
           <li>
-            CRDTs, "Conflict-Free Replicated Data Types,"
-            https://crdt.tech/
+            <a
+              href="https://crdt.tech/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CRDTs — Conflict-Free Replicated Data Types
+            </a>
           </li>
           <li>
-            Shopify Engineering Blog, "Scaling MySQL at Shopify,"
-            https://shopify.engineering/
+            <a
+              href="https://shopify.engineering/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Shopify Engineering Blog — Scaling MySQL at Shopify
+            </a>
           </li>
         </ul>
       </section>

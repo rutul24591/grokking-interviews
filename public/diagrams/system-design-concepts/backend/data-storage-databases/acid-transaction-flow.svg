@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">ACID Transaction Lifecycle</title>
+  <desc id="desc">Transaction lifecycle showing commit and rollback paths with WAL</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Transaction Lifecycle</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Commit path, rollback path, and crash recovery</text>
+  
+  <!-- Transaction Start -->
+  <rect x="50" y="85" width="120" height="60" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="110" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="white">BEGIN</text>
+  <text x="110" y="135" text-anchor="middle" font-size="9" fill="#bfdbfe">Transaction</text>
+  
+  <!-- Arrow to Operations -->
+  <line x1="175" y1="115" x2="205" y2="115" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Transaction Operations -->
+  <rect x="210" y="85" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="300" y="110" text-anchor="middle" font-size="11" font-weight="bold" fill="#b45309">Transaction Operations</text>
+  
+  <rect x="230" y="125" width="140" height="25" rx="3" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="300" y="142" text-anchor="middle" font-size="8" fill="#64748b">INSERT/UPDATE/DELETE</text>
+  
+  <rect x="230" y="155" width="140" height="25" rx="3" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="300" y="172" text-anchor="middle" font-size="8" fill="#64748b">Write to WAL Buffer</text>
+  
+  <rect x="230" y="185" width="140" height="15" rx="2" fill="#f59e0b"/>
+  <text x="300" y="197" text-anchor="middle" font-size="7" fill="white">Changes logged BEFORE data modified</text>
+  
+  <!-- Decision Point -->
+  <line x1="395" y1="145" x2="425" y2="145" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <polygon points="475,145 495,135 495,155" fill="#8b5cf6"/>
+  <text x="460" y="148" text-anchor="end" font-size="10" font-weight="bold" fill="#6d28d9">COMMIT?</text>
+  
+  <!-- Commit Path (Up) -->
+  <line x1="495" y1="140" x2="495" y2="100" x3="525" y3="100" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-green)"/>
+  <text x="510" y="95" text-anchor="start" font-size="9" font-weight="bold" fill="#10b981">YES</text>
+  
+  <!-- Rollback Path (Down) -->
+  <line x1="495" y1="150" x2="495" y2="190" x3="525" y3="190" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-red)"/>
+  <text x="510" y="205" text-anchor="start" font-size="9" font-weight="bold" fill="#ef4444">NO (ROLLBACK)</text>
+  
+  <!-- WAL fsync (Commit Path) -->
+  <rect x="530" y="70" width="140" height="60" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="600" y="95" text-anchor="middle" font-size="10" font-weight="bold" fill="white">WAL fsync</text>
+  <text x="600" y="115" text-anchor="middle" font-size="8" fill="#fef3c7">Flush to disk</text>
+  <text x="600" y="125" text-anchor="middle" font-size="8" fill="#fef3c7">DURABILITY POINT</text>
+  
+  <!-- Acknowledge Commit -->
+  <line x1="675" y1="100" x2="705" y2="100" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-green)"/>
+  
+  <rect x="710" y="70" width="120" height="60" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="770" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Ack to Client</text>
+  <text x="770" y="120" text-anchor="middle" font-size="8" fill="#6ee7b7">Transaction committed</text>
+  
+  <!-- Async Checkpoint -->
+  <line x1="770" y1="135" x2="770" y2="165" stroke="#64748b" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrow)"/>
+  
+  <rect x="710" y="170" width="120" height="50" rx="4" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="770" y="190" text-anchor="middle" font-size="9" fill="#64748b">Async Checkpoint</text>
+  <text x="770" y="205" text-anchor="middle" font-size="8" fill="#64748b">Write to data files</text>
+  
+  <!-- Rollback Path -->
+  <rect x="530" y="160" width="140" height="60" rx="8" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="600" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Undo Log</text>
+  <text x="600" y="205" text-anchor="middle" font-size="8" fill="#fca5a5">Rollback changes</text>
+  <text x="600" y="215" text-anchor="middle" font-size="8" fill="#fca5a5">Release locks</text>
+  
+  <!-- Rollback Ack -->
+  <line x1="675" y1="190" x2="705" y2="190" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-red)"/>
+  
+  <rect x="710" y="160" width="120" height="60" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="770" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="#b91c1c">Rollback Complete</text>
+  <text x="770" y="205" text-anchor="middle" font-size="8" fill="#64748b">No changes persisted</text>
+  
+  <!-- Crash Recovery Section -->
+  <rect x="50" y="250" width="800" height="180" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="450" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Crash Recovery Process</text>
+  
+  <!-- Crash point -->
+  <rect x="70" y="290" width="100" height="50" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="120" y="315" text-anchor="middle" font-size="10" font-weight="bold" fill="white">CRASH</text>
+  <text x="120" y="330" text-anchor="middle" font-size="8" fill="#fca5a5">System failure</text>
+  
+  <!-- Recovery arrow -->
+  <line x1="175" y1="315" x2="205" y2="315" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Recovery process -->
+  <rect x="210" y="290" width="200" height="100" rx="4" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="310" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#0369a1">Recovery Process</text>
+  
+  <rect x="230" y="330" width="160" height="25" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="310" y="347" text-anchor="middle" font-size="8" fill="#64748b">1. Scan WAL from last checkpoint</text>
+  
+  <rect x="230" y="360" width="160" height="25" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="310" y="377" text-anchor="middle" font-size="8" fill="#64748b">2. REDO committed transactions</text>
+  
+  <rect x="230" y="390" width="160" height="25" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="310" y="407" text-anchor="middle" font-size="8" fill="#64748b">3. UNDO uncommitted transactions</text>
+  
+  <!-- Recovery result -->
+  <line x1="415" y1="340" x2="445" y2="340" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-green)"/>
+  
+  <rect x="450" y="315" width="180" height="50" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="540" y="340" text-anchor="middle" font-size="10" font-weight="bold" fill="#047857">Database Recovered</text>
+  <text x="540" y="355" text-anchor="middle" font-size="8" fill="#6ee7b7">No data loss after fsync</text>
+  
+  <!-- Key points -->
+  <rect x="650" y="290" width="180" height="120" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="740" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#b45309">Key Points</text>
+  
+  <text x="740" y="340" text-anchor="middle" font-size="8" fill="#64748b">• fsync = durability boundary</text>
+  <text x="740" y="355" text-anchor="middle" font-size="8" fill="#64748b">• Committed = survives crash</text>
+  <text x="740" y="370" text-anchor="middle" font-size="8" fill="#64748b">• Uncommitted = rolled back</text>
+  <text x="740" y="385" text-anchor="middle" font-size="8" fill="#64748b">• WAL is append-only (fast)</text>
+  <text x="740" y="400" text-anchor="middle" font-size="8" fill="#64748b">• Checkpoint is async (slow OK)</text>
+  
+  <!-- Timeline at bottom -->
+  <rect x="50" y="445" width="800" height="85" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">Timeline: Write-Ahead Guarantee</text>
+  
+  <line x1="80" y1="500" x2="770" y2="500" stroke="#64748b" stroke-width="2"/>
+  
+  <!-- Timeline events -->
+  <circle cx="120" cy="500" r="5" fill="#3b82f6"/>
+  <text x="120" y="520" text-anchor="middle" font-size="8" fill="#64748b">1. Write</text>
+  <text x="120" y="530" text-anchor="middle" font-size="7" fill="#64748b">WAL buffer</text>
+  
+  <circle cx="260" cy="500" r="5" fill="#f59e0b"/>
+  <text x="260" y="520" text-anchor="middle" font-size="8" fill="#64748b">2. Modify</text>
+  <text x="260" y="530" text-anchor="middle" font-size="7" fill="#64748b">Data pages</text>
+  
+  <circle cx="400" cy="500" r="5" fill="#ef4444"/>
+  <text x="400" y="520" text-anchor="middle" font-size="8" fill="#64748b">3. fsync</text>
+  <text x="400" y="530" text-anchor="middle" font-size="7" fill="#64748b">WAL to disk</text>
+  
+  <rect x="520" y="490" width="80" height="20" rx="3" fill="#10b981"/>
+  <text x="560" y="505" text-anchor="middle" font-size="8" fill="white">COMMIT</text>
+  <text x="560" y="525" text-anchor="middle" font-size="7" fill="#64748b">Ack to client</text>
+  
+  <circle cx="700" cy="500" r="5" fill="#8b5cf6"/>
+  <text x="700" y="520" text-anchor="middle" font-size="8" fill="#64748b">4. Checkpoint</text>
+  <text x="700" y="530" text-anchor="middle" font-size="7" fill="#64748b">Async to data files</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">ACID vs BASE Comparison</title>
+  <desc id="desc">Comparison of ACID and BASE transaction models</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">ACID vs BASE</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Strong Consistency vs Eventual Consistency Trade-offs</text>
+  
+  <rect x="50" y="85" width="400" height="240" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">ACID (Strong Consistency)</text>
+  <rect x="70" y="125" width="360" height="190" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Atomicity, Consistency, Isolation, Durability</text>
+  <text x="250" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Strong consistency (all nodes see same data)</text>
+  <text x="250" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Immediate consistency after write</text>
+  <text x="250" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Transactions with rollback support</text>
+  <text x="250" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Schema enforcement, data validation</text>
+  <text x="250" y="240" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Data integrity guaranteed</text>
+  <text x="250" y="255" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Lower availability during partitions</text>
+  <text x="250" y="275" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Examples: PostgreSQL, MySQL, Oracle</text>
+  <text x="250" y="290" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use for: Financial, inventory, booking</text>
+  
+  <rect x="465" y="85" width="385" height="240" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">BASE (Eventual Consistency)</text>
+  <rect x="485" y="125" width="345" height="190" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="657" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Basically Available, Soft state, Eventually consistent</text>
+  <text x="657" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Eventual consistency (converges over time)</text>
+  <text x="657" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• High availability (always respond)</text>
+  <text x="657" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Partition tolerant (works during network issues)</text>
+  <text x="657" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Flexible schema, schema-on-read</text>
+  <text x="657" y="240" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Always available, scales horizontally</text>
+  <text x="657" y="255" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Temporary inconsistencies possible</text>
+  <text x="657" y="275" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Examples: DynamoDB, Cassandra, CouchDB</text>
+  <text x="657" y="290" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use for: Social media, caches, feeds</text>
+  
+  <rect x="50" y="335" width="800" height="100" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="12" font-weight="700" fill="#0369a1">The CAP Theorem Trade-off</text>
+  <rect x="70" y="375" width="360" height="50" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="395" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">ACID chooses CP (Consistency + Partition Tolerance)</text>
+  <text x="250" y="412" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Sacrifices availability during partitions to maintain consistency</text>
+  
+  <rect x="445" y="375" width="360" height="50" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="625" y="395" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">BASE chooses AP (Availability + Partition Tolerance)</text>
+  <text x="625" y="412" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Sacrifices immediate consistency to remain available</text>
+  
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="11" font-weight="700" fill="#065f46">Modern Approach: Tunable Consistency</text>
+  <rect x="70" y="485" width="760" height="40" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="505" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Choose consistency level per operation: Strong for critical writes, eventual for reads. Best of both worlds.</text>
+  <text x="450" y="520" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Examples: DynamoDB (consistent reads option), Cassandra (quorum writes)</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

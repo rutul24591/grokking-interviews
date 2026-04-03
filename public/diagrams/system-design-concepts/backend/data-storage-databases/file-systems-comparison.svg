@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">File Systems Comparison</title>
+  <desc id="desc">Comparison of local, network, and distributed file systems</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">File Systems Comparison</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Local vs Network vs Distributed</text>
+  
+  <!-- Local File Systems (Left) -->
+  <rect x="50" y="85" width="260" height="240" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Local File Systems</text>
+  
+  <rect x="65" y="125" width="230" height="190" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Single Machine</text>
+  <text x="180" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• ext4 (Linux)</text>
+  <text x="180" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• XFS (Linux, high perf)</text>
+  <text x="180" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• NTFS (Windows)</text>
+  <text x="180" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• APFS (macOS)</text>
+  
+  <text x="180" y="250" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Lowest latency</text>
+  <text x="180" y="265" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ No sharing across machines</text>
+  <text x="180" y="285" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Best for: Boot volumes, single-instance apps</text>
+  <text x="180" y="300" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Examples: EBS formatted with ext4</text>
+  
+  <!-- Network File Systems (Middle) -->
+  <rect x="320" y="85" width="260" height="240" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Network File Systems</text>
+  
+  <rect x="335" y="125" width="230" height="190" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Shared Over Network</text>
+  <text x="450" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• NFS (Unix/Linux)</text>
+  <text x="450" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• SMB/CIFS (Windows)</text>
+  <text x="450" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• POSIX semantics</text>
+  <text x="450" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• File locking support</text>
+  
+  <text x="450" y="250" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Shared access, POSIX</text>
+  <text x="450" y="265" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Higher latency than local</text>
+  <text x="450" y="285" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Best for: Shared files, home directories</text>
+  <text x="450" y="300" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Examples: EFS, Azure Files</text>
+  
+  <!-- Distributed File Systems (Right) -->
+  <rect x="590" y="85" width="260" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Distributed File Systems</text>
+  
+  <rect x="605" y="125" width="230" height="190" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Scale-Out Across Nodes</text>
+  <text x="720" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• HDFS (Hadoop)</text>
+  <text x="720" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Ceph (distributed)</text>
+  <text x="720" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• GlusterFS (scale-out)</text>
+  <text x="720" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Petabyte scale</text>
+  
+  <text x="720" y="250" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Massive scale, fault tolerant</text>
+  <text x="720" y="265" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Complex to manage</text>
+  <text x="720" y="285" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Best for: Big data, analytics</text>
+  <text x="720" y="300" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Examples: HDFS for Spark/Hadoop</text>
+  
+  <!-- Comparison Table (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Feature Comparison</text>
+  
+  <!-- Header -->
+  <rect x="70" y="375" width="180" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="160" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#0369a1">Feature</text>
+  <rect x="260" y="375" width="180" height="25" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="350" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Local</text>
+  <rect x="450" y="375" width="180" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Network</text>
+  <rect x="640" y="375" width="190" height="25" rx="3" fill="#f3f4f6" stroke="#6b7280" stroke-width="1"/>
+  <text x="735" y="392" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Distributed</text>
+  
+  <!-- Row 1 -->
+  <rect x="70" y="403" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="417" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Latency</text>
+  <rect x="260" y="403" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="417" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Lowest (sub-ms)</text>
+  <rect x="450" y="403" width="180" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="417" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Moderate (ms)</text>
+  <rect x="640" y="403" width="190" height="20" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="735" y="417" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Higher (network hops)</text>
+  
+  <!-- Row 2 -->
+  <rect x="70" y="426" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Shared Access</text>
+  <rect x="260" y="426" width="180" height="20" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="350" y="440" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Single machine</text>
+  <rect x="450" y="426" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="540" y="440" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">✓ Multiple clients</text>
+  <rect x="640" y="426" width="190" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="735" y="440" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">✓ Many nodes</text>
+  
+  <!-- Row 3 -->
+  <rect x="70" y="449" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="463" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Scale</text>
+  <rect x="260" y="449" width="180" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="350" y="463" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Limited (single disk)</text>
+  <rect x="450" y="449" width="180" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="463" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Moderate</text>
+  <rect x="640" y="449" width="190" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="735" y="463" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Petabytes (horizontal)</text>
+  
+  <!-- Row 4 -->
+  <rect x="70" y="472" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="486" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Complexity</text>
+  <rect x="260" y="472" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="486" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Low</text>
+  <rect x="450" y="472" width="180" height="20" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="486" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Moderate</text>
+  <rect x="640" y="472" width="190" height="20" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="735" y="486" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">High (manage cluster)</text>
+  
+  <!-- Row 5 -->
+  <rect x="70" y="495" width="180" height="20" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="160" y="509" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use Case</text>
+  <rect x="260" y="495" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="350" y="509" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Databases, boot</text>
+  <rect x="450" y="495" width="180" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="540" y="509" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Shared files, CMS</text>
+  <rect x="640" y="495" width="190" height="20" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="735" y="509" text-anchor="middle" font-size="8" font-weight="700" fill="#15803d">Big data, analytics</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

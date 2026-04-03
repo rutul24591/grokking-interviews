@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Document Database Data Modeling</title>
+  <desc id="desc">Embedding vs referencing strategies in document databases</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Document Database Data Modeling</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Embedding vs Referencing Strategies</text>
+  
+  <!-- Embedding Example (Left) -->
+  <rect x="50" y="85" width="380" height="240" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Embedding (Inline)</text>
+  
+  <!-- Document Structure -->
+  <rect x="70" y="125" width="340" height="190" rx="4" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  
+  <!-- User Document -->
+  <rect x="85" y="140" width="310" height="160" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="100" y="160" text-anchor="start" font-size="9" font-weight="700" fill="#1e3a8a">{_id: "user123"}</text>
+  <text x="100" y="175" text-anchor="start" font-size="9" font-weight="600" fill="#1f2937">name: "Alice"</text>
+  <text x="100" y="188" text-anchor="start" font-size="9" font-weight="600" fill="#1f2937">email: "alice@example.com"</text>
+  <text x="100" y="203" text-anchor="start" font-size="9" font-weight="700" fill="#1e3a8a">orders: [</text>
+  
+  <!-- Embedded Order 1 -->
+  <rect x="110" y="210" width="270" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="120" y="222" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">{order_id: "ord1", total: $99.99,</text>
+  <text x="120" y="235" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">items: [...], status: "shipped"}</text>
+  
+  <!-- Embedded Order 2 -->
+  <rect x="110" y="250" width="270" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="120" y="262" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">{order_id: "ord2", total: $149.99,</text>
+  <text x="120" y="275" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">items: [...], status: "pending"}</text>
+  
+  <text x="100" y="295" text-anchor="start" font-size="9" font-weight="700" fill="#1e3a8a">]</text>
+  
+  <!-- Embedding Pros/Cons -->
+  <rect x="70" y="335" width="340" height="70" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="240" y="352" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Pros:</text>
+  <text x="240" y="367" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Single-query reads (fast)</text>
+  <text x="240" y="380" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Atomic updates</text>
+  <text x="240" y="393" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Natural data representation</text>
+  <text x="240" y="405" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">✗ 16MB document limit</text>
+  
+  <!-- Referencing Example (Right) -->
+  <rect x="470" y="85" width="380" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Referencing (Normalized)</text>
+  
+  <!-- Users Collection -->
+  <rect x="490" y="125" width="160" height="80" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="570" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Users Collection</text>
+  <text x="570" y="165" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">{_id: "user123"}</text>
+  <text x="570" y="178" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">name: "Alice"</text>
+  <text x="570" y="191" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">email: "alice@example.com"</text>
+  
+  <!-- Arrow -->
+  <line x1="655" y1="165" x2="685" y2="165" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="670" y="155" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">user_id</text>
+  
+  <!-- Orders Collection -->
+  <rect x="690" y="125" width="140" height="140" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="760" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Orders Collection</text>
+  
+  <!-- Order 1 -->
+  <rect x="705" y="155" width="110" height="30" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="760" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">{_id: "ord1"}</text>
+  <text x="760" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">user_id: "user123"</text>
+  
+  <!-- Order 2 -->
+  <rect x="705" y="190" width="110" height="30" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="760" y="203" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">{_id: "ord2"}</text>
+  <text x="760" y="213" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">user_id: "user123"</text>
+  
+  <!-- Order 3 -->
+  <rect x="705" y="225" width="110" height="30" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="760" y="238" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">{_id: "ord3"}</text>
+  <text x="760" y="248" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">user_id: "user456"</text>
+  
+  <!-- Referencing Pros/Cons -->
+  <rect x="490" y="335" width="340" height="70" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="660" y="352" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Pros:</text>
+  <text x="660" y="367" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ No document size limit</text>
+  <text x="660" y="380" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Independent access patterns</text>
+  <text x="660" y="393" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">✓ Smaller documents</text>
+  <text x="660" y="405" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">✗ Multiple queries needed</text>
+  
+  <!-- Decision Framework (Bottom) -->
+  <rect x="50" y="420" width="800" height="115" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="442" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Decision Framework: When to Embed vs Reference</text>
+  
+  <!-- Embed Column -->
+  <rect x="70" y="455" width="180" height="70" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="160" y="475" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">EMBED When:</text>
+  <text x="160" y="492" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• One-to-few relationship</text>
+  <text x="160" y="505" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• Data accessed together</text>
+  <text x="160" y="518" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• Bounded document size</text>
+  
+  <!-- Reference Column -->
+  <rect x="270" y="455" width="180" height="70" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="360" y="475" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">REFERENCE When:</text>
+  <text x="360" y="492" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• One-to-many / many-to-many</text>
+  <text x="360" y="505" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• Independent access patterns</text>
+  <text x="360" y="518" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• Unbounded growth</text>
+  
+  <!-- Common Patterns -->
+  <rect x="470" y="455" width="360" height="70" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="650" y="475" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Common Patterns:</text>
+  <text x="650" y="492" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• Bucket pattern (group related items)</text>
+  <text x="650" y="505" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• Computed summary (pre-aggregated counts)</text>
+  <text x="650" y="518" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">• Hybrid: embed recent, reference historical</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Column-Family Compaction Strategies</title>
+  <desc id="desc">SSTable compaction showing merge process and strategies</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Column-Family Compaction</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">SSTable Merge Process and Strategies</text>
+  
+  <!-- Compaction Process (Top) -->
+  <rect x="50" y="85" width="800" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Compaction: Merging SSTables</text>
+  
+  <!-- Before Compaction -->
+  <rect x="70" y="125" width="350" height="125" rx="4" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+  <text x="245" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">Before Compaction</text>
+  
+  <!-- SSTable 1 -->
+  <rect x="85" y="160" width="140" height="35" rx="3" fill="#e0e7ff" stroke="#7c3aed" stroke-width="1"/>
+  <text x="155" y="182" text-anchor="middle" font-size="8" font-weight="700" fill="#5b21b6">SSTable 1 (Old)</text>
+  <text x="155" y="192" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">key:A→1, key:B→2</text>
+  
+  <!-- SSTable 2 -->
+  <rect x="85" y="200" width="140" height="35" rx="3" fill="#c7d2fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="155" y="222" text-anchor="middle" font-size="8" font-weight="700" fill="#5b21b6">SSTable 2</text>
+  <text x="155" y="232" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">key:B→3, key:C→4</text>
+  
+  <!-- SSTable 3 -->
+  <rect x="85" y="240" width="140" height="35" rx="3" fill="#a5b4fc" stroke="#7c3aed" stroke-width="1"/>
+  <text x="155" y="262" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">SSTable 3 (New)</text>
+  <text x="155" y="272" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">key:A→5, key:D→6</text>
+  
+  <!-- Arrow -->
+  <line x1="235" y1="217" x2="265" y2="217" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="250" y="207" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Merge</text>
+  
+  <!-- After Compaction -->
+  <rect x="280" y="125" width="125" height="125" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="342" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">After Compaction</text>
+  
+  <rect x="295" y="160" width="95" height="80" rx="3" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="342" y="182" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Merged SSTable</text>
+  <text x="342" y="197" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">key:A→5 (updated)</text>
+  <text x="342" y="209" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">key:B→3 (updated)</text>
+  <text x="342" y="221" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">key:C→4</text>
+  <text x="342" y="233" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">key:D→6</text>
+  
+  <!-- Compaction Benefits -->
+  <rect x="420" y="125" width="415" height="125" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="627" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Why Compact?</text>
+  
+  <rect x="435" y="165" width="180" height="75" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="525" y="185" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Benefits:</text>
+  <text x="525" y="202" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Remove old versions</text>
+  <text x="525" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Remove tombstones (deletes)</text>
+  <text x="525" y="228" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Reduce number of SSTables</text>
+  <text x="525" y="241" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✓ Improve read performance</text>
+  
+  <rect x="630" y="165" width="190" height="75" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="725" y="185" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Trade-offs:</text>
+  <text x="725" y="202" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ Disk I/O overhead</text>
+  <text x="725" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ CPU for merge/sort</text>
+  <text x="725" y="228" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">✗ Temporary disk space</text>
+  <text x="725" y="241" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">⚠ Can cause write amplification</text>
+  
+  <!-- Compaction Strategies (Bottom) -->
+  <rect x="50" y="275" width="800" height="260" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Compaction Strategies</text>
+  
+  <!-- Size-Tiered -->
+  <rect x="70" y="315" width="240" height="100" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="190" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Size-Tiered Compaction</text>
+  
+  <rect x="85" y="350" width="210" height="55" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Group SSTables by size</text>
+  <text x="190" y="383" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Merge similar-sized SSTables</text>
+  <text x="190" y="396" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Cassandra default</text>
+  
+  <text x="190" y="420" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Write-optimized</text>
+  <text x="190" y="433" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">✗ Read amplification</text>
+  
+  <!-- Leveled -->
+  <rect x="330" y="315" width="240" height="100" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Leveled Compaction</text>
+  
+  <rect x="345" y="350" width="210" height="55" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="450" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Organize SSTables into levels</text>
+  <text x="450" y="383" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Each level 10x larger than previous</text>
+  <text x="450" y="396" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• RocksDB, LevelDB default</text>
+  
+  <text x="450" y="420" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Read-optimized</text>
+  <text x="450" y="433" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">✗ Write amplification</text>
+  
+  <!-- Time-Window -->
+  <rect x="590" y="315" width="240" height="100" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="710" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Time-Window Compaction</text>
+  
+  <rect x="605" y="350" width="210" height="55" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="710" y="370" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Group by time windows</text>
+  <text x="710" y="383" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Expire old windows automatically</text>
+  <text x="710" y="396" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Time-series data</text>
+  
+  <text x="710" y="420" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Auto-expiry</text>
+  <text x="710" y="433" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Time-range queries</text>
+  
+  <!-- Strategy Selection -->
+  <rect x="70" y="430" width="760" height="90" rx="4" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="450" y="455" text-anchor="middle" font-size="11" font-weight="700" fill="#0369a1">Strategy Selection Guide</text>
+  
+  <rect x="85" y="465" width="220" height="45" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="195" y="485" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">Write-Heavy Workload</text>
+  <text x="195" y="500" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">→ Size-Tiered</text>
+  
+  <rect x="320" y="465" width="220" height="45" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="430" y="485" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">Read-Heavy Workload</text>
+  <text x="430" y="500" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">→ Leveled</text>
+  
+  <rect x="555" y="465" width="220" height="45" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="665" y="485" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">Time-Series Data</text>
+  <text x="665" y="500" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">→ Time-Window</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">SQL JOIN Types</title>
+  <desc id="desc">Different SQL JOIN types and when to use them</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">SQL JOIN Types</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Understanding JOIN Operations</text>
+  
+  <!-- INNER JOIN (Top Left) -->
+  <rect x="50" y="85" width="260" height="180" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">INNER JOIN</text>
+  
+  <rect x="65" y="125" width="230" height="130" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <!-- Venn Diagram -->
+  <circle cx="130" cy="175" r="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2" fill-opacity="0.5"/>
+  <circle cx="180" cy="175" r="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2" fill-opacity="0.5"/>
+  <ellipse cx="155" cy="175" rx="15" ry="35" fill="#2563eb" fill-opacity="0.7"/>
+  <text x="155" y="180" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Match</text>
+  
+  <text x="180" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Returns only matching rows</text>
+  
+  <text x="180" y="250" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users u</text>
+  <text x="180" y="262" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">INNER JOIN orders o ON u.id = o.user_id</text>
+  
+  <text x="180" y="280" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Most common, fastest</text>
+  
+  <!-- LEFT JOIN (Top Middle) -->
+  <rect x="320" y="85" width="260" height="180" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">LEFT JOIN (LEFT OUTER)</text>
+  
+  <rect x="335" y="125" width="230" height="130" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <!-- Venn Diagram -->
+  <circle cx="400" cy="175" r="35" fill="#fef3c7" stroke="#d97706" stroke-width="2" fill-opacity="0.7"/>
+  <circle cx="450" cy="175" r="35" fill="#fef3c7" stroke="#d97706" stroke-width="2" fill-opacity="0.3"/>
+  <text x="400" y="180" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">All Left</text>
+  
+  <text x="450" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Returns all left + matching right</text>
+  
+  <text x="450" y="250" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users u</text>
+  <text x="450" y="262" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">LEFT JOIN orders o ON u.id = o.user_id</text>
+  
+  <text x="450" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Users without orders show NULL</text>
+  
+  <!-- RIGHT JOIN (Top Right) -->
+  <rect x="590" y="85" width="260" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">RIGHT JOIN (RIGHT OUTER)</text>
+  
+  <rect x="605" y="125" width="230" height="130" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <!-- Venn Diagram -->
+  <circle cx="670" cy="175" r="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2" fill-opacity="0.3"/>
+  <circle cx="720" cy="175" r="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2" fill-opacity="0.7"/>
+  <text x="720" y="180" text-anchor="middle" font-size="7" font-weight="700" fill="#1e3a8a">All Right</text>
+  
+  <text x="720" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Returns all right + matching left</text>
+  
+  <text x="720" y="250" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users u</text>
+  <text x="720" y="262" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">RIGHT JOIN orders o ON u.id = o.user_id</text>
+  
+  <text x="720" y="280" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Orders without users show NULL</text>
+  
+  <!-- FULL OUTER JOIN (Bottom Left) -->
+  <rect x="50" y="275" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">FULL OUTER JOIN</text>
+  
+  <rect x="70" y="315" width="360" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  
+  <!-- Venn Diagram -->
+  <circle cx="150" cy="360" r="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2" fill-opacity="0.5"/>
+  <circle cx="200" cy="360" r="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2" fill-opacity="0.5"/>
+  <ellipse cx="175" cy="360" rx="15" ry="35" fill="#2563eb" fill-opacity="0.7"/>
+  <text x="175" y="365" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">All rows</text>
+  
+  <text x="300" y="350" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Returns ALL rows from both tables</text>
+  <text x="300" y="368" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">NULL where no match</text>
+  
+  <text x="300" y="388" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users u</text>
+  <text x="300" y="400" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">FULL OUTER JOIN orders o ON u.id = o.user_id</text>
+  
+  <text x="300" y="418" text-anchor="start" font-size="7" font-weight="700" fill="#b91c1c">⚠ Not supported in MySQL</text>
+  
+  <!-- CROSS JOIN (Bottom Right) -->
+  <rect x="465" y="275" width="385" height="140" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">CROSS JOIN (Cartesian Product)</text>
+  
+  <rect x="485" y="315" width="345" height="90" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <text x="657" y="340" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Returns ALL combinations (m × n rows)</text>
+  
+  <text x="500" y="365" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Users: 100 rows, Colors: 5 rows</text>
+  <text x="500" y="380" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">CROSS JOIN = 500 rows</text>
+  
+  <text x="500" y="400" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users CROSS JOIN colors</text>
+  
+  <text x="657" y="425" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">⚠ Use sparingly (can be huge!)</text>
+  
+  <!-- JOIN Performance Tips (Bottom) -->
+  <rect x="50" y="425" width="800" height="110" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="450" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">JOIN Performance Tips</text>
+  
+  <rect x="70" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="160" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Index Foreign Keys</text>
+  <text x="160" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Most important optimization</text>
+  <text x="160" y="517" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ 10-100x faster</text>
+  
+  <rect x="265" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="355" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Filter Before JOIN</text>
+  <text x="355" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Smaller tables = faster JOIN</text>
+  <text x="355" y="517" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Use WHERE/CTE first</text>
+  
+  <rect x="460" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="550" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Prefer INNER JOIN</text>
+  <text x="550" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">When OUTER not needed</text>
+  <text x="550" y="517" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Faster than OUTER</text>
+  
+  <rect x="655" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="745" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Use EXPLAIN</text>
+  <text x="745" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Verify JOIN algorithm</text>
+  <text x="745" y="517" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Check for index usage</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

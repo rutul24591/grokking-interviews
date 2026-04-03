@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">SQL Query Optimization</title>
+  <desc id="desc">SQL query optimization techniques and best practices</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">SQL Query Optimization</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Writing Efficient SQL Queries</text>
+  
+  <!-- WHERE Clause Optimization (Top Left) -->
+  <rect x="50" y="85" width="260" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">WHERE Clause Tips</text>
+  
+  <rect x="65" y="125" width="230" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Avoid:</text>
+  <text x="180" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">WHERE YEAR(created_at) = 2024</text>
+  <text x="180" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">✗ Function on column</text>
+  
+  <text x="180" y="195" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Use:</text>
+  <text x="180" y="210" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">WHERE created_at &gt;= '2024-01-01'</text>
+  <text x="180" y="223" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">✓ Index can be used</text>
+  
+  <!-- JOIN Optimization (Top Middle) -->
+  <rect x="320" y="85" width="260" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">JOIN Optimization</text>
+  
+  <rect x="335" y="125" width="230" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Best Practices:</text>
+  <text x="450" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Index foreign key columns</text>
+  <text x="450" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Use INNER JOIN when possible</text>
+  <text x="450" y="198" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Filter before JOIN (smaller sets)</text>
+  <text x="450" y="213" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Avoid Cartesian products</text>
+  
+  <!-- Subquery vs JOIN (Top Right) -->
+  <rect x="590" y="85" width="260" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Subquery vs JOIN</text>
+  
+  <rect x="605" y="125" width="230" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Slow (Subquery):</text>
+  <text x="720" y="165" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT * FROM orders WHERE user_id IN</text>
+  <text x="720" y="175" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">(SELECT id FROM users WHERE active=1)</text>
+  
+  <text x="720" y="195" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Fast (JOIN):</text>
+  <text x="720" y="210" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT o.* FROM orders o JOIN users u</text>
+  <text x="720" y="220" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">ON o.user_id = u.id WHERE u.active = 1</text>
+  
+  <!-- UNION vs UNION ALL (Middle Left) -->
+  <rect x="50" y="235" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">UNION vs UNION ALL</text>
+  
+  <rect x="70" y="275" width="360" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  
+  <text x="250" y="300" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">UNION (Slow - removes duplicates):</text>
+  <text x="250" y="318" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT id FROM table1 UNION SELECT id FROM table2</text>
+  <text x="250" y="333" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Sorts and removes duplicates</text>
+  <text x="250" y="348" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Expensive operation</text>
+  
+  <text x="250" y="368" text-anchor="middle" font-size="9" font-weight="700" fill="#059669">UNION ALL (Fast - keeps all):</text>
+  <text x="250" y="386" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">SELECT id FROM table1 UNION ALL SELECT id FROM table2</text>
+  <text x="250" y="401" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">• No deduplication = faster</text>
+  
+  <!-- EXISTS vs IN (Middle Right) -->
+  <rect x="465" y="235" width="385" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">EXISTS vs IN</text>
+  
+  <rect x="485" y="275" width="345" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="657" y="300" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">IN (can be slow with large subquery):</text>
+  <text x="500" y="318" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users WHERE id IN (SELECT user_id FROM orders)</text>
+  
+  <text x="657" y="340" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">EXISTS (often faster):</text>
+  <text x="500" y="358" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">SELECT * FROM users u WHERE EXISTS</text>
+  <text x="500" y="373" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">(SELECT 1 FROM orders o WHERE o.user_id = u.id)</text>
+  <text x="657" y="390" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">✓ Stops at first match</text>
+  
+  <!-- Common Patterns (Bottom) -->
+  <rect x="50" y="385" width="800" height="150" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Efficient Query Patterns</text>
+  
+  <!-- Pattern 1 -->
+  <rect x="70" y="425" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Batch Operations</text>
+  <text x="190" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Use: INSERT INTO ... VALUES (),(),()</text>
+  <text x="190" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Instead of: Multiple single INSERTs</text>
+  <text x="190" y="495" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Result: 100x faster for bulk inserts</text>
+  <text x="190" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Reduces round trips</text>
+  
+  <!-- Pattern 2 -->
+  <rect x="325" y="425" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="445" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Use Prepared Statements</text>
+  <text x="445" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Query plan cached</text>
+  <text x="445" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Prevents SQL injection</text>
+  <text x="445" y="495" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Faster for repeated queries</text>
+  <text x="445" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Plan reuse</text>
+  
+  <!-- Pattern 3 -->
+  <rect x="580" y="425" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="700" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Avoid Cursors</text>
+  <text x="700" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Use set-based operations</text>
+  <text x="700" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">UPDATE with CASE instead</text>
+  <text x="700" y="495" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937"> Cursors = row-by-row (slow)</text>
+  <text x="700" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Set-based = faster</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

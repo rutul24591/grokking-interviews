@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">CDN and Edge Storage Architecture</title>
+  <desc id="desc">CDN request flow, edge locations, and cache strategies</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">CDN and Edge Storage Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Edge Caching and Request Flow</text>
+  
+  <!-- CDN Request Flow (Top) -->
+  <rect x="50" y="85" width="800" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">CDN Request Flow</text>
+  
+  <!-- User -->
+  <rect x="70" y="125" width="100" height="60" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="120" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">User</text>
+  <text x="120" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Browser</text>
+  <text x="120" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">GET /image.jpg</text>
+  
+  <!-- Arrow -->
+  <line x1="175" y1="155" x2="205" y2="155" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="145" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">DNS resolves</text>
+  <text x="190" y="158" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">to nearest PoP</text>
+  
+  <!-- Edge Server -->
+  <rect x="220" y="125" width="140" height="80" rx="4" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="290" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Edge Server (PoP)</text>
+  <text x="290" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#6ee7b7">Checks cache:</text>
+  
+  <!-- Cache Hit -->
+  <rect x="235" y="175" width="55" height="25" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="262" y="192" text-anchor="middle" font-size="7" font-weight="700" fill="#15803d">Hit</text>
+  
+  <!-- Cache Miss -->
+  <rect x="300" y="175" width="55" height="25" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="327" y="192" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Miss</text>
+  
+  <!-- Arrow Hit -->
+  <line x1="365" y1="155" x2="395" y2="155" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="380" y="145" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">Serve from cache</text>
+  <text x="380" y="158" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">(5-10ms)</text>
+  
+  <!-- Arrow Miss -->
+  <path d="M 365 187 L 395 187 L 395 230 L 425 230" stroke="#374151" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="410" y="220" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">Fetch from origin</text>
+  <text x="410" y="233" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">(50-200ms)</text>
+  
+  <!-- Origin -->
+  <rect x="440" y="125" width="140" height="80" rx="4" fill="#d97706" stroke="#b45309" stroke-width="2"/>
+  <text x="510" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Origin Server</text>
+  <text x="510" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#fef3c7">S3 / Web Server</text>
+  <text x="510" y="183" text-anchor="middle" font-size="7" font-weight="600" fill="#fef3c7">Serves cache miss</text>
+  <text x="510" y="198" text-anchor="middle" font-size="7" font-weight="600" fill="#fef3c7">Caches at edge</text>
+  
+  <!-- Response -->
+  <line x1="585" y1="165" x2="615" y2="165" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="600" y="155" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Cache + Serve</text>
+  
+  <!-- Response to user -->
+  <rect x="630" y="125" width="100" height="60" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="680" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">User</text>
+  <text x="680" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Receives content</text>
+  <text x="680" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Fast response</text>
+  
+  <!-- Global Distribution (Bottom) -->
+  <rect x="50" y="275" width="800" height="260" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Global Edge Distribution</text>
+  
+  <!-- US-East -->
+  <rect x="70" y="315" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">US-East (10 PoPs)</text>
+  <text x="190" y="355" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Virginia, New York</text>
+  <text x="190" y="368" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Florida, Ohio</text>
+  <text x="190" y="381" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Latency: 5-20ms</text>
+  <text x="190" y="394" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Origin: S3 us-east-1</text>
+  <text x="190" y="410" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Closest to origin</text>
+  
+  <!-- EU-West -->
+  <rect x="325" y="315" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="445" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">EU-West (8 PoPs)</text>
+  <text x="445" y="355" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• London, Frankfurt</text>
+  <text x="445" y="368" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Paris, Amsterdam</text>
+  <text x="445" y="381" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Latency: 10-30ms</text>
+  <text x="445" y="394" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Origin: S3 us-east-1</text>
+  <text x="445" y="410" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ 10x faster than origin</text>
+  
+  <!-- Asia -->
+  <rect x="580" y="315" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="700" y="335" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Asia (6 PoPs)</text>
+  <text x="700" y="355" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Singapore, Tokyo</text>
+  <text x="700" y="368" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Mumbai, Seoul</text>
+  <text x="700" y="381" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Latency: 15-50ms</text>
+  <text x="700" y="394" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Origin: S3 us-east-1</text>
+  <text x="700" y="410" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ 4x faster than origin</text>
+  
+  <!-- Key Benefits (Bottom) -->
+  <rect x="70" y="425" width="760" height="100" rx="4" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="450" y="450" text-anchor="middle" font-size="11" font-weight="700" fill="#0369a1">Key Benefits</text>
+  
+  <text x="85" y="475" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Reduced latency (5-50ms vs 50-200ms)</text>
+  <text x="85" y="490" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Origin offload (90-99% cache hit rate)</text>
+  <text x="85" y="505" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ DDoS protection (absorb attacks at edge)</text>
+  <text x="450" y="475" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Bandwidth cost reduction</text>
+  <text x="450" y="490" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Global availability</text>
+  <text x="450" y="505" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Edge computing (Lambda@Edge, Workers)</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

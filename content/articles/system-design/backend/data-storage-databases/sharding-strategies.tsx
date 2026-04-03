@@ -647,45 +647,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapters 5-6.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapters 11-12.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapters 11-12.
           </li>
           <li>
-            Cassandra Documentation, "Data Modeling," "Partitioning,"
-            https://cassandra.apache.org/doc/
+            <a
+              href="https://cassandra.apache.org/doc/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cassandra Documentation — Data Modeling, Partitioning
+            </a>
           </li>
           <li>
-            CockroachDB Documentation, "Partitioning," "Sharding,"
-            https://www.cockroachlabs.com/docs/
+            <a
+              href="https://www.cockroachlabs.com/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CockroachDB Documentation — Partitioning, Sharding
+            </a>
           </li>
           <li>
-            MongoDB Documentation, "Sharding," "Partitioning,"
-            https://www.mongodb.com/docs/
+            <a
+              href="https://www.mongodb.com/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MongoDB Documentation — Sharding, Partitioning
+            </a>
           </li>
           <li>
-            Vitess Documentation, "Sharding,"
-            https://vitess.io/docs/
+            <a
+              href="https://vitess.io/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Vitess Documentation — Sharding
+            </a>
           </li>
           <li>
-            Citus Documentation, "Sharding,"
-            https://www.citusdata.com/
+            <a
+              href="https://www.citusdata.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Citus Documentation — Sharding
+            </a>
           </li>
           <li>
-            Google Spanner Documentation, "Data Model," "Partitioning,"
-            https://cloud.google.com/spanner/docs
+            <a
+              href="https://cloud.google.com/spanner/docs"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Spanner Documentation — Data Model, Partitioning
+            </a>
           </li>
           <li>
-            Shopify Engineering Blog, "Scaling MySQL at Shopify,"
-            https://shopify.engineering/
+            <a
+              href="https://shopify.engineering/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Shopify Engineering Blog — Scaling MySQL at Shopify
+            </a>
           </li>
           <li>
-            Twitter Engineering Blog, "Tweet Storage at Scale,"
-            https://blog.twitter.com/engineering
+            <a
+              href="https://blog.twitter.com/engineering"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Twitter Engineering Blog — Tweet Storage at Scale
+            </a>
           </li>
         </ul>
       </section>

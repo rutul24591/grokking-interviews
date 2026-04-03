@@ -666,46 +666,94 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
             Martin Fowler, <em>Patterns of Enterprise Application Architecture</em>,
             Addison-Wesley, 2002. Chapters: Active Record, Data Mapper, Unit of Work.
           </li>
           <li>
-            Ruby on Rails Documentation, "Active Record,"
-            https://guides.rubyonrails.org/active_record.html
+            <a
+              href="https://guides.rubyonrails.org/active_record.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ruby on Rails Documentation — Active Record
+            </a>
           </li>
           <li>
-            Django Documentation, "Models and Queries,"
-            https://docs.djangoproject.com/en/stable/topics/db/
+            <a
+              href="https://docs.djangoproject.com/en/stable/topics/db/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Django Documentation — Models and Queries
+            </a>
           </li>
           <li>
-            SQLAlchemy Documentation, "ORM Tutorial,"
-            https://docs.sqlalchemy.org/en/orm/
+            <a
+              href="https://docs.sqlalchemy.org/en/orm/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SQLAlchemy Documentation — ORM Tutorial
+            </a>
           </li>
           <li>
-            Hibernate Documentation, "Getting Started,"
-            https://hibernate.org/orm/
+            <a
+              href="https://hibernate.org/orm/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Hibernate Documentation — Getting Started
+            </a>
           </li>
           <li>
-            Entity Framework Documentation, "Getting Started,"
-            https://docs.microsoft.com/en-us/ef/
+            <a
+              href="https://docs.microsoft.com/en-us/ef/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Entity Framework Documentation — Getting Started
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Use The Index, Luke, "ORM and SQL,"
-            https://use-the-index-luke.com/
+            <a
+              href="https://use-the-index-luke.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Use The Index, Luke — ORM and SQL
+            </a>
           </li>
           <li>
-            Stack Overflow, "N+1 Query Problem,"
-            https://stackoverflow.com/questions/tagged/n+1
+            <a
+              href="https://stackoverflow.com/questions/tagged/n+1"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Stack Overflow — N+1 Query Problem
+            </a>
           </li>
           <li>
-            Bullet Gem (Rails N+1 detector),
-            https://github.com/flyerhzm/bullet
+            <a
+              href="https://github.com/flyerhzm/bullet"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Bullet Gem — Rails N+1 Query Detector
+            </a>
           </li>
         </ul>
       </section>

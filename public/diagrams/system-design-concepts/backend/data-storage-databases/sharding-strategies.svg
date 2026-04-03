@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Sharding Strategies Comparison</title>
+  <desc id="desc">Hash-based, range-based, and consistent hashing sharding methods</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Sharding Strategies Comparison</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Hash-Based, Range-Based, and Consistent Hashing</text>
+  
+  <!-- Hash-Based Sharding (Top Left) -->
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Hash-Based Sharding</text>
+  
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <!-- Hash flow -->
+  <rect x="80" y="140" width="80" height="30" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="120" y="160" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Shard Key</text>
+  <text x="120" y="172" text-anchor="middle" font-size="6" font-weight="600" fill="#dbeafe">user_id=123</text>
+  
+  <line x1="165" y1="155" x2="185" y2="155" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="190" y="140" width="80" height="30" rx="3" fill="#7c3aed" stroke="#6d28d9" stroke-width="1"/>
+  <text x="230" y="160" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Hash()</text>
+  <text x="230" y="172" text-anchor="middle" font-size="6" font-weight="600" fill="#e9d5ff">hash(123)=456</text>
+  
+  <line x1="275" y1="155" x2="295" y2="155" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="80" y="185" width="80" height="30" rx="3" fill="#16a34a" stroke="#065f46" stroke-width="1"/>
+  <text x="120" y="205" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Modulo N</text>
+  <text x="120" y="217" text-anchor="middle" font-size="6" font-weight="600" fill="#6ee7b7">456 % 3 = 0</text>
+  
+  <line x1="165" y1="200" x2="185" y2="200" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Shards -->
+  <rect x="200" y="185" width="25" height="30" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="212" y="205" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">0</text>
+  
+  <rect x="200" y="220" width="25" height="30" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="212" y="240" text-anchor="middle" font-size="7" font-weight="600" fill="#92400e">1</text>
+  
+  <rect x="200" y="255" width="25" height="30" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="212" y="275" text-anchor="middle" font-size="7" font-weight="600" fill="#92400e">2</text>
+  
+  <text x="180" y="295" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Even distribution</text>
+  <text x="180" y="308" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">✗ Range queries slow</text>
+  
+  <!-- Range-Based Sharding (Top Middle) -->
+  <rect x="320" y="85" width="260" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Range-Based Sharding</text>
+  
+  <rect x="335" y="125" width="230" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <!-- Range visualization -->
+  <rect x="350" y="140" width="200" height="35" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="162" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Shard A: user_id 1-100K</text>
+  
+  <rect x="350" y="180" width="200" height="35" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="202" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Shard B: user_id 100K-200K</text>
+  
+  <rect x="350" y="220" width="200" height="35" rx="3" fill="#fbbf24" stroke="#b45309" stroke-width="1"/>
+  <text x="450" y="242" text-anchor="middle" font-size="8" font-weight="700" fill="#78350f">Shard C: user_id 200K+</text>
+  
+  <text x="450" y="270" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Efficient range queries</text>
+  <text x="450" y="283" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">✗ Uneven distribution risk</text>
+  
+  <!-- Consistent Hashing (Top Right) -->
+  <rect x="590" y="85" width="260" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Consistent Hashing</text>
+  
+  <rect x="605" y="125" width="230" height="150" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <!-- Hash Ring -->
+  <circle cx="720" cy="190" r="55" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" stroke-dasharray="5,3"/>
+  
+  <!-- Nodes on ring -->
+  <circle cx="720" cy="135" r="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="720" y="130" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">A</text>
+  
+  <circle cx="765" cy="190" r="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="775" y="195" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">B</text>
+  
+  <circle cx="675" cy="190" r="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="665" y="195" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">C</text>
+  
+  <!-- Key assignment -->
+  <circle cx="740" cy="160" r="5" fill="#2563eb"/>
+  <text x="750" y="165" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">Key→A</text>
+  
+  <text x="720" y="270" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Minimal rebalancing</text>
+  <text x="720" y="283" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Adding node affects neighbors only</text>
+  
+  <!-- Shard Key Selection (Bottom Left) -->
+  <rect x="50" y="295" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Shard Key Selection</text>
+  
+  <rect x="70" y="335" width="170" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="155" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Good Shard Keys</text>
+  <text x="155" y="375" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• High cardinality</text>
+  <text x="155" y="388" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Even distribution</text>
+  <text x="155" y="401" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Frequently queried</text>
+  <text x="155" y="414" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Examples: user_id, email</text>
+  
+  <rect x="255" y="335" width="170" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="340" y="355" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Bad Shard Keys</text>
+  <text x="340" y="375" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Low cardinality</text>
+  <text x="340" y="388" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Monotonically increasing</text>
+  <text x="340" y="401" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Rarely queried</text>
+  <text x="340" y="414" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Examples: status, created_at</text>
+  
+  <!-- Cross-Shard Challenges (Bottom Right) -->
+  <rect x="465" y="295" width="385" height="140" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Cross-Shard Challenges</text>
+  
+  <rect x="485" y="335" width="345" height="90" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <text x="500" y="360" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">Cross-Shard Joins:</text>
+  <text x="500" y="375" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Fetch from multiple shards</text>
+  <text x="500" y="388" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Application-side join (slow)</text>
+  
+  <text x="500" y="410" text-anchor="start" font-size="8" font-weight="700" fill="#b91c1c">Distributed Transactions:</text>
+  <text x="500" y="425" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Two-phase commit overhead</text>
+  <text x="500" y="438" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Co-locate related data</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

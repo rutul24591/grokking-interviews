@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">ACID Transaction Architecture</title>
+  <desc id="desc">ACID transaction architecture showing transaction manager, WAL, and storage engine</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">ACID Transaction Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Transaction manager, WAL, and storage engine</text>
+  
+  <!-- Application Layer -->
+  <rect x="50" y="85" width="180" height="80" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="140" y="115" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Application Layer</text>
+  <text x="140" y="135" text-anchor="middle" font-size="9" fill="#bfdbfe">BEGIN TRANSACTION</text>
+  <text x="140" y="150" text-anchor="middle" font-size="9" fill="#bfdbfe">COMMIT / ROLLBACK</text>
+  
+  <!-- Arrow to Transaction Manager -->
+  <line x1="235" y1="125" x2="265" y2="125" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Transaction Manager -->
+  <rect x="270" y="85" width="200" height="140" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="370" y="110" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Transaction Manager</text>
+  
+  <rect x="290" y="125" width="160" height="35" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="370" y="148" text-anchor="middle" font-size="9" fill="#64748b">Lock Manager</text>
+  
+  <rect x="290" y="165" width="160" height="35" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="370" y="188" text-anchor="middle" font-size="9" fill="#64748b">Concurrency Control</text>
+  
+  <rect x="290" y="205" width="160" height="15" rx="2" fill="#6d28d9"/>
+  <text x="370" y="217" text-anchor="middle" font-size="7" fill="#c4b5fd">Enforces Atomicity &amp; Isolation</text>
+  
+  <!-- Arrow to WAL -->
+  <line x1="475" y1="155" x2="505" y2="155" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Write-Ahead Log -->
+  <rect x="510" y="85" width="180" height="140" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="600" y="110" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Write-Ahead Log</text>
+  
+  <rect x="530" y="125" width="140" height="30" rx="3" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="600" y="145" text-anchor="middle" font-size="8" fill="#64748b">Log Buffer</text>
+  
+  <rect x="530" y="160" width="140" height="30" rx="3" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="600" y="180" text-anchor="middle" font-size="8" fill="#64748b">fsync to Disk</text>
+  
+  <rect x="530" y="195" width="140" height="25" rx="3" fill="#b45309"/>
+  <text x="600" y="212" text-anchor="middle" font-size="8" fill="white">Durability Point</text>
+  
+  <!-- Arrow to Storage Engine -->
+  <line x1="695" y1="155" x2="725" y2="155" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Storage Engine -->
+  <rect x="730" y="85" width="140" height="140" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="800" y="110" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Storage Engine</text>
+  
+  <rect x="750" y="125" width="100" height="30" rx="3" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="800" y="145" text-anchor="middle" font-size="8" fill="#64748b">Data Pages</text>
+  
+  <rect x="750" y="160" width="100" height="30" rx="3" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="800" y="180" text-anchor="middle" font-size="8" fill="#64748b">Index Pages</text>
+  
+  <rect x="750" y="195" width="100" height="25" rx="3" fill="#059669"/>
+  <text x="800" y="212" text-anchor="middle" font-size="7" fill="#6ee7b7">Async Checkpoint</text>
+  
+  <!-- ACID Guarantees Section -->
+  <rect x="50" y="250" width="820" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">ACID Guarantees Implementation</text>
+  
+  <!-- Atomicity -->
+  <rect x="70" y="290" width="190" height="120" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="165" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#b45309">Atomicity</text>
+  <text x="165" y="335" text-anchor="middle" font-size="8" fill="#64748b">Undo Log for rollback</text>
+  <text x="165" y="350" text-anchor="middle" font-size="8" fill="#64748b">All-or-nothing commits</text>
+  <text x="165" y="365" text-anchor="middle" font-size="8" fill="#64748b">Recovery on crash</text>
+  <rect x="80" y="380" width="170" height="20" rx="2" fill="#f59e0b"/>
+  <text x="165" y="395" text-anchor="middle" font-size="8" fill="white">WAL ensures atomicity</text>
+  
+  <!-- Consistency -->
+  <rect x="275" y="290" width="190" height="120" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="370" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#b45309">Consistency</text>
+  <text x="370" y="335" text-anchor="middle" font-size="8" fill="#64748b">Constraint validation</text>
+  <text x="370" y="350" text-anchor="middle" font-size="8" fill="#64748b">Foreign key checks</text>
+  <text x="370" y="365" text-anchor="middle" font-size="8" fill="#64748b">Trigger enforcement</text>
+  <rect x="285" y="380" width="170" height="20" rx="2" fill="#f59e0b"/>
+  <text x="370" y="395" text-anchor="middle" font-size="8" fill="white">Invariant preservation</text>
+  
+  <!-- Isolation -->
+  <rect x="480" y="290" width="190" height="120" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="575" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#b45309">Isolation</text>
+  <text x="575" y="335" text-anchor="middle" font-size="8" fill="#64748b">Locking or MVCC</text>
+  <text x="575" y="350" text-anchor="middle" font-size="8" fill="#64748b">Snapshot isolation</text>
+  <text x="575" y="365" text-anchor="middle" font-size="8" fill="#64748b">Serializable schedules</text>
+  <rect x="490" y="380" width="170" height="20" rx="2" fill="#f59e0b"/>
+  <text x="575" y="395" text-anchor="middle" font-size="8" fill="white">Concurrent safety</text>
+  
+  <!-- Durability -->
+  <rect x="685" y="290" width="170" height="120" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="770" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#b45309">Durability</text>
+  <text x="770" y="335" text-anchor="middle" font-size="8" fill="#64748b">fsync before ack</text>
+  <text x="770" y="350" text-anchor="middle" font-size="8" fill="#64748b">WAL on stable storage</text>
+  <text x="770" y="365" text-anchor="middle" font-size="8" fill="#64748b">Crash recovery</text>
+  <rect x="695" y="380" width="150" height="20" rx="2" fill="#f59e0b"/>
+  <text x="770" y="395" text-anchor="middle" font-size="8" fill="white">Survives failures</text>
+  
+  <!-- Flow arrows for ACID -->
+  <line x1="165" y1="285" x2="165" y2="285" stroke="#64748b" stroke-width="2"/>
+  
+  <!-- Key Insight -->
+  <rect x="50" y="445" width="820" height="85" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="460" y="470" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369a1">Key Insight</text>
+  <rect x="70" y="480" width="780" height="40" rx="4" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="460" y="500" text-anchor="middle" font-size="9" fill="#64748b">WAL is the foundation: changes logged BEFORE data modified, fsync'd BEFORE commit acknowledged</text>
+  <text x="460" y="515" text-anchor="middle" font-size="9" fill="#64748b">This ordering enables both atomicity (undo uncommitted) and durability (redo committed after crash)</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

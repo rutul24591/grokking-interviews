@@ -544,45 +544,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Azure Blob Storage Documentation, "Blob Types," "Access Tiers," "Security,"
-            https://docs.microsoft.com/en-us/azure/storage/blobs/
+            <a
+              href="https://docs.microsoft.com/en-us/azure/storage/blobs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Azure Blob Storage Documentation — Blob Types, Access Tiers, Security
+            </a>
           </li>
           <li>
-            Amazon S3 Documentation, "Storage Classes," "Versioning,"
-            https://docs.aws.amazon.com/s3/
+            <a
+              href="https://docs.aws.amazon.com/s3/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Amazon S3 Documentation — Storage Classes, Versioning
+            </a>
           </li>
           <li>
-            Google Cloud Storage Documentation, "Storage Classes," "Object Lifecycle,"
-            https://cloud.google.com/storage/docs
+            <a
+              href="https://cloud.google.com/storage/docs"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Cloud Storage Documentation — Storage Classes, Object Lifecycle
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 3.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 3.
           </li>
           <li>
-            Microsoft Azure, "Azure Storage Documentation,"
-            https://azure.microsoft.com/en-us/services/storage/
+            <a
+              href="https://azure.microsoft.com/en-us/services/storage/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Microsoft Azure — Azure Storage Documentation
+            </a>
           </li>
           <li>
-            AWS, "Amazon S3 Storage Classes,"
-            https://aws.amazon.com/s3/storage-classes/
+            <a
+              href="https://aws.amazon.com/s3/storage-classes/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS — Amazon S3 Storage Classes
+            </a>
           </li>
           <li>
-            Backblaze, "B2 Cloud Storage vs S3 vs Azure Blob,"
-            https://www.backblaze.com/
+            <a
+              href="https://www.backblaze.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Backblaze — B2 Cloud Storage vs S3 vs Azure Blob
+            </a>
           </li>
           <li>
-            MinIO Documentation, "Object Storage Architecture,"
-            https://min.io/docs/
+            <a
+              href="https://min.io/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MinIO Documentation — Object Storage Architecture
+            </a>
           </li>
           <li>
-            Ceph Documentation, "RADOS and Object Storage,"
-            https://docs.ceph.com/
+            <a
+              href="https://docs.ceph.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ceph Documentation — RADOS and Object Storage
+            </a>
           </li>
         </ul>
       </section>

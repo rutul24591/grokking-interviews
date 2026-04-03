@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">BASE Properties Overview</title>
+  <desc id="desc">BASE properties showing Basically Available, Soft State, and Eventually Consistent</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">BASE Properties Overview</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Basically Available, Soft State, Eventually Consistent</text>
+  
+  <!-- BASE Acronym -->
+  <rect x="50" y="85" width="800" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  
+  <!-- B - Basically Available -->
+  <rect x="70" y="100" width="240" height="70" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="190" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Basically Available</text>
+  <text x="190" y="155" text-anchor="middle" font-size="9" fill="#fef3c7">System stays operational during failures</text>
+  
+  <!-- A - Soft State -->
+  <rect x="330" y="100" width="240" height="70" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="450" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Soft State</text>
+  <text x="450" y="155" text-anchor="middle" font-size="9" fill="#bfdbfe">State can change without new input</text>
+  
+  <!-- S - Eventually Consistent -->
+  <rect x="590" y="100" width="240" height="70" rx="4" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="710" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Eventually Consistent</text>
+  <text x="710" y="155" text-anchor="middle" font-size="9" fill="#6ee7b7">All replicas converge over time</text>
+  
+  <!-- Timeline showing write propagation -->
+  <rect x="50" y="200" width="800" height="180" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="225" text-anchor="middle" font-size="14" font-weight="bold" fill="#0369a1">Write Propagation Timeline</text>
+  
+  <!-- Time axis -->
+  <line x1="80" y1="270" x2="820" y2="270" stroke="#64748b" stroke-width="2"/>
+  <text x="80" y="295" text-anchor="middle" font-size="9" fill="#64748b">T=0</text>
+  <text x="820" y="295" text-anchor="middle" font-size="9" fill="#64748b">T+Δ</text>
+  
+  <!-- Node A -->
+  <rect x="100" y="235" width="120" height="70" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="160" y="260" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node A</text>
+  <text x="160" y="280" text-anchor="middle" font-size="9" fill="#bfdbfe">Write X=10</text>
+  <text x="160" y="295" text-anchor="middle" font-size="8" fill="#6ee7b7">Immediate</text>
+  
+  <!-- Replication arrow -->
+  <line x1="225" y1="270" x2="305" y2="270" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="265" y="260" text-anchor="middle" font-size="8" fill="#b45309">Async replicate</text>
+  
+  <!-- Node B -->
+  <rect x="320" y="235" width="120" height="70" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="380" y="260" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node B</text>
+  <text x="380" y="280" text-anchor="middle" font-size="9" fill="#bfdbfe">X=10 (lag)</text>
+  <text x="380" y="295" text-anchor="middle" font-size="8" fill="#f59e0b">Stale window</text>
+  
+  <!-- Replication arrow -->
+  <line x1="445" y1="270" x2="525" y2="270" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  
+  <!-- Node C -->
+  <rect x="540" y="235" width="120" height="70" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="600" y="260" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node C</text>
+  <text x="600" y="280" text-anchor="middle" font-size="9" fill="#bfdbfe">X=10 (lag)</text>
+  <text x="600" y="295" text-anchor="middle" font-size="8" fill="#f59e0b">Stale window</text>
+  
+  <!-- Convergence -->
+  <rect x="680" y="235" width="120" height="70" rx="4" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="740" y="260" text-anchor="middle" font-size="10" font-weight="bold" fill="white">All Nodes</text>
+  <text x="740" y="280" text-anchor="middle" font-size="9" fill="#6ee7b7">X=10</text>
+  <text x="740" y="295" text-anchor="middle" font-size="8" fill="#10b981">Consistent</text>
+  
+  <!-- Staleness window indicator -->
+  <line x1="225" y1="310" x2="675" y2="310" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="225" y1="305" x2="225" y2="315" stroke="#ef4444" stroke-width="2"/>
+  <line x1="675" y1="305" x2="675" y2="315" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="330" text-anchor="middle" font-size="9" fill="#ef4444">Staleness Window (reads may differ)</text>
+  
+  <!-- BASE vs ACID Comparison -->
+  <rect x="50" y="395" width="400" height="135" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="250" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">BASE vs ACID</text>
+  
+  <rect x="70" y="435" width="360" height="85" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  
+  <rect x="90" y="450" width="320" height="25" rx="3" fill="#ef4444"/>
+  <text x="250" y="467" text-anchor="middle" font-size="9" fill="white">ACID: Strong consistency, lower availability</text>
+  
+  <rect x="90" y="480" width="320" height="25" rx="3" fill="#10b981"/>
+  <text x="250" y="497" text-anchor="middle" font-size="9" fill="white">BASE: High availability, eventual consistency</text>
+  
+  <rect x="90" y="510" width="320" height="10" rx="2" fill="#f59e0b"/>
+  <text x="250" y="520" text-anchor="middle" font-size="8" fill="#64748b">Choose based on use case requirements</text>
+  
+  <!-- Use Cases -->
+  <rect x="470" y="395" width="380" height="135" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="660" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">BASE Use Cases</text>
+  
+  <rect x="490" y="435" width="340" height="85" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <rect x="510" y="450" width="300" height="25" rx="3" fill="#3b82f6"/>
+  <text x="660" y="467" text-anchor="middle" font-size="9" fill="white">Social media feeds (tolerate stale reads)</text>
+  
+  <rect x="510" y="480" width="300" height="25" rx="3" fill="#10b981"/>
+  <text x="660" y="497" text-anchor="middle" font-size="9" fill="white">Shopping cart (high availability needed)</text>
+  
+  <rect x="510" y="510" width="300" height="10" rx="2" fill="#f59e0b"/>
+  <text x="660" y="520" text-anchor="middle" font-size="8" fill="#64748b">DNS, CDN, caching layers</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

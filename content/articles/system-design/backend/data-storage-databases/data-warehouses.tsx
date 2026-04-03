@@ -572,44 +572,86 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Ralph Kimball, "The Data Warehouse Toolkit," Wiley, 2013.
+            Ralph Kimball, <em>The Data Warehouse Toolkit</em>, Wiley, 2013.
           </li>
           <li>
-            Bill Inmon, "Building the Data Warehouse," Wiley, 2005.
+            Bill Inmon, <em>Building the Data Warehouse</em>, Wiley, 2005.
           </li>
           <li>
-            Snowflake Documentation, "Architecture,"
-            https://docs.snowflake.com/
+            <a
+              href="https://docs.snowflake.com/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Snowflake Documentation — Architecture
+            </a>
           </li>
           <li>
-            Google BigQuery Documentation, "Introduction,"
-            https://cloud.google.com/bigquery/docs/introduction
+            <a
+              href="https://cloud.google.com/bigquery/docs/introduction"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google BigQuery Documentation — Introduction
+            </a>
           </li>
           <li>
-            Amazon Redshift Documentation, "Architecture,"
-            https://docs.aws.amazon.com/redshift/
+            <a
+              href="https://docs.aws.amazon.com/redshift/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Amazon Redshift Documentation — Architecture
+            </a>
           </li>
           <li>
-            Azure Synapse Documentation, "Overview,"
-            https://docs.microsoft.com/en-us/azure/synapse-analytics/
+            <a
+              href="https://docs.microsoft.com/en-us/azure/synapse-analytics/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Azure Synapse Documentation — Overview
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 3.
           </li>
           <li>
-            Databricks, "Lakehouse Architecture,"
-            https://www.databricks.com/glossary/data-lakehouse
+            <a
+              href="https://www.databricks.com/glossary/data-lakehouse"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Databricks — Lakehouse Architecture
+            </a>
           </li>
           <li>
-            AWS, "Data Warehouse vs Data Lake,"
-            https://aws.amazon.com/big-data/datalakes-and-analytics/data-warehouse-vs-data-lake/
+            <a
+              href="https://aws.amazon.com/big-data/datalakes-and-analytics/data-warehouse-vs-data-lake/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS — Data Warehouse vs Data Lake
+            </a>
           </li>
           <li>
-            Google Cloud, "Data Lake vs Data Warehouse,"
-            https://cloud.google.com/blog/products/data-analytics/data-lake-vs-data-warehouse
+            <a
+              href="https://cloud.google.com/blog/products/data-analytics/data-lake-vs-data-warehouse"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Cloud — Data Lake vs Data Warehouse
+            </a>
           </li>
         </ul>
       </section>

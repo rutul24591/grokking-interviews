@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Relational Database Design Principles</title>
+  <desc id="desc">Key principles for designing relational database schemas</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Relational Database Design Principles</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Best Practices for Schema Design</text>
+  
+  <!-- Primary Key Design (Top Left) -->
+  <rect x="50" y="85" width="260" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Primary Key Design</text>
+  
+  <rect x="65" y="125" width="230" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Good Choices:</text>
+  <text x="180" y="168" text-anchor="middle" font-size="8" font-weight="600" fill="#059669">✓ Auto-increment INT</text>
+  <text x="180" y="182" text-anchor="middle" font-size="8" font-weight="600" fill="#059669">✓ UUID (distributed systems)</text>
+  <text x="180" y="196" text-anchor="middle" font-size="8" font-weight="600" fill="#059669">✓ Surrogate keys (stable)</text>
+  
+  <text x="180" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Avoid:</text>
+  <text x="180" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#b91c1c">✗ Business keys (email can change)</text>
+  <text x="180" y="249" text-anchor="middle" font-size="8" font-weight="600" fill="#b91c1c">✗ Composite keys (complex joins)</text>
+  
+  <!-- Foreign Key Design (Top Middle) -->
+  <rect x="320" y="85" width="260" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Foreign Key Design</text>
+  
+  <rect x="335" y="125" width="230" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Cascade Actions:</text>
+  <text x="450" y="168" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">ON DELETE CASCADE (child deleted)</text>
+  <text x="450" y="182" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">ON DELETE SET NULL (child orphaned)</text>
+  <text x="450" y="196" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">ON DELETE RESTRICT (prevent delete)</text>
+  
+  <text x="450" y="220" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Always index foreign keys</text>
+  
+  <!-- Naming Conventions (Top Right) -->
+  <rect x="590" y="85" width="260" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Naming Conventions</text>
+  
+  <rect x="605" y="125" width="230" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Tables:</text>
+  <text x="720" y="168" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Plural (users, orders)</text>
+  <text x="720" y="182" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• snake_case (order_items)</text>
+  
+  <text x="720" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Columns:</text>
+  <text x="720" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Descriptive (created_at, not ts)</text>
+  <text x="720" y="234" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Consistent types (INT for all IDs)</text>
+  
+  <!-- Index Strategy (Middle Left) -->
+  <rect x="50" y="235" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Index Strategy</text>
+  
+  <rect x="70" y="275" width="170" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="155" y="295" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Always Index:</text>
+  <text x="155" y="315" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Primary keys (automatic)</text>
+  <text x="155" y="328" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Foreign keys (joins)</text>
+  <text x="155" y="341" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• WHERE clause columns</text>
+  <text x="155" y="354" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• ORDER BY columns</text>
+  
+  <rect x="255" y="275" width="170" height="90" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="340" y="295" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Composite Indexes:</text>
+  <text x="340" y="315" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Order matters (equality first)</text>
+  <text x="340" y="328" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Leftmost prefix rule</text>
+  <text x="340" y="341" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Covering indexes (include all)</text>
+  <text x="340" y="354" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">✗ Don't over-index (write cost)</text>
+  
+  <!-- Schema Evolution (Middle Right) -->
+  <rect x="465" y="235" width="385" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Schema Evolution (Migrations)</text>
+  
+  <rect x="485" y="275" width="345" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="657" y="295" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Zero-Downtime Migration:</text>
+  <text x="657" y="315" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">1. Add column (nullable or with default)</text>
+  <text x="657" y="328" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">2. Backfill data (batch updates)</text>
+  <text x="657" y="341" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">3. Switch reads to new column</text>
+  <text x="657" y="354" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">4. Remove old column (later migration)</text>
+  
+  <text x="657" y="375" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">⚠ Never drop columns in same migration as adding</text>
+  
+  <!-- Common Patterns (Bottom) -->
+  <rect x="50" y="385" width="800" height="150" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Common Design Patterns</text>
+  
+  <!-- Junction Table -->
+  <rect x="70" y="425" width="240" height="100" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="190" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Junction Table (Many-to-Many)</text>
+  <text x="190" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">orders ← order_items → products</text>
+  <text x="190" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Composite PK: (order_id, product_id)</text>
+  <text x="190" y="495" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Additional columns: quantity, price</text>
+  <text x="190" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Resolves many-to-many relationships</text>
+  
+  <!-- Soft Delete -->
+  <rect x="330" y="425" width="240" height="100" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="450" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Soft Delete Pattern</text>
+  <text x="450" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Add deleted_at TIMESTAMP column</text>
+  <text x="450" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Update: SET deleted_at = NOW()</text>
+  <text x="450" y="495" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Query: WHERE deleted_at IS NULL</text>
+  <text x="450" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Preserves history, recoverable</text>
+  
+  <!-- Audit Columns -->
+  <rect x="590" y="425" width="240" height="100" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="710" y="445" text-anchor="middle" font-size="10" font-weight="700" fill="#1f2937">Audit Columns</text>
+  <text x="710" y="465" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">created_at TIMESTAMP DEFAULT NOW()</text>
+  <text x="710" y="480" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">updated_at TIMESTAMP ON UPDATE</text>
+  <text x="710" y="495" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">created_by, updated_by (user IDs)</text>
+  <text x="710" y="510" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Track changes, debugging</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

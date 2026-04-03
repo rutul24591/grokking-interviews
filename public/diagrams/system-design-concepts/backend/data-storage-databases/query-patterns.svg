@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Database Query Patterns</title>
+  <desc id="desc">Master-detail, hierarchical, many-to-many, and polymorphic query patterns</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Database Query Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Master-Detail, Hierarchical, Many-to-Many, and Polymorphic</text>
+  
+  <!-- Master-Detail Pattern (Top Left) -->
+  <rect x="50" y="85" width="260" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Master-Detail Pattern</text>
+  
+  <rect x="65" y="125" width="230" height="130" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Order → Order Items</text>
+  
+  <rect x="80" y="165" width="100" height="40" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="130" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Order</text>
+  <text x="130" y="198" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">id, date, total</text>
+  
+  <line x1="135" y1="210" x2="135" y2="230" stroke="#374151" stroke-width="1"/>
+  <text x="140" y="220" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">1:N</text>
+  
+  <rect x="80" y="235" width="100" height="40" rx="3" fill="#60a5fa" stroke="#2563eb" stroke-width="1"/>
+  <text x="130" y="255" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Order Items</text>
+  <text x="130" y="268" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">id, order_id, product</text>
+  
+  <text x="230" y="220" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Query 1: SELECT * FROM orders WHERE id = ?</text>
+  <text x="230" y="233" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Query 2: SELECT * FROM items WHERE order_id = ?</text>
+  
+  <!-- Hierarchical Pattern (Top Middle) -->
+  <rect x="320" y="85" width="260" height="180" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Hierarchical Pattern</text>
+  
+  <rect x="335" y="125" width="230" height="130" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Category → Subcategories</text>
+  
+  <!-- Tree structure -->
+  <rect x="420" y="165" width="60" height="25" rx="3" fill="#d97706" stroke="#b45309" stroke-width="1"/>
+  <text x="450" y="182" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Electronics</text>
+  
+  <line x1="435" y1="195" x2="395" y2="215" stroke="#374151" stroke-width="1"/>
+  <line x1="450" y1="195" x2="450" y2="215" stroke="#374151" stroke-width="1"/>
+  <line x1="465" y1="195" x2="505" y2="215" stroke="#374151" stroke-width="1"/>
+  
+  <rect x="365" y="215" width="60" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="395" y="232" text-anchor="middle" font-size="6" font-weight="600" fill="#92400e">Phones</text>
+  
+  <rect x="430" y="215" width="60" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="460" y="232" text-anchor="middle" font-size="6" font-weight="600" fill="#92400e">Laptops</text>
+  
+  <rect x="495" y="215" width="60" height="25" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="525" y="232" text-anchor="middle" font-size="6" font-weight="600" fill="#92400e">Tablets</text>
+  
+  <text x="450" y="255" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Recursive CTEs, Adjacency List, Path Enumeration</text>
+  
+  <!-- Many-to-Many Pattern (Top Right) -->
+  <rect x="590" y="85" width="260" height="180" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Many-to-Many Pattern</text>
+  
+  <rect x="605" y="125" width="230" height="130" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Users ↔ Roles</text>
+  
+  <rect x="620" y="165" width="80" height="30" rx="3" fill="#16a34a" stroke="#065f46" stroke-width="1"/>
+  <text x="660" y="185" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">Users</text>
+  
+  <line x1="705" y1="180" x2="735" y2="180" stroke="#374151" stroke-width="1"/>
+  
+  <rect x="740" y="165" width="80" height="30" rx="3" fill="#86efac" stroke="#16a34a" stroke-width="1"/>
+  <text x="780" y="185" text-anchor="middle" font-size="7" font-weight="700" fill="#065f46">User_Roles</text>
+  
+  <line x1="780" y1="200" x2="780" y2="220" stroke="#374151" stroke-width="1"/>
+  
+  <rect x="740" y="225" width="80" height="30" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="780" y="245" text-anchor="middle" font-size="7" font-weight="700" fill="#065f46">Roles</text>
+  
+  <text x="720" y="265" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Junction table with foreign keys to both sides</text>
+  
+  <!-- Polymorphic Associations (Bottom Left) -->
+  <rect x="50" y="275" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Polymorphic Associations</text>
+  
+  <rect x="70" y="315" width="360" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  
+  <text x="250" y="340" text-anchor="middle" font-size="9" font-weight="700" fill="#0369a1">Comments → Post/User/Video</text>
+  
+  <rect x="85" y="355" width="140" height="40" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="155" y="375" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Comments</text>
+  <text x="155" y="388" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">id, commentable_id,</text>
+  <text x="155" y="401" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">commentable_type</text>
+  
+  <line x1="230" y1="375" x2="260" y2="375" stroke="#374151" stroke-width="1"/>
+  
+  <rect x="265" y="355" width="65" height="40" rx="3" fill="#60a5fa" stroke="#2563eb" stroke-width="1"/>
+  <text x="297" y="375" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">Post</text>
+  
+  <rect x="265" y="400" width="65" height="40" rx="3" fill="#60a5fa" stroke="#2563eb" stroke-width="1"/>
+  <text x="297" y="420" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">User</text>
+  
+  <rect x="340" y="355" width="65" height="40" rx="3" fill="#60a5fa" stroke="#2563eb" stroke-width="1"/>
+  <text x="372" y="375" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">Video</text>
+  
+  <text x="340" y="420" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">One table references multiple types</text>
+  
+  <!-- Anti-Patterns (Bottom Right) -->
+  <rect x="465" y="275" width="385" height="260" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Query Anti-Patterns</text>
+  
+  <rect x="485" y="315" width="345" height="60" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="500" y="335" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">EAV (Entity-Attribute-Value)</text>
+  <text x="500" y="355" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Flexible but complex queries. Use JSON columns instead.</text>
+  <text x="500" y="370" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Example: entities(id), attributes(entity_id, key, value)</text>
+  
+  <rect x="485" y="385" width="345" height="60" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="500" y="405" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">N+1 Query Pattern</text>
+  <text x="500" y="425" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">1 query for parents + N queries for children. Use JOIN instead.</text>
+  <text x="500" y="440" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Example: SELECT * FROM users; then for each user: SELECT * FROM orders</text>
+  
+  <rect x="485" y="455" width="345" height="60" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="500" y="475" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">SELECT *</text>
+  <text x="500" y="495" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Fetches all columns. Specify needed columns only.</text>
+  <text x="500" y="510" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Example: SELECT id, name FROM users WHERE active = true</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

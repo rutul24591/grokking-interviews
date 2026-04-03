@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Advanced Index Types</title>
+  <desc id="desc">Composite, partial, and covering indexes with selection strategies</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Advanced Index Types</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Composite, Partial, and Covering Indexes</text>
+  
+  <!-- Composite Index (Top Left) -->
+  <rect x="50" y="85" width="400" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Composite (Multi-Column) Index</text>
+  
+  <rect x="70" y="125" width="360" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="250" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Index: (last_name, first_name)</text>
+  
+  <!-- Sorted data visualization -->
+  <rect x="85" y="165" width="330" height="25" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="95" y="182" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Adams, Alice</text>
+  <text x="380" y="182" text-anchor="end" font-size="7" font-weight="600" fill="#1f2937">← Sorted by last_name first</text>
+  
+  <rect x="85" y="193" width="330" height="25" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="95" y="210" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Adams, Andrew</text>
+  
+  <rect x="85" y="221" width="330" height="25" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="95" y="238" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Adams, Anna</text>
+  
+  <rect x="85" y="249" width="330" height="25" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="95" y="266" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Brown, Bob</text>
+  
+  <rect x="85" y="277" width="330" height="25" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="95" y="294" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Brown, Betty</text>
+  
+  <text x="250" y="320" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Supports: WHERE last_name=? AND first_name=?</text>
+  <text x="250" y="335" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Supports: WHERE last_name=? (leftmost prefix)</text>
+  <text x="250" y="350" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">✗ Does NOT support: WHERE first_name=? alone</text>
+  
+  <!-- Partial Index (Top Right) -->
+  <rect x="465" y="85" width="385" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Partial (Filtered) Index</text>
+  
+  <rect x="485" y="125" width="345" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="657" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">CREATE INDEX ON users (email) WHERE active = true</text>
+  
+  <!-- All users table -->
+  <rect x="500" y="165" width="140" height="100" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="570" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">All Users (1M rows)</text>
+  <text x="570" y="205" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">active=true: 200K</text>
+  <text x="570" y="220" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">active=false: 800K</text>
+  <text x="570" y="240" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Index only 200K rows</text>
+  <text x="570" y="255" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ 80% smaller index</text>
+  
+  <!-- Arrow -->
+  <line x1="645" y1="215" x2="675" y2="215" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Partial index -->
+  <rect x="685" y="165" width="130" height="100" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <text x="750" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Partial Index</text>
+  <text x="750" y="205" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Only active users</text>
+  <text x="750" y="220" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">200K entries</text>
+  <text x="750" y="240" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Faster queries</text>
+  <text x="750" y="255" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Less storage</text>
+  
+  <!-- Covering Index (Bottom Left) -->
+  <rect x="50" y="295" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#0369a1">Covering Index (Index-Only Scan)</text>
+  
+  <rect x="70" y="335" width="360" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  
+  <text x="250" y="360" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Query: SELECT id, email FROM users WHERE status = ?</text>
+  
+  <text x="250" y="385" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Covering Index: (status, id, email)</text>
+  
+  <rect x="85" y="400" width="330" height="20" rx="2" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="414" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Index contains ALL columns needed for query</text>
+  
+  <text x="250" y="435" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ No table lookup needed (fastest possible)</text>
+  <text x="250" y="450" text-anchor="middle" font-size="8" font-weight="600" fill="#b91c1c">✗ Larger index size (includes extra columns)</text>
+  
+  <!-- Index Selection Strategy (Bottom Right) -->
+  <rect x="465" y="295" width="385" height="140" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="657" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Index Selection Strategy</text>
+  
+  <rect x="485" y="335" width="345" height="90" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  
+  <text x="500" y="355" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">1. Analyze query patterns (EXPLAIN ANALYZE)</text>
+  <text x="500" y="370" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">2. Index WHERE, JOIN, ORDER BY columns</text>
+  <text x="500" y="385" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">3. Use composite indexes for multi-column queries</text>
+  <text x="500" y="400" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">4. Consider partial indexes for filtered queries</text>
+  <text x="500" y="415" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">5. Monitor index usage, drop unused indexes</text>
+  
+  <!-- Key Rules -->
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Key Rules for Composite Indexes</text>
+  
+  <rect x="70" y="485" width="230" height="40" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="185" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Leftmost Prefix Rule</text>
+  <text x="185" y="518" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Index (A,B,C) supports queries on A, AB, ABC</text>
+  
+  <rect x="315" y="485" width="230" height="40" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="430" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Equality First, Then Range</text>
+  <text x="430" y="518" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Index (status, created_at) for status=? AND date BETWEEN</text>
+  
+  <rect x="560" y="485" width="230" height="40" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="675" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">High Cardinality First</text>
+  <text x="675" y="518" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">More unique values = better selectivity</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

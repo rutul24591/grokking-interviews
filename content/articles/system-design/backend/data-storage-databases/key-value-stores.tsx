@@ -567,43 +567,79 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Redis Documentation, "Data Structures," "Persistence," "Replication,"
-            https://redis.io/docs/
+            <a
+              href="https://redis.io/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Redis Documentation — Data Structures, Persistence, Replication
+            </a>
           </li>
           <li>
-            Amazon DynamoDB Documentation, "Core Components," "Best Practices,"
-            https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/
+            <a
+              href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Amazon DynamoDB Documentation — Core Components, Best Practices
+            </a>
           </li>
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapters 3, 5, 6.
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapters 4, 13.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapters 4, 13.
           </li>
           <li>
-            Salvatore Sanfilippo, "Redis Design Documentation,"
-            https://redis.io/topics/design
+            <a
+              href="https://redis.io/topics/design"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Salvatore Sanfilippo — Redis Design Documentation
+            </a>
           </li>
           <li>
-            Werner Vogels, "Dynamo: Amazon's Highly Available Key-Value Store," SOSP 2007.
+            Werner Vogels, "Dynamo: Amazon&apos;s Highly Available Key-Value Store," SOSP 2007.
           </li>
           <li>
-            Facebook, "Memcached: Distributed Memory Caching,"
-            https://memcached.org/
+            <a
+              href="https://memcached.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook — Memcached: Distributed Memory Caching
+            </a>
           </li>
           <li>
             Google, "Bigtable: A Distributed Storage System for Structured Data," OSDI 2006.
           </li>
           <li>
-            LevelDB Documentation, "Architecture,"
-            https://github.com/google/leveldb
+            <a
+              href="https://github.com/google/leveldb"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LevelDB Documentation — Architecture
+            </a>
           </li>
           <li>
-            RocksDB Documentation, "Architecture,"
-            https://rocksdb.org/docs/
+            <a
+              href="https://rocksdb.org/docs/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              RocksDB Documentation — Architecture
+            </a>
           </li>
         </ul>
       </section>

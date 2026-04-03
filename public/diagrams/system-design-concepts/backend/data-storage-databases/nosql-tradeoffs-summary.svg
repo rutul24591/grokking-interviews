@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">NoSQL Trade-offs Summary</title>
+  <desc id="desc">Summary of NoSQL trade-offs across database types</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">NoSQL Trade-offs Summary</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Consistency vs Flexibility vs Performance</text>
+  
+  <!-- Trade-offs Matrix (Top) -->
+  <rect x="50" y="85" width="800" height="240" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">NoSQL Trade-offs by Database Type</text>
+  
+  <!-- Header -->
+  <rect x="70" y="125" width="140" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="140" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Database Type</text>
+  <rect x="220" y="125" width="140" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="290" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Consistency</text>
+  <rect x="370" y="125" width="140" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="440" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Scalability</text>
+  <rect x="520" y="125" width="140" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="590" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Flexibility</text>
+  <rect x="670" y="125" width="160" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="750" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Key Trade-off</text>
+  
+  <!-- Row 1: Document -->
+  <rect x="70" y="153" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="175" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Document DB</text>
+  <rect x="220" y="153" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="290" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Eventual/Configurable</text>
+  <rect x="370" y="153" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="440" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Horizontal (sharding)</text>
+  <rect x="520" y="153" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="590" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">High (schema-flexible)</text>
+  <rect x="670" y="153" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="175" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Flexibility over joins</text>
+  
+  <!-- Row 2: Key-Value -->
+  <rect x="70" y="191" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="213" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Key-Value Store</text>
+  <rect x="220" y="191" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="290" y="213" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Eventual (AP)</text>
+  <rect x="370" y="191" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="440" y="213" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Excellent (linear)</text>
+  <rect x="520" y="191" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="590" y="213" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Low (simple model)</text>
+  <rect x="670" y="191" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="213" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Speed over flexibility</text>
+  
+  <!-- Row 3: Column-Family -->
+  <rect x="70" y="229" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="251" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Column-Family</text>
+  <rect x="220" y="229" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="290" y="251" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Eventual (tunable)</text>
+  <rect x="370" y="229" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="440" y="251" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Excellent (massive)</text>
+  <rect x="520" y="229" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="590" y="251" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Medium (column-flex)</text>
+  <rect x="670" y="229" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="251" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Scale over complexity</text>
+  
+  <!-- Row 4: Graph -->
+  <rect x="70" y="267" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="289" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Graph Database</text>
+  <rect x="220" y="267" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="290" y="289" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Strong (ACID)</text>
+  <rect x="370" y="267" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="440" y="289" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Limited (hard to shard)</text>
+  <rect x="520" y="267" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="590" y="289" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">High (relationship-flex)</text>
+  <rect x="670" y="267" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="289" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Relationships over scale</text>
+  
+  <!-- Row 5: Time-Series -->
+  <rect x="70" y="305" width="140" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="327" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Time-Series DB</text>
+  <rect x="220" y="305" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="290" y="327" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Strong/Eventual</text>
+  <rect x="370" y="305" width="140" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="440" y="327" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Good (time-partition)</text>
+  <rect x="520" y="305" width="140" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="590" y="327" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Low (time-optimized)</text>
+  <rect x="670" y="305" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="750" y="327" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Time optimization over all</text>
+  
+  <!-- Key Takeaways (Bottom) -->
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Key Takeaways</text>
+  
+  <rect x="70" y="375" width="360" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">NoSQL Strengths</text>
+  <text x="85" y="425" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Horizontal scalability (sharding built-in)</text>
+  <text x="85" y="440" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Schema flexibility (adapt to changing needs)</text>
+  <text x="85" y="455" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ High write throughput (optimized for writes)</text>
+  <text x="85" y="470" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ High availability (distributed by design)</text>
+  <text x="85" y="485" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Specialized for specific workloads</text>
+  <text x="85" y="500" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Developer productivity (natural data models)</text>
+  <text x="85" y="515" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✓ Cost-effective (commodity hardware)</text>
+  
+  <rect x="445" y="375" width="360" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="625" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">NoSQL Limitations</text>
+  <text x="460" y="425" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✗ No complex joins (denormalization required)</text>
+  <text x="460" y="440" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✗ Eventual consistency (not always strong)</text>
+  <text x="460" y="455" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✗ No ACID transactions (in most cases)</text>
+  <text x="460" y="470" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✗ Limited query flexibility (access-pattern driven)</text>
+  <text x="460" y="485" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✗ Data duplication (write amplification)</text>
+  <text x="460" y="500" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✗ Schema migration complexity (denormalized)</text>
+  <text x="460" y="515" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">✗ Operational complexity (distributed systems)</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

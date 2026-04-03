@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Deadlock Prevention Strategies</title>
+  <desc id="desc">How to prevent and handle deadlocks in applications</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Deadlock Prevention Strategies</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Lock Ordering, Short Transactions, and Retry Logic</text>
+  
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Lock Ordering</text>
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Always lock resources in same order</text>
+  <text x="180" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">TxA: Lock Row 1, then Row 2</text>
+  <text x="180" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">TxB: Lock Row 1, then Row 2</text>
+  <text x="180" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">TxB waits for Row 1 (held by TxA)</text>
+  <text x="180" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">TxA completes, releases locks</text>
+  <text x="180" y="235" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">TxB proceeds - no deadlock!</text>
+  <text x="180" y="260" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Breaks circular wait condition</text>
+  <text x="180" y="275" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Define consistent lock order</text>
+  
+  <rect x="320" y="85" width="260" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Short Transactions</text>
+  <rect x="335" y="125" width="230" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Hold locks for minimal time</text>
+  <text x="450" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Long transactions = more deadlock risk</text>
+  <text x="450" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Move non-DB work outside transaction</text>
+  <text x="450" y="205" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Bad: BEGIN TXN, call API, UPDATE, COMMIT</text>
+  <text x="450" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Good: call API, BEGIN TXN, UPDATE, COMMIT</text>
+  <text x="450" y="240" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Keep transactions under 100ms</text>
+  <text x="450" y="260" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Reduces deadlock window</text>
+  <text x="450" y="275" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Less contention overall</text>
+  
+  <rect x="590" y="85" width="260" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Retry Logic</text>
+  <rect x="605" y="125" width="230" height="150" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Catch deadlock, retry with backoff</text>
+  <text x="720" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">try { executeTransaction(); }</text>
+  <text x="720" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">catch (DeadlockError) {</text>
+  <text x="720" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">  sleep(exponentialBackoff(retry));</text>
+  <text x="720" y="215" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">  retry++;</text>
+  <text x="720" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">  if (retry &lt; max) retry;</text>
+  <text x="720" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">}</text>
+  <text x="720" y="265" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Handle deadlocks gracefully</text>
+  <text x="720" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Log for analysis</text>
+  
+  <rect x="50" y="295" width="800" height="120" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Deadlock Detection in Applications</text>
+  <rect x="70" y="335" width="760" height="70" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="450" y="355" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Monitor: deadlock count, victim selection rate, retry success rate, transaction duration</text>
+  <text x="450" y="370" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Alert on: sudden spike in deadlocks, high retry rate, long-running transactions</text>
+  <text x="450" y="385" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Analyze: Which tables/rows are involved? Can lock ordering be improved? Are transactions too long?</text>
+  <text x="450" y="400" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Database logs deadlock automatically - application must handle the error and retry</text>
+  
+  <rect x="50" y="425" width="800" height="110" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="450" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Common Deadlock Scenarios</text>
+  <rect x="70" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="160" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Foreign Key Constraints</text>
+  <text x="160" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Concurrent inserts with FK checks</text>
+  <text x="160" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Index FK columns</text>
+  
+  <rect x="265" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="355" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Batch Operations</text>
+  <text x="355" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Bulk updates in different order</text>
+  <text x="355" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Sort before batch</text>
+  
+  <rect x="460" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="550" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">High Contention</text>
+  <text x="550" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Hot rows updated frequently</text>
+  <text x="550" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Lower isolation level</text>
+  
+  <rect x="655" y="465" width="180" height="60" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="745" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Inconsistent Order</text>
+  <text x="745" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Different code paths lock differently</text>
+  <text x="745" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Define lock order</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

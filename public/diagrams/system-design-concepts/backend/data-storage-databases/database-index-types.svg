@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Database Index Types</title>
+  <desc id="desc">B-Tree, Hash, Bitmap, and GiST/GIN index types and structures</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Database Index Types</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">B-Tree, Hash, Bitmap, and Specialized Indexes</text>
+  
+  <!-- B-Tree Index (Top Left) -->
+  <rect x="50" y="85" width="260" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">B-Tree Index (Default)</text>
+  
+  <rect x="65" y="125" width="230" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <!-- B-Tree Structure -->
+  <rect x="130" y="140" width="100" height="25" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="180" y="157" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Root</text>
+  <text x="180" y="168" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">M</text>
+  
+  <line x1="145" y1="165" x2="110" y2="190" stroke="#374151" stroke-width="2"/>
+  <line x1="180" y1="165" x2="180" y2="190" stroke="#374151" stroke-width="2"/>
+  <line x1="215" y1="165" x2="250" y2="190" stroke="#374151" stroke-width="2"/>
+  
+  <!-- Internal Nodes -->
+  <rect x="80" y="190" width="60" height="25" rx="3" fill="#60a5fa" stroke="#2563eb" stroke-width="1"/>
+  <text x="110" y="207" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">F</text>
+  
+  <rect x="150" y="190" width="60" height="25" rx="3" fill="#60a5fa" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="207" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">M</text>
+  
+  <rect x="220" y="190" width="60" height="25" rx="3" fill="#60a5fa" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="207" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">T</text>
+  
+  <!-- Leaf Nodes -->
+  <line x1="95" y1="215" x2="80" y2="235" stroke="#374151" stroke-width="1"/>
+  <line x1="125" y1="215" x2="120" y2="235" stroke="#374151" stroke-width="1"/>
+  
+  <rect x="65" y="235" width="30" height="20" rx="2" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="80" y="249" text-anchor="middle" font-size="6" font-weight="600" fill="#1e3a8a">A-E</text>
+  
+  <rect x="105" y="235" width="30" height="20" rx="2" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="120" y="249" text-anchor="middle" font-size="6" font-weight="600" fill="#1e3a8a">F-L</text>
+  
+  <rect x="150" y="235" width="30" height="20" rx="2" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="165" y="249" text-anchor="middle" font-size="6" font-weight="600" fill="#1e3a8a">M-R</text>
+  
+  <rect x="190" y="235" width="30" height="20" rx="2" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="205" y="249" text-anchor="middle" font-size="6" font-weight="600" fill="#1e3a8a">S-T</text>
+  
+  <rect x="230" y="235" width="30" height="20" rx="2" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="245" y="249" text-anchor="middle" font-size="6" font-weight="600" fill="#1e3a8a">U-Z</text>
+  
+  <text x="180" y="275" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ O(log n) search</text>
+  <text x="180" y="288" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Range + Equality queries</text>
+  
+  <!-- Hash Index (Top Middle) -->
+  <rect x="320" y="85" width="260" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Hash Index</text>
+  
+  <rect x="335" y="125" width="230" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <!-- Hash Function -->
+  <rect x="350" y="140" width="200" height="35" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="162" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">hash(key) % num_buckets</text>
+  
+  <!-- Buckets -->
+  <rect x="350" y="185" width="40" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="370" y="207" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">0</text>
+  
+  <rect x="400" y="185" width="40" height="35" rx="2" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <text x="420" y="200" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">1</text>
+  <text x="420" y="212" text-anchor="middle" font-size="5" font-weight="600" fill="#1f2937">→ key1</text>
+  
+  <rect x="450" y="185" width="40" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="470" y="207" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">2</text>
+  
+  <rect x="500" y="185" width="40" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="520" y="207" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">3</text>
+  
+  <rect x="350" y="230" width="200" height="35" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="252" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ O(1) equality lookup</text>
+  <text x="450" y="265" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">✗ No range queries</text>
+  
+  <!-- Bitmap Index (Top Right) -->
+  <rect x="590" y="85" width="260" height="200" rx="8" fill="#e0e7ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">Bitmap Index</text>
+  
+  <rect x="605" y="125" width="230" height="150" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  
+  <text x="720" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#5b21b6">Low Cardinality Columns</text>
+  
+  <!-- Bitmap visualization -->
+  <rect x="620" y="165" width="200" height="25" rx="2" fill="#c7d2fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="630" y="182" text-anchor="start" font-size="7" font-weight="700" fill="#5b21b6">gender=male:</text>
+  <text x="720" y="182" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">101010110...</text>
+  
+  <rect x="620" y="195" width="200" height="25" rx="2" fill="#c7d2fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="630" y="212" text-anchor="start" font-size="7" font-weight="700" fill="#5b21b6">gender=female:</text>
+  <text x="720" y="212" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">010101001...</text>
+  
+  <rect x="620" y="225" width="200" height="25" rx="2" fill="#c7d2fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="630" y="242" text-anchor="start" font-size="7" font-weight="700" fill="#5b21b6">status=active:</text>
+  <text x="720" y="242" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">111011101...</text>
+  
+  <text x="720" y="265" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Fast AND/OR operations</text>
+  <text x="720" y="278" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Best for: gender, status, type</text>
+  
+  <!-- GIN/GiST Index (Bottom Left) -->
+  <rect x="50" y="295" width="400" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">GIN/GiST (Specialized)</text>
+  
+  <rect x="70" y="335" width="170" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">GIN (Generalized Inverted)</text>
+  <text x="155" y="375" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Array columns</text>
+  <text x="155" y="388" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• JSON/JSONB</text>
+  <text x="155" y="401" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Full-text search</text>
+  <text x="155" y="414" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Example: tags[] contains 'ruby'</text>
+  
+  <rect x="255" y="335" width="170" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="340" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">GiST (Generalized Search Tree)</text>
+  <text x="340" y="375" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Geometric data</text>
+  <text x="340" y="388" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Full-text search</text>
+  <text x="340" y="401" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Custom types</text>
+  <text x="340" y="414" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Example: location within radius</text>
+  
+  <!-- Index Comparison Table (Bottom Right) -->
+  <rect x="465" y="295" width="385" height="140" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="657" y="320" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Index Type Comparison</text>
+  
+  <rect x="485" y="335" width="345" height="90" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  
+  <text x="500" y="355" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">B-Tree:</text>
+  <text x="550" y="355" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Range + Equality (default)</text>
+  
+  <text x="500" y="370" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">Hash:</text>
+  <text x="550" y="370" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Equality only, O(1)</text>
+  
+  <text x="500" y="385" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">Bitmap:</text>
+  <text x="550" y="385" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Low cardinality (gender, status)</text>
+  
+  <text x="500" y="400" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">GIN:</text>
+  <text x="550" y="400" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Arrays, JSON, full-text</text>
+  
+  <text x="500" y="415" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">GiST:</text>
+  <text x="550" y="415" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Geometric, custom types</text>
+  
+  <!-- Key Insight -->
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">Key Insight: Choose Index Based on Query Pattern</text>
+  
+  <rect x="70" y="485" width="180" height="40" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="160" y="505" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">WHERE col = ? → Hash or B-Tree</text>
+  
+  <rect x="265" y="485" width="180" height="40" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="355" y="505" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">WHERE col BETWEEN → B-Tree</text>
+  
+  <rect x="460" y="485" width="180" height="40" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="550" y="505" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">WHERE status IN (...) → Bitmap</text>
+  
+  <rect x="655" y="485" width="180" height="40" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="745" y="505" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">WHERE tags @&gt; '{ruby}' → GIN</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

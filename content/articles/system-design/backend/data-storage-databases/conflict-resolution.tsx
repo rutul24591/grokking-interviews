@@ -659,45 +659,93 @@ export default function ArticlePage() {
       {/* Section 9: References */}
       <section>
         <h2>References</h2>
-        <ul className="list-disc list-inside space-y-2 text-sm">
+        <ul className="space-y-2">
           <li>
-            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O'Reilly, 2017.
+            Martin Kleppmann, <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017.
             Chapter 5.
           </li>
           <li>
-            Shapiro et al., "Conflict-Free Replicated Data Types (CRDTs),"
-            https://hal.inria.fr/inria-00609289/
+            <a
+              href="https://hal.inria.fr/inria-00609289/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Shapiro et al. — Conflict-Free Replicated Data Types (CRDTs)
+            </a>
           </li>
           <li>
-            Lamport, "Time, Clocks, and the Ordering of Events,"
-            https://lamport.azurewebsites.net/pubs/time-clocks.pdf
+            <a
+              href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Lamport — Time, Clocks, and the Ordering of Events
+            </a>
           </li>
           <li>
-            Cassandra Documentation, "Conflict Resolution,"
-            https://cassandra.apache.org/doc/
+            <a
+              href="https://cassandra.apache.org/doc/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cassandra Documentation — Conflict Resolution
+            </a>
           </li>
           <li>
-            CouchDB Documentation, "Conflict Resolution,"
-            https://docs.couchdb.org/en/stable/
+            <a
+              href="https://docs.couchdb.org/en/stable/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CouchDB Documentation — Conflict Resolution
+            </a>
           </li>
           <li>
-            Riak Documentation, "Vector Clocks,"
-            https://riak.com/product/
+            <a
+              href="https://riak.com/product/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Riak Documentation — Vector Clocks
+            </a>
           </li>
           <li>
-            Google Docs, "Operational Transform,"
-            https://en.wikipedia.org/wiki/Operational_transformation
+            <a
+              href="https://en.wikipedia.org/wiki/Operational_transformation"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Operational Transformation (Wikipedia)
+            </a>
           </li>
           <li>
-            CRDTs Website, "Introduction to CRDTs,"
-            https://crdt.tech/
+            <a
+              href="https://crdt.tech/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CRDT.tech — Introduction to CRDTs
+            </a>
           </li>
           <li>
-            Alex Petrov, <em>Database Internals</em>, O'Reilly, 2019. Chapter 11.
+            Alex Petrov, <em>Database Internals</em>, O&apos;Reilly, 2019. Chapter 11.
           </li>
           <li>
-            Percona Blog, "Conflict Resolution in Multi-Master,"
-            https://www.percona.com/blog/
+            <a
+              href="https://www.percona.com/blog/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Percona Blog — Conflict Resolution in Multi-Master
+            </a>
           </li>
         </ul>
       </section>

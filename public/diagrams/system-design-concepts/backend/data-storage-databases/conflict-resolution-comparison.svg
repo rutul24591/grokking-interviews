@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Conflict Resolution Comparison</title>
+  <desc id="desc">Comparison of conflict resolution strategies</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Conflict Resolution Comparison</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">LWW vs Vector Clocks vs CRDTs vs Application Merge</text>
+  
+  <rect x="50" y="85" width="800" height="240" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Strategy Comparison</text>
+  
+  <rect x="70" y="125" width="160" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="150" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Strategy</text>
+  <rect x="240" y="125" width="160" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="320" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Complexity</text>
+  <rect x="410" y="125" width="160" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="490" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Data Loss</text>
+  <rect x="580" y="125" width="160" height="25" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="660" y="142" text-anchor="middle" font-size="8" font-weight="700" fill="#0369a1">Best For</text>
+  
+  <rect x="70" y="153" width="160" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="150" y="175" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Last Write Wins</text>
+  <rect x="240" y="153" width="160" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="320" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Low</text>
+  <rect x="410" y="153" width="160" height="35" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="490" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">High (loses writes)</text>
+  <rect x="580" y="153" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="660" y="175" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Simple data, flags</text>
+  
+  <rect x="70" y="191" width="160" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="150" y="213" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Vector Clocks</text>
+  <rect x="240" y="191" width="160" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="320" y="213" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Medium</text>
+  <rect x="410" y="191" width="160" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="490" y="213" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">None (detects)</text>
+  <rect x="580" y="191" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="660" y="213" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Conflict detection</text>
+  
+  <rect x="70" y="229" width="160" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="150" y="251" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">CRDTs</text>
+  <rect x="240" y="229" width="160" height="35" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="320" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">High</text>
+  <rect x="410" y="229" width="160" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="490" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">None (auto-merge)</text>
+  <rect x="580" y="229" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="660" y="251" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Collaborative apps</text>
+  
+  <rect x="70" y="267" width="160" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="150" y="289" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Application Merge</text>
+  <rect x="240" y="267" width="160" height="35" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="320" y="289" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Very High</text>
+  <rect x="410" y="267" width="160" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="490" y="289" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">None (custom)</text>
+  <rect x="580" y="267" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="660" y="289" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Business-specific</text>
+  
+  <rect x="70" y="305" width="160" height="35" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="150" y="327" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Quorum Writes</text>
+  <rect x="240" y="305" width="160" height="35" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="320" y="327" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Medium</text>
+  <rect x="410" y="305" width="160" height="35" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="490" y="327" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">None (prevents)</text>
+  <rect x="580" y="305" width="160" height="35" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="660" y="327" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Strong consistency</text>
+  
+  <rect x="50" y="335" width="800" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="360" text-anchor="middle" font-size="12" font-weight="700" fill="#0369a1">Key Considerations</text>
+  
+  <rect x="70" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Clock Synchronization</text>
+  <text x="190" y="415" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LWW requires synchronized clocks</text>
+  <text x="190" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">NTP helps but not perfect</text>
+  <text x="190" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Clock skew can cause wrong winner</text>
+  <text x="190" y="465" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Hybrid Logical Clocks (HLC) better</text>
+  <text x="190" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Combines physical + logical clocks</text>
+  <text x="190" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Used by: CockroachDB, MongoDB</text>
+  <text x="190" y="510" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Reduces clock skew issues</text>
+  
+  <rect x="325" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Storage Overhead</text>
+  <text x="445" y="415" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LWW: Single timestamp (minimal)</text>
+  <text x="445" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Vector Clocks: O(N) per node</text>
+  <text x="445" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">CRDTs: Can be large (state-based)</text>
+  <text x="445" y="465" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Delta-CRDTs: Smaller (op-based)</text>
+  <text x="445" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Application Merge: Depends on logic</text>
+  <text x="445" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Quorum: No extra storage needed</text>
+  
+  <rect x="580" y="375" width="240" height="150" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Implementation Complexity</text>
+  <text x="700" y="415" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LWW: Built into most databases</text>
+  <text x="700" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Vector Clocks: Custom implementation</text>
+  <text x="700" y="445" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">CRDTs: Libraries available</text>
+  <text x="700" y="465" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Application Merge: Per-use-case</text>
+  <text x="700" y="480" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Quorum: W + R &gt; N configuration</text>
+  <text x="700" y="495" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Choose based on team expertise</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

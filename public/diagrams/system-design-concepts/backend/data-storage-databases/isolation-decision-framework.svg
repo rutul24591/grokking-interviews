@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Transaction Isolation Level Decision Framework</title>
+  <desc id="desc">Decision framework for choosing the right isolation level based on use case</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Isolation Level Decision Framework</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Choose the right isolation level for your use case</text>
+  
+  <!-- Decision Flow (Top) -->
+  <rect x="50" y="85" width="800" height="100" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  
+  <!-- Start Question -->
+  <rect x="70" y="100" width="180" height="70" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="160" y="125" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Start: Your Use Case</text>
+  <text x="160" y="142" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">What are you building?</text>
+  <text x="160" y="155" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">What can go wrong?</text>
+  
+  <!-- Arrow -->
+  <line x1="255" y1="135" x2="285" y2="135" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Financial/Inventory Path -->
+  <rect x="290" y="100" width="170" height="70" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="375" y="120" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Financial / Inventory</text>
+  <text x="375" y="135" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Money transfers</text>
+  <text x="375" y="147" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Stock trading</text>
+  <text x="375" y="159" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Inventory reservation</text>
+  
+  <!-- Arrow -->
+  <line x1="465" y1="135" x2="495" y2="135" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Recommendation -->
+  <rect x="500" y="100" width="170" height="70" rx="8" fill="#c7d2fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="585" y="125" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">SERIALIZABLE</text>
+  <text x="585" y="142" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Strongest guarantee</text>
+  <text x="585" y="155" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">No anomalies possible</text>
+  
+  <!-- Arrow -->
+  <line x1="675" y1="135" x2="705" y2="135" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Performance Note -->
+  <rect x="710" y="100" width="130" height="70" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="775" y="125" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">Performance</text>
+  <text x="775" y="142" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">50-90% throughput</text>
+  <text x="775" y="155" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">reduction possible</text>
+  <text x="775" y="165" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Accept for correctness</text>
+  
+  <!-- Second Row - Standard OLTP -->
+  <rect x="290" y="190" width="170" height="70" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="375" y="210" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Standard OLTP</text>
+  <text x="375" y="225" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">User profiles</text>
+  <text x="375" y="237" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Order management</text>
+  <text x="375" y="249" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Content management</text>
+  
+  <!-- Arrow -->
+  <line x1="465" y1="225" x2="495" y2="225" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Recommendation -->
+  <rect x="500" y="190" width="170" height="70" rx="8" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+  <text x="585" y="215" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">REPEATABLE READ</text>
+  <text x="585" y="232" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Stable reads within txn</text>
+  <text x="585" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Good performance</text>
+  
+  <!-- Arrow -->
+  <line x1="675" y1="225" x2="705" y2="225" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Performance Note -->
+  <rect x="710" y="190" width="130" height="70" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="775" y="215" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Performance</text>
+  <text x="775" y="230" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Moderate overhead</text>
+  <text x="775" y="242" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Good balance</text>
+  <text x="775" y="252" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Recommended default</text>
+  
+  <!-- Third Row - Analytics -->
+  <rect x="290" y="280" width="170" height="70" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="375" y="300" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Analytics / Reporting</text>
+  <text x="375" y="315" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Dashboards</text>
+  <text x="375" y="327" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Aggregations</text>
+  <text x="375" y="339" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Historical analysis</text>
+  
+  <!-- Arrow -->
+  <line x1="465" y1="315" x2="495" y2="315" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Recommendation -->
+  <rect x="500" y="280" width="170" height="70" rx="8" fill="#93c5fd" stroke="#2563eb" stroke-width="2"/>
+  <text x="585" y="305" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">READ COMMITTED</text>
+  <text x="585" y="322" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">No dirty reads</text>
+  <text x="585" y="335" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best performance</text>
+  
+  <!-- Arrow -->
+  <line x1="675" y1="315" x2="705" y2="315" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Performance Note -->
+  <rect x="710" y="280" width="130" height="70" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="775" y="305" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">Performance</text>
+  <text x="775" y="320" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Minimal overhead</text>
+  <text x="775" y="332" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Fastest option</text>
+  <text x="775" y="342" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Approximate OK</text>
+  
+  <!-- Performance Impact Chart (Bottom Left) -->
+  <rect x="50" y="375" width="400" height="160" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="250" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Performance Impact</text>
+  
+  <!-- Throughput Bars -->
+  <rect x="70" y="415" width="360" height="100" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  
+  <!-- Read Uncommitted Bar -->
+  <text x="140" y="435" text-anchor="end" font-size="8" font-weight="700" fill="#1f2937">Read Uncommitted</text>
+  <rect x="150" y="425" width="270" height="18" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="425" y="438" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">100% (baseline)</text>
+  
+  <!-- Read Committed Bar -->
+  <text x="140" y="458" text-anchor="end" font-size="8" font-weight="700" fill="#1f2937">Read Committed</text>
+  <rect x="150" y="448" width="255" height="18" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="425" y="461" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">~95%</text>
+  
+  <!-- Repeatable Read Bar -->
+  <text x="140" y="481" text-anchor="end" font-size="8" font-weight="700" fill="#1f2937">Repeatable Read</text>
+  <rect x="150" y="471" width="225" height="18" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="425" y="484" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">~80-85%</text>
+  
+  <!-- Serializable Bar -->
+  <text x="140" y="504" text-anchor="end" font-size="8" font-weight="700" fill="#1f2937">Serializable</text>
+  <rect x="150" y="494" width="135" height="18" rx="2" fill="#c7d2fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="425" y="507" text-anchor="start" font-size="8" font-weight="700" fill="#1f2937">~50-70%</text>
+  
+  <!-- Best Practices (Bottom Right) -->
+  <rect x="465" y="375" width="385" height="160" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="657" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Best Practices</text>
+  
+  <rect x="485" y="415" width="345" height="110" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <!-- Practice 1 -->
+  <circle cx="500" cy="435" r="5" fill="#1e3a8a"/>
+  <text x="515" y="440" text-anchor="start" font-size="9" font-weight="700" fill="#1e3a8a">Start with database default</text>
+  <text x="520" y="453" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">PostgreSQL/Oracle: Read Committed</text>
+  <text x="520" y="463" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">MySQL: Repeatable Read</text>
+  
+  <!-- Practice 2 -->
+  <circle cx="500" cy="478" r="5" fill="#1e3a8a"/>
+  <text x="515" y="483" text-anchor="start" font-size="9" font-weight="700" fill="#1e3a8a">Upgrade only if anomaly demonstrated</text>
+  <text x="520" y="496" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Don't preemptively use Serializable</text>
+  <text x="520" y="506" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Test for specific data corruption</text>
+  
+  <!-- Practice 3 -->
+  <circle cx="670" cy="435" r="5" fill="#1e3a8a"/>
+  <text x="685" y="440" text-anchor="start" font-size="9" font-weight="700" fill="#1e3a8a">Use explicit locking for critical sections</text>
+  <text x="690" y="453" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">SELECT FOR UPDATE</text>
+  <text x="690" y="463" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Fine-grained control</text>
+  
+  <!-- Practice 4 -->
+  <circle cx="670" cy="478" r="5" fill="#1e3a8a"/>
+  <text x="685" y="483" text-anchor="start" font-size="9" font-weight="700" fill="#1e3a8a">Design for retries</text>
+  <text x="690" y="496" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Exponential backoff + jitter</text>
+  <text x="690" y="506" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Idempotent operations</text>
+  
+  <!-- Practice 5 -->
+  <circle cx="500" cy="520" r="5" fill="#1e3a8a"/>
+  <text x="515" y="525" text-anchor="start" font-size="9" font-weight="700" fill="#1e3a8a">Monitor isolation metrics</text>
+  <text x="520" y="538" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Deadlock counts, serialization failures, lock waits</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

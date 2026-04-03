@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Read Replicas Challenges</title>
+  <desc id="desc">Replication lag, failover, and read-your-writes challenges</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Read Replicas Challenges</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Replication Lag, Failover, and Consistency</text>
+  
+  <!-- Read-Your-Writes Problem (Top Left) -->
+  <rect x="50" y="85" width="400" height="180" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Read-Your-Writes Problem</text>
+  
+  <rect x="70" y="125" width="360" height="130" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <!-- Timeline -->
+  <text x="250" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">User updates profile, reads immediately:</text>
+  
+  <rect x="85" y="165" width="80" height="35" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="125" y="187" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">T0: Write</text>
+  <text x="125" y="200" text-anchor="middle" font-size="6" font-weight="600" fill="#dbeafe">Primary</text>
+  
+  <line x1="170" y1="182" x2="200" y2="182" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="185" y="172" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Replicating...</text>
+  
+  <rect x="210" y="165" width="80" height="35" rx="3" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="250" y="187" text-anchor="middle" font-size="7" font-weight="700" fill="#1e3a8a">T1: Read</text>
+  <text x="250" y="200" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Replica (stale!)</text>
+  
+  <line x1="295" y1="182" x2="325" y2="182" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="335" y="165" width="80" height="35" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="375" y="187" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Stale Data!</text>
+  <text x="375" y="200" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Old profile</text>
+  
+  <text x="250" y="240" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Fix: Route to primary after write (for N seconds)</text>
+  
+  <!-- Failover Challenges (Top Right) -->
+  <rect x="465" y="85" width="385" height="180" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Failover Challenges</text>
+  
+  <rect x="485" y="125" width="345" height="130" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="500" y="150" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">1. Which Replica to Promote?</text>
+  <text x="500" y="168" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Most up-to-date (least lag)</text>
+  <text x="500" y="183" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Healthy and responsive</text>
+  <text x="500" y="198" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Has capacity for writes</text>
+  
+  <text x="500" y="220" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">2. Data Loss Risk:</text>
+  <text x="500" y="238" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Unreplicated writes lost</text>
+  <text x="500" y="253" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Lag = potential data loss window</text>
+  
+  <text x="650" y="270" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Mitigation: Semi-sync replication</text>
+  
+  <!-- Split Brain (Bottom Left) -->
+  <rect x="50" y="275" width="400" height="160" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Split Brain Problem</text>
+  
+  <rect x="70" y="315" width="360" height="110" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  
+  <!-- Two primaries -->
+  <rect x="85" y="330" width="100" height="50" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="135" y="355" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Primary A</text>
+  <text x="135" y="370" text-anchor="middle" font-size="6" font-weight="600" fill="#dbeafe">Thinks it's leader</text>
+  
+  <rect x="245" y="330" width="100" height="50" rx="3" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="295" y="355" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Primary B</text>
+  <text x="295" y="370" text-anchor="middle" font-size="6" font-weight="600" fill="#dbeafe">Thinks it's leader</text>
+  
+  <line x1="190" y1="355" x2="240" y2="355" stroke="#dc2626" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="215" y="345" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Network partition</text>
+  
+  <text x="250" y="405" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Both accept writes → Data divergence!</text>
+  <text x="250" y="420" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Fix: Consensus (only one leader at a time)</text>
+  
+  <!-- Solutions (Bottom Right) -->
+  <rect x="465" y="275" width="385" height="160" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="657" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Solutions</text>
+  
+  <rect x="485" y="315" width="345" height="110" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <text x="500" y="340" text-anchor="start" font-size="8" font-weight="700" fill="#065f46">Read-Your-Writes Routing:</text>
+  <text x="500" y="358" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Track last write time per user</text>
+  <text x="500" y="373" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Route to primary for N seconds</text>
+  <text x="500" y="388" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Then route to replica</text>
+  
+  <text x="500" y="410" text-anchor="start" font-size="8" font-weight="700" fill="#065f46">Automatic Failover:</text>
+  <text x="500" y="428" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Health checks every N seconds</text>
+  <text x="500" y="443" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Consensus on new primary</text>
+  <text x="500" y="458" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">• Update DNS/connection pool</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

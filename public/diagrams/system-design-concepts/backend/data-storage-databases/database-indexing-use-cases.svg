@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Database Indexing Use Cases</title>
+  <desc id="desc">When to create indexes and real-world examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Database Indexing Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Create Indexes</text>
+  
+  <!-- Always Index (Left Column) -->
+  <rect x="50" y="85" width="270" height="280" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="185" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Always Create Indexes On:</text>
+  
+  <!-- Primary Keys -->
+  <rect x="70" y="125" width="230" height="55" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Primary Keys</text>
+  <text x="185" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Automatic (UNIQUE + NOT NULL)</text>
+  <text x="185" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Fast lookups by ID</text>
+  
+  <!-- Foreign Keys -->
+  <rect x="70" y="190" width="230" height="65" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="210" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Foreign Keys</text>
+  <text x="185" y="230" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">JOIN performance</text>
+  <text x="185" y="243" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Cascade operations</text>
+  <text x="185" y="256" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">⚠ Not automatic in most DBs</text>
+  
+  <!-- WHERE Clauses -->
+  <rect x="70" y="265" width="230" height="55" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="285" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">WHERE Clause Columns</text>
+  <text x="185" y="305" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Frequently filtered columns</text>
+  <text x="185" y="318" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">email, username, status</text>
+  
+  <!-- ORDER BY -->
+  <rect x="70" y="330" width="230" height="30" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="185" y="350" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">ORDER BY / GROUP BY Columns</text>
+  
+  <!-- Consider Indexing (Middle Column) -->
+  <rect x="330" y="85" width="270" height="280" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="465" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Consider Indexing:</text>
+  
+  <!-- Composite Indexes -->
+  <rect x="345" y="125" width="240" height="65" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="465" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Composite Indexes</text>
+  <text x="465" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Multi-column queries</text>
+  <text x="465" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">(last_name, first_name)</text>
+  <text x="465" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Order: equality first, then range</text>
+  
+  <!-- Covering Indexes -->
+  <rect x="345" y="200" width="240" height="55" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="465" y="220" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Covering Indexes</text>
+  <text x="465" y="240" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Include all SELECT columns</text>
+  <text x="465" y="253" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Index-only scans (fastest)</text>
+  
+  <!-- Partial Indexes -->
+  <rect x="345" y="265" width="240" height="55" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="465" y="285" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Partial Indexes</text>
+  <text x="465" y="305" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">WHERE active = true</text>
+  <text x="465" y="318" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Smaller, faster for filtered queries</text>
+  
+  <!-- Don't Index (Right Column) -->
+  <rect x="610" y="85" width="240" height="280" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Avoid Indexing:</text>
+  
+  <!-- Low Cardinality -->
+  <rect x="625" y="125" width="210" height="65" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="730" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Low Cardinality Columns</text>
+  <text x="730" y="165" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">gender (2 values)</text>
+  <text x="730" y="178" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">status (active/inactive)</text>
+  <text x="730" y="191" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Use Bitmap index if needed</text>
+  
+  <!-- Rarely Queried -->
+  <rect x="625" y="200" width="210" height="55" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="730" y="220" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Rarely Queried Columns</text>
+  <text x="730" y="240" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Write overhead not worth it</text>
+  <text x="730" y="253" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Monitor usage, drop unused</text>
+  
+  <!-- Small Tables -->
+  <rect x="625" y="265" width="210" height="55" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="730" y="285" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">Small Tables (&lt;10K rows)</text>
+  <text x="730" y="305" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Full scan is fast enough</text>
+  <text x="730" y="318" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Index overhead not justified</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="375" width="800" height="160" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Real-World Indexing Examples</text>
+  
+  <!-- E-commerce -->
+  <rect x="70" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">E-commerce: Products</text>
+  <text x="190" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Index: category_id (filter)</text>
+  <text x="190" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Index: price (range query)</text>
+  <text x="190" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Composite: (category_id, price)</text>
+  <text x="190" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• GIN: tags[] (array search)</text>
+  <text x="190" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Fast product search</text>
+  
+  <!-- Social Media -->
+  <rect x="325" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Social Media: Posts</text>
+  <text x="445" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Index: user_id (foreign key)</text>
+  <text x="445" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Index: created_at (timeline)</text>
+  <text x="445" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Composite: (user_id, created_at)</text>
+  <text x="445" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Partial: WHERE deleted_at IS NULL</text>
+  <text x="445" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Fast user timeline</text>
+  
+  <!-- SaaS Application -->
+  <rect x="580" y="415" width="240" height="110" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="435" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">SaaS: Multi-tenant</text>
+  <text x="700" y="455" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Index: tenant_id (isolation)</text>
+  <text x="700" y="468" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Composite: (tenant_id, status)</text>
+  <text x="700" y="481" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Partial: WHERE tenant_id = ?</text>
+  <text x="700" y="494" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">• Covering: (tenant_id, id, name)</text>
+  <text x="700" y="507" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Result: Tenant data isolation</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Sharding Challenges and Solutions</title>
+  <desc id="desc">Common sharding challenges and their solutions</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Sharding Challenges &amp; Solutions</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Hot Spots, Rebalancing, and Cross-Shard Operations</text>
+  
+  <!-- Hot Spot Problem (Top Left) -->
+  <rect x="50" y="85" width="260" height="180" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Hot Spot Problem</text>
+  
+  <rect x="65" y="125" width="230" height="130" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  
+  <!-- Uneven distribution -->
+  <rect x="80" y="140" width="50" height="100" rx="2" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+  <text x="105" y="200" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Shard 0</text>
+  <text x="105" y="215" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">80% traffic</text>
+  <text x="105" y="228" text-anchor="middle" font-size="8" font-weight="700" fill="#dc2626">OVERLOADED</text>
+  
+  <rect x="145" y="180" width="50" height="60" rx="2" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="170" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#92400e">Shard 1</text>
+  <text x="170" y="228" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">15% traffic</text>
+  
+  <rect x="210" y="210" width="50" height="30" rx="2" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="235" y="230" text-anchor="middle" font-size="7" font-weight="600" fill="#065f46">Shard 2</text>
+  <text x="235" y="243" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">5% traffic</text>
+  
+  <text x="180" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#b91c1c">Cause: Poor shard key (status)</text>
+  
+  <!-- Solution: Hash-Based (Top Middle) -->
+  <rect x="320" y="85" width="260" height="180" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Solution: Hash-Based</text>
+  
+  <rect x="335" y="125" width="230" height="130" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  
+  <!-- Even distribution -->
+  <rect x="350" y="140" width="60" height="100" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="380" y="200" text-anchor="middle" font-size="7" font-weight="700" fill="#15803d">Shard 0</text>
+  <text x="380" y="215" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">33% traffic</text>
+  <text x="380" y="228" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">BALANCED</text>
+  
+  <rect x="425" y="140" width="60" height="100" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="455" y="200" text-anchor="middle" font-size="7" font-weight="700" fill="#15803d">Shard 1</text>
+  <text x="455" y="215" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">34% traffic</text>
+  <text x="455" y="228" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">BALANCED</text>
+  
+  <rect x="500" y="140" width="60" height="100" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="530" y="200" text-anchor="middle" font-size="7" font-weight="700" fill="#15803d">Shard 2</text>
+  <text x="530" y="215" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">33% traffic</text>
+  <text x="530" y="228" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">BALANCED</text>
+  
+  <text x="450" y="260" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">hash(user_id) % 3 = even distribution</text>
+  
+  <!-- Rebalancing (Top Right) -->
+  <rect x="590" y="85" width="260" height="180" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Rebalancing Strategies</text>
+  
+  <rect x="605" y="125" width="230" height="130" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  
+  <text x="720" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Before (2 shards):</text>
+  <rect x="620" y="165" width="80" height="40" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="660" y="187" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Shard A</text>
+  <text x="660" y="200" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">50% data</text>
+  
+  <rect x="720" y="165" width="80" height="40" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="760" y="187" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Shard B</text>
+  <text x="760" y="200" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">50% data</text>
+  
+  <text x="720" y="230" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">After (add Shard C):</text>
+  <rect x="620" y="245" width="50" height="30" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="645" y="265" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">A: 33%</text>
+  
+  <rect x="685" y="245" width="50" height="30" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="710" y="265" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">B: 33%</text>
+  
+  <rect x="750" y="245" width="50" height="30" rx="2" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+  <text x="775" y="265" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">C: 33%</text>
+  
+  <text x="720" y="290" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Consistent hashing minimizes movement</text>
+  
+  <!-- Cross-Shard Join (Bottom Left) -->
+  <rect x="50" y="275" width="400" height="160" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Cross-Shard Join Challenge</text>
+  
+  <rect x="70" y="315" width="360" height="110" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  
+  <!-- Query spans shards -->
+  <rect x="85" y="330" width="150" height="80" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="160" y="350" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">Shard A</text>
+  <text x="160" y="370" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">users 1-500K</text>
+  <text x="160" y="385" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Query: user_id=100</text>
+  <text x="160" y="400" text-anchor="middle" font-size="6" font-weight="700" fill="#059669">✓ Local query</text>
+  
+  <line x1="240" y1="370" x2="260" y2="370" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="250" y="360" text-anchor="middle" font-size="6" font-weight="600" fill="#b91c1c">JOIN</text>
+  
+  <rect x="270" y="330" width="150" height="80" rx="3" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="345" y="350" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">Shard B</text>
+  <text x="345" y="370" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">users 500K-1M</text>
+  <text x="345" y="385" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">Query: user_id=600K</text>
+  <text x="345" y="400" text-anchor="middle" font-size="6" font-weight="700" fill="#059669">✓ Local query</text>
+  
+  <text x="250" y="435" text-anchor="middle" font-size="7" font-weight="700" fill="#b91c1c">Problem: JOIN across shards = fetch both, join in app</text>
+  
+  <!-- Solutions (Bottom Right) -->
+  <rect x="465" y="275" width="385" height="160" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Solutions</text>
+  
+  <rect x="485" y="315" width="345" height="110" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="500" y="340" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">1. Denormalization:</text>
+  <text x="500" y="355" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Store related data together</text>
+  <text x="500" y="368" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Avoid cross-shard joins</text>
+  
+  <text x="500" y="388" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">2. Co-location:</text>
+  <text x="500" y="403" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Same shard key for related data</text>
+  <text x="500" y="416" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">user_id for users and orders</text>
+  
+  <text x="500" y="436" text-anchor="start" font-size="8" font-weight="700" fill="#92400e">3. Application-side join:</text>
+  <text x="500" y="451" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Fetch from both shards, merge in app</text>
+  <text x="650" y="466" text-anchor="end" font-size="7" font-weight="700" fill="#b91c1c">Slower but works</text>
+  
+  <!-- Key Takeaways (Bottom) -->
+  <rect x="50" y="445" width="800" height="90" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">Key Takeaways</text>
+  
+  <rect x="70" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="185" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Choose shard key carefully (most critical decision)</text>
+  
+  <rect x="315" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="430" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Use hash-based for even distribution</text>
+  
+  <rect x="560" y="485" width="230" height="40" rx="3" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="675" y="505" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Plan for rebalancing from day one</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

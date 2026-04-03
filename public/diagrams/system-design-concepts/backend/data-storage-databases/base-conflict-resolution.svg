@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">BASE Conflict Resolution</title>
+  <desc id="desc">How BASE systems resolve conflicts in eventually consistent systems</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">BASE Conflict Resolution</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Handling Concurrent Writes in Eventually Consistent Systems</text>
+  
+  <rect x="50" y="85" width="400" height="160" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Write Conflict Example</text>
+  <rect x="70" y="125" width="360" height="110" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="250" y="150" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Two writes to same key concurrently:</text>
+  <text x="250" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Node A: profile.name = &quot;Alice&quot; (t=100)</text>
+  <text x="250" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Node B: profile.name = &quot;Alicia&quot; (t=101)</text>
+  <text x="250" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Conflict! Both replicate to each other</text>
+  <text x="250" y="220" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Resolution needed to converge to single value</text>
+  
+  <rect x="465" y="85" width="385" height="160" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Resolution Strategies</text>
+  <rect x="485" y="125" width="345" height="110" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="500" y="150" text-anchor="start" font-size="9" font-weight="700" fill="#92400e">1. Last Write Wins (LWW)</text>
+  <text x="500" y="170" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Highest timestamp wins (&quot;Alicia&quot; at t=101)</text>
+  <text x="500" y="190" text-anchor="start" font-size="9" font-weight="700" fill="#92400e">2. Vector Clocks</text>
+  <text x="500" y="210" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Detect conflict, return both to application</text>
+  <text x="500" y="230" text-anchor="start" font-size="9" font-weight="700" fill="#92400e">3. Application Merge</text>
+  <text x="500" y="250" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Custom merge logic (e.g., union sets)</text>
+  
+  <rect x="50" y="255" width="800" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="280" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Convergence Guarantee</text>
+  <rect x="70" y="295" width="760" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">All replicas eventually converge to same state</text>
+  <text x="450" y="340" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Anti-entropy processes periodically sync replicas</text>
+  <text x="450" y="355" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Read repair fixes inconsistencies on read</text>
+  <text x="450" y="370" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Merkle trees detect differences between replicas efficiently</text>
+  <text x="450" y="385" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937">Eventual consistency ≠ no consistency—just delayed</text>
+  
+  <rect x="50" y="405" width="800" height="130" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="430" text-anchor="middle" font-size="12" font-weight="700" fill="#0369a1">Real-World Examples</text>
+  
+  <rect x="70" y="445" width="240" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="465" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">DynamoDB: LWW</text>
+  <text x="190" y="485" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Last writer wins by timestamp</text>
+  <text x="190" y="500" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Simple, predictable behavior</text>
+  <text x="190" y="515" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Global tables replicate across regions</text>
+  
+  <rect x="325" y="445" width="240" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="465" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Riak: Vector Clocks</text>
+  <text x="445" y="485" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Detects concurrent writes</text>
+  <text x="445" y="500" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Returns siblings (both values)</text>
+  <text x="445" y="515" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Application resolves conflict</text>
+  
+  <rect x="580" y="445" width="240" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="465" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Cassandra: Timestamp + TTL</text>
+  <text x="700" y="485" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LWW with configurable consistency</text>
+  <text x="700" y="500" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">QUORUM for stronger consistency</text>
+  <text x="700" y="515" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">ONE for maximum availability</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -285,8 +285,8 @@ export default function ArticlePage() {
         </p>
 
         <ArticleImage
-          src={`${BASE_PATH}/cap-real-world-decisions.svg`}
-          caption="Figure 3: Real-World CAP Decisions by Use Case showing six scenarios: Financial Systems (CP—double-spend is catastrophic), Social Media (AP—unavailable feed is worse than stale), Inventory (CP—overselling destroys trust), Shopping Cart (AP—union merge is safe), Reviews & Comments (AP—stale count is acceptable), and Friend Relationships (CP—relationship state must be consistent). The decision framework at bottom asks: 'What's the cost of inconsistency?' vs 'What's the cost of unavailability?'"
+          src={`${BASE_PATH}/cap-real-world-examples.svg`}
+          caption="Figure 3: Real-World CAP Examples showing six scenarios: Financial Systems (CP—double-spend is catastrophic), Social Media (AP—unavailable feed is worse than stale), Inventory (CP—overselling destroys trust), Shopping Cart (AP—union merge is safe), Reviews & Comments (AP—stale count is acceptable), and Friend Relationships (CP—relationship state must be consistent). The decision framework at bottom asks: 'What's the cost of inconsistency?' vs 'What's the cost of unavailability?'"
           alt="Real-world CAP decision examples"
         />
 

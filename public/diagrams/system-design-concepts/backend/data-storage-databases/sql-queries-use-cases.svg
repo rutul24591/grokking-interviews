@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">SQL Query Use Cases</title>
+  <desc id="desc">Real-world SQL query patterns and examples</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">SQL Query Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Common Query Patterns</text>
+  
+  <!-- Pagination (Top Left) -->
+  <rect x="50" y="85" width="260" height="140" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Pagination</text>
+  
+  <rect x="65" y="125" width="230" height="90" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a8a">OFFSET/LIMIT:</text>
+  <text x="180" y="168" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT * FROM products ORDER BY id</text>
+  <text x="180" y="180" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">LIMIT 20 OFFSET 40  -- Page 3</text>
+  
+  <text x="180" y="200" text-anchor="middle" font-size="8" font-weight="700" fill="#b91c1c">⚠ Slow for large OFFSET</text>
+  
+  <text x="180" y="220" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Better (Keyset):</text>
+  <text x="180" y="235" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">WHERE id &gt; last_seen_id LIMIT 20</text>
+  <text x="180" y="248" text-anchor="middle" font-size="6" font-weight="600" fill="#059669">✓ Uses index, constant time</text>
+  
+  <!-- Aggregation (Top Middle) -->
+  <rect x="320" y="85" width="260" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Aggregation with GROUP BY</text>
+  
+  <rect x="335" y="125" width="230" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Sales by Category:</text>
+  <text x="450" y="168" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT category_id, COUNT(*), SUM(price)</text>
+  <text x="450" y="180" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">FROM orders GROUP BY category_id</text>
+  <text x="450" y="192" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">HAVING SUM(price) &gt; 1000</text>
+  
+  <text x="450" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">✓ GROUP BY before HAVING</text>
+  <text x="450" y="228" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">✓ Index category_id for speed</text>
+  
+  <!-- Window Functions (Top Right) -->
+  <rect x="590" y="85" width="260" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Window Functions</text>
+  
+  <rect x="605" y="125" width="230" height="90" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Running Total:</text>
+  <text x="720" y="168" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT date, amount,</text>
+  <text x="720" y="180" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SUM(amount) OVER (ORDER BY date) as running_total</text>
+  <text x="720" y="192" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">FROM transactions</text>
+  
+  <text x="720" y="215" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">✓ No self-join needed</text>
+  <text x="720" y="228" text-anchor="middle" font-size="7" font-weight="600" fill="#059669">✓ ROW_NUMBER, RANK, LAG</text>
+  
+  <!-- Subquery Patterns (Middle Left) -->
+  <rect x="50" y="235" width="400" height="140" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="250" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Subquery Patterns</text>
+  
+  <rect x="70" y="275" width="170" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="155" y="295" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Correlated Subquery</text>
+  <text x="155" y="315" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT u.*,</text>
+  <text x="155" y="327" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">(SELECT COUNT(*) FROM orders WHERE user_id = u.id)</text>
+  <text x="155" y="339" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">FROM users u</text>
+  <text x="155" y="355" text-anchor="middle" font-size="6" font-weight="700" fill="#b91c1c">⚠ Runs for each row (slow)</text>
+  
+  <rect x="255" y="275" width="170" height="90" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="340" y="295" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Better: JOIN</text>
+  <text x="340" y="315" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT u.*, COUNT(o.id) as order_count</text>
+  <text x="340" y="327" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">FROM users u LEFT JOIN orders o</text>
+  <text x="340" y="339" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">ON u.id = o.user_id GROUP BY u.id</text>
+  <text x="340" y="355" text-anchor="middle" font-size="6" font-weight="700" fill="#059669">✓ Single pass (fast)</text>
+  
+  <!-- CTE (Common Table Expression) (Middle Right) -->
+  <rect x="465" y="235" width="385" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="657" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">CTE (WITH Clause)</text>
+  
+  <rect x="485" y="275" width="345" height="90" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  
+  <text x="657" y="300" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Makes complex queries readable:</text>
+  <text x="500" y="320" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">WITH active_users AS (</text>
+  <text x="510" y="332" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">SELECT id FROM users WHERE active = true</text>
+  <text x="500" y="344" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">)</text>
+  <text x="500" y="356" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">SELECT * FROM active_users au</text>
+  <text x="500" y="368" text-anchor="start" font-size="6" font-weight="600" fill="#1f2937">JOIN orders o ON au.id = o.user_id</text>
+  
+  <text x="657" y="385" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">✓ Readable, reusable, recursive</text>
+  
+  <!-- Real-World Examples (Bottom) -->
+  <rect x="50" y="385" width="800" height="150" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Real-World Query Examples</text>
+  
+  <!-- Find Top Customers -->
+  <rect x="70" y="425" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="190" y="445" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Top 10 Customers by Spend</text>
+  <text x="190" y="465" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT u.name, SUM(o.total) as total_spent</text>
+  <text x="190" y="477" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">FROM users u JOIN orders o ON u.id = o.user_id</text>
+  <text x="190" y="489" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">GROUP BY u.id ORDER BY total_spent DESC</text>
+  <text x="190" y="501" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">LIMIT 10</text>
+  <text x="190" y="515" text-anchor="middle" font-size="6" font-weight="700" fill="#059669">✓ Index: orders(user_id, total)</text>
+  
+  <!-- Recent Orders with Details -->
+  <rect x="325" y="425" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="445" y="445" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Recent Orders with Details</text>
+  <text x="445" y="465" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT o.id, u.name, p.name, oi.quantity</text>
+  <text x="445" y="477" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">FROM orders o</text>
+  <text x="445" y="489" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">JOIN users u ON o.user_id = u.id</text>
+  <text x="445" y="501" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">JOIN order_items oi ON o.id = oi.order_id</text>
+  <text x="445" y="513" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">JOIN products p ON oi.product_id = p.id</text>
+  <text x="445" y="525" text-anchor="middle" font-size="6" font-weight="700" fill="#059669">✓ Index all foreign keys</text>
+  
+  <!-- Users Without Orders -->
+  <rect x="580" y="425" width="240" height="100" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="700" y="445" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937">Users Without Orders</text>
+  <text x="700" y="465" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">SELECT u.* FROM users u</text>
+  <text x="700" y="477" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">LEFT JOIN orders o ON u.id = o.user_id</text>
+  <text x="700" y="489" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">WHERE o.id IS NULL</text>
+  <text x="700" y="501" text-anchor="middle" font-size="6" font-weight="600" fill="#1f2937">-- Finds users with no matching orders</text>
+  <text x="700" y="515" text-anchor="middle" font-size="6" font-weight="700" fill="#059669">✓ LEFT JOIN + IS NULL pattern</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Data Lakes Architecture</title>
+  <desc id="desc">Data lake architecture with medallion architecture and ingestion layers</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Data Lakes Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Medallion Architecture and Data Ingestion</text>
+  
+  <!-- Data Sources (Top) -->
+  <rect x="50" y="85" width="800" height="100" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Data Sources</text>
+  
+  <rect x="70" y="125" width="120" height="50" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="130" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Databases</text>
+  <text x="130" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">MySQL, PostgreSQL</text>
+  
+  <rect x="205" y="125" width="120" height="50" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="265" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Logs</text>
+  <text x="265" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">App logs, System</text>
+  
+  <rect x="340" y="125" width="120" height="50" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="400" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">IoT/Events</text>
+  <text x="400" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">Sensors, Streams</text>
+  
+  <rect x="475" y="125" width="120" height="50" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="535" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">Files</text>
+  <text x="535" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">CSV, JSON, Parquet</text>
+  
+  <rect x="610" y="125" width="120" height="50" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="670" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">APIs</text>
+  <text x="670" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">REST, GraphQL</text>
+  
+  <rect x="745" y="125" width="80" height="50" rx="4" fill="#2563eb" stroke="#1e3a8a" stroke-width="1"/>
+  <text x="785" y="148" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">External</text>
+  <text x="785" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#dbeafe">3rd party</text>
+  
+  <!-- Arrow -->
+  <line x1="450" y1="190" x2="450" y2="210" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="470" y="205" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">Ingest via Batch (scheduled ETL) or Streaming (real-time)</text>
+  
+  <!-- Medallion Architecture (Middle) -->
+  <rect x="50" y="220" width="800" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="245" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Medallion Architecture (Data Quality Layers)</text>
+  
+  <!-- Bronze Layer -->
+  <rect x="70" y="265" width="240" height="140" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="190" y="285" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Bronze (Raw)</text>
+  <text x="190" y="305" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Raw, immutable data</text>
+  <text x="190" y="320" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Full history retained</text>
+  <text x="190" y="335" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• No schema enforcement</text>
+  <text x="190" y="350" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Source of truth</text>
+  <text x="190" y="370" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Ingest as-is from sources</text>
+  <text x="190" y="385" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: Raw JSON logs</text>
+  <text x="190" y="400" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Append-only, never delete</text>
+  
+  <!-- Arrow -->
+  <line x1="315" y1="335" x2="335" y2="335" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="325" y="325" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Clean</text>
+  
+  <!-- Silver Layer -->
+  <rect x="340" y="265" width="240" height="140" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="460" y="285" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Silver (Validated)</text>
+  <text x="460" y="305" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Cleaned, validated data</text>
+  <text x="460" y="320" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Schema enforced</text>
+  <text x="460" y="335" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Deduplicated, enriched</text>
+  <text x="460" y="350" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Filtered bad records</text>
+  <text x="460" y="370" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Data quality checks pass</text>
+  <text x="460" y="385" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: Cleaned user data</text>
+  <text x="460" y="400" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Ready for analysis</text>
+  
+  <!-- Arrow -->
+  <line x1="585" y1="335" x2="605" y2="335" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="595" y="325" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Aggregate</text>
+  
+  <!-- Gold Layer -->
+  <rect x="610" y="265" width="240" height="140" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="730" y="285" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Gold (Curated)</text>
+  <text x="730" y="305" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Business-level aggregations</text>
+  <text x="730" y="320" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Ready for BI/ML</text>
+  <text x="730" y="335" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Star schema, denormalized</text>
+  <text x="730" y="350" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">• Consistent metrics</text>
+  <text x="730" y="370" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Consumption-ready</text>
+  <text x="730" y="385" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Example: Daily sales summary</text>
+  <text x="730" y="400" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Optimized for queries</text>
+  
+  <!-- Data Consumption (Bottom) -->
+  <rect x="50" y="430" width="800" height="105" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="455" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Data Consumption Layer</text>
+  
+  <rect x="70" y="465" width="180" height="60" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="160" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">SQL Engines</text>
+  <text x="160" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Athena, Presto, Spark SQL</text>
+  <text x="160" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Ad-hoc analysis</text>
+  
+  <rect x="265" y="465" width="180" height="60" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="355" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">BI Tools</text>
+  <text x="355" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Tableau, Power BI</text>
+  <text x="355" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Dashboards, reports</text>
+  
+  <rect x="460" y="465" width="180" height="60" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="550" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">ML/AI</text>
+  <text x="550" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Training data, inference</text>
+  <text x="550" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Feature stores</text>
+  
+  <rect x="655" y="465" width="180" height="60" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="745" y="485" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Data Science</text>
+  <text x="745" y="502" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Notebooks, exploration</text>
+  <text x="745" y="515" text-anchor="middle" font-size="7" font-weight="600" fill="#1f2937">Raw data access</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Connection Pooling Use Cases</title>
+  <desc id="desc">When to use connection pooling and real-world examples</desc>
+  
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Connection Pooling Use Cases</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">When to Use Connection Pools</text>
+  
+  <rect x="50" y="85" width="400" height="220" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Ideal Use Cases</text>
+  <rect x="70" y="125" width="360" height="170" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="250" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Web Applications</text>
+  <text x="250" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">High concurrency, short-lived requests</text>
+  <text x="250" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Pool amortizes connection cost</text>
+  <text x="250" y="210" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Microservices</text>
+  <text x="250" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Many services connecting to same DB</text>
+  <text x="250" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Prevents connection exhaustion</text>
+  <text x="250" y="270" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46">Batch Processing</text>
+  <text x="250" y="290" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Reuse connections for bulk operations</text>
+  <text x="250" y="305" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">10-100x throughput improvement</text>
+  
+  <rect x="465" y="85" width="385" height="220" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="657" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Common Issues</text>
+  <rect x="485" y="125" width="345" height="170" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="500" y="150" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">Connection Leaks</text>
+  <text x="500" y="170" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Connections not returned to pool</text>
+  <text x="500" y="185" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Pool exhaustion over time</text>
+  <text x="500" y="200" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Fix: Use try-finally, auto-close</text>
+  <text x="500" y="230" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">Stale Connections</text>
+  <text x="500" y="250" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">DB restarts, network issues</text>
+  <text x="500" y="265" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Fix: Connection validation, test query</text>
+  <text x="500" y="285" text-anchor="start" font-size="9" font-weight="700" fill="#b91c1c">Wrong Pool Size</text>
+  <text x="500" y="305" text-anchor="start" font-size="8" font-weight="600" fill="#1f2937">Too small = queueing, too large = contention</text>
+  
+  <rect x="50" y="315" width="800" height="220" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="450" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#0369a1">Popular Connection Pool Libraries</text>
+  
+  <rect x="70" y="355" width="240" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="190" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">HikariCP (Java)</text>
+  <text x="190" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Fastest Java pool</text>
+  <text x="190" y="410" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Zero overhead design</text>
+  <text x="190" y="425" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Spring Boot default</text>
+  
+  <rect x="325" y="355" width="240" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="445" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">PgBouncer (PostgreSQL)</text>
+  <text x="445" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Lightweight proxy</text>
+  <text x="445" y="410" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Transaction pooling mode</text>
+  <text x="445" y="425" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">Handles 10K+ clients</text>
+  
+  <rect x="580" y="355" width="240" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="700" y="375" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Connection Pool (Node.js)</text>
+  <text x="700" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Built-in to drivers</text>
+  <text x="700" y="410" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Configurable pool size</text>
+  <text x="700" y="425" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">pg, mysql2 packages</text>
+  
+  <rect x="70" y="445" width="760" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="450" y="465" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Best Practices</text>
+  <text x="450" y="485" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Always use connection pooling for production applications</text>
+  <text x="450" y="500" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Set max_connections &lt; DB max_connections (leave 20% headroom)</text>
+  <text x="450" y="515" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Enable connection validation, set idle timeout, monitor pool metrics</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>
