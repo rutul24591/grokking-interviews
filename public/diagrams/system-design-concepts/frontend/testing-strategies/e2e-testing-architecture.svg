@@ -1,0 +1,49 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">E2E Testing Architecture</text>
+  <rect x="50" y="80" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="150" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Test Runner</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Playwright / Cypress</text>
+  <text x="150" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Orchestrates tests</text>
+  <path d="M 250 140 L 300 140" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="300" y="80" width="200" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="400" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Browser</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Chrome / Firefox / WebKit</text>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Simulates user actions</text>
+  <path d="M 500 140 L 550 140" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="550" y="80" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="650" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Application</text>
+  <text x="650" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Frontend app (React)</text>
+  <text x="650" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Running in browser</text>
+  <path d="M 750 140 L 800 140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="50" y="220" width="200" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="150" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">Assertions</text>
+  <text x="150" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Verify results</text>
+  <text x="150" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Screenshots, videos</text>
+  <rect x="300" y="220" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="400" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Test Data</text>
+  <text x="400" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Seeded before test</text>
+  <text x="400" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Cleaned after test</text>
+  <rect x="550" y="220" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="650" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Backend APIs</text>
+  <text x="650" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Real or mocked</text>
+  <text x="650" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Network interception</text>
+  <rect x="50" y="360" width="800" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">E2E Test Flow</text>
+  <rect x="70" y="410" width="170" height="40" rx="4" fill="#f0f9ff" stroke="#bae6fd"/>
+  <text x="155" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">1. Launch browser</text>
+  <rect x="255" y="410" width="170" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="340" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">2. Navigate to app</text>
+  <rect x="440" y="410" width="170" height="40" rx="4" fill="#fef3c7" stroke="#fde68a"/>
+  <text x="525" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">3. Simulate actions</text>
+  <rect x="635" y="410" width="170" height="40" rx="4" fill="#faf5ff" stroke="#e9d5ff"/>
+  <text x="720" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">4. Verify results</text>
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Key Characteristics</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Real browser execution | Full system testing | Slow but realistic | Few tests, critical workflows only</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

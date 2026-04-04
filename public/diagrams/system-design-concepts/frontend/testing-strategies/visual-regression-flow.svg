@@ -1,0 +1,61 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Visual Regression Flow</text>
+  <!-- Step 1: Baseline -->
+  <rect x="50" y="80" width="200" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="150" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">1. Capture Baseline</text>
+  <rect x="70" y="135" width="160" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="150" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Known-good screenshots</text>
+  <rect x="70" y="165" width="160" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="150" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Reviewed and approved</text>
+  <rect x="70" y="195" width="160" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="150" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Stored in cloud/Git</text>
+  <path d="M 250 150 L 300 150" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Step 2: New Screenshot -->
+  <rect x="300" y="80" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">2. Capture New</text>
+  <rect x="320" y="135" width="160" height="25" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="400" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">On code change (PR)</text>
+  <rect x="320" y="165" width="160" height="25" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="400" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Consistent environment</text>
+  <rect x="320" y="195" width="160" height="25" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="400" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Same browser, viewport</text>
+  <path d="M 500 150 L 550 150" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Step 3: Compare -->
+  <rect x="550" y="80" width="180" height="140" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="640" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">3. Compare</text>
+  <rect x="570" y="135" width="140" height="25" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="640" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Pixel diff analysis</text>
+  <rect x="570" y="165" width="140" height="25" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="640" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Tolerance threshold</text>
+  <rect x="570" y="195" width="140" height="25" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="640" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Diff image generated</text>
+  <path d="M 730 150 L 780 150" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Step 4: Review -->
+  <rect x="780" y="80" width="100" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="830" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">4. Review</text>
+  <text x="830" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#6b21a8">Developer reviews</text>
+  <text x="830" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#6b21a8">diff images</text>
+  <!-- Decision paths -->
+  <path d="M 830 220 L 830 280 L 450 280 L 450 220" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="640" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Intentional → Approve &amp; update baseline</text>
+  <path d="M 830 220 L 830 320 L 150 320 L 150 220" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="490" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Unintentional → Fix code &amp; re-run</text>
+  <!-- Results -->
+  <rect x="50" y="340" width="380" height="100" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="240" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Approved Changes</text>
+  <text x="240" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Baseline updated, PR can merge</text>
+  <text x="240" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">New baseline becomes expected</text>
+  <rect x="470" y="340" width="380" height="100" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="660" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Regression Detected</text>
+  <text x="660" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Code fix required, PR blocked</text>
+  <text x="660" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Developer fixes visual bug, re-runs</text>
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Continuous Process</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475560">On every pull request: capture screenshots → compare against baselines → review differences → approve or fix → merge when all visual tests pass.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

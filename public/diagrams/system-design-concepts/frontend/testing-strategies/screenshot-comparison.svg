@@ -1,0 +1,56 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Screenshot Comparison</text>
+  <!-- Baseline -->
+  <rect x="50" y="80" width="260" height="220" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Baseline</text>
+  <rect x="70" y="130" width="220" height="150" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <!-- Mock UI -->
+  <rect x="90" y="150" width="180" height="30" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Header (correct)</text>
+  <rect x="90" y="185" width="85" height="80" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="132" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Sidebar</text>
+  <rect x="180" y="185" width="90" height="80" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="225" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Content</text>
+  <path d="M 310 190 L 360 190" stroke="#647480" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- New Screenshot -->
+  <rect x="360" y="80" width="260" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="490" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">New Screenshot</text>
+  <rect x="380" y="130" width="220" height="150" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <!-- Mock UI with bug -->
+  <rect x="400" y="150" width="180" height="30" rx="3" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="490" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Header (broken - red)</text>
+  <rect x="400" y="185" width="85" height="80" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="442" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Sidebar</text>
+  <rect x="490" y="185" width="90" height="80" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="535" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#0369a1">Content</text>
+  <path d="M 620 190 L 670 190" stroke="#647480" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Pixel Diff -->
+  <rect x="670" y="80" width="200" height="220" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="770" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Pixel Diff</text>
+  <rect x="690" y="130" width="160" height="150" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <!-- Mock diff highlighting -->
+  <rect x="710" y="150" width="120" height="30" rx="3" fill="#ef4444"/>
+  <text x="770" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">DIFFERENCE</text>
+  <rect x="710" y="185" width="55" height="80" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="737" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#0369a1">Same</text>
+  <rect x="770" y="185" width="60" height="80" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="800" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#0369a1">Same</text>
+  <!-- Comparison details -->
+  <rect x="50" y="320" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Comparison Details</text>
+  <rect x="70" y="370" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Side-by-side view</text>
+  <rect x="330" y="370" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Overlay view (diff highlighted)</text>
+  <rect x="590" y="370" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Slider view (swipe comparison)</text>
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Tolerance Threshold</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Small differences (anti-aliasing, sub-pixel rendering) are ignored. Large differences (layout shifts, missing elements, color changes) fail the test. Tolerance is configurable (e.g., 0.1% = 0.1% of pixels can differ).</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

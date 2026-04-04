@@ -1,0 +1,61 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Dynamic Content Handling</text>
+  <!-- Timestamp -->
+  <rect x="50" y="80" width="260" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Timestamps</text>
+  <rect x="70" y="130" width="220" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="180" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Changes every capture</text>
+  <rect x="70" y="165" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Mock with fixed value</text>
+  <rect x="70" y="195" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Mask timestamp region</text>
+  <!-- User Content -->
+  <rect x="330" y="80" width="260" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">User-Generated Content</text>
+  <rect x="350" y="130" width="220" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="460" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Varies per user/environment</text>
+  <rect x="350" y="165" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Use static test data</text>
+  <rect x="350" y="195" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Mock API responses</text>
+  <!-- Animations -->
+  <rect x="610" y="80" width="240" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Animations</text>
+  <rect x="630" y="130" width="200" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="730" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Different state per capture</text>
+  <rect x="630" y="165" width="200" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Disable animations</text>
+  <rect x="630" y="195" width="200" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">CSS: animation: none</text>
+  <!-- Ads/Third-Party -->
+  <rect x="50" y="260" width="260" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="180" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Ads / Third-Party</text>
+  <rect x="70" y="310" width="220" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="180" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Random content per load</text>
+  <rect x="70" y="345" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="362" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Hide ads in tests</text>
+  <rect x="70" y="375" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Exclude from testing</text>
+  <!-- Avatars -->
+  <rect x="330" y="260" width="260" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="460" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Avatars / Images</text>
+  <rect x="350" y="310" width="220" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="460" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">User photos vary</text>
+  <rect x="350" y="345" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="362" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Use placeholder images</text>
+  <rect x="350" y="375" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Mock image URLs</text>
+  <!-- Random Content -->
+  <rect x="610" y="260" width="240" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="730" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Random Content</text>
+  <rect x="630" y="310" width="200" height="30" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="730" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Recommendations, feeds</text>
+  <rect x="630" y="345" width="200" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="362" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Seed random with fixed</text>
+  <rect x="630" y="375" width="200" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Use static data fixture</text>
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Stabilization Strategies</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Mock dynamic content with static values | Mask dynamic regions in screenshots | Exclude dynamic components from testing | Use fixed test data fixtures | Disable animations and transitions</text>
+</svg>

@@ -1,0 +1,21 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Testing Pyramid</text>
+  <!-- E2E Tests (top) -->
+  <polygon points="350,80 550,80 650,200 250,200" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#b91c1c">E2E Tests</text>
+  <text x="450" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b91c1c">Few tests, slow, full system</text>
+  <text x="450" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Browser automation, real APIs</text>
+  <!-- Integration Tests (middle) -->
+  <polygon points="250,210 650,210 750,350 150,350" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Integration Tests</text>
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Moderate tests, moderate speed</text>
+  <text x="450" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Component interactions, API integration</text>
+  <!-- Unit Tests (base) -->
+  <polygon points="150,360 750,360 850,500 50,500" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Unit Tests</text>
+  <text x="450" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Many tests, fast, isolated</text>
+  <text x="450" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Functions, components, hooks, utilities</text>
+  <rect x="50" y="510" width="800" height="30" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="530" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Rule of thumb: 70% unit tests, 20% integration tests, 10% E2E tests</text>
+</svg>

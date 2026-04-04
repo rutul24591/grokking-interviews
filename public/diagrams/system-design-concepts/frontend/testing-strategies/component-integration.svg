@@ -1,0 +1,38 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Component Integration</text>
+  <!-- Parent Component -->
+  <rect x="300" y="80" width="300" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Parent Component</text>
+  <text x="450" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Manages state, passes props</text>
+  <text x="450" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Handles events from children</text>
+  <!-- Props down -->
+  <path d="M 400 200 L 250 280" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="300" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Props down</text>
+  <path d="M 500 200 L 650 280" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <text x="600" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Props down</text>
+  <!-- Child Components -->
+  <rect x="50" y="280" width="260" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Child Component A</text>
+  <text x="180" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Receives props, renders UI</text>
+  <text x="180" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Emits events to parent</text>
+  <rect x="590" y="280" width="260" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="720" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Child Component B</text>
+  <text x="720" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Receives props, renders UI</text>
+  <text x="720" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Emits events to parent</text>
+  <!-- Events up -->
+  <path d="M 250 400 L 400 200" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  <text x="290" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Events up</text>
+  <path d="M 650 400 L 500 200" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  <text x="610" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Events up</text>
+  <!-- Context -->
+  <rect x="300" y="420" width="300" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="450" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">Context Provider</text>
+  <text x="450" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Shared state across component tree</text>
+  <text x="450" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">All children can access context</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

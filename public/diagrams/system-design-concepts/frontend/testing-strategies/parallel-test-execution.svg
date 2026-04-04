@@ -1,0 +1,41 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Parallel Test Execution</text>
+  <!-- Sequential -->
+  <rect x="50" y="80" width="380" height="200" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#b91c1c">Sequential Execution</text>
+  <rect x="70" y="130" width="340" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Test 1 (30s) → Test 2 (30s) → Test 3 (30s) → Test 4 (30s)</text>
+  <rect x="70" y="165" width="340" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Test 5 (30s) → Test 6 (30s) → Test 7 (30s) → Test 8 (30s)</text>
+  <rect x="70" y="200" width="340" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="217" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Test 9 (30s) → Test 10 (30s) → Test 11 (30s) → Test 12 (30s)</text>
+  <rect x="70" y="240" width="340" height="30" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="240" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#b91c1c">Total: 6 minutes (12 tests × 30s)</text>
+  <!-- Parallel -->
+  <rect x="470" y="80" width="380" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Parallel Execution (4 workers)</text>
+  <rect x="490" y="130" width="160" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="570" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Worker 1: Test 1, 5, 9</text>
+  <rect x="490" y="160" width="160" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="570" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Worker 2: Test 2, 6, 10</text>
+  <rect x="670" y="130" width="160" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="750" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Worker 3: Test 3, 7, 11</text>
+  <rect x="670" y="160" width="160" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="750" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Worker 4: Test 4, 8, 12</text>
+  <rect x="490" y="200" width="340" height="30" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="660" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">Total: 1.5 minutes (12 tests / 4 workers × 30s)</text>
+  <!-- Comparison -->
+  <rect x="50" y="300" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Speed Improvement</text>
+  <rect x="70" y="350" width="240" height="40" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="190" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Sequential: 6 minutes</text>
+  <rect x="330" y="350" width="240" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Parallel (4 workers): 1.5 minutes</text>
+  <rect x="590" y="350" width="240" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="710" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">4x speedup</text>
+  <rect x="50" y="420" width="800" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Parallel Execution Considerations</text>
+  <rect x="70" y="470" width="760" height="45" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="450" y="497" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Ensure test isolation (no shared state between tests) | Monitor worker count (too many workers may overwhelm test environment) | Use test sharding for very large suites</text>
+</svg>

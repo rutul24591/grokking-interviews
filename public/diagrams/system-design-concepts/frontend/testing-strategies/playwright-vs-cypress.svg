@@ -1,0 +1,44 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Playwright vs Cypress</text>
+  <!-- Playwright -->
+  <rect x="50" y="80" width="380" height="260" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0c4a6e">Playwright</text>
+  <rect x="70" y="130" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Cross-browser (Chromium, Firefox, WebKit)</text>
+  <rect x="70" y="165" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Built-in auto-waiting</text>
+  <rect x="70" y="200" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Parallel execution out of the box</text>
+  <rect x="70" y="235" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Network interception, multiple contexts</text>
+  <rect x="70" y="270" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Faster execution (headless, concurrent)</text>
+  <rect x="70" y="305" width="340" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="240" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Best for: Cross-browser, large test suites</text>
+  <!-- Cypress -->
+  <rect x="470" y="80" width="380" height="260" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#15803d">Cypress</text>
+  <rect x="490" y="130" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Chromium-based browsers (Firefox experimental)</text>
+  <rect x="490" y="165" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Retry-ability (auto-retry commands)</text>
+  <rect x="490" y="200" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Real-time reloading, time-travel debugging</text>
+  <rect x="490" y="235" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Interactive test runner, excellent DX</text>
+  <rect x="490" y="270" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Parallel execution via Cypress Cloud</text>
+  <rect x="490" y="305" width="340" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Best for: Developer experience, small-medium suites</text>
+  <!-- Comparison -->
+  <rect x="50" y="360" width="800" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Decision Guide</text>
+  <rect x="70" y="405" width="360" height="25" rx="4" fill="#f0f9ff" stroke="#bae6fd"/>
+  <text x="250" y="422" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Choose Playwright for cross-browser, speed, large suites</text>
+  <rect x="470" y="405" width="360" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="650" y="422" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Choose Cypress for DX, interactive debugging, smaller suites</text>
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Market Trend</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Playwright is gaining market share due to cross-browser support, faster execution, and Microsoft backing. Cypress remains popular for developer experience.</text>
+</svg>

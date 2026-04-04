@@ -1,0 +1,67 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Flaky Test Prevention</text>
+  <!-- Timing Issues -->
+  <rect x="50" y="80" width="260" height="140" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Timing Issues</text>
+  <rect x="70" y="130" width="220" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="180" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Element not ready, animation</text>
+  <rect x="70" y="160" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Auto-waiting</text>
+  <text x="180" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#647480">Wait for visible, enabled, stable</text>
+  <!-- Network Variability -->
+  <rect x="330" y="80" width="260" height="140" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Network Variability</text>
+  <rect x="350" y="130" width="220" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="460" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Slow responses, failures</text>
+  <rect x="350" y="160" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Request mocking</text>
+  <text x="460" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#647480">Intercept and mock API responses</text>
+  <!-- Test Data Conflicts -->
+  <rect x="610" y="80" width="240" height="140" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Test Data Conflicts</text>
+  <rect x="630" y="130" width="200" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="730" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Shared data, affecting results</text>
+  <rect x="630" y="160" width="200" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Isolated test data</text>
+  <text x="730" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#647480">Each test creates own data</text>
+  <!-- Browser Variability -->
+  <rect x="50" y="240" width="260" height="140" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="180" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Browser Variability</text>
+  <rect x="70" y="290" width="220" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="180" y="307" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Different rendering, engines</text>
+  <rect x="70" y="320" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="337" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Cross-browser testing</text>
+  <text x="180" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#647480">Test in Chrome, Firefox, Safari</text>
+  <!-- State Leakage -->
+  <rect x="330" y="240" width="260" height="140" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="460" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">State Leakage</text>
+  <rect x="350" y="290" width="220" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="460" y="307" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Cookies, storage, sessions</text>
+  <rect x="350" y="320" width="220" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="337" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Fresh browser context</text>
+  <text x="460" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#647480">New context per test</text>
+  <!-- Manual Waits -->
+  <rect x="610" y="240" width="240" height="140" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="730" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Manual Waits</text>
+  <rect x="630" y="290" width="200" height="25" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="730" y="307" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">sleep(), wait for element</text>
+  <rect x="630" y="320" width="200" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="730" y="337" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fix: Auto-waiting</text>
+  <text x="730" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#647480">Built into every action</text>
+  <!-- Summary -->
+  <rect x="50" y="400" width="800" height="130" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Flaky Test Prevention Checklist</text>
+  <rect x="70" y="450" width="240" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="467" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Auto-waiting for all interactions</text>
+  <rect x="330" y="450" width="240" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="467" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Mock API responses for reliability</text>
+  <rect x="590" y="450" width="240" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="467" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Isolated test data per test</text>
+  <rect x="70" y="480" width="240" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="497" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fresh browser context per test</text>
+  <rect x="330" y="480" width="240" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="497" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">No manual waits (sleep, wait)</text>
+  <rect x="590" y="480" width="240" height="25" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="497" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Monitor flaky test rate</text>
+</svg>

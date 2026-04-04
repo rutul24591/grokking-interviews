@@ -1,0 +1,45 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Test Coverage Analysis</text>
+  <!-- Line Coverage -->
+  <rect x="50" y="80" width="260" height="180" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Line Coverage</text>
+  <rect x="70" y="130" width="220" height="30" rx="15" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">85%</text>
+  <text x="70" y="185" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Percentage of code lines</text>
+  <text x="70" y="205" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">executed by tests</text>
+  <text x="70" y="235" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Target: 80%+</text>
+  <!-- Branch Coverage -->
+  <rect x="330" y="80" width="260" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Branch Coverage</text>
+  <rect x="350" y="130" width="220" height="30" rx="15" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#b45309">72%</text>
+  <text x="350" y="185" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Percentage of conditional</text>
+  <text x="350" y="205" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">branches executed (if/else)</text>
+  <text x="350" y="235" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Target: 70%+</text>
+  <!-- Function Coverage -->
+  <rect x="610" y="80" width="240" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Function Coverage</text>
+  <rect x="630" y="130" width="200" height="30" rx="15" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="730" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0369a1">90%</text>
+  <text x="630" y="185" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Percentage of functions</text>
+  <text x="630" y="205" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">called by tests</text>
+  <text x="630" y="235" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Target: 85%+</text>
+  <!-- Coverage Visualization -->
+  <rect x="50" y="280" width="800" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Coverage Report Example</text>
+  <rect x="70" y="330" width="360" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="85" y="347" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#15803d">formatDate.ts     | 100% | 100% | 100%</text>
+  <rect x="70" y="360" width="360" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="85" y="377" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b45309">validateForm.ts   |  75% |  60% |  80%</text>
+  <rect x="70" y="390" width="360" height="25" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="85" y="407" text-anchor="start" font-family="monospace, sans-serif" font-size="9" fill="#b91c1c">apiClient.ts      |  40% |  30% |  50%</text>
+  <rect x="470" y="330" width="360" height="60" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="485" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#475560">File | Lines | Branches | Functions</text>
+  <text x="485" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Green: Good coverage | Yellow: Needs improvement | Red: Critical gap</text>
+  <!-- Key Insight -->
+  <rect x="50" y="420" width="800" height="110" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Key Insight</text>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">High coverage does not guarantee correctness — you can have 100% coverage with incorrect assertions.</text>
+  <text x="450" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Low coverage guarantees incompleteness — untested code may have bugs. Target 80%+ for critical code paths.</text>
+</svg>

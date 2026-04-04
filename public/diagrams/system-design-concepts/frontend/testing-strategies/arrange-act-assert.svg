@@ -1,0 +1,51 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Arrange-Act-Assert Pattern</text>
+  <!-- Arrange -->
+  <rect x="50" y="80" width="260" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Arrange</text>
+  <text x="180" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Set up the test environment</text>
+  <rect x="70" y="160" width="220" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Create test inputs</text>
+  <rect x="70" y="195" width="220" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Configure mocks</text>
+  <rect x="70" y="230" width="220" height="30" rx="4" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="180" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Prepare environment</text>
+  <path d="M 310 180 L 360 180" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Act -->
+  <rect x="360" y="80" width="200" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Act</text>
+  <text x="460" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Execute the unit under test</text>
+  <rect x="380" y="160" width="160" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Call the function</text>
+  <rect x="380" y="195" width="160" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Or render component</text>
+  <path d="M 560 180 L 610 180" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Assert -->
+  <rect x="610" y="80" width="240" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Assert</text>
+  <text x="730" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Verify the result</text>
+  <rect x="630" y="160" width="200" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Check output value</text>
+  <rect x="630" y="195" width="200" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Verify mock calls</text>
+  <rect x="630" y="230" width="200" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="730" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Assert side effects</text>
+  <!-- Code Example -->
+  <rect x="50" y="300" width="800" height="220" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Example: Testing a Format Date Function</text>
+  <rect x="70" y="350" width="760" height="50" rx="4" fill="#f0f9ff" stroke="#bae6fd"/>
+  <text x="85" y="370" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#0369a1">// Arrange: create input and configure expectations</text>
+  <text x="85" y="390" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#0369a1">const input = new Date(2024, 0, 15); const expected = &apos;Jan 15, 2024&apos;;</text>
+  <rect x="70" y="410" width="760" height="35" rx="4" fill="#fef3c7" stroke="#fde68a"/>
+  <text x="85" y="432" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#b45309">// Act: execute the function</text>
+  <text x="85" y="452" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#b45309">const result = formatDate(input);</text>
+  <rect x="70" y="455" width="760" height="50" rx="4" fill="#dcfce7" stroke="#dcfce7"/>
+  <text x="85" y="475" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#15803d">// Assert: verify the result matches expectation</text>
+  <text x="85" y="495" text-anchor="start" font-family="monospace, sans-serif" font-size="10" fill="#15803d">expect(result).toBe(expected);</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>
