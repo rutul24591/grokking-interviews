@@ -1,17 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Application Cache Layers</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Application Cache Layers</title>
+  <desc id="desc">Application-level caching architecture showing per-request, process-local, and distributed cache layers with request flow</desc>
 
-  <rect x="80" y="100" width="260" height="90" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
-  <text x="120" y="145" font-family="Arial" font-size="14" fill="#0f172a">Per-Request Cache</text>
+  <rect width="900" height="550" fill="#ffffff"/>
 
-  <rect x="380" y="100" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="420" y="145" font-family="Arial" font-size="14" fill="#0f172a">Process-Local Cache</text>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Application Cache Layers</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Three-Tier In-Process and Distributed Cache Architecture</text>
 
-  <rect x="680" y="100" width="220" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="710" y="145" font-family="Arial" font-size="14" fill="#0f172a">Shared Cache</text>
+  <!-- Request Entry (Top) -->
+  <rect x="350" y="80" width="200" height="50" rx="6" fill="#2563eb" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Incoming Request</text>
 
-  <rect x="80" y="240" width="820" height="100" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
-  <text x="110" y="280" font-family="Arial" font-size="14" fill="#0f172a">Each layer reduces load on the next. Local caches are fastest but least consistent.</text>
-  <text x="110" y="305" font-family="Arial" font-size="14" fill="#0f172a">Shared caches provide cross-instance reuse and higher hit ratio.</text>
+  <!-- Arrow down -->
+  <line x1="450" y1="135" x2="450" y2="155" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- L1: Per-Request Cache -->
+  <rect x="50" y="160" width="260" height="120" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="180" y="185" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">L1: Per-Request Cache</text>
+  <rect x="65" y="195" width="230" height="75" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="180" y="215" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Scoped to single request lifecycle</text>
+  <text x="180" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Zero network overhead (&lt;1ns lookup)</text>
+  <text x="180" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Hash map or WeakMap in memory</text>
+  <text x="180" y="260" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Best for: repeated lookups in one request</text>
+  <text x="180" y="275" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Hit Rate: 30-50% (per-request)</text>
+
+  <!-- Arrow down -->
+  <line x1="180" y1="285" x2="180" y2="305" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="298" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">MISS</text>
+
+  <!-- L2: Process-Local Cache -->
+  <rect x="320" y="160" width="260" height="120" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="185" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">L2: Process-Local Cache</text>
+  <rect x="335" y="195" width="230" height="75" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="450" y="215" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Caffeine/Guava cache in JVM memory</text>
+  <text x="450" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Fast in-memory lookups (5-50ns)</text>
+  <text x="450" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">W-TinyLFU eviction, bounded size</text>
+  <text x="450" y="260" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Not shared across instances</text>
+  <text x="450" y="275" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Hit Rate: 60-80% (hot data)</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="285" x2="450" y2="305" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="460" y="298" text-anchor="start" font-size="7" font-weight="600" fill="#1f2937">MISS</text>
+
+  <!-- L3: Distributed Cache -->
+  <rect x="590" y="160" width="260" height="120" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="720" y="185" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">L3: Distributed Cache (Redis)</text>
+  <rect x="605" y="195" width="230" height="75" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="720" y="215" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Redis/Memcached cluster over network</text>
+  <text x="720" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Network round-trip: 1-5ms (1000x L2)</text>
+  <text x="720" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Shared across all app instances</text>
+  <text x="720" y="260" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">LRU eviction, large capacity (10GB+)</text>
+  <text x="720" y="275" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">Hit Rate: 85-95% (overall)</text>
+
+  <!-- Database (Bottom) -->
+  <line x1="180" y1="310" x2="450" y2="400" stroke="#374151" stroke-width="1" stroke-dasharray="5,5"/>
+  <line x1="450" y1="310" x2="450" y2="400" stroke="#374151" stroke-width="1" stroke-dasharray="5,5"/>
+  <line x1="720" y1="285" x2="450" y2="400" stroke="#374151" stroke-width="1" stroke-dasharray="5,5"/>
+
+  <rect x="350" y="405" width="200" height="60" rx="6" fill="#374151" stroke="#1f2937" stroke-width="2"/>
+  <text x="450" y="430" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Database / Origin</text>
+  <text x="450" y="450" text-anchor="middle" font-size="8" font-weight="600" fill="#d1d5db">50-500ms per query</text>
+
+  <!-- Request Flow (Bottom Left) -->
+  <rect x="50" y="315" width="260" height="130" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="180" y="340" text-anchor="middle" font-size="12" font-weight="700" fill="#0369a1">Request Flow</text>
+  <rect x="65" y="350" width="230" height="85" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="180" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">1. Check L1 (per-request map)</text>
+  <text x="180" y="385" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">2. Check L2 (Caffeine cache)</text>
+  <text x="180" y="400" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">3. Check L3 (Redis/Memcached)</text>
+  <text x="180" y="415" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">4. Load from database</text>
+  <text x="180" y="430" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">5. Populate L3, L2, L1 on return</text>
+
+  <!-- Performance Metrics (Bottom Right) -->
+  <rect x="320" y="480" width="260" height="60" rx="6" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="500" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">Latency per Layer</text>
+  <text x="450" y="520" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">L1: &lt;1ns | L2: 5-50ns | L3: 1-5ms | DB: 50-500ms</text>
+
+  <rect x="590" y="315" width="260" height="130" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="720" y="340" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">Consistency Trade-offs</text>
+  <rect x="605" y="350" width="230" height="85" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="720" y="370" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">L1: Per-request (always consistent)</text>
+  <text x="720" y="385" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">L2: Per-instance (stale across nodes)</text>
+  <text x="720" y="400" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">L3: Cross-instance (eventually consistent)</text>
+  <text x="720" y="420" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Invalidation: L3 → L2 → L1 cascade</text>
+  <text x="720" y="435" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Use short L2 TTLs to limit staleness</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
 </svg>

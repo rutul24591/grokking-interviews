@@ -1,17 +1,131 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Query Caching Layers</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
 
-  <rect x="80" y="100" width="240" height="90" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
-  <text x="110" y="145" font-family="Arial" font-size="14" fill="#0f172a">Application Cache</text>
+  <!-- Background -->
+  <rect width="1200" height="820" fill="#ffffff"/>
 
-  <rect x="360" y="100" width="240" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="395" y="145" font-family="Arial" font-size="14" fill="#0f172a">Proxy Cache</text>
+  <!-- Title -->
+  <text x="60" y="48" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">Query Caching Layers</text>
+  <text x="60" y="76" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#374151">Query flows through multiple cache layers, each with distinct latency, capacity, and invalidation strategy</text>
 
-  <rect x="640" y="100" width="240" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="685" y="145" font-family="Arial" font-size="14" fill="#0f172a">DB Result Cache</text>
+  <!-- Query Flow Section -->
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Query Flow Through Cache Layers</text>
 
-  <rect x="80" y="240" width="800" height="100" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
-  <text x="110" y="280" font-family="Arial" font-size="14" fill="#0f172a">Higher layers are more flexible, lower layers are more transparent.</text>
-  <text x="110" y="305" font-family="Arial" font-size="14" fill="#0f172a">All layers require correct invalidation to avoid stale data.</text>
+  <!-- Client Box -->
+  <rect x="500" y="140" width="200" height="55" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2"/>
+  <text x="545" y="174" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Client Request</text>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="195" x2="600" y2="230" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- Layer 1: Application Cache -->
+  <rect x="50" y="240" width="300" height="160" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="70" y="275" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Layer 1: Application Cache</text>
+  <text x="70" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">In-memory: Guava, Caffeine</text>
+  <rect x="70" y="318" width="260" height="28" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="80" y="337" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Latency: 0.1-1ms | Capacity: MBs-GBs</text>
+  <rect x="70" y="352" width="260" height="28" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="80" y="371" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Hit Rate: 40-70% (local)</text>
+  <rect x="70" y="386" width="260" height="28" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="80" y="405" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Invalidation: TTL, size-based eviction</text>
+
+  <!-- Arrow from client to L1 (HIT path) -->
+  <line x1="600" y1="195" x2="200" y2="240" stroke="#22c55e" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#ah-green)"/>
+  <text x="340" y="200" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#16a34a">HIT: return immediately</text>
+
+  <!-- Arrow from L1 to L2 (MISS path) -->
+  <line x1="350" y1="320" x2="490" y2="320" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="370" y="305" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">MISS -&gt;</text>
+
+  <!-- Layer 2: Distributed Cache -->
+  <rect x="500" y="240" width="300" height="160" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="520" y="275" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Layer 2: Distributed Cache</text>
+  <text x="520" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Redis, Memcached cluster</text>
+  <rect x="520" y="318" width="260" height="28" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="530" y="337" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Latency: 1-5ms | Capacity: 10s of GBs</text>
+  <rect x="520" y="352" width="260" height="28" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="530" y="371" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Hit Rate: 70-90% (shared)</text>
+  <rect x="520" y="386" width="260" height="28" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="530" y="405" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Invalidation: pub/sub, explicit DELETE</text>
+
+  <!-- Arrow from L2 to L3 (MISS path) -->
+  <line x1="800" y1="320" x2="940" y2="320" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="820" y="305" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">MISS -&gt;</text>
+
+  <!-- Layer 3: DB Buffer Pool -->
+  <rect x="950" y="240" width="220" height="160" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="965" y="275" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Layer 3: DB Buffer Pool</text>
+  <text x="965" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">InnoDB buffer pool</text>
+  <rect x="965" y="318" width="190" height="28" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="975" y="337" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Latency: 0.5-2ms (RAM)</text>
+  <rect x="965" y="352" width="190" height="28" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="975" y="371" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Hit Rate: 90-99%</text>
+  <rect x="965" y="386" width="190" height="28" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="975" y="405" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Invalidation: LRU, auto-managed</text>
+
+  <!-- Arrow down from L3 -->
+  <line x1="1060" y1="400" x2="1060" y2="445" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="1065" y="435" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">MISS -&gt;</text>
+
+  <!-- Layer 4: Materialized Views / Disk -->
+  <rect x="950" y="455" width="220" height="130" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="960" y="488" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Layer 4: Disk I/O</text>
+  <text x="960" y="513" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Materialized views,</text>
+  <text x="960" y="530" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">table scans, indexes</text>
+  <rect x="965" y="545" width="190" height="28" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="975" y="564" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Latency: 10-100ms (disk)</text>
+
+  <!-- Invalidation Strategies Panel -->
+  <rect x="60" y="450" width="520" height="340" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="80" y="485" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Invalidation Strategy per Layer</text>
+
+  <rect x="80" y="505" width="480" height="65" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="95" y="528" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Application Cache: Passive TTL + Size Eviction</text>
+  <text x="95" y="550" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">No cross-node coordination; stale data tolerated briefly</text>
+
+  <rect x="80" y="580" width="480" height="65" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="95" y="603" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Distributed Cache: Explicit Invalidation via Pub/Sub</text>
+  <text x="95" y="625" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Write-through or cache-aside with event-driven key deletion</text>
+
+  <rect x="80" y="655" width="480" height="65" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="95" y="678" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">DB Buffer Pool: LRU Eviction (Automatic)</text>
+  <text x="95" y="700" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Managed by storage engine; not directly controllable</text>
+
+  <rect x="80" y="730" width="480" height="50" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="95" y="753" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Materialized Views: Scheduled Refresh or ON COMMIT</text>
+  <text x="95" y="770" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Trade-off: freshness vs. refresh overhead</text>
+
+  <!-- Comparison Panel -->
+  <rect x="610" y="450" width="310" height="340" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="630" y="485" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Layer Trade-Offs</text>
+
+  <rect x="630" y="505" width="270" height="60" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="645" y="528" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Higher layers = faster</text>
+  <text x="645" y="550" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Application cache is fastest but</text>
+  <text x="645" y="566" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">has weakest consistency guarantees</text>
+
+  <rect x="630" y="575" width="270" height="60" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="645" y="598" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Lower layers = more consistent</text>
+  <text x="645" y="620" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">DB buffer pool is always consistent</text>
+  <text x="645" y="636" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">but cannot absorb write load</text>
+
+  <rect x="630" y="645" width="270" height="60" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="645" y="668" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Distributed cache = sweet spot</text>
+  <text x="645" y="690" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Shared across nodes, explicit</text>
+  <text x="645" y="706" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">invalidation control, good latency</text>
+
+  <rect x="630" y="715" width="270" height="60" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="645" y="738" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Multi-layer = defense in depth</text>
+  <text x="645" y="760" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Each layer absorbs a portion of</text>
+  <text x="645" y="776" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">load, but invalidation complexity grows</text>
 </svg>

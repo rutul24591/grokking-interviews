@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="100%" height="100%">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <linearGradient id="successGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#dcfce7" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="waitGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- White background -->
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Distributed Locking Flow: Cache Regeneration Coordination</text>
+  <text x="450" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">SETNX &#8594; Lock acquired &#8594; Regenerate &#8594; Release with timeout and deadlock prevention</text>
+
+  <!-- Main Flow: Lock Acquisition Sequence -->
+  <g transform="translate(50, 80)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Lock Acquisition Flow</text>
+    
+    <!-- Step 1: SETNX -->
+    <g transform="translate(30, 30)">
+      <rect x="0" y="0" width="130" height="65" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <text x="65" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 1: SETNX</text>
+      <text x="65" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">SETNX lock:key</text>
+      <text x="65" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">"app1" EX 30</text>
+    </g>
+    
+    <!-- Arrow to Step 2 -->
+    <line x1="160" y1="62" x2="185" y2="62" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="172" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">OK</text>
+    
+    <!-- Step 2: Lock Acquired -->
+    <g transform="translate(190, 30)">
+      <rect x="0" y="0" width="130" height="65" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="65" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 2: Lock Held</text>
+      <text x="65" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Owner: app-instance-1</text>
+      <text x="65" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">TTL: 30s lease</text>
+    </g>
+    
+    <!-- Arrow to Step 3 -->
+    <line x1="320" y1="62" x2="345" y2="62" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 3: Regenerate -->
+    <g transform="translate(350, 30)">
+      <rect x="0" y="0" width="130" height="65" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="65" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 3: Regenerate</text>
+      <text x="65" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Fetch from DB</text>
+      <text x="65" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Build cache entry</text>
+    </g>
+    
+    <!-- Arrow to Step 4 -->
+    <line x1="480" y1="62" x2="505" y2="62" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 4: Set Cache -->
+    <g transform="translate(510, 30)">
+      <rect x="0" y="0" width="130" height="65" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="65" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 4: Cache SET</text>
+      <text x="65" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">SET key value</text>
+      <text x="65" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">EX 300 + jitter</text>
+    </g>
+    
+    <!-- Arrow to Step 5 -->
+    <line x1="640" y1="62" x2="665" y2="62" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 5: Release Lock -->
+    <g transform="translate(670, 30)">
+      <rect x="0" y="0" width="130" height="65" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="65" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 5: Release</text>
+      <text x="65" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">EVAL DEL if owner</text>
+      <text x="65" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Lua atomic delete</text>
+    </g>
+    
+    <!-- Success arrow back -->
+    <path d="M 735 95 L 735 120 Q 735 130 725 130 L 65 130 Q 55 130 55 120 L 55 105" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+    <text x="400" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#16a34a" text-anchor="middle">Cache populated, lock released, other requests served from cache</text>
+  </g>
+
+  <!-- Lock Contention Diagram -->
+  <g transform="translate(50, 240)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Lock Contention: Multiple Concurrent Requests</text>
+    
+    <!-- App Servers -->
+    <g transform="translate(0, 40)">
+      <rect x="20" y="0" width="100" height="35" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <text x="70" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">App Server 1</text>
+      
+      <rect x="20" y="50" width="100" height="35" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <text x="70" y="72" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">App Server 2</text>
+      
+      <rect x="20" y="100" width="100" height="35" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <text x="70" y="122" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">App Server 3</text>
+      
+      <rect x="20" y="150" width="100" height="35" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <text x="70" y="172" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">App Server 4</text>
+    </g>
+    
+    <!-- Arrows to lock -->
+    <line x1="120" y1="57" x2="340" y2="80" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+    <line x1="120" y1="107" x2="340" y2="80" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+    <line x1="120" y1="57" x2="340" y2="120" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+    <line x1="120" y1="107" x2="340" y2="120" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+    
+    <!-- Redis Lock Node -->
+    <g transform="translate(350, 50)">
+      <rect x="0" y="0" width="180" height="55" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="90" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Redis Lock Manager</text>
+      <text x="90" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">SETNX lock:hot_key "srv1" EX 30</text>
+      <text x="90" y="49" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Atomic compare-and-set</text>
+    </g>
+    
+    <!-- Outcomes -->
+    <g transform="translate(560, 40)">
+      <!-- Server 1: Success -->
+      <rect x="0" y="0" width="260" height="55" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="130" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">&#x2705; Server 1: Lock Acquired</text>
+      <text x="130" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Regenerates cache, holds lock for 30s</text>
+      <text x="130" y="47" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Single DB query executed</text>
+      
+      <!-- Server 2: Wait/Fallback -->
+      <rect x="0" y="70" width="260" height="55" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="130" y="88" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">&#x23F3; Server 2: Waiting (Fallback)</text>
+      <text x="130" y="103" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Serves stale cache if available</text>
+      <text x="130" y="117" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Or returns cached value with short TTL</text>
+      
+      <!-- Server 3: Wait/Fallback -->
+      <rect x="0" y="140" width="260" height="55" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="130" y="158" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">&#x23F3; Server 3: Waiting (Fallback)</text>
+      <text x="130" y="173" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Polls for lock release or timeout</text>
+      <text x="130" y="187" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Returns stale data or 202 Accepted</text>
+      
+      <!-- Server 4: Timeout -->
+      <rect x="0" y="210" width="260" height="55" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+      <text x="130" y="228" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">&#x274C; Server 4: Lock Timeout</text>
+      <text x="130" y="243" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Gives up after 5s timeout</text>
+      <text x="130" y="257" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Serves stale or returns error</text>
+    </g>
+    
+    <!-- Arrow from Redis to outcomes -->
+    <line x1="530" y1="77" x2="560" y2="67" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="530" y1="77" x2="560" y2="137" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="530" y1="77" x2="560" y2="207" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+
+  <!-- Lock Timeout & Deadlock Prevention -->
+  <g transform="translate(50, 560)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Lock Timeout, Deadlock Prevention &#38; Lease Patterns</text>
+    
+    <!-- Lock Timeout -->
+    <g transform="translate(0, 30)">
+      <rect x="0" y="0" width="250" height="100" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+      <text x="125" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Lock Timeout</text>
+      <text x="15" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">SETNX with EX 30 (auto-expire)</text>
+      <text x="15" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Prevents permanent lock hold</text>
+      <text x="15" y="74" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Watchdog pattern: extend lease</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">while regenerating</text>
+    </g>
+    
+    <!-- Deadlock Prevention -->
+    <g transform="translate(270, 30)">
+      <rect x="0" y="0" width="250" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="125" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Deadlock Prevention</text>
+      <text x="15" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Single lock per key (no cycles)</text>
+      <text x="15" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Atomic Lua script for DEL</text>
+      <text x="15" y="74" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Verify owner before release</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">if lock_value == owner then DEL</text>
+    </g>
+    
+    <!-- Lock Lease -->
+    <g transform="translate(540, 30)">
+      <rect x="0" y="0" width="250" height="100" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="125" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Lock Lease Pattern</text>
+      <text x="15" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Fixed TTL on lock (e.g., 30s)</text>
+      <text x="15" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Regeneration must complete &lt; TTL</text>
+      <text x="15" y="74" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Redlock for multi-Redis setup</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Quorum-based distributed lock</text>
+    </g>
+  </g>
+</svg>

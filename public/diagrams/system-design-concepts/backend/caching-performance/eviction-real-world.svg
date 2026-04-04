@@ -1,0 +1,307 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="42" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Real-World Eviction Implementations — Redis, Caffeine, Memcached</text>
+  <text x="600" y="66" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Production architectures, trade-offs, and measured performance metrics</text>
+
+  <!-- ==================== REDIS SECTION ==================== -->
+  <rect x="30" y="95" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="125" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">1. Redis — Approximated LRU with Sampling</text>
+
+  <!-- Redis Architecture -->
+  <rect x="30" y="160" width="740" height="340" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="30" y="160" width="740" height="38" rx="10" fill="#e0e7ff"/>
+  <rect x="30" y="188" width="740" height="10" fill="#e0e7ff"/>
+  <text x="400" y="185" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#3730a3" text-anchor="middle">Redis Internal Eviction Architecture</text>
+
+  <!-- Config -->
+  <rect x="50" y="215" width="200" height="80" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="150" y="237" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Configuration</text>
+  <text x="65" y="258" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e">maxmemory-policy: allkeys-lru</text>
+  <text x="65" y="274" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e">maxmemory-samples: 5 (default)</text>
+  <text x="65" y="290" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e">or 10 for better accuracy</text>
+
+  <!-- Sampling Pool -->
+  <rect x="270" y="215" width="220" height="130" rx="8" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="380" y="237" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Sample Pool</text>
+  <text x="380" y="255" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(N=5 random keys)</text>
+
+  <rect x="285" y="265" width="40" height="24" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="305" y="282" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">K1</text>
+  <text x="305" y="294" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">idle=12s</text>
+
+  <rect x="333" y="265" width="40" height="24" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="353" y="282" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">K2</text>
+  <text x="353" y="294" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">idle=45s</text>
+
+  <rect x="381" y="265" width="40" height="24" rx="4" fill="#fee2e2" stroke="#f87171" stroke-width="1"/>
+  <text x="401" y="282" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#991b1b" text-anchor="middle">K3</text>
+  <text x="401" y="294" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">idle=120s</text>
+
+  <rect x="429" y="265" width="40" height="24" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="449" y="282" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">K4</text>
+  <text x="449" y="294" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">idle=8s</text>
+
+  <rect x="285" y="298" width="40" height="24" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="305" y="315" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">K5</text>
+  <text x="305" y="327" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">idle=30s</text>
+
+  <!-- Eviction Decision -->
+  <rect x="510" y="215" width="240" height="130" rx="8" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="630" y="237" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Eviction Decision</text>
+
+  <rect x="530" y="250" width="200" height="36" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="630" y="267" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b" text-anchor="middle">K3 has highest idle (120s)</text>
+  <text x="630" y="282" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">--&gt; EVICT K3</text>
+
+  <text x="530" y="310" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Note: K3 might not be the true</text>
+  <text x="530" y="326" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">LRU key -- just the oldest in sample</text>
+
+  <!-- Arrow from config to sampling -->
+  <line x1="250" y1="270" x2="268" y2="270" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <!-- Arrow from sampling to decision -->
+  <line x1="492" y1="270" x2="508" y2="270" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Redis dict / radix tree -->
+  <rect x="50" y="360" width="660" height="120" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="380" y="382" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534" text-anchor="middle">Redis Data Structure — dict (Hash Table) + 24-bit Idle Counter per Key</text>
+
+  <rect x="70" y="395" width="120" height="30" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="130" y="415" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">dictEntry*</text>
+
+  <rect x="200" y="395" width="120" height="30" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="260" y="415" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">sds key</text>
+
+  <rect x="330" y="395" width="120" height="30" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="390" y="415" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">robj* value</text>
+
+  <rect x="460" y="395" width="130" height="30" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="525" y="415" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">24-bit lru field</text>
+
+  <text x="70" y="448" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534">The 24-bit field stores either:</text>
+  <text x="70" y="464" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534">- LRU: lru_clock granularity (server.lruclock)</text>
+  <text x="70" y="476" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534">- LFU: 8-bit frequency + 8-bit decay time (when policy is LFU)</text>
+
+  <!-- Redis Trade-offs -->
+  <rect x="790" y="160" width="380" height="340" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="790" y="160" width="380" height="38" rx="10" fill="#fef3c7"/>
+  <rect x="790" y="188" width="380" height="10" fill="#fef3c7"/>
+  <text x="980" y="185" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#92400e" text-anchor="middle">Redis Trade-offs</text>
+
+  <!-- Pros -->
+  <rect x="810" y="215" width="340" height="120" rx="8" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="980" y="237" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Advantages</text>
+  <text x="825" y="258" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Only 3 bytes per key (vs 16 bytes</text>
+  <text x="825" y="274" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">  for doubly-linked list pointers)</text>
+  <text x="825" y="294" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- N=10 achieves ~95% hit rate of</text>
+  <text x="825" y="310" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">  true LRU on typical web workloads</text>
+  <text x="825" y="330" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- No pointer chasing, better CPU cache</text>
+
+  <!-- Cons -->
+  <rect x="810" y="345" width="340" height="130" rx="8" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="980" y="367" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Disadvantages</text>
+  <text x="825" y="388" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- Probabilistic, not deterministic</text>
+  <text x="825" y="404" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- Can evict hot keys if unlucky sample</text>
+  <text x="825" y="424" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- No scan resistance (bulk inserts pollute)</text>
+  <text x="825" y="440" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- 24-bit counter wraps at ~194 days</text>
+  <text x="825" y="456" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">  (with 1s granularity)</text>
+
+  <!-- Redis Production Metrics -->
+  <rect x="30" y="520" width="1140" height="130" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+  <text x="600" y="545" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">Redis Production Metrics</text>
+
+  <rect x="60" y="560" width="260" height="70" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="190" y="582" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#166534" text-anchor="middle">92-96%</text>
+  <text x="190" y="600" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Hit rate (N=10, web workload)</text>
+  <text x="190" y="616" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">vs 95-98% true LRU</text>
+
+  <rect x="340" y="560" width="260" height="70" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="470" y="582" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#166534" text-anchor="middle">3 bytes</text>
+  <text x="470" y="600" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Memory overhead per key</text>
+  <text x="470" y="616" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">vs 16 bytes (true LRU)</text>
+
+  <rect x="620" y="560" width="260" height="70" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="750" y="582" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#166534" text-anchor="middle">~50M</text>
+  <text x="750" y="600" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Keys supported per instance</text>
+  <text x="750" y="616" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">with 8GB memory limit</text>
+
+  <rect x="900" y="560" width="240" height="70" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="1020" y="582" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#166534" text-anchor="middle">O(N)</text>
+  <text x="1020" y="600" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">CPU per eviction</text>
+  <text x="1020" y="616" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">N = maxmemory-samples</text>
+
+  <!-- ==================== CAFFEINE SECTION ==================== -->
+  <rect x="30" y="670" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="700" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">2. Caffeine (Java) — W-TinyLFU (Window TinyLFU)</text>
+
+  <!-- Caffeine Architecture -->
+  <rect x="30" y="735" width="740" height="360" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="30" y="735" width="740" height="38" rx="10" fill="#dcfce7"/>
+  <rect x="30" y="763" width="740" height="10" fill="#dcfce7"/>
+  <text x="400" y="760" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#166534" text-anchor="middle">Caffeine W-TinyLFU Architecture</text>
+
+  <!-- Count-Min Sketch -->
+  <rect x="50" y="790" width="200" height="120" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="150" y="812" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Count-Min Sketch</text>
+  <text x="150" y="830" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">(Frequency Estimator)</text>
+
+  <rect x="65" y="840" width="170" height="22" rx="3" fill="#ffffff" stroke="#fbbf24" stroke-width="1"/>
+  <text x="150" y="856" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Row 0: hash0(k) % w0</text>
+  <rect x="65" y="864" width="170" height="22" rx="3" fill="#ffffff" stroke="#fbbf24" stroke-width="1"/>
+  <text x="150" y="880" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Row 1: hash1(k) % w1</text>
+  <rect x="65" y="888" width="170" height="22" rx="3" fill="#ffffff" stroke="#fbbf24" stroke-width="1"/>
+  <text x="150" y="904" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">min(rows) = freq estimate</text>
+
+  <!-- Window LRU -->
+  <rect x="270" y="790" width="200" height="120" rx="8" fill="#e0e7ff" stroke="#818cf8" stroke-width="2"/>
+  <text x="370" y="812" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">Window LRU</text>
+  <text x="370" y="830" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(1% of cache)</text>
+
+  <rect x="285" y="845" width="50" height="22" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="310" y="861" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#166534" text-anchor="middle">New</text>
+
+  <rect x="343" y="845" width="50" height="22" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="368" y="861" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#166534" text-anchor="middle">A</text>
+
+  <rect x="401" y="845" width="50" height="22" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="426" y="861" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#166534" text-anchor="middle">B</text>
+
+  <text x="370" y="890" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">New items enter here</text>
+  <text x="370" y="906" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">LRU evicted from window</text>
+
+  <!-- Main Space: SLRU -->
+  <rect x="490" y="790" width="260" height="120" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="620" y="812" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Main Space — SLRU (99% of cache)</text>
+
+  <!-- Probation -->
+  <rect x="505" y="825" width="230" height="35" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="620" y="842" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">Probation (25% of main)</text>
+  <text x="620" y="856" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#92400e" text-anchor="middle">Newly promoted from window</text>
+
+  <!-- Resident -->
+  <rect x="505" y="865" width="230" height="35" rx="4" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="620" y="882" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">Resident (75% of main)</text>
+  <text x="620" y="896" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#166534" text-anchor="middle">Re-accessed items -- protected</text>
+
+  <!-- Admission Gate -->
+  <rect x="50" y="930" width="680" height="50" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="390" y="952" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#1e40af" text-anchor="middle">Admission Gate: Window victim competes with probation tail</text>
+  <text x="390" y="970" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#1e40af" text-anchor="middle">Admitted if CMS.freq(new_item) &gt;= CMS.freq(probation_tail)</text>
+
+  <!-- Flow arrows -->
+  <line x1="250" y1="855" x2="268" y2="855" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="472" y1="855" x2="488" y2="855" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="390" y1="912" x2="390" y2="928" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Caffeine Trade-offs -->
+  <rect x="790" y="735" width="380" height="360" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="790" y="735" width="380" height="38" rx="10" fill="#dcfce7"/>
+  <rect x="790" y="763" width="380" height="10" fill="#dcfce7"/>
+  <text x="980" y="760" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#166534" text-anchor="middle">Caffeine Trade-offs</text>
+
+  <!-- Pros -->
+  <rect x="810" y="790" width="340" height="140" rx="8" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="980" y="812" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Advantages</text>
+  <text x="825" y="834" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Near-optimal hit rate (beats LRU by</text>
+  <text x="825" y="850" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">  5-15% on real-world traces)</text>
+  <text x="825" y="870" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Scan-resistant (CMS windowing)</text>
+  <text x="825" y="886" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- ~1-2 bits per entry for CMS</text>
+  <text x="825" y="906" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Window protects new items from</text>
+  <text x="825" y="922" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">  immediate eviction</text>
+
+  <!-- Cons -->
+  <rect x="810" y="940" width="340" height="130" rx="8" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="980" y="962" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Disadvantages</text>
+  <text x="825" y="984" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- Complex implementation (SLRU +</text>
+  <text x="825" y="1000" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">  CMS + admission gate)</text>
+  <text x="825" y="1020" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- CMS has false positives (overcounts)</text>
+  <text x="825" y="1036" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- Periodic reset needed for CMS decay</text>
+  <text x="825" y="1056" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- In-process only (not distributed)</text>
+
+  <!-- Caffeine Production Metrics -->
+  <rect x="30" y="1115" width="1140" height="130" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+  <text x="600" y="1140" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">Caffeine Production Metrics</text>
+
+  <rect x="60" y="1155" width="260" height="70" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="190" y="1177" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#166534" text-anchor="middle">95-99%</text>
+  <text x="190" y="1195" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Hit rate (real-world traces)</text>
+  <text x="190" y="1211" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">+5-15% over LRU</text>
+
+  <rect x="340" y="1155" width="260" height="70" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="470" y="1177" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#166534" text-anchor="middle">~1-2 bits</text>
+  <text x="470" y="1195" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">CMS overhead per entry</text>
+  <text x="470" y="1211" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">vs 16 bytes (true LRU)</text>
+
+  <rect x="620" y="1155" width="260" height="70" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="750" y="1177" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#166534" text-anchor="middle">1%</text>
+  <text x="750" y="1195" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Window size (configurable)</text>
+  <text x="750" y="1211" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">of total cache capacity</text>
+
+  <rect x="900" y="1155" width="240" height="70" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="1020" y="1177" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#166534" text-anchor="middle">Used by</text>
+  <text x="1020" y="1195" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Spring Boot, Guava,</text>
+  <text x="1020" y="1211" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">gRPC, many others</text>
+
+  <!-- ==================== MEMCACHED SECTION ==================== -->
+  <rect x="30" y="1265" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="1295" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">3. Memcached — Slab Class LRU with Tail Repair</text>
+
+  <!-- Memcached Architecture -->
+  <rect x="30" y="1330" width="740" height="130" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="30" y="1330" width="740" height="38" rx="10" fill="#f3f4f6"/>
+  <rect x="30" y="1358" width="740" height="10" fill="#f3f4f6"/>
+  <text x="400" y="1355" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="middle">Memcached Slab Class LRU Architecture</text>
+
+  <!-- Slab classes -->
+  <rect x="50" y="1380" width="140" height="60" rx="6" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="120" y="1398" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Slab 1 (96B)</text>
+  <text x="120" y="1414" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">LRU chain</text>
+  <text x="120" y="1428" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">items: 96 bytes each</text>
+
+  <rect x="200" y="1380" width="140" height="60" rx="6" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="270" y="1398" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Slab 2 (120B)</text>
+  <text x="270" y="1414" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">LRU chain</text>
+  <text x="270" y="1428" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">items: 120 bytes each</text>
+
+  <rect x="350" y="1380" width="140" height="60" rx="6" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="420" y="1398" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Slab 3 (152B)</text>
+  <text x="420" y="1414" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">LRU chain</text>
+  <text x="420" y="1428" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">items: 152 bytes each</text>
+
+  <rect x="500" y="1380" width="140" height="60" rx="6" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="570" y="1398" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Slab N (...)</text>
+  <text x="570" y="1414" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">LRU chain</text>
+  <text x="570" y="1428" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">size grows 1.25x</text>
+
+  <text x="660" y="1410" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#374151">...</text>
+
+  <!-- Memcached Trade-offs -->
+  <rect x="790" y="1330" width="380" height="130" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="790" y="1330" width="380" height="38" rx="10" fill="#f3f4f6"/>
+  <rect x="790" y="1358" width="380" height="10" fill="#f3f4f6"/>
+  <text x="980" y="1355" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="middle">Memcached Trade-offs</text>
+
+  <rect x="810" y="1380" width="160" height="60" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="890" y="1400" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Pros</text>
+  <text x="820" y="1418" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">No internal fragmentation</text>
+  <text x="820" y="1432" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">within slab class</text>
+
+  <rect x="990" y="1380" width="160" height="60" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="1070" y="1400" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Cons</text>
+  <text x="1000" y="1418" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">Cross-slab waste: items</text>
+  <text x="1000" y="1432" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">rounded up to slab size</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#60a5fa"/>
+    </marker>
+  </defs>
+</svg>

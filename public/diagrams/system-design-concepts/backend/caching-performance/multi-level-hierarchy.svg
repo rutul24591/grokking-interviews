@@ -1,17 +1,130 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Multi-Level Cache Hierarchy</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="780" viewBox="0 0 1100 780">
+  <rect width="1100" height="780" fill="#ffffff" />
 
-  <rect x="120" y="90" width="220" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="160" y="130" font-family="Arial" font-size="14" fill="#0f172a">L1 In-Process</text>
+  <!-- Title -->
+  <text x="550" y="42" font-family="Arial" font-size="26" font-weight="700" fill="#111827" text-anchor="middle">Multi-Level Cache Hierarchy</text>
+  <text x="550" y="68" font-family="Arial" font-size="15" fill="#374151" text-anchor="middle">Browser -> CDN -> Reverse Proxy -> App L2 -> App L1 -> Database</text>
 
-  <rect x="120" y="180" width="220" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="160" y="220" font-family="Arial" font-size="14" fill="#0f172a">L2 Shared Cache</text>
+  <!-- Level 1: Browser -->
+  <rect x="80" y="100" width="240" height="95" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2" />
+  <text x="200" y="130" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">L0: Browser Cache</text>
+  <text x="200" y="155" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Latency: 0ms (local)</text>
+  <text x="200" y="175" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Capacity: ~50MB per origin</text>
+  <text x="200" y="195" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Hit Rate: 30-60% (static)</text>
 
-  <rect x="120" y="270" width="220" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="160" y="310" font-family="Arial" font-size="14" fill="#0f172a">L3 Origin</text>
+  <!-- Arrow L0 -> L1 -->
+  <line x1="320" y1="147" x2="370" y2="147" stroke="#374151" stroke-width="2" />
+  <polygon points="370,139 385,147 370,155" fill="#374151" />
+  <text x="350" y="137" font-family="Arial" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">MISS</text>
 
-  <rect x="420" y="120" width="420" height="200" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
-  <text x="450" y="165" font-family="Arial" font-size="14" fill="#0f172a">Lower layers are slower but have more capacity</text>
-  <text x="450" y="195" font-family="Arial" font-size="14" fill="#0f172a">Higher layers are faster but smaller</text>
+  <!-- Level 2: CDN -->
+  <rect x="385" y="100" width="240" height="95" rx="8" fill="#bfdbfe" stroke="#2563eb" stroke-width="2" />
+  <text x="505" y="130" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">L1: CDN Edge Cache</text>
+  <text x="505" y="155" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Latency: 10-50ms</text>
+  <text x="505" y="175" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Capacity: ~100GB per POP</text>
+  <text x="505" y="195" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Hit Rate: 70-90% (static/semi-dynamic)</text>
+
+  <!-- Arrow L1 -> L2 -->
+  <line x1="625" y1="147" x2="675" y2="147" stroke="#374151" stroke-width="2" />
+  <polygon points="675,139 690,147 675,155" fill="#374151" />
+  <text x="655" y="137" font-family="Arial" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">MISS</text>
+
+  <!-- Level 3: Reverse Proxy -->
+  <rect x="690" y="100" width="240" height="95" rx="8" fill="#93c5fd" stroke="#2563eb" stroke-width="2" />
+  <text x="810" y="130" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">L2: Reverse Proxy (Varnish/Nginx)</text>
+  <text x="810" y="155" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Latency: 1-5ms</text>
+  <text x="810" y="175" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Capacity: ~10-50GB per node</text>
+  <text x="810" y="195" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Hit Rate: 60-80% (API responses)</text>
+
+  <!-- Arrow L2 -> L3 -->
+  <line x1="810" y1="195" x2="810" y2="240" stroke="#374151" stroke-width="2" />
+  <polygon points="802,235 810,250 818,235" fill="#374151" />
+  <text x="828" y="225" font-family="Arial" font-size="11" font-weight="700" fill="#374151">MISS</text>
+
+  <!-- Level 4: App L2 (Redis) -->
+  <rect x="690" y="250" width="240" height="95" rx="8" fill="#bbf7d0" stroke="#16a34a" stroke-width="2" />
+  <text x="810" y="280" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">L3: Distributed Cache (Redis)</text>
+  <text x="810" y="305" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Latency: 1-3ms</text>
+  <text x="810" y="325" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Capacity: ~10-100GB cluster</text>
+  <text x="810" y="345" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Hit Rate: 80-95% (session, query)</text>
+
+  <!-- Arrow L3 -> L4 -->
+  <line x1="810" y1="345" x2="810" y2="390" stroke="#374151" stroke-width="2" />
+  <polygon points="802,385 810,400 818,385" fill="#374151" />
+  <text x="828" y="375" font-family="Arial" font-size="11" font-weight="700" fill="#374151">MISS</text>
+
+  <!-- Level 5: App L1 (In-Process) -->
+  <rect x="690" y="400" width="240" height="95" rx="8" fill="#86efac" stroke="#16a34a" stroke-width="2" />
+  <text x="810" y="430" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">L4: App L1 (In-Process Memory)</text>
+  <text x="810" y="455" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Latency: under 1ms (memory access)</text>
+  <text x="810" y="475" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Capacity: ~1-5GB per process</text>
+  <text x="810" y="495" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Hit Rate: 40-70% (hot keys)</text>
+
+  <!-- Arrow L4 -> L5 -->
+  <line x1="810" y1="495" x2="810" y2="540" stroke="#374151" stroke-width="2" />
+  <polygon points="802,535 810,550 818,535" fill="#374151" />
+  <text x="828" y="525" font-family="Arial" font-size="11" font-weight="700" fill="#374151">MISS</text>
+
+  <!-- Level 6: Database -->
+  <rect x="690" y="550" width="240" height="95" rx="8" fill="#fca5a5" stroke="#dc2626" stroke-width="2" />
+  <text x="810" y="580" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">L5: Database (Origin)</text>
+  <text x="810" y="605" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Latency: 10-100ms (disk/network)</text>
+  <text x="810" y="625" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Capacity: ~TB scale</text>
+  <text x="810" y="645" font-family="Arial" font-size="13" fill="#1f2937" text-anchor="middle">Hit Rate: 100% (source of truth)</text>
+
+  <!-- Hit path arrows going back up on left side -->
+  <path d="M 690,147 L 625,147" stroke="#059669" stroke-width="2" stroke-dasharray="6,4" />
+  <polygon points="630,139 615,147 630,155" fill="#059669" />
+  <text x="645" y="165" font-family="Arial" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">HIT</text>
+
+  <path d="M 385,147 L 320,147" stroke="#059669" stroke-width="2" stroke-dasharray="6,4" />
+  <polygon points="325,139 310,147 325,155" fill="#059669" />
+  <text x="345" y="165" font-family="Arial" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">HIT</text>
+
+  <path d="M 690,297 L 625,297 L 625,147" stroke="#059669" stroke-width="2" stroke-dasharray="6,4" />
+  <polygon points="620,152 610,157 620,162" fill="#059669" />
+  <text x="640" y="315" font-family="Arial" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">HIT (populates up)</text>
+
+  <path d="M 690,447 L 625,447 L 625,297" stroke="#059669" stroke-width="2" stroke-dasharray="6,4" />
+  <polygon points="620,302 610,307 620,312" fill="#059669" />
+  <text x="640" y="465" font-family="Arial" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">HIT (populates up)</text>
+
+  <!-- Cumulative Hit Rate Calculation Box -->
+  <rect x="80" y="250" width="500" height="280" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="2" />
+  <text x="330" y="280" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">Cumulative Hit Rate Calculation</text>
+
+  <text x="110" y="315" font-family="Arial" font-size="14" fill="#1f2937">P(hit at any level) = 1 - product of P(miss at each level)</text>
+
+  <text x="110" y="350" font-family="Arial" font-size="14" fill="#1f2937">Example with typical hit rates:</text>
+  <text x="110" y="375" font-family="Arial" font-size="13" fill="#1f2937">  L0 Browser:    40% hit -> 60% miss</text>
+  <text x="110" y="395" font-family="Arial" font-size="13" fill="#1f2937">  L1 CDN:        80% hit -> 20% miss</text>
+  <text x="110" y="415" font-family="Arial" font-size="13" fill="#1f2937">  L2 Proxy:      70% hit -> 30% miss</text>
+  <text x="110" y="435" font-family="Arial" font-size="13" fill="#1f2937">  L3 Redis:      90% hit -> 10% miss</text>
+  <text x="110" y="455" font-family="Arial" font-size="13" fill="#1f2937">  L4 App L1:     55% hit -> 45% miss</text>
+
+  <text x="110" y="490" font-family="Arial" font-size="14" font-weight="700" fill="#111827">Cumulative miss rate:</text>
+  <text x="110" y="512" font-family="Arial" font-size="13" fill="#1f2937">  0.60 x 0.20 x 0.30 x 0.10 x 0.45 = 0.00162 (0.16%)</text>
+
+  <text x="110" y="542" font-family="Arial" font-size="14" font-weight="700" fill="#059669">Cumulative hit rate: 99.84%</text>
+  <text x="110" y="562" font-family="Arial" font-size="13" fill="#1f2937">Only 0.16% of requests reach the database</text>
+
+  <!-- Key Principles Box -->
+  <rect x="80" y="560" width="500" height="100" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2" />
+  <text x="330" y="590" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">Key Design Principles</text>
+  <text x="110" y="615" font-family="Arial" font-size="13" fill="#1f2937">Each level is faster than the one below it</text>
+  <text x="110" y="635" font-family="Arial" font-size="13" fill="#1f2937">Smaller, faster layers absorb most traffic; larger, slower layers handle the remainder</text>
+  <text x="110" y="655" font-family="Arial" font-size="13" fill="#1f2937">Cache invalidation must propagate top-down on writes</text>
+
+  <!-- Request Flow Label -->
+  <text x="810" y="690" font-family="Arial" font-size="15" font-weight="700" fill="#374151" text-anchor="middle">Request Flow: Top -> Down on Miss, Bottom -> Up on Hit (populate)</text>
+  <text x="810" y="715" font-family="Arial" font-size="15" font-weight="700" fill="#374151" text-anchor="middle">Each miss at a level cascades to the next slower tier</text>
+
+  <!-- Additional decorative elements - latency bars -->
+  <rect x="80" y="680" width="15" height="8" rx="2" fill="#059669" />
+  <text x="100" y="690" font-family="Arial" font-size="10" fill="#1f2937">Fast</text>
+  <rect x="160" y="680" width="40" height="8" rx="2" fill="#facc15" />
+  <text x="205" y="690" font-family="Arial" font-size="10" fill="#1f2937">Medium</text>
+  <rect x="270" y="680" width="70" height="8" rx="2" fill="#dc2626" />
+  <text x="345" y="690" font-family="Arial" font-size="10" fill="#1f2937">Slow</text>
+  <text x="395" y="690" font-family="Arial" font-size="10" fill="#6b7280">Relative latency scale</text>
 </svg>

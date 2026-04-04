@@ -1,14 +1,201 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
-  <rect width="1200" height="620" fill="#f8fafc"/>
-  <text x="60" y="70" font-size="28" font-family="Arial" fill="#0f172a">Local vs Shared Cache</text>
-  <rect x="80" y="140" width="420" height="180" rx="12" fill="#dcfce7" stroke="#22c55e"/>
-  <text x="110" y="190" font-size="18" font-family="Arial" fill="#0f172a">Local Cache</text>
-  <text x="110" y="220" font-size="14" font-family="Arial" fill="#475569">Fast, per-instance</text>
-  <text x="110" y="250" font-size="14" font-family="Arial" fill="#475569">No cross-instance sharing</text>
-  <rect x="700" y="140" width="420" height="180" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/>
-  <text x="730" y="190" font-size="18" font-family="Arial" fill="#0f172a">Shared Cache</text>
-  <text x="730" y="220" font-size="14" font-family="Arial" fill="#475569">Slightly higher latency</text>
-  <text x="730" y="250" font-size="14" font-family="Arial" fill="#475569">Consistent across instances</text>
-  <line x1="500" y1="230" x2="700" y2="230" stroke="#94a3b8" stroke-width="4"/>
-  <text x="60" y="520" font-size="16" font-family="Arial" fill="#475569">Most systems use both: L1 local cache and L2 shared cache.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1050" viewBox="0 0 1400 1050">
+  <!-- Background -->
+  <rect width="1400" height="1050" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="60" y="55" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#111827">Local Cache vs Shared Cache Architecture</text>
+  <text x="60" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#374151">Comparing Caffeine (in-process) and Redis (distributed) caching strategies</text>
+
+  <!-- ============================================ -->
+  <!-- LEFT: LOCAL CACHE ARCHITECTURE               -->
+  <!-- ============================================ -->
+
+  <text x="60" y="140" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Local Cache (Caffeine / In-Process)</text>
+  <line x1="60" y1="155" x2="500" y2="155" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- App Instance 1 -->
+  <rect x="60" y="175" width="320" height="260" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="80" y="205" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">App Instance #1</text>
+
+  <rect x="80" y="220" width="280" height="50" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="220" y="242" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">HTTP Request</text>
+  <text x="220" y="260" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">GET /api/user/12345</text>
+
+  <line x1="220" y1="270" x2="220" y2="295" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="80" y="295" width="280" height="50" rx="8" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="220" y="318" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">Caffeine Cache (L1)</text>
+  <text x="220" y="336" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Latency: ~5-50 ns</text>
+
+  <line x1="220" y1="345" x2="220" y2="370" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="80" y="370" width="280" height="50" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="220" y="393" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">Heap Memory</text>
+  <text x="220" y="411" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Max: 512MB - 2GB</text>
+
+  <!-- App Instance 2 -->
+  <rect x="410" y="175" width="320" height="260" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="430" y="205" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">App Instance #2</text>
+
+  <rect x="430" y="220" width="280" height="50" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="570" y="242" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">HTTP Request</text>
+  <text x="570" y="260" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">GET /api/user/12345</text>
+
+  <line x1="570" y1="270" x2="570" y2="295" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="430" y="295" width="280" height="50" rx="8" fill="#fecaca" stroke="#fca5a5" stroke-width="2"/>
+  <text x="570" y="318" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">Caffeine Cache (L1)</text>
+  <text x="570" y="336" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Latency: ~5-50 ns</text>
+  <text x="570" y="350" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">MISS (different instance!)</text>
+
+  <line x1="570" y1="345" x2="570" y2="370" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="430" y="370" width="280" height="50" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="570" y="393" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">Heap Memory</text>
+  <text x="570" y="411" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Max: 512MB - 2GB</text>
+
+  <!-- Isolation Arrow -->
+  <line x1="380" y1="320" x2="410" y2="320" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="355" y="315" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#dc2626">NO</text>
+  <text x="355" y="340" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#dc2626">SHARING</text>
+
+  <!-- ============================================ -->
+  <!-- RIGHT: SHARED CACHE ARCHITECTURE             -->
+  <!-- ============================================ -->
+
+  <text x="780" y="140" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Shared Cache (Redis Cluster)</text>
+  <line x1="780" y1="155" x2="1340" y2="155" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- App Instances -->
+  <rect x="780" y="175" width="260" height="90" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="910" y="205" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">App Instance #1</text>
+  <text x="910" y="225" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">GET /api/user/12345</text>
+  <text x="910" y="245" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#16a34a" text-anchor="middle">Network call to Redis</text>
+
+  <rect x="1070" y="175" width="260" height="90" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="1200" y="205" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">App Instance #2</text>
+  <text x="1200" y="225" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">GET /api/user/12345</text>
+  <text x="1200" y="245" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#16a34a" text-anchor="middle">Network call to Redis</text>
+
+  <!-- Connection lines to Redis -->
+  <line x1="910" y1="265" x2="910" y2="310" stroke="#6b7280" stroke-width="2"/>
+  <line x1="1200" y1="265" x2="1150" y2="310" stroke="#6b7280" stroke-width="2"/>
+
+  <!-- Redis Cluster -->
+  <rect x="780" y="310" width="550" height="125" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+  <text x="1055" y="340" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Redis Cluster</text>
+
+  <!-- Redis Nodes -->
+  <rect x="800" y="355" width="150" height="60" rx="8" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text x="875" y="380" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Redis Node A</text>
+  <text x="875" y="398" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Latency: ~1-5 ms</text>
+
+  <rect x="975" y="355" width="150" height="60" rx="8" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text x="1050" y="380" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Redis Node B</text>
+  <text x="1050" y="398" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Latency: ~1-5 ms</text>
+
+  <rect x="1150" y="355" width="150" height="60" rx="8" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text x="1225" y="380" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Redis Node C</text>
+  <text x="1225" y="398" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Latency: ~1-5 ms</text>
+
+  <!-- Shared memory note -->
+  <rect x="780" y="445" width="550" height="35" rx="6" fill="#eff6ff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="1055" y="468" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Shared Memory: All instances see the same cached data</text>
+
+  <!-- ============================================ -->
+  <!-- SECTION: METRICS COMPARISON TABLE            -->
+  <!-- ============================================ -->
+
+  <text x="60" y="530" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Metrics Comparison</text>
+
+  <!-- Table Header -->
+  <rect x="60" y="550" width="1280" height="45" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="80" y="579" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Metric</text>
+  <text x="400" y="579" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Local Cache (Caffeine)</text>
+  <text x="800" y="579" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Shared Cache (Redis)</text>
+  <text x="1150" y="579" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Winner</text>
+
+  <!-- Row 1: Latency -->
+  <rect x="60" y="595" width="1280" height="50" rx="0" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="625" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">Read Latency</text>
+  <text x="400" y="625" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">~5-50 nanoseconds</text>
+  <text x="800" y="625" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">~1-5 milliseconds</text>
+  <rect x="1150" y="600" width="100" height="40" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="1200" y="625" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#16a34a" text-anchor="middle">Local</text>
+
+  <!-- Row 2: Hit Rate -->
+  <rect x="60" y="645" width="1280" height="50" rx="0" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="675" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">Cross-Instance Hit Rate</text>
+  <text x="400" y="675" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">0% (no sharing)</text>
+  <text x="800" y="675" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">High (shared state)</text>
+  <rect x="1150" y="650" width="100" height="40" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="1200" y="675" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#16a34a" text-anchor="middle">Shared</text>
+
+  <!-- Row 3: Memory -->
+  <rect x="60" y="695" width="1280" height="50" rx="0" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="725" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">Memory Efficiency</text>
+  <text x="400" y="725" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Duplicated across N instances</text>
+  <text x="800" y="725" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Single copy, centralized</text>
+  <rect x="1150" y="700" width="100" height="40" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="1200" y="725" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#16a34a" text-anchor="middle">Shared</text>
+
+  <!-- Row 4: Consistency -->
+  <rect x="60" y="745" width="1280" height="50" rx="0" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="775" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">Data Consistency</text>
+  <text x="400" y="775" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Eventual (stale reads possible)</text>
+  <text x="800" y="775" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Strong (single source)</text>
+  <rect x="1150" y="750" width="100" height="40" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="1200" y="775" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#16a34a" text-anchor="middle">Shared</text>
+
+  <!-- Row 5: Operational Cost -->
+  <rect x="60" y="795" width="1280" height="50" rx="0" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="825" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">Operational Complexity</text>
+  <text x="400" y="825" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Zero (bundled in JVM)</text>
+  <text x="800" y="825" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">High (cluster management)</text>
+  <rect x="1150" y="800" width="100" height="40" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="1200" y="825" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#16a34a" text-anchor="middle">Local</text>
+
+  <!-- ============================================ -->
+  <!-- SECTION: CACHE INVALIDATION FLOW             -->
+  <!-- ============================================ -->
+
+  <text x="60" y="890" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Cache Invalidation Flow</text>
+
+  <!-- Local Cache Invalidation -->
+  <rect x="60" y="910" width="630" height="120" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="80" y="940" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Local: Invalidate All Instances</text>
+
+  <rect x="80" y="955" width="120" height="35" rx="6" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="140" y="978" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Update DB</text>
+
+  <line x1="200" y1="973" x2="225" y2="973" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="225" y="955" width="130" height="35" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="290" y="978" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Invalidate L1</text>
+
+  <line x1="355" y1="973" x2="380" y2="973" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <rect x="380" y="955" width="140" height="35" rx="6" fill="#fecaca" stroke="#fca5a5" stroke-width="2"/>
+  <text x="450" y="978" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">Instance #2 stale!</text>
+
+  <text x="80" y="1015" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Problem: Must broadcast invalidation to ALL instances via pub/sub or bus</text>
+
+  <!-- Shared Cache Invalidation -->
+  <rect x="720" y="910" width="620" height="120" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="740" y="940" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Shared: Single Point Invalidation</text>
+
+  <rect x="740" y="955" width="120" height="35" rx="6" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="800" y="978" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Update DB</text>
+
+  <line x1="860" y1="973" x2="885" y2="973" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="885" y="955" width="130" height="35" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="950" y="978" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">DEL from Redis</text>
+
+  <line x1="1015" y1="973" x2="1040" y2="973" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="1040" y="955" width="140" height="35" rx="6" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text x="1110" y="978" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#16a34a" text-anchor="middle">All instances see fresh data</text>
+
+  <text x="740" y="1015" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Solution: Single invalidation propagates to all consumers automatically</text>
 </svg>

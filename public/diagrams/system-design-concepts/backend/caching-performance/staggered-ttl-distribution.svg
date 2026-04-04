@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="100%" height="100%">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937"/>
+    </marker>
+    <linearGradient id="uniformArea" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#fee2e2" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#dc2626" stop-opacity="0.7"/>
+    </linearGradient>
+    <linearGradient id="staggeredArea" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#dcfce7" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="jitterGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#dbeafe" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- White background -->
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Staggered TTL Distribution: Preventing Cache Stampede</text>
+  <text x="450" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Uniform TTL expiration vs jitter-based staggered expiration strategies</text>
+
+  <!-- Uniform TTL Expiration -->
+  <g transform="translate(50, 85)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#dc2626" text-anchor="middle">Uniform TTL: The Thundering Herd Problem</text>
+    <text x="400" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">All keys set with identical TTL &#8594; expire simultaneously</text>
+    
+    <!-- Graph background -->
+    <rect x="0" y="30" width="800" height="180" fill="#fafafa" stroke="#d1d5db" stroke-width="2" rx="4"/>
+    
+    <!-- Y-axis -->
+    <line x1="40" y1="35" x2="40" y2="205" stroke="#1f2937" stroke-width="2"/>
+    <text x="-5" y="120" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle" transform="rotate(-90, -5, 120)">Expiring Keys</text>
+    
+    <!-- X-axis -->
+    <line x1="40" y1="205" x2="795" y2="205" stroke="#1f2937" stroke-width="2"/>
+    <text x="400" y="225" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Time</text>
+    
+    <!-- X-axis time labels -->
+    <text x="100" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+0</text>
+    <text x="250" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+60</text>
+    <text x="400" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+120</text>
+    <text x="550" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+180</text>
+    <text x="700" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+240</text>
+    
+    <!-- Grid lines -->
+    <line x1="40" y1="70" x2="795" y2="70" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="105" x2="795" y2="105" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="140" x2="795" y2="140" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="175" x2="795" y2="175" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    
+    <!-- TTL=300s label -->
+    <text x="400" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#374151" text-anchor="middle">TTL = 300s for all 10,000 keys</text>
+    
+    <!-- Spike at T+300 -->
+    <rect x="380" y="40" width="40" height="160" fill="url(#uniformArea)" rx="4"/>
+    <line x1="400" y1="40" x2="400" y2="35" stroke="#dc2626" stroke-width="2"/>
+    <text x="400" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">10,000 keys expire!</text>
+    
+    <!-- Normal expiry before spike -->
+    <rect x="100" y="195" width="5" height="8" fill="#f97316" rx="2"/>
+    <rect x="150" y="195" width="5" height="8" fill="#f97316" rx="2"/>
+    <rect x="200" y="195" width="5" height="8" fill="#f97316" rx="2"/>
+    <rect x="250" y="195" width="5" height="8" fill="#f97316" rx="2"/>
+    <rect x="300" y="195" width="5" height="8" fill="#f97316" rx="2"/>
+    <rect x="350" y="195" width="5" height="8" fill="#f97316" rx="2"/>
+    
+    <!-- Zero after spike -->
+    <rect x="450" y="200" width="5" height="3" fill="#f97316" rx="2"/>
+    <rect x="500" y="200" width="5" height="3" fill="#f97316" rx="2"/>
+    <rect x="550" y="200" width="5" height="3" fill="#f97316" rx="2"/>
+    <rect x="600" y="200" width="5" height="3" fill="#f97316" rx="2"/>
+    <rect x="650" y="200" width="5" height="3" fill="#f97316" rx="2"/>
+    <rect x="700" y="200" width="5" height="3" fill="#f97316" rx="2"/>
+    
+    <!-- Warning annotation -->
+    <rect x="340" y="235" width="120" height="25" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="400" y="252" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">&#x26A0;&#xFE0F; THUNDERING HERD</text>
+  </g>
+
+  <!-- Request Rate Comparison -->
+  <g transform="translate(50, 360)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Request Rate Impact Comparison</text>
+    
+    <!-- Graph background -->
+    <rect x="0" y="25" width="800" height="150" fill="#fafafa" stroke="#d1d5db" stroke-width="2" rx="4"/>
+    
+    <!-- Y-axis -->
+    <line x1="40" y1="30" x2="40" y2="170" stroke="#1f2937" stroke-width="2"/>
+    <text x="-5" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle" transform="rotate(-90, -5, 100)">Requests/sec</text>
+    
+    <!-- Y-axis labels -->
+    <text x="35" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="end">20K</text>
+    <text x="35" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="end">15K</text>
+    <text x="35" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="end">10K</text>
+    <text x="35" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="end">5K</text>
+    <text x="35" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="end">0</text>
+    
+    <!-- X-axis -->
+    <line x1="40" y1="170" x2="795" y2="170" stroke="#1f2937" stroke-width="2"/>
+    <text x="400" y="190" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Time after initial TTL expiry</text>
+    
+    <!-- Grid lines -->
+    <line x1="40" y1="45" x2="795" y2="45" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="80" x2="795" y2="80" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="115" x2="795" y2="115" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="150" x2="795" y2="150" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    
+    <!-- DB capacity line -->
+    <line x1="40" y1="60" x2="795" y2="60" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="790" y="55" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#dc2626" text-anchor="end">DB Capacity</text>
+    
+    <!-- Uniform TTL request spike (red) -->
+    <path d="M 100 155 L 250 150 L 350 140 L 400 35 L 450 30 L 500 50 L 550 110 L 600 145 L 700 155 L 795 158 L 795 170 L 40 170 L 40 155 Z" fill="url(#uniformArea)" opacity="0.6"/>
+    <polyline points="100,155 250,150 350,140 400,35 450,30 500,50 550,110 600,145 700,155 795,158" fill="none" stroke="#dc2626" stroke-width="3"/>
+    
+    <!-- Staggered TTL smooth line (green) -->
+    <polyline points="100,145 200,130 300,110 400,95 500,85 600,90 700,115 795,140" fill="none" stroke="#16a34a" stroke-width="3"/>
+    <path d="M 100 145 L 200 130 L 300 110 L 400 95 L 500 85 L 600 90 L 700 115 L 795 140 L 795 170 L 40 170 L 40 145 Z" fill="url(#staggeredArea)" opacity="0.4"/>
+    
+    <!-- Annotations -->
+    <text x="425" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">Uniform: 18K peak (DB overload)</text>
+    <text x="500" y="78" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#16a34a" text-anchor="middle">Staggered: 8K peak (safe)</text>
+    
+    <!-- Legend -->
+    <rect x="580" y="140" width="15" height="3" fill="#dc2626"/>
+    <text x="600" y="144" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Uniform TTL</text>
+    <rect x="680" y="140" width="15" height="3" fill="#16a34a"/>
+    <text x="700" y="144" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Staggered TTL</text>
+  </g>
+
+  <!-- Jitter Implementation Approaches -->
+  <g transform="translate(50, 570)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Jitter Implementation Approaches</text>
+    
+    <!-- Approach 1: Random Jitter -->
+    <g transform="translate(0, 30)">
+      <rect x="0" y="0" width="255" height="95" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <text x="127" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">1. Random Jitter</text>
+      <text x="15" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">TTL = base_ttl + random(0, jitter_range)</text>
+      <text x="15" y="54" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Example: 300s +/- 30s</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Simple, effective for most cases</text>
+      <text x="15" y="86" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Pros: Easy to implement</text>
+    </g>
+    
+    <!-- Approach 2: Hash-based Jitter -->
+    <g transform="translate(275, 30)">
+      <rect x="0" y="0" width="255" height="95" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="127" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">2. Hash-based Jitter</text>
+      <text x="15" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">jitter = hash(key) % jitter_range</text>
+      <text x="15" y="54" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Deterministic per key</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Same key always gets same offset</text>
+      <text x="15" y="86" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Pros: Predictable distribution</text>
+    </g>
+    
+    <!-- Approach 3: Time-based Stagger -->
+    <g transform="translate(550, 30)">
+      <rect x="0" y="0" width="255" height="95" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="127" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">3. Time-based Stagger</text>
+      <text x="15" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">TTL = base + (hash(key) % window)</text>
+      <text x="15" y="54" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Spread across time window</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">e.g., 270s to 330s window</text>
+      <text x="15" y="86" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Pros: Guarantees no clustering</text>
+    </g>
+  </g>
+</svg>

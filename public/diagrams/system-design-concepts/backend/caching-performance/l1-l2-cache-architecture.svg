@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="l1Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="l2Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.05" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="520" fill="transparent" />
+
+  <!-- Title -->
+  <text x="400" y="36" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="currentColor">L1/L2 Multi-Level Cache Architecture</text>
+
+  <!-- Request Entry -->
+  <rect x="300" y="60" width="200" height="44" rx="8" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.3" />
+  <text x="400" y="87" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="currentColor">Incoming Request</text>
+
+  <!-- Arrow: Request -> L1 -->
+  <line x1="400" y1="104" x2="400" y2="130" stroke="currentColor" stroke-width="2" stroke-opacity="0.5" marker-end="url(#arrowhead)" />
+
+  <!-- L1 Cache Box -->
+  <rect x="100" y="130" width="600" height="130" rx="12" fill="url(#l1Grad)" stroke="#3b82f6" stroke-width="2" />
+  <text x="400" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#3b82f6">L1 Cache - In-Process (Caffeine)</text>
+  <text x="400" y="178" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="normal" fill="currentColor" opacity="0.7">Per-instance, JVM heap, nanosecond latency</text>
+
+  <!-- L1 Internal: Segments -->
+  <rect x="130" y="195" width="100" height="50" rx="6" fill="#3b82f6" opacity="0.1" stroke="#3b82f6" stroke-width="1" />
+  <text x="180" y="217" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="normal" fill="#3b82f6">Segment 0</text>
+  <text x="180" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="currentColor" opacity="0.6">W-TinyLFU</text>
+
+  <rect x="250" y="195" width="100" height="50" rx="6" fill="#3b82f6" opacity="0.1" stroke="#3b82f6" stroke-width="1" />
+  <text x="300" y="217" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="normal" fill="#3b82f6">Segment 1</text>
+  <text x="300" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="currentColor" opacity="0.6">W-TinyLFU</text>
+
+  <rect x="370" y="195" width="100" height="50" rx="6" fill="#3b82f6" opacity="0.1" stroke="#3b82f6" stroke-width="1" />
+  <text x="420" y="217" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="normal" fill="#3b82f6">Segment 2</text>
+  <text x="420" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="currentColor" opacity="0.6">W-TinyLFU</text>
+
+  <rect x="490" y="195" width="100" height="50" rx="6" fill="#3b82f6" opacity="0.1" stroke="#3b82f6" stroke-width="1" />
+  <text x="540" y="217" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="normal" fill="#3b82f6">Segment 3</text>
+  <text x="540" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="currentColor" opacity="0.6">W-TinyLFU</text>
+
+  <!-- L1 Labels -->
+  <text x="130" y="275" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.7">TTL: 30s-2min</text>
+  <text x="300" y="275" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.7">Size: 64-512 MB</text>
+  <text x="470" y="275" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.7">Hit rate: 60-80%</text>
+  <text x="610" y="275" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.7">Latency: ~100ns</text>
+
+  <!-- Arrow: L1 Miss -> L2 -->
+  <line x1="400" y1="260" x2="400" y2="310" stroke="currentColor" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="6,4" marker-end="url(#arrowhead)" />
+  <text x="420" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.6">L1 miss</text>
+
+  <!-- L2 Cache Box -->
+  <rect x="100" y="310" width="600" height="100" rx="12" fill="url(#l2Grad)" stroke="#10b981" stroke-width="2" />
+  <text x="400" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#10b981">L2 Cache - Distributed (Redis/Memcached)</text>
+  <text x="400" y="358" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="normal" fill="currentColor" opacity="0.7">Shared across instances, sub-millisecond network latency</text>
+
+  <!-- L2 Labels -->
+  <text x="130" y="395" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.7">TTL: 5-30 min</text>
+  <text x="300" y="395" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.7">Size: 4-64 GB</text>
+  <text x="470" y="395" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.7">Latency: 0.5-2ms</text>
+  <text x="610" y="395" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.7">Consistent across instances</text>
+
+  <!-- Arrow: L2 Miss -> DB -->
+  <line x1="400" y1="410" x2="400" y2="445" stroke="currentColor" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="6,4" marker-end="url(#arrowhead)" />
+  <text x="420" y="432" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="currentColor" opacity="0.6">L2 miss</text>
+
+  <!-- Database Box -->
+  <rect x="200" y="445" width="400" height="60" rx="12" fill="url(#dbGrad)" stroke="#f59e0b" stroke-width="2" />
+  <text x="400" y="472" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#f59e0b">Database (Authoritative Source)</text>
+  <text x="400" y="492" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="normal" fill="currentColor" opacity="0.7">Latency: 5-50ms</text>
+
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="currentColor" opacity="0.5" />
+    </marker>
+  </defs>
+
+  <!-- Populate arrows (DB -> L2, L2 -> L1) -->
+  <path d="M 580 460 Q 720 460 720 360 Q 720 260 680 200" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)" />
+  <text x="710" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#10b981">Populate</text>
+
+  <path d="M 620 175 Q 750 175 750 110 Q 750 80 620 80" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)" />
+  <text x="710" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#3b82f6">Populate</text>
+</svg>

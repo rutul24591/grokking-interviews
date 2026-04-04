@@ -1,0 +1,334 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="42" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Eviction Policy Trade-offs — LRU vs LFU vs FIFO vs ARC vs TinyLFU</text>
+  <text x="600" y="66" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Six-dimensional comparison and decision framework for policy selection</text>
+
+  <!-- ==================== COMPARISON TABLE ==================== -->
+  <rect x="30" y="95" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="125" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Six-Dimensional Comparison Matrix</text>
+
+  <!-- Table Header -->
+  <rect x="30" y="155" width="1140" height="40" rx="6" fill="#1f2937" stroke="#111827" stroke-width="2"/>
+  <text x="195" y="180" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Policy</text>
+  <text x="360" y="180" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Hit Rate</text>
+  <text x="525" y="180" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Compute Cost</text>
+  <text x="690" y="180" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Memory Overhead</text>
+  <text x="855" y="180" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Scan Resistance</text>
+  <text x="1020" y="180" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Complexity</text>
+
+  <!-- Row 1: LRU -->
+  <rect x="30" y="195" width="1140" height="60" rx="0" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="30" y="195" width="165" height="60" fill="#e0e7ff"/>
+  <text x="195" y="220" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#3730a3" text-anchor="middle">LRU</text>
+  <text x="195" y="240" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Least Recently Used</text>
+
+  <rect x="195" y="195" width="165" height="60" fill="#fef3c7"/>
+  <text x="360" y="220" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Good</text>
+  <text x="360" y="238" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Strong temporal locality</text>
+
+  <rect x="360" y="195" width="165" height="60" fill="#d1fae5"/>
+  <text x="525" y="220" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">O(1) get/put</text>
+  <text x="525" y="238" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Doubly-linked list</text>
+
+  <rect x="525" y="195" width="165" height="60" fill="#fee2e2"/>
+  <text x="690" y="220" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">High</text>
+  <text x="690" y="238" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">2 pointers per entry</text>
+
+  <rect x="690" y="195" width="165" height="60" fill="#fee2e2"/>
+  <text x="855" y="220" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Poor</text>
+  <text x="855" y="238" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">One scan evicts all</text>
+
+  <rect x="855" y="195" width="330" height="60" fill="#d1fae5"/>
+  <text x="1020" y="220" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Low — simple data structure</text>
+  <text x="1020" y="238" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Hash map + linked list only</text>
+
+  <!-- Row 2: LFU -->
+  <rect x="30" y="255" width="1140" height="60" rx="0" fill="#f9fafb" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="30" y="255" width="165" height="60" fill="#fef3c7"/>
+  <text x="195" y="280" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">LFU</text>
+  <text x="195" y="300" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Least Frequently Used</text>
+
+  <rect x="195" y="255" width="165" height="60" fill="#d1fae5"/>
+  <text x="360" y="280" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Excellent</text>
+  <text x="360" y="298" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Optimal for skewed access</text>
+
+  <rect x="360" y="255" width="165" height="60" fill="#fee2e2"/>
+  <text x="525" y="280" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">O(log n) or O(1)*</text>
+  <text x="525" y="298" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Min-heap or freq buckets</text>
+
+  <rect x="525" y="255" width="165" height="60" fill="#fee2e2"/>
+  <text x="690" y="280" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">High</text>
+  <text x="690" y="298" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Counter + freq list per entry</text>
+
+  <rect x="690" y="255" width="165" height="60" fill="#fee2e2"/>
+  <text x="855" y="280" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Poor</text>
+  <text x="855" y="298" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Frequency bias blocks new</text>
+
+  <rect x="855" y="255" width="330" height="60" fill="#fee2e2"/>
+  <text x="1020" y="280" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">High — frequency aging, decay</text>
+  <text x="1020" y="298" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">requires tuning</text>
+
+  <!-- Row 3: FIFO -->
+  <rect x="30" y="315" width="1140" height="60" rx="0" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="30" y="315" width="165" height="60" fill="#f3f4f6"/>
+  <text x="195" y="340" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">FIFO</text>
+  <text x="195" y="360" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">First In, First Out</text>
+
+  <rect x="195" y="315" width="165" height="60" fill="#fee2e2"/>
+  <text x="360" y="340" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Fair</text>
+  <text x="360" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Ignores access patterns</text>
+
+  <rect x="360" y="315" width="165" height="60" fill="#d1fae5"/>
+  <text x="525" y="340" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">O(1) enqueue/dequeue</text>
+  <text x="525" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Simple queue</text>
+
+  <rect x="525" y="315" width="165" height="60" fill="#d1fae5"/>
+  <text x="690" y="340" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Low</text>
+  <text x="690" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">No per-entry metadata</text>
+
+  <rect x="690" y="315" width="165" height="60" fill="#fee2e2"/>
+  <text x="855" y="340" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Poor</text>
+  <text x="855" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">No awareness of access</text>
+
+  <rect x="855" y="315" width="330" height="60" fill="#d1fae5"/>
+  <text x="1020" y="340" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Lowest — simple queue/array</text>
+  <text x="1020" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Minimal implementation</text>
+
+  <!-- Row 4: ARC -->
+  <rect x="30" y="375" width="1140" height="60" rx="0" fill="#f9fafb" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="30" y="375" width="165" height="60" fill="#dbeafe"/>
+  <text x="195" y="400" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">ARC</text>
+  <text x="195" y="420" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#1e40af" text-anchor="middle">Adaptive Replacement Cache</text>
+
+  <rect x="195" y="375" width="165" height="60" fill="#d1fae5"/>
+  <text x="360" y="400" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Excellent</text>
+  <text x="360" y="418" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Self-tuning, near-optimal</text>
+
+  <rect x="360" y="375" width="165" height="60" fill="#fef3c7"/>
+  <text x="525" y="400" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">O(1) amortized</text>
+  <text x="525" y="418" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">4 lists + self-tuning</text>
+
+  <rect x="525" y="375" width="165" height="60" fill="#fef3c7"/>
+  <text x="690" y="400" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Medium</text>
+  <text x="690" y="418" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">4 lists, ghost entries</text>
+
+  <rect x="690" y="375" width="165" height="60" fill="#d1fae5"/>
+  <text x="855" y="400" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Good</text>
+  <text x="855" y="418" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Ghost lists track evicted</text>
+
+  <rect x="855" y="375" width="330" height="60" fill="#fee2e2"/>
+  <text x="1020" y="400" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">High — 4 lists, ghost tracking</text>
+  <text x="1020" y="418" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">adaptive parameter p</text>
+
+  <!-- Row 5: TinyLFU -->
+  <rect x="30" y="435" width="1140" height="60" rx="0" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <rect x="30" y="435" width="165" height="60" fill="#dcfce7"/>
+  <text x="195" y="460" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#166534" text-anchor="middle">TinyLFU</text>
+  <text x="195" y="480" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534" text-anchor="middle">Window TinyLFU (W-TinyLFU)</text>
+
+  <rect x="195" y="435" width="165" height="60" fill="#d1fae5"/>
+  <text x="360" y="460" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Excellent</text>
+  <text x="360" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Near-optimal, Bloom filter</text>
+
+  <rect x="360" y="435" width="165" height="60" fill="#d1fae5"/>
+  <text x="525" y="460" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">O(1) amortized</text>
+  <text x="525" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Count-Min Sketch</text>
+
+  <rect x="525" y="435" width="165" height="60" fill="#d1fae5"/>
+  <text x="690" y="460" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Very Low</text>
+  <text x="690" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">~1-2 bits per entry (CMS)</text>
+
+  <rect x="690" y="435" width="165" height="60" fill="#d1fae5"/>
+  <text x="855" y="460" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Excellent</text>
+  <text x="855" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">CMS frequency windowing</text>
+
+  <rect x="855" y="435" width="330" height="60" fill="#fef3c7"/>
+  <text x="1020" y="460" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Medium — CMS + SLRU + admission</text>
+  <text x="1020" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">gate logic</text>
+
+  <!-- Table border -->
+  <rect x="30" y="195" width="1140" height="300" fill="none" stroke="#d1d5db" stroke-width="2"/>
+  <line x1="195" y1="195" x2="195" y2="495" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="360" y1="195" x2="360" y2="495" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="525" y1="195" x2="525" y2="495" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="690" y1="195" x2="690" y2="495" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="855" y1="195" x2="855" y2="495" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Legend -->
+  <rect x="30" y="505" width="1140" height="36" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <rect x="60" y="513" width="16" height="16" rx="3" fill="#d1fae5"/>
+  <text x="82" y="526" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Good</text>
+  <rect x="140" y="513" width="16" height="16" rx="3" fill="#fef3c7"/>
+  <text x="162" y="526" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Fair</text>
+  <rect x="220" y="513" width="16" height="16" rx="3" fill="#fee2e2"/>
+  <text x="242" y="526" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Poor</text>
+  <text x="340" y="526" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">* LFU with frequency buckets (not min-heap) achieves O(1)</text>
+
+  <!-- ==================== DETAILED POLICY DESCRIPTIONS ==================== -->
+  <rect x="30" y="560" width="1140" height="42" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="587" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Policy Deep Dive — How Each Works Internally</text>
+
+  <!-- LRU Detail -->
+  <rect x="30" y="615" width="360" height="160" rx="10" fill="#ffffff" stroke="#818cf8" stroke-width="2"/>
+  <rect x="30" y="615" width="360" height="32" rx="10" fill="#e0e7ff"/>
+  <rect x="30" y="637" width="360" height="10" fill="#e0e7ff"/>
+  <text x="210" y="637" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#3730a3" text-anchor="middle">LRU — Recency-Based</text>
+
+  <text x="50" y="670" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Evicts least recently accessed item.</text>
+  <text x="50" y="688" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Doubly-linked list + hash map.</text>
+  <text x="50" y="706" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Access moves item to MRU end.</text>
+  <text x="50" y="724" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Used in: Redis (approximated),</text>
+  <text x="50" y="742" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">browser caches, OS page cache.</text>
+  <rect x="50" y="750" width="120" height="18" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="110" y="764" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#991b1b" text-anchor="middle">Scan-sensitive</text>
+
+  <!-- LFU Detail -->
+  <rect x="410" y="615" width="360" height="160" rx="10" fill="#ffffff" stroke="#fbbf24" stroke-width="2"/>
+  <rect x="410" y="615" width="360" height="32" rx="10" fill="#fef3c7"/>
+  <rect x="410" y="637" width="360" height="10" fill="#fef3c7"/>
+  <text x="590" y="637" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">LFU — Frequency-Based</text>
+
+  <text x="430" y="670" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Evicts lowest frequency count item.</text>
+  <text x="430" y="688" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Frequency buckets (doubly-linked</text>
+  <text x="430" y="706" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">lists per count) for O(1).</text>
+  <text x="430" y="724" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Used in: CDN edge caches,</text>
+  <text x="430" y="742" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">popular content caching.</text>
+  <rect x="430" y="750" width="150" height="18" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="505" y="764" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#991b1b" text-anchor="middle">New item starvation</text>
+
+  <!-- FIFO Detail -->
+  <rect x="790" y="615" width="380" height="160" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="790" y="615" width="380" height="32" rx="10" fill="#f3f4f6"/>
+  <rect x="790" y="637" width="380" height="10" fill="#f3f4f6"/>
+  <text x="980" y="637" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">FIFO — Order-Based</text>
+
+  <text x="810" y="670" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Evicts oldest inserted item.</text>
+  <text x="810" y="688" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Simple queue — no access tracking.</text>
+  <text x="810" y="706" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Zero per-entry metadata overhead.</text>
+  <text x="810" y="724" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Used in: Simple bounded caches,</text>
+  <text x="810" y="742" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">embedded systems, ring buffers.</text>
+  <rect x="810" y="750" width="140" height="18" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="880" y="764" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#991b1b" text-anchor="middle">Access-ignorant</text>
+
+  <!-- ARC Detail -->
+  <rect x="30" y="790" width="560" height="160" rx="10" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+  <rect x="30" y="790" width="560" height="32" rx="10" fill="#dbeafe"/>
+  <rect x="30" y="812" width="560" height="10" fill="#dbeafe"/>
+  <text x="310" y="812" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">ARC — Adaptive (LRU + Frequency History)</text>
+
+  <text x="50" y="845" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Maintains 4 lists: T1 (recent, once), T2 (frequent), B1 (ghost of T1), B2 (ghost of T2).</text>
+  <text x="50" y="863" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Ghost lists track evicted keys' metadata (not data) to learn access patterns.</text>
+  <text x="50" y="881" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Adaptively sizes T1 vs T2 using parameter p based on B1/B2 hit ratios.</text>
+  <text x="50" y="899" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Used in: ZFS ARC, database buffer pools, enterprise storage.</text>
+  <rect x="50" y="915" width="160" height="18" rx="4" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="130" y="929" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#065f46" text-anchor="middle">Self-tuning, scan-resistant</text>
+
+  <!-- TinyLFU Detail -->
+  <rect x="610" y="790" width="560" height="160" rx="10" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <rect x="610" y="790" width="560" height="32" rx="10" fill="#dcfce7"/>
+  <rect x="610" y="812" width="560" height="10" fill="#dcfce7"/>
+  <text x="890" y="812" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#166534" text-anchor="middle">TinyLFU — Count-Min Sketch + SLRU</text>
+
+  <text x="630" y="845" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Uses Count-Min Sketch (probabilistic frequency counter) to estimate access frequency.</text>
+  <text x="630" y="863" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">W-TinyLFU: small LRU window for new items, SLRU main space for probation/resident.</text>
+  <text x="630" y="881" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Admission gate: new item admitted only if its CMS frequency exceeds resident tail.</text>
+  <text x="630" y="899" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Used in: Caffeine (Java), Redis (as module), many modern in-process caches.</text>
+  <rect x="630" y="915" width="180" height="18" rx="4" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="720" y="929" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#065f46" text-anchor="middle">Best overall hit rate, low memory</text>
+
+  <!-- ==================== DECISION FRAMEWORK ==================== -->
+  <rect x="30" y="970" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="1000" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Decision Framework — How to Choose the Right Policy</text>
+
+  <!-- Decision flow -->
+  <!-- Q1 -->
+  <rect x="360" y="1035" width="480" height="50" rx="10" fill="#1f2937" stroke="#111827" stroke-width="2"/>
+  <text x="600" y="1058" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Q1: Is memory overhead a primary concern?</text>
+  <text x="600" y="1076" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#d1d5db" text-anchor="middle">(e.g., millions of keys, constrained environment)</text>
+
+  <!-- Yes branch -->
+  <line x1="480" y1="1085" x2="200" y2="1120" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <rect x="120" y="1090" width="50" height="22" rx="4" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="145" y="1106" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Yes</text>
+
+  <!-- Q2A -->
+  <rect x="30" y="1120" width="340" height="50" rx="10" fill="#e0e7ff" stroke="#818cf8" stroke-width="2"/>
+  <text x="200" y="1143" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">Q2A: Do you need scan resistance?</text>
+
+  <!-- Yes -->
+  <line x1="120" y1="1170" x2="80" y2="1210" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <rect x="50" y="1178" width="50" height="22" rx="4" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="75" y="1194" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Yes</text>
+
+  <rect x="30" y="1210" width="340" height="50" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="200" y="1233" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#166534" text-anchor="middle">Use TinyLFU (W-TinyLFU)</text>
+  <text x="200" y="1250" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534" text-anchor="middle">~1-2 bits/entry, excellent hit rate, scan-resistant</text>
+
+  <!-- No -->
+  <line x1="370" y1="1170" x2="420" y2="1210" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <rect x="380" y="1178" width="50" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="405" y="1194" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">No</text>
+
+  <rect x="30" y="1210" width="680" height="50" rx="10" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="370" y="1233" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">Use Approximated LRU (Redis-style sampling)</text>
+  <text x="370" y="1250" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Low memory, simple, good enough for most workloads</text>
+
+  <!-- Q1 No branch -->
+  <line x1="720" y1="1085" x2="1000" y2="1120" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <rect x="980" y="1090" width="50" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="1005" y="1106" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">No</text>
+
+  <!-- Q2B -->
+  <rect x="690" y="1120" width="480" height="50" rx="10" fill="#e0e7ff" stroke="#818cf8" stroke-width="2"/>
+  <text x="930" y="1143" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">Q2B: Is access pattern highly skewed (Zipfian)?</text>
+
+  <!-- Yes -->
+  <line x1="810" y1="1170" x2="760" y2="1210" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <rect x="730" y="1178" width="50" height="22" rx="4" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="755" y="1194" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Yes</text>
+
+  <rect x="690" y="1210" width="480" height="50" rx="10" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="930" y="1233" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">Use LFU (frequency buckets) or TinyLFU</text>
+  <text x="930" y="1250" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">LFU if simplicity needed; TinyLFU for best overall</text>
+
+  <!-- No -->
+  <line x1="1050" y1="1170" x2="1100" y2="1210" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <rect x="1060" y="1178" width="50" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="1085" y="1194" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">No</text>
+
+  <!-- Q3 -->
+  <rect x="690" y="1280" width="480" height="50" rx="10" fill="#e0e7ff" stroke="#818cf8" stroke-width="2"/>
+  <text x="930" y="1303" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">Q3: Do you need self-tuning for mixed workloads?</text>
+
+  <!-- Yes -->
+  <line x1="810" y1="1330" x2="760" y2="1370" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <rect x="730" y="1338" width="50" height="22" rx="4" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="755" y="1354" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Yes</text>
+
+  <rect x="690" y="1370" width="480" height="50" rx="10" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="930" y="1393" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Use ARC (Adaptive Replacement Cache)</text>
+  <text x="930" y="1410" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#1e40af" text-anchor="middle">Self-tunes between recency and frequency automatically</text>
+
+  <!-- No -->
+  <line x1="1050" y1="1330" x2="1100" y2="1370" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <rect x="1060" y="1338" width="50" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="1085" y="1354" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">No</text>
+
+  <rect x="690" y="1370" width="480" height="50" rx="10" fill="#e0e7ff" stroke="#818cf8" stroke-width="2"/>
+  <text x="930" y="1393" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#3730a3" text-anchor="middle">Use Standard LRU</text>
+  <text x="930" y="1410" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Simple, well-understood, good default for temporal locality</text>
+
+  <!-- Key takeaway -->
+  <rect x="30" y="1440" width="1140" height="45" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="600" y="1460" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">Key Takeaway:</text>
+  <text x="600" y="1478" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#92400e" text-anchor="middle">For most production systems, TinyLFU (via Caffeine) or approximated LRU (via Redis) are the top choices.</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+  </defs>
+</svg>

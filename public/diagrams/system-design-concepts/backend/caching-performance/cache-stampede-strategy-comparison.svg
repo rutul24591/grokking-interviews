@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" width="1200" height="1600">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- White Background -->
+  <rect width="1200" height="1600" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700" fill="#111827" text-anchor="middle">Cache Stampede Prevention: Strategy Comparison and Decision Framework</text>
+  <text x="600" y="72" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#374151" text-anchor="middle">Comparing Locking, Stale-While-Revalidate, Probabilistic Early Expiration, and Jittered TTLs for production-scale cache protection</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 1: THE STAMPEDE PROBLEM -->
+  <!-- ============================================================ -->
+  <text x="60" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#111827">The Cache Stampede Problem</text>
+  <text x="60" y="138" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#374151">When a popular cache key expires, hundreds of concurrent requests hit the origin simultaneously, causing a thundering herd that overwhelms the backend</text>
+
+  <rect x="60" y="155" width="1080" height="130" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2" filter="url(#shadow)"/>
+
+  <!-- Stampede visualization -->
+  <text x="80" y="180" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827">Without Protection: Cache Key Expires &#8594; Thundering Herd</text>
+
+  <!-- Clients -->
+  <rect x="80" y="195" width="70" height="75" rx="4" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="115" y="218" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Client 1</text>
+  <text x="115" y="233" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">req</text>
+  <text x="115" y="248" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">miss</text>
+  <text x="115" y="263" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">&#8594; DB</text>
+
+  <rect x="155" y="195" width="70" height="75" rx="4" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="190" y="218" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Client 2</text>
+  <text x="190" y="233" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">req</text>
+  <text x="190" y="248" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">miss</text>
+  <text x="190" y="263" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">&#8594; DB</text>
+
+  <rect x="230" y="195" width="70" height="75" rx="4" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="265" y="218" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Client 3</text>
+  <text x="265" y="233" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">req</text>
+  <text x="265" y="248" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">miss</text>
+  <text x="265" y="263" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">&#8594; DB</text>
+
+  <text x="335" y="240" font-family="system-ui, -apache-system, sans-serif" font-size="16" fill="#6b7280" text-anchor="middle">...</text>
+
+  <rect x="380" y="195" width="70" height="75" rx="4" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+  <text x="415" y="218" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Client N</text>
+  <text x="415" y="233" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">req</text>
+  <text x="415" y="248" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">miss</text>
+  <text x="415" y="263" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">&#8594; DB</text>
+
+  <!-- Arrows to cache -->
+  <line x1="115" y1="270" x2="115" y2="290" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="190" y1="270" x2="190" y2="290" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="265" y1="270" x2="265" y2="290" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="415" y1="270" x2="415" y2="290" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Expired cache -->
+  <rect x="80" y="290" width="120" height="40" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="140" y="315" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">CACHE EXPIRED</text>
+
+  <!-- Arrows to DB -->
+  <line x1="140" y1="330" x2="140" y2="350" stroke="#dc2626" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="200" y1="330" x2="200" y2="350" stroke="#dc2626" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="260" y1="330" x2="260" y2="350" stroke="#dc2626" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="415" y1="330" x2="415" y2="350" stroke="#dc2626" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Overloaded DB -->
+  <rect x="80" y="350" width="400" height="75" rx="6" fill="#991b1b" stroke="#7f1d1d" stroke-width="2"/>
+  <text x="280" y="375" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Database / Origin Server</text>
+  <text x="280" y="395" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="400" fill="#fecaca" text-anchor="middle">N concurrent identical queries | CPU 100% | Connection pool exhausted</text>
+  <text x="280" y="412" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="400" fill="#fecaca" text-anchor="middle">Response time: 5-30s | Cascading failures across dependent services</text>
+
+  <!-- Impact metrics -->
+  <rect x="520" y="155" width="620" height="130" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="830" y="180" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Stampede Impact Metrics (Hot Key with 10K req/s)</text>
+  <line x1="535" y1="190" x2="1125" y2="190" stroke="#dc2626" stroke-width="1"/>
+
+  <!-- Metrics grid -->
+  <text x="550" y="215" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#374151">Origin Load:</text>
+  <text x="640" y="215" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="400" fill="#1f2937">10,000x increase (cache hit &#8594; all miss)</text>
+  <rect x="640" y="222" width="480" height="10" rx="5" fill="#e5e7eb"/>
+  <rect x="640" y="222" width="480" height="10" rx="5" fill="#dc2626"/>
+
+  <text x="550" y="252" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#374151">P99 Latency:</text>
+  <text x="650" y="252" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="400" fill="#1f2937">50ms &#8594; 15,000ms (300x degradation)</text>
+  <rect x="650" y="259" width="470" height="10" rx="5" fill="#e5e7eb"/>
+  <rect x="650" y="259" width="470" height="10" rx="5" fill="#dc2626"/>
+
+  <text x="550" y="289" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#374151">Error Rate:</text>
+  <text x="635" y="289" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="400" fill="#1f2937">0.01% &#8594; 45% (timeout + connection refusal)</text>
+  <rect x="635" y="296" width="485" height="10" rx="5" fill="#e5e7eb"/>
+  <rect x="635" y="296" width="220" height="10" rx="5" fill="#dc2626"/>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: STRATEGY 1 - LOCKING (SINGLE-FLIGHT) -->
+  <!-- ============================================================ -->
+  <text x="60" y="325" font-family="system-ui, -apache-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Strategy 1: Locking (Single-Flight / Mutex)</text>
+
+  <rect x="60" y="340" width="540" height="250" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2" filter="url(#shadow)"/>
+
+  <!-- Locking diagram -->
+  <text x="80" y="365" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827">How It Works</text>
+  <line x1="80" y1="375" x2="580" y2="375" stroke="#2563eb" stroke-width="1"/>
+
+  <!-- Request flow with lock -->
+  <rect x="80" y="385" width="90" height="30" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="125" y="405" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Request A</text>
+
+  <rect x="80" y="420" width="90" height="30" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="125" y="440" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Request B</text>
+
+  <rect x="80" y="455" width="90" height="30" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="125" y="475" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Request C</text>
+
+  <rect x="80" y="490" width="90" height="30" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="125" y="510" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Request D</text>
+  <text x="80" y="535" font-family="system-ui, -apache-system, sans-serif" font-size="10" fill="#6b7280">Concurrent requests</text>
+
+  <!-- Lock acquisition -->
+  <line x1="170" y1="400" x2="220" y2="400" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="195" y="395" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="700" fill="#2563eb" text-anchor="middle">WINS</text>
+  <line x1="170" y1="435" x2="220" y2="435" stroke="#6b7280" stroke-width="2"/>
+  <text x="195" y="430" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">WAIT</text>
+  <line x1="170" y1="470" x2="220" y2="470" stroke="#6b7280" stroke-width="2"/>
+  <text x="195" y="465" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">WAIT</text>
+  <line x1="170" y1="505" x2="220" y2="505" stroke="#6b7280" stroke-width="2"/>
+  <text x="195" y="500" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">WAIT</text>
+
+  <!-- Lock -->
+  <rect x="220" y="385" width="120" height="40" rx="6" fill="#2563eb" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="280" y="400" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">LOCK ACQUIRED</text>
+  <text x="280" y="416" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#bfdbfe" text-anchor="middle">by Request A only</text>
+
+  <!-- Origin fetch -->
+  <rect x="360" y="385" width="100" height="40" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="410" y="400" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">Single Origin</text>
+  <text x="410" y="416" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Fetch (1x)</text>
+
+  <!-- Cache fill -->
+  <rect x="480" y="385" width="100" height="40" rx="6" fill="#d1fae5" stroke="#16a34a" stroke-width="2"/>
+  <text x="530" y="400" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">Cache Populated</text>
+  <text x="530" y="416" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Key refreshed</text>
+
+  <!-- Response to all -->
+  <line x1="530" y1="425" x2="530" y2="470" stroke="#16a34a" stroke-width="2"/>
+  <line x1="530" y1="470" x2="125" y2="470" stroke="#16a34a" stroke-width="2"/>
+  <line x1="125" y1="470" x2="125" y2="455" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="200" y1="470" x2="200" y2="490" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="275" y1="470" x2="275" y2="490" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="350" y1="470" x2="350" y2="490" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Results -->
+  <rect x="360" y="430" width="220" height="80" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="470" y="450" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Result: Only 1 origin query</text>
+  <text x="375" y="470" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Request A: pays origin cost (200ms)</text>
+  <text x="375" y="488" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Request B-D: wait for A (200-250ms)</text>
+  <text x="375" y="506" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Origin protection: 100% (N requests &#8594; 1 query)</text>
+
+  <!-- Pros and Cons -->
+  <rect x="620" y="340" width="520" height="250" rx="8" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+  <text x="880" y="365" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Locking: Trade-offs</text>
+  <line x1="635" y1="375" x2="1125" y2="375" stroke="#374151" stroke-width="1"/>
+
+  <text x="640" y="400" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#16a34a">Advantages:</text>
+  <text x="640" y="422" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Guarantees exactly 1 origin query per expired key</text>
+  <text x="640" y="442" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Strong consistency: all requesters get same fresh value</text>
+  <text x="640" y="462" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Simple to implement with distributed locks (Redis SET NX)</text>
+  <text x="640" y="482" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Works with any cache backend, no special features needed</text>
+
+  <text x="640" y="512" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#dc2626">Disadvantages:</text>
+  <text x="640" y="534" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Waiting requests block for full origin fetch latency</text>
+  <text x="640" y="554" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Lock contention under extreme concurrency adds overhead</text>
+  <text x="640" y="574" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Lock holder failure (timeout/crash) leaves waiters stranded</text>
+  <text x="640" y="594" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Increased tail latency for 99th percentile requests</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: STRATEGY 2 - STALE-WHILE-REVALIDATE -->
+  <!-- ============================================================ -->
+  <text x="60" y="630" font-family="system-ui, -apache-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Strategy 2: Stale-While-Revalidate (SWR)</text>
+
+  <rect x="60" y="645" width="540" height="240" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+
+  <!-- SWR diagram -->
+  <text x="80" y="670" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827">How It Works: Serve stale + async refresh</text>
+  <line x1="80" y1="680" x2="580" y2="680" stroke="#16a34a" stroke-width="1"/>
+
+  <!-- Timeline -->
+  <text x="80" y="705" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#374151">Time: T=0s (Cache Fresh)</text>
+  <rect x="80" y="715" width="150" height="35" rx="6" fill="#d1fae5" stroke="#16a34a" stroke-width="2"/>
+  <text x="155" y="737" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Cache HIT</text>
+
+  <text x="250" y="737" font-family="system-ui, -apache-system, sans-serif" font-size="16" fill="#374151">&#8594;</text>
+
+  <text x="280" y="705" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#374151">T=300s (TTL Expires)</text>
+  <rect x="280" y="715" width="150" height="35" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="355" y="737" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">TTL EXPIRED</text>
+
+  <text x="450" y="737" font-family="system-ui, -apache-system, sans-serif" font-size="16" fill="#374151">&#8594;</text>
+
+  <!-- SWR window -->
+  <rect x="480" y="695" width="100" height="70" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="530" y="715" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">SWR</text>
+  <text x="530" y="730" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Window</text>
+  <text x="530" y="745" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">60s grace</text>
+  <text x="530" y="758" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">period</text>
+
+  <!-- Request flow during SWR -->
+  <text x="80" y="775" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#374151">Request arrives during SWR window:</text>
+
+  <!-- Step 1: Serve stale immediately -->
+  <rect x="80" y="785" width="140" height="60" rx="6" fill="#d1fae5" stroke="#16a34a" stroke-width="2"/>
+  <text x="150" y="805" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">1. Serve STALE</text>
+  <text x="150" y="822" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: 5ms</text>
+  <text x="150" y="836" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">(instant response)</text>
+
+  <line x1="220" y1="815" x2="260" y2="815" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Step 2: Async revalidate -->
+  <rect x="260" y="785" width="140" height="60" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="330" y="805" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">2. Async Refresh</text>
+  <text x="330" y="822" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Background thread</text>
+  <text x="330" y="836" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">(non-blocking)</text>
+
+  <line x1="400" y1="815" x2="440" y2="815" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- Step 3: Cache updated -->
+  <rect x="440" y="785" width="140" height="60" rx="6" fill="#d1fae5" stroke="#16a34a" stroke-width="2"/>
+  <text x="510" y="805" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">3. Cache Updated</text>
+  <text x="510" y="822" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Fresh value stored</text>
+  <text x="510" y="836" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">next req gets fresh</text>
+
+  <!-- Trade-offs for SWR -->
+  <rect x="620" y="645" width="520" height="240" rx="8" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+  <text x="880" y="670" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">SWR: Trade-offs</text>
+  <line x1="635" y1="680" x2="1125" y2="680" stroke="#374151" stroke-width="1"/>
+
+  <text x="640" y="705" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#16a34a">Advantages:</text>
+  <text x="640" y="727" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Zero additional latency for requesters (stale served instantly)</text>
+  <text x="640" y="747" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Only 1 background refresh even under heavy concurrency</text>
+  <text x="640" y="767" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Naturally smooths traffic spikes; self-healing</text>
+  <text x="640" y="787" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- No distributed lock needed; simpler coordination</text>
+
+  <text x="640" y="817" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#dc2626">Disadvantages:</text>
+  <text x="640" y="839" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Serves stale data during SWR window (eventual consistency)</text>
+  <text x="640" y="859" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Background thread may fail silently (stale persists)</text>
+  <text x="640" y="879" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- SWR window too short = repeated stampedes</text>
+  <text x="640" y="899" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- SWR window too long = excessively stale data</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: STRATEGY 3 - PROBABILISTIC EARLY EXPIRATION -->
+  <!-- ============================================================ -->
+  <text x="60" y="925" font-family="system-ui, -apache-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Strategy 3: Probabilistic Early Expiration</text>
+
+  <rect x="60" y="940" width="540" height="230" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2" filter="url(#shadow)"/>
+
+  <text x="80" y="965" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827">How It Works: Probability increases as TTL approaches expiry</text>
+  <line x1="80" y1="975" x2="580" y2="975" stroke="#7c3aed" stroke-width="1"/>
+
+  <!-- Probability curve visualization -->
+  <text x="80" y="1000" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#374151">Expiration Probability Over TTL Lifetime</text>
+
+  <!-- Axes -->
+  <line x1="100" y1="1015" x2="100" y2="1130" stroke="#374151" stroke-width="2"/>
+  <line x1="100" y1="1130" x2="550" y2="1130" stroke="#374151" stroke-width="2"/>
+
+  <!-- Y axis labels -->
+  <text x="90" y="1020" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="end">100%</text>
+  <text x="90" y="1060" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="end">50%</text>
+  <text x="90" y="1100" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="end">25%</text>
+  <text x="90" y="1135" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="end">0%</text>
+
+  <!-- X axis labels -->
+  <text x="100" y="1148" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">TTL Start</text>
+  <text x="250" y="1148" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">50% TTL</text>
+  <text x="380" y="1148" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">80% TTL</text>
+  <text x="500" y="1148" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">100% TTL</text>
+
+  <!-- Probability curve (S-curve) -->
+  <path d="M 100 1130 Q 150 1130 200 1125 Q 250 1115 300 1095 Q 350 1060 400 1020 Q 440 990 480 970 Q 510 960 550 955" fill="none" stroke="#7c3aed" stroke-width="3"/>
+
+  <!-- Probability zones -->
+  <rect x="100" y="955" width="150" height="175" rx="4" fill="#d1fae5" opacity="0.3"/>
+  <text x="175" y="1000" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="700" fill="#16a34a" text-anchor="middle">LOW</text>
+  <text x="175" y="1015" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">P &#60; 10%</text>
+
+  <rect x="250" y="955" width="130" height="175" rx="4" fill="#fef3c7" opacity="0.3"/>
+  <text x="315" y="1000" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="700" fill="#d97706" text-anchor="middle">MEDIUM</text>
+  <text x="315" y="1015" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">P: 10-60%</text>
+
+  <rect x="380" y="955" width="170" height="175" rx="4" fill="#fecaca" opacity="0.3"/>
+  <text x="465" y="1000" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">HIGH</text>
+  <text x="465" y="1015" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">P: 60-100%</text>
+
+  <!-- Explanation -->
+  <rect x="80" y="1160" width="470" height="70" rx="6" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="315" y="1180" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Mechanism</text>
+  <text x="95" y="1200" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Each request computes: P(early-expire) = (elapsed_time / TTL)^2</text>
+  <text x="95" y="1216" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">If random() &#60; P, this request triggers a refresh. Otherwise uses cached value.</text>
+  <text x="95" y="1232" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">At 80% TTL: P = 0.64, meaning ~64% of requests will refresh early</text>
+
+  <!-- Trade-offs -->
+  <rect x="620" y="940" width="520" height="230" rx="8" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+  <text x="880" y="965" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Probabilistic: Trade-offs</text>
+  <line x1="635" y1="975" x2="1125" y2="975" stroke="#374151" stroke-width="1"/>
+
+  <text x="640" y="1000" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#16a34a">Advantages:</text>
+  <text x="640" y="1022" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- No coordination needed between instances (stateless)</text>
+  <text x="640" y="1042" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Spreads refresh load across time (no synchronized stampede)</text>
+  <text x="640" y="1062" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Naturally scales with traffic: more requests = higher P</text>
+  <text x="640" y="1082" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Tunable via exponent (squaring, cubing) for different hotness</text>
+
+  <text x="640" y="1112" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#dc2626">Disadvantages:</text>
+  <text x="640" y="1134" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Multiple requests may still refresh (not strictly single-flight)</text>
+  <text x="640" y="1154" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Requires careful tuning of probability function per workload</text>
+  <text x="640" y="1174" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Unpredictable: can over-refresh or under-refresh</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 5: STRATEGY 4 - JITTERED TTLS -->
+  <!-- ============================================================ -->
+  <text x="60" y="1210" font-family="system-ui, -apache-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Strategy 4: Jittered TTLs</text>
+
+  <rect x="60" y="1225" width="540" height="190" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="2" filter="url(#shadow)"/>
+
+  <text x="80" y="1250" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827">How It Works: Add random variance to TTL to desynchronize expiry</text>
+  <line x1="80" y1="1260" x2="580" y2="1260" stroke="#ea580c" stroke-width="1"/>
+
+  <!-- TTL distribution visualization -->
+  <text x="80" y="1285" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#374151">TTL Distribution with &#177;20% Jitter (Base TTL = 300s)</text>
+
+  <!-- Base TTL line -->
+  <line x1="100" y1="1310" x2="520" y2="1310" stroke="#374151" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="310" y="1305" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="700" fill="#374151" text-anchor="middle">Base TTL: 300s</text>
+
+  <!-- Jittered bars -->
+  <rect x="120" y="1295" width="20" height="30" rx="3" fill="#fdba74"/>
+  <text x="130" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">240s</text>
+
+  <rect x="155" y="1285" width="20" height="40" rx="3" fill="#fdba74"/>
+  <text x="165" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">260s</text>
+
+  <rect x="190" y="1300" width="20" height="25" rx="3" fill="#fdba74"/>
+  <text x="200" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">285s</text>
+
+  <rect x="225" y="1310" width="20" height="15" rx="3" fill="#fdba74"/>
+  <text x="235" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">300s</text>
+
+  <rect x="260" y="1295" width="20" height="30" rx="3" fill="#fdba74"/>
+  <text x="270" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">315s</text>
+
+  <rect x="295" y="1280" width="20" height="45" rx="3" fill="#fdba74"/>
+  <text x="305" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">330s</text>
+
+  <rect x="330" y="1275" width="20" height="50" rx="3" fill="#fdba74"/>
+  <text x="340" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">345s</text>
+
+  <rect x="365" y="1290" width="20" height="35" rx="3" fill="#fdba74"/>
+  <text x="375" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">320s</text>
+
+  <rect x="400" y="1305" width="20" height="20" rx="3" fill="#fdba74"/>
+  <text x="410" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">295s</text>
+
+  <rect x="435" y="1270" width="20" height="55" rx="3" fill="#fdba74"/>
+  <text x="445" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">355s</text>
+
+  <rect x="470" y="1260" width="20" height="65" rx="3" fill="#fdba74"/>
+  <text x="480" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">360s</text>
+
+  <text x="505" y="1340" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">...</text>
+
+  <!-- Range annotation -->
+  <line x1="120" y1="1355" x2="490" y2="1355" stroke="#ea580c" stroke-width="2"/>
+  <line x1="120" y1="1350" x2="120" y2="1360" stroke="#ea580c" stroke-width="2"/>
+  <line x1="490" y1="1350" x2="490" y2="1360" stroke="#ea580c" stroke-width="2"/>
+  <text x="305" y="1370" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#ea580c" text-anchor="middle">Expiry spread: 240s to 360s (120s window)</text>
+
+  <!-- Explanation -->
+  <rect x="80" y="1385" width="470" height="65" rx="6" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+  <text x="315" y="1405" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Mechanism</text>
+  <text x="95" y="1425" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">Actual TTL = BaseTTL &#215; (1 + random(-jitter, +jitter))</text>
+  <text x="95" y="1441" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">With 20% jitter on 300s TTL: actual expiry between 240s and 360s</text>
+
+  <!-- Trade-offs -->
+  <rect x="620" y="1225" width="520" height="190" rx="8" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+  <text x="880" y="1250" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Jittered TTL: Trade-offs</text>
+  <line x1="635" y1="1260" x2="1125" y2="1260" stroke="#374151" stroke-width="1"/>
+
+  <text x="640" y="1285" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#16a34a">Advantages:</text>
+  <text x="640" y="1307" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Simplest strategy: one-line change to TTL calculation</text>
+  <text x="640" y="1327" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- No coordination, no locks, no background threads</text>
+  <text x="640" y="1347" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Prevents synchronized expiry across keys and instances</text>
+  <text x="640" y="1367" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Works with any cache system (client-side TTL manipulation)</text>
+
+  <text x="640" y="1397" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#dc2626">Disadvantages:</text>
+  <text x="640" y="1419" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Doesn't prevent stampede, only reduces probability</text>
+  <text x="640" y="1439" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">- Extreme hot keys can still collide within jitter window</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 6: COMPARISON MATRIX -->
+  <!-- ============================================================ -->
+  <text x="60" y="1455" font-family="system-ui, -apache-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Strategy Comparison Matrix</text>
+
+  <rect x="60" y="1470" width="1080" height="120" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="2"/>
+
+  <!-- Header row -->
+  <rect x="60" y="1470" width="220" height="35" fill="#374151"/>
+  <text x="170" y="1493" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Property</text>
+
+  <rect x="280" y="1470" width="200" height="35" fill="#2563eb"/>
+  <text x="380" y="1493" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Locking</text>
+
+  <rect x="480" y="1470" width="200" height="35" fill="#16a34a"/>
+  <text x="580" y="1493" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Stale-While-Revalidate</text>
+
+  <rect x="680" y="1470" width="200" height="35" fill="#7c3aed"/>
+  <text x="780" y="1493" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Probabilistic Early Expiry</text>
+
+  <rect x="880" y="1470" width="200" height="35" fill="#ea580c"/>
+  <text x="980" y="1493" font-family="system-ui, -apache-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Jittered TTLs</text>
+
+  <!-- Row 1: Origin Queries -->
+  <text x="170" y="1525" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Origin Queries/Expiry</text>
+  <text x="380" y="1525" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Exactly 1</text>
+  <text x="580" y="1525" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">1 (background)</text>
+  <text x="780" y="1525" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">1-3 (probabilistic)</text>
+  <text x="980" y="1525" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">N (reduced probability)</text>
+
+  <!-- Row 2: Latency Impact -->
+  <text x="170" y="1555" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Request Latency Impact</text>
+  <text x="380" y="1555" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">High (wait for lock holder)</text>
+  <text x="580" y="1555" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">None (instant stale)</text>
+  <text x="780" y="1555" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Low (some pay refresh)</text>
+  <text x="980" y="1555" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">None (cache hit)</text>
+
+  <!-- Row 3: Consistency -->
+  <text x="170" y="1585" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Consistency Guarantee</text>
+  <text x="380" y="1585" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Strong (all get fresh)</text>
+  <text x="580" y="1585" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Eventual (stale during SWR)</text>
+  <text x="780" y="1585" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Eventual (mixed fresh/stale)</text>
+  <text x="980" y="1585" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Eventual (varies by instance)</text>
+</svg>

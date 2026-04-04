@@ -1,13 +1,200 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Object Pool Lifecycle</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720">
+  <rect width="1100" height="720" fill="#ffffff"/>
 
-  <rect x="80" y="120" width="220" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="160" font-family="Arial" font-size="14" fill="#0f172a">Acquire</text>
+  <!-- Title -->
+  <text x="550" y="38" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Object Pool Lifecycle — State Transitions, Recycling &amp; Monitoring</text>
 
-  <rect x="360" y="120" width="220" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="400" y="160" font-family="Arial" font-size="14" fill="#0f172a">Use</text>
+  <!-- ============ TOP: Lifecycle Flow Diagram ============ -->
+  <text x="550" y="78" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Lifecycle State Machine</text>
 
-  <rect x="640" y="120" width="220" height="70" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
-  <text x="680" y="160" font-family="Arial" font-size="14" fill="#0f172a">Release</text>
+  <!-- Pool Initialization -->
+  <rect x="30" y="100" width="140" height="60" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="100" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Pool</text>
+  <text x="100" y="140" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Initialization</text>
+
+  <!-- Arrow 1 -->
+  <line x1="170" y1="130" x2="220" y2="130" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="195" y="122" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">pre-warm</text>
+
+  <!-- Object Creation -->
+  <rect x="220" y="100" width="140" height="60" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="290" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#0c4a6e" text-anchor="middle">Object</text>
+  <text x="290" y="140" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#0c4a6e" text-anchor="middle">Creation</text>
+
+  <!-- Arrow 2 -->
+  <line x1="360" y1="130" x2="410" y2="130" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="385" y="122" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">factory</text>
+
+  <!-- Borrow / Acquire -->
+  <rect x="410" y="100" width="140" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="480" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">Borrow /</text>
+  <text x="480" y="140" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">Acquire</text>
+
+  <!-- Arrow 3 -->
+  <line x1="550" y1="130" x2="600" y2="130" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="575" y="122" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">checkout</text>
+
+  <!-- In Use -->
+  <rect x="600" y="100" width="140" height="60" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="670" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#5b21b6" text-anchor="middle">In Use</text>
+  <text x="670" y="140" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#5b21b6" text-anchor="middle">(Active)</text>
+
+  <!-- Arrow 4 -->
+  <line x1="740" y1="130" x2="790" y2="130" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="765" y="122" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">release</text>
+
+  <!-- Return to Pool -->
+  <rect x="790" y="100" width="140" height="60" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="860" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">Return to</text>
+  <text x="860" y="140" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">Pool</text>
+
+  <!-- Arrow 5 down to Validation -->
+  <line x1="860" y1="160" x2="860" y2="200" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowD)"/>
+
+  <!-- Validation -->
+  <rect x="790" y="200" width="140" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="860" y="222" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">Validation</text>
+  <text x="860" y="240" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">Check</text>
+
+  <!-- Arrow: pass validation -> reuse -->
+  <line x1="790" y1="230" x2="560" y2="230" stroke="#059669" stroke-width="2" marker-end="url(#arrowL)"/>
+  <text x="670" y="222" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#065f46" text-anchor="middle">Valid -&gt; Reuse</text>
+
+  <!-- Arrow: fail validation -> destroy -->
+  <line x1="860" y1="260" x2="860" y2="300" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowD)"/>
+  <text x="875" y="285" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#991b1b">Invalid -&gt; Destroy</text>
+
+  <!-- Reuse (back to idle pool) -->
+  <rect x="410" y="200" width="140" height="60" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="480" y="222" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">Idle Pool</text>
+  <text x="480" y="240" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">(Reusable)</text>
+
+  <!-- Arrow from Reuse back to Borrow -->
+  <path d="M410 230 L410 280 L480 280 L480 160" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#arrowU)"/>
+  <text x="430" y="270" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">recycle</text>
+
+  <!-- Destroy -->
+  <rect x="790" y="300" width="140" height="60" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="860" y="322" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">Destroy /</text>
+  <text x="860" y="340" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">GC Reclaim</text>
+
+  <!-- Arrow: destroy -> recreate (loop) -->
+  <path d="M790 330 L700 330 L700 360 L360 360 L360 160" stroke="#d97706" stroke-width="2" fill="none" stroke-dasharray="6,4" marker-end="url(#arrowU)"/>
+  <text x="530" y="352" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e">recreate on demand</text>
+
+  <!-- ============ MIDDLE: Pool State Transitions ============ -->
+  <text x="550" y="400" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Pool State Transitions Under Load</text>
+
+  <!-- Empty State -->
+  <rect x="40" y="425" width="200" height="90" rx="8" fill="#ffffff" stroke="#6b7280" stroke-width="2"/>
+  <text x="140" y="447" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Empty</text>
+  <text x="140" y="467" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">active=0, idle=0</text>
+  <text x="140" y="487" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">All borrows block</text>
+
+  <!-- Arrow -->
+  <line x1="240" y1="470" x2="290" y2="470" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="265" y="462" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">init</text>
+
+  <!-- Partially Filled -->
+  <rect x="290" y="425" width="200" height="90" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="390" y="447" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Partially Filled</text>
+  <text x="390" y="467" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">active=3, idle=7</text>
+  <text x="390" y="487" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Normal operation</text>
+
+  <!-- Arrow -->
+  <line x1="490" y1="470" x2="540" y2="470" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="515" y="462" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">ramp up</text>
+
+  <!-- Full / Optimal -->
+  <rect x="540" y="425" width="200" height="90" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="640" y="447" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">Full / Optimal</text>
+  <text x="640" y="467" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">active=8, idle=2</text>
+  <text x="640" y="487" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Peak throughput</text>
+
+  <!-- Arrow -->
+  <line x1="740" y1="470" x2="790" y2="470" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="765" y="462" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">spike</text>
+
+  <!-- Exhausted -->
+  <rect x="790" y="425" width="200" height="90" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="890" y="447" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">Exhausted</text>
+  <text x="890" y="467" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">active=10, idle=0</text>
+  <text x="890" y="487" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Borrows queue or timeout</text>
+
+  <!-- Resize arrow: Exhausted -> Partially Filled (resize up) -->
+  <path d="M890 425 L890 390 L390 390 L390 425" stroke="#2563eb" stroke-width="2" fill="none" stroke-dasharray="6,4" marker-end="url(#arrowU)"/>
+  <text x="640" y="382" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">Pool Resize (scale up max capacity)</text>
+
+  <!-- ============ BOTTOM: Monitoring Metrics ============ -->
+  <text x="550" y="545" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Monitoring Metrics &amp; Recycling Patterns</text>
+
+  <!-- Metrics Panel -->
+  <rect x="40" y="565" width="500" height="140" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+
+  <!-- Metric 1 -->
+  <rect x="55" y="580" width="110" height="28" rx="4" fill="#f3f4f6"/>
+  <text x="110" y="599" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Active Count</text>
+  <rect x="165" y="580" width="160" height="28" rx="4" fill="#d1fae5"/>
+  <text x="245" y="599" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Currently borrowed objs</text>
+  <rect x="325" y="580" width="100" height="28" rx="4" fill="#dbeafe"/>
+  <text x="375" y="599" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Target: 70%</text>
+
+  <!-- Metric 2 -->
+  <rect x="55" y="613" width="110" height="28" rx="4" fill="#f3f4f6"/>
+  <text x="110" y="632" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Idle Count</text>
+  <rect x="165" y="613" width="160" height="28" rx="4" fill="#d1fae5"/>
+  <text x="245" y="632" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Available in pool</text>
+  <rect x="325" y="613" width="100" height="28" rx="4" fill="#dbeafe"/>
+  <text x="375" y="632" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Target: 20-30%</text>
+
+  <!-- Metric 3 -->
+  <rect x="55" y="646" width="110" height="28" rx="4" fill="#f3f4f6"/>
+  <text x="110" y="665" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Wait Time</text>
+  <rect x="165" y="646" width="160" height="28" rx="4" fill="#d1fae5"/>
+  <text x="245" y="665" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Queue borrow latency</text>
+  <rect x="325" y="646" width="100" height="28" rx="4" fill="#dbeafe"/>
+  <text x="375" y="665" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Target: &lt;2ms</text>
+
+  <!-- Metric 4 -->
+  <rect x="55" y="679" width="110" height="28" rx="4" fill="#f3f4f6"/>
+  <text x="110" y="698" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Borrow Rate</text>
+  <rect x="165" y="679" width="160" height="28" rx="4" fill="#d1fae5"/>
+  <text x="245" y="698" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Borrows per second</text>
+  <rect x="325" y="679" width="100" height="28" rx="4" fill="#dbeafe"/>
+  <text x="375" y="698" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Alert: &gt;1k/s</text>
+
+  <!-- Recycling Panel -->
+  <rect x="560" y="565" width="500" height="140" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="810" y="587" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Object Recycling Patterns</text>
+
+  <!-- Pattern 1 -->
+  <rect x="575" y="600" width="470" height="28" rx="4" fill="#d1fae5"/>
+  <text x="590" y="619" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46">Reset:</text>
+  <text x="635" y="619" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Clear internal state, reset buffers, close open handles before return to idle pool</text>
+
+  <!-- Pattern 2 -->
+  <rect x="575" y="633" width="470" height="28" rx="4" fill="#d1fae5"/>
+  <text x="590" y="652" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46">Validate:</text>
+  <text x="645" y="652" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Run health-check on borrow (connection ping, DB query test, socket liveness)</text>
+
+  <!-- Pattern 3 -->
+  <rect x="575" y="666" width="470" height="28" rx="4" fill="#d1fae5"/>
+  <text x="590" y="685" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46">Evict:</text>
+  <text x="635" y="685" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Remove stale objects after TTL or max-use count to prevent resource leaks &amp; corruption</text>
+
+  <!-- Markers -->
+  <defs>
+    <marker id="arrowR" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f2937"/>
+    </marker>
+    <marker id="arrowD" viewBox="0 0 10 10" refX="5" refY="10" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#1f2937"/>
+    </marker>
+    <marker id="arrowL" viewBox="0 0 10 10" refX="0" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 10 0 L 0 5 L 10 10 z" fill="#059669"/>
+    </marker>
+    <marker id="arrowU" viewBox="0 0 10 10" refX="5" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 10 L 5 0 L 10 10 z" fill="#1f2937"/>
+    </marker>
+  </defs>
 </svg>

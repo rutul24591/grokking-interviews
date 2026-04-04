@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Caching Strategies Overview</title>
+  <desc id="desc">Overview of five core caching strategies: Cache-Aside, Read-Through, Write-Through, Write-Behind, and Write-Around</desc>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Caching Strategies Overview</text>
+  <text x="450" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">Five Core Read and Write Patterns</text>
+
+  <!-- Cache-Aside (Top Left) -->
+  <rect x="50" y="85" width="250" height="200" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="175" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Cache-Aside</text>
+  <rect x="65" y="125" width="220" height="150" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="175" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Read Path:</text>
+  <text x="175" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">App checks cache first</text>
+  <text x="175" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">If miss, load from DB</text>
+  <text x="175" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Then populate cache</text>
+  <text x="175" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">Write Path:</text>
+  <text x="175" y="240" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Write to DB directly</text>
+  <text x="175" y="255" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Delete cache entry</text>
+  <text x="175" y="270" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">(invalidation on write)</text>
+
+  <!-- Read-Through (Top Middle) -->
+  <rect x="310" y="85" width="250" height="200" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="435" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Read-Through</text>
+  <rect x="325" y="125" width="220" height="150" rx="4" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+  <text x="435" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Read Path:</text>
+  <text x="435" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">App reads from cache</text>
+  <text x="435" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cache loads from DB</text>
+  <text x="435" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">transparently on miss</text>
+  <text x="435" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Write Path:</text>
+  <text x="435" y="240" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">App writes to DB directly</text>
+  <text x="435" y="255" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cache invalidated by</text>
+  <text x="435" y="270" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">cache layer callback</text>
+
+  <!-- Write-Through (Top Right) -->
+  <rect x="570" y="85" width="250" height="200" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="695" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46">Write-Through</text>
+  <rect x="585" y="125" width="220" height="150" rx="4" fill="#ecfdf5" stroke="#16a34a" stroke-width="1"/>
+  <text x="695" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Read Path:</text>
+  <text x="695" y="170" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cache-aside or</text>
+  <text x="695" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">read-through pattern</text>
+  <text x="695" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">(depends on config)</text>
+  <text x="695" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46">Write Path:</text>
+  <text x="695" y="240" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Write to cache first</text>
+  <text x="695" y="255" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cache writes to DB</text>
+  <text x="695" y="270" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Ack after both complete</text>
+
+  <!-- Write-Behind (Bottom Left) -->
+  <rect x="50" y="295" width="250" height="200" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="175" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#0369a1">Write-Behind</text>
+  <rect x="65" y="335" width="220" height="150" rx="4" fill="#dbeafe" stroke="#38bdf8" stroke-width="1"/>
+  <text x="175" y="360" text-anchor="middle" font-size="9" font-weight="700" fill="#0369a1">Read Path:</text>
+  <text x="175" y="380" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cache-aside pattern</text>
+  <text x="175" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">(check cache, load on miss)</text>
+  <text x="175" y="420" text-anchor="middle" font-size="9" font-weight="700" fill="#0369a1">Write Path:</text>
+  <text x="175" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Write to cache, ack</text>
+  <text x="175" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cache batches writes</text>
+  <text x="175" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">to DB asynchronously</text>
+  <text x="175" y="485" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">(dirty tracking)</text>
+
+  <!-- Write-Around (Bottom Right) -->
+  <rect x="310" y="295" width="250" height="200" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="435" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Write-Around</text>
+  <rect x="325" y="335" width="220" height="150" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="435" y="360" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Read Path:</text>
+  <text x="435" y="380" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cache-aside pattern</text>
+  <text x="435" y="395" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">(check cache, load on miss)</text>
+  <text x="435" y="420" text-anchor="middle" font-size="9" font-weight="700" fill="#b91c1c">Write Path:</text>
+  <text x="435" y="440" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Write to DB directly</text>
+  <text x="435" y="455" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Bypass cache entirely</text>
+  <text x="435" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">Cache populated on next</text>
+  <text x="435" y="485" text-anchor="middle" font-size="8" font-weight="600" fill="#1f2937">read (if accessed again)</text>
+
+  <!-- Key Legend (Bottom Right) -->
+  <rect x="570" y="295" width="280" height="200" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="710" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2937">Key Characteristics</text>
+  <rect x="585" y="335" width="250" height="150" rx="4" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="710" y="355" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Cache-Aside: App-controlled, flexible, most common</text>
+  <text x="710" y="375" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Read-Through: Simple app code, cache loads on miss</text>
+  <text x="710" y="395" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Write-Through: Strong consistency, slower writes</text>
+  <text x="710" y="415" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Write-Behind: Fast writes, batch DB writes, data loss risk</text>
+  <text x="710" y="435" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Write-Around: Avoids cache pollution, read-after-write miss</text>
+  <text x="710" y="460" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Consistency: Write-Through (strong) → Others (eventual)</text>
+  <text x="710" y="480" text-anchor="middle" font-size="8" font-weight="700" fill="#1f2937">Write Speed: Write-Behind (fastest) → Write-Through (slowest)</text>
+</svg>

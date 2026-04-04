@@ -1,14 +1,135 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
-  <rect width="1200" height="620" fill="#f8fafc"/>
-  <text x="60" y="70" font-size="28" font-family="Arial" fill="#0f172a">Cache Stampede (Thundering Herd)</text>
-  <rect x="80" y="140" width="260" height="120" rx="12" fill="#fee2e2" stroke="#ef4444"/>
-  <text x="110" y="195" font-size="18" font-family="Arial" fill="#0f172a">Cache Expired</text>
-  <rect x="480" y="120" width="640" height="160" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/>
-  <text x="510" y="165" font-size="16" font-family="Arial" fill="#0f172a">Many clients miss at once</text>
-  <text x="510" y="195" font-size="16" font-family="Arial" fill="#0f172a">All requests hit the database</text>
-  <text x="510" y="225" font-size="16" font-family="Arial" fill="#0f172a">Latency spikes and DB overload</text>
-  <line x1="340" y1="200" x2="480" y2="200" stroke="#94a3b8" stroke-width="4"/>
-  <rect x="80" y="340" width="1040" height="160" rx="12" fill="#fef3c7" stroke="#f59e0b"/>
-  <text x="110" y="385" font-size="16" font-family="Arial" fill="#0f172a">Mitigation: locks, request coalescing, refresh-ahead, stale-while-revalidate</text>
-  <text x="80" y="560" font-size="16" font-family="Arial" fill="#475569">Stampedes are a reliability issue, not just a performance issue.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="820" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="60" y="48" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">Cache Stampede (Thundering Herd)</text>
+  <text x="60" y="76" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#374151">How a single hot key expiry triggers cascading database overload without stampede protection</text>
+
+  <!-- Stampede Formation Diagram -->
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Stampede Formation Timeline</text>
+
+  <!-- Time axis -->
+  <line x1="60" y1="170" x2="1140" y2="170" stroke="#d1d5db" stroke-width="2"/>
+  <text x="60" y="195" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">T-30s</text>
+  <text x="340" y="195" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">T=0</text>
+  <text x="620" y="195" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">T+5s</text>
+  <text x="900" y="195" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">T+30s</text>
+
+  <!-- Phase 1: Cache Hit -->
+  <rect x="60" y="210" width="280" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="80" y="248" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Phase 1: Cache Hit (Normal)</text>
+  <text x="80" y="278" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Key: product:detail:12345</text>
+  <text x="80" y="298" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">10K req/s served from cache</text>
+  <text x="80" y="318" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">DB load: 50 queries/s (baseline)</text>
+
+  <!-- Arrow -->
+  <line x1="340" y1="270" x2="390" y2="270" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="348" y="255" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#dc2626">KEY EXPIRES</text>
+
+  <!-- Phase 2: Stampede -->
+  <rect x="390" y="210" width="280" height="120" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="410" y="248" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Phase 2: Thundering Herd</text>
+  <text x="410" y="278" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">All 10K requests miss cache</text>
+  <text x="410" y="298" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">All hit DB simultaneously</text>
+  <text x="410" y="318" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">DB connections exhausted</text>
+
+  <!-- Arrow -->
+  <line x1="670" y1="270" x2="720" y2="270" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="678" y="255" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#dc2626">CASCADES</text>
+
+  <!-- Phase 3: DB Overload -->
+  <rect x="720" y="210" width="280" height="120" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="740" y="248" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Phase 3: Cascading Failure</text>
+  <text x="740" y="278" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">DB CPU spikes to 100%</text>
+  <text x="740" y="298" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Query latency: 2ms -&gt; 30s+</text>
+  <text x="740" y="318" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Downstream services fail</text>
+
+  <!-- Arrow -->
+  <line x1="1000" y1="270" x2="1050" y2="270" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- Phase 4: Recovery -->
+  <rect x="1050" y="210" width="100" height="120" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="1055" y="248" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Phase 4</text>
+  <text x="1055" y="270" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Slow</text>
+  <text x="1055" y="288" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">recovery</text>
+  <text x="1055" y="306" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">(minutes)</text>
+
+  <!-- Impact Metrics -->
+  <text x="60" y="370" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Impact Metrics During Stampede</text>
+
+  <rect x="60" y="390" width="260" height="100" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="80" y="425" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Database Queries</text>
+  <text x="80" y="455" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#dc2626">200x spike</text>
+  <text x="80" y="478" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">50/s -&gt; 10,000/s</text>
+
+  <rect x="350" y="390" width="260" height="100" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="370" y="425" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Query Latency (p99)</text>
+  <text x="370" y="455" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#dc2626">2ms -&gt; 30s</text>
+  <text x="370" y="478" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">15,000x degradation</text>
+
+  <rect x="640" y="390" width="260" height="100" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="660" y="425" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Error Rate</text>
+  <text x="660" y="455" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#dc2626">0.01% -&gt; 85%</text>
+  <text x="660" y="478" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Connection pool exhausted</text>
+
+  <rect x="930" y="390" width="220" height="100" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="950" y="425" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Recovery Time</text>
+  <text x="950" y="455" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#dc2626">5-15 minutes</text>
+  <text x="950" y="478" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Even after traffic normalizes</text>
+
+  <!-- Without Stampede Protection Timeline -->
+  <text x="60" y="540" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Request Timeline: Without vs With Stampede Protection</text>
+
+  <!-- WITHOUT Protection -->
+  <rect x="60" y="565" width="520" height="230" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="80" y="600" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">WITHOUT Stampede Protection</text>
+
+  <!-- Request bars without protection -->
+  <rect x="80" y="620" width="40" height="22" rx="3" fill="#22c55e"/>
+  <text x="130" y="636" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">req 1 - cache hit -&gt; return</text>
+
+  <rect x="80" y="650" width="40" height="22" rx="3" fill="#22c55e"/>
+  <text x="130" y="666" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">req 2 - cache hit -&gt; return</text>
+
+  <rect x="80" y="680" width="460" height="22" rx="3" fill="#ef4444"/>
+  <text x="95" y="696" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#ffffff">req 3 - MISS -&gt; DB query (30s timeout)</text>
+
+  <rect x="80" y="710" width="460" height="22" rx="3" fill="#ef4444"/>
+  <text x="95" y="726" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#ffffff">req 4 - MISS -&gt; DB query (30s timeout)</text>
+
+  <rect x="80" y="740" width="460" height="22" rx="3" fill="#ef4444"/>
+  <text x="95" y="756" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#ffffff">req 5 - MISS -&gt; DB query (30s timeout)</text>
+
+  <text x="560" y="700" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#dc2626">5 concurrent DB queries</text>
+  <text x="560" y="720" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#dc2626">All doing same work</text>
+
+  <!-- WITH Protection -->
+  <rect x="610" y="565" width="530" height="230" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+  <text x="630" y="600" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">WITH Stampede Protection</text>
+
+  <!-- Request bars with protection -->
+  <rect x="630" y="620" width="40" height="22" rx="3" fill="#22c55e"/>
+  <text x="680" y="636" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">req 1 - cache hit -&gt; return</text>
+
+  <rect x="630" y="650" width="40" height="22" rx="3" fill="#22c55e"/>
+  <text x="680" y="666" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">req 2 - cache hit -&gt; return</text>
+
+  <rect x="630" y="680" width="200" height="22" rx="3" fill="#eab308"/>
+  <text x="645" y="696" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#ffffff">req 3 - MISS -&gt; acquires lock</text>
+
+  <rect x="630" y="710" width="120" height="22" rx="3" fill="#3b82f6"/>
+  <text x="645" y="726" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#ffffff">req 4 - waits for lock</text>
+
+  <rect x="630" y="740" width="120" height="22" rx="3" fill="#3b82f6"/>
+  <text x="645" y="756" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#ffffff">req 5 - waits for lock</text>
+
+  <text x="800" y="700" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#16a34a">1 DB query</text>
+  <text x="800" y="720" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#16a34a">Others wait or serve stale</text>
 </svg>

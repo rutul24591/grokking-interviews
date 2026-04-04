@@ -1,13 +1,152 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">HTTP Cache Headers</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="#00000022"/>
+    </filter>
+  </defs>
 
-  <rect x="80" y="100" width="800" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
-  <text x="110" y="140" font-family="Arial" font-size="14" fill="#0f172a">Cache-Control: public, max-age=60, s-maxage=300, stale-while-revalidate=30</text>
+  <!-- Background -->
+  <rect width="1100" height="720" fill="#ffffff"/>
 
-  <rect x="80" y="200" width="380" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="240" font-family="Arial" font-size="14" fill="#0f172a">ETag: "v123"</text>
+  <!-- Title -->
+  <text x="550" y="42" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#111827" text-anchor="middle">HTTP Cache Headers — Directives, Combinations &amp; Cardinality</text>
+  <text x="550" y="66" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Cache-Control directives, ETag / Last-Modified revalidation, and Vary header impact on cache key</text>
 
-  <rect x="500" y="200" width="380" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="530" y="240" font-family="Arial" font-size="14" fill="#0f172a">Vary: Accept-Encoding</text>
+  <!-- ============================================= -->
+  <!-- SECTION 1: Cache-Control Directives (top)     -->
+  <!-- ============================================= -->
+  <rect x="30" y="90" width="330" height="300" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+  <text x="195" y="120" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Cache-Control Directives</text>
+  <line x1="50" y1="132" x2="340" y2="132" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Freshness directives -->
+  <rect x="50" y="145" width="290" height="50" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="65" y="164" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">max-age=&lt;seconds&gt;</text>
+  <text x="65" y="182" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Browser cache lifetime in seconds</text>
+
+  <rect x="50" y="202" width="290" height="50" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="65" y="221" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">s-maxage=&lt;seconds&gt;</text>
+  <text x="65" y="239" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Shared / CDN cache lifetime (overrides max-age)</text>
+
+  <!-- Visibility directives -->
+  <rect x="50" y="260" width="138" height="44" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="58" y="279" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">public</text>
+  <text x="58" y="295" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Cacheable by any cache</text>
+
+  <rect x="202" y="260" width="138" height="44" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="210" y="279" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">private</text>
+  <text x="210" y="295" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Single-user cache only</text>
+
+  <!-- Negative directives -->
+  <rect x="50" y="312" width="90" height="38" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="55" y="336" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">no-store</text>
+
+  <rect x="148" y="312" width="96" height="38" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="153" y="336" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">no-cache</text>
+
+  <rect x="252" y="312" width="88" height="38" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="256" y="336" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">must-revalidate</text>
+
+  <rect x="50" y="358" width="290" height="24" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="62" y="375" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">stale-while-revalidate=N | stale-if-error=N</text>
+
+  <!-- ============================================= -->
+  <!-- SECTION 2: Header Combinations (middle-right) -->
+  <!-- ============================================= -->
+  <rect x="390" y="90" width="680" height="300" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+  <text x="730" y="120" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Common Header Combinations &amp; Effective Behavior</text>
+  <line x1="410" y1="132" x2="1050" y2="132" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Table header -->
+  <rect x="410" y="142" width="640" height="32" rx="0" fill="#e5e7eb"/>
+  <text x="560" y="163" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Response Header</text>
+  <text x="850" y="163" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Effective Caching Behavior</text>
+  <line x1="410" y1="174" x2="1050" y2="174" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Row 1 -->
+  <rect x="410" y="176" width="640" height="34" fill="#ffffff"/>
+  <text x="420" y="197" font-family="monospace" font-size="11" font-weight="400" fill="#1f2937">Cache-Control: public, max-age=3600</text>
+  <text x="730" y="197" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">All caches store for 1 hour; no revalidation needed</text>
+
+  <!-- Row 2 -->
+  <rect x="410" y="212" width="640" height="34" fill="#f9fafb"/>
+  <text x="420" y="233" font-family="monospace" font-size="11" font-weight="400" fill="#1f2937">Cache-Control: private, max-age=0, no-cache</text>
+  <text x="730" y="233" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Browser caches but must revalidate on every request</text>
+
+  <!-- Row 3 -->
+  <rect x="410" y="248" width="640" height="34" fill="#ffffff"/>
+  <text x="420" y="269" font-family="monospace" font-size="11" font-weight="400" fill="#1f2937">Cache-Control: no-store</text>
+  <text x="730" y="269" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">No cache anywhere; response never stored</text>
+
+  <!-- Row 4 -->
+  <rect x="410" y="284" width="640" height="34" fill="#f9fafb"/>
+  <text x="420" y="305" font-family="monospace" font-size="11" font-weight="400" fill="#1f2937">Cache-Control: s-maxage=86400, stale-while-revalidate=3600</text>
+  <text x="730" y="305" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">CDN caches 24 hrs; serves stale 1 hr while fetching fresh</text>
+
+  <!-- Row 5 -->
+  <rect x="410" y="320" width="640" height="34" fill="#ffffff"/>
+  <text x="420" y="341" font-family="monospace" font-size="11" font-weight="400" fill="#1f2937">Cache-Control: max-age=300, must-revalidate</text>
+  <text x="730" y="341" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Fresh 5 min; after expiry must revalidate before use</text>
+
+  <!-- Row 6 -->
+  <rect x="410" y="356" width="640" height="34" fill="#f9fafb"/>
+  <text x="420" y="377" font-family="monospace" font-size="11" font-weight="400" fill="#1f2937">Cache-Control: max-age=0, no-cache, must-revalidate</text>
+  <text x="730" y="377" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Always revalidate; never serve stale without validation</text>
+
+  <!-- ============================================= -->
+  <!-- SECTION 3: ETag & Last-Modified (bottom-left) -->
+  <!-- ============================================= -->
+  <rect x="30" y="410" width="510" height="290" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+  <text x="285" y="440" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Revalidation Headers</text>
+  <line x1="50" y1="452" x2="520" y2="452" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- ETag sub-section -->
+  <rect x="50" y="465" width="470" height="105" rx="8" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="70" y="488" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">ETag (Entity Tag) — Opaque validator</text>
+  <text x="70" y="508" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Response: ETag: "a1b2c3d4"</text>
+  <text x="70" y="528" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Request:  If-None-Match: "a1b2c3d4"</text>
+  <text x="70" y="550" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Server compares tags: match = 304 Not Modified | mismatch = 200 OK + new body + new ETag</text>
+
+  <!-- Last-Modified sub-section -->
+  <rect x="50" y="580" width="470" height="105" rx="8" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="70" y="603" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Last-Modified — Timestamp validator</text>
+  <text x="70" y="623" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Response: Last-Modified: Wed, 01 Apr 2026 12:00:00 GMT</text>
+  <text x="70" y="643" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Request:  If-Modified-Since: Wed, 01 Apr 2026 12:00:00 GMT</text>
+  <text x="70" y="665" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Server compares timestamps: newer = 200 OK | same/older = 304 Not Modified</text>
+
+  <!-- ============================================= -->
+  <!-- SECTION 4: Vary Header Cardinality (bottom-right) -->
+  <!-- ============================================= -->
+  <rect x="560" y="410" width="510" height="290" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+  <text x="815" y="440" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Vary Header — Cache Key Cardinality</text>
+  <line x1="580" y1="452" x2="1050" y2="452" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Explanation -->
+  <text x="580" y="475" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Vary tells caches which request headers must differ for a unique cache entry.</text>
+  <text x="580" y="493" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Each distinct value combination creates a separate cache key, impacting hit rate.</text>
+
+  <!-- Vary examples -->
+  <rect x="580" y="510" width="470" height="44" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="595" y="529" font-family="monospace" font-size="12" font-weight="700" fill="#111827">Vary: Accept-Encoding</text>
+  <text x="595" y="546" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">2x keys (gzip / br). Low cardinality impact. Recommended.</text>
+
+  <rect x="580" y="562" width="470" height="44" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="595" y="581" font-family="monospace" font-size="12" font-weight="700" fill="#111827">Vary: Accept-Encoding, Accept-Language</text>
+  <text x="595" y="598" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">2 x N languages. Moderate impact; only if content is localized.</text>
+
+  <rect x="580" y="614" width="470" height="44" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="595" y="633" font-family="monospace" font-size="12" font-weight="700" fill="#111827">Vary: *</text>
+  <text x="595" y="650" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Never cache; unbounded cardinality. Avoid in production.</text>
+
+  <rect x="580" y="666" width="470" height="24" rx="4" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="595" y="683" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Rule: Minimize Vary headers to maximize cache hit ratio at every layer.</text>
 </svg>

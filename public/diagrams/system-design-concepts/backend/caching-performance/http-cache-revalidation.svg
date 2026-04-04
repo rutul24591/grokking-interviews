@@ -1,23 +1,187 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">HTTP Cache Revalidation</text>
-
-  <rect x="60" y="110" width="200" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
-  <text x="100" y="150" font-family="Arial" font-size="14" fill="#0f172a">Client Cache</text>
-
-  <rect x="360" y="110" width="200" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="405" y="150" font-family="Arial" font-size="14" fill="#0f172a">Origin</text>
-
-  <line x1="260" y1="145" x2="360" y2="145" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-  <line x1="360" y1="165" x2="260" y2="165" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-
-  <text x="90" y="210" font-family="Arial" font-size="13" fill="#0f172a">If-None-Match: "etag"</text>
-  <text x="90" y="235" font-family="Arial" font-size="13" fill="#0f172a">If-Modified-Since: ...</text>
-  <text x="90" y="265" font-family="Arial" font-size="13" fill="#0f172a">304 Not Modified</text>
-
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="820" viewBox="0 0 1100 820">
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6" fill="#475569" />
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937"/>
     </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="#00000022"/>
+    </filter>
   </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="820" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="550" y="40" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#111827" text-anchor="middle">HTTP Cache Revalidation Flow</text>
+  <text x="550" y="64" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">ETag / If-None-Match, Last-Modified / If-Modified-Since, stale-while-revalidate &amp; CDN vs Browser revalidation</text>
+
+  <!-- ============================================= -->
+  <!-- LEFT COLUMN: ETag Revalidation Flow           -->
+  <!-- ============================================= -->
+  <rect x="30" y="85" width="510" height="430" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+  <text x="285" y="116" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">ETag Revalidation Flow</text>
+  <line x1="50" y1="128" x2="520" y2="128" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Step 1: Initial Response -->
+  <rect x="50" y="142" width="470" height="70" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="70" y="165" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">1. Initial Response (Origin)</text>
+  <text x="70" y="185" font-family="monospace" font-size="12" font-weight="400" fill="#1f2937">HTTP/1.1 200 OK</text>
+  <text x="70" y="202" font-family="monospace" font-size="12" font-weight="400" fill="#1f2937">ETag: "v5-a1b2c3d4"   Cache-Control: max-age=3600</text>
+
+  <!-- Arrow down -->
+  <line x1="285" y1="212" x2="285" y2="235" stroke="#1f2937" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: Cache expires, client revalidates -->
+  <rect x="50" y="240" width="470" height="80" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="70" y="263" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">2. Cache Expires — Client Sends Conditional Request</text>
+  <text x="70" y="283" font-family="monospace" font-size="12" font-weight="400" fill="#1f2937">GET /resource HTTP/1.1</text>
+  <text x="70" y="300" font-family="monospace" font-size="12" font-weight="400" fill="#1f2937">If-None-Match: "v5-a1b2c3d4"</text>
+
+  <!-- Arrow down -->
+  <line x1="285" y1="320" x2="285" y2="343" stroke="#1f2937" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Decision diamond -->
+  <polygon points="285,348 430,400 285,452 140,400" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="285" y="394" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Server compares ETags</text>
+  <text x="285" y="412" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">match?</text>
+
+  <!-- Left branch: Match -> 304 -->
+  <line x1="140" y1="400" x2="70" y2="400" stroke="#059669" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <rect x="50" y="378" width="100" height="44" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="100" y="397" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Match</text>
+  <text x="100" y="414" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">YES</text>
+
+  <rect x="50" y="435" width="190" height="60" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="65" y="458" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">304 Not Modified</text>
+  <text x="65" y="476" font-family="monospace" font-size="11" font-weight="400" fill="#1f2937">No body sent</text>
+  <text x="65" y="490" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Client uses cached copy</text>
+
+  <!-- Right branch: No match -> 200 -->
+  <line x1="430" y1="400" x2="460" y2="400" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowRed)"/>
+  <rect x="420" y="378" width="100" height="44" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="470" y="397" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">No Match</text>
+  <text x="470" y="414" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">NO</text>
+
+  <rect x="380" y="435" width="190" height="60" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="395" y="458" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">200 OK</text>
+  <text x="395" y="476" font-family="monospace" font-size="11" font-weight="400" fill="#1f2937">Full body + new ETag</text>
+  <text x="395" y="490" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Client replaces cache</text>
+
+  <!-- ============================================= -->
+  <!-- RIGHT COLUMN: Last-Modified Flow               -->
+  <!-- ============================================= -->
+  <rect x="560" y="85" width="510" height="430" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+  <text x="815" y="116" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Last-Modified Revalidation Flow</text>
+  <line x1="580" y1="128" x2="1050" y2="128" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Step 1 -->
+  <rect x="580" y="142" width="470" height="70" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="600" y="165" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">1. Initial Response (Origin)</text>
+  <text x="600" y="185" font-family="monospace" font-size="12" font-weight="400" fill="#1f2937">HTTP/1.1 200 OK</text>
+  <text x="600" y="202" font-family="monospace" font-size="12" font-weight="400" fill="#1f2937">Last-Modified: Wed, 01 Apr 2026 12:00:00 GMT</text>
+
+  <!-- Arrow down -->
+  <line x1="815" y1="212" x2="815" y2="235" stroke="#1f2937" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2 -->
+  <rect x="580" y="240" width="470" height="80" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="600" y="263" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">2. Conditional Request with If-Modified-Since</text>
+  <text x="600" y="283" font-family="monospace" font-size="12" font-weight="400" fill="#1f2937">GET /resource HTTP/1.1</text>
+  <text x="600" y="300" font-family="monospace" font-size="12" font-weight="400" fill="#1f2937">If-Modified-Since: Wed, 01 Apr 2026 12:00:00 GMT</text>
+
+  <!-- Arrow down -->
+  <line x1="815" y1="320" x2="815" y2="343" stroke="#1f2937" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Decision -->
+  <polygon points="815,348 960,400 815,452 670,400" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="815" y="394" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Compare timestamps</text>
+  <text x="815" y="412" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">newer?</text>
+
+  <!-- Left: not newer -> 304 -->
+  <line x1="670" y1="400" x2="640" y2="400" stroke="#059669" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <rect x="580" y="378" width="120" height="44" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="640" y="397" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Not Newer</text>
+  <text x="640" y="414" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">304</text>
+
+  <rect x="580" y="435" width="190" height="60" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="595" y="458" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">304 Not Modified</text>
+  <text x="595" y="476" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Cached copy still valid</text>
+  <text x="595" y="490" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Lower precision than ETag</text>
+
+  <!-- Right: newer -> 200 -->
+  <line x1="960" y1="400" x2="990" y2="400" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowRed)"/>
+  <rect x="950" y="378" width="120" height="44" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="1010" y="397" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Newer</text>
+  <text x="1010" y="414" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">200</text>
+
+  <rect x="910" y="435" width="190" height="60" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="925" y="458" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">200 OK + New Body</text>
+  <text x="925" y="476" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Updated Last-Modified</text>
+  <text x="925" y="490" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Cache replaced</text>
+
+  <!-- ============================================= -->
+  <!-- BOTTOM LEFT: stale-while-revalidate            -->
+  <!-- ============================================= -->
+  <rect x="30" y="535" width="510" height="265" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+  <text x="285" y="566" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">stale-while-revalidate &amp; stale-if-error</text>
+  <line x1="50" y1="578" x2="520" y2="578" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Timeline bar -->
+  <rect x="50" y="595" width="470" height="40" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="285" y="613" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Fresh Period: max-age=3600 (1 hour)</text>
+  <text x="285" y="630" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Served directly from cache — no request sent</text>
+
+  <rect x="50" y="640" width="470" height="40" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="285" y="658" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">stale-while-revalidate=600 (10 min)</text>
+  <text x="285" y="675" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Serve stale immediately; background fetch for fresh copy</text>
+
+  <rect x="50" y="685" width="470" height="40" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="285" y="703" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">stale-if-error=86400 (24 hours)</text>
+  <text x="285" y="720" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">If origin returns 5xx, serve stale copy instead of error</text>
+
+  <!-- Arrow between periods -->
+  <line x1="285" y1="635" x2="285" y2="640" stroke="#1f2937" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="285" y1="680" x2="285" y2="685" stroke="#1f2937" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ============================================= -->
+  <!-- BOTTOM RIGHT: CDN vs Browser Revalidation      -->
+  <!-- ============================================= -->
+  <rect x="560" y="535" width="510" height="265" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+  <text x="815" y="566" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">CDN vs Browser Revalidation</text>
+  <line x1="580" y1="578" x2="1050" y2="578" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Browser side -->
+  <rect x="580" y="595" width="220" height="190" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="690" y="618" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Browser Cache</text>
+  <line x1="595" y1="628" x2="785" y2="628" stroke="#93c5fd" stroke-width="1"/>
+  <text x="595" y="648" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Honors: max-age, no-cache</text>
+  <text x="595" y="666" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Sends: If-None-Match</text>
+  <text x="595" y="684" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Ignores: s-maxage</text>
+  <text x="595" y="702" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Per-user isolation</text>
+  <text x="595" y="720" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Low shared hit rate</text>
+  <text x="595" y="738" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Latency: ~0ms on hit</text>
+  <text x="595" y="756" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Hit rate: 10-30% typical</text>
+  <text x="595" y="774" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Scope: Single user session</text>
+
+  <!-- CDN side -->
+  <rect x="820" y="595" width="230" height="190" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="935" y="618" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">CDN Edge Cache</text>
+  <line x1="835" y1="628" x2="1035" y2="628" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="840" y="648" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Honors: s-maxage, public</text>
+  <text x="840" y="666" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Revalidates: to origin on miss</text>
+  <text x="840" y="684" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Overrides: max-age via s-maxage</text>
+  <text x="840" y="702" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Shared across all users</text>
+  <text x="840" y="720" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">High shared hit rate</text>
+  <text x="840" y="738" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Latency: ~20-50ms on hit</text>
+  <text x="840" y="756" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Hit rate: 70-95% typical</text>
+  <text x="840" y="774" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Scope: Global edge network</text>
 </svg>

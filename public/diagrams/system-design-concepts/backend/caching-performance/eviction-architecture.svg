@@ -1,0 +1,429 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <rect width="1200" height="1600" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="42" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">LRU Eviction Architecture — Doubly-Linked List + Hash Map</text>
+  <text x="600" y="66" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">O(1) get/put operations, access patterns, Redis approximation vs true LRU</text>
+
+  <!-- ==================== SECTION 1: TRUE LRU ARCHITECTURE ==================== -->
+  <rect x="30" y="95" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="125" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">True LRU Architecture — Hash Map + Doubly-Linked List</text>
+
+  <!-- Hash Map -->
+  <rect x="40" y="160" width="260" height="320" rx="10" fill="#ffffff" stroke="#818cf8" stroke-width="2"/>
+  <rect x="40" y="160" width="260" height="38" rx="10" fill="#e0e7ff"/>
+  <rect x="40" y="188" width="260" height="10" fill="#e0e7ff"/>
+  <text x="170" y="185" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#3730a3" text-anchor="middle">Hash Map</text>
+
+  <!-- Hash map entries -->
+  <rect x="55" y="208" width="230" height="28" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="70" y="227" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">"A" --&gt; Node(A)</text>
+
+  <rect x="55" y="244" width="230" height="28" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="70" y="263" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">"B" --&gt; Node(B)</text>
+
+  <rect x="55" y="280" width="230" height="28" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="70" y="299" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">"C" --&gt; Node(C)</text>
+
+  <rect x="55" y="316" width="230" height="28" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="70" y="335" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">"D" --&gt; Node(D)</text>
+
+  <rect x="55" y="352" width="230" height="28" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="70" y="371" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">"E" --&gt; Node(E)</text>
+
+  <rect x="55" y="388" width="230" height="28" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="70" y="407" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">"F" --&gt; Node(F)</text>
+
+  <rect x="55" y="424" width="230" height="28" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="170" y="443" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">O(1) lookup</text>
+
+  <!-- Pointer arrows from hash map to linked list -->
+  <line x1="300" y1="222" x2="420" y2="222" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-indigo)"/>
+  <line x1="300" y1="258" x2="510" y2="258" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-indigo)"/>
+  <line x1="300" y1="294" x2="600" y2="294" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-indigo)"/>
+  <line x1="300" y1="330" x2="690" y2="330" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-indigo)"/>
+  <line x1="300" y1="366" x2="780" y2="366" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-indigo)"/>
+  <line x1="300" y1="402" x2="870" y2="402" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Doubly-Linked List -->
+  <rect x="340" y="160" width="820" height="320" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="340" y="160" width="820" height="38" rx="10" fill="#fef3c7"/>
+  <rect x="340" y="188" width="820" height="10" fill="#fef3c7"/>
+  <text x="750" y="185" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#92400e" text-anchor="middle">Doubly-Linked List (Most Recent &lt;--&gt; Least Recent)</text>
+
+  <!-- MRU Head -->
+  <rect x="360" y="210" width="50" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="385" y="230" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">HEAD</text>
+
+  <!-- Node D -->
+  <rect x="430" y="210" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="465" y="230" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+
+  <!-- Node C -->
+  <rect x="520" y="210" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="555" y="230" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">C</text>
+
+  <!-- Node B -->
+  <rect x="610" y="210" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="645" y="230" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+
+  <!-- Node A -->
+  <rect x="700" y="210" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="735" y="230" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">A</text>
+
+  <!-- Node E -->
+  <rect x="790" y="210" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="825" y="230" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">E</text>
+
+  <!-- Node F (LRU tail - about to be evicted) -->
+  <rect x="880" y="210" width="70" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="915" y="230" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">F</text>
+
+  <!-- TAIL -->
+  <rect x="970" y="210" width="50" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="995" y="230" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">TAIL</text>
+
+  <!-- Forward arrows -->
+  <line x1="410" y1="225" x2="428" y2="225" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="500" y1="225" x2="518" y2="225" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="590" y1="225" x2="608" y2="225" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="680" y1="225" x2="698" y2="225" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="770" y1="225" x2="788" y2="225" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="860" y1="225" x2="878" y2="225" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="950" y1="225" x2="968" y2="225" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+
+  <!-- Backward arrows (below) -->
+  <line x1="428" y1="255" x2="410" y2="255" stroke="#6366f1" stroke-width="2" marker-start="url(#arrow-indigo-rev)"/>
+  <line x1="518" y1="255" x2="500" y2="255" stroke="#6366f1" stroke-width="2" marker-start="url(#arrow-indigo-rev)"/>
+  <line x1="608" y1="255" x2="590" y2="255" stroke="#6366f1" stroke-width="2" marker-start="url(#arrow-indigo-rev)"/>
+  <line x1="698" y1="255" x2="680" y2="255" stroke="#6366f1" stroke-width="2" marker-start="url(#arrow-indigo-rev)"/>
+  <line x1="788" y1="255" x2="770" y2="255" stroke="#6366f1" stroke-width="2" marker-start="url(#arrow-indigo-rev)"/>
+  <line x1="878" y1="255" x2="860" y2="255" stroke="#6366f1" stroke-width="2" marker-start="url(#arrow-indigo-rev)"/>
+  <line x1="968" y1="255" x2="950" y2="255" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" marker-start="url(#arrow-red-rev)"/>
+
+  <!-- Eviction label -->
+  <rect x="880" y="260" width="120" height="26" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="940" y="278" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Evict on next put</text>
+
+  <!-- Node structure detail -->
+  <rect x="360" y="300" width="320" height="160" rx="8" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="520" y="325" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Node Structure (each entry)</text>
+
+  <rect x="380" y="340" width="120" height="30" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="440" y="360" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">key: string</text>
+
+  <rect x="520" y="340" width="140" height="30" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="590" y="360" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">value: any type</text>
+
+  <rect x="380" y="380" width="120" height="30" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="440" y="400" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">prev: Node*</text>
+
+  <rect x="520" y="380" width="120" height="30" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="580" y="400" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">next: Node*</text>
+
+  <rect x="450" y="420" width="120" height="26" rx="4" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="510" y="438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">4 pointers total</text>
+
+  <!-- Complexity annotation -->
+  <rect x="700" y="310" width="440" height="140" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+  <text x="920" y="335" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#166534" text-anchor="middle">Time Complexity</text>
+
+  <rect x="720" y="345" width="180" height="30" rx="4" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="810" y="365" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">get(key): O(1)</text>
+
+  <rect x="920" y="345" width="180" height="30" rx="4" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="1010" y="365" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">put(key,val): O(1)</text>
+
+  <rect x="720" y="385" width="180" height="30" rx="4" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="810" y="405" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">delete(key): O(1)</text>
+
+  <rect x="920" y="385" width="180" height="30" rx="4" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="1010" y="405" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Space: O(capacity)</text>
+
+  <text x="920" y="438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Hash map gives O(1) lookup; linked list gives O(1) reorder</text>
+
+  <!-- ==================== SECTION 2: GET OPERATION ==================== -->
+  <rect x="30" y="500" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="530" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">get("A") Operation — Move Accessed Node to MRU End</text>
+
+  <!-- Before state -->
+  <rect x="40" y="565" width="540" height="220" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="310" y="595" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#3730a3" text-anchor="middle">Before get("A")</text>
+
+  <!-- Before list -->
+  <rect x="60" y="610" width="50" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="85" y="630" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">HEAD</text>
+
+  <rect x="120" y="610" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="150" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+
+  <rect x="190" y="610" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="220" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">C</text>
+
+  <rect x="260" y="610" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+
+  <rect x="330" y="610" width="60" height="30" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="360" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">A</text>
+
+  <rect x="400" y="610" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="430" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">E</text>
+
+  <rect x="470" y="610" width="50" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="495" y="630" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">TAIL</text>
+
+  <!-- Arrows -->
+  <line x1="110" y1="625" x2="118" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="180" y1="625" x2="188" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="250" y1="625" x2="258" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="320" y1="625" x2="328" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="390" y1="625" x2="398" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="460" y1="625" x2="468" y2="625" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+
+  <!-- Highlight A -->
+  <rect x="325" y="605" width="70" height="40" rx="8" fill="none" stroke="#f59e0b" stroke-width="3"/>
+  <text x="360" y="665" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#d97706" text-anchor="middle">get("A")</text>
+
+  <!-- Steps -->
+  <text x="60" y="690" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Step 1: Hash lookup --&gt; find Node(A)</text>
+  <text x="60" y="710" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Step 2: Unlink Node(A) from current position</text>
+  <text x="60" y="730" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Step 3: Insert Node(A) at HEAD (MRU end)</text>
+  <text x="60" y="750" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Step 4: Return value</text>
+
+  <!-- After state -->
+  <rect x="600" y="565" width="560" height="220" rx="10" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <text x="880" y="595" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">After get("A") — A moved to MRU</text>
+
+  <!-- After list -->
+  <rect x="620" y="610" width="50" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="645" y="630" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">HEAD</text>
+
+  <rect x="680" y="610" width="60" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="710" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534" text-anchor="middle">A</text>
+
+  <rect x="750" y="610" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="780" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+
+  <rect x="820" y="610" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="850" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">C</text>
+
+  <rect x="890" y="610" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="920" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+
+  <rect x="960" y="610" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="990" y="630" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">E</text>
+
+  <rect x="1030" y="610" width="50" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="1055" y="630" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">TAIL</text>
+
+  <!-- Arrows -->
+  <line x1="670" y1="625" x2="678" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="740" y1="625" x2="748" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="810" y1="625" x2="818" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="880" y1="625" x2="888" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="950" y1="625" x2="958" y2="625" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="1020" y1="625" x2="1028" y2="625" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+
+  <!-- Movement annotation -->
+  <path d="M 360 650 Q 500 750 710 650" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-amber)"/>
+  <text x="530" y="720" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#d97706" text-anchor="middle">Unlink + reinsert at HEAD</text>
+
+  <!-- ==================== SECTION 3: PUT OPERATION ==================== -->
+  <rect x="30" y="800" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="830" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">put("X", val) Operation — Insert at MRU, Evict from LRU if Full</text>
+
+  <!-- Before put -->
+  <rect x="40" y="865" width="540" height="240" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="310" y="895" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#3730a3" text-anchor="middle">Before put("X", val) — Cache at capacity (5)</text>
+
+  <rect x="60" y="910" width="50" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="85" y="930" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">HEAD</text>
+
+  <rect x="120" y="910" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="150" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">A</text>
+
+  <rect x="190" y="910" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="220" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+
+  <rect x="260" y="910" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">C</text>
+
+  <rect x="330" y="910" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="360" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+
+  <rect x="400" y="910" width="60" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="430" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">E</text>
+
+  <rect x="470" y="910" width="50" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="495" y="930" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">TAIL</text>
+
+  <line x1="110" y1="925" x2="118" y2="925" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="180" y1="925" x2="188" y2="925" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="250" y1="925" x2="258" y2="925" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="320" y1="925" x2="328" y2="925" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="390" y1="925" x2="398" y2="925" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+
+  <!-- Capacity badge -->
+  <rect x="60" y="960" width="200" height="26" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="160" y="978" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b" text-anchor="middle">Capacity = 5 (FULL)</text>
+
+  <!-- Steps -->
+  <text x="60" y="1020" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Step 1: Check if "X" exists in hash map</text>
+  <text x="60" y="1040" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Step 2: Not found --&gt; cache is full, evict TAIL</text>
+  <text x="60" y="1060" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Step 3: Remove "E" from TAIL + hash map</text>
+  <text x="60" y="1080" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Step 4: Create Node("X"), insert at HEAD</text>
+
+  <!-- After put -->
+  <rect x="600" y="865" width="560" height="240" rx="10" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <text x="880" y="895" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">After put("X", val) — E evicted, X at MRU</text>
+
+  <rect x="620" y="910" width="50" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="645" y="930" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">HEAD</text>
+
+  <rect x="680" y="910" width="60" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="710" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534" text-anchor="middle">X</text>
+
+  <rect x="750" y="910" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="780" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">A</text>
+
+  <rect x="820" y="910" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="850" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+
+  <rect x="890" y="910" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="920" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">C</text>
+
+  <rect x="960" y="910" width="60" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="990" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+
+  <rect x="1030" y="910" width="50" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="1055" y="930" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">TAIL</text>
+
+  <line x1="670" y1="925" x2="678" y2="925" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="740" y1="925" x2="748" y2="925" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="810" y1="925" x2="818" y2="925" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="880" y1="925" x2="888" y2="925" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="950" y1="925" x2="958" y2="925" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+
+  <!-- Eviction annotation -->
+  <rect x="700" y="960" width="120" height="26" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="760" y="978" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">New entry</text>
+
+  <rect x="930" y="960" width="130" height="26" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="995" y="978" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b" text-anchor="middle">E was evicted</text>
+
+  <!-- ==================== SECTION 4: REDIS APPROXIMATION ==================== -->
+  <rect x="30" y="1130" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="1160" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Redis Approximated LRU vs True LRU — Memory vs Accuracy Trade-off</text>
+
+  <!-- True LRU -->
+  <rect x="40" y="1195" width="540" height="370" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="40" y="1195" width="540" height="38" rx="10" fill="#e0e7ff"/>
+  <rect x="40" y="1223" width="540" height="10" fill="#e0e7ff"/>
+  <text x="310" y="1220" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#3730a3" text-anchor="middle">True LRU (Doubly-Linked List)</text>
+
+  <!-- Diagram -->
+  <rect x="60" y="1250" width="500" height="50" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="310" y="1270" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Exact ordering: HEAD &lt;--&gt; A &lt;--&gt; B &lt;--&gt; C &lt;--&gt; D &lt;--&gt; E &lt;--&gt; TAIL</text>
+  <text x="310" y="288" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Every access updates exact position</text>
+
+  <!-- Pros -->
+  <rect x="60" y="1310" width="220" height="120" rx="8" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="170" y="1332" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Advantages</text>
+  <text x="75" y="1355" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">Exact recency tracking</text>
+  <text x="75" y="1372" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">Optimal hit rate for</text>
+  <text x="75" y="1386" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">temporal locality</text>
+  <text x="75" y="1403" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">O(1) all operations</text>
+  <text x="75" y="1420" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">Deterministic eviction</text>
+
+  <!-- Cons -->
+  <rect x="300" y="1310" width="260" height="120" rx="8" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="430" y="1332" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Disadvantages</text>
+  <text x="315" y="1355" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">2 extra pointers per entry</text>
+  <text x="315" y="1372" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">(prev, next) --&gt; higher memory</text>
+  <text x="315" y="1389" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">Poor cache locality (pointer chasing)</text>
+  <text x="315" y="1406" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">Not practical for millions of keys</text>
+  <text x="315" y="1423" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">in a distributed cache like Redis</text>
+
+  <!-- Memory overhead -->
+  <rect x="60" y="1445" width="500" height="40" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="310" y="1462" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">Memory per entry: key + value + 2 pointers (16 bytes on 64-bit)</text>
+  <text x="310" y="1478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">For 10M keys: ~160 MB just for pointers</text>
+
+  <!-- Redis Approximated LRU -->
+  <rect x="600" y="1195" width="560" height="370" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="600" y="1195" width="560" height="38" rx="10" fill="#fef3c7"/>
+  <rect x="600" y="1223" width="560" height="10" fill="#fef3c7"/>
+  <text x="880" y="1220" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#92400e" text-anchor="middle">Redis Approximated LRU (Sampling)</text>
+
+  <!-- Sampling diagram -->
+  <rect x="620" y="1250" width="520" height="60" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="880" y="1270" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Sample N keys (default 5), evict least recently used among sample</text>
+
+  <!-- Sampling visualization -->
+  <rect x="630" y="1280" width="40" height="24" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="650" y="1297" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">K1</text>
+
+  <rect x="678" y="1280" width="40" height="24" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="698" y="1297" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">K2</text>
+
+  <rect x="726" y="1280" width="40" height="24" rx="4" fill="#fee2e2" stroke="#f87171" stroke-width="1"/>
+  <text x="746" y="1297" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#991b1b" text-anchor="middle">K3</text>
+
+  <rect x="774" y="1280" width="40" height="24" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="794" y="1297" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">K4</text>
+
+  <rect x="822" y="1280" width="40" height="24" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="842" y="1297" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">K5</text>
+
+  <text x="890" y="1297" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#111827">--&gt;</text>
+
+  <rect x="920" y="1280" width="80" height="24" rx="4" fill="#fee2e2" stroke="#f87171" stroke-width="1"/>
+  <text x="960" y="1297" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#991b1b" text-anchor="middle">Evict K3</text>
+
+  <text x="1020" y="1297" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151">(oldest idle)</text>
+
+  <!-- N parameter -->
+  <rect x="620" y="1320" width="520" height="50" rx="6" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="880" y="1340" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#3730a3" text-anchor="middle">maxmemory-samples: N (default 5, range 1-20)</text>
+  <text x="880" y="1358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Higher N = better approximation, more CPU. Lower N = faster, less accurate.</text>
+
+  <!-- Pros -->
+  <rect x="620" y="1380" width="240" height="100" rx="8" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="740" y="1402" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Advantages</text>
+  <text x="635" y="1425" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">Only 24-bit idle counter per key</text>
+  <text x="635" y="1442" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">(3 bytes vs 16 bytes pointers)</text>
+  <text x="635" y="1459" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">Memory efficient for millions of keys</text>
+  <text x="635" y="1476" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">Good enough hit rate (N=10 ~95% of true LRU)</text>
+
+  <!-- Cons -->
+  <rect x="880" y="1380" width="260" height="100" rx="8" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="1010" y="1402" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Disadvantages</text>
+  <text x="895" y="1425" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">Not exact: may evict recently</text>
+  <text x="895" y="1442" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">used key if not in sample</text>
+  <text x="895" y="1459" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">CPU cost scales with N</text>
+  <text x="895" y="1476" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">Probabilistic, not deterministic</text>
+
+  <!-- Memory comparison -->
+  <rect x="620" y="1495" width="520" height="40" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="880" y="1512" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">Memory per entry: 3 bytes (24-bit idle counter) vs 16 bytes (2 pointers)</text>
+  <text x="880" y="1528" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">For 10M keys: 30 MB vs 160 MB -- 5x savings</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow-indigo-rev" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto">
+      <path d="M10,0 L0,3 L10,6 Z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-red-rev" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto">
+      <path d="M10,0 L0,3 L10,6 Z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

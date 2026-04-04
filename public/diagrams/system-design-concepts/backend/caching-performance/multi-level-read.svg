@@ -1,22 +1,147 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Multi-Level Read Path</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="820" viewBox="0 0 1100 820">
+  <rect width="1100" height="820" fill="#ffffff" />
 
-  <rect x="80" y="120" width="180" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="120" y="160" font-family="Arial" font-size="14" fill="#0f172a">L1</text>
+  <!-- Title -->
+  <text x="550" y="42" font-family="Arial" font-size="26" font-weight="700" fill="#111827" text-anchor="middle">Multi-Level Read Path</text>
+  <text x="550" y="68" font-family="Arial" font-size="15" fill="#374151" text-anchor="middle">L1 -> L2 -> L3 -> DB with hit shortcuts and populate-back flow</text>
 
-  <rect x="320" y="120" width="180" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="360" y="160" font-family="Arial" font-size="14" fill="#0f172a">L2</text>
+  <!-- Full Miss Path (main vertical flow) -->
+  <text x="550" y="110" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">Complete Miss Path: L1 -> L2 -> L3 -> DB -> Populate Back</text>
 
-  <rect x="560" y="120" width="180" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="600" y="160" font-family="Arial" font-size="14" fill="#0f172a">Origin</text>
+  <!-- L1 Node -->
+  <rect x="430" y="135" width="240" height="65" rx="8" fill="#86efac" stroke="#16a34a" stroke-width="2" />
+  <text x="550" y="162" font-family="Arial" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">L1: App In-Process</text>
+  <text x="550" y="182" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Latency: under 1ms</text>
 
-  <line x1="260" y1="155" x2="320" y2="155" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-  <line x1="500" y1="155" x2="560" y2="155" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+  <!-- Arrow L1 -> L2 (miss) -->
+  <line x1="550" y1="200" x2="550" y2="240" stroke="#374151" stroke-width="2" />
+  <polygon points="542,235 550,250 558,235" fill="#374151" />
+  <text x="570" y="230" font-family="Arial" font-size="11" font-weight="700" fill="#374151">MISS</text>
 
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6" fill="#475569" />
-    </marker>
-  </defs>
+  <!-- L2 Node -->
+  <rect x="430" y="250" width="240" height="65" rx="8" fill="#bbf7d0" stroke="#16a34a" stroke-width="2" />
+  <text x="550" y="277" font-family="Arial" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">L2: Distributed (Redis)</text>
+  <text x="550" y="297" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Latency: 1-3ms</text>
+
+  <!-- Arrow L2 -> L3 (miss) -->
+  <line x1="550" y1="315" x2="550" y2="355" stroke="#374151" stroke-width="2" />
+  <polygon points="542,350 550,365 558,350" fill="#374151" />
+  <text x="570" y="345" font-family="Arial" font-size="11" font-weight="700" fill="#374151">MISS</text>
+
+  <!-- L3 Node -->
+  <rect x="430" y="365" width="240" height="65" rx="8" fill="#93c5fd" stroke="#2563eb" stroke-width="2" />
+  <text x="550" y="392" font-family="Arial" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">L3: Reverse Proxy / CDN</text>
+  <text x="550" y="412" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Latency: 5-15ms</text>
+
+  <!-- Arrow L3 -> DB (miss) -->
+  <line x1="550" y1="430" x2="550" y2="470" stroke="#374151" stroke-width="2" />
+  <polygon points="542,465 550,480 558,465" fill="#374151" />
+  <text x="570" y="460" font-family="Arial" font-size="11" font-weight="700" fill="#374151">MISS</text>
+
+  <!-- Database Node -->
+  <rect x="430" y="480" width="240" height="65" rx="8" fill="#fca5a5" stroke="#dc2626" stroke-width="2" />
+  <text x="550" y="507" font-family="Arial" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Database (Origin)</text>
+  <text x="550" y="527" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Latency: 10-100ms</text>
+
+  <!-- Populate back arrows (right side going up) -->
+  <path d="M 670,512 L 750,512 L 750,397 L 670,397" stroke="#059669" stroke-width="2" />
+  <polygon points="675,389 660,397 675,405" fill="#059669" />
+  <text x="765" y="460" font-family="Arial" font-size="11" font-weight="700" fill="#059669">POPULATE L3</text>
+
+  <path d="M 670,397 L 750,397 L 750,282 L 670,282" stroke="#059669" stroke-width="2" />
+  <polygon points="675,274 660,282 675,290" fill="#059669" />
+  <text x="765" y="345" font-family="Arial" font-size="11" font-weight="700" fill="#059669">POPULATE L2</text>
+
+  <path d="M 670,282 L 750,282 L 750,167 L 670,167" stroke="#059669" stroke-width="2" />
+  <polygon points="675,159 660,167 675,175" fill="#059669" />
+  <text x="765" y="230" font-family="Arial" font-size="11" font-weight="700" fill="#059669">POPULATE L1</text>
+
+  <!-- Return to client arrow -->
+  <path d="M 670,512 L 830,512 L 830,167 L 670,167" stroke="#7c3aed" stroke-width="2" stroke-dasharray="8,4" />
+  <polygon points="675,159 660,167 675,175" fill="#7c3aed" />
+  <text x="845" y="345" font-family="Arial" font-size="12" font-weight="700" fill="#7c3aed">RETURN TO CLIENT</text>
+  <text x="845" y="365" font-family="Arial" font-size="11" fill="#1f2937">Total: 100+ms</text>
+
+  <!-- Hit Shortcut Paths (left side) -->
+  <text x="370" y="160" font-family="Arial" font-size="13" font-weight="700" fill="#059669" text-anchor="middle">Hit Shortcuts</text>
+
+  <!-- L1 Hit shortcut -->
+  <path d="M 430,167 L 340,167 L 340,167" stroke="#059669" stroke-width="2" />
+  <polygon points="345,159 330,167 345,175" fill="#059669" />
+  <text x="385" y="155" font-family="Arial" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">L1 HIT: under 1ms</text>
+
+  <!-- L2 Hit shortcut -->
+  <path d="M 430,282 L 300,282 L 300,167 L 340,167" stroke="#059669" stroke-width="2" stroke-dasharray="6,4" />
+  <polygon points="335,159 350,167 335,175" fill="#059669" />
+  <text x="315" y="230" font-family="Arial" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">L2 HIT: 1-3ms</text>
+  <text x="315" y="248" font-family="Arial" font-size="10" fill="#1f2937" text-anchor="middle">+ populate L1</text>
+
+  <!-- L3 Hit shortcut -->
+  <path d="M 430,397 L 260,397 L 260,167 L 340,167" stroke="#059669" stroke-width="2" stroke-dasharray="6,4" />
+  <polygon points="335,159 350,167 335,175" fill="#059669" />
+  <text x="275" y="300" font-family="Arial" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">L3 HIT: 5-15ms</text>
+  <text x="275" y="318" font-family="Arial" font-size="10" fill="#1f2937" text-anchor="middle">+ populate L2, L1</text>
+
+  <!-- DB Hit shortcut (no shortcut, full path) -->
+  <path d="M 430,512 L 220,512 L 220,167 L 340,167" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4" />
+  <polygon points="335,159 350,167 335,175" fill="#dc2626" />
+  <text x="235" y="420" font-family="Arial" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">DB HIT: 10-100ms</text>
+  <text x="235" y="438" font-family="Arial" font-size="10" fill="#1f2937" text-anchor="middle">+ populate L3, L2, L1</text>
+
+  <!-- Latency Accumulation Table -->
+  <rect x="30" y="575" width="1040" height="120" rx="8" fill="#f9fafb" stroke="#374151" stroke-width="2" />
+  <text x="550" y="605" font-family="Arial" font-size="17" font-weight="700" fill="#111827" text-anchor="middle">Latency Accumulation by Hit Level</text>
+
+  <!-- Table headers -->
+  <text x="180" y="635" font-family="Arial" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Hit At</text>
+  <text x="350" y="635" font-family="Arial" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Lookup Cost</text>
+  <text x="520" y="635" font-family="Arial" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Data Fetch</text>
+  <text x="690" y="635" font-family="Arial" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Populate Overhead</text>
+  <text x="890" y="635" font-family="Arial" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Total P99 Latency</text>
+
+  <line x1="50" y1="645" x2="1050" y2="645" stroke="#d1d5db" stroke-width="1" />
+
+  <!-- Row 1 -->
+  <text x="180" y="665" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">L1 (In-Process)</text>
+  <text x="350" y="665" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">under 0.5ms</text>
+  <text x="520" y="665" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">under 0.5ms</text>
+  <text x="690" y="665" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">N/A</text>
+  <text x="890" y="665" font-family="Arial" font-size="12" font-weight="700" fill="#059669" text-anchor="middle">under 1ms</text>
+  <line x1="50" y1="675" x2="1050" y2="675" stroke="#d1d5db" stroke-width="1" />
+
+  <!-- Row 2 -->
+  <text x="180" y="695" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">L2 (Redis)</text>
+  <text x="350" y="695" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">under 1ms (L1 miss)</text>
+  <text x="520" y="695" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">1-3ms</text>
+  <text x="690" y="695" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">under 0.5ms (L1 set)</text>
+  <text x="890" y="695" font-family="Arial" font-size="12" font-weight="700" fill="#ca8a04" text-anchor="middle">2-5ms</text>
+  <line x1="50" y1="705" x2="1050" y2="705" stroke="#d1d5db" stroke-width="1" />
+
+  <!-- Row 3 -->
+  <text x="180" y="725" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">L3 (Proxy/CDN)</text>
+  <text x="350" y="725" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">1-2ms (L1+L2 miss)</text>
+  <text x="520" y="725" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">5-15ms</text>
+  <text x="690" y="725" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">1-2ms (L2+L1 set)</text>
+  <text x="890" y="725" font-family="Arial" font-size="12" font-weight="700" fill="#ca8a04" text-anchor="middle">7-20ms</text>
+  <line x1="50" y1="735" x2="1050" y2="735" stroke="#d1d5db" stroke-width="1" />
+
+  <!-- Row 4 -->
+  <text x="180" y="755" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Database</text>
+  <text x="350" y="755" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">2-4ms (L1+L2+L3 miss)</text>
+  <text x="520" y="755" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">10-100ms</text>
+  <text x="690" y="755" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">3-6ms (L3+L2+L1 set)</text>
+  <text x="890" y="755" font-family="Arial" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">15-110ms</text>
+
+  <!-- Cache-Aside vs Read-Through -->
+  <rect x="30" y="710" width="500" height="95" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2" />
+  <text x="280" y="737" font-family="Arial" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Cache-Aside Pattern</text>
+  <text x="280" y="760" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Application code checks cache, fetches from DB on miss,</text>
+  <text x="280" y="778" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">then populates cache. Full control, more boilerplate.</text>
+  <text x="280" y="796" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Used in: most application-level caching libraries.</text>
+
+  <rect x="570" y="710" width="500" height="95" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2" />
+  <text x="820" y="737" font-family="Arial" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Read-Through Pattern</text>
+  <text x="820" y="760" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Cache layer fetches from DB transparently on miss.</text>
+  <text x="820" y="778" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">Application sees cache as data source. Cleaner code,</text>
+  <text x="820" y="796" font-family="Arial" font-size="12" fill="#1f2937" text-anchor="middle">tighter coupling. Used in: Redis CacheLoader, Caffeine.</text>
 </svg>

@@ -1,0 +1,212 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 780" width="100%" height="100%">
+  <defs>
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="walGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="kafkaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="svcGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="cacheGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="failGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.12" />
+      <stop offset="100%" style="stop-color:#ef4444;stop-opacity:0.04" />
+    </linearGradient>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#f59e0b" />
+    </marker>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#06b6d4" />
+    </marker>
+    <marker id="arrowPink" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#ec4899" />
+    </marker>
+    <marker id="arrowEmerald" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#10b981" />
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#3b82f6" />
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#ef4444" />
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#6b7280" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="950" height="780" fill="#ffffff" />
+
+  <!-- Title -->
+  <text x="475" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#111827">CDC-Based Cache Invalidation Pipeline</text>
+  <text x="475" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151">Change Data Capture from database write-log to cache deletion with reliability guarantees</text>
+
+  <!-- ============================================================ -->
+  <!-- MAIN PIPELINE FLOW -->
+  <!-- ============================================================ -->
+
+  <!-- Step 1: Database -->
+  <rect x="40" y="100" width="150" height="90" rx="10" fill="url(#dbGrad)" stroke="#f59e0b" stroke-width="2" />
+  <text x="115" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1f2937">Database</text>
+  <text x="115" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">PostgreSQL / MySQL</text>
+  <text x="115" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">WAL / Binlog enabled</text>
+
+  <!-- WAL append detail -->
+  <rect x="40" y="200" width="150" height="55" rx="6" fill="#111827" opacity="0.04" stroke="#6b7280" stroke-width="1" />
+  <text x="115" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Write path:</text>
+  <text x="115" y="238" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">TX commit -&gt; WAL append</text>
+  <text x="115" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">(atomic with data write)</text>
+
+  <!-- Arrow: DB -> WAL/Binlog Stream -->
+  <line x1="190" y1="145" x2="260" y2="145" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrowCyan)" />
+  <text x="225" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Stream</text>
+
+  <!-- Step 2: WAL / Binlog Reader (Debezium) -->
+  <rect x="260" y="100" width="170" height="90" rx="10" fill="url(#walGrad)" stroke="#06b6d4" stroke-width="2" />
+  <text x="345" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1f2937">Debezium Connector</text>
+  <text x="345" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">WAL / Binlog reader</text>
+  <text x="345" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Captures row-level changes</text>
+
+  <!-- Debezium details -->
+  <rect x="260" y="200" width="170" height="70" rx="6" fill="#111827" opacity="0.04" stroke="#6b7280" stroke-width="1" />
+  <text x="345" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Captures per row:</text>
+  <text x="345" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">- before/after state</text>
+  <text x="345" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">- operation type (I/U/D)</text>
+  <text x="345" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">- transaction metadata</text>
+
+  <!-- Arrow: Debezium -> Kafka -->
+  <line x1="430" y1="145" x2="500" y2="145" stroke="#ec4899" stroke-width="2" marker-end="url(#arrowPink)" />
+  <text x="465" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Produce</text>
+
+  <!-- Step 3: Kafka -->
+  <rect x="500" y="100" width="180" height="90" rx="10" fill="url(#kafkaGrad)" stroke="#ec4899" stroke-width="2" />
+  <text x="590" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1f2937">Apache Kafka</text>
+  <text x="590" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Topic: db.changes</text>
+  <text x="590" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Partitioned by table/row key</text>
+
+  <!-- Kafka details -->
+  <rect x="500" y="200" width="180" height="70" rx="6" fill="#111827" opacity="0.04" stroke="#6b7280" stroke-width="1" />
+  <text x="590" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Ordering guarantee:</text>
+  <text x="590" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Same key -&gt; same partition</text>
+  <text x="590" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Total order per partition</text>
+  <text x="590" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Replication factor: 3</text>
+
+  <!-- Arrow: Kafka -> Cache Invalidation Service -->
+  <line x1="680" y1="145" x2="750" y2="145" stroke="#10b981" stroke-width="2" marker-end="url(#arrowEmerald)" />
+  <text x="715" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Consume</text>
+
+  <!-- Step 4: Cache Invalidation Service -->
+  <rect x="750" y="100" width="170" height="90" rx="10" fill="url(#svcGrad)" stroke="#10b981" stroke-width="2" />
+  <text x="835" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#1f2937">Cache Invalidation</text>
+  <text x="835" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#1f2937">Service</text>
+  <text x="835" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Kafka consumer group</text>
+  <text x="835" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Maps DB changes to cache keys</text>
+
+  <!-- Service details -->
+  <rect x="750" y="200" width="170" height="70" rx="6" fill="#111827" opacity="0.04" stroke="#6b7280" stroke-width="1" />
+  <text x="835" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Processing:</text>
+  <text x="835" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">1. Parse change event</text>
+  <text x="835" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">2. Derive cache key(s)</text>
+  <text x="835" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">3. Issue cache DELETE</text>
+
+  <!-- Arrow: Service -> Cache Delete -->
+  <line x1="835" y1="190" x2="835" y2="270" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)" />
+
+  <!-- Step 5: Cache Delete -->
+  <rect x="750" y="275" width="170" height="60" rx="10" fill="url(#cacheGrad)" stroke="#3b82f6" stroke-width="2" />
+  <text x="835" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#1f2937">Cache DELETE</text>
+  <text x="835" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Redis DEL / MDEL</text>
+
+  <!-- Next read refresh -->
+  <path d="M 750 305 Q 600 305 500 350" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowPurple)" />
+  <text x="610" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#8b5cf6">Next read: cache miss, refresh from DB</text>
+
+  <!-- ============================================================ -->
+  <!-- RELIABILITY GUARANTEES SECTION -->
+  <!-- ============================================================ -->
+  <rect x="30" y="380" width="890" height="200" rx="12" fill="url(#failGrad)" stroke="#ef4444" stroke-width="2" />
+  <text x="475" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1f2937">Reliability Guarantees &amp; Failure Handling</text>
+
+  <!-- At-Least-Once Delivery -->
+  <rect x="50" y="440" width="250" height="125" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" />
+  <text x="175" y="468" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#10b981">At-Least-Once Delivery</text>
+
+  <!-- Checkpoint/offset -->
+  <text x="70" y="495" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Debezium commits offsets</text>
+  <text x="70" y="512" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">to Kafka only after consumer</text>
+  <text x="70" y="529" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">ACK. On restart, replays</text>
+  <text x="70" y="546" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">from last committed offset.</text>
+
+  <!-- Result note -->
+  <rect x="60" y="550" width="230" height="10" rx="3" fill="#10b981" opacity="0.2" />
+  <text x="175" y="559" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="#10b981">May process same event twice</text>
+
+  <!-- Idempotent Consumers -->
+  <rect x="350" y="440" width="250" height="125" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="2" />
+  <text x="475" y="468" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#3b82f6">Idempotent Consumers</text>
+
+  <text x="370" y="495" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Cache DELETE is inherently</text>
+  <text x="370" y="512" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">idempotent. Deleting a key</text>
+  <text x="370" y="529" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">that does not exist is a</text>
+  <text x="370" y="546" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">no-op. Safe for replays.</text>
+
+  <rect x="360" y="550" width="230" height="10" rx="3" fill="#3b82f6" opacity="0.2" />
+  <text x="475" y="559" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="#3b82f6">Redundant deletes are harmless</text>
+
+  <!-- Ordering Guarantees -->
+  <rect x="650" y="440" width="250" height="125" rx="8" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" />
+  <text x="775" y="468" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#8b5cf6">Ordering Guarantees</text>
+
+  <text x="670" y="495" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Partition by table + row ID</text>
+  <text x="670" y="512" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">ensures total order per entity.</text>
+  <text x="670" y="529" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Prevents stale invalidation</text>
+  <text x="670" y="546" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">from arriving after a newer one.</text>
+
+  <rect x="660" y="550" width="230" height="10" rx="3" fill="#8b5cf6" opacity="0.2" />
+  <text x="775" y="559" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="#8b5cf6">Critical for correctness</text>
+
+  <!-- ============================================================ -->
+  <!-- FAILURE SCENARIOS -->
+  <!-- ============================================================ -->
+  <rect x="30" y="600" width="890" height="165" rx="12" fill="#111827" opacity="0.03" stroke="#6b7280" stroke-width="1.5" />
+  <text x="475" y="632" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1f2937">Failure Scenarios &amp; Recovery</text>
+
+  <!-- Scenario 1: Service Down -->
+  <rect x="50" y="650" width="260" height="100" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="1.5" />
+  <text x="180" y="675" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ef4444">Service Crash</text>
+  <text x="70" y="700" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Offsets not committed. On</text>
+  <text x="70" y="717" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">restart, Debezium replays</text>
+  <text x="70" y="734" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">all unprocessed events.</text>
+  <rect x="60" y="738" width="240" height="8" rx="3" fill="#ef4444" opacity="0.15" />
+  <text x="180" y="745" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="#ef4444">No data loss, idempotent replay</text>
+
+  <!-- Scenario 2: Kafka Down -->
+  <rect x="345" y="650" width="260" height="100" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5" />
+  <text x="475" y="675" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#f59e0b">Kafka Broker Down</text>
+  <text x="365" y="700" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Debezium buffers changes</text>
+  <text x="365" y="717" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">locally. Kafka replication</text>
+  <text x="365" y="734" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">ensures durability across</text>
+  <text x="365" y="750" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">ISR (in-sync replicas).</text>
+
+  <!-- Scenario 3: Stale Cache -->
+  <rect x="640" y="650" width="260" height="100" rx="8" fill="#ffffff" stroke="#06b6d4" stroke-width="1.5" />
+  <text x="770" y="675" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#06b6d4">Pipeline Lag (Stale Cache)</text>
+  <text x="660" y="700" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Invalidation delayed. Cache</text>
+  <text x="660" y="717" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">serves stale data briefly.</text>
+  <text x="660" y="734" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Mitigation: fallback TTL on</text>
+  <text x="660" y="750" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">all cache entries (safety net).</text>
+
+</svg>

@@ -1,17 +1,129 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
-  <rect width="1200" height="620" fill="#f8fafc"/>
-  <text x="60" y="70" font-size="28" font-family="Arial" fill="#0f172a">Stale-While-Revalidate</text>
-  <rect x="80" y="140" width="360" height="140" rx="12" fill="#dcfce7" stroke="#22c55e"/>
-  <text x="110" y="190" font-size="18" font-family="Arial" fill="#0f172a">Serve Stale</text>
-  <text x="110" y="220" font-size="14" font-family="Arial" fill="#475569">Immediate response</text>
-  <rect x="520" y="140" width="360" height="140" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/>
-  <text x="550" y="190" font-size="18" font-family="Arial" fill="#0f172a">Background Refresh</text>
-  <text x="550" y="220" font-size="14" font-family="Arial" fill="#475569">Single loader updates cache</text>
-  <rect x="940" y="140" width="220" height="140" rx="12" fill="#fef3c7" stroke="#f59e0b"/>
-  <text x="960" y="190" font-size="18" font-family="Arial" fill="#0f172a">Fresh Cache</text>
-  <line x1="440" y1="210" x2="520" y2="210" stroke="#94a3b8" stroke-width="4"/>
-  <line x1="880" y1="210" x2="940" y2="210" stroke="#94a3b8" stroke-width="4"/>
-  <rect x="80" y="340" width="1040" height="160" rx="12" fill="#f1f5f9" stroke="#cbd5f5"/>
-  <text x="110" y="385" font-size="16" font-family="Arial" fill="#0f172a">SWR trades freshness for low latency and reduces stampede risk.</text>
-  <text x="80" y="560" font-size="16" font-family="Arial" fill="#475569">Common in CDNs and high-traffic APIs.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="820" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="60" y="48" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">Stale-While-Revalidate (SWR) Pattern</text>
+  <text x="60" y="76" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#374151">Serve stale content during grace window while asynchronously refreshing the cache</text>
+
+  <!-- SWR Timeline -->
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">SWR Timeline: TTL Expiry Through Refresh</text>
+
+  <!-- Time axis -->
+  <line x1="60" y1="175" x2="1140" y2="175" stroke="#d1d5db" stroke-width="2"/>
+  <text x="60" y="200" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">T=0</text>
+  <text x="350" y="200" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">T=TTL</text>
+  <text x="650" y="200" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">T=TTL+grace</text>
+  <text x="950" y="200" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">T=TTL+grace+refresh</text>
+
+  <!-- Phase 1: Fresh Cache -->
+  <rect x="60" y="220" width="290" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="80" y="258" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Fresh Cache Serving</text>
+  <text x="80" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Key valid, TTL not expired</text>
+  <text x="80" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Latency: 1-2ms (cache hit)</text>
+
+  <!-- Arrow -->
+  <line x1="350" y1="270" x2="400" y2="270" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="355" y="255" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#eab308">TTL EXPIRES</text>
+
+  <!-- Phase 2: SWR Grace Window -->
+  <rect x="400" y="220" width="290" height="100" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="420" y="258" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">SWR Grace Window</text>
+  <text x="420" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Serve stale + trigger async refresh</text>
+  <text x="420" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Latency: 1-2ms (stale hit)</text>
+
+  <!-- Arrow -->
+  <line x1="690" y1="270" x2="740" y2="270" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="695" y="255" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#3b82f6">ASYNC REFRESH</text>
+
+  <!-- Phase 3: Background Refresh -->
+  <rect x="740" y="220" width="290" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="760" y="258" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Background Refresh</text>
+  <text x="760" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Single loader fetches fresh data</text>
+  <text x="760" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">DB query: 50-200ms</text>
+
+  <!-- Arrow -->
+  <line x1="1030" y1="270" x2="1080" y2="270" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="1035" y="255" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#22c55e">CACHE UPDATED</text>
+
+  <!-- Phase 4: Fresh Again -->
+  <rect x="1080" y="220" width="80" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="1085" y="258" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Fresh</text>
+  <text x="1085" y="278" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">New TTL</text>
+  <text x="1085" y="298" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">starts</text>
+
+  <!-- Request Handling During SWR -->
+  <text x="60" y="370" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Request Handling During Grace Window</text>
+
+  <rect x="60" y="395" width="520" height="200" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="80" y="430" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Request arrives during SWR grace period</text>
+
+  <rect x="80" y="445" width="480" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="95" y="468" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">1. Check: is key in grace period (TTL &lt; now &lt; TTL + grace)?</text>
+
+  <rect x="80" y="488" width="480" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="95" y="511" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">2. YES -&gt; Return stale value immediately (1-2ms)</text>
+
+  <rect x="80" y="531" width="480" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="95" y="554" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">3. If no refresh in progress -&gt; spawn async background refresh</text>
+
+  <rect x="80" y="574" width="480" height="35" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="95" y="597" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">4. If refresh already in progress -&gt; return stale, skip refresh</text>
+
+  <!-- Latency Comparison -->
+  <text x="610" y="370" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Latency Comparison During Stampede</text>
+
+  <!-- WITHOUT SWR -->
+  <rect x="610" y="395" width="530" height="85" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="630" y="428" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Without SWR: Each request hits DB</text>
+  <text x="630" y="455" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">p50: 200ms | p99: 30s+ | Error rate: 85%</text>
+  <text x="630" y="473" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">DB connection pool exhausted, cascading failures</text>
+
+  <!-- WITH SWR -->
+  <rect x="610" y="495" width="530" height="100" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="630" y="528" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">With SWR: All requests served stale</text>
+  <text x="630" y="555" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">p50: 2ms | p99: 5ms | Error rate: 0%</text>
+  <text x="630" y="573" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Single background refresh, DB protected</text>
+  <text x="630" y="590" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Trade-off: briefly stale data (acceptable for most use cases)</text>
+
+  <!-- SWR Configuration Panel -->
+  <rect x="60" y="640" width="520" height="160" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="80" y="675" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">SWR Configuration Options</text>
+
+  <rect x="80" y="690" width="480" height="40" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="95" y="715" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">gracePeriod: TTL * 0.5 (typically 50% of TTL)</text>
+
+  <rect x="80" y="738" width="480" height="40" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="95" y="763" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">maxStaleAge: absolute upper bound for stale data (e.g., 1 hour)</text>
+
+  <!-- SWR Trade-Offs Panel -->
+  <rect x="610" y="640" width="530" height="170" rx="8" fill="#fefce8" stroke="#fde68a" stroke-width="2"/>
+  <text x="630" y="675" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">SWR Trade-Offs</text>
+
+  <rect x="630" y="690" width="240" height="105" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="645" y="715" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#16a34a">Pros</text>
+  <text x="645" y="738" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Eliminates stampede entirely</text>
+  <text x="645" y="758" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Zero added latency for readers</text>
+  <text x="645" y="778" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Simple to implement</text>
+  <text x="645" y="796" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Works with any cache backend</text>
+
+  <rect x="890" y="690" width="240" height="105" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="905" y="715" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#dc2626">Cons</text>
+  <text x="905" y="738" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Stale data served briefly</text>
+  <text x="905" y="758" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Not suitable for real-time data</text>
+  <text x="905" y="778" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Wasted refresh if key unused</text>
+  <text x="905" y="796" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Memory: old + new coexist briefly</text>
+
+  <!-- SWR in Practice -->
+  <rect x="610" y="820" width="530" height="45" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="630" y="848" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">SWR is used by CDNs (Cloudflare, Fastly), HTTP Cache-Control stale-while-revalidate, and Caffeine cache.</text>
 </svg>

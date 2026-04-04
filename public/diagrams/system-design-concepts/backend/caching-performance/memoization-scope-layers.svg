@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 780" width="900" height="780">
+  <!-- Background -->
+  <rect width="900" height="780" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Memoization Scope Layers</text>
+  <text x="450" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Per-request, per-process, and cross-node distributed caching with visibility and consistency trade-offs</text>
+
+  <!-- ============================================ -->
+  <!-- LAYER 1: PER-REQUEST SCOPE                   -->
+  <!-- ============================================ -->
+  <text x="450" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Layer 1: Per-Request Scope</text>
+
+  <rect x="40" y="120" width="820" height="170" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+
+  <!-- Request boundary -->
+  <rect x="70" y="140" width="300" height="130" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="220" y="164" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Request Boundary</text>
+  <text x="220" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(HTTP request / RPC call)</text>
+
+  <!-- Function calls within request -->
+  <rect x="90" y="192" width="100" height="30" rx="4" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="1"/>
+  <text x="140" y="212" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">fn()</text>
+
+  <rect x="200" y="192" width="100" height="30" rx="4" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="1"/>
+  <text x="250" y="212" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">fn()</text>
+
+  <rect x="310" y="192" width="40" height="30" rx="4" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="1"/>
+  <text x="330" y="212" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">fn()</text>
+
+  <!-- Shared cache within request -->
+  <rect x="90" y="234" width="260" height="28" rx="6" fill="#3b82f6" opacity="0.1" stroke="#3b82f6" stroke-width="1"/>
+  <text x="220" y="252" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">Request-level memo map</text>
+
+  <!-- Cache visibility -->
+  <rect x="420" y="140" width="410" height="130" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="625" y="166" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Scope Characteristics</text>
+  <line x1="440" y1="178" x2="810" y2="178" stroke="#d1d5db" stroke-width="1"/>
+
+  <text x="440" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Visibility:</text>
+  <text x="520" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Single request context only</text>
+
+  <text x="440" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Consistency:</text>
+  <text x="540" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Strong (single-threaded map)</text>
+
+  <text x="440" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Latency:</text>
+  <text x="510" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">~1-5ns (map lookup)</text>
+
+  <text x="440" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Memory:</text>
+  <text x="505" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Freed on request completion</text>
+
+  <text x="680" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Eviction:</text>
+  <text x="745" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Automatic (GC)</text>
+
+  <text x="680" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Best For:</text>
+  <text x="745" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Same fn called N times</text>
+
+  <text x="680" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Overhead:</text>
+  <text x="750" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Negligible</text>
+
+  <text x="680" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Risk:</text>
+  <text x="725" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">None (isolated)</text>
+
+  <!-- ============================================ -->
+  <!-- ARROW DOWN                                    -->
+  <!-- ============================================ -->
+  <path d="M 450 290 L 450 330" fill="none" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="465" y="315" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Cross-request sharing</text>
+
+  <!-- ============================================ -->
+  <!-- LAYER 2: PER-PROCESS SCOPE                   -->
+  <!-- ============================================ -->
+  <text x="450" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Layer 2: Per-Process Scope (In-Memory)</text>
+
+  <rect x="40" y="390" width="820" height="180" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+
+  <!-- Process boundary -->
+  <rect x="70" y="410" width="460" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="300" y="434" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#15803d" text-anchor="middle">Process Boundary (Single JVM / Node.js Process)</text>
+
+  <!-- Multiple requests sharing cache -->
+  <rect x="90" y="446" width="100" height="40" rx="6" fill="#86efac" opacity="0.3" stroke="#16a34a" stroke-width="1"/>
+  <text x="140" y="464" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#15803d" text-anchor="middle">Request A</text>
+  <text x="140" y="478" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">concurrent</text>
+
+  <rect x="200" y="446" width="100" height="40" rx="6" fill="#86efac" opacity="0.3" stroke="#16a34a" stroke-width="1"/>
+  <text x="250" y="464" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#15803d" text-anchor="middle">Request B</text>
+  <text x="250" y="478" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">concurrent</text>
+
+  <rect x="310" y="446" width="100" height="40" rx="6" fill="#86efac" opacity="0.3" stroke="#16a34a" stroke-width="1"/>
+  <text x="360" y="464" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#15803d" text-anchor="middle">Request C</text>
+  <text x="360" y="478" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">concurrent</text>
+
+  <!-- Shared process cache -->
+  <rect x="90" y="500" width="420" height="36" rx="8" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="300" y="522" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#15803d" text-anchor="middle">Process-level cache (Caffeine / LRU Map)</text>
+
+  <!-- Thread-safety concern -->
+  <rect x="430" y="500" width="100" height="36" rx="6" fill="#fef3c7" stroke="#ca8a04" stroke-width="1"/>
+  <text x="480" y="522" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#a16207" text-anchor="middle">Thread-safe</text>
+
+  <!-- Characteristics panel -->
+  <rect x="560" y="410" width="270" height="140" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="695" y="434" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Scope Characteristics</text>
+  <line x1="580" y1="446" x2="810" y2="446" stroke="#d1d5db" stroke-width="1"/>
+
+  <text x="580" y="468" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Visibility:</text>
+  <text x="660" y="468" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">All requests in process</text>
+
+  <text x="580" y="488" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Consistency:</text>
+  <text x="670" y="488" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Eventual (concurrent writes)</text>
+
+  <text x="580" y="508" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Latency:</text>
+  <text x="640" y="508" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">~5-20ns + contention</text>
+
+  <text x="580" y="528" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Memory:</text>
+  <text x="635" y="528" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Heap pressure (bounded)</text>
+
+  <text x="580" y="548" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Eviction:</text>
+  <text x="650" y="548" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">LRU/W-TinyLFU + size cap</text>
+
+  <!-- ============================================ -->
+  <!-- ARROW DOWN                                    -->
+  <!-- ============================================ -->
+  <path d="M 450 570 L 450 610" fill="none" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="465" y="595" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Cross-process / distributed</text>
+
+  <!-- ============================================ -->
+  <!-- LAYER 3: CROSS-NODE DISTRIBUTED SCOPE        -->
+  <!-- ============================================ -->
+  <text x="450" y="650" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Layer 3: Cross-Node Distributed Scope</text>
+
+  <rect x="40" y="670" width="820" height="95" rx="10" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+
+  <!-- Multiple process boxes -->
+  <rect x="60" y="688" width="120" height="55" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="120" y="710" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#15803d" text-anchor="middle">Process A</text>
+  <text x="120" y="726" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Local cache</text>
+
+  <rect x="220" y="688" width="120" height="55" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="280" y="710" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#15803d" text-anchor="middle">Process B</text>
+  <text x="280" y="726" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Local cache</text>
+
+  <rect x="380" y="688" width="120" height="55" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="440" y="710" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#15803d" text-anchor="middle">Process C</text>
+  <text x="440" y="726" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Local cache</text>
+
+  <rect x="540" y="688" width="120" height="55" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="600" y="710" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#15803d" text-anchor="middle">Process D</text>
+  <text x="600" y="726" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Local cache</text>
+
+  <!-- Distributed cache connecting all -->
+  <rect x="700" y="688" width="140" height="55" rx="6" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+  <text x="770" y="710" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#a16207" text-anchor="middle">Distributed</text>
+  <text x="770" y="726" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#a16207" text-anchor="middle">Cache (Redis)</text>
+
+  <!-- Connection lines -->
+  <line x1="180" y1="715" x2="220" y2="715" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <line x1="340" y1="715" x2="380" y2="715" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <line x1="500" y1="715" x2="540" y2="715" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <line x1="660" y1="715" x2="700" y2="715" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- Trade-offs arrow labels -->
+  <text x="200" y="708" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="400" fill="#ca8a04" text-anchor="middle">network</text>
+  <text x="360" y="708" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="400" fill="#ca8a04" text-anchor="middle">network</text>
+  <text x="520" y="708" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="400" fill="#ca8a04" text-anchor="middle">network</text>
+  <text x="680" y="708" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="400" fill="#ca8a04" text-anchor="middle">network</text>
+
+  <!-- ============================================ -->
+  <!-- TRADE-OFFS COMPARISON TABLE (Bottom)         -->
+  <!-- ============================================ -->
+  <text x="450" y="760" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Trade-off: Latency ~ Consistency ~ Memory (increasing scope increases latency &amp; consistency complexity, reduces per-node memory)</text>
+
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

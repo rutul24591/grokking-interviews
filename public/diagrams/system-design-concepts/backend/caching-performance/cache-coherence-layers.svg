@@ -1,26 +1,158 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Cache Coherence Layers</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="620" viewBox="0 0 960 620">
+  <!-- Background -->
+  <rect width="960" height="620" fill="#ffffff" />
 
-  <rect x="80" y="100" width="200" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
-  <text x="120" y="140" font-family="Arial" font-size="14" fill="#0f172a">Browser Cache</text>
+  <!-- Title -->
+  <text x="480" y="42" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Cache Coherence Across L1/L2/L3 Layers</text>
+  <text x="480" y="66" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Coherence violations, invalidation cascades, and write protocols in multi-layer caching</text>
 
-  <rect x="320" y="100" width="200" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="360" y="140" font-family="Arial" font-size="14" fill="#0f172a">CDN Cache</text>
+  <!-- ============================================================ -->
+  <!-- SECTION 1: CACHE LAYER ARCHITECTURE (top half) -->
+  <!-- ============================================================ -->
 
-  <rect x="560" y="100" width="200" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="590" y="140" font-family="Arial" font-size="14" fill="#0f172a">Redis Cache</text>
+  <!-- Layer Labels on left -->
+  <text x="30" y="105" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#374151">L1</text>
+  <text x="30" y="195" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#374151">L2</text>
+  <text x="30" y="285" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#374151">L3</text>
+  <text x="30" y="375" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#374151">DB</text>
 
-  <rect x="800" y="100" width="120" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="815" y="140" font-family="Arial" font-size="14" fill="#0f172a">DB</text>
+  <!-- L1: Browser/Request-Scoped Cache -->
+  <rect x="60" y="90" width="200" height="55" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="160" y="112" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">L1: Browser Cache</text>
+  <text x="160" y="132" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Scope: Per-request / Session</text>
+  <text x="160" y="146" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">TTL: 30s - 5min</text>
 
-  <line x1="280" y1="135" x2="320" y2="135" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-  <line x1="520" y1="135" x2="560" y2="135" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-  <line x1="760" y1="135" x2="800" y2="135" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+  <!-- L2: CDN/Edge Cache -->
+  <rect x="60" y="180" width="200" height="55" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="160" y="202" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">L2: CDN Edge Cache</text>
+  <text x="160" y="222" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Scope: Edge PoP / Regional</text>
+  <text x="160" y="236" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">TTL: 1min - 15min</text>
 
+  <!-- L3: Distributed Redis Cache -->
+  <rect x="60" y="270" width="200" height="55" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="160" y="292" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">L3: Redis Cluster</text>
+  <text x="160" y="312" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Scope: Application Cluster</text>
+  <text x="160" y="326" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">TTL: 5min - 1hr</text>
+
+  <!-- Database -->
+  <rect x="60" y="360" width="200" height="55" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="160" y="382" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Database (Source)</text>
+  <text x="160" y="402" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Authoritative Data Store</text>
+  <text x="160" y="416" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">TTL: Persistent</text>
+
+  <!-- Arrows between layers -->
+  <line x1="160" y1="145" x2="160" y2="180" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+  <line x1="160" y1="235" x2="160" y2="270" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+  <line x1="160" y1="325" x2="160" y2="360" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: COHERENCE VIOLATION SCENARIO (center-right) -->
+  <!-- ============================================================ -->
+
+  <!-- Violation box -->
+  <rect x="310" y="90" width="300" height="325" rx="10" fill="#fff5f5" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,3" />
+  <text x="460" y="118" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#dc2626" text-anchor="middle">Coherence Violation Scenario</text>
+
+  <!-- Timeline: t=0 Write -->
+  <rect x="330" y="130" width="260" height="50" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="460" y="150" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">t=0: Write to user:1042</text>
+  <text x="460" y="168" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">DB updated: name="Alice v2"</text>
+
+  <!-- Arrow from DB to Write box -->
+  <path d="M 260 388 L 330 155" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+  <text x="280" y="290" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#dc2626" transform="rotate(-60, 280, 290)">WRITE</text>
+
+  <!-- t=5: L3 updated but L2/L1 stale -->
+  <rect x="330" y="195" width="260" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+  <text x="460" y="215" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">t=5ms: L3 (Redis) updated</text>
+  <text x="460" y="233" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">L2/L1 still hold stale "Alice v1"</text>
+
+  <!-- Arrow from Write to L3 -->
+  <path d="M 330 155 L 260 297" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+
+  <!-- t=20: Stale reads from L1 -->
+  <rect x="330" y="260" width="260" height="50" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2" />
+  <text x="460" y="280" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">t=20ms: Client reads stale v1</text>
+  <text x="460" y="298" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">L1 TTL not expired, serves old data</text>
+
+  <!-- Arrow from L1 to Stale box -->
+  <path d="M 260 117 L 330 285" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+
+  <!-- Impact note -->
+  <rect x="330" y="325" width="260" height="45" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" />
+  <text x="460" y="345" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Impact: Data inconsistency window</text>
+  <text x="460" y="362" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Staleness = max(L1 TTL, L2 TTL) = 5min</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: INVALIDATION CASCADE (bottom left) -->
+  <!-- ============================================================ -->
+
+  <rect x="310" y="440" width="300" height="165" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" />
+  <text x="460" y="468" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#16a34a" text-anchor="middle">Invalidation Cascade</text>
+
+  <!-- Step 1 -->
+  <rect x="330" y="485" width="260" height="30" rx="4" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="460" y="505" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">1. L3: DELETE user:1042 (pub/sub event)</text>
+
+  <!-- Arrow down -->
+  <line x1="460" y1="515" x2="460" y2="525" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Step 2 -->
+  <rect x="330" y="525" width="260" height="30" rx="4" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="460" y="545" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">2. L2: TTL expiry on next validation</text>
+
+  <!-- Arrow down -->
+  <line x1="460" y1="555" x2="460" y2="565" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Step 3 -->
+  <rect x="330" y="565" width="260" height="30" rx="4" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="460" y="585" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">3. L1: Request-scope expiry on miss</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: COHERENCE PROTOCOLS (bottom right) -->
+  <!-- ============================================================ -->
+
+  <rect x="640" y="90" width="290" height="515" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2" />
+  <text x="785" y="118" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Coherence Protocols Comparison</text>
+
+  <!-- Write-Through -->
+  <rect x="660" y="135" width="250" height="110" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="785" y="157" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Write-Through</text>
+  <text x="785" y="177" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Write hits DB + cache synchronously</text>
+  <text x="785" y="193" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Strong consistency guaranteed</text>
+  <text x="785" y="209" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Write latency = DB write + cache set</text>
+  <text x="785" y="233" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#16a34a" text-anchor="middle">Best for: Financial, user-profile data</text>
+
+  <!-- Write-Invalidate -->
+  <rect x="660" y="260" width="250" height="110" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="785" y="282" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Write-Invalidate</text>
+  <text x="785" y="302" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Delete cache entry on write</text>
+  <text x="785" y="318" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Next read triggers cache refill</text>
+  <text x="785" y="334" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Low write latency, eventual consistency</text>
+  <text x="785" y="358" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#16a34a" text-anchor="middle">Best for: Product catalogs, feeds</text>
+
+  <!-- Write-Update (Broadcast) -->
+  <rect x="660" y="385" width="250" height="110" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="785" y="407" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Write-Update (Broadcast)</text>
+  <text x="785" y="427" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Push update to all cache layers</text>
+  <text x="785" y="443" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">via pub/sub (Redis Streams, Kafka)</text>
+  <text x="785" y="459" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Near-real-time, moderate complexity</text>
+  <text x="785" y="483" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#16a34a" text-anchor="middle">Best for: Real-time dashboards, live data</text>
+
+  <!-- Summary row at bottom of protocols -->
+  <rect x="660" y="510" width="250" height="30" rx="4" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" />
+  <text x="785" y="530" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#1f2937" text-anchor="middle">Trade-off: Consistency vs Latency</text>
+
+  <!-- Arrow markers definition -->
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6" fill="#475569" />
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937" />
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626" />
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a" />
     </marker>
   </defs>
 </svg>

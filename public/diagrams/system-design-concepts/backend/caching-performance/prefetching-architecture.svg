@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 820" width="900" height="820">
+  <!-- Background -->
+  <rect width="900" height="820" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Prefetching System Architecture</text>
+  <text x="450" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Prediction engine, prefetch executor, cache population strategies, budgeting, and waste mitigation</text>
+  
+  <!-- TOP SECTION: Main Architecture Flow -->
+  <text x="450" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">System Architecture: Request to Cache Population Pipeline</text>
+  
+  <!-- 1. Client Requests -->
+  <rect x="40" y="120" width="160" height="80" rx="8" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+  <text x="120" y="148" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e40af" text-anchor="middle">Client Requests</text>
+  <text x="120" y="166" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Page views, API calls,</text>
+  <text x="120" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">user navigation events</text>
+  
+  <!-- Arrow to Hint Collector -->
+  <line x1="200" y1="160" x2="250" y2="160" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- 2. Hint Collector -->
+  <rect x="250" y="120" width="160" height="80" rx="8" fill="#f0fdf4" stroke="#166534" stroke-width="2"/>
+  <text x="330" y="148" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">Hint Collector</text>
+  <text x="330" y="166" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Hover events, scroll depth,</text>
+  <text x="330" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">navigation patterns</text>
+  
+  <!-- Arrow to Prediction Engine -->
+  <line x1="410" y1="160" x2="460" y2="160" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- 3. Prediction Engine -->
+  <rect x="460" y="110" width="180" height="100" rx="8" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+  <text x="550" y="138" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ca8a04" text-anchor="middle">Prediction Engine</text>
+  <text x="550" y="156" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">ML model: LSTM / Transformer</text>
+  <text x="550" y="172" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Heuristic: Markov chains</text>
+  <text x="550" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Rule: Access frequency &gt; threshold</text>
+  <text x="550" y="204" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ca8a04" text-anchor="middle">Output: Predicted keys + confidence</text>
+  
+  <!-- Arrow to Prefetch Executor -->
+  <line x1="640" y1="160" x2="690" y2="160" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- 4. Prefetch Executor -->
+  <rect x="690" y="110" width="180" height="100" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="780" y="138" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#7c3aed" text-anchor="middle">Prefetch Executor</text>
+  <text x="780" y="156" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Budget check: tokens remaining?</text>
+  <text x="780" y="172" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Dedup: already cached? skip</text>
+  <text x="780" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Priority queue: confidence sort</text>
+  <text x="780" y="204" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#7c3aed" text-anchor="middle">Rate limit: max 100 req/s</text>
+  
+  <!-- Arrow from Executor to Cache -->
+  <line x1="780" y1="210" x2="780" y2="280" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- 5. Cache Layer -->
+  <rect x="650" y="280" width="260" height="80" rx="8" fill="#dcfce7" stroke="#166534" stroke-width="2"/>
+  <text x="780" y="308" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">Cache Layer (Redis / Memcached)</text>
+  <text x="780" y="326" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Prefetched entries with prefetch-TTL</text>
+  <text x="780" y="342" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Tagged for tracking hit/miss ratio</text>
+  
+  <!-- Arrow from Cache to Client (response) -->
+  <path d="M 650 320 Q 350 380 120 200" fill="none" stroke="#1e40af" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowhead)"/>
+  <text x="350" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1e40af">Fast cache hit for subsequent requests</text>
+  
+  <!-- MIDDLE SECTION: Three Prefetch Strategies -->
+  <text x="450" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Prefetch Strategy Comparison</text>
+  
+  <!-- Strategy 1: Hint-Based -->
+  <rect x="20" y="430" width="270" height="200" rx="8" fill="#f0fdf4" stroke="#166534" stroke-width="2"/>
+  <text x="155" y="458" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#166534" text-anchor="middle">Hint-Based Prefetching</text>
+  <line x1="40" y1="470" x2="270" y2="470" stroke="#166534" stroke-width="1"/>
+  
+  <text x="155" y="494" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Triggers:</text>
+  <text x="155" y="512" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Link hover (200ms+ duration)</text>
+  <text x="155" y="528" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Scroll viewport proximity</text>
+  <text x="155" y="544" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Pagination intent detection</text>
+  
+  <text x="155" y="568" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Characteristics:</text>
+  <text x="155" y="586" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Accuracy: 60-80%</text>
+  <text x="155" y="602" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Latency impact: ~200ms gain</text>
+  <text x="155" y="618" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Waste: Moderate (20-40% unused)</text>
+  
+  <!-- Strategy 2: ML-Based -->
+  <rect x="310" y="430" width="280" height="200" rx="8" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="458" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#ca8a04" text-anchor="middle">ML-Based Prefetching</text>
+  <line x1="330" y1="470" x2="570" y2="470" stroke="#ca8a04" stroke-width="1"/>
+  
+  <text x="450" y="494" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Triggers:</text>
+  <text x="450" y="512" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Session sequence prediction (LSTM)</text>
+  <text x="450" y="528" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Collaborative filtering (similar users)</text>
+  <text x="450" y="544" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Time-of-day pattern matching</text>
+  
+  <text x="450" y="568" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Characteristics:</text>
+  <text x="450" y="586" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Accuracy: 70-90% (after training)</text>
+  <text x="450" y="602" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Latency impact: Proactive caching</text>
+  <text x="450" y="618" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Waste: Low (10-30% unused)</text>
+  
+  <!-- Strategy 3: User-Driven -->
+  <rect x="610" y="430" width="270" height="200" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="745" y="458" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#7c3aed" text-anchor="middle">User-Driven Prefetching</text>
+  <line x1="630" y1="470" x2="860" y2="470" stroke="#7c3aed" stroke-width="1"/>
+  
+  <text x="745" y="494" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Triggers:</text>
+  <text x="745" y="512" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Explicit bookmarking / watchlist</text>
+  <text x="745" y="528" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Dashboard subscription patterns</text>
+  <text x="745" y="544" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Scheduled report generation</text>
+  
+  <text x="745" y="568" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Characteristics:</text>
+  <text x="745" y="586" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Accuracy: 85-95% (explicit intent)</text>
+  <text x="745" y="602" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Latency impact: Zero-wait access</text>
+  <text x="745" y="618" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Waste: Minimal (5-15% unused)</text>
+  
+  <!-- BOTTOM SECTION: Budget and Waste -->
+  <text x="450" y="660" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Prefetch Budgeting &amp; Waste Mitigation</text>
+  
+  <!-- Budget Token System -->
+  <rect x="20" y="690" width="420" height="110" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="230" y="718" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Token-Based Budget System</text>
+  <line x1="40" y1="730" x2="420" y2="730" stroke="#d1d5db" stroke-width="1"/>
+  
+  <text x="230" y="754" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Each service gets prefetch tokens per time window (e.g., 500 tokens/minute)</text>
+  <text x="230" y="772" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">High-accuracy strategies earn more tokens; wasteful strategies lose tokens</text>
+  <text x="230" y="790" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Token replenishment rate adjusts dynamically based on cache hit ratio</text>
+  
+  <!-- Waste Mitigation -->
+  <rect x="460" y="690" width="420" height="110" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="670" y="718" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Waste Mitigation Strategies</text>
+  <line x1="480" y1="730" x2="860" y2="730" stroke="#d1d5db" stroke-width="1"/>
+  
+  <text x="670" y="754" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">1. Prefetch-TTL: Shorter TTL for prefetched items vs on-demand items</text>
+  <text x="670" y="772" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">2. Eviction priority: Prefetched items evicted first under memory pressure</text>
+  <text x="670" y="790" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">3. Feedback loop: Track hit/miss ratio per strategy, adjust confidence thresholds</text>
+  
+  <!-- Arrowhead markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

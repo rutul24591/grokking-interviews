@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 800" width="950" height="800">
+  <!-- Background -->
+  <rect width="950" height="800" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="475" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Memoization Performance Trade-offs</text>
+  <text x="475" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Computation cost vs memoization overhead vs memory usage with cache key serialization analysis</text>
+
+  <!-- ============================================ -->
+  <!-- TOP: DECISION CHART (When to memoize)        -->
+  <!-- ============================================ -->
+  <text x="475" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">When Is Memoization Beneficial vs Harmful?</text>
+
+  <!-- 2D Decision Chart -->
+  <rect x="40" y="120" width="580" height="400" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- Chart axes -->
+  <!-- Y-axis: Computation Cost -->
+  <line x1="100" y1="160" x2="100" y2="480" stroke="#374151" stroke-width="2"/>
+  <text x="60" y="320" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#374151" text-anchor="middle" transform="rotate(-90, 60, 320)">Computation Cost</text>
+
+  <!-- X-axis: Call Frequency -->
+  <line x1="100" y1="480" x2="580" y2="480" stroke="#374151" stroke-width="2"/>
+  <text x="340" y="510" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#374151" text-anchor="middle">Call Frequency (per second)</text>
+
+  <!-- Grid lines -->
+  <line x1="100" y1="240" x2="580" y2="240" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,2"/>
+  <line x1="100" y1="320" x2="580" y2="320" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,2"/>
+  <line x1="100" y1="400" x2="580" y2="400" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,2"/>
+  <line x1="220" y1="160" x2="220" y2="480" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,2"/>
+  <line x1="340" y1="160" x2="340" y2="480" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,2"/>
+  <line x1="460" y1="160" x2="460" y2="480" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,2"/>
+
+  <!-- Y-axis labels -->
+  <text x="90" y="165" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="end">High</text>
+  <text x="90" y="485" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="end">Low</text>
+
+  <!-- X-axis labels -->
+  <text x="100" y="495" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Low</text>
+  <text x="580" y="495" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">High</text>
+
+  <!-- Zone 1: HIGHLY BENEFICIAL (High cost, High freq) - Top-right -->
+  <rect x="340" y="160" width="240" height="160" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="460" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#15803d" text-anchor="middle">HIGHLY BENEFICIAL</text>
+  <text x="460" y="232" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Expensive + frequently called</text>
+  <text x="460" y="248" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Example: DB query, ML inference</text>
+  <text x="460" y="264" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#15803d" text-anchor="middle">Speedup: 10x-100x</text>
+  <text x="460" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#15803d" text-anchor="middle">Strategy: Distributed + local cache</text>
+  <text x="460" y="300" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">DB aggregation, report generation,</text>
+  <text x="460" y="314" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">feature engineering, price calc</text>
+
+  <!-- Zone 2: MODERATELY BENEFICIAL (High cost, Low freq) - Top-left -->
+  <rect x="100" y="160" width="240" height="160" rx="4" fill="#fef3c7" stroke="#ca8a04" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="220" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#a16207" text-anchor="middle">MODERATELY BENEFICIAL</text>
+  <text x="220" y="232" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Expensive but rarely called</text>
+  <text x="220" y="248" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Example: Monthly report generation</text>
+  <text x="220" y="264" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ca8a04" text-anchor="middle">Speedup: marginal</text>
+  <text x="220" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ca8a04" text-anchor="middle">Strategy: TTL-based, short-lived</text>
+  <text x="220" y="300" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">One-time data migration,</text>
+  <text x="220" y="314" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">periodic analytics</text>
+
+  <!-- Zone 3: POTENTIALLY HARMFUL (Low cost, High freq) - Bottom-right -->
+  <rect x="340" y="320" width="240" height="160" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="460" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#dc2626" text-anchor="middle">CAUTION: EVALUATE</text>
+  <text x="460" y="392" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Cheap but very frequent</text>
+  <text x="460" y="408" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Example: String formatting, getters</text>
+  <text x="460" y="424" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">Overhead may exceed savings</text>
+  <text x="460" y="440" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">Strategy: Per-request only or skip</text>
+  <text x="460" y="460" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Property access, validation,</text>
+  <text x="460" y="474" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">simple math, identity transforms</text>
+
+  <!-- Zone 4: NOT WORTH IT (Low cost, Low freq) - Bottom-left -->
+  <rect x="100" y="320" width="240" height="160" rx="4" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="220" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#4b5563" text-anchor="middle">NOT WORTH IT</text>
+  <text x="220" y="392" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Cheap and rarely called</text>
+  <text x="220" y="408" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Example: Config lookup at startup</text>
+  <text x="220" y="424" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#4b5563" text-anchor="middle">Negative ROI on memoization</text>
+  <text x="220" y="440" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#4b5563" text-anchor="middle">Strategy: No memoization needed</text>
+  <text x="220" y="460" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Initialization logic, one-time</text>
+  <text x="220" y="474" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">setup, debug utilities</text>
+
+  <!-- ============================================ -->
+  <!-- RIGHT PANEL: OVERHEAD BREAKDOWN             -->
+  <!-- ============================================ -->
+  <text x="740" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Memoization Overhead Breakdown</text>
+
+  <rect x="640" y="120" width="290" height="400" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- Overhead Component 1: Key Generation -->
+  <text x="660" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#374151">1. Key Serialization &amp; Hashing</text>
+  <rect x="660" y="158" width="250" height="12" rx="4" fill="#e5e7eb"/>
+  <rect x="660" y="158" width="200" height="12" rx="4" fill="#7c3aed"/>
+  <text x="920" y="168" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#6d28d9">80ns avg</text>
+
+  <text x="660" y="190" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">JSON.stringify(small): ~20ns</text>
+  <text x="660" y="204" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">JSON.stringify(large): ~500ns</text>
+  <text x="660" y="218" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">MurmurHash3: ~10ns</text>
+  <text x="660" y="232" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">SHA-256: ~200ns (avoid for local)</text>
+
+  <!-- Overhead Component 2: Cache Lookup -->
+  <text x="660" y="258" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#374151">2. Cache Lookup</text>
+  <rect x="660" y="266" width="250" height="12" rx="4" fill="#e5e7eb"/>
+  <rect x="660" y="266" width="40" height="12" rx="4" fill="#2563eb"/>
+  <text x="920" y="276" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#1e40af">5-15ns</text>
+
+  <text x="660" y="298" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">HashMap get: ~5ns</text>
+  <text x="660" y="312" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">ConcurrentHashMap: ~10-15ns</text>
+  <text x="660" y="326" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">Caffeine (W-TinyLFU): ~12ns</text>
+
+  <!-- Overhead Component 3: Storage -->
+  <text x="660" y="352" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#374151">3. Result Storage &amp; Eviction</text>
+  <rect x="660" y="360" width="250" height="12" rx="4" fill="#e5e7eb"/>
+  <rect x="660" y="360" width="60" height="12" rx="4" fill="#16a34a"/>
+  <text x="920" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#15803d">20-40ns</text>
+
+  <text x="660" y="392" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">HashMap put: ~10ns</text>
+  <text x="660" y="406" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">LRU maintenance: ~10-15ns</text>
+  <text x="660" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">W-TinyLFU update: ~15-20ns</text>
+  <text x="660" y="434" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">Eviction callback: ~5-10ns</text>
+
+  <!-- Overhead Component 4: Network (distributed) -->
+  <text x="660" y="460" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#374151">4. Network Overhead (Distributed)</text>
+  <rect x="660" y="468" width="250" height="12" rx="4" fill="#e5e7eb"/>
+  <rect x="660" y="468" width="240" height="12" rx="4" fill="#dc2626"/>
+  <text x="920" y="478" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626">500us-2ms</text>
+
+  <text x="660" y="500" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">Redis GET: ~0.5-1ms (p99: 2ms)</text>
+  <text x="660" y="514" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937">Serialization + network RTT dominates</text>
+
+  <!-- ============================================ -->
+  <!-- BOTTOM: DECISION TREE                        -->
+  <!-- ============================================ -->
+  <text x="475" y="555" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Memoization Decision Checklist</text>
+
+  <!-- Decision tree boxes -->
+  <rect x="40" y="580" width="870" height="80" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+
+  <text x="475" y="606" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 1: Is the function pure (deterministic, no side effects)?</text>
+  <text x="200" y="626" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#15803d">Yes -> proceed to Step 2</text>
+  <text x="550" y="626" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#dc2626">No -> Do NOT memoize (non-deterministic results)</text>
+  <text x="475" y="646" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Exceptions: controlled non-determinism acceptable if documented (e.g., "current time" with TTL)</text>
+
+  <rect x="40" y="665" width="870" height="80" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+
+  <text x="475" y="691" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 2: Does computation cost exceed overhead (serialization + lookup + storage)?</text>
+  <text x="200" y="711" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#15803d">Yes -> proceed to Step 3</text>
+  <text x="550" y="711" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#dc2626">No -> Skip memoization (overhead > savings)</text>
+  <text x="475" y="731" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Rule of thumb: computation should be 10x+ overhead (~100ns+) for local cache</text>
+
+  <!-- ============================================ -->
+  <!-- BOTTOM: KEY SERIALIZATION ANALYSIS           -->
+  <!-- ============================================ -->
+  <text x="475" y="760" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Key Serialization Cost Analysis: Simple types (~5ns) | Complex objects (~50-500ns) | Circular refs (must handle!) | Order-dependent keys (sort first)</text>
+
+  <!-- Arrowhead markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
+</svg>

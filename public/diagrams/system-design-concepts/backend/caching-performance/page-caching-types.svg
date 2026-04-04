@@ -1,16 +1,237 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Full Page vs Fragment Cache</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="780" viewBox="0 0 1100 780">
+  <!-- White background -->
+  <rect width="1100" height="780" fill="#ffffff"/>
 
-  <rect x="80" y="100" width="360" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="145" font-family="Arial" font-size="14" fill="#0f172a">Full Page Cache</text>
+  <!-- Title -->
+  <text x="550" y="48" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700" fill="#111827">Page Caching Types: Architecture &amp; Trade-offs</text>
+  <text x="550" y="74" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Full Page | Fragment | Edge-Side Includes (ESI)</text>
 
-  <rect x="520" y="100" width="360" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="550" y="145" font-family="Arial" font-size="14" fill="#0f172a">Fragment Cache</text>
+  <!-- ==================== FULL PAGE CACHE COLUMN ==================== -->
+  <!-- Column header -->
+  <rect x="30" y="100" width="330" height="44" rx="6" fill="#1e3a5f"/>
+  <text x="195" y="128" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Full Page Cache</text>
 
-  <rect x="80" y="230" width="360" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
-  <text x="110" y="270" font-family="Arial" font-size="12" fill="#0f172a">Cache entire HTML response</text>
+  <!-- Architecture box -->
+  <rect x="30" y="160" width="330" height="190" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="195" y="186" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Architecture</text>
 
-  <rect x="520" y="230" width="360" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
-  <text x="550" y="270" font-family="Arial" font-size="12" fill="#0f172a">Cache components and assemble</text>
+  <!-- Browser icon -->
+  <rect x="50" y="200" width="90" height="40" rx="6" fill="#e5e7eb" stroke="#374151" stroke-width="2"/>
+  <text x="95" y="224" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Browser</text>
+
+  <!-- Arrow down -->
+  <line x1="95" y1="240" x2="95" y2="270" stroke="#1f2937" stroke-width="2"/>
+  <polygon points="95,276 89,266 101,266" fill="#1f2937"/>
+
+  <!-- CDN/Edge box -->
+  <rect x="50" y="280" width="90" height="40" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="95" y="304" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">CDN Edge</text>
+
+  <!-- Arrow right -->
+  <line x1="140" y1="300" x2="180" y2="300" stroke="#1f2937" stroke-width="2"/>
+  <polygon points="186,300 176,294 176,306" fill="#1f2937"/>
+
+  <!-- Full page cache box -->
+  <rect x="190" y="280" width="150" height="50" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="265" y="300" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#166534">FULL PAGE HTML</text>
+  <text x="265" y="316" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Cached Response</text>
+
+  <!-- Invalidation scope -->
+  <rect x="30" y="365" width="330" height="60" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="195" y="388" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Invalidation Scope</text>
+  <text x="195" y="408" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Entire URL or path-based purge. Single change</text>
+  <text x="195" y="422" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">invalidates entire page cache entry.</text>
+
+  <!-- Use cases -->
+  <rect x="30" y="440" width="330" height="80" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="195" y="463" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Best Use Cases</text>
+  <text x="195" y="483" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Static landing pages, blog posts, marketing</text>
+  <text x="195" y="497" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">pages, documentation, SEO-critical pages</text>
+  <text x="195" y="511" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">with zero personalization.</text>
+
+  <!-- Metrics -->
+  <rect x="30" y="535" width="330" height="100" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="195" y="558" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Performance Metrics</text>
+  <text x="70" y="580" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Cache Hit Rate:</text>
+  <text x="220" y="580" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#16a34a">85-99%</text>
+  <!-- Hit rate bar -->
+  <rect x="70" y="588" width="240" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="70" y="588" width="220" height="8" rx="4" fill="#16a34a"/>
+  <text x="70" y="612" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Memory Usage:</text>
+  <text x="220" y="612" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#ea580c">HIGH</text>
+  <!-- Memory bar -->
+  <rect x="70" y="620" width="240" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="70" y="620" width="190" height="8" rx="4" fill="#ea580c"/>
+
+  <!-- ==================== FRAGMENT CACHE COLUMN ==================== -->
+  <!-- Column header -->
+  <rect x="385" y="100" width="330" height="44" rx="6" fill="#1e3a5f"/>
+  <text x="550" y="128" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Fragment Cache</text>
+
+  <!-- Architecture box -->
+  <rect x="385" y="160" width="330" height="190" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="550" y="186" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Architecture</text>
+
+  <!-- Browser icon -->
+  <rect x="405" y="200" width="90" height="40" rx="6" fill="#e5e7eb" stroke="#374151" stroke-width="2"/>
+  <text x="450" y="224" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Browser</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="240" x2="450" y2="270" stroke="#1f2937" stroke-width="2"/>
+  <polygon points="450,276 444,266 456,266" fill="#1f2937"/>
+
+  <!-- App server box -->
+  <rect x="405" y="280" width="100" height="50" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="455" y="300" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e">App Server</text>
+  <text x="455" y="316" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Assembles page</text>
+
+  <!-- Arrows to fragment caches -->
+  <line x1="505" y1="295" x2="540" y2="295" stroke="#1f2937" stroke-width="2"/>
+  <polygon points="546,295 536,289 536,301" fill="#1f2937"/>
+  <line x1="505" y1="310" x2="540" y2="310" stroke="#1f2937" stroke-width="2"/>
+  <polygon points="546,310 536,304 536,316" fill="#1f2937"/>
+
+  <!-- Fragment 1 -->
+  <rect x="550" y="280" width="75" height="30" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="587" y="300" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937">Header</text>
+
+  <!-- Fragment 2 -->
+  <rect x="550" y="315" width="75" height="30" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="587" y="335" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937">Product</text>
+
+  <!-- Fragment 3 -->
+  <rect x="640" y="280" width="60" height="30" rx="4" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+  <text x="670" y="300" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937">Cart</text>
+
+  <!-- Fragment 4 -->
+  <rect x="640" y="315" width="60" height="30" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="670" y="335" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937">Footer</text>
+
+  <!-- Invalidation scope -->
+  <rect x="385" y="365" width="330" height="60" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="550" y="388" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Invalidation Scope</text>
+  <text x="550" y="408" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Per-fragment invalidation. Only affected</text>
+  <text x="550" y="422" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">fragments are purged; rest stay warm.</text>
+
+  <!-- Use cases -->
+  <rect x="385" y="440" width="330" height="80" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="550" y="463" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Best Use Cases</text>
+  <text x="550" y="483" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">E-commerce product pages (static details</text>
+  <text x="550" y="497" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">+ dynamic cart), dashboards with mixed</text>
+  <text x="550" y="511" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">content freshness requirements.</text>
+
+  <!-- Metrics -->
+  <rect x="385" y="535" width="330" height="100" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="550" y="558" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Performance Metrics</text>
+  <text x="425" y="580" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Cache Hit Rate:</text>
+  <text x="575" y="580" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#ca8a04">60-85%</text>
+  <!-- Hit rate bar -->
+  <rect x="425" y="588" width="240" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="425" y="588" width="175" height="8" rx="4" fill="#ca8a04"/>
+  <text x="425" y="612" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Memory Usage:</text>
+  <text x="575" y="612" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#16a34a">MEDIUM</text>
+  <!-- Memory bar -->
+  <rect x="425" y="620" width="240" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="425" y="620" width="140" height="8" rx="4" fill="#16a34a"/>
+
+  <!-- ==================== ESI COLUMN ==================== -->
+  <!-- Column header -->
+  <rect x="740" y="100" width="330" height="44" rx="6" fill="#1e3a5f"/>
+  <text x="905" y="128" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Edge-Side Includes (ESI)</text>
+
+  <!-- Architecture box -->
+  <rect x="740" y="160" width="330" height="190" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="905" y="186" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Architecture</text>
+
+  <!-- Browser icon -->
+  <rect x="760" y="200" width="90" height="40" rx="6" fill="#e5e7eb" stroke="#374151" stroke-width="2"/>
+  <text x="805" y="224" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Browser</text>
+
+  <!-- Arrow down -->
+  <line x1="805" y1="240" x2="805" y2="270" stroke="#1f2937" stroke-width="2"/>
+  <polygon points="805,276 799,266 811,266" fill="#1f2937"/>
+
+  <!-- ESI Processor box -->
+  <rect x="760" y="280" width="100" height="50" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="810" y="300" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#5b21b6">ESI Processor</text>
+  <text x="810" y="316" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">At edge layer</text>
+
+  <!-- Arrows to sub-requests -->
+  <line x1="860" y1="295" x2="895" y2="295" stroke="#1f2937" stroke-width="2"/>
+  <polygon points="901,295 891,289 891,301" fill="#1f2937"/>
+  <line x1="860" y1="310" x2="895" y2="310" stroke="#1f2937" stroke-width="2"/>
+  <polygon points="901,310 891,304 891,316" fill="#1f2937"/>
+
+  <!-- Sub-request 1: static fragment -->
+  <rect x="905" y="280" width="75" height="30" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="942" y="296" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#1f2937">Static Nav</text>
+  <text x="942" y="307" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#374151">TTL: 1h</text>
+
+  <!-- Sub-request 2: personalized fragment -->
+  <rect x="905" y="315" width="75" height="30" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="942" y="331" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#1f2937">User Greet</text>
+  <text x="942" y="342" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#374151">No cache</text>
+
+  <!-- Sub-request 3 -->
+  <rect x="990" y="280" width="65" height="30" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="1022" y="300" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#1f2937">Footer</text>
+
+  <!-- Sub-request 4 -->
+  <rect x="990" y="315" width="65" height="30" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="1022" y="331" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#1f2937">Recommend</text>
+  <text x="1022" y="342" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#374151">TTL: 5m</text>
+
+  <!-- Invalidation scope -->
+  <rect x="740" y="365" width="330" height="60" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="905" y="388" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Invalidation Scope</text>
+  <text x="905" y="408" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Per-fragment with independent TTLs.</text>
+  <text x="905" y="422" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Granular control per ESI include tag.</text>
+
+  <!-- Use cases -->
+  <rect x="740" y="440" width="330" height="80" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="905" y="463" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Best Use Cases</text>
+  <text x="905" y="483" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Personalized pages (user-specific header</text>
+  <text x="905" y="497" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">+ static body), news portals with mixed</text>
+  <text x="905" y="511" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">freshness, A/B testing at the edge.</text>
+
+  <!-- Metrics -->
+  <rect x="740" y="535" width="330" height="100" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="905" y="558" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Performance Metrics</text>
+  <text x="780" y="580" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Cache Hit Rate:</text>
+  <text x="930" y="580" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#dc2626">40-70%</text>
+  <!-- Hit rate bar -->
+  <rect x="780" y="588" width="240" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="780" y="588" width="130" height="8" rx="4" fill="#dc2626"/>
+  <text x="780" y="612" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Memory Usage:</text>
+  <text x="930" y="612" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#16a34a">LOW</text>
+  <!-- Memory bar -->
+  <rect x="780" y="620" width="240" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="780" y="620" width="80" height="8" rx="4" fill="#16a34a"/>
+
+  <!-- ==================== COMPARISON TABLE ==================== -->
+  <rect x="30" y="660" width="1040" height="100" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="550" y="684" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Quick Comparison</text>
+
+  <!-- Table headers -->
+  <text x="200" y="706" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Full Page</text>
+  <text x="550" y="706" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">Fragment</text>
+  <text x="905" y="706" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827">ESI</text>
+
+  <!-- Row 1: Complexity -->
+  <text x="40" y="726" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Complexity:</text>
+  <text x="200" y="726" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Low</text>
+  <text x="550" y="726" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Medium</text>
+  <text x="905" y="726" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">High</text>
+
+  <!-- Row 2: Personalization -->
+  <text x="40" y="744" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Personalization:</text>
+  <text x="200" y="744" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">None</text>
+  <text x="550" y="744" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Server-side</text>
+  <text x="905" y="744" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Edge-level</text>
+
+  <!-- Row 3: TTFB -->
+  <text x="40" y="762" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">TTFB:</text>
+  <text x="200" y="762" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#16a34a">~5ms</text>
+  <text x="550" y="762" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#ca8a04">~15ms</text>
+  <text x="905" y="762" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#dc2626">~30ms</text>
 </svg>

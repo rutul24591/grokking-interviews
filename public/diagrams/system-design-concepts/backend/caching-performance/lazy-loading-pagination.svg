@@ -1,13 +1,175 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Lazy Loading with Pagination</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="800" viewBox="0 0 960 800">
+  <!-- Background -->
+  <rect width="960" height="800" fill="#ffffff" />
 
-  <rect x="80" y="120" width="260" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="120" y="160" font-family="Arial" font-size="14" fill="#0f172a">Page 1</text>
+  <!-- Title -->
+  <text x="480" y="42" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Lazy Loading with Pagination Patterns</text>
+  <text x="480" y="66" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Offset-based vs cursor-based pagination, cache key design, and deep pagination mitigation</text>
 
-  <rect x="360" y="120" width="260" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="400" y="160" font-family="Arial" font-size="14" fill="#0f172a">Page 2</text>
+  <!-- ============================================================ -->
+  <!-- SECTION 1: OFFSET vs CURSOR COMPARISON (top) -->
+  <!-- ============================================================ -->
 
-  <rect x="640" y="120" width="240" height="70" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
-  <text x="670" y="160" font-family="Arial" font-size="14" fill="#0f172a">Page 3</text>
+  <text x="480" y="100" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Offset-Based vs Cursor-Based Pagination</text>
+
+  <!-- OFFSET-BASED (left) -->
+  <rect x="40" y="120" width="420" height="240" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2" />
+  <text x="250" y="148" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#dc2626" text-anchor="middle">Offset-Based Pagination (Anti-Pattern)</text>
+
+  <!-- Offset flow -->
+  <rect x="60" y="165" width="380" height="38" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="250" y="189" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">SELECT * FROM items ORDER BY created_at DESC LIMIT 20 OFFSET 0</text>
+
+  <rect x="60" y="210" width="380" height="38" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="250" y="234" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">SELECT * FROM items ORDER BY created_at DESC LIMIT 20 OFFSET 20</text>
+
+  <rect x="60" y="255" width="380" height="38" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="250" y="279" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">SELECT * FROM items ORDER BY created_at DESC LIMIT 20 OFFSET 40</text>
+
+  <!-- Problems list -->
+  <rect x="60" y="305" width="380" height="45" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+  <text x="250" y="324" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Problems: Duplicate/missing rows on inserts</text>
+  <text x="250" y="340" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">O(n) scan cost, uncacheable without exact offset</text>
+
+  <!-- CURSOR-BASED (right) -->
+  <rect x="490" y="120" width="430" height="240" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" />
+  <text x="705" y="148" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#16a34a" text-anchor="middle">Cursor-Based Pagination (Recommended)</text>
+
+  <!-- Cursor flow -->
+  <rect x="510" y="165" width="390" height="38" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="705" y="189" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">SELECT * FROM items WHERE created_at &lt; '2024-01-15T10:00:00'</text>
+
+  <rect x="510" y="210" width="390" height="38" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="705" y="234" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">ORDER BY created_at DESC LIMIT 20 -- cursor = last row timestamp</text>
+
+  <rect x="510" y="255" width="390" height="38" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="705" y="279" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937" text-anchor="middle">Next: WHERE created_at &lt; '2024-01-14T22:30:00' (last row)</text>
+
+  <!-- Benefits list -->
+  <rect x="510" y="305" width="390" height="45" rx="6" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" />
+  <text x="705" y="324" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Benefits: O(log n) index seek, stable results</text>
+  <text x="705" y="340" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">No duplicates, cacheable by cursor value</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: CURSOR-BASED WITH SNAPSHOT ISOLATION (middle) -->
+  <!-- ============================================================ -->
+
+  <rect x="40" y="385" width="880" height="180" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2" />
+  <text x="480" y="413" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Cursor-Based Pagination with Snapshot Isolation</text>
+
+  <!-- Timeline -->
+  <line x1="80" y1="460" x2="880" y2="460" stroke="#1f2937" stroke-width="2" />
+
+  <!-- Snapshot point 1 -->
+  <circle cx="200" cy="460" r="8" fill="#2563eb" />
+  <text x="200" y="440" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">t=0</text>
+  <text x="200" y="485" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Snapshot taken</text>
+  <text x="200" y="498" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">cursor: ts=10:00:00</text>
+
+  <!-- Arrow -->
+  <line x1="208" y1="460" x2="370" y2="460" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Page 1 load -->
+  <rect x="370" y="435" width="130" height="50" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="435" y="455" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Page 1 Loaded</text>
+  <text x="435" y="472" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">20 items (ts 10:00 - 9:55)</text>
+  <text x="435" y="485" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Cursor: ts=9:55:00</text>
+
+  <!-- Arrow -->
+  <line x1="500" y1="460" x2="530" y2="460" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Concurrent writes during pagination -->
+  <rect x="530" y="430" width="150" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+  <text x="605" y="450" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Concurrent Writes</text>
+  <text x="605" y="466" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">+3 new items inserted</text>
+  <text x="605" y="480" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">ts=9:58, 9:57, 9:56</text>
+
+  <!-- Arrow -->
+  <line x1="680" y1="460" x2="710" y2="460" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Page 2 from snapshot -->
+  <rect x="710" y="435" width="140" height="50" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="780" y="455" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Page 2 (Snapshot)</text>
+  <text x="780" y="472" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">WHERE ts &lt; 9:55:00</text>
+  <text x="780" y="485" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Ignores new inserts</text>
+
+  <!-- Key insight box -->
+  <rect x="200" y="510" width="560" height="40" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" />
+  <text x="480" y="528" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Snapshot isolation ensures consistent pagination despite concurrent writes</text>
+  <text x="480" y="544" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">New items appear on next full page load, not mid-session</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: CACHE KEY DESIGN (bottom left) -->
+  <!-- ============================================================ -->
+
+  <rect x="40" y="580" width="440" height="200" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" />
+  <text x="260" y="608" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Cache Key Design for Paginated Results</text>
+
+  <!-- Cache key patterns -->
+  <rect x="60" y="625" width="400" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="260" y="643" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Offset-based cache key:</text>
+  <text x="260" y="659" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">feed:user:1042:offset:40:limit:20:sort:created_at</text>
+
+  <rect x="60" y="675" width="400" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="260" y="693" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Cursor-based cache key:</text>
+  <text x="260" y="709" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">feed:user:1042:cursor:ts=9:55:00:limit:20</text>
+
+  <rect x="60" y="725" width="400" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="260" y="743" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Versioned cache key (for invalidation):</text>
+  <text x="260" y="759" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">feed:user:1042:v3:cursor:ts=9:55:00:limit:20</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: DEEP PAGINATION DEGRADATION (bottom right) -->
+  <!-- ============================================================ -->
+
+  <rect x="505" y="580" width="415" height="200" rx="10" fill="#fff5f5" stroke="#dc2626" stroke-width="2" />
+  <text x="712" y="608" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Deep Pagination Performance Degradation</text>
+
+  <!-- Performance curve (text-based graph) -->
+  <!-- Y axis -->
+  <line x1="540" y1="740" x2="540" y2="640" stroke="#1f2937" stroke-width="2" />
+  <!-- X axis -->
+  <line x1="540" y1="740" x2="880" y2="740" stroke="#1f2937" stroke-width="2" />
+
+  <!-- Y labels -->
+  <text x="535" y="645" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="end">High</text>
+  <text x="535" y="695" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="end">Low</text>
+  <text x="535" y="745" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="end">0</text>
+
+  <!-- X labels -->
+  <text x="560" y="756" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">Page 1</text>
+  <text x="640" y="756" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">Page 10</text>
+  <text x="720" y="756" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">Page 50</text>
+  <text x="800" y="756" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">Page 100</text>
+
+  <!-- Y axis label -->
+  <text x="520" y="690" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle" transform="rotate(-90, 520, 690)">Latency</text>
+  <!-- X axis label -->
+  <text x="712" y="772" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Page Depth</text>
+
+  <!-- Performance degradation curve -->
+  <path d="M 560 720 Q 600 710 640 695 Q 680 680 720 650 Q 760 620 800 590 Q 830 575 860 565" stroke="#dc2626" stroke-width="2" fill="none" />
+
+  <!-- Data points -->
+  <circle cx="560" cy="720" r="4" fill="#dc2626" />
+  <text x="560" y="712" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#dc2626" text-anchor="middle">5ms</text>
+
+  <circle cx="640" cy="695" r="4" fill="#dc2626" />
+  <text x="640" y="687" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#dc2626" text-anchor="middle">45ms</text>
+
+  <circle cx="720" cy="650" r="4" fill="#dc2626" />
+  <text x="720" y="642" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#dc2626" text-anchor="middle">200ms</text>
+
+  <circle cx="800" cy="590" r="4" fill="#dc2626" />
+  <text x="800" y="582" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#dc2626" text-anchor="middle">800ms</text>
+
+  <circle cx="860" cy="565" r="4" fill="#dc2626" />
+  <text x="860" y="557" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#dc2626" text-anchor="middle">2s+</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937" />
+    </marker>
+  </defs>
 </svg>

@@ -1,19 +1,157 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">CDN Cache Key</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="850" viewBox="0 0 960 850">
+  <rect width="960" height="850" fill="#ffffff"/>
 
-  <rect x="80" y="110" width="800" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
-  <text x="110" y="150" font-family="Arial" font-size="14" fill="#0f172a">/images/product.png?size=large</text>
+  <!-- Title -->
+  <text x="480" y="45" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#111827" text-anchor="middle">CDN Cache Key Design &amp; Normalization</text>
+  <text x="480" y="72" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">How URL components, headers, and normalization rules determine cache key identity and cardinality</text>
 
-  <rect x="80" y="220" width="260" height="80" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="255" font-family="Arial" font-size="14" fill="#0f172a">Path</text>
-  <text x="110" y="280" font-family="Arial" font-size="12" fill="#0f172a">Primary identifier</text>
+  <!-- ======================== SECTION 1: Cache Key Composition ======================== -->
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Cache Key Composition</text>
 
-  <rect x="360" y="220" width="260" height="80" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="255" font-family="Arial" font-size="14" fill="#0f172a">Query Params</text>
-  <text x="390" y="280" font-family="Arial" font-size="12" fill="#0f172a">Optional variations</text>
+  <!-- URL Path Box -->
+  <rect x="60" y="140" width="260" height="130" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="190" y="168" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">URL Path</text>
+  <line x1="100" y1="178" x2="280" y2="178" stroke="#0ea5e9" stroke-width="1.5"/>
+  <text x="80" y="200" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">Primary resource identifier</text>
+  <text x="80" y="222" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">Case-normalized (lowercase)</text>
+  <text x="80" y="244" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">Trailing slash removed</text>
 
-  <rect x="640" y="220" width="240" height="80" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="670" y="255" font-family="Arial" font-size="14" fill="#0f172a">Headers</text>
-  <text x="670" y="280" font-family="Arial" font-size="12" fill="#0f172a">Vary rules</text>
+  <!-- Arrow from URL Path to center -->
+  <line x1="320" y1="205" x2="430" y2="205" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="360" y="197" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle">+</text>
+
+  <!-- Query Params Box -->
+  <rect x="430" y="140" width="260" height="130" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <text x="560" y="168" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Query Parameters</text>
+  <line x1="470" y1="178" x2="650" y2="178" stroke="#10b981" stroke-width="1.5"/>
+  <text x="450" y="200" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">Included: id, page, sort, lang</text>
+  <text x="450" y="222" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">Excluded: utm_*, fbclid, _ga</text>
+  <text x="450" y="244" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">Sorted alphabetically</text>
+
+  <!-- Arrow from Query Params to center -->
+  <line x1="690" y1="205" x2="800" y2="205" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="735" y="197" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle">+</text>
+
+  <!-- ======================== SECTION 2: Normalization Pipeline ======================== -->
+  <text x="60" y="320" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Cache Key Normalization Pipeline</text>
+
+  <!-- Normalization step 1 -->
+  <rect x="60" y="340" width="190" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="155" y="365" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 1: Lowercase</text>
+  <line x1="85" y1="375" x2="225" y2="375" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="75" y="398" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">/Products/Widget</text>
+  <text x="75" y="418" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">/products/widget</text>
+
+  <!-- Arrow -->
+  <line x1="250" y1="390" x2="290" y2="390" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- Normalization step 2 -->
+  <rect x="290" y="340" width="190" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="385" y="365" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 2: Sort Params</text>
+  <line x1="315" y1="375" x2="455" y2="375" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="305" y="398" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">?sort=price&amp;id=42</text>
+  <text x="305" y="418" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">?id=42&amp;sort=price</text>
+
+  <!-- Arrow -->
+  <line x1="480" y1="390" x2="520" y2="390" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- Normalization step 3 -->
+  <rect x="520" y="340" width="190" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="615" y="365" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 3: Strip Tracking</text>
+  <line x1="545" y1="375" x2="685" y2="375" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="535" y="398" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">?utm_src=google</text>
+  <text x="535" y="418" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">(removed)</text>
+
+  <!-- Arrow -->
+  <line x1="710" y1="390" x2="750" y2="390" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- Normalization step 4 -->
+  <rect x="750" y="340" width="170" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="835" y="365" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 4: Resolve Path</text>
+  <line x1="770" y1="375" x2="900" y2="375" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="765" y="398" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">/a/../b/./c/</text>
+  <text x="765" y="418" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">/b/c</text>
+
+  <!-- ======================== SECTION 3: Vary Header Impact ======================== -->
+  <text x="60" y="480" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Vary Header Impact on Key Cardinality</text>
+
+  <!-- Vary header explanation box -->
+  <rect x="60" y="500" width="420" height="180" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+  <text x="80" y="530" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Vary: Accept-Encoding</text>
+  <text x="80" y="552" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Creates separate cache entries for each</text>
+  <text x="80" y="572" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">encoding variant: gzip, br, identity</text>
+  <text x="80" y="592" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Cardinality multiplier: 3x</text>
+  <text x="80" y="618" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Vary: Accept-Language</text>
+  <text x="80" y="640" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">One cache entry per language (en, es, fr...)</text>
+  <text x="80" y="660" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">With 12 languages: cardinality multiplier 12x</text>
+
+  <!-- Cache fragmentation illustration -->
+  <rect x="500" y="500" width="420" height="180" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="710" y="530" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Cache Fragmentation from Poor Key Design</text>
+  <line x1="530" y1="540" x2="890" y2="540" stroke="#6b7280" stroke-width="1.5"/>
+
+  <!-- Good key design -->
+  <rect x="520" y="555" width="180" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="530" y="574" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">Good: 1 key / URL</text>
+  <text x="530" y="594" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Hit rate: 94%</text>
+
+  <!-- Bad key design -->
+  <rect x="720" y="555" width="180" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="730" y="574" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">Bad: 1000 keys / URL</text>
+  <text x="730" y="594" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Hit rate: 3%</text>
+
+  <!-- Fragmentation explanation -->
+  <text x="520" y="628" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">Example:</text>
+  <text x="520" y="648" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">?id=42&amp;utm_src=google&amp;fbclid=abc</text>
+  <text x="520" y="666" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">?id=42&amp;utm_src=facebook&amp;fbclid=xyz</text>
+  <text x="520" y="684" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#ef4444">Each = unique cache entry!</text>
+
+  <!-- ======================== Final Cache Key Hash ======================== -->
+  <!-- Center arrow to final key -->
+  <line x1="480" y1="270" x2="480" y2="310" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- Final hash representation (drawn above normalization to show flow) -->
+  <!-- Repositioned: we'll add a connecting arrow from normalization to the right -->
+
+  <!-- Markers -->
+  <defs>
+    <marker id="arrowGray" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- ======================== SECTION 4: Headers Impact ======================== -->
+  <text x="60" y="690" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Header-Based Cache Key Components</text>
+
+  <!-- Headers table -->
+  <rect x="60" y="710" width="840" height="110" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- Header rows -->
+  <rect x="70" y="720" width="200" height="28" rx="4" fill="#e0e7ff"/>
+  <text x="170" y="739" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Header Name</text>
+  <rect x="270" y="720" width="300" height="28" rx="4" fill="#e0e7ff"/>
+  <text x="420" y="739" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Impact on Cache Key</text>
+  <rect x="570" y="720" width="150" height="28" rx="4" fill="#e0e7ff"/>
+  <text x="645" y="739" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Cardinality</text>
+  <rect x="720" y="720" width="170" height="28" rx="4" fill="#e0e7ff"/>
+  <text x="805" y="739" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Recommendation</text>
+
+  <!-- Row 1 -->
+  <text x="75" y="768" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Accept-Encoding</text>
+  <text x="275" y="768" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Separates gzip, br, deflate variants</text>
+  <text x="575" y="768" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#374151">Low (2-4x)</text>
+  <text x="725" y="768" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Always include</text>
+
+  <!-- Row 2 -->
+  <text x="75" y="790" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Accept-Language</text>
+  <text x="275" y="790" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">One entry per locale variant</text>
+  <text x="575" y="790" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#dc2626">High (10-20x)</text>
+  <text x="725" y="790" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Include only if localized</text>
+
+  <!-- Row 3 -->
+  <text x="75" y="812" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Cookie</text>
+  <text x="275" y="812" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Per-user session cache entry</text>
+  <text x="575" y="812" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#dc2626">Extreme (Nx users)</text>
+  <text x="725" y="812" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#ef4444">Never include; no-cache</text>
 </svg>

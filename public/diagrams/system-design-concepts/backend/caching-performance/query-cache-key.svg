@@ -1,19 +1,122 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Query Cache Key</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
 
-  <rect x="80" y="110" width="800" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
-  <text x="100" y="153" font-family="Arial" font-size="14" fill="#0f172a">q:v1:select product_id,sum(quantity) from orders group by product_id::[]</text>
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#ffffff"/>
 
-  <rect x="80" y="220" width="240" height="80" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="100" y="255" font-family="Arial" font-size="14" fill="#0f172a">Normalized SQL</text>
-  <text x="100" y="280" font-family="Arial" font-size="12" fill="#0f172a">Whitespace + case</text>
+  <!-- Title -->
+  <text x="60" y="48" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">Query Cache Key Design</text>
+  <text x="60" y="76" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#374151">Composing unique cache keys from normalized SQL, parameter hashes, and session context</text>
 
-  <rect x="360" y="220" width="240" height="80" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="380" y="255" font-family="Arial" font-size="14" fill="#0f172a">Parameters</text>
-  <text x="380" y="280" font-family="Arial" font-size="12" fill="#0f172a">Sorted for stability</text>
+  <!-- Key Design Principles -->
+  <rect x="60" y="95" width="1080" height="35" rx="6" fill="#f9fafb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="80" y="118" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Principles: Deterministic (same input = same key) | Collision-free (different inputs = different keys) | Compact (minimal memory overhead)</text>
 
-  <rect x="640" y="220" width="240" height="80" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="660" y="255" font-family="Arial" font-size="14" fill="#0f172a">Version</text>
-  <text x="660" y="280" font-family="Arial" font-size="12" fill="#0f172a">Schema changes</text>
+  <!-- Key Composition Section -->
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Cache Key Structure</text>
+
+  <!-- Full key example -->
+  <rect x="60" y="140" width="1080" height="60" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="80" y="165" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Final Cache Key:</text>
+  <text x="80" y="190" font-family="'Courier New', monospace" font-size="16" font-weight="400" fill="#1f2937">q:v3:SELECT id,name FROM users WHERE status=? AND org=? ::[active,acme] ::sess_tenant=acme_corp</text>
+
+  <!-- Key Components Breakdown -->
+  <text x="60" y="240" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Key Components</text>
+
+  <!-- Component 1: Normalized SQL -->
+  <rect x="60" y="265" width="340" height="200" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="80" y="300" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">1. Normalized SQL</text>
+
+  <rect x="80" y="315" width="300" height="45" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="95" y="343" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Remove extra whitespace, comments</text>
+
+  <rect x="80" y="368" width="300" height="45" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="95" y="396" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Canonical keyword ordering (ORDER BY)</text>
+
+  <rect x="80" y="421" width="300" height="35" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="95" y="444" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Uppercase keywords: SELECT, FROM</text>
+
+  <!-- Component 2: Parameter Hash -->
+  <rect x="430" y="265" width="340" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="300" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">2. Parameter Hash</text>
+
+  <rect x="450" y="315" width="300" height="45" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="465" y="343" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Sort parameters alphabetically by name</text>
+
+  <rect x="450" y="368" width="300" height="45" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="465" y="396" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Include parameter types: int vs string</text>
+
+  <rect x="450" y="421" width="300" height="35" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="465" y="444" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Hash large arrays: SHA256 first 8 chars</text>
+
+  <!-- Component 3: Session Context -->
+  <rect x="800" y="265" width="340" height="200" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="820" y="300" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">3. Session Context</text>
+
+  <rect x="820" y="315" width="300" height="45" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="835" y="343" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Tenant ID for multi-tenant isolation</text>
+
+  <rect x="820" y="368" width="300" height="45" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="835" y="396" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">User role / permission level</text>
+
+  <rect x="820" y="421" width="300" height="35" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="835" y="444" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Schema version / database shard ID</text>
+
+  <!-- Key Collision Scenarios -->
+  <rect x="60" y="500" width="560" height="180" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="80" y="535" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Key Collision Scenarios</text>
+
+  <rect x="80" y="550" width="520" height="45" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="95" y="570" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Whitespace: "SELECT * FROM t" vs "select * from t"</text>
+  <text x="95" y="588" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Fix: normalize case + collapse whitespace to single spaces</text>
+
+  <rect x="80" y="603" width="520" height="45" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="95" y="623" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Param Order: status=active,org=acme vs org=acme,status=active</text>
+  <text x="95" y="641" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Fix: sort parameters alphabetically by parameter name</text>
+
+  <rect x="80" y="656" width="520" height="20" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="95" y="672" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Type Coercion: id=1 (int) vs id="1" (string) - encode type in key</text>
+
+  <!-- Normalization Pipeline -->
+  <rect x="650" y="500" width="490" height="180" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="670" y="535" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Normalization Pipeline</text>
+
+  <rect x="670" y="550" width="450" height="35" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="685" y="573" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Input: raw SQL + parameters from application ORM/DAO</text>
+
+  <rect x="670" y="593" width="450" height="35" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="685" y="616" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Parse SQL AST -&gt; remove comments, normalize whitespace</text>
+
+  <rect x="670" y="636" width="450" height="35" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="685" y="659" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Canonicalize: uppercase keywords, sort clauses deterministically</text>
+
+  <!-- Memory Optimization Panel -->
+  <rect x="60" y="710" width="560" height="170" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+  <text x="80" y="745" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Memory Optimization Strategies</text>
+
+  <rect x="80" y="760" width="520" height="45" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="95" y="783" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Key Prefix Compression (Radix Trees)</text>
+  <text x="95" y="803" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Shared prefix "q:v3:SELECT..." stored once - saves 30-50% on key storage</text>
+
+  <rect x="80" y="813" width="520" height="45" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="95" y="836" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Parameter Hash Truncation</text>
+  <text x="95" y="856" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Store first 8 chars of SHA256 (8 bytes) instead of full hash (64 bytes)</text>
+
+  <!-- Session Context Deduplication -->
+  <rect x="650" y="710" width="490" height="170" rx="8" fill="#fefce8" stroke="#fde68a" stroke-width="2"/>
+  <text x="670" y="745" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Session Context Deduplication</text>
+
+  <rect x="670" y="760" width="450" height="45" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="685" y="783" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Intern Common Context Strings</text>
+  <text x="685" y="803" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Cache tenant ID strings; use integer IDs instead of repeated strings</text>
+
+  <rect x="670" y="813" width="450" height="55" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="685" y="836" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Memory Overhead Summary</text>
+  <text x="685" y="856" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Typical key: 80-200 bytes | 1M keys = 80-200 MB</text>
+  <text x="685" y="873" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">With prefix compression + hash truncation: ~60 MB</text>
+  <text x="685" y="888" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Monitor key size distribution to detect normalization bugs early</text>
 </svg>

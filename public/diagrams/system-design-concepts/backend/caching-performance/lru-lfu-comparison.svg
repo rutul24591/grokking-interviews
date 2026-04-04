@@ -1,0 +1,294 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="960" viewBox="0 0 1200 960">
+  <rect width="1200" height="960" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="42" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">LRU vs LFU Eviction Policies — Deep Comparison</text>
+  <text x="600" y="66" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">How each algorithm works, internal data structures, strengths, weaknesses, and when to choose which</text>
+
+  <!-- ==================== LRU SECTION (Left) ==================== -->
+  <rect x="30" y="90" width="560" height="420" rx="14" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <!-- Header -->
+  <rect x="30" y="90" width="560" height="50" rx="14" fill="#e0e7ff" stroke="#818cf8" stroke-width="2"/>
+  <rect x="30" y="120" width="560" height="20" fill="#e0e7ff"/>
+  <text x="60" y="122" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#3730a3">LRU — Least Recently Used</text>
+
+  <!-- How it works -->
+  <text x="50" y="165" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">How It Works</text>
+  <text x="50" y="185" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Evicts the item that has not been accessed for the longest time.</text>
+  <text x="50" y="200" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Uses a doubly-linked list + hash map for O(1) get and put operations.</text>
+
+  <!-- LRU Linked List Diagram -->
+  <text x="50" y="235" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Doubly-Linked List (Most Recent → Least Recent)</text>
+
+  <!-- MRU end -->
+  <rect x="50" y="250" width="50" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="75" y="270" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">MRU</text>
+
+  <!-- Nodes -->
+  <rect x="120" y="250" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="155" y="270" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+
+  <rect x="210" y="250" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="245" y="270" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">C</text>
+
+  <rect x="300" y="250" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="335" y="270" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+
+  <rect x="390" y="250" width="70" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="425" y="270" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">A</text>
+
+  <!-- LRU end -->
+  <rect x="480" y="250" width="50" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="505" y="270" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">LRU</text>
+
+  <!-- Arrows between nodes -->
+  <line x1="100" y1="265" x2="118" y2="265" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="190" y1="265" x2="208" y2="265" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="280" y1="265" x2="298" y2="265" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="370" y1="265" x2="388" y2="265" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="460" y1="265" x2="478" y2="265" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+
+  <!-- Eviction annotation -->
+  <text x="425" y="295" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="600" fill="#dc2626" text-anchor="middle">Evicted next!</text>
+  <line x1="425" y1="282" x2="425" y2="280" stroke="#dc2626" stroke-width="1"/>
+
+  <!-- Access example -->
+  <text x="50" y="330" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Access "A" — moves to MRU end</text>
+
+  <!-- Before -->
+  <text x="50" y="352" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="600" fill="#374151">Before: D → C → B → A</text>
+  <line x1="50" y1="358" x2="500" y2="358" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- After -->
+  <text x="50" y="380" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="600" fill="#374151">After:  A → D → C → B</text>
+
+  <!-- After visualization -->
+  <rect x="120" y="390" width="70" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="155" y="410" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534" text-anchor="middle">A</text>
+
+  <rect x="210" y="390" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="245" y="410" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+
+  <rect x="300" y="390" width="70" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="335" y="410" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">C</text>
+
+  <rect x="390" y="390" width="70" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="425" y="410" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">B</text>
+
+  <line x1="100" y1="405" x2="118" y2="405" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="190" y1="405" x2="208" y2="405" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="280" y1="405" x2="298" y2="405" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <line x1="370" y1="405" x2="388" y2="405" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Strengths -->
+  <rect x="50" y="440" width="240" height="55" rx="8" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="65" y="458" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#065f46">Strengths</text>
+  <text x="65" y="474" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">Simple, O(1) operations,</text>
+  <text x="65" y="488" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">good temporal locality</text>
+
+  <!-- Weaknesses -->
+  <rect x="310" y="440" width="240" height="55" rx="8" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="325" y="458" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b">Weaknesses</text>
+  <text x="325" y="474" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">Evicts frequently-used but</text>
+  <text x="325" y="488" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">infrequently-accessed items</text>
+
+  <!-- ==================== LFU SECTION (Right) ==================== -->
+  <rect x="610" y="90" width="560" height="420" rx="14" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="610" y="90" width="560" height="50" rx="14" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <rect x="610" y="120" width="560" height="20" fill="#fef3c7"/>
+  <text x="640" y="122" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#92400e">LFU — Least Frequently Used</text>
+
+  <!-- How it works -->
+  <text x="630" y="165" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">How It Works</text>
+  <text x="630" y="185" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Evicts the item with the lowest access frequency count.</text>
+  <text x="630" y="200" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">Uses a hash map + min-heap (or frequency buckets) for O(log n) or O(1) ops.</text>
+
+  <!-- LFU Frequency Counter Diagram -->
+  <text x="630" y="235" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">Frequency Buckets (Doubly-Linked Lists per Count)</text>
+
+  <!-- Frequency bucket: count=1 -->
+  <rect x="630" y="250" width="60" height="30" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="660" y="270" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">f=1</text>
+
+  <rect x="700" y="250" width="50" height="30" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="725" y="270" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">F</text>
+
+  <!-- Frequency bucket: count=2 -->
+  <rect x="630" y="295" width="60" height="30" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="660" y="315" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">f=2</text>
+
+  <rect x="700" y="295" width="50" height="30" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="725" y="315" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">E</text>
+
+  <!-- Frequency bucket: count=3 -->
+  <rect x="630" y="340" width="60" height="30" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="660" y="360" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">f=3</text>
+
+  <rect x="700" y="340" width="50" height="30" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="725" y="360" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">C</text>
+
+  <!-- Frequency bucket: count=5 -->
+  <rect x="630" y="385" width="60" height="30" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="660" y="405" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">f=5</text>
+
+  <rect x="700" y="385" width="50" height="30" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="725" y="405" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">B</text>
+
+  <!-- Frequency bucket: count=8 -->
+  <rect x="630" y="430" width="60" height="30" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="660" y="450" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">f=8</text>
+
+  <rect x="700" y="430" width="50" height="30" rx="6" fill="#d1fae5" stroke="#86efac" stroke-width="2"/>
+  <text x="725" y="450" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534" text-anchor="middle">A</text>
+
+  <!-- Eviction annotation -->
+  <rect x="760" y="250" width="120" height="30" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="820" y="270" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Evicted next!</text>
+  <line x1="760" y1="265" x2="752" y2="265" stroke="#dc2626" stroke-width="1"/>
+
+  <!-- Hash map -->
+  <text x="900" y="270" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">Hash Map</text>
+  <rect x="900" y="280" width="140" height="24" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="970" y="297" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#111827" text-anchor="middle">A → node(f=8)</text>
+  <rect x="900" y="308" width="140" height="24" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="970" y="325" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#111827" text-anchor="middle">B → node(f=5)</text>
+  <rect x="900" y="336" width="140" height="24" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="970" y="353" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#111827" text-anchor="middle">C → node(f=3)</text>
+  <rect x="900" y="364" width="140" height="24" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="970" y="381" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#111827" text-anchor="middle">E → node(f=2)</text>
+  <rect x="900" y="392" width="140" height="24" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="970" y="409" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#111827" text-anchor="middle">F → node(f=1)</text>
+
+  <!-- Access increment -->
+  <text x="630" y="480" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">Access "F": f=1 → f=2, moves to f=2 bucket</text>
+
+  <!-- Strengths -->
+  <rect x="630" y="500" width="240" height="55" rx="8" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="645" y="518" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#065f46">Strengths</text>
+  <text x="645" y="534" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">Keeps hot items cached,</text>
+  <text x="645" y="548" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">good for skewed access</text>
+
+  <!-- Weaknesses -->
+  <rect x="890" y="500" width="260" height="55" rx="8" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="905" y="518" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b">Weaknesses</text>
+  <text x="905" y="534" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">New items evicted quickly</text>
+  <text x="905" y="548" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">(frequency bias), complex</text>
+
+  <!-- ==================== SCENARIO COMPARISON ==================== -->
+  <rect x="30" y="530" width="1140" height="42" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="557" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Scenario: Cache Capacity = 3, Access Sequence: A, B, C, A, B, A, D, E, F</text>
+
+  <!-- Access sequence visualization -->
+  <rect x="30" y="585" width="1140" height="36" rx="8" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="50" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">Access:</text>
+
+  <rect x="110" y="590" width="40" height="26" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="130" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">A</text>
+
+  <rect x="160" y="590" width="40" height="26" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="180" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+
+  <rect x="210" y="590" width="40" height="26" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="230" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">C</text>
+
+  <rect x="260" y="590" width="40" height="26" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="280" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">A</text>
+
+  <rect x="310" y="590" width="40" height="26" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="330" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+
+  <rect x="360" y="590" width="40" height="26" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="380" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">A</text>
+
+  <rect x="410" y="590" width="40" height="26" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="430" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">D</text>
+
+  <rect x="460" y="590" width="40" height="26" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="480" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">E</text>
+
+  <rect x="510" y="590" width="40" height="26" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="530" y="608" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">F</text>
+
+  <text x="570" y="608" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#374151">| Capacity = 3</text>
+
+  <!-- LRU Result -->
+  <rect x="30" y="630" width="560" height="110" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="50" y="655" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#3730a3">LRU Result (after full sequence)</text>
+
+  <!-- Cache state -->
+  <rect x="50" y="665" width="70" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="85" y="690" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">A</text>
+  <text x="85" y="715" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#374151" text-anchor="middle">MRU</text>
+
+  <rect x="130" y="665" width="70" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="165" y="690" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+
+  <rect x="210" y="665" width="70" height="40" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="245" y="690" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#991b1b" text-anchor="middle">E</text>
+  <text x="245" y="715" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#374151" text-anchor="middle">LRU</text>
+
+  <text x="300" y="685" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#374151">Evicted: B, C, F</text>
+  <text x="300" y="705" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">(B was accessed 3x but</text>
+  <text x="300" y="720" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">least recently used)</text>
+
+  <!-- Analysis -->
+  <text x="50" y="725" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="600" fill="#111827">Analysis:</text>
+  <text x="50" y="738" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">B was accessed 3 times but evicted because it wasn't the most recent.</text>
+
+  <!-- LFU Result -->
+  <rect x="610" y="630" width="560" height="110" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="630" y="655" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#92400e">LFU Result (after full sequence)</text>
+
+  <!-- Cache state -->
+  <rect x="630" y="665" width="70" height="40" rx="6" fill="#d1fae5" stroke="#86efac" stroke-width="2"/>
+  <text x="665" y="690" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">A</text>
+  <text x="665" y="715" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#374151" text-anchor="middle">f=3</text>
+
+  <rect x="710" y="665" width="70" height="40" rx="6" fill="#d1fae5" stroke="#86efac" stroke-width="2"/>
+  <text x="745" y="690" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">B</text>
+  <text x="745" y="715" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#374151" text-anchor="middle">f=2</text>
+
+  <rect x="790" y="665" width="70" height="40" rx="6" fill="#d1fae5" stroke="#86efac" stroke-width="2"/>
+  <text x="825" y="690" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">D</text>
+  <text x="825" y="715" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#374151" text-anchor="middle">f=1</text>
+
+  <text x="880" y="685" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#374151">Evicted: C, E, F</text>
+  <text x="880" y="705" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">(all had f=1, tied —</text>
+  <text x="880" y="720" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">LRU tiebreak among them)</text>
+
+  <!-- Analysis -->
+  <text x="630" y="725" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="600" fill="#111827">Analysis:</text>
+  <text x="630" y="738" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">B (f=2) survives over C/E/F (f=1). Hot items stay. New items at risk.</text>
+
+  <!-- ==================== BOTTOM COMPARISON ==================== -->
+  <rect x="30" y="760" width="1140" height="42" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="787" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">When to Use Which</text>
+
+  <!-- LRU column -->
+  <rect x="30" y="810" width="560" height="130" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="310" y="835" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#3730a3" text-anchor="middle">Choose LRU When...</text>
+
+  <text x="50" y="860" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">- Access patterns show strong temporal locality (recently accessed = likely accessed again)</text>
+  <text x="50" y="878" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">- Simplicity matters: you want O(1) with minimal implementation overhead</text>
+  <text x="50" y="896" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">- You are caching web pages, session data, or API responses where recency is the best predictor</text>
+  <text x="50" y="914" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">- Examples: Redis default, browser caches, HTTP proxy caches</text>
+
+  <!-- LFU column -->
+  <rect x="610" y="810" width="560" height="130" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <text x="890" y="835" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#92400e" text-anchor="middle">Choose LFU When...</text>
+
+  <text x="630" y="860" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">- Access patterns are skewed: a small set of items receive disproportionate reads (Zipfian distribution)</text>
+  <text x="630" y="878" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">- You need to protect hot items from being evicted by one-time scans or bulk operations</text>
+  <text x="630" y="896" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">- You are caching popular products, trending content, or frequently-used database queries</text>
+  <text x="630" y="914" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">- Examples: CDN edge caches, database query caches, leaderboards</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

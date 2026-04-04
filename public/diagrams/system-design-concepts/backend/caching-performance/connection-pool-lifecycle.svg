@@ -1,13 +1,245 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Connection Pool Lifecycle</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720">
+  <defs>
+    <marker id="arr-flow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arr-flow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arr-flow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arr-flow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+    <linearGradient id="creationGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="borrowedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d1fae5"/>
+      <stop offset="100%" stop-color="#a7f3d0"/>
+    </linearGradient>
+    <linearGradient id="inuseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+    <linearGradient id="returnedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0e7ff"/>
+      <stop offset="100%" stop-color="#c7d2fe"/>
+    </linearGradient>
+    <linearGradient id="idleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f3e8ff"/>
+      <stop offset="100%" stop-color="#e9d5ff"/>
+    </linearGradient>
+    <linearGradient id="validGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ccfbf1"/>
+      <stop offset="100%" stop-color="#99f6e4"/>
+    </linearGradient>
+    <linearGradient id="expiredGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="100%" stop-color="#fdba74"/>
+    </linearGradient>
+    <linearGradient id="brokenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fee2e2"/>
+      <stop offset="100%" stop-color="#fecaca"/>
+    </linearGradient>
+  </defs>
 
-  <rect x="80" y="120" width="220" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="160" font-family="Arial" font-size="14" fill="#0f172a">Acquire</text>
+  <!-- White background -->
+  <rect width="1100" height="720" fill="#ffffff"/>
 
-  <rect x="360" y="120" width="220" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="400" y="160" font-family="Arial" font-size="14" fill="#0f172a">Use</text>
+  <!-- Title -->
+  <text x="550" y="42" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Connection Pool Lifecycle</text>
+  <text x="550" y="66" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#6b7280" text-anchor="middle">Connection states, pool sizing, recycling patterns, leak detection, and timeout handling</text>
 
-  <rect x="640" y="120" width="220" height="70" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
-  <text x="680" y="160" font-family="Arial" font-size="14" fill="#0f172a">Release</text>
+  <!-- MAIN LIFECYCLE FLOW (Top section) -->
+  <rect x="40" y="90" width="1020" height="240" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="550" y="118" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Connection Lifecycle Flow</text>
+
+  <!-- State 1: Creation -->
+  <rect x="60" y="140" width="140" height="90" rx="8" fill="url(#creationGrad)" stroke="#2563eb" stroke-width="2"/>
+  <text x="130" y="165" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">1. Creation</text>
+  <text x="130" y="183" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">TCP Handshake</text>
+  <text x="130" y="197" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">TLS Negotiation</text>
+  <text x="130" y="211" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Auth (SCRAM/PAM)</text>
+  <text x="130" y="225" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#2563eb" text-anchor="middle">Cost: 10-50ms</text>
+
+  <!-- Arrow to Borrowed -->
+  <line x1="200" y1="185" x2="235" y2="185" stroke="#374151" stroke-width="2" marker-end="url(#arr-flow)"/>
+  <text x="217" y="178" font-family="Arial, sans-serif" font-size="8" font-weight="400" fill="#6b7280" text-anchor="middle">ready</text>
+
+  <!-- State 2: Borrowed -->
+  <rect x="240" y="140" width="140" height="90" rx="8" fill="url(#borrowedGrad)" stroke="#059669" stroke-width="2"/>
+  <text x="310" y="165" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">2. Borrowed</text>
+  <text x="310" y="183" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">App requests connection</text>
+  <text x="310" y="197" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Pool assigns idle conn</text>
+  <text x="310" y="211" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Track borrow timestamp</text>
+  <text x="310" y="225" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#059669" text-anchor="middle">Cost: &lt;1ms</text>
+
+  <!-- Arrow to In-Use -->
+  <line x1="380" y1="185" x2="415" y2="185" stroke="#374151" stroke-width="2" marker-end="url(#arr-flow)"/>
+  <text x="397" y="178" font-family="Arial, sans-serif" font-size="8" font-weight="400" fill="#6b7280" text-anchor="middle">acquire</text>
+
+  <!-- State 3: In-Use -->
+  <rect x="420" y="140" width="140" height="90" rx="8" fill="url(#inuseGrad)" stroke="#d97706" stroke-width="2"/>
+  <text x="490" y="165" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">3. In-Use</text>
+  <text x="490" y="183" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Executing SQL query</text>
+  <text x="490" y="197" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Transaction in progress</text>
+  <text x="490" y="211" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Leak timer running</text>
+  <text x="490" y="225" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#d97706" text-anchor="middle">Duration: 5-500ms</text>
+
+  <!-- Arrow to Returned -->
+  <line x1="560" y1="185" x2="595" y2="185" stroke="#374151" stroke-width="2" marker-end="url(#arr-flow)"/>
+  <text x="577" y="178" font-family="Arial, sans-serif" font-size="8" font-weight="400" fill="#6b7280" text-anchor="middle">complete</text>
+
+  <!-- State 4: Returned -->
+  <rect x="600" y="140" width="140" height="90" rx="8" fill="url(#returnedGrad)" stroke="#6366f1" stroke-width="2"/>
+  <text x="670" y="165" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">4. Returned</text>
+  <text x="670" y="183" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Transaction committed</text>
+  <text x="670" y="197" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">or rolled back</text>
+  <text x="670" y="211" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Reset session state</text>
+  <text x="670" y="225" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#6366f1" text-anchor="middle">Cost: 1-2ms</text>
+
+  <!-- Arrow to Idle -->
+  <line x1="740" y1="185" x2="775" y2="185" stroke="#374151" stroke-width="2" marker-end="url(#arr-flow)"/>
+  <text x="757" y="178" font-family="Arial, sans-serif" font-size="8" font-weight="400" fill="#6b7280" text-anchor="middle">release</text>
+
+  <!-- State 5: Idle -->
+  <rect x="780" y="140" width="140" height="90" rx="8" fill="url(#idleGrad)" stroke="#7c3aed" stroke-width="2"/>
+  <text x="850" y="165" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">5. Idle</text>
+  <text x="850" y="183" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Available in pool</text>
+  <text x="850" y="197" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Idle timer started</text>
+  <text x="850" y="211" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">TTL countdown active</text>
+  <text x="850" y="225" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#7c3aed" text-anchor="middle">Idle timeout: 30-300s</text>
+
+  <!-- Arrow to Validation -->
+  <line x1="920" y1="185" x2="955" y2="185" stroke="#374151" stroke-width="2" marker-end="url(#arr-flow)"/>
+  <text x="937" y="178" font-family="Arial, sans-serif" font-size="8" font-weight="400" fill="#6b7280" text-anchor="middle">validate</text>
+
+  <!-- State 6: Validation -->
+  <rect x="960" y="140" width="100" height="90" rx="8" fill="url(#validGrad)" stroke="#0d9488" stroke-width="2"/>
+  <text x="1010" y="165" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">6. Validation</text>
+  <text x="1010" y="183" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">SELECT 1 ping</text>
+  <text x="1010" y="197" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Check connection health</text>
+  <text x="1010" y="211" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Verify no stale state</text>
+  <text x="1010" y="225" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#0d9488" text-anchor="middle">Cost: 1-5ms</text>
+
+  <!-- Validation success arrow (back to Idle/Available) -->
+  <path d="M 1010,230 Q 1010,260 920,260 Q 850,260 850,235" fill="none" stroke="#059669" stroke-width="1.5" marker-end="url(#arr-flow-green)"/>
+  <text x="930" y="255" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#059669" text-anchor="middle">PASS -&gt; reuse</text>
+
+  <!-- Validation fail arrow (to Broken) -->
+  <path d="M 1010,230 Q 1010,280 900,300" fill="none" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr-flow-red)"/>
+  <text x="970" y="280" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#dc2626" text-anchor="middle">FAIL -&gt; destroy</text>
+
+  <!-- CONNECTION STATES DIAGRAM (Middle section) -->
+  <rect x="40" y="350" width="500" height="190" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="290" y="378" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Connection States</text>
+
+  <!-- State: Idle -->
+  <rect x="60" y="395" width="90" height="50" rx="6" fill="url(#idleGrad)" stroke="#7c3aed" stroke-width="2"/>
+  <text x="105" y="417" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Idle</text>
+  <text x="105" y="435" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Available</text>
+
+  <!-- State: Active -->
+  <rect x="180" y="395" width="90" height="50" rx="6" fill="url(#inuseGrad)" stroke="#d97706" stroke-width="2"/>
+  <text x="225" y="417" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Active</text>
+  <text x="225" y="435" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">In-Use</text>
+
+  <!-- State: Validating -->
+  <rect x="300" y="395" width="90" height="50" rx="6" fill="url(#validGrad)" stroke="#0d9488" stroke-width="2"/>
+  <text x="345" y="417" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Validating</text>
+  <text x="345" y="435" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Health check</text>
+
+  <!-- State: Expired -->
+  <rect x="420" y="395" width="90" height="50" rx="6" fill="url(#expiredGrad)" stroke="#ea580c" stroke-width="2"/>
+  <text x="465" y="417" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Expired</text>
+  <text x="465" y="435" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">TTL exceeded</text>
+
+  <!-- State: Broken -->
+  <rect x="60" y="465" width="90" height="50" rx="6" fill="url(#brokenGrad)" stroke="#dc2626" stroke-width="2"/>
+  <text x="105" y="487" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Broken</text>
+  <text x="105" y="505" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Network error</text>
+
+  <!-- State: Destroyed -->
+  <rect x="180" y="465" width="90" height="50" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="225" y="487" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Destroyed</text>
+  <text x="225" y="505" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Closed &amp; freed</text>
+
+  <!-- State transitions between boxes -->
+  <line x1="150" y1="420" x2="180" y2="420" stroke="#374151" stroke-width="1.5" marker-end="url(#arr-flow)"/>
+  <text x="165" y="414" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">borrow</text>
+
+  <line x1="270" y1="420" x2="300" y2="420" stroke="#374151" stroke-width="1.5" marker-end="url(#arr-flow)"/>
+  <text x="285" y="414" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">return</text>
+
+  <line x1="390" y1="420" x2="420" y2="420" stroke="#ea580c" stroke-width="1.5" marker-end="url(#arr-flow-orange)"/>
+  <text x="405" y="414" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">timeout</text>
+
+  <line x1="465" y1="445" x2="465" y2="465" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr-flow-red)"/>
+  <text x="480" y="458" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280">discard</text>
+
+  <line x1="420" y1="490" x2="270" y2="490" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arr-flow-red)"/>
+  <text x="345" y="484" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">close</text>
+
+  <line x1="150" y1="490" x2="270" y2="490" stroke="#374151" stroke-width="1.5" marker-end="url(#arr-flow)"/>
+  <text x="210" y="484" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" text-anchor="middle">cleanup</text>
+
+  <!-- POOL SIZING SECTION (Right middle) -->
+  <rect x="570" y="350" width="490" height="190" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="815" y="378" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Pool Sizing &amp; Connection Recycling</text>
+
+  <!-- Sizing Formula -->
+  <rect x="590" y="395" width="450" height="55" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+  <text x="815" y="417" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Optimal Pool Size Formula</text>
+  <text x="815" y="437" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">pool_size = CPU_cores * 2 + disk_spindles (for DB server)</text>
+  <text x="815" y="449" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#6b7280" text-anchor="middle">Example: 8-core, 2 disks = 18 connections per application instance</text>
+
+  <!-- Recycling Patterns -->
+  <rect x="590" y="460" width="220" height="70" rx="6" fill="url(#creationGrad)" stroke="#2563eb" stroke-width="2"/>
+  <text x="700" y="482" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Fixed-Size Pool</text>
+  <text x="700" y="500" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Pre-created connections at startup</text>
+  <text x="700" y="516" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">No creation latency during runtime</text>
+  <text x="700" y="526" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#2563eb" text-anchor="middle">Best for: Stable workloads</text>
+
+  <rect x="820" y="460" width="220" height="70" rx="6" fill="url(#borrowedGrad)" stroke="#059669" stroke-width="2"/>
+  <text x="930" y="482" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Dynamic Resize Pool</text>
+  <text x="930" y="500" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Min 5, Max 50 connections</text>
+  <text x="930" y="516" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Scale up on demand, scale down on idle</text>
+  <text x="930" y="526" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#059669" text-anchor="middle">Best for: Variable traffic</text>
+
+  <!-- LEAK DETECTION SECTION (Bottom Left) -->
+  <rect x="40" y="560" width="500" height="140" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="290" y="588" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Connection Leak Detection</text>
+
+  <!-- Leak Detection Details -->
+  <rect x="60" y="605" width="460" height="80" rx="6" fill="url(#brokenGrad)" stroke="#dc2626" stroke-width="2"/>
+  <text x="290" y="625" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Leak Detection Mechanism</text>
+  <text x="80" y="645" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937">1. Track borrow timestamp on each connection checkout</text>
+  <text x="80" y="661" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937">2. If connection not returned within leak_threshold (default: 30s), log warning</text>
+  <text x="80" y="677" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937">3. If not returned within force_return_timeout (default: 60s), forcibly close + alert</text>
+
+  <!-- TIMEOUT HANDLING SECTION (Bottom Right) -->
+  <rect x="570" y="560" width="490" height="140" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="815" y="588" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Timeout Handling</text>
+
+  <!-- Timeout Types -->
+  <rect x="590" y="605" width="145" height="80" rx="6" fill="url(#expiredGrad)" stroke="#ea580c" stroke-width="2"/>
+  <text x="662" y="625" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Connection Timeout</text>
+  <text x="662" y="643" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Max wait time to</text>
+  <text x="662" y="657" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">acquire from pool</text>
+  <text x="662" y="675" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#ea580c" text-anchor="middle">Default: 5-30s</text>
+
+  <rect x="745" y="605" width="145" height="80" rx="6" fill="url(#inuseGrad)" stroke="#d97706" stroke-width="2"/>
+  <text x="817" y="625" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Idle Timeout</text>
+  <text x="817" y="643" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Max idle time before</text>
+  <text x="817" y="657" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">connection is closed</text>
+  <text x="817" y="675" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#d97706" text-anchor="middle">Default: 30-300s</text>
+
+  <rect x="900" y="605" width="145" height="80" rx="6" fill="url(#validGrad)" stroke="#0d9488" stroke-width="2"/>
+  <text x="972" y="625" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Max Lifetime</text>
+  <text x="972" y="643" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Total connection age</text>
+  <text x="972" y="657" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">before forced recycle</text>
+  <text x="972" y="675" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#0d9488" text-anchor="middle">Default: 30min-2hr</text>
 </svg>

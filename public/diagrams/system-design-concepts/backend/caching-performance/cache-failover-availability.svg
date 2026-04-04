@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 780" width="900" height="780">
+  <!-- Background -->
+  <rect width="900" height="780" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Cache Failover &amp; Availability Architecture</text>
+  <text x="450" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Primary-to-replica promotion, client reconnection, and circuit breaker pattern during cache node failures</text>
+  
+  <!-- Phase 1: Normal Operation -->
+  <rect x="20" y="90" width="260" height="200" rx="8" fill="#f0fdf4" stroke="#166534" stroke-width="2"/>
+  <text x="150" y="118" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Phase 1: Normal Operation</text>
+  <line x1="40" y1="130" x2="260" y2="130" stroke="#166534" stroke-width="1"/>
+  
+  <!-- Client -->
+  <rect x="60" y="145" width="180" height="36" rx="6" fill="#ffffff" stroke="#111827" stroke-width="2"/>
+  <text x="150" y="168" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Application Client</text>
+  
+  <!-- Arrow to Primary -->
+  <line x1="150" y1="181" x2="150" y2="215" stroke="#111827" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="195" y="202" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Read/Write</text>
+  
+  <!-- Primary Cache Node -->
+  <rect x="60" y="215" width="180" height="50" rx="6" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+  <text x="150" y="236" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Primary Cache Node</text>
+  <text x="150" y="254" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1e40af" text-anchor="middle">Memory: 16GB, Hit Rate: 94%</text>
+  
+  <!-- Arrow to Replica -->
+  <line x1="240" y1="240" x2="270" y2="240" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Replica Cache Node -->
+  <rect x="275" y="215" width="0" height="50" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="2"/>
+  
+  <!-- Phase 2: Failure Detection -->
+  <rect x="20" y="310" width="260" height="200" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="150" y="338" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Phase 2: Failure Detection</text>
+  <line x1="40" y1="350" x2="260" y2="350" stroke="#dc2626" stroke-width="1"/>
+  
+  <!-- Client -->
+  <rect x="60" y="365" width="180" height="36" rx="6" fill="#ffffff" stroke="#111827" stroke-width="2"/>
+  <text x="150" y="388" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Application Client</text>
+  
+  <!-- Failed Arrow -->
+  <line x1="150" y1="401" x2="150" y2="435" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead-red)"/>
+  <text x="195" y="422" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626">TIMEOUT!</text>
+  
+  <!-- Failed Primary -->
+  <rect x="60" y="435" width="180" height="50" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="150" y="456" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#dc2626" text-anchor="middle">Primary Cache Node</text>
+  <text x="150" y="474" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">UNREACHABLE</text>
+  
+  <!-- Health check arrows -->
+  <path d="M 80 460 Q 40 460 40 410 Q 40 380 75 380" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="25" y="425" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#dc2626">Health</text>
+  <text x="25" y="437" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#dc2626">Check</text>
+  
+  <!-- Phase 3: Replica Promotion -->
+  <rect x="310" y="90" width="280" height="200" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="118" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Phase 3: Replica Promotion</text>
+  <line x1="330" y1="130" x2="570" y2="130" stroke="#ca8a04" stroke-width="1"/>
+  
+  <!-- Client -->
+  <rect x="350" y="145" width="200" height="36" rx="6" fill="#ffffff" stroke="#111827" stroke-width="2"/>
+  <text x="450" y="168" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Application Client</text>
+  
+  <!-- Sentinel/Orchestrator -->
+  <rect x="350" y="200" width="200" height="36" rx="6" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="223" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ca8a04" text-anchor="middle">Sentinel / Orchestrator</text>
+  
+  <!-- Arrow from client to sentinel -->
+  <line x1="450" y1="181" x2="450" y2="198" stroke="#374151" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="460" y="192" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151">Detect</text>
+  
+  <!-- Promotion arrow -->
+  <line x1="450" y1="236" x2="450" y2="260" stroke="#ca8a04" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="465" y="252" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#ca8a04">PROMOTE</text>
+  
+  <!-- Replica becomes Primary -->
+  <rect x="350" y="260" width="200" height="40" rx="6" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+  <text x="450" y="285" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e40af" text-anchor="middle">Replica -&gt; NEW PRIMARY</text>
+  
+  <!-- Phase 4: Client Reconnection -->
+  <rect x="310" y="310" width="280" height="200" rx="8" fill="#f0fdf4" stroke="#166534" stroke-width="2"/>
+  <text x="450" y="338" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Phase 4: Client Reconnection</text>
+  <line x1="330" y1="350" x2="570" y2="350" stroke="#166534" stroke-width="1"/>
+  
+  <!-- Client -->
+  <rect x="350" y="365" width="200" height="36" rx="6" fill="#ffffff" stroke="#111827" stroke-width="2"/>
+  <text x="450" y="388" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Application Client</text>
+  
+  <!-- Reconnect arrow -->
+  <line x1="450" y1="401" x2="450" y2="440" stroke="#166534" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="465" y="425" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#166534">Reconnect</text>
+  
+  <!-- New Primary -->
+  <rect x="350" y="440" width="200" height="50" rx="6" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+  <text x="450" y="461" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">New Primary Cache</text>
+  <text x="450" y="479" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1e40af" text-anchor="middle">Rebuilding cache from DB...</text>
+  
+  <!-- RIGHT SIDE: Circuit Breaker Pattern -->
+  <rect x="620" y="90" width="260" height="300" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="750" y="118" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Circuit Breaker Pattern</text>
+  <line x1="640" y1="130" x2="860" y2="130" stroke="#d1d5db" stroke-width="1"/>
+  
+  <!-- State Machine -->
+  <!-- CLOSED State -->
+  <rect x="650" y="150" width="200" height="50" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="2"/>
+  <text x="750" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">CLOSED</text>
+  <text x="750" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Cache healthy, normal ops</text>
+  
+  <!-- Arrow to OPEN -->
+  <line x1="750" y1="200" x2="750" y2="220" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="765" y="214" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#dc2626">Error threshold</text>
+  <text x="765" y="226" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#dc2626">exceeded (50%)</text>
+  
+  <!-- OPEN State -->
+  <rect x="650" y="230" width="200" height="50" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="750" y="250" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#dc2626" text-anchor="middle">OPEN</text>
+  <text x="750" y="268" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Fail fast, bypass cache</text>
+  
+  <!-- Arrow to HALF-OPEN -->
+  <line x1="750" y1="280" x2="750" y2="300" stroke="#ca8a04" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="765" y="294" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#ca8a04">Timeout (30s)</text>
+  
+  <!-- HALF-OPEN State -->
+  <rect x="650" y="310" width="200" height="50" rx="6" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+  <text x="750" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ca8a04" text-anchor="middle">HALF-OPEN</text>
+  <text x="750" y="348" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Test probe requests</text>
+  
+  <!-- Arrow back to CLOSED -->
+  <path d="M 650 335 Q 600 335 600 175 Q 600 175 648 175" fill="none" stroke="#166534" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="590" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#166534">Success</text>
+  
+  <!-- BOTTOM LEFT: Availability Timeline -->
+  <rect x="620" y="410" width="260" height="180" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="750" y="438" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Availability Timeline</text>
+  <line x1="640" y1="450" x2="860" y2="450" stroke="#d1d5db" stroke-width="1"/>
+  
+  <!-- Timeline -->
+  <line x1="650" y1="540" x2="850" y2="540" stroke="#374151" stroke-width="2"/>
+  
+  <!-- Time markers -->
+  <line x1="650" y1="535" x2="650" y2="545" stroke="#374151" stroke-width="1"/>
+  <text x="650" y="558" font-family="monospace" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">T=0s</text>
+  
+  <line x1="700" y1="535" x2="700" y2="545" stroke="#374151" stroke-width="1"/>
+  <text x="700" y="558" font-family="monospace" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">T=5s</text>
+  
+  <line x1="750" y1="535" x2="750" y2="545" stroke="#374151" stroke-width="1"/>
+  <text x="750" y="558" font-family="monospace" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">T=15s</text>
+  
+  <line x1="800" y1="535" x2="800" y2="545" stroke="#374151" stroke-width="1"/>
+  <text x="800" y="558" font-family="monospace" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">T=30s</text>
+  
+  <line x1="850" y1="535" x2="850" y2="545" stroke="#374151" stroke-width="1"/>
+  <text x="850" y="558" font-family="monospace" font-size="9" font-weight="700" fill="#1f2937" text-anchor="middle">T=60s</text>
+  
+  <!-- Availability bar -->
+  <rect x="650" y="480" width="50" height="30" rx="3" fill="#dcfce7" stroke="#166534" stroke-width="1"/>
+  <text x="675" y="499" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">100%</text>
+  
+  <rect x="700" y="480" width="50" height="30" rx="3" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="725" y="499" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">~60%</text>
+  
+  <rect x="750" y="480" width="50" height="30" rx="3" fill="#fef3c7" stroke="#ca8a04" stroke-width="1"/>
+  <text x="775" y="499" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ca8a04" text-anchor="middle">~75%</text>
+  
+  <rect x="800" y="480" width="50" height="30" rx="3" fill="#dbeafe" stroke="#1e40af" stroke-width="1"/>
+  <text x="825" y="499" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#1e40af" text-anchor="middle">~85%</text>
+  
+  <!-- Labels for phases -->
+  <text x="675" y="475" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="700" fill="#166534" text-anchor="middle">Normal</text>
+  <text x="725" y="475" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="700" fill="#dc2626" text-anchor="middle">Fail</text>
+  <text x="775" y="475" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="700" fill="#ca8a04" text-anchor="middle">Detect</text>
+  <text x="825" y="475" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="700" fill="#1e40af" text-anchor="middle">Rebuild</text>
+  
+  <!-- Recovery label -->
+  <rect x="650" y="515" width="200" height="18" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1"/>
+  <text x="750" y="528" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">Cache warms up -&gt; 100% available</text>
+  
+  <!-- BOTTOM RIGHT: Key Metrics -->
+  <rect x="620" y="610" width="260" height="150" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="750" y="638" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Key Metrics &amp; Thresholds</text>
+  <line x1="640" y1="650" x2="860" y2="650" stroke="#d1d5db" stroke-width="1"/>
+  
+  <text x="640" y="672" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Health Check Interval:</text>
+  <text x="840" y="672" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="end">2s</text>
+  
+  <text x="640" y="692" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Failure Detection Timeout:</text>
+  <text x="840" y="692" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="end">5s (3 consecutive)</text>
+  
+  <text x="640" y="712" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Replica Promotion Time:</text>
+  <text x="840" y="712" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="end">10-15s</text>
+  
+  <text x="640" y="732" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Cache Warm-up Time:</text>
+  <text x="840" y="732" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="end">30-60s</text>
+  
+  <text x="640" y="752" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#374151">Target RPO:</text>
+  <text x="840" y="752" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="end">&lt; 5s (async replication lag)</text>
+  
+  <!-- Markers for arrows -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
+</svg>

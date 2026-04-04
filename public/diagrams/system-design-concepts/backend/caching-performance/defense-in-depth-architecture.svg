@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 750" width="100%" height="100%">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <linearGradient id="cdnGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#dbeafe" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="appGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="cacheGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#e0e7ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="dbGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#dcfce7" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="monGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#fce7f3" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0.3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- White background -->
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Defense in Depth: Multi-Layer Cache Breakdown Protection</text>
+  <text x="450" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">CDN &#8594; Application &#8594; Cache layer defense with monitoring at each stage</text>
+
+  <!-- Request Flow Through Layers -->
+  <g transform="translate(50, 85)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Request Flow Through Defense Layers</text>
+    
+    <!-- Client -->
+    <g transform="translate(0, 30)">
+      <rect x="0" y="0" width="100" height="50" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+      <text x="50" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Client</text>
+      <text x="50" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Requests</text>
+    </g>
+    
+    <!-- Arrow to CDN -->
+    <line x1="100" y1="55" x2="140" y2="55" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- Layer 1: CDN -->
+    <g transform="translate(145, 25)">
+      <rect x="0" y="0" width="150" height="60" rx="8" fill="url(#cdnGrad)" stroke="#3b82f6" stroke-width="2"/>
+      <text x="75" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Layer 1: CDN</text>
+      <text x="75" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Edge caching</text>
+      <text x="75" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Request coalescing</text>
+    </g>
+    
+    <!-- Arrow to App -->
+    <line x1="295" y1="55" x2="335" y2="55" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="315" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">Miss</text>
+    
+    <!-- Layer 2: Application -->
+    <g transform="translate(340, 25)">
+      <rect x="0" y="0" width="150" height="60" rx="8" fill="url(#appGrad)" stroke="#f59e0b" stroke-width="2"/>
+      <text x="75" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Layer 2: Application</text>
+      <text x="75" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Distributed locking</text>
+      <text x="75" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Stale-while-revalidate</text>
+    </g>
+    
+    <!-- Arrow to Cache -->
+    <line x1="490" y1="55" x2="530" y2="55" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="510" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">Miss</text>
+    
+    <!-- Layer 3: Cache -->
+    <g transform="translate(535, 25)">
+      <rect x="0" y="0" width="150" height="60" rx="8" fill="url(#cacheGrad)" stroke="#4f46e5" stroke-width="2"/>
+      <text x="75" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Layer 3: Cache</text>
+      <text x="75" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Early expiration</text>
+      <text x="75" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Jitter on TTL</text>
+    </g>
+    
+    <!-- Arrow to DB -->
+    <line x1="685" y1="55" x2="725" y2="55" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="705" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#374151" text-anchor="middle">Miss</text>
+    
+    <!-- Database -->
+    <g transform="translate(730, 30)">
+      <ellipse cx="50" cy="25" rx="45" ry="25" fill="url(#dbGrad)" stroke="#16a34a" stroke-width="2"/>
+      <text x="50" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Database</text>
+      <text x="50" y="37" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">(Last resort)</text>
+    </g>
+    
+    <!-- Hit arrows (going back) -->
+    <path d="M 220 85 Q 220 100 165 100 L 100 100 Q 85 100 85 85" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+    <text x="155" y="96" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#16a34a" text-anchor="middle">CDN Hit</text>
+    
+    <path d="M 415 85 Q 415 100 360 100 L 300 100 Q 285 100 285 85" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+    <text x="350" y="96" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#16a34a" text-anchor="middle">App SWR</text>
+    
+    <path d="M 610 85 Q 610 100 555 100 L 495 100 Q 480 100 480 85" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+    <text x="545" y="96" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#16a34a" text-anchor="middle">Cache Hit</text>
+  </g>
+
+  <!-- Detailed Layer Breakdown -->
+  <g transform="translate(50, 210)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Defense Layer Details</text>
+    
+    <!-- CDN Layer -->
+    <g transform="translate(0, 30)">
+      <rect x="0" y="0" width="250" height="180" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+      <text x="125" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">CDN Layer (Edge)</text>
+      
+      <text x="15" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Request Coalescing</text>
+      <text x="15" y="62" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Multiple identical requests</text>
+      <text x="15" y="77" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">collapsed into single origin fetch</text>
+      
+      <text x="15" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Edge Caching</text>
+      <text x="15" y="117" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Static content served from</text>
+      <text x="15" y="132" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">nearest edge location</text>
+      
+      <text x="15" y="155" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Monitoring</text>
+      <text x="15" y="172" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Hit ratio, bandwidth, latency</text>
+    </g>
+    
+    <!-- Application Layer -->
+    <g transform="translate(270, 30)">
+      <rect x="0" y="0" width="250" height="180" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+      <text x="125" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Application Layer</text>
+      
+      <text x="15" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Distributed Locking</text>
+      <text x="15" y="62" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Single instance regenerates cache</text>
+      <text x="15" y="77" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Others wait or serve stale</text>
+      
+      <text x="15" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Stale-While-Revalidate</text>
+      <text x="15" y="117" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Serve expired data + async</text>
+      <text x="15" y="132" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">refresh in background</text>
+      
+      <text x="15" y="155" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Monitoring</text>
+      <text x="15" y="172" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Lock wait time, fallback rate</text>
+    </g>
+    
+    <!-- Cache Layer -->
+    <g transform="translate(540, 30)">
+      <rect x="0" y="0" width="250" height="180" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="125" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Cache Layer (Redis)</text>
+      
+      <text x="15" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Early Expiration</text>
+      <text x="15" y="62" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Background refresh before TTL</text>
+      <text x="15" y="77" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">expires (e.g., at 80% of TTL)</text>
+      
+      <text x="15" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Jitter on TTL</text>
+      <text x="15" y="117" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Stagger key expiration times</text>
+      <text x="15" y="132" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Prevent thundering herd</text>
+      
+      <text x="15" y="155" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1f2937">Monitoring</text>
+      <text x="15" y="172" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Hit/miss ratio, eviction rate</text>
+    </g>
+  </g>
+
+  <!-- Monitoring Dashboard -->
+  <g transform="translate(50, 440)">
+    <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Monitoring &#38; Alerting at Each Layer</text>
+    
+    <!-- Monitoring graph background -->
+    <rect x="0" y="25" width="800" height="200" fill="#fafafa" stroke="#d1d5db" stroke-width="2" rx="4"/>
+    
+    <!-- Y-axis -->
+    <line x1="50" y1="30" x2="50" y2="220" stroke="#1f2937" stroke-width="2"/>
+    <text x="-5" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle" transform="rotate(-90, -5, 125)">Cache Hit Rate %</text>
+    
+    <!-- Y-axis labels -->
+    <text x="45" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">100%</text>
+    <text x="45" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">80%</text>
+    <text x="45" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">60%</text>
+    <text x="45" y="165" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">40%</text>
+    <text x="45" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">20%</text>
+    
+    <!-- X-axis -->
+    <line x1="50" y1="220" x2="795" y2="220" stroke="#1f2937" stroke-width="2"/>
+    <text x="400" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Time</text>
+    
+    <!-- X-axis labels -->
+    <text x="100" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+0</text>
+    <text x="250" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+5</text>
+    <text x="400" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+10</text>
+    <text x="550" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+15</text>
+    <text x="700" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">T+20</text>
+    
+    <!-- Grid lines -->
+    <line x1="50" y1="45" x2="795" y2="45" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="50" y1="85" x2="795" y2="85" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="50" y1="125" x2="795" y2="125" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="50" y1="165" x2="795" y2="165" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+    
+    <!-- Warning threshold line -->
+    <line x1="50" y1="85" x2="795" y2="85" stroke="#f97316" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="790" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#f97316" text-anchor="end">Warning: 80% hit rate</text>
+    
+    <!-- Critical threshold line -->
+    <line x1="50" y1="125" x2="795" y2="125" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="790" y="120" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#dc2626" text-anchor="end">Critical: 60% hit rate</text>
+    
+    <!-- Cache hit rate line -->
+    <polyline points="100,35 200,36 280,38 350,50 400,75 430,110 460,155 490,140 520,95 560,55 620,40 680,37 740,35 795,34" fill="none" stroke="#3b82f6" stroke-width="3"/>
+    
+    <!-- Alert points -->
+    <circle cx="400" cy="75" r="5" fill="#f97316" stroke="#ffffff" stroke-width="2"/>
+    <text x="400" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#f97316" text-anchor="middle">&#x26A0;&#xFE0F; Warning Alert</text>
+    
+    <circle cx="460" cy="155" r="5" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+    <text x="460" y="175" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">&#x1F6A8; Critical: Cache breakdown</text>
+    
+    <!-- Recovery annotation -->
+    <rect x="520" y="35" width="130" height="22" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="585" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#16a34a" text-anchor="middle">&#x2705; Recovery</text>
+    
+    <!-- Layer defense markers -->
+    <rect x="100" y="250" width="150" height="60" rx="6" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="175" y="268" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">CDN Metrics</text>
+    <text x="175" y="283" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Bandwidth, cache status</text>
+    <text x="175" y="297" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Edge hit ratio &#x3E; 95%</text>
+    
+    <rect x="325" y="250" width="150" height="60" rx="6" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="400" y="268" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">App Metrics</text>
+    <text x="400" y="283" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Lock wait time &#x3C; 100ms</text>
+    <text x="400" y="297" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Fallback rate &#x3C; 5%</text>
+    
+    <rect x="550" y="250" width="150" height="60" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="625" y="268" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Cache Metrics</text>
+    <text x="625" y="283" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Hit rate &#x3E; 90%</text>
+    <text x="625" y="297" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Eviction rate &#x3C; 1%</text>
+  </g>
+</svg>

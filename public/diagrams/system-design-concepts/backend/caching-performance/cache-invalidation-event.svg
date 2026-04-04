@@ -1,21 +1,140 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
-  <rect width="1200" height="620" fill="#f8fafc"/>
-  <text x="60" y="70" font-size="28" font-family="Arial" fill="#0f172a">Event-Driven Invalidation</text>
-  <rect x="80" y="140" width="300" height="120" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/>
-  <text x="110" y="190" font-size="18" font-family="Arial" fill="#0f172a">Database Write</text>
-  <text x="110" y="220" font-size="14" font-family="Arial" fill="#475569">Update product 123</text>
-  <rect x="450" y="140" width="300" height="120" rx="12" fill="#fef3c7" stroke="#f59e0b"/>
-  <text x="480" y="190" font-size="18" font-family="Arial" fill="#0f172a">Event Bus</text>
-  <text x="480" y="220" font-size="14" font-family="Arial" fill="#475569">product.updated</text>
-  <rect x="820" y="140" width="300" height="120" rx="12" fill="#dcfce7" stroke="#22c55e"/>
-  <text x="850" y="190" font-size="18" font-family="Arial" fill="#0f172a">Cache Invalidator</text>
-  <text x="850" y="220" font-size="14" font-family="Arial" fill="#475569">Del keys / tags</text>
-  <line x1="380" y1="200" x2="450" y2="200" stroke="#94a3b8" stroke-width="4"/>
-  <line x1="750" y1="200" x2="820" y2="200" stroke="#94a3b8" stroke-width="4"/>
-  <rect x="300" y="340" width="600" height="160" rx="12" fill="#f1f5f9" stroke="#cbd5f5"/>
-  <text x="330" y="385" font-size="16" font-family="Arial" fill="#0f172a">Keys invalidated:</text>
-  <text x="330" y="415" font-size="16" font-family="Arial" fill="#0f172a">product:v1:123</text>
-  <text x="330" y="445" font-size="16" font-family="Arial" fill="#0f172a">product:price:v1:123</text>
-  <text x="330" y="475" font-size="16" font-family="Arial" fill="#0f172a">category:top:v1:electronics</text>
-  <text x="80" y="560" font-size="16" font-family="Arial" fill="#475569">Event-driven invalidation improves freshness but adds complexity and dependencies.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="ah-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="820" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="60" y="48" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">Event-Driven Cache Invalidation</text>
+  <text x="60" y="76" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#374151">Write events published to message bus trigger asynchronous cache key invalidation with delivery guarantees</text>
+
+  <!-- Main Flow -->
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Invalidation Pipeline</text>
+
+  <!-- Step 1: Database Write -->
+  <rect x="60" y="145" width="220" height="100" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="80" y="180" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">1. Database Write</text>
+  <text x="80" y="205" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">UPDATE products SET</text>
+  <text x="80" y="225" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">price=39.99 WHERE id=12345</text>
+
+  <!-- Arrow -->
+  <line x1="280" y1="195" x2="330" y2="195" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="285" y="180" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">CDC / Trigger</text>
+
+  <!-- Step 2: Message Bus -->
+  <rect x="330" y="145" width="220" height="100" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="350" y="180" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">2. Message Bus</text>
+  <text x="350" y="205" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Topic: product.updated</text>
+  <text x="350" y="225" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Kafka / SQS / RabbitMQ</text>
+
+  <!-- Arrow -->
+  <line x1="550" y1="195" x2="600" y2="195" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="555" y="180" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">Consume</text>
+
+  <!-- Step 3: Invalidation Service -->
+  <rect x="600" y="145" width="220" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="620" y="180" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">3. Invalidation Service</text>
+  <text x="620" y="205" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Resolves event to cache keys</text>
+  <text x="620" y="225" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">product:detail:v42:12345</text>
+
+  <!-- Arrow -->
+  <line x1="820" y1="195" x2="870" y2="195" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="825" y="180" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151">DELETE</text>
+
+  <!-- Step 4: Cache Keys Deleted -->
+  <rect x="870" y="145" width="270" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="890" y="180" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">4. Cache Keys Deleted</text>
+  <text x="890" y="205" font-family="'Courier New', monospace" font-size="12" font-weight="400" fill="#1f2937">DEL product:detail:v42:12345</text>
+  <text x="890" y="225" font-family="'Courier New', monospace" font-size="12" font-weight="400" fill="#1f2937">DEL product:price:v42:12345</text>
+
+  <!-- At-Least-Once Delivery Panel -->
+  <text x="60" y="295" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">At-Least-Once Delivery and Idempotent Consumers</text>
+
+  <rect x="60" y="320" width="540" height="210" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="80" y="355" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">At-Least-Once Delivery</text>
+
+  <rect x="80" y="370" width="500" height="40" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="95" y="395" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Message bus guarantees delivery with ACK + retry</text>
+
+  <rect x="80" y="418" width="500" height="40" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="95" y="443" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">If consumer crashes: message requeued, redelivered</text>
+
+  <rect x="80" y="466" width="500" height="40" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="95" y="491" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Risk: Same event may be delivered multiple times</text>
+
+  <rect x="80" y="514" width="500" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="95" y="532" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e">Solution: Consumer must be idempotent</text>
+
+  <!-- Idempotent Consumer Panel -->
+  <rect x="630" y="320" width="510" height="210" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="650" y="355" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Idempotent Consumer Pattern</text>
+
+  <rect x="650" y="370" width="470" height="40" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="665" y="395" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Track processed event IDs: SET processed:event-uuid 1 EX 3600</text>
+
+  <rect x="650" y="418" width="470" height="40" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="665" y="443" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">On receive: check if event_id already processed</text>
+
+  <rect x="650" y="466" width="470" height="40" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="665" y="491" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">If yes: ACK and skip (DELETE already done, safe to retry)</text>
+
+  <rect x="650" y="514" width="470" height="25" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="665" y="532" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#166534">DELETE is naturally idempotent - safe to call multiple times</text>
+
+  <!-- Event Ordering Panel -->
+  <text x="60" y="570" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Event Ordering and Duplicate Handling</text>
+
+  <rect x="60" y="595" width="350" height="200" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="80" y="630" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Ordering Challenge</text>
+
+  <rect x="80" y="645" width="310" height="40" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="95" y="670" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Event 1: price=29.99 (ts=100)</text>
+  <text x="290" y="670" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#16a34a">correct</text>
+
+  <rect x="80" y="690" width="310" height="40" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="95" y="715" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Event 2: price=39.99 (ts=101)</text>
+  <text x="290" y="715" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#16a34a">correct</text>
+
+  <rect x="80" y="735" width="310" height="50" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="95" y="755" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">If delivered out of order, stale value</text>
+  <text x="95" y="773" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">may be cached briefly (usually acceptable)</text>
+
+  <rect x="440" y="595" width="350" height="200" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="460" y="630" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Ordering Solutions</text>
+
+  <rect x="460" y="645" width="310" height="40" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="475" y="670" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Partition by entity ID (Kafka key)</text>
+  <text x="475" y="685" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Guarantees order per product</text>
+
+  <rect x="460" y="695" width="310" height="40" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="475" y="720" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Include timestamp, consumer compares</text>
+  <text x="475" y="735" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Skip if event.ts &lt; last_processed.ts</text>
+
+  <rect x="460" y="745" width="310" height="40" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="475" y="770" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Use version numbers (monotonically increasing)</text>
+  <text x="475" y="785" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Only process if version &gt; current</text>
+
+  <!-- Failure Recovery Panel -->
+  <rect x="820" y="595" width="320" height="200" rx="8" fill="#f3e8ff" stroke="#c084fc" stroke-width="2"/>
+  <text x="840" y="630" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Failure Recovery</text>
+
+  <rect x="840" y="645" width="280" height="40" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="855" y="670" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">DLQ for unprocessable events</text>
+
+  <rect x="840" y="690" width="280" height="40" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="855" y="715" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Exponential backoff retry (3, 9, 27s)</text>
+
+  <rect x="840" y="735" width="280" height="50" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="855" y="755" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Periodic full invalidation sweep as</text>
+  <text x="855" y="773" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">safety net for missed invalidations</text>
 </svg>

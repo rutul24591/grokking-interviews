@@ -1,0 +1,264 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <rect width="1200" height="820" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="42" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Cache Strategy Comparison Matrix</text>
+  <text x="600" y="66" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Evaluating 5 caching strategies across 6 critical dimensions for production systems</text>
+
+  <!-- ==================== TABLE HEADER ==================== -->
+  <rect x="30" y="90" width="200" height="44" rx="8" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="130" y="118" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Strategy</text>
+
+  <rect x="230" y="90" width="160" height="44" rx="8" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="310" y="118" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Read Latency</text>
+
+  <rect x="390" y="90" width="160" height="44" rx="8" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="470" y="118" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Write Latency</text>
+
+  <rect x="550" y="90" width="160" height="44" rx="8" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="630" y="118" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Consistency</text>
+
+  <rect x="710" y="90" width="160" height="44" rx="8" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="790" y="118" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Complexity</text>
+
+  <rect x="870" y="90" width="160" height="44" rx="8" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="950" y="118" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Data Loss Risk</text>
+
+  <rect x="1030" y="90" width="150" height="44" rx="8" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="1105" y="110" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Best For</text>
+  <text x="1105" y="126" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(Use Case)</text>
+
+  <!-- ==================== ROW 1: Cache-Aside ==================== -->
+  <rect x="30" y="134" width="200" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="130" y="160" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Cache-Aside</text>
+  <text x="130" y="178" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(Lazy Loading)</text>
+  <text x="130" y="198" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">App manages cache lifecycle</text>
+
+  <rect x="230" y="134" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="310" y="160" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">GOOD</text>
+  <text x="310" y="180" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">~1-5ms on cache hit</text>
+  <text x="310" y="198" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Higher on miss</text>
+
+  <rect x="390" y="134" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="470" y="160" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">GOOD</text>
+  <text x="470" y="180" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Direct to DB</text>
+  <text x="470" y="198" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">~10-50ms</text>
+
+  <rect x="550" y="134" width="160" height="80" rx="6" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="630" y="160" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">MEDIUM</text>
+  <text x="630" y="180" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Eventual consistency</text>
+  <text x="630" y="198" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Stale reads possible</text>
+
+  <rect x="710" y="134" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="790" y="160" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">LOW</text>
+  <text x="790" y="180" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Simple to implement</text>
+  <text x="790" y="198" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">App logic only</text>
+
+  <rect x="870" y="134" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="950" y="160" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">LOW</text>
+  <text x="950" y="180" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">DB is source of truth</text>
+  <text x="950" y="198" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Cache loss = ok</text>
+
+  <rect x="1030" y="134" width="150" height="80" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="1105" y="160" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">Web Apps</text>
+  <text x="1105" y="180" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Product catalogs</text>
+  <text x="1105" y="198" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Session data</text>
+
+  <!-- ==================== ROW 2: Read-Through ==================== -->
+  <rect x="30" y="214" width="200" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="130" y="240" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Read-Through</text>
+  <text x="130" y="258" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(Cache as proxy)</text>
+  <text x="130" y="278" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Cache manages loading</text>
+
+  <rect x="230" y="214" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="310" y="240" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">GOOD</text>
+  <text x="310" y="260" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">~1-5ms on hit</text>
+  <text x="310" y="278" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Transparent miss</text>
+
+  <rect x="390" y="214" width="160" height="80" rx="6" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="470" y="240" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#374151" text-anchor="middle">N/A</text>
+  <text x="470" y="260" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Read-only pattern</text>
+  <text x="470" y="278" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Pair w/ another</text>
+
+  <rect x="550" y="214" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="630" y="240" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">STRONG</text>
+  <text x="630" y="260" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Cache controls load</text>
+  <text x="630" y="278" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Single read path</text>
+
+  <rect x="710" y="214" width="160" height="80" rx="6" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="790" y="240" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">MEDIUM</text>
+  <text x="790" y="260" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Cache loader needed</text>
+  <text x="790" y="278" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Tight coupling</text>
+
+  <rect x="870" y="214" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="950" y="240" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">LOW</text>
+  <text x="950" y="260" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">DB always source</text>
+  <text x="950" y="278" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">No write buffering</text>
+
+  <rect x="1030" y="214" width="150" height="80" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="1105" y="240" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">Read-Heavy</text>
+  <text x="1105" y="260" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Reference data</text>
+  <text x="1105" y="278" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Config services</text>
+
+  <!-- ==================== ROW 3: Write-Through ==================== -->
+  <rect x="30" y="294" width="200" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="130" y="320" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Write-Through</text>
+  <text x="130" y="338" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(Synchronous dual-write)</text>
+  <text x="130" y="358" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Cache + DB updated together</text>
+
+  <rect x="230" y="294" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="310" y="320" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">GOOD</text>
+  <text x="310" y="340" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">~1-5ms read</text>
+  <text x="310" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Always fresh data</text>
+
+  <rect x="390" y="294" width="160" height="80" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="470" y="320" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">HIGH</text>
+  <text x="470" y="340" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Cache + DB write</text>
+  <text x="470" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">~20-100ms</text>
+
+  <rect x="550" y="294" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="630" y="320" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">STRONG</text>
+  <text x="630" y="340" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Both always in sync</text>
+  <text x="630" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">No stale data</text>
+
+  <rect x="710" y="294" width="160" height="80" rx="6" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="790" y="320" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">MEDIUM</text>
+  <text x="790" y="340" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Dual-write logic</text>
+  <text x="790" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Error handling</text>
+
+  <rect x="870" y="294" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="950" y="320" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">NONE</text>
+  <text x="950" y="340" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">DB written first</text>
+  <text x="950" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Durable writes</text>
+
+  <rect x="1030" y="294" width="150" height="80" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="1105" y="320" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">Financial</text>
+  <text x="1105" y="340" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">User profiles</text>
+  <text x="1105" y="358" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Critical data</text>
+
+  <!-- ==================== ROW 4: Write-Behind ==================== -->
+  <rect x="30" y="374" width="200" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="130" y="400" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Write-Behind</text>
+  <text x="130" y="418" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(Write-Back / Async)</text>
+  <text x="130" y="438" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Queue writes, flush async</text>
+
+  <rect x="230" y="374" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="310" y="400" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">GOOD</text>
+  <text x="310" y="420" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">~1-5ms read</text>
+  <text x="310" y="438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Fresh from cache</text>
+
+  <rect x="390" y="374" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="470" y="400" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">LOWEST</text>
+  <text x="470" y="420" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">~1-3ms cache write</text>
+  <text x="470" y="438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">DB flush deferred</text>
+
+  <rect x="550" y="374" width="160" height="80" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="630" y="400" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">WEAK</text>
+  <text x="630" y="420" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">DB may be stale</text>
+  <text x="630" y="438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Readers see old DB</text>
+
+  <rect x="710" y="374" width="160" height="80" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="790" y="400" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">HIGH</text>
+  <text x="790" y="420" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Queue management</text>
+  <text x="790" y="438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Retry, batching</text>
+
+  <rect x="870" y="374" width="160" height="80" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="950" y="400" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">HIGH</text>
+  <text x="950" y="420" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Cache crash = loss</text>
+  <text x="950" y="438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Unflushed data lost</text>
+
+  <rect x="1030" y="374" width="150" height="80" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="1105" y="400" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">Social Media</text>
+  <text x="1105" y="420" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Metrics, counters</text>
+  <text x="1105" y="438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">IoT telemetry</text>
+
+  <!-- ==================== ROW 5: Write-Around ==================== -->
+  <rect x="30" y="454" width="200" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="130" y="480" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Write-Around</text>
+  <text x="130" y="498" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(Bypass cache on write)</text>
+  <text x="130" y="518" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">Write to DB, read fills cache</text>
+
+  <rect x="230" y="454" width="160" height="80" rx="6" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="310" y="480" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">MEDIUM</text>
+  <text x="310" y="500" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Cache miss after write</text>
+  <text x="310" y="518" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Next read = DB hit</text>
+
+  <rect x="390" y="454" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="470" y="480" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">GOOD</text>
+  <text x="470" y="500" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Direct DB write</text>
+  <text x="470" y="518" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">~10-50ms</text>
+
+  <rect x="550" y="454" width="160" height="80" rx="6" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="630" y="480" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">MEDIUM</text>
+  <text x="630" y="500" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Cache may be stale</text>
+  <text x="630" y="518" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Until next read</text>
+
+  <rect x="710" y="454" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="790" y="480" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">LOW</text>
+  <text x="790" y="500" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Simple pattern</text>
+  <text x="790" y="518" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">Like cache-aside</text>
+
+  <rect x="870" y="454" width="160" height="80" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="950" y="480" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">LOW</text>
+  <text x="950" y="500" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">DB is always current</text>
+  <text x="950" y="518" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46" text-anchor="middle">No buffered writes</text>
+
+  <rect x="1030" y="454" width="150" height="80" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="1105" y="480" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">Write-Once</text>
+  <text x="1105" y="500" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Archival data</text>
+  <text x="1105" y="518" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Bulk uploads</text>
+
+  <!-- ==================== DECISION FLOWCHART ==================== -->
+  <rect x="30" y="560" width="1140" height="42" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="587" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Strategy Selection Decision Flow</text>
+
+  <!-- Decision nodes -->
+  <rect x="420" y="620" width="360" height="50" rx="25" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="600" y="643" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">What is the primary workload?</text>
+  <text x="600" y="660" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Start here</text>
+
+  <!-- Branch 1: Read-Heavy -->
+  <line x1="480" y1="670" x2="250" y2="720" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <text x="310" y="700" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#6366f1">Read-Heavy</text>
+
+  <rect x="120" y="720" width="260" height="40" rx="20" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="250" y="745" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Read-Through + Cache-Aside</text>
+
+  <!-- Branch 2: Write-Heavy, needs consistency -->
+  <line x1="600" y1="670" x2="600" y2="720" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <text x="610" y="700" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#6366f1">Write + Strong Consistency</text>
+
+  <rect x="470" y="720" width="260" height="40" rx="20" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="600" y="745" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#065f46" text-anchor="middle">Write-Through</text>
+
+  <!-- Branch 3: Write-Heavy, eventual ok -->
+  <line x1="720" y1="670" x2="950" y2="720" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  <text x="880" y="700" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#6366f1">Write-Heavy + Eventual</text>
+
+  <rect x="820" y="720" width="260" height="40" rx="20" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="950" y="745" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Write-Behind (accept risk)</text>
+
+  <!-- Color legend -->
+  <rect x="30" y="780" width="20" height="20" rx="4" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="56" y="795" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#111827">Good / Recommended</text>
+
+  <rect x="250" y="780" width="20" height="20" rx="4" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="276" y="795" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#111827">Medium / Trade-off needed</text>
+
+  <rect x="540" y="780" width="20" height="20" rx="4" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="566" y="795" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#111827">Poor / High risk</text>
+
+  <rect x="740" y="780" width="20" height="20" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="766" y="795" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" fill="#111827">Use case mapping</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+  </defs>
+
+  <!-- Footer -->
+  <rect x="30" y="780" width="1140" height="30" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="600" y="800" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">In production, hybrid approaches are common: e.g., Cache-Aside for reads + Write-Through for critical writes, or Write-Behind with periodic snapshots to minimize data loss.</text>
+</svg>

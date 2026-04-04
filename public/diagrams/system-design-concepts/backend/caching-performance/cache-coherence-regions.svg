@@ -1,22 +1,155 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Coherence Across Regions</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="700" viewBox="0 0 960 700">
+  <!-- Background -->
+  <rect width="960" height="700" fill="#ffffff" />
 
-  <rect x="80" y="110" width="300" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="120" y="150" font-family="Arial" font-size="14" fill="#0f172a">Region A Cache</text>
+  <!-- Title -->
+  <text x="480" y="42" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Multi-Region Cache Coherence</text>
+  <text x="480" y="66" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Cross-region replication lag, region pinning, and consistency trade-offs</text>
 
-  <rect x="580" y="110" width="300" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="620" y="150" font-family="Arial" font-size="14" fill="#0f172a">Region B Cache</text>
+  <!-- ============================================================ -->
+  <!-- SECTION 1: THREE REGIONS (top) -->
+  <!-- ============================================================ -->
 
-  <line x1="380" y1="155" x2="580" y2="155" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
-  <line x1="580" y1="175" x2="380" y2="175" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+  <!-- US-EAST Region -->
+  <rect x="40" y="95" width="270" height="230" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" />
+  <text x="175" y="122" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">US-East (Virginia)</text>
 
-  <text x="120" y="250" font-family="Arial" font-size="13" fill="#0f172a">Invalidation events propagate with delay</text>
-  <text x="120" y="275" font-family="Arial" font-size="13" fill="#0f172a">Define explicit staleness budgets per region</text>
+  <!-- US-East Cache -->
+  <rect x="60" y="135" width="230" height="45" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="175" y="155" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Redis Cluster (Primary)</text>
+  <text x="175" y="172" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">user:1042 = "Alice v2" (fresh)</text>
 
+  <!-- US-East App Servers -->
+  <rect x="60" y="195" width="230" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="175" y="213" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">App Servers (us-east-1)</text>
+  <text x="175" y="228" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">L1/L2 cache: fresh</text>
+
+  <!-- US-East CDN -->
+  <rect x="60" y="250" width="230" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="175" y="268" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">CloudFront Edge (PoPs)</text>
+  <text x="175" y="283" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">TTL: 2min, last validated: 10s ago</text>
+
+  <!-- US Users -->
+  <ellipse cx="175" cy="315" rx="50" ry="18" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="175" y="320" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">US Users</text>
+
+  <!-- Arrow: Users -> CDN -->
+  <line x1="175" y1="297" x2="175" y2="290" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- US-WEST Region -->
+  <rect x="345" y="95" width="270" height="230" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2" />
+  <text x="480" y="122" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">US-West (Oregon)</text>
+
+  <!-- US-West Cache -->
+  <rect x="365" y="135" width="230" height="45" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="480" y="155" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Redis Cluster (Replica)</text>
+  <text x="480" y="172" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">user:1042 = "Alice v1" (STALE)</text>
+
+  <!-- US-West App Servers -->
+  <rect x="365" y="195" width="230" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="480" y="213" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">App Servers (us-west-2)</text>
+  <text x="480" y="228" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">L1/L2 cache: stale (v1)</text>
+
+  <!-- US-West CDN -->
+  <rect x="365" y="250" width="230" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="480" y="268" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">CloudFront Edge (PoPs)</text>
+  <text x="480" y="283" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">TTL: 2min, expires in 90s</text>
+
+  <!-- West Users -->
+  <ellipse cx="480" cy="315" rx="55" ry="18" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="480" y="320" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">West Users</text>
+
+  <!-- Arrow: Users -> CDN -->
+  <line x1="480" y1="297" x2="480" y2="290" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- EU-WEST Region -->
+  <rect x="650" y="95" width="270" height="230" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+  <text x="785" y="122" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">EU-West (Ireland)</text>
+
+  <!-- EU-West Cache -->
+  <rect x="670" y="135" width="230" height="45" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="785" y="155" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Redis Cluster (Replica)</text>
+  <text x="785" y="172" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">user:1042 = "Alice v1" (STALE)</text>
+
+  <!-- EU-West App Servers -->
+  <rect x="670" y="195" width="230" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="785" y="213" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">App Servers (eu-west-1)</text>
+  <text x="785" y="228" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">L1/L2 cache: stale (v1)</text>
+
+  <!-- EU-West CDN -->
+  <rect x="670" y="250" width="230" height="40" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="785" y="268" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">CloudFront Edge (PoPs)</text>
+  <text x="785" y="283" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">TTL: 2min, expires in 45s</text>
+
+  <!-- EU Users -->
+  <ellipse cx="785" cy="315" rx="50" ry="18" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="785" y="320" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">EU Users</text>
+
+  <!-- Arrow: Users -> CDN -->
+  <line x1="785" y1="297" x2="785" y2="290" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: CROSS-REGION REPLICATION (middle) -->
+  <!-- ============================================================ -->
+
+  <text x="480" y="360" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Cross-Region Replication Links</text>
+
+  <!-- Replication arrows between regions -->
+  <line x1="310" y1="208" x2="345" y2="208" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowhead-red)" />
+  <text x="327" y="200" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">lag: 120ms</text>
+
+  <line x1="615" y1="208" x2="650" y2="208" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowhead-red)" />
+  <text x="632" y="200" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">lag: 250ms</text>
+
+  <!-- Staleness Window Box -->
+  <rect x="310" y="385" width="340" height="95" rx="10" fill="#fff5f5" stroke="#dc2626" stroke-width="2" />
+  <text x="480" y="410" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#dc2626" text-anchor="middle">Staleness Windows by Region</text>
+
+  <text x="340" y="435" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">US-East (Primary): 0ms staleness (write region)</text>
+  <text x="340" y="453" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">US-West (Replica): ~120ms replication lag</text>
+  <text x="340" y="471" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">EU-West (Replica): ~250ms replication lag</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: REGION PINNING STRATEGY (bottom left) -->
+  <!-- ============================================================ -->
+
+  <rect x="40" y="505" width="430" height="175" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" />
+  <text x="255" y="533" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#16a34a" text-anchor="middle">Region Pinning Strategy</text>
+
+  <!-- Pinning flow -->
+  <rect x="60" y="548" width="390" height="35" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="255" y="570" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">User logs in -> GeoDNS assigns home region</text>
+
+  <rect x="60" y="590" width="390" height="35" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="255" y="612" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">All subsequent reads/writes routed to pinned region</text>
+
+  <rect x="60" y="632" width="390" height="35" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="255" y="654" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Eliminates cross-region reads for user session</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: CONSISTENCY TRADE-OFFS (bottom right) -->
+  <!-- ============================================================ -->
+
+  <rect x="495" y="505" width="425" height="175" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2" />
+  <text x="707" y="533" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Consistency Trade-offs</text>
+
+  <!-- Strong Consistency -->
+  <rect x="515" y="548" width="385" height="55" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="707" y="568" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Strong Consistency (Cross-Region Sync)</text>
+  <text x="707" y="588" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Paxos/Raft across regions. Write latency: 250-500ms. Zero staleness.</text>
+
+  <!-- Eventual Consistency -->
+  <rect x="515" y="610" width="385" height="55" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="2" />
+  <text x="707" y="630" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Eventual Consistency (Region-Local)</text>
+  <text x="707" y="650" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Async replication. Write latency: 5-10ms. Staleness: 120-250ms.</text>
+
+  <!-- Arrow markers -->
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6" fill="#475569" />
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937" />
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626" />
     </marker>
   </defs>
 </svg>

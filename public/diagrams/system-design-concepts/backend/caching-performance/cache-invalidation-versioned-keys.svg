@@ -1,17 +1,137 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
-  <rect width="1200" height="620" fill="#f8fafc"/>
-  <text x="60" y="70" font-size="28" font-family="Arial" fill="#0f172a">Versioned Keys (Cache Busting)</text>
-  <rect x="80" y="140" width="420" height="140" rx="12" fill="#e2e8f0" stroke="#94a3b8"/>
-  <text x="110" y="185" font-size="18" font-family="Arial" fill="#0f172a">Version Store</text>
-  <text x="110" y="220" font-size="16" font-family="Arial" fill="#475569">product:version = 42</text>
-  <rect x="620" y="140" width="480" height="140" rx="12" fill="#dcfce7" stroke="#22c55e"/>
-  <text x="650" y="185" font-size="18" font-family="Arial" fill="#0f172a">Cache Key</text>
-  <text x="650" y="220" font-size="16" font-family="Arial" fill="#475569">product:v42:123</text>
-  <line x1="500" y1="210" x2="620" y2="210" stroke="#94a3b8" stroke-width="4"/>
-  <rect x="80" y="340" width="1020" height="160" rx="12" fill="#fef3c7" stroke="#f59e0b"/>
-  <text x="110" y="385" font-size="16" font-family="Arial" fill="#0f172a">On update:</text>
-  <text x="110" y="415" font-size="16" font-family="Arial" fill="#0f172a">1) increment version to 43</text>
-  <text x="110" y="445" font-size="16" font-family="Arial" fill="#0f172a">2) new reads use product:v43:123</text>
-  <text x="110" y="475" font-size="16" font-family="Arial" fill="#0f172a">3) old keys expire naturally (no delete storm)</text>
-  <text x="80" y="560" font-size="16" font-family="Arial" fill="#475569">Versioned keys avoid mass deletion and simplify rollbacks.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="ah-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="820" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="60" y="48" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">Versioned Cache Keys (Cache Busting)</text>
+  <text x="60" y="76" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#374151">Logical invalidation through version bumps instead of explicit key deletion</text>
+
+  <!-- Version Registry -->
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Version Registry and Key Resolution</text>
+
+  <!-- Version Store -->
+  <rect x="60" y="145" width="340" height="200" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="80" y="180" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Version Registry</text>
+  <text x="80" y="200" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Fast lookup store (Redis hash / DB table)</text>
+
+  <rect x="80" y="215" width="300" height="30" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="95" y="236" font-family="'Courier New', monospace" font-size="13" font-weight="400" fill="#1f2937">product:detail     -&gt;  v42</text>
+
+  <rect x="80" y="250" width="300" height="30" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="95" y="271" font-family="'Courier New', monospace" font-size="13" font-weight="400" fill="#1f2937">product:price      -&gt;  v18</text>
+
+  <rect x="80" y="285" width="300" height="30" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="95" y="306" font-family="'Courier New', monospace" font-size="13" font-weight="400" fill="#1f2937">product:inventory  -&gt;  v156</text>
+
+  <rect x="80" y="320" width="300" height="20" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="95" y="335" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">... millions of entries ...</text>
+
+  <!-- Arrow from Registry to Cache Keys -->
+  <line x1="400" y1="200" x2="480" y2="170" stroke="#3b82f6" stroke-width="2" marker-end="url(#ah-blue)"/>
+  <text x="410" y="170" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#3b82f6">Read: lookup version</text>
+
+  <line x1="400" y1="280" x2="480" y2="340" stroke="#22c55e" stroke-width="2" marker-end="url(#ah-green)"/>
+  <text x="410" y="325" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#16a34a">Write: bump version</text>
+
+  <!-- Cache Keys -->
+  <rect x="490" y="145" width="350" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="510" y="180" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Cache Keys (Versioned)</text>
+
+  <rect x="510" y="195" width="310" height="30" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="525" y="216" font-family="'Courier New', monospace" font-size="13" font-weight="400" fill="#1f2937">product:detail:v42:12345  -&gt; {name: "Widget"}</text>
+
+  <rect x="510" y="230" width="310" height="30" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="525" y="251" font-family="'Courier New', monospace" font-size="13" font-weight="400" fill="#6b7280">product:detail:v41:12345  -&gt; {name: "Widget"}</text>
+  <text x="750" y="251" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">(expiring)</text>
+
+  <rect x="510" y="265" width="310" height="30" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="525" y="286" font-family="'Courier New', monospace" font-size="13" font-weight="400" fill="#1f2937">product:price:v18:12345   -&gt; 29.99</text>
+
+  <rect x="510" y="300" width="310" height="30" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="525" y="321" font-family="'Courier New', monospace" font-size="13" font-weight="400" fill="#1f2937">product:inventory:v156:12345 -&gt; 847</text>
+
+  <!-- Version Resolution Example -->
+  <rect x="870" y="145" width="280" height="200" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="890" y="180" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#111827">Key Resolution on Read</text>
+
+  <rect x="890" y="195" width="240" height="35" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="905" y="218" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Read request: product:12345</text>
+
+  <rect x="890" y="238" width="240" height="35" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="905" y="261" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">1. Lookup version: v42</text>
+
+  <rect x="890" y="281" width="240" height="35" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="905" y="304" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">2. Build key: :v42:12345</text>
+
+  <rect x="890" y="324" width="240" height="18" rx="4" fill="#ffffff" stroke="#fde68a" stroke-width="1"/>
+  <text x="905" y="339" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">3. Cache GET with full key</text>
+
+  <!-- Write Flow - Version Bump -->
+  <text x="60" y="390" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">Version Bump on Write Operations</text>
+
+  <rect x="60" y="415" width="240" height="70" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+  <text x="80" y="445" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Write: UPDATE product</text>
+  <text x="80" y="468" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">SET name="NewWidget" WHERE id=12345</text>
+
+  <line x1="300" y1="450" x2="360" y2="450" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+
+  <rect x="360" y="415" width="240" height="70" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="380" y="445" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">INCR version registry</text>
+  <text x="380" y="468" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">product:detail: v42 -&gt; v43</text>
+
+  <line x1="600" y1="450" x2="660" y2="450" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+
+  <rect x="660" y="415" width="240" height="70" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="680" y="445" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Next read uses v43</text>
+  <text x="680" y="468" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">product:detail:v43:12345</text>
+
+  <line x1="900" y1="450" x2="960" y2="450" stroke="#6b7280" stroke-width="2" marker-end="url(#ah)"/>
+
+  <rect x="960" y="415" width="190" height="70" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="980" y="445" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827">Cache miss -&gt; DB</text>
+  <text x="980" y="468" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#1f2937">Fresh data loaded</text>
+
+  <!-- Old Key Fate -->
+  <text x="60" y="530" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#111827">What Happens to Old Versions?</text>
+
+  <rect x="60" y="555" width="340" height="120" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="80" y="588" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">No Explicit Delete Needed</text>
+  <text x="80" y="618" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Old keys (v42) are no longer referenced</text>
+  <text x="80" y="638" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">They expire naturally via their own TTL</text>
+  <text x="80" y="658" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Eliminates expensive mass-delete operations</text>
+
+  <rect x="430" y="555" width="340" height="120" rx="8" fill="#f3e8ff" stroke="#c084fc" stroke-width="2"/>
+  <text x="450" y="588" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Version Garbage Collection</text>
+  <text x="450" y="618" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Periodic cleanup of orphaned registry entries</text>
+  <text x="450" y="638" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Run hourly: scan versions not accessed in N hours</text>
+  <text x="450" y="658" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Remove entries where no cache key exists</text>
+
+  <rect x="800" y="555" width="340" height="120" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="820" y="588" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Rollback Support</text>
+  <text x="820" y="618" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">To rollback: decrement version in registry</text>
+  <text x="820" y="638" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">v43 -&gt; v42, next reads use old cached value</text>
+  <text x="820" y="658" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Instant rollback, no cache repopulation needed</text>
+
+  <!-- Trade-offs Panel -->
+  <rect x="60" y="710" width="540" height="95" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="80" y="740" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Advantages Over Explicit Invalidation</text>
+  <text x="80" y="765" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">No DELETE storms | Natural TTL expiry | Rollback support | Works with tag-based caches</text>
+  <text x="80" y="788" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Slightly higher memory (multiple versions coexist briefly)</text>
+
+  <rect x="630" y="710" width="510" height="95" rx="8" fill="#fefce8" stroke="#fde68a" stroke-width="2"/>
+  <text x="650" y="740" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Memory Overhead</text>
+  <text x="650" y="765" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Version registry: ~100 bytes per entry | 1M entries = ~100 MB</text>
+  <text x="650" y="788" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1f2937">Old keys persist until TTL: typically 5-30 min overlap, acceptable</text>
 </svg>

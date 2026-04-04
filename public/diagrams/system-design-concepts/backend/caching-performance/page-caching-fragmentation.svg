@@ -1,0 +1,351 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="42" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Page Caching — Fragmentation &amp; Cache Key Explosion</text>
+  <text x="600" y="66" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Full page vs fragment vs ESI caching, personalization impact, and memory usage comparison</text>
+
+  <!-- ==================== SECTION 1: CACHING GRANULARITY ==================== -->
+  <rect x="30" y="95" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="125" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Three Levels of Page Caching Granularity</text>
+
+  <!-- Full Page Caching -->
+  <rect x="30" y="160" width="360" height="380" rx="10" fill="#ffffff" stroke="#818cf8" stroke-width="2"/>
+  <rect x="30" y="160" width="360" height="38" rx="10" fill="#e0e7ff"/>
+  <rect x="30" y="188" width="360" height="10" fill="#e0e7ff"/>
+  <text x="210" y="185" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#3730a3" text-anchor="middle">Full Page Cache</text>
+
+  <!-- Page visualization -->
+  <rect x="50" y="215" width="320" height="180" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Header -->
+  <rect x="55" y="220" width="310" height="30" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="210" y="240" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Header (static)</text>
+
+  <!-- Hero -->
+  <rect x="55" y="255" width="200" height="50" rx="4" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="155" y="285" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">Hero (static)</text>
+
+  <!-- Sidebar personalized -->
+  <rect x="260" y="255" width="105" height="50" rx="4" fill="#fee2e2" stroke="#f87171" stroke-width="1"/>
+  <text x="312" y="278" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="700" fill="#991b1b" text-anchor="middle">Sidebar</text>
+  <text x="312" y="290" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#991b1b" text-anchor="middle">(personalized)</text>
+
+  <!-- Content -->
+  <rect x="55" y="310" width="150" height="40" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="130" y="335" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">Content (static)</text>
+
+  <!-- Recommendations personalized -->
+  <rect x="210" y="310" width="155" height="40" rx="4" fill="#fee2e2" stroke="#f87171" stroke-width="1"/>
+  <text x="287" y="330" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="700" fill="#991b1b" text-anchor="middle">Recommendations</text>
+  <text x="287" y="342" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#991b1b" text-anchor="middle">(personalized per user)</text>
+
+  <!-- Footer -->
+  <rect x="55" y="355" width="310" height="30" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="210" y="375" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Footer (static)</text>
+
+  <!-- Cache key -->
+  <rect x="50" y="410" width="320" height="40" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="210" y="428" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">Cache Key: GET /page?id=X&amp;user=U123</text>
+  <text x="210" y="444" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#92400e" text-anchor="middle">One cached page PER user PER page</text>
+
+  <!-- Pros/Cons -->
+  <rect x="50" y="460" width="145" height="60" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="122" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Pros</text>
+  <text x="60" y="496" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">Simplest to implement</text>
+  <text x="60" y="510" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">Fastest cache hit (full HTML)</text>
+  <text x="60" y="524" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">Single cache lookup</text>
+
+  <rect x="205" y="460" width="165" height="60" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="287" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Cons</text>
+  <text x="215" y="496" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">Cache key explosion with N users</text>
+  <text x="215" y="510" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">Duplicates static content per user</text>
+  <text x="215" y="524" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">Invalidation cascades on update</text>
+
+  <!-- Fragment Caching -->
+  <rect x="410" y="160" width="360" height="380" rx="10" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <rect x="410" y="160" width="360" height="38" rx="10" fill="#dcfce7"/>
+  <rect x="410" y="188" width="360" height="10" fill="#dcfce7"/>
+  <text x="590" y="185" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#166534" text-anchor="middle">Fragment Caching</text>
+
+  <!-- Fragment visualization -->
+  <rect x="430" y="215" width="320" height="180" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Header - cached fragment -->
+  <rect x="435" y="220" width="310" height="30" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="590" y="240" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">Header fragment (cached, shared)</text>
+
+  <!-- Hero - cached fragment -->
+  <rect x="435" y="255" width="200" height="50" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="535" y="285" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">Hero fragment (cached)</text>
+
+  <!-- Sidebar - per-user fragment -->
+  <rect x="640" y="255" width="105" height="50" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="692" y="278" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="700" fill="#92400e" text-anchor="middle">Sidebar</text>
+  <text x="692" y="290" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#92400e" text-anchor="middle">(per-user key)</text>
+
+  <!-- Content - cached fragment -->
+  <rect x="435" y="310" width="150" height="40" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="510" y="335" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">Content (cached)</text>
+
+  <!-- Recommendations - per-user fragment -->
+  <rect x="590" y="310" width="155" height="40" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="667" y="330" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="700" fill="#92400e" text-anchor="middle">Recommendations</text>
+  <text x="667" y="342" font-family="Inter, Arial, sans-serif" font-size="7" font-weight="400" fill="#92400e" text-anchor="middle">(per-user key)</text>
+
+  <!-- Footer - cached fragment -->
+  <rect x="435" y="355" width="310" height="30" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="590" y="375" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">Footer fragment (cached, shared)</text>
+
+  <!-- Cache keys -->
+  <rect x="430" y="410" width="320" height="40" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="590" y="428" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">Keys: frag:header, frag:hero, frag:content</text>
+  <text x="590" y="444" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#92400e" text-anchor="middle">+ frag:sidebar:U123, frag:recs:U123</text>
+
+  <!-- Pros/Cons -->
+  <rect x="430" y="460" width="150" height="60" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="505" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Pros</text>
+  <text x="440" y="496" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">Static fragments shared across</text>
+  <text x="440" y="510" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">users -- no duplication</text>
+  <text x="440" y="524" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">Fine-grained invalidation</text>
+
+  <rect x="590" y="460" width="160" height="60" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="670" y="478" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Cons</text>
+  <text x="600" y="496" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">More cache lookups per request</text>
+  <text x="600" y="510" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">Assembly overhead (template)</text>
+  <text x="600" y="524" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">Complex cache key management</text>
+
+  <!-- ESI (Edge Side Includes) -->
+  <rect x="790" y="160" width="380" height="380" rx="10" fill="#ffffff" stroke="#fbbf24" stroke-width="2"/>
+  <rect x="790" y="160" width="380" height="38" rx="10" fill="#fef3c7"/>
+  <rect x="790" y="188" width="380" height="10" fill="#fef3c7"/>
+  <text x="980" y="185" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#92400e" text-anchor="middle">ESI (Edge Side Includes)</text>
+
+  <!-- ESI visualization -->
+  <rect x="810" y="215" width="340" height="180" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- CDN Edge -->
+  <rect x="820" y="225" width="120" height="40" rx="6" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="880" y="243" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#1e40af" text-anchor="middle">CDN Edge</text>
+  <text x="880" y="257" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#1e40af" text-anchor="middle">(ESI processor)</text>
+
+  <!-- ESI tags -->
+  <rect x="960" y="225" width="180" height="40" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="1050" y="243" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#92400e" text-anchor="middle">&lt;esi:include src=</text>
+  <text x="1050" y="257" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#92400e" text-anchor="middle">"/sidebar?user=U123"/&gt;</text>
+
+  <!-- Arrows -->
+  <line x1="942" y1="245" x2="958" y2="245" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Origin fetch -->
+  <rect x="820" y="280" width="120" height="40" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="880" y="298" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Origin Server</text>
+  <text x="880" y="312" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#374151" text-anchor="middle">(dynamic content)</text>
+
+  <line x1="880" y1="267" x2="880" y2="278" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Assembled page -->
+  <rect x="960" y="280" width="180" height="40" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="1050" y="298" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#166534" text-anchor="middle">Assembled at edge</text>
+  <text x="1050" y="312" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="400" fill="#166534" text-anchor="middle">static + dynamic merged</text>
+
+  <line x1="942" y1="300" x2="958" y2="300" stroke="#86efac" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- ESI explanation -->
+  <rect x="810" y="335" width="340" height="60" rx="6" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="980" y="355" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">How ESI Works</text>
+  <text x="825" y="372" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151">1. Template has ESI tags for dynamic blocks</text>
+  <text x="825" y="386" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151">2. CDN fetches template (cacheable)</text>
+  <text x="825" y="400" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151">3. CDN resolves ESI tags from origin</text>
+  <text x="825" y="414" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151">4. Merges and delivers final HTML</text>
+
+  <!-- Pros/Cons -->
+  <rect x="810" y="410" width="155" height="60" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="887" y="428" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Pros</text>
+  <text x="820" y="446" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">Best of both worlds:</text>
+  <text x="820" y="460" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#065f46">static at edge, dynamic at origin</text>
+
+  <rect x="975" y="410" width="175" height="60" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="1062" y="428" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Cons</text>
+  <text x="985" y="446" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">CDN must support ESI</text>
+  <text x="985" y="460" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">(Fastly, Akamai); origin</text>
+  <text x="985" y="474" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">still serves N requests</text>
+
+  <!-- ==================== SECTION 2: CACHE KEY EXPLOSION ==================== -->
+  <rect x="30" y="565" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="595" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Cache Key Explosion — Personalized Page Caching at Scale</text>
+
+  <!-- Scenario -->
+  <rect x="30" y="630" width="1140" height="60" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="600" y="652" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">Scenario: E-commerce product page with 10,000 products and 5,000,000 users</text>
+  <text x="600" y="672" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#92400e" text-anchor="middle">Each user sees: personalized recommendations, cart count, greeting, localized prices, A/B test variant</text>
+
+  <!-- Full page cache keys -->
+  <rect x="30" y="710" width="360" height="300" rx="10" fill="#ffffff" stroke="#f87171" stroke-width="2"/>
+  <rect x="30" y="710" width="360" height="38" rx="10" fill="#fee2e2"/>
+  <rect x="30" y="738" width="360" height="10" fill="#fee2e2"/>
+  <text x="210" y="735" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#991b1b" text-anchor="middle">Full Page Cache — Key Explosion</text>
+
+  <!-- Key examples -->
+  <rect x="50" y="765" width="320" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="65" y="781" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">page:product:P001:user:U00001:variant:A</text>
+
+  <rect x="50" y="791" width="320" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="65" y="807" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">page:product:P001:user:U00002:variant:B</text>
+
+  <rect x="50" y="817" width="320" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="65" y="833" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">page:product:P001:user:U00003:variant:A</text>
+
+  <text x="210" y="860" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#374151" text-anchor="middle">...</text>
+
+  <text x="210" y="885" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#374151" text-anchor="middle">...</text>
+
+  <!-- Total count -->
+  <rect x="50" y="910" width="320" height="40" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="210" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Total keys: 10,000 x 5,000,000 x 2</text>
+  <text x="210" y="946" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">= 100 BILLION unique cache keys</text>
+
+  <!-- Fragment cache keys -->
+  <rect x="410" y="710" width="360" height="300" rx="10" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <rect x="410" y="710" width="360" height="38" rx="10" fill="#dcfce7"/>
+  <rect x="410" y="738" width="360" height="10" fill="#dcfce7"/>
+  <text x="590" y="735" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">Fragment Cache — Shared + Personalized</text>
+
+  <!-- Static fragments (shared) -->
+  <rect x="430" y="765" width="320" height="60" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="590" y="785" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">Static Fragments (Shared Across All Users)</text>
+  <text x="450" y="805" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#166534">frag:header (1 key), frag:product:P001 (10,000 keys), frag:footer (1 key)</text>
+
+  <text x="590" y="840" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Total static: ~10,002 keys</text>
+
+  <!-- Personalized fragments -->
+  <rect x="430" y="855" width="320" height="60" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="590" y="875" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">Personalized Fragments (Per User)</text>
+  <text x="450" y="895" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#92400e">frag:recs:U00001, frag:cart:U00001, frag:greeting:U00001</text>
+
+  <text x="590" y="930" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Total personalized: 5,000,000 x 3 = 15M keys</text>
+
+  <!-- Grand total -->
+  <rect x="430" y="930" width="320" height="30" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="590" y="950" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">Grand total: ~15M keys (vs 100B)</text>
+
+  <!-- ESI cache keys -->
+  <rect x="790" y="710" width="380" height="300" rx="10" fill="#ffffff" stroke="#fbbf24" stroke-width="2"/>
+  <rect x="790" y="710" width="380" height="38" rx="10" fill="#fef3c7"/>
+  <rect x="790" y="738" width="380" height="10" fill="#fef3c7"/>
+  <text x="980" y="735" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#92400e" text-anchor="middle">ESI Cache — Edge + Origin Split</text>
+
+  <!-- Edge cache (static template) -->
+  <rect x="810" y="765" width="340" height="60" rx="6" fill="#dbeafe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="980" y="785" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">CDN Edge Cache (Static Template)</text>
+  <text x="830" y="805" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#1e40af">esi:page:product:P001 -- ONE key per product (10,000 keys)</text>
+
+  <!-- Origin requests -->
+  <rect x="810" y="840" width="340" height="60" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="1"/>
+  <text x="980" y="860" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b" text-anchor="middle">Origin Server (Dynamic ESI Includes)</text>
+  <text x="830" y="880" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">/api/sidebar?user=U00001 -- origin handles per-user</text>
+  <text x="830" y="896" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#991b1b">/api/recommendations?user=U00001 -- origin handles</text>
+
+  <!-- Result -->
+  <rect x="810" y="915" width="340" height="45" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="980" y="935" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">Edge: 10,000 keys (template only)</text>
+  <text x="980" y="952" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Origin: handles 5M dynamic requests</text>
+
+  <!-- ==================== SECTION 3: MEMORY USAGE COMPARISON ==================== -->
+  <rect x="30" y="1035" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="1065" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Memory Usage Comparison — Full Page vs Fragment vs ESI</text>
+
+  <!-- Bar chart visualization -->
+  <rect x="30" y="1100" width="740" height="360" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- Y axis -->
+  <line x1="120" y1="1130" x2="120" y2="1420" stroke="#d1d5db" stroke-width="2"/>
+  <text x="50" y="1140" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Memory</text>
+  <text x="50" y="1155" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">(GB)</text>
+
+  <!-- Y axis labels -->
+  <text x="110" y="1145" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">500</text>
+  <text x="110" y="1215" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">400</text>
+  <text x="110" y="1285" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">300</text>
+  <text x="110" y="1355" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">200</text>
+  <text x="110" y="1425" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="end">0</text>
+
+  <!-- Grid lines -->
+  <line x1="120" y1="1140" x2="740" y2="1140" stroke="#f3f4f6" stroke-width="1"/>
+  <line x1="120" y1="1215" x2="740" y2="1215" stroke="#f3f4f6" stroke-width="1"/>
+  <line x1="120" y1="1285" x2="740" y2="1285" stroke="#f3f4f6" stroke-width="1"/>
+  <line x1="120" y1="1355" x2="740" y2="1355" stroke="#f3f4f6" stroke-width="1"/>
+
+  <!-- Full Page bar -->
+  <rect x="200" y="1135" width="120" height="285" rx="4" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="260" y="1128" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#991b1b" text-anchor="middle">~500 GB</text>
+  <text x="260" y="1445" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Full Page</text>
+  <text x="260" y="1460" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">100B keys</text>
+
+  <!-- Fragment bar -->
+  <rect x="380" y="1320" width="120" height="100" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="440" y="1313" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#92400e" text-anchor="middle">~15 GB</text>
+  <text x="440" y="1445" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">Fragment</text>
+  <text x="440" y="1460" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">15M keys</text>
+
+  <!-- ESI bar -->
+  <rect x="560" y="1400" width="120" height="20" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="620" y="1393" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">~0.5 GB</text>
+  <text x="620" y="1445" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">ESI (Edge)</text>
+  <text x="620" y="1460" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">10K keys</text>
+
+  <!-- X axis -->
+  <line x1="120" y1="1430" x2="740" y2="1430" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- Annotation -->
+  <rect x="200" y="1180" width="400" height="60" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="400" y="1200" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b" text-anchor="middle">Full page: 50KB/page x 100B keys = ~5 PB (impossible)</text>
+  <text x="400" y="1216" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">With 1% unique user-product combos: 500 GB still exceeds any single cache</text>
+
+  <rect x="200" y="1250" width="400" height="40" rx="8" fill="#fef3c7" stroke="#fca5a5" stroke-width="1"/>
+  <text x="400" y="1270" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">Fragment: ~1KB/fragment x 15M keys = ~15 GB (feasible)</text>
+  <text x="400" y="1286" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">Fits in a Redis cluster or distributed cache</text>
+
+  <rect x="200" y="1300" width="400" height="30" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="400" y="1320" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">ESI: ~50KB x 10K edge keys = ~0.5 GB (trivial at edge)</text>
+
+  <!-- Decision guide -->
+  <rect x="790" y="1100" width="380" height="360" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="790" y="1100" width="380" height="38" rx="10" fill="#f3f4f6"/>
+  <rect x="790" y="1128" width="380" height="10" fill="#f3f4f6"/>
+  <text x="980" y="1125" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="middle">When to Use Which</text>
+
+  <rect x="810" y="1155" width="340" height="70" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="980" y="1175" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Full Page: Static sites only</text>
+  <text x="825" y="1195" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">Blogs, documentation, marketing pages.</text>
+  <text x="825" y="1210" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">Zero or minimal personalization.</text>
+
+  <rect x="810" y="1235" width="340" height="80" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="980" y="1255" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Fragment: Moderate personalization</text>
+  <text x="825" y="1275" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e">E-commerce, dashboards, social feeds.</text>
+  <text x="825" y="1290" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e">Mix of shared and per-user content.</text>
+  <text x="825" y="1305" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e">Requires template assembly overhead.</text>
+
+  <rect x="810" y="1325" width="340" height="80" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="980" y="1345" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534" text-anchor="middle">ESI: Heavy personalization + scale</text>
+  <text x="825" y="1365" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534">Large e-commerce, news portals, SaaS.</text>
+  <text x="825" y="1380" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534">Static at edge, dynamic at origin.</text>
+  <text x="825" y="1395" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534">Requires CDN ESI support (Fastly, Akamai).</text>
+
+  <!-- Key insight -->
+  <rect x="810" y="1415" width="340" height="35" rx="6" fill="#1f2937"/>
+  <text x="980" y="1437" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Key: Fragment or ESI for any personalization</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#60a5fa"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#86efac"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,12 +1,190 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Lazy Loading Waterfall</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000">
+  <!-- Background -->
+  <rect width="1400" height="1000" fill="#ffffff"/>
 
-  <rect x="80" y="120" width="240" height="40" rx="8" fill="#dbeafe" stroke="#60a5fa" />
-  <rect x="340" y="170" width="240" height="40" rx="8" fill="#dbeafe" stroke="#60a5fa" />
-  <rect x="600" y="220" width="240" height="40" rx="8" fill="#dbeafe" stroke="#60a5fa" />
+  <!-- Title -->
+  <text x="60" y="55" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#111827">Lazy Loading Waterfall: Cascading Fetches</text>
+  <text x="60" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#374151">Sequential cascade vs parallel fetching optimization for nested data loading</text>
 
-  <text x="90" y="145" font-family="Arial" font-size="12" fill="#0f172a">Request A</text>
-  <text x="350" y="195" font-family="Arial" font-size="12" fill="#0f172a">Request B</text>
-  <text x="610" y="245" font-family="Arial" font-size="12" fill="#0f172a">Request C</text>
+  <!-- ============================================ -->
+  <!-- SECTION 1: SEQUENTIAL WATERFALL (left side)  -->
+  <!-- ============================================ -->
+
+  <text x="60" y="140" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Sequential Cascade (Unoptimized)</text>
+  <text x="60" y="165" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Each level waits for the previous to complete before starting</text>
+
+  <!-- Timeline axis -->
+  <line x1="60" y1="200" x2="660" y2="200" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Time markers -->
+  <text x="60" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">0ms</text>
+  <text x="180" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">50ms</text>
+  <text x="300" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">100ms</text>
+  <text x="420" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">150ms</text>
+  <text x="540" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">200ms</text>
+  <text x="640" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">250ms</text>
+
+  <!-- Level 0: Product Details -->
+  <text x="60" y="255" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">L1: Product Details</text>
+  <rect x="60" y="265" width="100" height="30" rx="4" fill="#3b82f6"/>
+  <text x="165" y="285" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937">40ms</text>
+  <text x="60" y="285" font-family="monospace" font-size="10" font-weight="400" fill="#ffffff">SELECT * FROM products WHERE id=789</text>
+
+  <!-- Arrow L1 to L2 -->
+  <line x1="160" y1="300" x2="170" y2="320" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Level 2: Reviews -->
+  <text x="60" y="335" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">L2: Reviews (5 items)</text>
+  <rect x="170" y="345" width="180" height="30" rx="4" fill="#ef4444"/>
+  <text x="355" y="365" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937">65ms</text>
+  <text x="170" y="365" font-family="monospace" font-size="10" font-weight="400" fill="#ffffff">SELECT * FROM reviews WHERE product_id=789</text>
+
+  <!-- Arrow L2 to L3a -->
+  <line x1="350" y1="380" x2="360" y2="400" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Level 3a: Reviewer Profiles -->
+  <text x="60" y="415" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">L3: Reviewer Profiles (N+1)</text>
+  <rect x="360" y="425" width="200" height="30" rx="4" fill="#f59e0b"/>
+  <text x="565" y="445" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937">80ms</text>
+  <text x="360" y="445" font-family="monospace" font-size="10" font-weight="400" fill="#ffffff">5x SELECT * FROM users WHERE id=? (sequential)</text>
+
+  <!-- Arrow L3a to L3b -->
+  <line x1="560" y1="460" x2="570" y2="480" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Level 3b: Reviewer Avatars -->
+  <text x="60" y="495" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">L4: Avatar URLs</text>
+  <rect x="570" y="505" width="80" height="30" rx="4" fill="#8b5cf6"/>
+  <text x="655" y="525" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937">25ms</text>
+  <text x="570" y="525" font-family="monospace" font-size="10" font-weight="400" fill="#ffffff">S3 presigned URLs</text>
+
+  <!-- Total time badge -->
+  <rect x="50" y="560" width="200" height="45" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="150" y="580" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#dc2626" text-anchor="middle">Total Latency: ~210ms</text>
+  <text x="150" y="598" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">4 sequential levels</text>
+
+  <!-- ============================================ -->
+  <!-- SECTION 2: PARALLEL OPTIMIZATION (right)     -->
+  <!-- ============================================ -->
+
+  <text x="730" y="140" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Parallel Fetching (Optimized)</text>
+  <text x="730" y="165" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Independent requests at same level execute concurrently</text>
+
+  <!-- Timeline axis -->
+  <line x1="730" y1="200" x2="1330" y2="200" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Time markers -->
+  <text x="730" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">0ms</text>
+  <text x="850" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">20ms</text>
+  <text x="970" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">40ms</text>
+  <text x="1090" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">60ms</text>
+  <text x="1210" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">80ms</text>
+  <text x="1310" y="220" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#6b7280">100ms</text>
+
+  <!-- Level 1: Product -->
+  <text x="730" y="255" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">L1: Product Details</text>
+  <rect x="730" y="265" width="80" height="30" rx="4" fill="#3b82f6"/>
+  <text x="815" y="285" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937">35ms</text>
+
+  <!-- Arrow -->
+  <line x1="810" y1="300" x2="820" y2="320" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Level 2: Reviews (batched) -->
+  <text x="730" y="335" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">L2: Reviews (batched)</text>
+  <rect x="820" y="345" width="120" height="30" rx="4" fill="#22c55e"/>
+  <text x="945" y="365" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937">45ms</text>
+  <text x="820" y="365" font-family="monospace" font-size="10" font-weight="400" fill="#ffffff">SELECT * FROM reviews WHERE product_id=789</text>
+
+  <!-- Arrow L2 to L3 -->
+  <line x1="940" y1="380" x2="950" y2="400" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Level 3: User Profiles + Avatars (PARALLEL) -->
+  <text x="730" y="415" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2937">L3: Profiles + Avatars (parallel)</text>
+
+  <!-- Profiles bar -->
+  <rect x="950" y="425" width="100" height="30" rx="4" fill="#f59e0b"/>
+  <text x="1055" y="445" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937">30ms</text>
+  <text x="950" y="445" font-family="monospace" font-size="10" font-weight="400" fill="#ffffff">SELECT * FROM users WHERE id IN (...)</text>
+
+  <!-- Avatars bar (parallel, same start time) -->
+  <rect x="950" y="465" width="60" height="30" rx="4" fill="#8b5cf6"/>
+  <text x="1015" y="485" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2937">20ms</text>
+  <text x="950" y="485" font-family="monospace" font-size="10" font-weight="400" fill="#ffffff">S3 batch presign</text>
+
+  <!-- Parallel indicator bracket -->
+  <line x1="1060" y1="430" x2="1060" y2="500" stroke="#6b7280" stroke-width="2"/>
+  <text x="1070" y="470" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#16a34a">PARALLEL</text>
+
+  <!-- Total time badge -->
+  <rect x="720" y="560" width="200" height="45" rx="8" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text x="820" y="580" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#16a34a" text-anchor="middle">Total Latency: ~110ms</text>
+  <text x="820" y="598" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">48% faster than sequential</text>
+
+  <!-- ============================================ -->
+  <!-- SECTION 3: DETAILED TIMING BREAKDOWN         -->
+  <!-- ============================================ -->
+
+  <text x="60" y="660" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Detailed Timing Breakdown by Level</text>
+
+  <!-- Table header -->
+  <rect x="60" y="680" width="1280" height="40" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="80" y="706" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Level</text>
+  <text x="300" y="706" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Operation</text>
+  <text x="600" y="706" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Sequential Start</text>
+  <text x="800" y="706" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Sequential Duration</text>
+  <text x="1020" y="706" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Parallel Start</text>
+  <text x="1200" y="706" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Parallel Duration</text>
+
+  <!-- Row 1 -->
+  <rect x="60" y="720" width="1280" height="45" rx="0" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="748" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937">L1</text>
+  <text x="300" y="748" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Load product from DB</text>
+  <text x="600" y="748" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">0ms</text>
+  <text x="800" y="748" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">40ms</text>
+  <text x="1020" y="748" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">0ms</text>
+  <text x="1200" y="748" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">35ms</text>
+
+  <!-- Row 2 -->
+  <rect x="60" y="765" width="1280" height="45" rx="0" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="793" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937">L2</text>
+  <text x="300" y="793" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Load reviews for product</text>
+  <text x="600" y="793" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">40ms (after L1)</text>
+  <text x="800" y="793" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">65ms</text>
+  <text x="1020" y="793" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">35ms (after L1)</text>
+  <text x="1200" y="793" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">45ms</text>
+
+  <!-- Row 3 -->
+  <rect x="60" y="810" width="1280" height="45" rx="0" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="838" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937">L3a</text>
+  <text x="300" y="838" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Load reviewer profiles (5x)</text>
+  <text x="600" y="838" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">105ms (after L2)</text>
+  <text x="800" y="838" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">80ms</text>
+  <text x="1020" y="838" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">80ms (after L2)</text>
+  <text x="1200" y="838" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">30ms (batched IN)</text>
+
+  <!-- Row 4 -->
+  <rect x="60" y="855" width="1280" height="45" rx="0" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="80" y="883" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2937">L3b</text>
+  <text x="300" y="883" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">Load avatar URLs from S3</text>
+  <text x="600" y="883" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">185ms (after L3a)</text>
+  <text x="800" y="883" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">25ms</text>
+  <text x="1020" y="883" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">80ms (parallel to L3a)</text>
+  <text x="1200" y="883" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151">20ms (batched)</text>
+
+  <!-- Row 5: Totals -->
+  <rect x="60" y="900" width="1280" height="50" rx="0" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="80" y="930" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">TOTAL</text>
+  <text x="300" y="930" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">Cumulative latency</text>
+  <text x="600" y="930" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">-</text>
+  <rect x="800" y="910" width="120" height="30" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="860" y="930" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#dc2626" text-anchor="middle">~210ms</text>
+  <text x="1020" y="930" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151">-</text>
+  <rect x="1200" y="910" width="120" height="30" rx="6" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text x="1260" y="930" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#16a34a" text-anchor="middle">~110ms</text>
+
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
 </svg>

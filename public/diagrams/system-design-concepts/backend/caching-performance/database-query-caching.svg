@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <linearGradient id="appGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ede9fe"/>
+      <stop offset="100%" stop-color="#ddd6fe"/>
+    </linearGradient>
+    <linearGradient id="queryGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="cacheGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d1fae5"/>
+      <stop offset="100%" stop-color="#a7f3d0"/>
+    </linearGradient>
+    <linearGradient id="materialGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+    <linearGradient id="bufferGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fce7f3"/>
+      <stop offset="100%" stop-color="#fbcfe8"/>
+    </linearGradient>
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e5e7eb"/>
+      <stop offset="100%" stop-color="#d1d5db"/>
+    </linearGradient>
+    <linearGradient id="invalidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fee2e2"/>
+      <stop offset="100%" stop-color="#fecaca"/>
+    </linearGradient>
+  </defs>
+
+  <!-- White background -->
+  <rect width="1100" height="720" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="550" y="42" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Database Query Caching Layers</text>
+  <text x="550" y="66" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#6b7280" text-anchor="middle">Multi-layer caching architecture with cache invalidation on writes</text>
+
+  <!-- Layer 1: Application Level -->
+  <rect x="60" y="90" width="200" height="85" rx="8" fill="url(#appGrad)" stroke="#7c3aed" stroke-width="2"/>
+  <text x="160" y="118" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Application-Level Cache</text>
+  <text x="160" y="138" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">(Redis / Memcached)</text>
+  <text x="160" y="158" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Hit Rate: 70-85%</text>
+  <text x="160" y="172" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: 1-3ms</text>
+
+  <!-- Layer 2: Query Result Cache -->
+  <rect x="60" y="200" width="200" height="85" rx="8" fill="url(#queryGrad)" stroke="#2563eb" stroke-width="2"/>
+  <text x="160" y="228" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Query Result Cache</text>
+  <text x="160" y="248" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">(ORM / PreparedStatement)</text>
+  <text x="160" y="268" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Hit Rate: 50-65%</text>
+  <text x="160" y="282" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: 3-8ms</text>
+
+  <!-- Layer 3: Materialized Views -->
+  <rect x="60" y="310" width="200" height="85" rx="8" fill="url(#materialGrad)" stroke="#d97706" stroke-width="2"/>
+  <text x="160" y="338" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Materialized Views</text>
+  <text x="160" y="358" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">(Pre-computed aggregates)</text>
+  <text x="160" y="378" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Hit Rate: 80-95%</text>
+  <text x="160" y="392" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: 5-15ms</text>
+
+  <!-- Layer 4: Database Buffer Pool -->
+  <rect x="60" y="420" width="200" height="85" rx="8" fill="url(#bufferGrad)" stroke="#db2777" stroke-width="2"/>
+  <text x="160" y="448" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Database Buffer Pool</text>
+  <text x="160" y="468" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">(InnoDB Buffer / Shared Buffers)</text>
+  <text x="160" y="488" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Hit Rate: 90-99%</text>
+  <text x="160" y="502" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: 0.1-1ms</text>
+
+  <!-- Database Storage -->
+  <rect x="60" y="540" width="200" height="70" rx="8" fill="url(#dbGrad)" stroke="#6b7280" stroke-width="2"/>
+  <text x="160" y="568" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Persistent Storage</text>
+  <text x="160" y="588" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">(Disk / SSD / NVMe)</text>
+  <text x="160" y="604" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: 10-100ms</text>
+
+  <!-- Query Flow Section (Right side) -->
+  <rect x="330" y="90" width="420" height="420" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="540" y="120" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Query Flow Pipeline</text>
+
+  <!-- Step 1: SQL Query -->
+  <rect x="370" y="145" width="340" height="50" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+  <text x="540" y="168" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">1. SQL Query Received</text>
+  <text x="540" y="186" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">SELECT * FROM users WHERE region = $1 AND status = $2</text>
+
+  <!-- Arrow down -->
+  <line x1="540" y1="195" x2="540" y2="215" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Cache Key Generation -->
+  <rect x="370" y="220" width="340" height="50" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="540" y="243" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">2. Generate Cache Key</text>
+  <text x="540" y="261" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">key = hash(normalize(SQL) + params + session_context)</text>
+
+  <!-- Arrow down -->
+  <line x1="540" y1="270" x2="540" y2="290" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Cache Lookup -->
+  <rect x="370" y="295" width="340" height="50" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="540" y="318" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">3. Cache Lookup</text>
+  <text x="540" y="336" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Check L1 -&gt; L2 -&gt; L3 -&gt; L4 layers in order</text>
+
+  <!-- Arrow down split -->
+  <line x1="540" y1="345" x2="540" y2="365" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: Decision diamond -->
+  <polygon points="540,370 440,410 540,450 640,410" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="540" y="406" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Cache Hit?</text>
+  <text x="540" y="424" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Check TTL + validity</text>
+
+  <!-- Arrow HIT (right) -->
+  <line x1="640" y1="410" x2="680" y2="410" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  <text x="665" y="400" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">HIT</text>
+
+  <!-- Arrow MISS (down) -->
+  <line x1="540" y1="450" x2="540" y2="480" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+  <text x="555" y="470" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#dc2626" text-anchor="start">MISS</text>
+
+  <!-- Hit Result -->
+  <rect x="685" y="385" width="180" height="50" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="775" y="406" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Return Cached</text>
+  <text x="775" y="424" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: 1-5ms</text>
+
+  <!-- Miss Result -->
+  <rect x="450" y="485" width="180" height="50" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="540" y="508" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Execute Query</text>
+  <text x="540" y="526" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: 10-100ms</text>
+
+  <!-- Cache Invalidation Section -->
+  <rect x="810" y="90" width="260" height="520" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="940" y="120" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Cache Invalidation</text>
+  <text x="940" y="140" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#6b7280" text-anchor="middle">Triggered on WRITE operations</text>
+
+  <!-- Invalidation Strategy 1 -->
+  <rect x="830" y="160" width="220" height="100" rx="6" fill="url(#invalidGrad)" stroke="#dc2626" stroke-width="2"/>
+  <text x="940" y="183" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Table-Level Invalidation</text>
+  <text x="940" y="203" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">DELETE/UPDATE on table</text>
+  <text x="940" y="219" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Invalidates ALL cache entries</text>
+  <text x="940" y="235" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">for that table</text>
+  <text x="940" y="251" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">Aggressive | Safe | Costly</text>
+
+  <!-- Invalidation Strategy 2 -->
+  <rect x="830" y="280" width="220" height="100" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="940" y="303" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Row-Level Invalidation</text>
+  <text x="940" y="323" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Invalidates cache entries</text>
+  <text x="940" y="339" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">matching modified row IDs</text>
+  <text x="940" y="355" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Uses row hash tracking</text>
+  <text x="940" y="371" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#d97706" text-anchor="middle">Precise | Moderate | Efficient</text>
+
+  <!-- Invalidation Strategy 3 -->
+  <rect x="830" y="400" width="220" height="100" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="940" y="423" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Query-Pattern Based</text>
+  <text x="940" y="443" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Analyzes query patterns</text>
+  <text x="940" y="459" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Invalidates dependent caches</text>
+  <text x="940" y="475" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">via dependency graph</text>
+  <text x="940" y="491" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">Smart | Complex | Optimal</text>
+
+  <!-- Write trigger arrow -->
+  <rect x="830" y="520" width="220" height="60" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="940" y="545" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">WRITE Operations</text>
+  <text x="940" y="565" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">INSERT / UPDATE / DELETE</text>
+
+  <!-- Connecting arrows between layers -->
+  <line x1="260" y1="132" x2="330" y2="132" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="260" y1="242" x2="330" y2="242" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="260" y1="352" x2="330" y2="352" stroke="#d97706" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="260" y1="462" x2="330" y2="462" stroke="#db2777" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Arrows from query flow to invalidation -->
+  <line x1="750" y1="410" x2="810" y2="410" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <text x="780" y="400" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280" text-anchor="middle">invalidate</text>
+
+  <!-- Layer connections (downward arrows) -->
+  <line x1="160" y1="175" x2="160" y2="200" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="180" y="192" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280">miss</text>
+  <line x1="160" y1="285" x2="160" y2="310" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="180" y="302" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280">miss</text>
+  <line x1="160" y1="395" x2="160" y2="420" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="180" y="412" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280">miss</text>
+  <line x1="160" y1="505" x2="160" y2="540" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="180" y="527" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#6b7280">miss</text>
+
+  <!-- Write to invalidate arrow -->
+  <line x1="630" y1="510" x2="830" y2="550" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowhead-red)"/>
+  <text x="730" y="525" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">triggers invalidation</text>
+
+  <!-- Bottom metrics summary -->
+  <rect x="330" y="560" width="420" height="80" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="540" y="585" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Performance Metrics Summary</text>
+  <text x="400" y="610" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">L1 Hit: 75% | Avg: 2ms</text>
+  <text x="540" y="610" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">L2 Hit: 55% | Avg: 5ms</text>
+  <text x="680" y="610" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">L3 Hit: 88% | Avg: 10ms</text>
+  <text x="400" y="630" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">L4 Hit: 95% | Avg: 0.5ms</text>
+  <text x="540" y="630" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">DB Hit: 5% | Avg: 50ms</text>
+  <text x="680" y="630" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Effective TTL: 30s-5min</text>
+
+  <!-- Legend -->
+  <rect x="330" y="660" width="420" height="45" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="345" y1="680" x2="370" y2="680" stroke="#059669" stroke-width="2"/>
+  <text x="375" y="684" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Cache Hit Flow</text>
+  <line x1="470" y1="680" x2="495" y2="680" stroke="#dc2626" stroke-width="2"/>
+  <text x="500" y="684" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Cache Miss Flow</text>
+  <line x1="595" y1="680" x2="620" y2="680" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="625" y="684" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#374151">Invalidation Trigger</text>
+</svg>

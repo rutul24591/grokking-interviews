@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="ttlGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="eventGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="versionGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.05" />
+    </linearGradient>
+    <linearGradient id="flowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.05" />
+    </linearGradient>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#3b82f6" />
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#10b981" />
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#8b5cf6" />
+    </marker>
+    <marker id="arrowAmber" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#f59e0b" />
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#ef4444" />
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#6b7280" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="720" fill="#ffffff" />
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#111827">Cache Invalidation Architecture Patterns</text>
+  <text x="450" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151">Three strategies for keeping cache consistent with the database</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 1: TTL-Based Invalidation -->
+  <!-- ============================================================ -->
+  <rect x="30" y="85" width="840" height="195" rx="12" fill="url(#ttlGrad)" stroke="#3b82f6" stroke-width="2" />
+  <text x="450" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#3b82f6">Strategy 1: TTL-Based Invalidation (Time-To-Live)</text>
+
+  <!-- Timeline -->
+  <line x1="60" y1="190" x2="840" y2="190" stroke="#6b7280" stroke-width="2" />
+  <text x="850" y="195" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#6b7280">Time</text>
+
+  <!-- T0: Write -->
+  <circle cx="130" cy="190" r="20" fill="#3b82f6" stroke="#3b82f6" stroke-width="2" />
+  <text x="130" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">T0</text>
+  <text x="130" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1f2937">Write DB</text>
+  <text x="130" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Cache populated</text>
+
+  <!-- Staleness window -->
+  <rect x="160" y="175" width="400" height="30" rx="6" fill="#ef4444" opacity="0.1" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" />
+  <text x="360" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#ef4444">Staleness Window (data may be stale but served from cache)</text>
+
+  <!-- T1: Stale reads -->
+  <circle cx="300" cy="190" r="16" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" />
+  <text x="300" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">T1</text>
+  <text x="300" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Stale reads OK</text>
+
+  <!-- T2: More stale reads -->
+  <circle cx="440" cy="190" r="16" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" />
+  <text x="440" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">T2</text>
+  <text x="440" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Still serving stale</text>
+
+  <!-- T3: TTL expires -->
+  <circle cx="560" cy="190" r="20" fill="#ef4444" stroke="#ef4444" stroke-width="2" />
+  <text x="560" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">T3</text>
+  <text x="560" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1f2937">TTL Expires</text>
+  <text x="560" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Cache entry evicted</text>
+
+  <!-- T4: Refresh on next read -->
+  <circle cx="700" cy="190" r="20" fill="#10b981" stroke="#10b981" stroke-width="2" />
+  <text x="700" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">T4</text>
+  <text x="700" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1f2937">Refresh on Next Read</text>
+  <text x="700" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Cache miss triggers DB fetch</text>
+
+  <!-- Arrow from T3 to T4 -->
+  <line x1="580" y1="190" x2="680" y2="190" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" />
+
+  <!-- Consistency trade-off label -->
+  <rect x="30" y="248" width="840" height="24" rx="4" fill="#111827" opacity="0.05" />
+  <text x="450" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1f2937">Trade-off: Simple to implement, but accepts eventual consistency with bounded staleness = TTL duration. Best for read-heavy, stale-tolerant data.</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: Event-Based Invalidation -->
+  <!-- ============================================================ -->
+  <rect x="30" y="295" width="840" height="195" rx="12" fill="url(#eventGrad)" stroke="#10b981" stroke-width="2" />
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#10b981">Strategy 2: Event-Based Invalidation (Write-Triggered)</text>
+
+  <!-- Write triggers invalidation flow -->
+  <!-- App -->
+  <rect x="60" y="345" width="130" height="45" rx="8" fill="#10b981" opacity="0.15" stroke="#10b981" stroke-width="2" />
+  <text x="125" y="372" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1f2937">App: Write</text>
+
+  <!-- Arrow to DB -->
+  <line x1="190" y1="367" x2="250" y2="367" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" />
+  <text x="220" y="358" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Step 1</text>
+
+  <!-- DB -->
+  <rect x="255" y="345" width="130" height="45" rx="8" fill="#10b981" opacity="0.15" stroke="#10b981" stroke-width="2" />
+  <text x="320" y="372" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1f2937">Database</text>
+
+  <!-- Arrow to Pub/Sub -->
+  <line x1="385" y1="367" x2="445" y2="367" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" />
+  <text x="415" y="358" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Step 2</text>
+
+  <!-- Pub/Sub -->
+  <rect x="450" y="345" width="130" height="45" rx="8" fill="#10b981" opacity="0.15" stroke="#10b981" stroke-width="2" />
+  <text x="515" y="372" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1f2937">Pub/Sub Event</text>
+
+  <!-- Arrows branching to multiple L1 caches -->
+  <!-- Arrow to L1 Instance 1 -->
+  <path d="M 580 360 Q 620 340 650 320" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" />
+  <!-- Arrow to L1 Instance 2 -->
+  <line x1="580" y1="367" x2="650" y2="367" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" />
+  <!-- Arrow to L1 Instance 3 -->
+  <path d="M 580 375 Q 620 395 650 415" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" />
+
+  <!-- L1 Instance 1 -->
+  <rect x="655" y="305" width="110" height="40" rx="6" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="2" />
+  <text x="710" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#1f2937">L1: Delete</text>
+
+  <!-- L1 Instance 2 -->
+  <rect x="655" y="350" width="110" height="40" rx="6" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="2" />
+  <text x="710" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#1f2937">L2: Delete</text>
+
+  <!-- L1 Instance 3 -->
+  <rect x="655" y="395" width="110" height="40" rx="6" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="2" />
+  <text x="710" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#1f2937">L1: Delete</text>
+
+  <!-- Multi-instance label -->
+  <text x="710" y="455" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">All cache instances invalidated</text>
+
+  <!-- Next read refresh -->
+  <path d="M 710 305 Q 710 280 560 280 Q 410 280 410 320" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowPurple)" />
+  <text x="560" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#8b5cf6">Next read: cache miss, refresh from DB</text>
+
+  <!-- Trade-off label -->
+  <rect x="30" y="465" width="840" height="24" rx="4" fill="#111827" opacity="0.05" />
+  <text x="450" y="482" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1f2937">Trade-off: Near-real-time consistency, but requires reliable pub/sub. Risk of missed invalidation if event delivery fails. At-least-once delivery preferred.</text>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: Versioned Keys Invalidation -->
+  <!-- ============================================================ -->
+  <rect x="30" y="505" width="840" height="200" rx="12" fill="url(#versionGrad)" stroke="#8b5cf6" stroke-width="2" />
+  <text x="450" y="535" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#8b5cf6">Strategy 3: Versioned Keys (Logical Invalidation)</text>
+
+  <!-- Version columns -->
+  <!-- v1 key -->
+  <rect x="60" y="555" width="180" height="130" rx="8" fill="#8b5cf6" opacity="0.1" stroke="#8b5cf6" stroke-width="1.5" />
+  <text x="150" y="580" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#8b5cf6">Key: user:100:v1</text>
+  <text x="150" y="605" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#1f2937">Status: Stale (abandoned)</text>
+  <rect x="80" y="620" width="140" height="50" rx="6" fill="#ef4444" opacity="0.1" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2" />
+  <text x="150" y="640" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ef4444">Not served after v2 write</text>
+  <text x="150" y="658" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ef4444">Evicted by TTL eventually</text>
+
+  <!-- Version increment arrow -->
+  <path d="M 240 620 Q 290 620 340 620" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowAmber)" />
+  <text x="290" y="605" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#f59e0b">Write = Bump version</text>
+
+  <!-- v2 key -->
+  <rect x="340" y="555" width="180" height="130" rx="8" fill="#8b5cf6" opacity="0.15" stroke="#8b5cf6" stroke-width="2" />
+  <text x="430" y="580" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#8b5cf6">Key: user:100:v2</text>
+  <text x="430" y="605" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#10b981">Status: Active (current)</text>
+  <rect x="360" y="620" width="140" height="50" rx="6" fill="#10b981" opacity="0.1" stroke="#10b981" stroke-width="1" />
+  <text x="430" y="640" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#10b981">Served on all reads</text>
+  <text x="430" y="658" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#10b981">Fresh data from DB</text>
+
+  <!-- Version pointer arrow -->
+  <path d="M 520 620 Q 570 620 620 620" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" />
+  <text x="570" y="605" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#10b981">Read resolves to latest</text>
+
+  <!-- Version resolution table -->
+  <rect x="620" y="555" width="220" height="130" rx="8" fill="#111827" opacity="0.05" stroke="#111827" stroke-width="1.5" />
+  <text x="730" y="580" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1f2937">Version Resolution</text>
+
+  <!-- Table rows -->
+  <line x1="640" y1="590" x2="820" y2="590" stroke="#6b7280" stroke-width="1" />
+  <text x="645" y="608" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1f2937">Entity: user:100</text>
+  <line x1="640" y1="615" x2="820" y2="615" stroke="#6b7280" stroke-width="1" />
+  <text x="645" y="633" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Current version: v2</text>
+  <line x1="640" y1="640" x2="820" y2="640" stroke="#6b7280" stroke-width="1" />
+  <text x="645" y="658" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Stored in: version table</text>
+  <line x1="640" y1="665" x2="820" y2="665" stroke="#6b7280" stroke-width="1" />
+  <text x="645" y="680" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Or: encoded in key itself</text>
+
+  <!-- Trade-off label -->
+  <rect x="30" y="680" width="840" height="24" rx="4" fill="#111827" opacity="0.05" />
+  <text x="450" y="697" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1f2937">Trade-off: No cache deletion needed, but old versions consume memory until TTL. Version metadata must be consistent. Best for high-write, append-heavy workloads.</text>
+
+</svg>

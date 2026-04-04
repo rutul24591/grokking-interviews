@@ -1,0 +1,304 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <rect width="1200" height="1600" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="42" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827" text-anchor="middle">Cache Invalidation Flow — Atomic vs Eventual Consistency</text>
+  <text x="600" y="66" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" text-anchor="middle">Content update --&gt; identify affected pages --&gt; purge CDN --&gt; purge reverse proxy --&gt; purge app cache --&gt; fragment invalidation, with rollback strategy</text>
+
+  <!-- ==================== SECTION 1: FULL INVALIDATION PIPELINE ==================== -->
+  <rect x="30" y="95" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="125" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Complete Invalidation Pipeline — Step by Step</text>
+
+  <!-- Trigger event -->
+  <rect x="30" y="160" width="1140" height="60" rx="10" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <rect x="30" y="160" width="60" height="60" rx="10" fill="#dc2626"/>
+  <text x="60" y="197" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">!</text>
+  <text x="620" y="188" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#991b1b" text-anchor="middle">Trigger Event: Content Update</text>
+  <text x="620" y="208" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#991b1b" text-anchor="middle">Example: Admin updates product description for product:P001 -- price changes from $99 to $79, new images added</text>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="222" x2="600" y2="252" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Step 1: Identify Affected Pages -->
+  <rect x="30" y="255" width="1140" height="120" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="30" y="255" width="60" height="120" rx="10" fill="#fef3c7"/>
+  <rect x="30" y="365" width="60" height="10" fill="#fef3c7"/>
+  <text x="60" y="310" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#92400e" text-anchor="middle">1</text>
+
+  <text x="120" y="280" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Step 1: Identify All Affected Cache Keys</text>
+
+  <!-- Affected keys visualization -->
+  <rect x="120" y="295" width="200" height="26" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="135" y="313" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">page:product:P001</text>
+
+  <rect x="330" y="295" width="200" height="26" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="345" y="313" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">page:category:electronics</text>
+
+  <rect x="540" y="295" width="200" height="26" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="555" y="313" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">page:related:P002,P003,P004</text>
+
+  <rect x="750" y="295" width="200" height="26" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="765" y="313" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">frag:product:P001</text>
+
+  <rect x="120" y="330" width="200" height="26" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="135" y="348" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">frag:price:P001</text>
+
+  <rect x="330" y="330" width="200" height="26" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="345" y="348" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">cdn:/products/P001/*</text>
+
+  <rect x="540" y="330" width="200" height="26" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="555" y="348" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e">+ 47 more related keys...</text>
+
+  <!-- Tag-based invalidation -->
+  <rect x="750" y="330" width="400" height="26" rx="4" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/>
+  <text x="950" y="348" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#3730a3" text-anchor="middle">Using Surrogate-Key: product-P001 (one tag purge all)</text>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="377" x2="600" y2="407" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Step 2-6 horizontal flow -->
+  <text x="600" y="430" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Steps 2-6: Purge Each Layer (Eventual Consistency)</text>
+
+  <!-- Step 2: Purge CDN -->
+  <rect x="30" y="455" width="220" height="130" rx="10" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+  <rect x="30" y="455" width="40" height="40" rx="8" fill="#dbeafe"/>
+  <text x="50" y="482" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#1e40af" text-anchor="middle">2</text>
+
+  <text x="140" y="478" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#1e40af">Purge CDN</text>
+
+  <rect x="45" y="500" width="190" height="24" rx="4" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="140" y="517" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#1e40af" text-anchor="middle">POST /purge (CloudFront API)</text>
+
+  <rect x="45" y="528" width="190" height="24" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="140" y="545" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#92400e" text-anchor="middle">Time: 50-200ms</text>
+
+  <rect x="45" y="556" width="190" height="24" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="140" y="573" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Propagates to 200+ PoPs</text>
+
+  <!-- Arrow -->
+  <line x1="252" y1="520" x2="288" y2="520" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Step 3: Purge Reverse Proxy -->
+  <rect x="290" y="455" width="220" height="130" rx="10" fill="#ffffff" stroke="#a78bfa" stroke-width="2"/>
+  <rect x="290" y="455" width="40" height="40" rx="8" fill="#ede9fe"/>
+  <text x="310" y="482" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#6b21a8" text-anchor="middle">3</text>
+
+  <text x="400" y="478" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#6b21a8">Purge Varnish</text>
+
+  <rect x="305" y="500" width="190" height="24" rx="4" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="400" y="517" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#6b21a8" text-anchor="middle">BAN "req.url ~ /products/P001"</text>
+
+  <rect x="305" y="528" width="190" height="24" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="400" y="545" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#92400e" text-anchor="middle">Time: 10-50ms</text>
+
+  <rect x="305" y="556" width="190" height="24" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="400" y="573" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">All Varnish instances (local LAN)</text>
+
+  <!-- Arrow -->
+  <line x1="512" y1="520" x2="548" y2="520" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Step 4: Purge App Cache -->
+  <rect x="550" y="455" width="220" height="130" rx="10" fill="#ffffff" stroke="#fbbf24" stroke-width="2"/>
+  <rect x="550" y="455" width="40" height="40" rx="8" fill="#fef3c7"/>
+  <text x="570" y="482" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#92400e" text-anchor="middle">4</text>
+
+  <text x="660" y="478" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e">Purge App Cache</text>
+
+  <rect x="565" y="500" width="190" height="24" rx="4" fill="#fef3c7" stroke="#fcd34d" stroke-width="1"/>
+  <text x="660" y="517" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#92400e" text-anchor="middle">DEL product:P001:* (Redis)</text>
+
+  <rect x="565" y="528" width="190" height="24" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="660" y="545" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#92400e" text-anchor="middle">Time: 5-20ms</text>
+
+  <rect x="565" y="556" width="190" height="24" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="660" y="573" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Pub/sub for Caffeine invalidation</text>
+
+  <!-- Arrow -->
+  <line x1="772" y1="520" x2="808" y2="520" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Step 5: Fragment Invalidation -->
+  <rect x="810" y="455" width="220" height="130" rx="10" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <rect x="810" y="455" width="40" height="40" rx="8" fill="#dcfce7"/>
+  <text x="830" y="482" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">5</text>
+
+  <text x="920" y="478" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534">Fragments</text>
+
+  <rect x="825" y="500" width="190" height="24" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="920" y="517" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#166534" text-anchor="middle">Invalidate fragment cache entries</text>
+
+  <rect x="825" y="528" width="190" height="24" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="920" y="545" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#92400e" text-anchor="middle">Time: 1-5ms</text>
+
+  <rect x="825" y="556" width="190" height="24" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="920" y="573" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Re-rendered on next request</text>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="587" x2="600" y2="617" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Complete state -->
+  <rect x="30" y="620" width="1140" height="60" rx="10" fill="#d1fae5" stroke="#86efac" stroke-width="2"/>
+  <text x="600" y="645" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#166534" text-anchor="middle">Invalidation Complete — All layers serving fresh data</text>
+  <text x="600" y="665" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#166534" text-anchor="middle">Total wall-clock time: ~200-300ms (CDN propagation dominates)</text>
+
+  <!-- ==================== SECTION 2: ATOMIC vs EVENTUAL CONSISTENCY ==================== -->
+  <rect x="30" y="705" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="735" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Atomic Invalidation vs Eventual Consistency — Two Approaches</text>
+
+  <!-- Atomic Invalidation -->
+  <rect x="30" y="770" width="560" height="420" rx="10" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+  <rect x="30" y="770" width="560" height="40" rx="10" fill="#dbeafe"/>
+  <rect x="30" y="800" width="560" height="10" fill="#dbeafe"/>
+  <text x="310" y="795" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#1e40af" text-anchor="middle">Atomic Invalidation (All-or-Nothing)</text>
+
+  <!-- Timeline -->
+  <text x="50" y="840" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">Approach: Block serving until all layers purged</text>
+
+  <!-- Step visualization -->
+  <rect x="50" y="855" width="520" height="35" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="65" y="878" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b">T+0ms: Mark content as "invalidating" -- serve 503 or stale</text>
+
+  <rect x="50" y="895" width="520" height="35" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="65" y="918" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e">T+10ms: Purge Redis + Caffeine (fast, local)</text>
+
+  <rect x="50" y="935" width="520" height="35" rx="6" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="65" y="958" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#6b21a8">T+30ms: Purge Varnish (local network)</text>
+
+  <rect x="50" y="975" width="520" height="35" rx="6" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="65" y="998" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#1e40af">T+50ms: Purge CDN (async, fire-and-forget)</text>
+
+  <rect x="50" y="1015" width="520" height="35" rx="6" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="65" y="1038" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#166534">T+50ms: Mark "valid" -- serve fresh (app + Varnish ready)</text>
+
+  <rect x="50" y="1055" width="520" height="35" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="65" y="1078" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#374151">T+200ms: CDN propagation completes (background)</text>
+
+  <!-- Pros/Cons -->
+  <rect x="50" y="1100" width="240" height="75" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="170" y="1120" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#065f46" text-anchor="middle">Advantages</text>
+  <text x="65" y="1140" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- No mixed-content pages (all layers consistent)</text>
+  <text x="65" y="1156" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Users see clean transition: old or new, never mixed</text>
+  <text x="65" y="1172" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Safe for critical data (prices, inventory)</text>
+
+  <rect x="310" y="1100" width="260" height="75" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="440" y="1120" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b" text-anchor="middle">Disadvantages</text>
+  <text x="325" y="1140" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- Brief 503/stale window during purge</text>
+  <text x="325" y="1156" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- Complex coordination (distributed lock)</text>
+  <text x="325" y="1172" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- CDN still has eventual consistency at edge</text>
+
+  <!-- Eventual Consistency -->
+  <rect x="610" y="770" width="560" height="420" rx="10" fill="#ffffff" stroke="#fbbf24" stroke-width="2"/>
+  <rect x="610" y="770" width="560" height="40" rx="10" fill="#fef3c7"/>
+  <rect x="610" y="800" width="560" height="10" fill="#fef3c7"/>
+  <text x="890" y="795" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#92400e" text-anchor="middle">Eventual Consistency (Fire-and-Forget)</text>
+
+  <!-- Timeline -->
+  <text x="630" y="840" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">Approach: Purge all layers asynchronously, accept stale window</text>
+
+  <!-- Step visualization -->
+  <rect x="630" y="855" width="520" height="35" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="645" y="878" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b">T+0ms: Update content in DB, publish invalidation event</text>
+
+  <rect x="630" y="895" width="520" height="35" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="645" y="918" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e">T+5ms: Parallel purge all layers (Redis, Varnish, CDN)</text>
+
+  <rect x="630" y="935" width="520" height="35" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="645" y="958" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#374151">T+5-200ms: Some requests may hit stale cache (mixed content possible)</text>
+
+  <rect x="630" y="975" width="520" height="35" rx="6" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="645" y="998" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#166534">T+200ms: All layers converged, serving fresh data</text>
+
+  <!-- Stale window visualization -->
+  <rect x="630" y="1020" width="520" height="40" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="890" y="1038" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#92400e" text-anchor="middle">Stale Window: ~200ms (acceptable for most content)</text>
+  <text x="890" y="1054" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="400" fill="#92400e" text-anchor="middle">During this window, CDN may serve old HTML with new app data</text>
+
+  <!-- Pros/Cons -->
+  <rect x="630" y="1075" width="250" height="100" rx="6" fill="#d1fae5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="755" y="1095" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#065f46" text-anchor="middle">Advantages</text>
+  <text x="645" y="1115" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Simple implementation: publish event, each layer subscribes</text>
+  <text x="645" y="1132" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- No serving disruption -- always available</text>
+  <text x="645" y="1148" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Parallel purges minimize total time</text>
+  <text x="645" y="1165" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#065f46">- Works with CDN's inherent eventual consistency</text>
+
+  <rect x="900" y="1075" width="250" height="100" rx="6" fill="#fee2e2" stroke="#fecaca" stroke-width="1"/>
+  <text x="1025" y="1095" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#991b1b" text-anchor="middle">Disadvantages</text>
+  <text x="915" y="1115" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- Mixed content during stale window</text>
+  <text x="915" y="1132" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">(old page HTML, new fragment data)</text>
+  <text x="915" y="1148" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">- Not safe for critical updates</text>
+  <text x="915" y="1165" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b">(prices, availability, auth state)</text>
+
+  <!-- ==================== SECTION 3: ROLLBACK STRATEGY ==================== -->
+  <rect x="30" y="1215" width="1140" height="48" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="1245" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Rollback Strategy — When Invalidation Fails or New Content Has Bugs</text>
+
+  <!-- Rollback flow -->
+  <rect x="30" y="1280" width="1140" height="290" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- Normal flow -->
+  <rect x="60" y="1305" width="140" height="50" rx="8" fill="#d1fae5" stroke="#86efac" stroke-width="2"/>
+  <text x="130" y="1325" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534" text-anchor="middle">Normal:</text>
+  <text x="130" y="1343" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534" text-anchor="middle">Update + Invalidate</text>
+
+  <!-- Arrow -->
+  <line x1="202" y1="1330" x2="258" y2="1330" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Detection -->
+  <rect x="260" y="1305" width="180" height="50" rx="8" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="350" y="1325" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Detection:</text>
+  <text x="350" y="1343" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Error monitoring / alert</text>
+
+  <!-- Arrow -->
+  <line x1="442" y1="1330" x2="498" y2="1330" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <!-- Decision -->
+  <rect x="500" y="1295" width="160" height="70" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+  <text x="580" y="1318" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Error Rate &gt; Threshold?</text>
+  <text x="580" y="1340" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#92400e" text-anchor="middle">(5xx spikes, user reports)</text>
+  <text x="580" y="1356" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">--&gt; Trigger Rollback</text>
+
+  <!-- Arrow down -->
+  <line x1="580" y1="1367" x2="580" y2="1398" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Rollback steps -->
+  <rect x="480" y="1400" width="200" height="50" rx="8" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="580" y="1420" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Step 1: Revert DB</text>
+  <text x="580" y="1438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Restore previous content</text>
+
+  <!-- Arrow right -->
+  <line x1="682" y1="1425" x2="718" y2="1425" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <rect x="720" y="1400" width="200" height="50" rx="8" fill="#fee2e2" stroke="#f87171" stroke-width="2"/>
+  <text x="820" y="1420" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">Step 2: Re-purge Cache</text>
+  <text x="820" y="1438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#991b1b" text-anchor="middle">Invalidate buggy content</text>
+
+  <!-- Arrow right -->
+  <line x1="922" y1="1425" x2="958" y2="1425" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+
+  <rect x="960" y="1400" width="180" height="50" rx="8" fill="#d1fae5" stroke="#86efac" stroke-width="2"/>
+  <text x="1050" y="1420" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534" text-anchor="middle">Step 3: Verify</text>
+  <text x="1050" y="1438" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#166534" text-anchor="middle">Monitor error rate</text>
+
+  <!-- Pre-cached rollback content -->
+  <rect x="480" y="1465" width="660" height="45" rx="8" fill="#e0e7ff" stroke="#818cf8" stroke-width="2"/>
+  <text x="810" y="1485" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#3730a3" text-anchor="middle">Pro Tip: Keep previous version pre-cached with versioned keys</text>
+  <text x="810" y="1503" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">page:v2:product:P001 --&gt; rollback to page:v1:product:P001 (instant, no DB revert needed)</text>
+
+  <!-- Key insight -->
+  <rect x="60" y="1400" width="400" height="110" rx="8" fill="#1f2937"/>
+  <text x="260" y="1425" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Rollback Best Practices</text>
+
+  <text x="80" y="1450" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#d1d5db">1. Always version your cache keys (v1, v2, v3)</text>
+  <text x="80" y="1468" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#d1d5db">2. Keep previous version cached for instant rollback</text>
+  <text x="80" y="1486" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#d1d5db">3. Use feature flags to control new content visibility</text>
+  <text x="80" y="1504" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="400" fill="#d1d5db">4. Monitor 5xx rate, TTFB, and cache hit rate during deploys</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>
