@@ -1,0 +1,52 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Blue-Green Rollback</text>
+  <!-- Green with Issues -->
+  <rect x="50" y="80" width="350" height="200" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="225" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#b91c1c">Green Active (Issues Detected)</text>
+  <text x="225" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#b91c1c">Version 2.0 with errors</text>
+  <rect x="70" y="160" width="310" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="225" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Error rate spike detected (5% → 15%)</text>
+  <rect x="70" y="190" width="310" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="225" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Response time degraded (200ms → 800ms)</text>
+  <rect x="70" y="220" width="310" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="225" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">User complaints increasing</text>
+  <rect x="70" y="250" width="310" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="225" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Rollback triggered automatically</text>
+  <!-- Instant Switch Arrow -->
+  <path d="M 400 180 L 500 180" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-red)" fill="none"/>
+  <text x="450" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#b91c1c">INSTANT SWITCH</text>
+  <!-- Blue Standby (Ready) -->
+  <rect x="500" y="80" width="350" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="675" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Blue Standby (Ready)</text>
+  <text x="675" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#15803d">Version 1.0 (stable)</text>
+  <rect x="520" y="160" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="675" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Previous stable version</text>
+  <rect x="520" y="190" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="675" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Ready for instant switch</text>
+  <rect x="520" y="220" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="675" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">No rebuild or redeploy needed</text>
+  <rect x="520" y="250" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="675" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">All sessions valid (JWT tokens)</text>
+  <!-- After Rollback -->
+  <rect x="50" y="300" width="800" height="120" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">After Rollback</text>
+  <rect x="70" y="350" width="360" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="250" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Blue is active again (v1.0 serving traffic)</text>
+  <rect x="450" y="350" width="380" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="640" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Green is available for fix and redeploy</text>
+  <!-- Rollback Characteristics -->
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Rollback Characteristics</text>
+  <rect x="70" y="485" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Time: Instant (seconds)</text>
+  <rect x="330" y="485" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">No rebuild needed</text>
+  <rect x="590" y="485" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">No data loss</text>
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

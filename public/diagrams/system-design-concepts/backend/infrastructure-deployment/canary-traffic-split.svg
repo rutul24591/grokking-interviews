@@ -1,0 +1,53 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Canary Traffic Split</text>
+  <!-- Stage 1: 1% -->
+  <rect x="50" y="80" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="130" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">1% Canary</text>
+  <text x="130" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Initial test</text>
+  <text x="130" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">15 minutes</text>
+  <path d="M 210 130 L 260 130" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Stage 2: 5% -->
+  <rect x="260" y="80" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="340" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">5% Canary</text>
+  <text x="340" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Expanded test</text>
+  <text x="340" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">30 minutes</text>
+  <path d="M 420 130 L 470 130" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Stage 3: 10% -->
+  <rect x="470" y="80" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="550" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">10% Canary</text>
+  <text x="550" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Broader exposure</text>
+  <text x="550" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">1 hour</text>
+  <path d="M 630 130 L 680 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Stage 4: 25% -->
+  <rect x="680" y="80" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="760" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">25% Canary</text>
+  <text x="760" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Significant exposure</text>
+  <text x="760" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">2 hours</text>
+  <!-- Stage 5: 50% -->
+  <rect x="50" y="200" width="160" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">50% Canary</text>
+  <text x="130" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Half traffic</text>
+  <text x="130" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">4 hours</text>
+  <path d="M 210 250 L 260 250" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Stage 6: 100% -->
+  <rect x="260" y="200" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="340" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">100% Rollout</text>
+  <text x="340" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Full deployment</text>
+  <text x="340" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Complete</text>
+  <!-- Traffic Distribution -->
+  <rect x="50" y="320" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Traffic Distribution</text>
+  <rect x="70" y="370" width="760" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="450" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Old Version: 99% → 95% → 90% → 75% → 50% → 0% | New Version: 1% → 5% → 10% → 25% → 50% → 100%</text>
+  <!-- Decision Point -->
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Promotion Decision</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">If metrics healthy → proceed to next stage. If metrics degraded → halt and rollback to previous version.</text>
+  <text x="450" y="520" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Each stage runs for defined duration to allow metrics to stabilize and issues to surface.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,45 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Mutable vs Immutable Infrastructure</text>
+  <!-- Mutable -->
+  <rect x="50" y="80" width="380" height="240" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#b91c1c">Mutable Infrastructure</text>
+  <rect x="70" y="130" width="340" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">SSH into server, make changes</text>
+  <rect x="70" y="160" width="340" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Configuration drift accumulates</text>
+  <rect x="70" y="190" width="340" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Difficult debugging</text>
+  <rect x="70" y="220" width="340" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Complex rollback (undo changes)</text>
+  <rect x="70" y="250" width="340" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Server divergence over time</text>
+  <rect x="70" y="280" width="340" height="25" rx="3" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="240" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Best for: Small fleets, simple apps</text>
+  <!-- Immutable -->
+  <rect x="470" y="80" width="380" height="240" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Immutable Infrastructure</text>
+  <rect x="490" y="130" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Build image, replace servers</text>
+  <rect x="490" y="160" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">No configuration drift</text>
+  <rect x="490" y="190" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Easy debugging (replace server)</text>
+  <rect x="490" y="220" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Easy rollback (revert image)</text>
+  <rect x="490" y="250" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">All servers identical</text>
+  <rect x="490" y="280" width="340" height="25" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="660" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Best for: Large fleets, complex apps</text>
+  <!-- Comparison -->
+  <rect x="50" y="340" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Key Differences</text>
+  <rect x="70" y="390" width="360" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="250" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Mutable: In-place updates, drift, complex rollback</text>
+  <rect x="450" y="390" width="380" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="640" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Immutable: Replacement, no drift, simple rollback</text>
+  <!-- Recommendation -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Recommendation</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Use immutable infrastructure for production environments. Use mutable for development/testing where rapid iteration is needed. Transition to immutable as scale increases.</text>
+</svg>

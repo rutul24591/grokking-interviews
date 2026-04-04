@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <rect width="900" height="550" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">State Management &amp; Drift Detection</text>
+
+  <!-- Left Panel: Remote State Backend -->
+  <rect x="40" y="70" width="400" height="220" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="240" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Remote State Backend</text>
+  <rect x="60" y="125" width="360" height="35" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Terraform Cloud / AWS S3 + DynamoDB</text>
+  <rect x="60" y="170" width="360" height="35" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Encrypted at rest, access controlled</text>
+  <rect x="60" y="215" width="360" height="35" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="237" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Shared among team members</text>
+  <rect x="60" y="260" width="360" height="35" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="282" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Locked during operations</text>
+
+  <!-- Right Panel: Drift Detection -->
+  <rect x="460" y="70" width="400" height="220" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="660" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#991b1b">Drift Detection</text>
+  <rect x="480" y="125" width="360" height="35" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="660" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Desired state (IaC) vs Actual state</text>
+  <rect x="480" y="170" width="360" height="35" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="660" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Causes: manual changes, auto-scaling</text>
+  <rect x="480" y="215" width="360" height="35" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="660" y="237" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Detection: terraform plan, scheduled jobs</text>
+  <rect x="480" y="260" width="360" height="35" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="660" y="282" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Correction: reapply IaC configuration</text>
+
+  <!-- Drift Correction Flow -->
+  <rect x="40" y="315" width="820" height="100" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#15803d">Drift Correction Flow</text>
+  <rect x="60" y="365" width="180" height="38" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="150" y="389" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">1. Detect drift</text>
+  <rect x="260" y="365" width="180" height="38" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="350" y="389" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">2. Review changes</text>
+  <rect x="460" y="365" width="180" height="38" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="550" y="389" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">3. Approve fix</text>
+  <rect x="660" y="365" width="180" height="38" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="750" y="389" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">4. Reapply IaC</text>
+
+  <!-- Best Practices -->
+  <rect x="40" y="435" width="820" height="100" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="450" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#a16207">State Management Best Practices</text>
+  <rect x="60" y="480" width="240" height="32" rx="5" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="180" y="501" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#854d0e">Store state remotely, never locally</text>
+  <rect x="320" y="480" width="240" height="32" rx="5" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="440" y="501" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#854d0e">Enable state locking</text>
+  <rect x="580" y="480" width="240" height="32" rx="5" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="700" y="501" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#854d0e">Never store secrets in state</text>
+</svg>

@@ -1,0 +1,49 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Rolling vs Blue-Green Deployment</text>
+  <!-- Rolling -->
+  <rect x="50" y="80" width="380" height="240" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Rolling Deployment</text>
+  <rect x="70" y="130" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Update instances in-place (one at a time or batches)</text>
+  <rect x="70" y="160" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Lower infrastructure cost</text>
+  <rect x="70" y="190" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Slower rollback (instance by instance)</text>
+  <rect x="70" y="220" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Mixed-version requests during rollout</text>
+  <rect x="70" y="250" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="240" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Best for: Cost-sensitive, large-scale</text>
+  <rect x="70" y="280" width="340" height="25" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="240" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Zero-downtime guaranteed</text>
+  <!-- Blue-Green -->
+  <rect x="470" y="80" width="380" height="240" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Blue-Green Deployment</text>
+  <rect x="490" y="130" width="340" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Two full environments, instant switch</text>
+  <rect x="490" y="160" width="340" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Double infrastructure cost</text>
+  <rect x="490" y="190" width="340" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Instant rollback (switch back)</text>
+  <rect x="490" y="220" width="340" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">No mixed-version requests</text>
+  <rect x="490" y="250" width="340" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="660" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Best for: Instant rollback needed</text>
+  <rect x="490" y="280" width="340" height="25" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="660" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Zero-downtime guaranteed</text>
+  <!-- Comparison -->
+  <rect x="50" y="340" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Comparison</text>
+  <rect x="70" y="390" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Rollback Speed: Slow vs Instant</text>
+  <rect x="330" y="390" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Cost: Low vs High</text>
+  <rect x="590" y="390" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Complexity: Moderate vs Low</text>
+  <rect x="70" y="430" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="452" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Traffic: Mixed vs Single version</text>
+  <!-- Recommendation -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Recommendation</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Rolling for cost-sensitive large-scale deployments. Blue-green for instant rollback and simplicity.</text>
+</svg>

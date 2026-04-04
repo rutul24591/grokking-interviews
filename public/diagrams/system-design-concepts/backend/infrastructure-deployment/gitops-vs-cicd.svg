@@ -1,0 +1,49 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">GitOps vs Traditional CI/CD</text>
+  <!-- Traditional CI/CD -->
+  <rect x="50" y="80" width="380" height="240" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Traditional CI/CD (Push-Based)</text>
+  <rect x="70" y="130" width="340" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Pipeline pushes changes to infrastructure</text>
+  <rect x="70" y="160" width="340" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Pipeline needs production credentials</text>
+  <rect x="70" y="190" width="340" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Drift not detected automatically</text>
+  <rect x="70" y="220" width="340" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Rollback requires redeploying</text>
+  <rect x="70" y="250" width="340" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Familiar workflow (most teams use CI/CD)</text>
+  <rect x="70" y="280" width="340" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="240" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Best for: Non-Kubernetes, existing CI/CD</text>
+  <!-- GitOps -->
+  <rect x="470" y="80" width="380" height="240" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">GitOps (Pull-Based)</text>
+  <rect x="490" y="130" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Agent pulls changes from Git</text>
+  <rect x="490" y="160" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Agent has credentials (pipeline does not)</text>
+  <rect x="490" y="190" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Drift detected and corrected automatically</text>
+  <rect x="490" y="220" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Rollback via Git revert (fast)</text>
+  <rect x="490" y="250" width="340" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Learning curve (adapt to Git-based workflow)</text>
+  <rect x="490" y="280" width="340" height="25" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="660" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Best for: Kubernetes, secure, reliable</text>
+  <!-- Comparison Table -->
+  <rect x="50" y="340" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Key Differences</text>
+  <rect x="70" y="390" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Security: High risk vs Low risk</text>
+  <rect x="330" y="390" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Drift: Manual vs Auto-detect</text>
+  <rect x="590" y="390" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Rollback: Slow vs Fast (Git)</text>
+  <rect x="70" y="430" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="452" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Audit: Partial vs Complete</text>
+  <!-- Recommendation -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Recommendation</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Use GitOps for Kubernetes environments (secure, reliable, auditable). Use traditional CI/CD for non-Kubernetes infrastructure or teams not ready for GitOps workflow.</text>
+</svg>

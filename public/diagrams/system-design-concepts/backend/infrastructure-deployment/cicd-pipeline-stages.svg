@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#f8fafc;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="550" fill="url(#bgGrad)"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#1e293b">CI/CD Pipeline Stages</text>
+  <!-- Stage 1: Code Commit -->
+  <rect x="40" y="80" width="140" height="70" rx="8" fill="#3b82f6"/>
+  <text x="110" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Code</text>
+  <text x="110" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Commit</text>
+  <!-- Arrow 1 -->
+  <line x1="180" y1="115" x2="230" y2="115" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Stage 2: Build -->
+  <rect x="230" y="80" width="140" height="70" rx="8" fill="#6366f1"/>
+  <text x="300" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Build &amp;</text>
+  <text x="300" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Compile</text>
+  <!-- Arrow 2 -->
+  <line x1="370" y1="115" x2="420" y2="115" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Stage 3: Unit Tests -->
+  <rect x="420" y="80" width="140" height="70" rx="8" fill="#8b5cf6"/>
+  <text x="490" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Unit</text>
+  <text x="490" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Tests</text>
+  <!-- Arrow 3 -->
+  <line x1="560" y1="115" x2="610" y2="115" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Stage 4: Integration Tests -->
+  <rect x="610" y="80" width="140" height="70" rx="8" fill="#a855f7"/>
+  <text x="680" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Integration</text>
+  <text x="680" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Tests</text>
+  <!-- Arrow 4 -->
+  <line x1="750" y1="115" x2="800" y2="115" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Stage 5: Deploy Staging -->
+  <rect x="800" y="80" width="140" height="70" rx="8" fill="#d946ef"/>
+  <text x="870" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Deploy</text>
+  <text x="870" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Staging</text>
+  <!-- Second row -->
+  <!-- Arrow down -->
+  <line x1="870" y1="150" x2="870" y2="200" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Stage 6: E2E Tests -->
+  <rect x="800" y="200" width="140" height="70" rx="8" fill="#ec4899"/>
+  <text x="870" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">E2E</text>
+  <text x="870" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Tests</text>
+  <!-- Arrow left -->
+  <line x1="800" y1="235" x2="750" y2="235" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Stage 7: Deploy Production -->
+  <rect x="610" y="200" width="140" height="70" rx="8" fill="#f43f5e"/>
+  <text x="680" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Deploy</text>
+  <text x="680" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Production</text>
+  <!-- Arrow left -->
+  <line x1="610" y1="235" x2="560" y2="235" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Stage 8: Health Checks -->
+  <rect x="420" y="200" width="140" height="70" rx="8" fill="#f97316"/>
+  <text x="490" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Health</text>
+  <text x="490" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Checks</text>
+  <!-- Arrow left -->
+  <line x1="420" y1="235" x2="370" y2="235" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Stage 9: Monitor -->
+  <rect x="230" y="200" width="140" height="70" rx="8" fill="#10b981"/>
+  <text x="300" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Monitor</text>
+  <text x="300" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#ffffff">&amp; Alert</text>
+  <!-- Quality gates annotation -->
+  <rect x="40" y="320" width="820" height="200" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="450" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Quality Gates</text>
+  <line x1="110" y1="115" x2="110" y2="370" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="150" y="390" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#475569">Gate 1: Lint &amp; type check must pass</text>
+  <line x1="300" y1="115" x2="300" y2="370" stroke="#6366f1" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="340" y="420" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#475569">Gate 2: All unit tests must pass (&gt;90% coverage)</text>
+  <line x1="490" y1="115" x2="490" y2="370" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="530" y="450" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#475569">Gate 3: Integration tests with test dependencies</text>
+  <line x1="680" y1="235" x2="680" y2="370" stroke="#d946ef" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="60" y="480" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#475569">Gate 4: E2E tests on production-like environment</text>
+  <line x1="870" y1="235" x2="870" y2="370" stroke="#ec4899" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="60" y="510" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#475569">Gate 5: Security scan &amp; performance benchmarks</text>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

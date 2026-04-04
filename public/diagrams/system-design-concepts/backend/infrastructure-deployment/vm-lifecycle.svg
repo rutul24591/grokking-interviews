@@ -1,0 +1,57 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">VM Lifecycle Management</text>
+  <!-- Provision -->
+  <rect x="50" y="80" width="160" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="130" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">1. Provision</text>
+  <text x="130" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Template or image</text>
+  <text x="130" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Allocate resources</text>
+  <path d="M 210 130 L 260 130" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Configure -->
+  <rect x="260" y="80" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="340" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">2. Configure</text>
+  <text x="340" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">OS, apps, networking</text>
+  <text x="340" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Security hardening</text>
+  <path d="M 420 130 L 470 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Run -->
+  <rect x="470" y="80" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="550" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">3. Run</text>
+  <text x="550" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Serve workloads</text>
+  <text x="550" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Handle requests</text>
+  <path d="M 630 130 L 680 130" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Monitor -->
+  <rect x="680" y="80" width="160" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="760" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">4. Monitor</text>
+  <text x="760" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Health, performance</text>
+  <text x="760" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Resource usage</text>
+  <!-- Scale path -->
+  <path d="M 550 180 L 550 220 L 340 220 L 340 180" stroke="#22c55e" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  <rect x="370" y="220" width="140" height="60" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="440" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">Scale</text>
+  <text x="440" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Up or down</text>
+  <!-- Decommission -->
+  <path d="M 760 180 L 760 280 L 130 280 L 130 180" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  <rect x="50" y="280" width="160" height="60" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="130" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#b91c1c">5. Decommission</text>
+  <text x="130" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Backup, terminate</text>
+  <!-- Automation -->
+  <rect x="50" y="360" width="800" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Automation Tools</text>
+  <rect x="70" y="400" width="170" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="155" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Terraform (provision)</text>
+  <rect x="260" y="400" width="170" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="345" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Ansible (configure)</text>
+  <rect x="450" y="400" width="170" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="535" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Prometheus (monitor)</text>
+  <rect x="640" y="400" width="170" height="30" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="725" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Auto-scaling (scale)</text>
+  <!-- Best Practice -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Best Practice</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Automate the entire lifecycle — provision with IaC, configure with automation, monitor continuously, scale automatically, decommission when no longer needed.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

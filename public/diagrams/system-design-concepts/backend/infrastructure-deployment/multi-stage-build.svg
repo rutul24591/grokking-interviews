@@ -1,0 +1,49 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Multi-Stage Build</text>
+  <!-- Stage 1: Build -->
+  <rect x="50" y="80" width="380" height="260" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Stage 1: Build</text>
+  <rect x="70" y="130" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">FROM node:20 AS build</text>
+  <rect x="70" y="170" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Install build tools (gcc, make)</text>
+  <rect x="70" y="210" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Install dependencies (npm install)</text>
+  <rect x="70" y="250" width="340" height="35" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="240" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Compile source code (npm run build)</text>
+  <rect x="70" y="290" width="340" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="240" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Size: 800 MB (with all build tools)</text>
+  <!-- Arrow -->
+  <path d="M 430 210 L 480 210" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow)" fill="none"/>
+  <text x="455" y="202" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Copy artifacts only</text>
+  <!-- Stage 2: Runtime -->
+  <rect x="480" y="80" width="380" height="260" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Stage 2: Runtime</text>
+  <rect x="500" y="130" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="670" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">FROM node:20-alpine AS runtime</text>
+  <rect x="500" y="170" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="670" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">COPY --from=build /app/dist /app</text>
+  <rect x="500" y="210" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="670" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">No build tools, no source code</text>
+  <rect x="500" y="250" width="340" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="670" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Minimal dependencies only</text>
+  <rect x="500" y="290" width="340" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="670" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Size: 80 MB (90% reduction)</text>
+  <!-- Comparison -->
+  <rect x="50" y="360" width="800" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Size Comparison</text>
+  <rect x="70" y="405" width="360" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="250" y="422" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Single-stage: 800 MB (build tools included)</text>
+  <rect x="470" y="405" width="360" height="25" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="650" y="422" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Multi-stage: 80 MB (runtime only)</text>
+  <!-- Benefits -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Benefits</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Smaller image → faster pulls, less storage, smaller attack surface. No build tools in production image → fewer vulnerabilities.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

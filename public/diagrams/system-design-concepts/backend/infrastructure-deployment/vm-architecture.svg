@@ -1,0 +1,48 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Virtual Machine Architecture</text>
+  <!-- VM 1 -->
+  <rect x="50" y="80" width="260" height="240" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">VM 1 (Linux)</text>
+  <rect x="70" y="130" width="220" height="25" rx="3" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="180" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Application</text>
+  <rect x="70" y="160" width="220" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="180" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Guest OS (Linux Kernel)</text>
+  <rect x="70" y="190" width="220" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="180" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Virtual Hardware (vCPU, RAM)</text>
+  <rect x="70" y="220" width="220" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="180" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Virtual Disk, Network</text>
+  <!-- VM 2 -->
+  <rect x="330" y="80" width="260" height="240" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">VM 2 (Windows)</text>
+  <rect x="350" y="130" width="220" height="25" rx="3" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="460" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Application</text>
+  <rect x="350" y="160" width="220" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="460" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Guest OS (Windows Kernel)</text>
+  <rect x="350" y="190" width="220" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Virtual Hardware (vCPU, RAM)</text>
+  <rect x="350" y="220" width="220" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="460" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Virtual Disk, Network</text>
+  <!-- VM 3 -->
+  <rect x="610" y="80" width="240" height="240" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">VM 3 (BSD)</text>
+  <rect x="630" y="130" width="200" height="25" rx="3" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="730" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Application</text>
+  <rect x="630" y="160" width="200" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="730" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Guest OS (BSD Kernel)</text>
+  <rect x="630" y="190" width="200" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="730" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Virtual Hardware (vCPU, RAM)</text>
+  <rect x="630" y="220" width="200" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="730" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Virtual Disk, Network</text>
+  <!-- Hypervisor -->
+  <rect x="50" y="340" width="800" height="60" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#b91c1c">Hypervisor (Type 1 — Bare Metal: ESXi, KVM, Hyper-V)</text>
+  <text x="450" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Virtualizes hardware, isolates VMs, allocates resources</text>
+  <!-- Hardware -->
+  <rect x="50" y="420" width="800" height="60" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="450" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#475560">Physical Hardware (CPU, RAM, Disk, Network)</text>
+  <text x="450" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#647480">Shared by all VMs through hypervisor virtualization</text>
+  <!-- Key Insight -->
+  <rect x="50" y="500" width="800" height="35" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="522" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Each VM has its own kernel — strong isolation, different OS possible, but heavier resource usage than containers</text>
+</svg>

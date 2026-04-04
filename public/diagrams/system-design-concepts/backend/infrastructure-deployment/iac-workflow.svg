@@ -1,0 +1,59 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">IaC Workflow</text>
+  <!-- Code -->
+  <rect x="50" y="80" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="150" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">1. Write Code</text>
+  <text x="150" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Declarative configuration</text>
+  <text x="150" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Modules, variables</text>
+  <text x="150" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Version control (Git)</text>
+  <path d="M 250 140 L 300 140" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Plan -->
+  <rect x="300" y="80" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">2. Plan</text>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Preview changes</text>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Create, update, destroy</text>
+  <text x="400" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">No changes made yet</text>
+  <path d="M 500 140 L 550 140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Review -->
+  <rect x="550" y="80" width="160" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="630" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">3. Review</text>
+  <text x="630" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">PR review</text>
+  <text x="630" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Approve or reject</text>
+  <text x="630" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Track changes</text>
+  <path d="M 710 140 L 760 140" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Apply -->
+  <rect x="760" y="80" width="110" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="815" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">4. Apply</text>
+  <text x="815" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Provision</text>
+  <text x="815" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">infrastructure</text>
+  <!-- State -->
+  <rect x="50" y="220" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">State Management</text>
+  <rect x="70" y="270" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Remote backend (S3, Terraform Cloud)</text>
+  <rect x="330" y="270" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Locking prevents concurrent changes</text>
+  <rect x="590" y="270" width="240" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Encrypted, backed up, shared</text>
+  <!-- Cloud Resources -->
+  <rect x="50" y="340" width="800" height="100" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Cloud Provider APIs</text>
+  <rect x="70" y="390" width="180" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="160" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">AWS (EC2, RDS, ALB)</text>
+  <rect x="270" y="390" width="180" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="360" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">GCP (GCE, SQL, LB)</text>
+  <rect x="470" y="390" width="180" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="560" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Azure (VM, SQL, LB)</text>
+  <rect x="670" y="390" width="160" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="750" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Kubernetes</text>
+  <!-- Benefits -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Benefits</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">Reproducible infrastructure | Version-controlled changes | Automated provisioning | Environment consistency | Auditability</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

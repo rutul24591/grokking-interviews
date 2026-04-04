@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Network Architecture Patterns</title>
+  <desc id="desc">Network architecture comparison showing single VPC, multi-VPC with peering, hub-and-spoke with transit gateway, and hybrid cloud connectivity patterns</desc>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Network Architecture Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Single VPC, Multi-VPC Peering, Transit Gateway Hub-and-Spoke, Hybrid Cloud</text>
+
+  <!-- Pattern 1: Single VPC -->
+  <rect x="20" y="80" width="200" height="220" rx="8" fill="white" stroke="#3b82f6" stroke-width="2"/>
+  <text x="120" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#3b82f6">Single VPC</text>
+  <text x="120" y="122" text-anchor="middle" font-size="9" fill="#64748b">Simple Applications</text>
+
+  <!-- VPC Box -->
+  <rect x="35" y="135" width="170" height="150" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="120" y="155" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e40af">VPC 10.0.0.0/16</text>
+
+  <!-- Subnets -->
+  <rect x="45" y="165" width="150" height="25" rx="3" fill="#dbeafe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="120" y="182" text-anchor="middle" font-size="9" fill="#1e40af">Public Subnet</text>
+
+  <rect x="45" y="195" width="150" height="25" rx="3" fill="#dcfce7" stroke="#4ade80" stroke-width="1"/>
+  <text x="120" y="212" text-anchor="middle" font-size="9" fill="#166534">Private App Subnet</text>
+
+  <rect x="45" y="225" width="150" height="25" rx="3" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="120" y="242" text-anchor="middle" font-size="9" fill="#92400e">Private Data Subnet</text>
+
+  <!-- Pros/Cons -->
+  <text x="120" y="270" text-anchor="middle" font-size="8" fill="#10b981">+ Simple, low cost</text>
+  <text x="120" y="285" text-anchor="middle" font-size="8" fill="#ef4444">- No isolation</text>
+
+  <!-- Pattern 2: Multi-VPC Peering -->
+  <rect x="240" y="80" width="210" height="220" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="345" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#10b981">Multi-VPC Peering</text>
+  <text x="345" y="122" text-anchor="middle" font-size="9" fill="#64748b">Shared Services (2-5 VPCs)</text>
+
+  <!-- VPC A -->
+  <rect x="255" y="135" width="80" height="70" rx="6" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="295" y="160" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e40af">VPC A</text>
+  <text x="295" y="175" text-anchor="middle" font-size="8" fill="#64748b">App</text>
+  <text x="295" y="190" text-anchor="middle" font-size="8" fill="#64748b">10.0.0.0/16</text>
+
+  <!-- VPC B -->
+  <rect x="360" y="135" width="80" height="70" rx="6" fill="#dcfce7" stroke="#4ade80" stroke-width="1"/>
+  <text x="400" y="160" text-anchor="middle" font-size="9" font-weight="bold" fill="#166534">VPC B</text>
+  <text x="400" y="175" text-anchor="middle" font-size="8" fill="#64748b">Shared</text>
+  <text x="400" y="190" text-anchor="middle" font-size="8" fill="#64748b">10.1.0.0/16</text>
+
+  <!-- Peering Line -->
+  <line x1="340" y1="170" x2="355" y2="170" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="348" y="160" text-anchor="middle" font-size="7" fill="#7c3aed">Peering</text>
+
+  <!-- VPC C -->
+  <rect x="307" y="220" width="80" height="60" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="347" y="245" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">VPC C</text>
+  <text x="347" y="260" text-anchor="middle" font-size="8" fill="#64748b">Data</text>
+  <text x="347" y="275" text-anchor="middle" font-size="8" fill="#64748b">10.2.0.0/16</text>
+
+  <!-- Peering Lines to C -->
+  <line x1="310" y1="205" x2="320" y2="220" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,2"/>
+  <line x1="385" y1="205" x2="380" y2="220" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,2"/>
+
+  <!-- Note -->
+  <text x="345" y="295" text-anchor="middle" font-size="8" fill="#f59e0b">Non-transitive peering</text>
+
+  <!-- Pattern 3: Transit Gateway -->
+  <rect x="470" y="80" width="210" height="220" rx="8" fill="white" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="575" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#8b5cf6">Transit Gateway</text>
+  <text x="575" y="122" text-anchor="middle" font-size="9" fill="#64748b">Hub-and-Spoke (10+ VPCs)</text>
+
+  <!-- Transit Gateway Hub -->
+  <rect x="530" y="145" width="90" height="50" rx="25" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="575" y="165" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Transit</text>
+  <text x="575" y="180" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Gateway</text>
+
+  <!-- Spoke VPCs -->
+  <rect x="485" y="215" width="55" height="35" rx="4" fill="#dbeafe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="512" y="237" text-anchor="middle" font-size="8" font-weight="bold" fill="#1e40af">VPC 1</text>
+
+  <rect x="550" y="215" width="55" height="35" rx="4" fill="#dcfce7" stroke="#4ade80" stroke-width="1"/>
+  <text x="577" y="237" text-anchor="middle" font-size="8" font-weight="bold" fill="#166534">VPC 2</text>
+
+  <rect x="615" y="215" width="55" height="35" rx="4" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="642" y="237" text-anchor="middle" font-size="8" font-weight="bold" fill="#92400e">VPC 3</text>
+
+  <!-- Spoke lines -->
+  <line x1="530" y1="195" x2="512" y2="215" stroke="#8b5cf6" stroke-width="2"/>
+  <line x1="575" y1="195" x2="577" y2="215" stroke="#8b5cf6" stroke-width="2"/>
+  <line x1="620" y1="195" x2="642" y2="215" stroke="#8b5cf6" stroke-width="2"/>
+
+  <!-- Route Table -->
+  <rect x="485" y="260" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="575" y="280" text-anchor="middle" font-size="9" fill="#475569">Route Tables for Segmentation</text>
+
+  <!-- Pattern 4: Hybrid Cloud -->
+  <rect x="700" y="80" width="180" height="220" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="790" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#b45309">Hybrid Cloud</text>
+  <text x="790" y="122" text-anchor="middle" font-size="9" fill="#64748b">On-Premises + Cloud</text>
+
+  <!-- On-Premises -->
+  <rect x="715" y="135" width="150" height="55" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="790" y="158" text-anchor="middle" font-size="10" font-weight="bold" fill="#475569">On-Premises DC</text>
+  <text x="790" y="175" text-anchor="middle" font-size="8" fill="#64748b">172.16.0.0/12</text>
+
+  <!-- Direct Connect Line -->
+  <line x1="790" y1="190" x2="790" y2="210" stroke="#06b6d4" stroke-width="2"/>
+  <rect x="755" y="195" width="70" height="15" rx="3" fill="#06b6d4"/>
+  <text x="790" y="206" text-anchor="middle" font-size="7" font-weight="bold" fill="white">Direct Connect</text>
+
+  <!-- Transit Gateway -->
+  <rect x="755" y="220" width="70" height="35" rx="17" fill="#8b5cf6"/>
+  <text x="790" y="242" text-anchor="middle" font-size="8" font-weight="bold" fill="white">TGW</text>
+
+  <!-- Cloud VPCs -->
+  <rect x="715" y="265" width="65" height="28" rx="4" fill="#dbeafe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="747" y="283" text-anchor="middle" font-size="8" font-weight="bold" fill="#1e40af">VPC A</text>
+
+  <rect x="790" y="265" width="65" height="28" rx="4" fill="#dcfce7" stroke="#4ade80" stroke-width="1"/>
+  <text x="822" y="283" text-anchor="middle" font-size="8" font-weight="bold" fill="#166534">VPC B</text>
+
+  <line x1="780" y1="255" x2="750" y2="265" stroke="#8b5cf6" stroke-width="1"/>
+  <line x1="800" y1="255" x2="822" y2="265" stroke="#8b5cf6" stroke-width="1"/>
+
+  <!-- Comparison Table -->
+  <rect x="20" y="320" width="860" height="210" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Architecture Pattern Comparison</text>
+
+  <!-- Table Header -->
+  <rect x="30" y="355" width="160" height="28" rx="3" fill="#e2e8f0"/>
+  <text x="110" y="374" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Pattern</text>
+
+  <rect x="190" y="355" width="160" height="28" rx="3" fill="#e2e8f0"/>
+  <text x="270" y="374" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Best For</text>
+
+  <rect x="350" y="355" width="180" height="28" rx="3" fill="#e2e8f0"/>
+  <text x="440" y="374" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Scalability</text>
+
+  <rect x="530" y="355" width="170" height="28" rx="3" fill="#e2e8f0"/>
+  <text x="615" y="374" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Complexity</text>
+
+  <rect x="700" y="355" width="170" height="28" rx="3" fill="#e2e8f0"/>
+  <text x="785" y="374" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Cost</text>
+
+  <!-- Row 1: Single VPC -->
+  <rect x="30" y="383" width="160" height="28" rx="3" fill="white"/>
+  <text x="110" y="401" text-anchor="middle" font-size="9" fill="#1e293b">Single VPC</text>
+
+  <rect x="190" y="383" width="160" height="28" rx="3" fill="white"/>
+  <text x="270" y="401" text-anchor="middle" font-size="9" fill="#475569">Simple apps, dev</text>
+
+  <rect x="350" y="383" width="180" height="28" rx="3" fill="white"/>
+  <text x="440" y="401" text-anchor="middle" font-size="9" fill="#475569">Low (single VPC)</text>
+
+  <rect x="530" y="383" width="170" height="28" rx="3" fill="white"/>
+  <text x="615" y="401" text-anchor="middle" font-size="9" fill="#475569">Minimal</text>
+
+  <rect x="700" y="383" width="170" height="28" rx="3" fill="white"/>
+  <text x="785" y="401" text-anchor="middle" font-size="9" fill="#475569">Lowest</text>
+
+  <!-- Row 2: Multi-VPC Peering -->
+  <rect x="30" y="411" width="160" height="28" rx="3" fill="#f8fafc"/>
+  <text x="110" y="429" text-anchor="middle" font-size="9" fill="#1e293b">Multi-VPC Peering</text>
+
+  <rect x="190" y="411" width="160" height="28" rx="3" fill="#f8fafc"/>
+  <text x="270" y="429" text-anchor="middle" font-size="9" fill="#475569">2-5 VPCs, shared svc</text>
+
+  <rect x="350" y="411" width="180" height="28" rx="3" fill="#f8fafc"/>
+  <text x="440" y="429" text-anchor="middle" font-size="9" fill="#475569">Poor (N*(N-1)/2)</text>
+
+  <rect x="530" y="411" width="170" height="28" rx="3" fill="#f8fafc"/>
+  <text x="615" y="429" text-anchor="middle" font-size="9" fill="#475569">Low-Medium</text>
+
+  <rect x="700" y="411" width="170" height="28" rx="3" fill="#f8fafc"/>
+  <text x="785" y="429" text-anchor="middle" font-size="9" fill="#475569">Low (no gateway)</text>
+
+  <!-- Row 3: Transit Gateway -->
+  <rect x="30" y="439" width="160" height="28" rx="3" fill="white"/>
+  <text x="110" y="457" text-anchor="middle" font-size="9" fill="#1e293b">Transit Gateway</text>
+
+  <rect x="190" y="439" width="160" height="28" rx="3" fill="white"/>
+  <text x="270" y="457" text-anchor="middle" font-size="9" fill="#475569">10+ VPCs, multi-acct</text>
+
+  <rect x="350" y="439" width="180" height="28" rx="3" fill="white"/>
+  <text x="440" y="457" text-anchor="middle" font-size="9" fill="#475569">High (thousands)</text>
+
+  <rect x="530" y="439" width="170" height="28" rx="3" fill="white"/>
+  <text x="615" y="457" text-anchor="middle" font-size="9" fill="#475569">Medium-High</text>
+
+  <rect x="700" y="439" width="170" height="28" rx="3" fill="white"/>
+  <text x="785" y="457" text-anchor="middle" font-size="9" fill="#475569">Medium (hourly + GB)</text>
+
+  <!-- Row 4: Hybrid Cloud -->
+  <rect x="30" y="467" width="160" height="28" rx="3" fill="#f8fafc"/>
+  <text x="110" y="485" text-anchor="middle" font-size="9" fill="#1e293b">Hybrid Cloud</text>
+
+  <rect x="190" y="467" width="160" height="28" rx="3" fill="#f8fafc"/>
+  <text x="270" y="485" text-anchor="middle" font-size="9" fill="#475569">On-prem + cloud</text>
+
+  <rect x="350" y="467" width="180" height="28" rx="3" fill="#f8fafc"/>
+  <text x="440" y="485" text-anchor="middle" font-size="9" fill="#475569">High (via TGW)</text>
+
+  <rect x="530" y="467" width="170" height="28" rx="3" fill="#f8fafc"/>
+  <text x="615" y="485" text-anchor="middle" font-size="9" fill="#475569">High (DNS, BGP)</text>
+
+  <rect x="700" y="467" width="170" height="28" rx="3" fill="#f8fafc"/>
+  <text x="785" y="485" text-anchor="middle" font-size="9" fill="#475569">Highest (DX + TGW)</text>
+
+  <!-- Row 5: Key Differentiator -->
+  <rect x="30" y="495" width="160" height="28" rx="3" fill="white"/>
+  <text x="110" y="513" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e293b">Key Differentiator</text>
+
+  <rect x="190" y="495" width="160" height="28" rx="3" fill="white"/>
+  <text x="270" y="513" text-anchor="middle" font-size="9" fill="#475569">Simplicity</text>
+
+  <rect x="350" y="495" width="180" height="28" rx="3" fill="white"/>
+  <text x="440" y="513" text-anchor="middle" font-size="9" fill="#475569">Direct paths</text>
+
+  <rect x="530" y="495" width="170" height="28" rx="3" fill="white"/>
+  <text x="615" y="513" text-anchor="middle" font-size="9" fill="#475569">Centralized routing</text>
+
+  <rect x="700" y="495" width="170" height="28" rx="3" fill="white"/>
+  <text x="785" y="513" text-anchor="middle" font-size="9" fill="#475569">Seamless extension</text>
+</svg>

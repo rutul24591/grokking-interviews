@@ -1,0 +1,57 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Immutable Rollback</text>
+  <!-- Current Version -->
+  <rect x="50" y="80" width="350" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="225" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#b91c1c">Current: v2.0 (Issues Detected)</text>
+  <rect x="70" y="130" width="310" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="225" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Error rate spike (5% → 15%)</text>
+  <rect x="70" y="160" width="310" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="225" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Response time degraded (200ms → 800ms)</text>
+  <rect x="70" y="190" width="310" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="225" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Rollback triggered</text>
+  <!-- Rollback Arrow -->
+  <path d="M 400 160 L 470 160" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-red)" fill="none"/>
+  <text x="435" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#b91c1c">REVERT</text>
+  <!-- Previous Version -->
+  <rect x="470" y="80" width="350" height="160" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="645" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Previous: v1.0 (Stable)</text>
+  <rect x="490" y="130" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="645" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Error rate: 0.5% (normal)</text>
+  <rect x="490" y="160" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="645" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Response time: 200ms (normal)</text>
+  <rect x="490" y="190" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="645" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Provision new servers from v1.0</text>
+  <!-- Rollback Process -->
+  <rect x="50" y="260" width="800" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Rollback Process</text>
+  <rect x="70" y="310" width="240" height="55" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">1. Provision servers from v1.0</text>
+  <text x="190" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Previous image in registry</text>
+  <rect x="330" y="310" width="240" height="55" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">2. Health check new servers</text>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Verify healthy</text>
+  <rect x="590" y="310" width="240" height="55" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">3. Route traffic, terminate v2.0</text>
+  <text x="710" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Zero-downtime rollback</text>
+  <!-- Key Benefits -->
+  <rect x="50" y="400" width="800" height="130" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Rollback Benefits</text>
+  <rect x="70" y="450" width="240" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fast (no undo complexity)</text>
+  <rect x="330" y="450" width="240" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Reliable (v1.0 known to work)</text>
+  <rect x="590" y="450" width="240" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Auditable (tracked in registry)</text>
+  <rect x="70" y="485" width="240" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">No state loss (stateless servers)</text>
+  <rect x="330" y="485" width="240" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Zero-downtime (healthy servers)</text>
+  <rect x="590" y="485" width="240" height="30" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Simple (revert image version)</text>
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

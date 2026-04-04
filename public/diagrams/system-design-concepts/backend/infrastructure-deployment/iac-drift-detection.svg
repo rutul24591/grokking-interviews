@@ -1,0 +1,60 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Drift Detection and Correction</text>
+  <!-- Desired State -->
+  <rect x="50" y="80" width="350" height="160" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="225" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Desired State (IaC Config)</text>
+  <rect x="70" y="130" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="147" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#15803d">resource &quot;aws_instance&quot; &quot;web&quot;</text>
+  <rect x="70" y="160" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="177" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#15803d">ami = &quot;ami-12345678&quot;</text>
+  <rect x="70" y="190" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="207" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#15803d">instance_type = &quot;t3.medium&quot;</text>
+  <rect x="70" y="220" width="310" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="237" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" fill="#15803d">count = 3</text>
+  <!-- Comparison -->
+  <path d="M 400 160 L 450 160" stroke="#647480" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <rect x="450" y="100" width="100" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="500" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Compare</text>
+  <text x="500" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Detect differences</text>
+  <!-- Actual State -->
+  <rect x="550" y="80" width="300" height="160" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="700" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#b91c1c">Actual State (Cloud)</text>
+  <rect x="570" y="130" width="260" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="700" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">3 instances running (DRIFTED)</text>
+  <rect x="570" y="160" width="260" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="700" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">instance_type = &quot;t3.large&quot; (changed!)</text>
+  <rect x="570" y="190" width="260" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="700" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Security group modified manually</text>
+  <rect x="570" y="220" width="260" height="25" rx="3" fill="#ffffff" stroke="#fecaca"/>
+  <text x="700" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Extra instance added manually</text>
+  <!-- Correction -->
+  <rect x="50" y="260" width="800" height="100" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Correction: Reapply IaC Configuration</text>
+  <rect x="70" y="310" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="332" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Downsize instance_type to t3.medium</text>
+  <rect x="330" y="310" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="332" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Restore original security group</text>
+  <rect x="590" y="310" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="332" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Remove extra instance</text>
+  <!-- Prevention -->
+  <rect x="50" y="380" width="800" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Preventing Drift</text>
+  <rect x="70" y="430" width="240" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="190" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Restrict cloud console access</text>
+  <rect x="330" y="430" width="240" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">All changes through IaC</text>
+  <rect x="590" y="430" width="240" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="710" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Automated drift detection (daily)</text>
+  <rect x="70" y="470" width="240" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="190" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Audit logging for all changes</text>
+  <rect x="330" y="470" width="240" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Alert on unauthorized changes</text>
+  <rect x="590" y="470" width="240" height="30" rx="4" fill="#ffffff" stroke="#fde68a"/>
+  <text x="710" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Team training on IaC workflow</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

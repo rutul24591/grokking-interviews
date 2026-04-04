@@ -1,0 +1,56 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Cloud Architecture</text>
+  <!-- CDN -->
+  <rect x="50" y="80" width="180" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="140" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">CDN (Edge)</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Cache static content</text>
+  <text x="140" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Route to nearest edge</text>
+  <path d="M 230 130 L 280 130" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Load Balancer -->
+  <rect x="280" y="80" width="180" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="370" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">Load Balancer</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Distribute traffic</text>
+  <text x="370" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Health checks</text>
+  <path d="M 460 130 L 510 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Application -->
+  <rect x="510" y="80" width="180" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="600" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">Application</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">VMs / Containers</text>
+  <text x="600" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Auto-scaling</text>
+  <path d="M 690 130 L 740 130" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Managed Services -->
+  <rect x="740" y="80" width="130" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="805" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">Services</text>
+  <text x="805" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Database</text>
+  <text x="805" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">Cache</text>
+  <!-- Storage -->
+  <rect x="50" y="200" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Storage Layer</text>
+  <rect x="70" y="250" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Object Storage (S3, GCS)</text>
+  <rect x="330" y="250" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">Block Storage (EBS, PD)</text>
+  <rect x="590" y="250" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475560">File Storage (EFS, Filestore)</text>
+  <!-- Regions and AZs -->
+  <rect x="50" y="320" width="800" height="120" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Multi-AZ, Multi-Region Architecture</text>
+  <rect x="70" y="370" width="240" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="387" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Region: US East (3 AZs)</text>
+  <rect x="330" y="370" width="240" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="387" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Region: EU West (3 AZs)</text>
+  <rect x="590" y="370" width="240" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="387" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Region: Asia Pacific (3 AZs)</text>
+  <rect x="70" y="400" width="760" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="417" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Cross-region replication for DR | Global traffic routing via Route 53 / Cloud DNS | CDN for edge caching</text>
+  <!-- Key Principle -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Key Principle</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Design for failure: multi-AZ for high availability, multi-region for disaster recovery, auto-scaling for elasticity, CDN for performance.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

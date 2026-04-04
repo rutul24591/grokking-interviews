@@ -1,0 +1,52 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">VM vs Container Architecture</text>
+  <!-- VM Stack -->
+  <rect x="50" y="80" width="380" height="280" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="240" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#b91c1c">Virtual Machine</text>
+  <!-- App -->
+  <rect x="70" y="130" width="340" height="35" rx="3" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="240" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Application A</text>
+  <!-- Guest OS -->
+  <rect x="70" y="170" width="340" height="35" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="240" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Guest OS (Own Kernel)</text>
+  <!-- Virtual Hardware -->
+  <rect x="70" y="210" width="340" height="35" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="240" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Virtual Hardware (vCPU, vRAM)</text>
+  <!-- Hypervisor -->
+  <rect x="70" y="250" width="340" height="35" rx="3" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="240" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Hypervisor</text>
+  <!-- VM Stats -->
+  <rect x="70" y="300" width="340" height="45" rx="4" fill="#ffffff" stroke="#fecaca"/>
+  <text x="240" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">Size: GB | Startup: Minutes | Isolation: Strong</text>
+  <text x="240" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Different OS per VM, kernel-level isolation</text>
+  <!-- Container Stack -->
+  <rect x="470" y="80" width="380" height="280" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Container</text>
+  <!-- App -->
+  <rect x="490" y="130" width="340" height="35" rx="3" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="660" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Application B</text>
+  <!-- Libs -->
+  <rect x="490" y="170" width="340" height="35" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="660" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Libraries / Binaries</text>
+  <!-- Container Engine -->
+  <rect x="490" y="210" width="340" height="35" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="660" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Container Engine (Docker)</text>
+  <!-- Host OS -->
+  <rect x="490" y="250" width="340" height="35" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="660" y="272" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Host OS Kernel (Shared)</text>
+  <!-- Container Stats -->
+  <rect x="490" y="300" width="340" height="45" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="660" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Size: MB | Startup: Seconds | Isolation: Moderate</text>
+  <text x="660" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">Same kernel, user-space isolation only</text>
+  <!-- Hardware (shared) -->
+  <rect x="50" y="380" width="800" height="50" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#475560">Physical Hardware (Shared)</text>
+  <!-- Comparison -->
+  <rect x="50" y="450" width="800" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Key Difference</text>
+  <rect x="70" y="490" width="360" height="30" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="250" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">VM: Each has own kernel (strong isolation)</text>
+  <rect x="470" y="490" width="360" height="30" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="650" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Container: Share host kernel (lightweight)</text>
+</svg>

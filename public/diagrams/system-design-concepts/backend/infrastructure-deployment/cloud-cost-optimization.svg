@@ -1,0 +1,55 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Cloud Cost Optimization</text>
+  <!-- Reserved Instances -->
+  <rect x="50" y="80" width="200" height="140" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="150" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">Reserved Instances</text>
+  <text x="150" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">1-3 year commitment</text>
+  <text x="150" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">60-75% savings</text>
+  <text x="150" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Predictable workloads</text>
+  <text x="150" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Baseline capacity</text>
+  <!-- Spot Instances -->
+  <rect x="280" y="80" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="380" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">Spot Instances</text>
+  <text x="380" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Interruptible</text>
+  <text x="380" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Up to 90% savings</text>
+  <text x="380" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Batch, CI/CD, ML</text>
+  <text x="380" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Burst capacity</text>
+  <!-- Rightsizing -->
+  <rect x="510" y="80" width="200" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="610" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#15803d">Rightsizing</text>
+  <text x="610" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Match instance to load</text>
+  <text x="610" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Monitor utilization</text>
+  <text x="610" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Downsize unused</text>
+  <text x="610" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Upsize bottlenecked</text>
+  <!-- Auto-scaling -->
+  <rect x="740" y="80" width="130" height="140" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="805" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6b21a8">Auto-Scaling</text>
+  <text x="805" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Pay for usage</text>
+  <text x="805" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Scale on demand</text>
+  <text x="805" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Remove unused</text>
+  <!-- Cost Comparison -->
+  <rect x="50" y="240" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Cost Comparison (Monthly for 100 instances)</text>
+  <rect x="70" y="290" width="180" height="35" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="160" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c">On-Demand: $50,000</text>
+  <rect x="270" y="290" width="180" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="360" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Reserved: $15,000 (70% savings)</text>
+  <rect x="470" y="290" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="560" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Spot: $5,000 (90% savings)</text>
+  <rect x="670" y="290" width="160" height="35" rx="4" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="750" y="312" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Combined: ~$10,000</text>
+  <!-- Strategy -->
+  <rect x="50" y="360" width="800" height="170" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Optimal Cost Strategy</text>
+  <rect x="70" y="410" width="240" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Reserved for baseline</text>
+  <text x="190" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">(predictable, always-on)</text>
+  <rect x="330" y="410" width="240" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">On-Demand for variable</text>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">(unpredictable spikes)</text>
+  <rect x="590" y="410" width="240" height="50" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Spot for interruptible</text>
+  <text x="710" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#647480">(batch, CI/CD, ML training)</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Combine all three: Reserved for baseline (60%), Spot for burst (25%), On-Demand for overflow (15%) = 50-70% total savings</text>
+</svg>

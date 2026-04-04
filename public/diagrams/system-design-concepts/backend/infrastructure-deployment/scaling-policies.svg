@@ -1,0 +1,52 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Scaling Policies</text>
+  <!-- Threshold-Based -->
+  <rect x="50" y="80" width="260" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Threshold-Based</text>
+  <text x="180" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Scale out when CPU &gt; 70%</text>
+  <text x="180" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Scale in when CPU &lt; 30%</text>
+  <rect x="70" y="180" width="220" height="30" rx="3" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="180" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b91c1c">Scale out: +2 instances</text>
+  <rect x="70" y="215" width="220" height="30" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Scale in: -1 instance</text>
+  <rect x="70" y="250" width="220" height="20" rx="3" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="180" y="264" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#475560">Simple, but may oscillate</text>
+  <!-- Target Tracking -->
+  <rect x="330" y="80" width="260" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Target Tracking</text>
+  <text x="460" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Maintain CPU at 50%</text>
+  <text x="460" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Auto-adjust instances</text>
+  <rect x="350" y="180" width="220" height="30" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">CPU &gt; 50%: scale out</text>
+  <rect x="350" y="215" width="220" height="30" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="460" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">CPU &lt; 50%: scale in</text>
+  <rect x="350" y="250" width="220" height="20" rx="3" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="460" y="264" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#475560">Preferred for most use cases</text>
+  <!-- Step Scaling -->
+  <rect x="610" y="80" width="240" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Step Scaling</text>
+  <text x="730" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Scale by severity</text>
+  <rect x="630" y="160" width="200" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="730" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">CPU 70-80%: +2 instances</text>
+  <rect x="630" y="190" width="200" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="730" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">CPU 80-90%: +5 instances</text>
+  <rect x="630" y="220" width="200" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="730" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">CPU &gt; 90%: +10 instances</text>
+  <rect x="630" y="250" width="200" height="20" rx="3" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="730" y="264" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#475560">Best for traffic spikes</text>
+  <!-- Policy Comparison -->
+  <rect x="50" y="300" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Policy Comparison</text>
+  <rect x="70" y="350" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Threshold: Simple, may oscillate</text>
+  <rect x="330" y="350" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Target: Stable, preferred</text>
+  <rect x="590" y="350" width="240" height="35" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Step: Rapid response to spikes</text>
+  <!-- Recommendation -->
+  <rect x="50" y="420" width="800" height="110" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Recommendation</text>
+  <text x="450" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Use target tracking for most use cases (maintains consistent performance). Use step scaling for traffic spikes (rapid scaling for severe demand). Use threshold-based for simple, predictable workloads.</text>
+  <text x="450" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Combine policies: target tracking for normal scaling, step scaling for emergency scaling during severe traffic spikes.</text>
+</svg>

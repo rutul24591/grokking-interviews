@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <rect width="900" height="500" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Service Mesh vs. Traditional Service Discovery</text>
+  <!-- Traditional Service Discovery -->
+  <rect x="30" y="70" width="400" height="400" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="30" y="70" width="400" height="50" rx="12" fill="#3b82f6"/>
+  <text x="230" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Traditional Service Discovery</text>
+  <!-- Client with embedded discovery logic -->
+  <rect x="60" y="140" width="340" height="80" rx="8" fill="#60a5fa"/>
+  <text x="230" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Client Application</text>
+  <text x="230" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#dbeafe">Implements: registry query, LB, retry logic</text>
+  <text x="230" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#dbeafe">Each service duplicates this logic</text>
+  <!-- Arrow down -->
+  <line x1="230" y1="220" x2="230" y2="260" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowblue)"/>
+  <!-- Service Registry -->
+  <rect x="60" y="260" width="340" height="60" rx="8" fill="#3b82f6"/>
+  <text x="230" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Service Registry</text>
+  <text x="230" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#dbeafe">Eureka, Consul, etcd</text>
+  <!-- Arrow to services -->
+  <line x1="230" y1="320" x2="120" y2="380" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowblue)"/>
+  <line x1="230" y1="320" x2="230" y2="380" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowblue)"/>
+  <line x1="230" y1="320" x2="340" y2="380" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowblue)"/>
+  <!-- Backend services -->
+  <rect x="60" y="380" width="120" height="60" rx="6" fill="#1d4ed8"/>
+  <text x="120" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">User Svc</text>
+  <text x="120" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#dbeafe">+ discovery logic</text>
+  <rect x="170" y="380" width="120" height="60" rx="6" fill="#1d4ed8"/>
+  <text x="230" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Order Svc</text>
+  <text x="230" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#dbeafe">+ discovery logic</text>
+  <rect x="280" y="380" width="120" height="60" rx="6" fill="#1d4ed8"/>
+  <text x="340" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Payment Svc</text>
+  <text x="340" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#dbeafe">+ discovery logic</text>
+  <!-- Characteristics -->
+  <rect x="60" y="450" width="340" height="15" rx="3" fill="#dbeafe"/>
+  <text x="230" y="462" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e40af">Simple, low overhead, per-service duplication, limited features</text>
+  <!-- Service Mesh -->
+  <rect x="470" y="70" width="400" height="400" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="470" y="70" width="400" height="50" rx="12" fill="#f59e0b"/>
+  <text x="670" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Service Mesh (Sidecar Proxy)</text>
+  <!-- Client with no discovery logic -->
+  <rect x="500" y="140" width="340" height="80" rx="8" fill="#fbbf24"/>
+  <text x="670" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Client Application</text>
+  <text x="670" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#fef3c7">No discovery logic — sends to local sidecar</text>
+  <text x="670" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#fef3c7">Application is unaware of discovery</text>
+  <!-- Arrow to sidecar -->
+  <line x1="670" y1="220" x2="670" y2="260" stroke="#f59e0b" stroke-width="2" marker-end="url(#arroworange)"/>
+  <!-- Sidecar proxy -->
+  <rect x="500" y="260" width="340" height="60" rx="8" fill="#f59e0b"/>
+  <text x="670" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Sidecar Proxy (Envoy)</text>
+  <text x="670" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#fef3c7">Handles: discovery, LB, mTLS, observability</text>
+  <!-- Arrow to services -->
+  <line x1="670" y1="320" x2="560" y2="380" stroke="#f59e0b" stroke-width="2" marker-end="url(#arroworange)"/>
+  <line x1="670" y1="320" x2="670" y2="380" stroke="#f59e0b" stroke-width="2" marker-end="url(#arroworange)"/>
+  <line x1="670" y1="320" x2="780" y2="380" stroke="#f59e0b" stroke-width="2" marker-end="url(#arroworange)"/>
+  <!-- Backend services with sidecars -->
+  <rect x="500" y="380" width="120" height="60" rx="6" fill="#92400e"/>
+  <text x="560" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">User Svc</text>
+  <text x="560" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#fef3c7">+ sidecar proxy</text>
+  <rect x="610" y="380" width="120" height="60" rx="6" fill="#92400e"/>
+  <text x="670" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Order Svc</text>
+  <text x="670" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#fef3c7">+ sidecar proxy</text>
+  <rect x="720" y="380" width="120" height="60" rx="6" fill="#92400e"/>
+  <text x="780" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Payment Svc</text>
+  <text x="780" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#fef3c7">+ sidecar proxy</text>
+  <!-- Characteristics -->
+  <rect x="500" y="450" width="340" height="15" rx="3" fill="#fef3c7"/>
+  <text x="670" y="462" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">Transparent, advanced features, higher overhead, complex ops</text>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#64748b">Traditional: each service implements discovery (simple, duplicated). Service Mesh: sidecar handles everything (transparent, feature-rich, complex)</text>
+  <defs>
+    <marker id="arrowblue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arroworange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

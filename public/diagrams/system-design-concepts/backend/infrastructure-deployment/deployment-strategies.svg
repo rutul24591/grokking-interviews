@@ -1,0 +1,63 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Deployment Strategies Comparison</text>
+  <!-- Blue-Green -->
+  <rect x="50" y="80" width="260" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Blue-Green</text>
+  <rect x="70" y="130" width="220" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="180" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">All-at-once traffic switch</text>
+  <rect x="70" y="160" width="220" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="180" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Instant rollback</text>
+  <rect x="70" y="190" width="220" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="180" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Double infrastructure</text>
+  <rect x="70" y="220" width="220" height="25" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="180" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Simple deployment logic</text>
+  <rect x="70" y="250" width="220" height="25" rx="3" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="180" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Best for: Instant rollback needed</text>
+  <!-- Rolling -->
+  <rect x="330" y="80" width="260" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Rolling</text>
+  <rect x="350" y="130" width="220" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Gradual instance replace</text>
+  <rect x="350" y="160" width="220" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Slower rollback</text>
+  <rect x="350" y="190" width="220" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Lower infrastructure cost</text>
+  <rect x="350" y="220" width="220" height="25" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="460" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Complex rollback logic</text>
+  <rect x="350" y="250" width="220" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="460" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Best for: Cost-sensitive, large scale</text>
+  <!-- Canary -->
+  <rect x="610" y="80" width="240" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Canary</text>
+  <rect x="630" y="130" width="200" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="730" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Gradual traffic split</text>
+  <rect x="630" y="160" width="200" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="730" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Limited blast radius</text>
+  <rect x="630" y="190" width="200" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="730" y="207" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Complex traffic splitting</text>
+  <rect x="630" y="220" width="200" height="25" rx="3" fill="#ffffff" stroke="#bae6fd"/>
+  <text x="730" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Slower deployment</text>
+  <rect x="630" y="250" width="200" height="25" rx="3" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="730" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0369a1">Best for: High-risk, minimize impact</text>
+  <!-- Comparison Table -->
+  <rect x="50" y="300" width="800" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Strategy Comparison</text>
+  <rect x="70" y="350" width="240" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="367" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Rollback Speed: Instant vs Slow vs Moderate</text>
+  <rect x="330" y="350" width="240" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="367" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Infrastructure Cost: High vs Low vs Moderate</text>
+  <rect x="590" y="350" width="240" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="367" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Complexity: Low vs Moderate vs High</text>
+  <rect x="70" y="380" width="240" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="190" y="397" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">User Impact: All vs Some vs Few</text>
+  <rect x="330" y="380" width="240" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="450" y="397" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Best For: Confidence vs Cost vs Risk</text>
+  <rect x="590" y="380" width="240" height="25" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="710" y="397" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475560">Downtime: Zero vs Near-zero vs Zero</text>
+  <!-- Recommendation -->
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Recommendation</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Blue-green for instant rollback and simplicity. Rolling for cost-sensitive large-scale deployments. Canary for high-risk deployments where user impact must be minimized.</text>
+  <text x="450" y="520" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Choose based on risk tolerance, infrastructure cost, and rollback speed requirements.</text>
+</svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <rect width="900" height="500" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Idempotent Operations in Configuration Management</text>
+  <!-- Non-idempotent path -->
+  <rect x="30" y="80" width="380" height="380" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="220" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#991b1b">Non-Idempotent (Bad)</text>
+  <!-- Apply 1 -->
+  <rect x="60" y="140" width="300" height="60" rx="8" fill="#fecaca"/>
+  <text x="210" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#991b1b">Apply: "append 'max_connections=100'"</text>
+  <text x="210" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#991b1b">Config file: max_connections=100</text>
+  <!-- Arrow -->
+  <line x1="210" y1="200" x2="210" y2="240" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowred)"/>
+  <!-- Apply 2 -->
+  <rect x="60" y="240" width="300" height="60" rx="8" fill="#fecaca"/>
+  <text x="210" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#991b1b">Apply again: "append 'max_connections=100'"</text>
+  <text x="210" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#991b1b">Config file: max_connections=100, max_connections=100</text>
+  <!-- Arrow -->
+  <line x1="210" y1="300" x2="210" y2="340" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowred)"/>
+  <!-- Apply 3 -->
+  <rect x="60" y="340" width="300" height="60" rx="8" fill="#fecaca"/>
+  <text x="210" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#991b1b">Apply again: "append 'max_connections=100'"</text>
+  <text x="210" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#991b1b">Config file: max_connections=100 x3 (BROKEN!)</text>
+  <!-- Idempotent path -->
+  <rect x="490" y="80" width="380" height="380" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="680" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#065f46">Idempotent (Good)</text>
+  <!-- Apply 1 -->
+  <rect x="520" y="140" width="300" height="60" rx="8" fill="#a7f3d0"/>
+  <text x="670" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#065f46">Apply: "set max_connections=100"</text>
+  <text x="670" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#065f46">Config file: max_connections=100</text>
+  <!-- Arrow -->
+  <line x1="670" y1="200" x2="670" y2="240" stroke="#10b981" stroke-width="2" marker-end="url(#arrowgreen)"/>
+  <!-- Apply 2 -->
+  <rect x="520" y="240" width="300" height="60" rx="8" fill="#a7f3d0"/>
+  <text x="670" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#065f46">Apply again: "set max_connections=100"</text>
+  <text x="670" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#065f46">Config file: max_connections=100 (unchanged)</text>
+  <!-- Arrow -->
+  <line x1="670" y1="300" x2="670" y2="340" stroke="#10b981" stroke-width="2" marker-end="url(#arrowgreen)"/>
+  <!-- Apply 3 -->
+  <rect x="520" y="340" width="300" height="60" rx="8" fill="#a7f3d0"/>
+  <text x="670" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#065f46">Apply again: "set max_connections=100"</text>
+  <text x="670" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#065f46">Config file: max_connections=100 (unchanged)</text>
+  <!-- Key insight -->
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#64748b">Idempotent: applying the same config repeatedly produces the same result. Non-idempotent: each application changes the state further, causing drift and errors</text>
+  <defs>
+    <marker id="arrowred" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+</svg>

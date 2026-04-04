@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <rect width="900" height="500" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Container Orchestration Platform Comparison</text>
+  <!-- Kubernetes -->
+  <rect x="30" y="70" width="270" height="400" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="30" y="70" width="270" height="50" rx="10" fill="#3b82f6"/>
+  <text x="165" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Kubernetes</text>
+  <text x="50" y="150" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e40af">Type: Full orchestration</text>
+  <text x="50" y="175" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e40af">Auto-scaling: HPA, VPA, CA</text>
+  <text x="50" y="200" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e40af">Self-healing: Yes (probes)</text>
+  <text x="50" y="225" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e40af">Networking: Services, Ingress</text>
+  <text x="50" y="250" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e40af">Storage: PV, PVC, CSI</text>
+  <text x="50" y="275" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e40af">Ecosystem: Largest (Helm, operators)</text>
+  <text x="50" y="300" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e40af">Complexity: High</text>
+  <rect x="50" y="320" width="220" height="50" rx="6" fill="#dbeafe"/>
+  <text x="165" y="342" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e40af">Best For</text>
+  <text x="165" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1e40af">Large-scale production, microservices</text>
+  <rect x="50" y="385" width="220" height="70" rx="6" fill="#dbeafe"/>
+  <text x="165" y="407" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e40af">Adopted by</text>
+  <text x="165" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1e40af">Spotify, Airbnb, Pinterest, Niantic</text>
+  <text x="165" y="447" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1e40af">Capital One, Adobe</text>
+  <!-- Docker Swarm -->
+  <rect x="315" y="70" width="270" height="400" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="315" y="70" width="270" height="50" rx="10" fill="#f59e0b"/>
+  <text x="450" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Docker Swarm</text>
+  <text x="335" y="150" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">Type: Simple orchestration</text>
+  <text x="335" y="175" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">Auto-scaling: No (manual)</text>
+  <text x="335" y="200" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">Self-healing: Limited</text>
+  <text x="335" y="225" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">Networking: Overlay networks</text>
+  <text x="335" y="250" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">Storage: Basic volume support</text>
+  <text x="335" y="275" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">Ecosystem: Small, declining</text>
+  <text x="335" y="300" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">Complexity: Low</text>
+  <rect x="335" y="320" width="220" height="50" rx="6" fill="#fef3c7"/>
+  <text x="450" y="342" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">Best For</text>
+  <text x="450" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#92400e">Small teams, dev environments</text>
+  <rect x="335" y="385" width="220" height="70" rx="6" fill="#fef3c7"/>
+  <text x="450" y="407" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">Adopted by</text>
+  <text x="450" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#92400e">Small startups, hobby projects</text>
+  <text x="450" y="447" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#92400e">Simple multi-container apps</text>
+  <!-- Amazon ECS -->
+  <rect x="600" y="70" width="270" height="400" rx="10" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+  <rect x="600" y="70" width="270" height="50" rx="10" fill="#ec4899"/>
+  <text x="735" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Amazon ECS</text>
+  <text x="620" y="150" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#9d174d">Type: Cloud-native orchestration</text>
+  <text x="620" y="175" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#9d174d">Auto-scaling: Yes (Service Auto Scaling)</text>
+  <text x="620" y="200" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#9d174d">Self-healing: Yes</text>
+  <text x="620" y="225" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#9d174d">Networking: ALB, NLB integration</text>
+  <text x="620" y="250" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#9d174d">Storage: EBS, EFS integration</text>
+  <text x="620" y="275" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#9d174d">Ecosystem: AWS-native only</text>
+  <text x="620" y="300" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#9d174d">Complexity: Moderate</text>
+  <rect x="620" y="320" width="220" height="50" rx="6" fill="#fce7f3"/>
+  <text x="730" y="342" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#9d174d">Best For</text>
+  <text x="730" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#9d174d">AWS-centric teams, simpler orchestration</text>
+  <rect x="620" y="385" width="220" height="70" rx="6" fill="#fce7f3"/>
+  <text x="730" y="407" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#9d174d">Adopted by</text>
+  <text x="730" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#9d174d">AWS-heavy organizations</text>
+  <text x="730" y="447" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#9d174d">Teams avoiding K8s complexity</text>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#64748b">Kubernetes is the industry standard (77% adoption). Docker Swarm is simpler but declining. ECS is AWS-native with deep AWS integration</text>
+</svg>

@@ -1,118 +1,200 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
-  <title id="title">Networking - Load Balancing</title>
-  <desc id="desc">Load balancing showing distribution algorithms and health checking</desc>
-  
+  <title id="title">Network Connectivity Patterns</title>
+  <desc id="desc">Network architecture patterns showing VPC peering, transit gateway hub-and-spoke topology, and hybrid connectivity to on-premises networks</desc>
+
   <!-- Background -->
-  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
-  
+  <rect width="900" height="550" fill="#f8fafc"/>
+
   <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Networking - Load Balancing</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Traffic distribution and health checking</text>
-  
-  <!-- Load Balancer Types -->
-  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
-  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Load Balancer Types</text>
-  
-  <!-- Layer 4 LB -->
-  <rect x="50" y="125" width="360" height="80" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
-  <text x="230" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Layer 4 (Transport)</text>
-  <text x="230" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">TCP/UDP level</text>
-  <text x="230" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Fast, low overhead</text>
-  <text x="230" y="200" text-anchor="middle" font-size="8" fill="#64748b">Examples: NLB, HAProxy TCP</text>
-  
-  <!-- Layer 7 LB -->
-  <rect x="50" y="215" width="360" height="80" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
-  <text x="230" y="240" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Layer 7 (Application)</text>
-  <text x="230" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">HTTP/HTTPS level</text>
-  <text x="230" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Content-aware routing</text>
-  <text x="230" y="290" text-anchor="middle" font-size="8" fill="#64748b">Examples: ALB, NGINX</text>
-  
-  <!-- Health Check -->
-  <rect x="50" y="305" width="360" height="50" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
-  <text x="230" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #b45309">Health checks remove unhealthy backends</text>
-  
-  <!-- Traffic Distribution -->
-  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
-  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Traffic Distribution</text>
-  
-  <!-- Clients -->
-  <rect x="490" y="125" width="100" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
-  <text x="540" y="155" text-anchor="middle" font-size="9" fill="white">Clients</text>
-  
-  <!-- LB -->
-  <rect x="620" y="125" width="100" height="80" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
-  <text x="670" y="160" text-anchor="middle" font-size="9" fill="white">Load</text>
-  <text x="670" y="175" text-anchor="middle" font-size="9" fill="white">Balancer</text>
-  <text x="670" y="195" text-anchor="middle" font-size="8" fill="#c4b5fd">Distributes</text>
-  
-  <!-- Backends -->
-  <rect x="750" y="125" width="45" height="40" rx="2" fill="var(--bg-theme, #10b981)"/>
-  <text x="772" y="148" text-anchor="middle" font-size="7" fill="white">S1</text>
-  
-  <rect x="750" y="175" width="45" height="40" rx="2" fill="var(--bg-theme, #10b981)"/>
-  <text x="772" y="198" text-anchor="middle" font-size="7" fill="white">S2</text>
-  
-  <rect x="750" y="225" width="45" height="40" rx="2" fill="var(--bg-theme, #10b981)"/>
-  <text x="772" y="248" text-anchor="middle" font-size="7" fill="white">S3</text>
-  
-  <!-- Arrows -->
-  <line x1="595" y1="150" x2="615" y2="150" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
-  
-  <line x1="725" y1="145" x2="745" y2="145" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <line x1="725" y1="165" x2="745" y2="165" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <line x1="725" y1="185" x2="745" y2="185" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
-  
-  <!-- Health Check Flow -->
-  <rect x="490" y="230" width="360" height="125" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
-  <text x="670" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Health Check Flow</text>
-  
-  <rect x="500" y="270" width="80" height="35" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
-  <text x="540" y="293" text-anchor="middle" font-size="8" fill="white">LB</text>
-  
-  <line x1="585" y1="288" x2="625" y2="288" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <text x="605" y="278" text-anchor="middle" font-size="7" fill="var(--text-theme, #10b981">Check</text>
-  
-  <rect x="635" y="270" width="80" height="35" rx="3" fill="var(--bg-theme, #10b981)"/>
-  <text x="675" y="293" text-anchor="middle" font-size="8" fill="white">Backend</text>
-  
-  <line x1="675" y1="305" x2="675" y2="330" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-down)"/>
-  <text x="695" y="320" text-anchor="start" font-size="7" fill="var(--text-theme, #10b981">200 OK</text>
-  
-  <rect x="635" y="335" width="80" height="35" rx="3" fill="var(--bg-theme, #10b981)"/>
-  <text x="675" y="358" text-anchor="middle" font-size="8" fill="white">Healthy</text>
-  
-  <!-- Sticky Sessions -->
-  <rect x="30" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
-  <text x="230" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Sticky Sessions</text>
-  
-  <rect x="50" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
-  
-  <text x="70" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Route same user to same server</text>
-  <text x="70" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Based on cookie or IP</text>
-  <text x="70" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• ✓ Session state preserved</text>
-  <text x="70" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠ Uneven load distribution</text>
-  
-  <!-- Global Load Balancing -->
-  <rect x="470" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
-  <text x="670" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Global Load Balancing</text>
-  
-  <rect x="490" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
-  
-  <text x="510" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• DNS-based routing</text>
-  <text x="510" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Route to nearest region</text>
-  <text x="510" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• ✓ Low latency</text>
-  <text x="510" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• ✓ Regional failover</text>
-  
-  <!-- Arrow markers -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
-    </marker>
-    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
-    </marker>
-    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #10b981)"/>
-    </marker>
-  </defs>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Network Connectivity Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">VPC peering, transit gateway hub-and-spoke, and hybrid cloud connectivity</text>
+
+  <!-- Pattern 1: VPC Peering (Left) -->
+  <rect x="25" y="85" width="275" height="230" rx="10" fill="white" stroke="#3b82f6" stroke-width="2"/>
+  <text x="162" y="112" text-anchor="middle" font-size="14" font-weight="bold" fill="#3b82f6">VPC Peering</text>
+  <text x="162" y="130" text-anchor="middle" font-size="10" fill="#64748b">Direct two-VPC connections</text>
+
+  <!-- VPC A -->
+  <rect x="45" y="145" width="100" height="80" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="95" y="175" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">VPC A</text>
+  <text x="95" y="195" text-anchor="middle" font-size="9" fill="#3b82f6">10.0.0.0/16</text>
+  <text x="95" y="212" text-anchor="middle" font-size="8" fill="#64748b">Production</text>
+
+  <!-- VPC B -->
+  <rect x="180" y="145" width="100" height="80" rx="8" fill="#dcfce7" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="230" y="175" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">VPC B</text>
+  <text x="230" y="195" text-anchor="middle" font-size="9" fill="#22c55e">10.1.0.0/16</text>
+  <text x="230" y="212" text-anchor="middle" font-size="8" fill="#64748b">Shared Services</text>
+
+  <!-- Peering Connection -->
+  <line x1="148" y1="185" x2="175" y2="185" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="6,3"/>
+  <polygon points="173,180 183,185 173,190" fill="#8b5cf6"/>
+  <text x="162" y="175" text-anchor="middle" font-size="8" font-weight="bold" fill="#7c3aed">Peering</text>
+
+  <!-- VPC C -->
+  <rect x="112" y="245" width="100" height="55" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="162" y="268" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">VPC C</text>
+  <text x="162" y="288" text-anchor="middle" font-size="9" fill="#f59e0b">10.2.0.0/16</text>
+
+  <!-- Peering to C -->
+  <line x1="120" y1="228" x2="130" y2="242" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,2"/>
+  <line x1="205" y1="228" x2="195" y2="242" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,2"/>
+
+  <!-- Note -->
+  <text x="162" y="305" text-anchor="middle" font-size="9" font-weight="bold" fill="#f59e0b">Non-transitive: A cannot reach C via B</text>
+
+  <!-- Pattern 2: Transit Gateway (Center) -->
+  <rect x="320" y="85" width="275" height="230" rx="10" fill="white" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="457" y="112" text-anchor="middle" font-size="14" font-weight="bold" fill="#8b5cf6">Transit Gateway</text>
+  <text x="457" y="130" text-anchor="middle" font-size="10" fill="#64748b">Hub-and-spoke (10+ VPCs)</text>
+
+  <!-- Transit Gateway Hub -->
+  <rect x="407" y="145" width="100" height="55" rx="27" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="457" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Transit</text>
+  <text x="457" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Gateway</text>
+
+  <!-- Spoke VPC 1 -->
+  <rect x="340" y="220" width="70" height="45" rx="6" fill="#dbeafe" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="375" y="240" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e40af">VPC 1</text>
+  <text x="375" y="256" text-anchor="middle" font-size="8" fill="#64748b">Prod</text>
+
+  <!-- Spoke VPC 2 -->
+  <rect x="422" y="220" width="70" height="45" rx="6" fill="#dcfce7" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="457" y="240" text-anchor="middle" font-size="10" font-weight="bold" fill="#166534">VPC 2</text>
+  <text x="457" y="256" text-anchor="middle" font-size="8" fill="#64748b">Dev</text>
+
+  <!-- Spoke VPC 3 -->
+  <rect x="504" y="220" width="70" height="45" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="539" y="240" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">VPC 3</text>
+  <text x="539" y="256" text-anchor="middle" font-size="8" fill="#64748b">Shared</text>
+
+  <!-- Spoke lines -->
+  <line x1="430" y1="200" x2="385" y2="218" stroke="#8b5cf6" stroke-width="2"/>
+  <polygon points="383,215 385,223 389,217" fill="#8b5cf6"/>
+  <line x1="457" y1="200" x2="457" y2="218" stroke="#8b5cf6" stroke-width="2"/>
+  <polygon points="452,216 457,224 462,216" fill="#8b5cf6"/>
+  <line x1="485" y1="200" x2="528" y2="218" stroke="#8b5cf6" stroke-width="2"/>
+  <polygon points="526,215 530,223 533,217" fill="#8b5cf6"/>
+
+  <!-- Route Table -->
+  <rect x="355" y="278" width="205" height="28" rx="5" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="457" y="297" text-anchor="middle" font-size="9" font-weight="bold" fill="#475569">Route Tables for Segmentation</text>
+
+  <!-- Pattern 3: Hybrid Cloud (Right) -->
+  <rect x="615" y="85" width="260" height="230" rx="10" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="745" y="112" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Hybrid Cloud</text>
+  <text x="745" y="130" text-anchor="middle" font-size="10" fill="#64748b">On-premises + cloud</text>
+
+  <!-- On-Premises DC -->
+  <rect x="635" y="145" width="220" height="60" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="745" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">On-Premises DC</text>
+  <text x="745" y="188" text-anchor="middle" font-size="9" fill="#64748b">172.16.0.0/12</text>
+  <text x="745" y="200" text-anchor="middle" font-size="8" fill="#64748b">Active Directory, Legacy Apps</text>
+
+  <!-- Direct Connect Line -->
+  <rect x="695" y="215" width="100" height="22" rx="4" fill="#06b6d4"/>
+  <text x="745" y="230" text-anchor="middle" font-size="9" font-weight="bold" fill="white">Direct Connect</text>
+
+  <!-- Transit Gateway -->
+  <rect x="705" y="248" width="80" height="35" rx="17" fill="#8b5cf6"/>
+  <text x="745" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="white">TGW</text>
+
+  <!-- Cloud VPCs -->
+  <rect x="640" y="295" width="60" height="15" rx="3" fill="#dbeafe" stroke="#60a5fa" stroke-width="1"/>
+  <text x="670" y="306" text-anchor="middle" font-size="7" font-weight="bold" fill="#1e40af">VPC A</text>
+
+  <rect x="710" y="295" width="60" height="15" rx="3" fill="#dcfce7" stroke="#4ade80" stroke-width="1"/>
+  <text x="740" y="306" text-anchor="middle" font-size="7" font-weight="bold" fill="#166534">VPC B</text>
+
+  <!-- Spoke lines -->
+  <line x1="730" y1="283" x2="685" y2="295" stroke="#8b5cf6" stroke-width="1.5"/>
+  <line x1="760" y1="283" x2="740" y2="295" stroke="#8b5cf6" stroke-width="1.5"/>
+
+  <!-- Comparison Table -->
+  <rect x="25" y="335" width="850" height="200" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="450" y="362" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Architecture Pattern Comparison</text>
+
+  <!-- Table Header -->
+  <rect x="35" y="372" width="155" height="28" rx="4" fill="#e2e8f0"/>
+  <text x="112" y="391" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Pattern</text>
+
+  <rect x="190" y="372" width="155" height="28" rx="4" fill="#e2e8f0"/>
+  <text x="267" y="391" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Best For</text>
+
+  <rect x="345" y="372" width="170" height="28" rx="4" fill="#e2e8f0"/>
+  <text x="430" y="391" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Scalability</text>
+
+  <rect x="515" y="372" width="170" height="28" rx="4" fill="#e2e8f0"/>
+  <text x="600" y="391" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Complexity</text>
+
+  <rect x="685" y="372" width="180" height="28" rx="4" fill="#e2e8f0"/>
+  <text x="775" y="391" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Cost</text>
+
+  <!-- Row 1: VPC Peering -->
+  <rect x="35" y="400" width="155" height="28" rx="4" fill="white"/>
+  <text x="112" y="419" text-anchor="middle" font-size="9" fill="#1e293b">VPC Peering</text>
+
+  <rect x="190" y="400" width="155" height="28" rx="4" fill="white"/>
+  <text x="267" y="419" text-anchor="middle" font-size="9" fill="#475569">2-5 VPCs</text>
+
+  <rect x="345" y="400" width="170" height="28" rx="4" fill="white"/>
+  <text x="430" y="419" text-anchor="middle" font-size="9" fill="#475569">Poor (N*(N-1)/2)</text>
+
+  <rect x="515" y="400" width="170" height="28" rx="4" fill="white"/>
+  <text x="600" y="419" text-anchor="middle" font-size="9" fill="#475569">Low</text>
+
+  <rect x="685" y="400" width="180" height="28" rx="4" fill="white"/>
+  <text x="775" y="419" text-anchor="middle" font-size="9" fill="#475569">Low (no gateway charges)</text>
+
+  <!-- Row 2: Transit Gateway -->
+  <rect x="35" y="428" width="155" height="28" rx="4" fill="#f8fafc"/>
+  <text x="112" y="447" text-anchor="middle" font-size="9" fill="#1e293b">Transit Gateway</text>
+
+  <rect x="190" y="428" width="155" height="28" rx="4" fill="#f8fafc"/>
+  <text x="267" y="447" text-anchor="middle" font-size="9" fill="#475569">10+ VPCs, multi-account</text>
+
+  <rect x="345" y="428" width="170" height="28" rx="4" fill="#f8fafc"/>
+  <text x="430" y="447" text-anchor="middle" font-size="9" fill="#475569">High (thousands of attachments)</text>
+
+  <rect x="515" y="428" width="170" height="28" rx="4" fill="#f8fafc"/>
+  <text x="600" y="447" text-anchor="middle" font-size="9" fill="#475569">Medium-High</text>
+
+  <rect x="685" y="428" width="180" height="28" rx="4" fill="#f8fafc"/>
+  <text x="775" y="447" text-anchor="middle" font-size="9" fill="#475569">Medium (hourly + per-GB)</text>
+
+  <!-- Row 3: Hybrid Cloud -->
+  <rect x="35" y="456" width="155" height="28" rx="4" fill="white"/>
+  <text x="112" y="475" text-anchor="middle" font-size="9" fill="#1e293b">Hybrid Cloud</text>
+
+  <rect x="190" y="456" width="155" height="28" rx="4" fill="white"/>
+  <text x="267" y="475" text-anchor="middle" font-size="9" fill="#475569">On-prem + cloud migration</text>
+
+  <rect x="345" y="456" width="170" height="28" rx="4" fill="white"/>
+  <text x="430" y="475" text-anchor="middle" font-size="9" fill="#475569">High (via TGW)</text>
+
+  <rect x="515" y="456" width="170" height="28" rx="4" fill="white"/>
+  <text x="600" y="475" text-anchor="middle" font-size="9" fill="#475569">High (DNS, BGP routing)</text>
+
+  <rect x="685" y="456" width="180" height="28" rx="4" fill="white"/>
+  <text x="775" y="475" text-anchor="middle" font-size="9" fill="#475569">Highest (DX + TGW charges)</text>
+
+  <!-- Row 4: Key Differentiator -->
+  <rect x="35" y="484" width="155" height="28" rx="4" fill="#f8fafc"/>
+  <text x="112" y="503" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e293b">Key Differentiator</text>
+
+  <rect x="190" y="484" width="155" height="28" rx="4" fill="#f8fafc"/>
+  <text x="267" y="503" text-anchor="middle" font-size="9" fill="#475569">Direct paths, simple</text>
+
+  <rect x="345" y="484" width="170" height="28" rx="4" fill="#f8fafc"/>
+  <text x="430" y="503" text-anchor="middle" font-size="9" fill="#475569">Centralized routing, scale</text>
+
+  <rect x="515" y="484" width="170" height="28" rx="4" fill="#f8fafc"/>
+  <text x="600" y="503" text-anchor="middle" font-size="9" fill="#475569">Seamless extension</text>
+
+  <rect x="685" y="484" width="180" height="28" rx="4" fill="#f8fafc"/>
+  <text x="775" y="503" text-anchor="middle" font-size="9" fill="#475569">Unified identity, data locality</text>
+
+  <!-- Key Takeaway -->
+  <rect x="25" y="520" width="850" height="25" rx="5" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="450" y="537" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">Choose peering for 2-5 VPCs, transit gateway for 10+, hybrid for on-premises integration</text>
 </svg>

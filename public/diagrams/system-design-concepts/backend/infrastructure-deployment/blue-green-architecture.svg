@@ -1,0 +1,45 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Blue-Green Architecture</text>
+  <!-- Blue Environment -->
+  <rect x="50" y="80" width="350" height="220" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="225" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#15803d">Blue Environment (v1.0)</text>
+  <rect x="70" y="130" width="310" height="30" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Application servers (3 instances)</text>
+  <rect x="70" y="165" width="310" height="30" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Database (shared)</text>
+  <rect x="70" y="200" width="310" height="30" rx="3" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="225" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">CDN cache</text>
+  <rect x="70" y="235" width="310" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="225" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Currently serving 100% traffic</text>
+  <!-- Green Environment -->
+  <rect x="500" y="80" width="350" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="675" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Green Environment (v2.0)</text>
+  <rect x="520" y="130" width="310" height="30" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="675" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Application servers (3 instances)</text>
+  <rect x="520" y="165" width="310" height="30" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="675" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">Database (shared)</text>
+  <rect x="520" y="200" width="310" height="30" rx="3" fill="#ffffff" stroke="#fde68a"/>
+  <text x="675" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#b45309">CDN cache</text>
+  <rect x="520" y="235" width="310" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="675" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Deployed, tested, ready for switch</text>
+  <!-- Traffic Router -->
+  <rect x="300" y="320" width="300" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="450" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Traffic Router</text>
+  <text x="450" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Load Balancer / DNS / CDN</text>
+  <text x="450" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Currently routing to Blue</text>
+  <!-- Arrows -->
+  <path d="M 450 320 L 450 300" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <path d="M 225 300 L 225 320" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <path d="M 675 300 L 675 320" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" fill="none"/>
+  <!-- Key Principle -->
+  <rect x="50" y="440" width="800" height="90" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Zero-Downtime Guarantee</text>
+  <text x="450" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">Both environments run simultaneously. Traffic switches only after new version is verified healthy.</text>
+  <text x="450" y="520" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">At every point, at least one healthy environment serves traffic. Users never experience downtime.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

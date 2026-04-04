@@ -1,0 +1,52 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1a2e">Flag Evaluation Flow</text>
+  <!-- User Request -->
+  <rect x="50" y="80" width="180" height="120" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="140" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">User Request</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">Page load / action</text>
+  <text x="140" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0369a1">User context (ID, attrs)</text>
+  <path d="M 230 140 L 280 140" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- SDK -->
+  <rect x="280" y="80" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="370" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#92400e">Flag SDK</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Fetch flag states</text>
+  <text x="370" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">Evaluate targeting rules</text>
+  <path d="M 460 140 L 510 140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Targeting Rules -->
+  <rect x="510" y="80" width="180" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="600" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#166534">Targeting Rules</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Percentage check</text>
+  <text x="600" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Segment check</text>
+  <path d="M 690 140 L 740 140" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+  <!-- Result -->
+  <rect x="740" y="80" width="130" height="120" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="805" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6b21a8">Result</text>
+  <text x="805" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">Enabled</text>
+  <text x="805" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b21a8">or Disabled</text>
+  <!-- Feature Code -->
+  <rect x="50" y="220" width="800" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#1e293b">Feature Code Execution</text>
+  <rect x="70" y="270" width="340" height="35" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="240" y="292" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#15803d">if (flag.enabled) { runNewFeature() }</text>
+  <rect x="470" y="270" width="360" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="650" y="292" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#b45309">else { runExistingFeature() }</text>
+  <!-- Caching -->
+  <rect x="50" y="340" width="800" height="100" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#15803d">Caching for Performance</text>
+  <rect x="70" y="390" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="190" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Fetch on app load</text>
+  <rect x="330" y="390" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="450" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Cache in memory/localStorage</text>
+  <rect x="590" y="390" width="240" height="35" rx="4" fill="#ffffff" stroke="#dcfce7"/>
+  <text x="710" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">Update via WebSocket/polling</text>
+  <!-- Key Principle -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0c4a6e">Key Principle</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1">Flag evaluation must be fast (under 10ms). Cache flag states, use sticky assignment (same user always gets same result), provide default values if SDK is unavailable.</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#647480"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <rect width="900" height="500" fill="#ffffff"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Service Discovery Patterns: DNS-Based, Client-Side, Server-Side</text>
+  <!-- DNS-Based Discovery -->
+  <rect x="30" y="70" width="270" height="400" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="30" y="70" width="270" height="50" rx="12" fill="#3b82f6"/>
+  <text x="165" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">DNS-Based Discovery</text>
+  <!-- Flow -->
+  <rect x="60" y="140" width="210" height="50" rx="6" fill="#60a5fa"/>
+  <text x="165" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Client: user-service.internal</text>
+  <text x="165" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#dbeafe">Resolves to IP list via DNS</text>
+  <line x1="165" y1="190" x2="165" y2="220" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowblue)"/>
+  <rect x="60" y="220" width="210" height="50" rx="6" fill="#3b82f6"/>
+  <text x="165" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">DNS Server</text>
+  <text x="165" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#dbeafe">Returns all healthy IPs</text>
+  <line x1="165" y1="270" x2="165" y2="300" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowblue)"/>
+  <rect x="60" y="300" width="210" height="50" rx="6" fill="#1d4ed8"/>
+  <text x="165" y="322" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Service Instances</text>
+  <text x="165" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#dbeafe">10.0.1.10, 10.0.1.11, 10.0.1.12</text>
+  <!-- Pros/Cons -->
+  <rect x="50" y="370" width="230" height="80" rx="6" fill="#dbeafe"/>
+  <text x="165" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e40af">Pros: Simple, standard DNS</text>
+  <text x="165" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e40af">Cons: DNS caching, stale IPs,</text>
+  <text x="165" y="432" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e40af">no built-in load balancing</text>
+  <text x="165" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1e40af">Used by: Kubernetes CoreDNS</text>
+  <!-- Client-Side Discovery -->
+  <rect x="315" y="70" width="270" height="400" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="315" y="70" width="270" height="50" rx="12" fill="#f59e0b"/>
+  <text x="450" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Client-Side Discovery</text>
+  <!-- Flow -->
+  <rect x="345" y="140" width="210" height="50" rx="6" fill="#fbbf24"/>
+  <text x="450" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Client queries registry directly</text>
+  <text x="450" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#fef3c7">GET /services/user-service</text>
+  <line x1="450" y1="190" x2="450" y2="220" stroke="#f59e0b" stroke-width="2" marker-end="url(#arroworange)"/>
+  <rect x="345" y="220" width="210" height="50" rx="6" fill="#f59e0b"/>
+  <text x="450" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Service Registry</text>
+  <text x="450" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#fef3c7">Returns healthy instance list</text>
+  <line x1="450" y1="270" x2="450" y2="300" stroke="#f59e0b" stroke-width="2" marker-end="url(#arroworange)"/>
+  <rect x="345" y="300" width="210" height="50" rx="6" fill="#92400e"/>
+  <text x="450" y="322" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Client load balances</text>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#fef3c7">Round-robin across returned IPs</text>
+  <!-- Pros/Cons -->
+  <rect x="335" y="370" width="230" height="80" rx="6" fill="#fef3c7"/>
+  <text x="450" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Pros: Real-time IPs, client LB</text>
+  <text x="450" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Cons: Client implements</text>
+  <text x="450" y="432" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">discovery logic, registry dep</text>
+  <text x="450" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#92400e">Used by: Netflix Eureka, Consul</text>
+  <!-- Server-Side Discovery -->
+  <rect x="600" y="70" width="270" height="400" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <rect x="600" y="70" width="270" height="50" rx="12" fill="#10b981"/>
+  <text x="735" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Server-Side Discovery</text>
+  <!-- Flow -->
+  <rect x="630" y="140" width="210" height="50" rx="6" fill="#34d399"/>
+  <text x="735" y="162" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Client sends to Load Balancer</text>
+  <text x="735" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#d1fae5">No discovery logic needed</text>
+  <line x1="735" y1="190" x2="735" y2="220" stroke="#10b981" stroke-width="2" marker-end="url(#arrowgreen)"/>
+  <rect x="630" y="220" width="210" height="50" rx="6" fill="#10b981"/>
+  <text x="735" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Load Balancer</text>
+  <text x="735" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#d1fae5">Queries registry, routes traffic</text>
+  <line x1="735" y1="270" x2="735" y2="300" stroke="#10b981" stroke-width="2" marker-end="url(#arrowgreen)"/>
+  <rect x="630" y="300" width="210" height="50" rx="6" fill="#065f46"/>
+  <text x="735" y="322" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Service Instances</text>
+  <text x="735" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#d1fae5">Transparent to client</text>
+  <!-- Pros/Cons -->
+  <rect x="620" y="370" width="230" height="80" rx="6" fill="#d1fae5"/>
+  <text x="735" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Pros: Client-transparent, LB</text>
+  <text x="735" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">handles discovery, routing</text>
+  <text x="735" y="432" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Cons: LB is extra component</text>
+  <text x="735" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#065f46">Used by: Envoy, Kong, ALB</text>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#64748b">DNS-based: simple but caching issues. Client-side: real-time but client complexity. Server-side: client-transparent but LB dependency</text>
+  <defs>
+    <marker id="arrowblue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arroworange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+</svg>
