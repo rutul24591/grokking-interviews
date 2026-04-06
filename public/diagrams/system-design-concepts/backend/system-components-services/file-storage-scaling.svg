@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">File Storage Service &#8212; Scaling Strategies</text>
+
+  <!-- Horizontal Scaling -->
+  <rect x="30" y="65" width="410" height="150" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Horizontal Scaling: API Layer</text>
+
+  <!-- Load Balancer -->
+  <rect x="50" y="110" width="370" height="35" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="235" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">Load Balancer (Round-Robin / Least Connections)</text>
+
+  <!-- API Instances -->
+  <rect x="50" y="155" width="80" height="45" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="90" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">API-1</text>
+  <text x="90" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">us-east-1a</text>
+
+  <rect x="145" y="155" width="80" height="45" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="185" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">API-2</text>
+  <text x="185" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">us-east-1b</text>
+
+  <rect x="240" y="155" width="80" height="45" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="280" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">API-3</text>
+  <text x="280" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">us-west-2a</text>
+
+  <rect x="335" y="155" width="80" height="45" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="375" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">API-N</text>
+  <text x="375" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">eu-west-1a</text>
+
+  <!-- Storage Scaling -->
+  <rect x="470" y="65" width="400" height="150" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">Storage Scaling: Object Storage</text>
+
+  <!-- Buckets -->
+  <rect x="485" y="110" width="370" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#166534">Auto-Partitioning Across Storage Nodes</text>
+
+  <!-- Storage Nodes -->
+  <rect x="485" y="155" width="110" height="45" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="540" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Node A</text>
+  <text x="540" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Partition 1-100</text>
+
+  <rect x="610" y="155" width="110" height="45" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="665" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Node B</text>
+  <text x="665" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Partition 101-200</text>
+
+  <rect x="735" y="155" width="110" height="45" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="790" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Node N</text>
+  <text x="790" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Partition N-End</text>
+
+  <!-- CDN Scaling -->
+  <rect x="30" y="245" width="410" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">CDN Edge Cache Scaling</text>
+
+  <rect x="50" y="290" width="370" height="35" rx="4" fill="#fefce8" stroke="#f59e0b" stroke-width="1"/>
+  <text x="235" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Global Edge Network &#8212; 200+ PoPs</text>
+
+  <!-- Edge locations -->
+  <rect x="50" y="335" width="70" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="85" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">NYC</text>
+
+  <rect x="130" y="335" width="70" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="165" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">LAX</text>
+
+  <rect x="210" y="335" width="70" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="245" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">LON</text>
+
+  <rect x="290" y="335" width="70" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="325" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">NRT</text>
+
+  <rect x="370" y="335" width="50" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="395" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">...</text>
+
+  <!-- Metadata DB Scaling -->
+  <rect x="470" y="245" width="400" height="140" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Metadata Database Scaling</text>
+
+  <rect x="485" y="290" width="370" height="35" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="670" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#6b21a8">Read Replicas + Sharding by Tenant/User</text>
+
+  <!-- Primary -->
+  <rect x="485" y="335" width="110" height="35" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="540" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Primary</text>
+
+  <!-- Replicas -->
+  <rect x="610" y="335" width="80" height="35" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="650" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Replica 1</text>
+
+  <rect x="700" y="335" width="80" height="35" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="740" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Replica 2</text>
+
+  <rect x="790" y="335" width="65" height="35" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="822" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Replica N</text>
+
+  <!-- Capacity Planning -->
+  <rect x="30" y="415" width="410" height="110" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Capacity Planning Metrics</text>
+
+  <rect x="50" y="460" width="180" height="50" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="140" y="480" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Storage Growth Rate</text>
+  <text x="140" y="498" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">TB/month, files/month</text>
+
+  <rect x="245" y="460" width="180" height="50" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="335" y="480" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Request Rate</text>
+  <text x="335" y="498" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">RPS, bandwidth, IOPS</text>
+
+  <!-- Auto-Scaling Triggers -->
+  <rect x="470" y="415" width="400" height="110" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Auto-Scaling Triggers</text>
+
+  <rect x="485" y="460" width="180" height="50" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="575" y="480" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">CPU &#62; 70% for 5min</text>
+  <text x="575" y="498" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Add API instances</text>
+
+  <rect x="680" y="460" width="175" height="50" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="767" y="480" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">CDN cache hit &#60; 80%</text>
+  <text x="767" y="498" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Increase TTL / edge nodes</text>
+
+  <!-- Key Metric -->
+  <rect x="30" y="520" width="840" height="25" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="120" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0c4a6e">Key Metrics:</text>
+  <text x="210" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Object storage: virtually unlimited</text>
+  <text x="430" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">CDN cache hit rate: &#62; 95%</text>
+  <text x="620" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">API latency p99: &#60; 100ms</text>
+  <text x="780" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Metadata DB: sharded by tenant</text>
+</svg>

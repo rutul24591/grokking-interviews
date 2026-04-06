@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Media Processing Service &#8212; Scaling Strategies</text>
+
+  <!-- GPU Worker Scaling -->
+  <rect x="30" y="65" width="410" height="140" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">GPU Worker Auto-Scaling</text>
+
+  <rect x="50" y="110" width="370" height="30" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="235" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">Scale GPU instances based on video processing queue depth</text>
+
+  <rect x="50" y="150" width="110" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">GPU-1</text>
+  <text x="105" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">NVIDIA T4</text>
+
+  <rect x="170" y="150" width="110" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="225" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">GPU-2</text>
+  <text x="225" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">NVIDIA T4</text>
+
+  <rect x="290" y="150" width="130" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="355" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">GPU-N (scaled)</text>
+  <text x="355" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">On-demand/Spot</text>
+
+  <!-- CPU Worker Pool -->
+  <rect x="470" y="65" width="400" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">CPU Worker Pool (Image/Audio)</text>
+
+  <rect x="485" y="110" width="370" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#166534">ImageMagick / Sharp / FFmpeg (CPU mode)</text>
+
+  <rect x="485" y="150" width="110" height="40" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="540" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">CPU-1</text>
+  <text x="540" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Image tasks</text>
+
+  <rect x="605" y="150" width="110" height="40" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="660" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">CPU-2</text>
+  <text x="660" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Audio tasks</text>
+
+  <rect x="725" y="150" width="120" height="40" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="785" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">CPU-N (scaled)</text>
+  <text x="785" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Auto-scale</text>
+
+  <!-- CDN Distribution -->
+  <rect x="30" y="235" width="410" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">CDN Distribution Strategy</text>
+
+  <rect x="50" y="280" width="370" height="30" rx="4" fill="#fefce8" stroke="#f59e0b" stroke-width="1"/>
+  <text x="235" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Processed assets pushed to CDN edge nodes globally</text>
+
+  <rect x="50" y="320" width="110" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="105" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">us-east</text>
+  <text x="105" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Primary</text>
+
+  <rect x="170" y="320" width="110" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="225" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">eu-west</text>
+  <text x="225" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Replica</text>
+
+  <rect x="290" y="320" width="130" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="355" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">ap-southeast</text>
+  <text x="355" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Replica</text>
+
+  <!-- Cost Optimization -->
+  <rect x="470" y="235" width="400" height="140" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Cost Optimization: Spot Instances</text>
+
+  <rect x="485" y="280" width="370" height="30" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="670" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#6b21a8">Use spot/preemptible instances for non-real-time transcoding</text>
+
+  <rect x="485" y="320" width="170" height="40" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="570" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Spot: 60-90% cheaper</text>
+  <text x="570" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Can be interrupted</text>
+
+  <rect x="665" y="320" width="185" height="40" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="757" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">On-demand for urgent</text>
+  <text x="757" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Real-time processing</text>
+
+  <!-- Processing Throughput -->
+  <rect x="30" y="405" width="410" height="115" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Processing Throughput Metrics</text>
+
+  <rect x="50" y="450" width="170" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="135" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Video: 0.5-2x real-time</text>
+
+  <rect x="235" y="450" width="185" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="327" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Image: 100-500/sec per worker</text>
+
+  <rect x="50" y="483" width="170" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="135" y="500" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">GPU speedup: 5-10x vs CPU</text>
+
+  <rect x="235" y="483" width="185" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="327" y="500" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Audio: 10-50x real-time</text>
+
+  <!-- Key Scaling Decisions -->
+  <rect x="470" y="405" width="400" height="115" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Key Scaling Decisions</text>
+
+  <rect x="485" y="450" width="370" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="670" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">Segment video for parallel encoding (10-min video = 150 segments)</text>
+
+  <rect x="485" y="483" width="175" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="572" y="500" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Lazy transcoding on demand</text>
+
+  <rect x="675" y="483" width="180" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="765" y="500" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Pre-warm popular content</text>
+</svg>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">File Upload Flow &#8212; Multipart Upload with Presigned URLs</text>
+
+  <!-- Step 1: Initiate -->
+  <rect x="30" y="65" width="160" height="80" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="110" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">1. Initiate Upload</text>
+  <text x="110" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Client requests presigned</text>
+  <text x="110" y="133" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">URL from API server</text>
+
+  <!-- Step 2: Generate -->
+  <rect x="220" y="65" width="160" height="80" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="300" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#166534">2. Generate Presigned URL</text>
+  <text x="300" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Server validates auth,</text>
+  <text x="300" y="133" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">generates time-limited URL</text>
+
+  <!-- Step 3: Upload Parts -->
+  <rect x="410" y="65" width="160" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="490" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">3. Upload Parts in Parallel</text>
+  <text x="490" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Client uploads chunks</text>
+  <text x="490" y="133" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">directly to object storage</text>
+
+  <!-- Step 4: Complete -->
+  <rect x="600" y="65" width="160" height="80" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="680" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#6b21a8">4. Complete Multipart</text>
+  <text x="680" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Client signals completion,</text>
+  <text x="680" y="133" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">storage assembles file</text>
+
+  <!-- Step 5: Verify -->
+  <rect x="790" y="65" width="80" height="80" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="830" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#155e75">5. Verify</text>
+  <text x="830" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Checksum</text>
+  <text x="830" y="133" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">validation</text>
+
+  <!-- Arrows -->
+  <line x1="190" y1="105" x2="220" y2="105" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="380" y1="105" x2="410" y2="105" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="570" y1="105" x2="600" y2="105" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="760" y1="105" x2="790" y2="105" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Multipart Upload Detail -->
+  <rect x="30" y="180" width="540" height="180" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="300" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#334155">Multipart Upload Detail</text>
+
+  <!-- Upload ID -->
+  <rect x="50" y="225" width="480" height="35" rx="4" fill="#ffffff" stroke="#64748b" stroke-width="1"/>
+  <text x="290" y="247" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Upload ID: abc-123-def (returned by InitiateMultipartUpload)</text>
+
+  <!-- Part boxes -->
+  <rect x="50" y="275" width="80" height="65" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="90" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Part 1</text>
+  <text x="90" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">0-5MB</text>
+  <text x="90" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">ETag: a1b2</text>
+
+  <rect x="145" y="275" width="80" height="65" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="185" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Part 2</text>
+  <text x="185" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">5-10MB</text>
+  <text x="185" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">ETag: c3d4</text>
+
+  <rect x="240" y="275" width="80" height="65" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="280" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Part 3</text>
+  <text x="280" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">10-15MB</text>
+  <text x="280" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">ETag: e5f6</text>
+
+  <rect x="335" y="275" width="80" height="65" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="375" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Part 4</text>
+  <text x="375" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">15-18MB</text>
+  <text x="375" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">ETag: g7h8</text>
+
+  <rect x="430" y="275" width="80" height="65" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="470" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Assemble</text>
+  <text x="470" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">CompleteMPU</text>
+  <text x="470" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">&#8594; Final Object</text>
+
+  <!-- Retry Logic -->
+  <rect x="30" y="385" width="260" height="140" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2" filter="url(#shadow)"/>
+  <text x="160" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#9a3412">Retry Logic for Failed Parts</text>
+
+  <rect x="45" y="430" width="230" height="35" rx="4" fill="#ffffff" stroke="#f97316" stroke-width="1"/>
+  <text x="160" y="452" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Part upload fails with 5xx</text>
+
+  <rect x="45" y="475" width="105" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="97" y="492" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Exponential backoff</text>
+  <text x="97" y="505" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">retry same part</text>
+
+  <rect x="160" y="475" width="115" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="217" y="492" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">Abort after max retries</text>
+  <text x="217" y="505" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">clean up parts</text>
+
+  <!-- Presigned URL Flow -->
+  <rect x="320" y="385" width="260" height="140" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#155e75">Presigned URL Security</text>
+
+  <rect x="335" y="430" width="230" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="450" y="452" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">URL signed with IAM credentials</text>
+
+  <rect x="335" y="475" width="105" height="35" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="387" y="492" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">TTL: 15 minutes</text>
+  <text x="387" y="505" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">auto-expire</text>
+
+  <rect x="450" y="475" width="115" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="507" y="492" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Scoped to specific</text>
+  <text x="507" y="505" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">bucket + key</text>
+
+  <!-- Key Metrics -->
+  <rect x="610" y="385" width="260" height="140" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="740" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0c4a6e">Key Performance Metrics</text>
+
+  <rect x="625" y="430" width="230" height="25" rx="4" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="740" y="447" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Part size: 5MB (optimal)</text>
+
+  <rect x="625" y="462" width="230" height="25" rx="4" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="740" y="479" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Max parts: 10,000 per file</text>
+
+  <rect x="625" y="494" width="230" height="25" rx="4" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="740" y="511" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Parallel uploads: 10 concurrent</text>
+</svg>

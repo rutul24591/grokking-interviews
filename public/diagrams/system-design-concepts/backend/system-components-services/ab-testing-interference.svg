@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Experiment Interference and Holdout Strategies</text>
+
+  <!-- Problem: Multiple overlapping experiments -->
+  <rect x="40" y="70" width="400" height="180" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#991b1b">Problem: Overlapping Experiments</text>
+
+  <!-- User flow through overlapping experiments -->
+  <rect x="60" y="120" width="360" height="40" rx="6" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+  <text x="240" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#991b1b">User enters Experiment A (checkout UI change)</text>
+  <rect x="60" y="168" width="360" height="40" rx="6" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+  <text x="240" y="193" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#991b1b">Same user enters Experiment B (payment retry logic)</text>
+  <rect x="60" y="216" width="360" height="25" rx="6" fill="#fef2f2"/>
+  <text x="240" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#991b1b">Result: Effects interact, attribution becomes unreliable</text>
+
+  <!-- Solution: Mutually exclusive layers -->
+  <rect x="460" y="70" width="400" height="180" rx="10" fill="#ecfdf5" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534">Solution: Experiment Layers</text>
+
+  <rect x="480" y="120" width="360" height="30" rx="5" fill="#86efac" stroke="#22c55e" stroke-width="1"/>
+  <text x="660" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534">Layer 1: UI / Layout experiments (mutually exclusive)</text>
+  <rect x="480" y="156" width="360" height="30" rx="5" fill="#bbf7d0" stroke="#22c55e" stroke-width="1"/>
+  <text x="660" y="176" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534">Layer 2: Backend / Algorithm experiments (mutually exclusive)</text>
+  <rect x="480" y="192" width="360" height="30" rx="5" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="660" y="212" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534">Layer 3: Pricing / Monetization experiments (isolated)</text>
+  <rect x="480" y="228" width="360" height="15" rx="3" fill="#f0fdf4"/>
+  <text x="660" y="239" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#166534">Experiments within a layer are mutually exclusive; layers are independent</text>
+
+  <!-- Holdout strategy -->
+  <rect x="40" y="280" width="820" height="100" rx="10" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">Global Holdout Group</text>
+  <text x="200" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#475569">5% of users see NO experiments</text>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#475569">Measures cumulative impact of all changes</text>
+  <text x="700" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#475569">Detects interaction bias</text>
+
+  <!-- Interference detection -->
+  <rect x="40" y="400" width="400" height="85" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="240" y="428" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#a16207">Interference Detection</text>
+  <text x="240" y="453" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Monitor: do results change when another experiment is active?</text>
+  <text x="240" y="473" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Flag: inconsistent effect sizes across segments or time windows</text>
+
+  <!-- Long-term impact measurement -->
+  <rect x="460" y="400" width="400" height="85" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="660" y="428" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Long-Term Impact Measurement</text>
+  <text x="660" y="453" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Short-term lift may not persist (novelty effect)</text>
+  <text x="660" y="473" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Holdout groups measure sustained effects over weeks/months</text>
+</svg>

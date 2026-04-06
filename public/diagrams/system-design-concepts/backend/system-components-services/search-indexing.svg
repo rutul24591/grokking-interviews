@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Search Indexing Pipeline and Query Flow</text>
+  <!-- Indexing Pipeline -->
+  <rect x="40" y="70" width="400" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Indexing Pipeline</text>
+  <rect x="60" y="120" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">1. Document extraction from source databases</text>
+  <rect x="60" y="157" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="177" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">2. Text analysis: tokenization, stemming, stop words</text>
+  <rect x="60" y="194" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="214" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">3. Build inverted index: term &#8594; posting list</text>
+  <rect x="60" y="231" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="251" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">4. Distribute index across shards with replicas</text>
+  <!-- Arrow -->
+  <line x1="440" y1="170" x2="470" y2="170" stroke="#64748b" stroke-width="2"/>
+  <polygon points="470,165 480,170 470,175" fill="#64748b"/>
+  <!-- Query Flow -->
+  <rect x="480" y="70" width="380" height="200" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534">Query Execution Flow</text>
+  <rect x="500" y="120" width="340" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="670" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">1. Parse query, expand synonyms, apply filters</text>
+  <rect x="500" y="157" width="340" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="670" y="177" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">2. Fan-out query to all relevant shards</text>
+  <rect x="500" y="194" width="340" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="670" y="214" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">3. Each shard scores matching documents (BM25)</text>
+  <rect x="500" y="231" width="340" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="670" y="251" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">4. Merge results, rank, return top-K to client</text>
+  <!-- Real-time vs Batch -->
+  <rect x="40" y="300" width="400" height="185" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="240" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#a16207">Index Update Strategies</text>
+  <rect x="60" y="350" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="240" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Near-real-time (NRT): commit every 1-5 seconds</text>
+  <rect x="60" y="382" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="240" y="399" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">CDC streaming: database changes &#8594; index updates</text>
+  <rect x="60" y="414" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="240" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Batch reindex: full rebuild nightly for consistency</text>
+  <rect x="60" y="446" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="240" y="463" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Blue-green index swap: zero-downtime reindex</text>
+  <!-- Relevance tuning -->
+  <rect x="460" y="300" width="400" height="185" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="660" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Relevance Tuning Levers</text>
+  <rect x="480" y="350" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Field boosting: title &#62; description &#62; body text</text>
+  <rect x="480" y="382" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="399" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Function scoring: popularity, recency, personalization</text>
+  <rect x="480" y="414" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Query understanding: synonyms, spell correction, NER</text>
+  <rect x="480" y="446" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="463" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Learning-to-rank: ML models on top of BM25 scores</text>
+</svg>

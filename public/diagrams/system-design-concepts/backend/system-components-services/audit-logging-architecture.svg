@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a90d9"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6cb4ee"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <rect width="900" height="550" fill="#1a1a2e" opacity="0" class="dark-bg"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1a1a2e">Audit Logging Service Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="normal" fill="#555555">Event sources &#8594; Ingestion pipeline &#8594; Immutable storage &#8594; Query &amp; access</text>
+
+  <!-- EVENT SOURCES column -->
+  <rect x="30" y="85" width="190" height="390" rx="8" fill="#f0f4f8" stroke="#c8d6e5" stroke-width="1.5"/>
+  <text x="125" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#1a1a2e">Event Sources</text>
+
+  <!-- Source boxes -->
+  <rect x="50" y="130" width="150" height="48" rx="6" fill="#e8f0fe" stroke="#4a90d9" stroke-width="1.5"/>
+  <text x="125" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Auth Service</text>
+  <text x="125" y="166" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">login, logout, MFA</text>
+
+  <rect x="50" y="190" width="150" height="48" rx="6" fill="#e8f0fe" stroke="#4a90d9" stroke-width="1.5"/>
+  <text x="125" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Data Service</text>
+  <text x="125" y="226" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">CRUD, export, delete</text>
+
+  <rect x="50" y="250" width="150" height="48" rx="6" fill="#e8f0fe" stroke="#4a90d9" stroke-width="1.5"/>
+  <text x="125" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Admin Console</text>
+  <text x="125" y="286" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">role changes, config</text>
+
+  <rect x="50" y="310" width="150" height="48" rx="6" fill="#e8f0fe" stroke="#4a90d9" stroke-width="1.5"/>
+  <text x="125" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">API Gateway</text>
+  <text x="125" y="346" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">request, rate limit</text>
+
+  <rect x="50" y="370" width="150" height="48" rx="6" fill="#e8f0fe" stroke="#4a90d9" stroke-width="1.5"/>
+  <text x="125" y="390" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Infra Services</text>
+  <text x="125" y="406" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">deploy, scaling, alerts</text>
+
+  <!-- INGESTION column -->
+  <rect x="260" y="85" width="190" height="390" rx="8" fill="#f0f4f8" stroke="#c8d6e5" stroke-width="1.5"/>
+  <text x="355" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#1a1a2e">Ingestion Pipeline</text>
+
+  <rect x="280" y="130" width="150" height="56" rx="6" fill="#fff3e0" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="355" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Schema Validator</text>
+  <text x="355" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">JSON schema, version</text>
+
+  <rect x="280" y="200" width="150" height="56" rx="6" fill="#fff3e0" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="355" y="222" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Message Queue</text>
+  <text x="355" y="238" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">Kafka / Kinesis / SQS</text>
+
+  <rect x="280" y="270" width="150" height="56" rx="6" fill="#fff3e0" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="355" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Enrichment</text>
+  <text x="355" y="308" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">IP geo, tenant, tags</text>
+
+  <rect x="280" y="340" width="150" height="56" rx="6" fill="#fff3e0" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="355" y="362" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Dedup &amp; Order</text>
+  <text x="355" y="378" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">idempotency keys</text>
+
+  <!-- IMMUTABLE STORAGE column -->
+  <rect x="490" y="85" width="190" height="390" rx="8" fill="#f0f4f8" stroke="#c8d6e5" stroke-width="1.5"/>
+  <text x="585" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#1a1a2e">Immutable Storage</text>
+
+  <rect x="510" y="130" width="150" height="56" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="585" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Append-Only Log</text>
+  <text x="585" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">WAL, no UPDATE/DELETE</text>
+
+  <rect x="510" y="200" width="150" height="56" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="585" y="222" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Hash Chain</text>
+  <text x="585" y="238" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">SHA-256 linked blocks</text>
+
+  <rect x="510" y="270" width="150" height="56" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="585" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Index Layer</text>
+  <text x="585" y="308" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">Elasticsearch / OpenSearch</text>
+
+  <rect x="510" y="340" width="150" height="56" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="585" y="362" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Cold Archive</text>
+  <text x="585" y="378" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">S3 Glacier, retention lock</text>
+
+  <!-- QUERY &amp; ACCESS column -->
+  <rect x="720" y="85" width="160" height="390" rx="8" fill="#f0f4f8" stroke="#c8d6e5" stroke-width="1.5"/>
+  <text x="800" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#1a1a2e">Query &amp; Access</text>
+
+  <rect x="740" y="130" width="120" height="56" rx="6" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+  <text x="800" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Query API</text>
+  <text x="800" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">filter, time range</text>
+
+  <rect x="740" y="200" width="120" height="56" rx="6" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+  <text x="800" y="222" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">RBAC / ABAC</text>
+  <text x="800" y="238" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">least privilege</text>
+
+  <rect x="740" y="270" width="120" height="56" rx="6" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+  <text x="800" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Dashboards</text>
+  <text x="800" y="308" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">compliance reports</text>
+
+  <rect x="740" y="340" width="120" height="56" rx="6" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+  <text x="800" y="362" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Alert Rules</text>
+  <text x="800" y="378" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#555555">anomaly detection</text>
+
+  <!-- Arrows between columns -->
+  <!-- Sources to Ingestion -->
+  <line x1="220" y1="155" x2="280" y2="155" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="220" y1="215" x2="280" y2="215" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="220" y1="275" x2="280" y2="275" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="220" y1="335" x2="280" y2="335" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="220" y1="395" x2="280" y2="395" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Ingestion to Storage -->
+  <line x1="450" y1="155" x2="510" y2="155" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="225" x2="510" y2="225" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="295" x2="510" y2="295" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="365" x2="510" y2="365" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Storage to Query -->
+  <line x1="680" y1="155" x2="740" y2="155" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="680" y1="225" x2="740" y2="225" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="680" y1="295" x2="740" y2="295" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="680" y1="365" x2="740" y2="365" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Footer label -->
+  <text x="450" y="520" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#777777">Flow: Events are validated, buffered, enriched, deduplicated, then written to append-only storage with hash-chain integrity and indexed for query.</text>
+</svg>

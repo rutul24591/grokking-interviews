@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Notification Service Architecture</text>
+
+  <!-- Event Sources -->
+  <rect x="30" y="65" width="180" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="120" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">Event Sources</text>
+  <text x="120" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">User Actions</text>
+  <text x="120" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">System Events</text>
+  <text x="120" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Scheduled Triggers</text>
+
+  <!-- Notification Gateway -->
+  <rect x="240" y="65" width="180" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="330" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#166534">Notification Gateway</text>
+  <text x="330" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Template Resolution</text>
+  <text x="330" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Preference Check</text>
+  <text x="330" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Rate Limiting</text>
+
+  <!-- Channel Router -->
+  <rect x="450" y="65" width="180" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="540" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Channel Router</text>
+  <text x="540" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Email / Push / SMS</text>
+  <text x="540" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">In-App / Webhook</text>
+  <text x="540" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Channel Fallback</text>
+
+  <!-- Channel Providers -->
+  <rect x="660" y="65" width="210" height="100" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="765" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#6b21a8">Channel Providers</text>
+  <text x="765" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">SendGrid / SES (Email)</text>
+  <text x="765" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">FCM / APNs (Push)</text>
+  <text x="765" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Twilio (SMS)</text>
+
+  <!-- Delivery Tracking -->
+  <rect x="30" y="200" width="420" height="140" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="240" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Delivery Tracking &amp; Status</text>
+
+  <rect x="50" y="250" width="120" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="110" y="272" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Queued</text>
+
+  <line x1="170" y1="267" x2="185" y2="267" stroke="#64748b" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <rect x="185" y="250" width="120" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="245" y="272" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Sent</text>
+
+  <line x1="305" y1="267" x2="320" y2="267" stroke="#64748b" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <rect x="320" y="250" width="120" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="380" y="272" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Delivered</text>
+
+  <rect x="50" y="295" width="120" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="110" y="317" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Opened/Read</text>
+
+  <line x1="170" y1="312" x2="185" y2="312" stroke="#64748b" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <rect x="185" y="295" width="120" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="245" y="317" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Clicked</text>
+
+  <rect x="320" y="295" width="120" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="380" y="317" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">Failed/Bounced</text>
+
+  <!-- Notification Preferences -->
+  <rect x="480" y="200" width="390" height="140" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="675" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Notification Preferences Engine</text>
+
+  <rect x="495" y="250" width="360" height="28" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="675" y="268" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Per-user, per-channel, per-notification-type preferences</text>
+
+  <rect x="495" y="288" width="170" height="40" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="580" y="306" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">Quiet Hours</text>
+  <text x="580" y="321" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">suppress during sleep</text>
+
+  <rect x="680" y="288" width="175" height="40" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="767" y="306" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">Digest Mode</text>
+  <text x="767" y="321" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">batch into summary</text>
+
+  <!-- Notification Types -->
+  <rect x="30" y="370" width="270" height="150" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="165" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0c4a6e">Notification Types</text>
+  <text x="165" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Transactional (receipts, OTP)</text>
+  <text x="165" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Marketing (promotions)</text>
+  <text x="165" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Alerts (system, security)</text>
+  <text x="165" y="485" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Social (mentions, follows)</text>
+  <text x="165" y="505" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Reminders (calendar, tasks)</text>
+
+  <!-- Template System -->
+  <rect x="330" y="370" width="270" height="150" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="465" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#334155">Template System</text>
+  <text x="465" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Handlebars/Mustache templates</text>
+  <text x="465" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Multi-language support (i18n)</text>
+  <text x="465" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Per-channel variants</text>
+  <text x="465" y="485" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">A/B test template versions</text>
+  <text x="465" y="505" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Version-controlled templates</text>
+
+  <!-- Analytics Pipeline -->
+  <rect x="630" y="370" width="240" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="750" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Analytics Pipeline</text>
+  <text x="750" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Delivery rate tracking</text>
+  <text x="750" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Open/click rate analysis</text>
+  <text x="750" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Bounce/complaint handling</text>
+  <text x="750" y="485" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Opt-out propagation</text>
+  <text x="750" y="505" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Cost per channel tracking</text>
+
+  <!-- Arrows -->
+  <line x1="210" y1="115" x2="240" y2="115" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="420" y1="115" x2="450" y2="115" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="630" y1="115" x2="660" y2="115" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>

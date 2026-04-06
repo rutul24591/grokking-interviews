@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">File Storage Service Architecture</text>
+
+  <!-- Client Layer -->
+  <rect x="30" y="65" width="840" height="70" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="450" y="90" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Client Layer</text>
+  <text x="150" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Web Browser</text>
+  <text x="320" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Mobile App</text>
+  <text x="490" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Backend Service</text>
+  <text x="660" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">CLI / SDK</text>
+  <text x="800" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Third-party Integration</text>
+
+  <!-- API Gateway -->
+  <rect x="30" y="165" width="840" height="70" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="450" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">API Gateway &amp; Load Balancer</text>
+  <text x="150" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Rate Limiting</text>
+  <text x="320" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Auth &amp; Authorization</text>
+  <text x="490" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Request Routing</text>
+  <text x="660" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">SSL Termination</text>
+  <text x="800" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Circuit Breaking</text>
+
+  <!-- Upload Pipeline -->
+  <rect x="30" y="265" width="410" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Upload Pipeline</text>
+  <text x="120" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Presigned URL Generation</text>
+  <text x="120" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Multipart Upload Coordinator</text>
+  <text x="120" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Chunk Validation &amp; Dedup</text>
+  <text x="350" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Virus Scanning</text>
+  <text x="350" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Content-Type Detection</text>
+  <text x="350" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Metadata Extraction</text>
+
+  <!-- Download Pipeline -->
+  <rect x="460" y="265" width="410" height="120" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="665" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Download Pipeline</text>
+  <text x="550" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Access Control Check</text>
+  <text x="550" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">CDN Cache Lookup</text>
+  <text x="550" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Range Request Handling</text>
+  <text x="780" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Streaming Response</text>
+  <text x="780" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Bandwidth Throttling</text>
+  <text x="780" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">ETag Generation</text>
+
+  <!-- Storage Layer -->
+  <rect x="30" y="415" width="270" height="100" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="165" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Object Storage</text>
+  <text x="165" y="468" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">S3 / GCS / Azure Blob</text>
+  <text x="165" y="485" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Durability: 11x9s</text>
+  <text x="165" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Multi-AZ Replication</text>
+
+  <!-- Metadata Store -->
+  <rect x="320" y="415" width="270" height="100" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="455" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Metadata Store</text>
+  <text x="455" y="468" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">PostgreSQL / DynamoDB</text>
+  <text x="455" y="485" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">File attributes, ACLs</text>
+  <text x="455" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Version history</text>
+
+  <!-- CDN -->
+  <rect x="610" y="415" width="260" height="100" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="740" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0c4a6e">CDN Edge Cache</text>
+  <text x="740" y="468" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">CloudFront / Cloudflare</text>
+  <text x="740" y="485" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">TTL-based invalidation</text>
+  <text x="740" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Global edge nodes</text>
+
+  <!-- Arrows -->
+  <line x1="450" y1="135" x2="450" y2="165" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="235" x2="235" y2="265" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="235" x2="665" y2="265" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="235" y1="385" x2="165" y2="415" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="235" y1="385" x2="455" y2="415" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="665" y1="385" x2="740" y2="415" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="665" y1="385" x2="455" y2="415" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+</svg>

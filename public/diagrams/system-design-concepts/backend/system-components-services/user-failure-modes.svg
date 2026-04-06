@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">User Service Failure Modes: Data Consistency, Availability, and Compliance</text>
+  <!-- Failure 1 -->
+  <rect x="40" y="70" width="400" height="180" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#991b1b">Database Outage</text>
+  <rect x="60" y="120" width="360" height="25" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cause: Primary DB failure, network partition, disk full</text>
+  <rect x="60" y="152" width="360" height="25" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Impact: Cannot authenticate users, read profile data</text>
+  <rect x="60" y="184" width="360" height="25" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Mitigation: Read replicas (reads continue), automatic failover</text>
+  <rect x="60" y="216" width="360" height="25" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Monitor: DB connectivity, replication lag, disk utilization</text>
+  <!-- Failure 2 -->
+  <rect x="460" y="70" width="400" height="180" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="660" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#a16207">Cache Stampede</text>
+  <rect x="480" y="120" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="660" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cause: Popular user profile expires from cache simultaneously</text>
+  <rect x="480" y="152" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="660" y="169" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Impact: DB overload from concurrent cache miss requests</text>
+  <rect x="480" y="184" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="660" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Mitigation: Probabilistic early expiration, request coalescing</text>
+  <rect x="480" y="216" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="660" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Monitor: Cache miss rate, DB query rate, p99 latency spikes</text>
+  <!-- Failure 3 -->
+  <rect x="40" y="280" width="400" height="205" rx="10" fill="#ecfdf5" stroke="#22c55e" stroke-width="2"/>
+  <text x="240" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#166534">Duplicate User Creation</text>
+  <rect x="60" y="330" width="360" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="240" y="347" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cause: Race condition during concurrent signups with same email</text>
+  <rect x="60" y="362" width="360" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="240" y="379" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Impact: Duplicate accounts, confused users, billing issues</text>
+  <rect x="60" y="394" width="360" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="240" y="411" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Mitigation: Unique constraint on email, advisory locks during signup</text>
+  <rect x="60" y="426" width="360" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="240" y="443" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Idempotent signup: check-exists-then-create in single transaction</text>
+  <rect x="60" y="458" width="360" height="18" rx="3" fill="#ecfdf5"/>
+  <text x="240" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#166534">Unique index on email/phone at DB level (not just application level)</text>
+  <!-- Failure 4 -->
+  <rect x="460" y="280" width="400" height="205" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="660" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">GDPR Erasure Incomplete</text>
+  <rect x="480" y="330" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="347" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cause: User deleted from primary DB but not downstream services</text>
+  <rect x="480" y="362" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="379" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Impact: Regulatory fines, user data persists in backups</text>
+  <rect x="480" y="394" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="411" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Mitigation: Event-driven cascading deletion, erasure tracking</text>
+  <rect x="480" y="426" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="443" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Audit: track erasure completion across all downstream services</text>
+  <rect x="480" y="458" width="360" height="18" rx="3" fill="#faf5ff"/>
+  <text x="660" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#6b21a8">Maintain erasure checklist: sessions, billing, analytics, backups, logs</text>
+</svg>

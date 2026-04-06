@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="550" viewBox="0 0 900 550">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <rect x="0" y="0" width="900" height="55" fill="#f9fafb" rx="0"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Authentication Token Lifecycle</text>
+
+  <!-- Phase 1: Issuance -->
+  <rect x="40" y="90" width="210" height="160" rx="10" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="145" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#0c4a6e">1. Issuance</text>
+  <rect x="65" y="135" width="160" height="35" rx="6" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="145" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">Credential Verification</text>
+  <rect x="65" y="175" width="160" height="35" rx="6" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="145" y="197" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">MFA Challenge</text>
+  <rect x="65" y="215" width="160" height="25" rx="6" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="145" y="232" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Risk scoring &amp; device check</text>
+
+  <!-- Arrow: 1 to 2 -->
+  <line x1="250" y1="170" x2="305" y2="170" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Phase 2: Active Use -->
+  <rect x="310" y="90" width="210" height="160" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="415" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534">2. Active Use</text>
+  <rect x="335" y="135" width="160" height="35" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1"/>
+  <text x="415" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">Access Token (short TTL)</text>
+  <rect x="335" y="175" width="160" height="35" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1"/>
+  <text x="415" y="197" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">Refresh Token (long TTL)</text>
+  <rect x="335" y="215" width="160" height="25" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1"/>
+  <text x="415" y="232" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Services validate via JWKS</text>
+
+  <!-- Arrow: 2 to 3 -->
+  <line x1="520" y1="170" x2="575" y2="170" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Phase 3: Refresh / Rotate -->
+  <rect x="580" y="90" width="210" height="160" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="685" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#78350f">3. Refresh &amp; Rotation</text>
+  <rect x="605" y="135" width="160" height="35" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="685" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#78350f">Rotating Refresh Tokens</text>
+  <rect x="605" y="175" width="160" height="35" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="685" y="197" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#78350f">Old token invalidated</text>
+  <rect x="605" y="215" width="160" height="25" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="685" y="232" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Replay = theft detection</text>
+
+  <!-- Arrow: 3 to 4 -->
+  <line x1="685" y1="250" x2="685" y2="305" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Phase 4: Revocation -->
+  <rect x="580" y="310" width="210" height="160" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="685" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#991b1b">4. Revocation</text>
+  <rect x="605" y="355" width="160" height="35" rx="6" fill="#ffffff" stroke="#dc2626" stroke-width="1"/>
+  <text x="685" y="377" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#991b1b">Explicit Logout</text>
+  <rect x="605" y="395" width="160" height="35" rx="6" fill="#ffffff" stroke="#dc2626" stroke-width="1"/>
+  <text x="685" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#991b1b">Token Denylist / Blocklist</text>
+  <rect x="605" y="435" width="160" height="25" rx="6" fill="#ffffff" stroke="#dc2626" stroke-width="1"/>
+  <text x="685" y="452" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Key rotation forces all invalid</text>
+
+  <!-- Arrow: 4 to 2 (feedback loop) -->
+  <path d="M 580 390 Q 420 390 420 255" stroke="#6b7280" stroke-width="2" fill="none" stroke-dasharray="6,3" marker-end="url(#arrow)"/>
+  <text x="440" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#6b7280">Re-authenticate</text>
+
+  <!-- Arrow: 2 to 1 (feedback loop for refresh) -->
+  <path d="M 310 170 Q 200 100 255 170" stroke="#16a34a" stroke-width="2" fill="none" stroke-dasharray="6,3" marker-end="url(#arrow-green)"/>
+
+  <!-- TTL Comparison Box -->
+  <rect x="40" y="310" width="210" height="160" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="145" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#111827">TTL Design Trade-offs</text>
+  <rect x="60" y="358" width="170" height="45" rx="6" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="145" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534">Access Token: 5-15 min</text>
+  <text x="145" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#6b7280">Small blast radius if leaked</text>
+  <rect x="60" y="408" width="170" height="45" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="145" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#78350f">Refresh Token: 7-30 days</text>
+  <text x="145" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#6b7280">Requires strong storage</text>
+
+  <!-- Security Considerations -->
+  <rect x="310" y="310" width="210" height="160" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="415" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#111827">Security Considerations</text>
+  <rect x="330" y="358" width="160" height="35" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="410" y="380" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#374151">HttpOnly + Secure cookies</text>
+  <rect x="330" y="398" width="160" height="35" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="410" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#374151">SameSite = Strict/Lax</text>
+  <rect x="330" y="438" width="160" height="25" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="410" y="455" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#6b7280">Never store in localStorage</text>
+</svg>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">User Data Model and Lifecycle</text>
+  <!-- Core fields -->
+  <rect x="40" y="70" width="400" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Core User Schema</text>
+  <rect x="60" y="120" width="360" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">id (UUID), email (unique), phone (unique)</text>
+  <rect x="60" y="152" width="360" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">name, avatar_url, timezone, locale</text>
+  <rect x="60" y="184" width="360" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">status (active, suspended, deleted)</text>
+  <rect x="60" y="216" width="360" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">created_at, updated_at, last_login_at</text>
+  <rect x="60" y="248" width="360" height="15" rx="3" fill="#eff6ff"/>
+  <text x="240" y="259" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#1e40af">preferences: JSONB (flexible, queryable)</text>
+  <!-- Lifecycle states -->
+  <rect x="460" y="70" width="400" height="200" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534">User Lifecycle States</text>
+  <rect x="480" y="120" width="150" height="40" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="555" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">Pending</text>
+  <text x="555" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Email not verified</text>
+  <rect x="660" y="120" width="150" height="40" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="735" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">Active</text>
+  <text x="735" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Verified, logged in</text>
+  <rect x="480" y="175" width="150" height="40" rx="6" fill="#fef3c7" stroke="#eab308" stroke-width="1"/>
+  <text x="555" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#a16207">Suspended</text>
+  <text x="555" y="213" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Admin action, abuse</text>
+  <rect x="660" y="175" width="150" height="40" rx="6" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+  <text x="735" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#991b1b">Deleted</text>
+  <text x="735" y="213" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Soft delete, GDPR erase</text>
+  <!-- Transitions -->
+  <text x="660" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">Pending &#8594; Active (email verify), Active &#8594; Suspended (admin)</text>
+  <text x="660" y="262" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">Suspended &#8594; Active (admin), Active &#8594; Deleted (user/GDPR)</text>
+  <!-- GDPR compliance -->
+  <rect x="40" y="300" width="400" height="185" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="240" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#a16207">GDPR Compliance</text>
+  <rect x="60" y="350" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="240" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Right to access: export all user data (JSON, CSV)</text>
+  <rect x="60" y="382" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="240" y="399" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Right to erasure: soft delete &#8594; hard delete after 30d</text>
+  <rect x="60" y="414" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="240" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Consent tracking: record consent timestamp, scope</text>
+  <rect x="60" y="446" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="240" y="463" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Data minimization: collect only what is necessary</text>
+  <rect x="60" y="478" width="360" height="15" rx="3" fill="#fefce8"/>
+  <text x="240" y="489" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="500" fill="#854d0e">Erasure must cascade to downstream services (sessions, billing)</text>
+  <!-- Audit trail -->
+  <rect x="460" y="300" width="400" height="185" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="660" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Audit Trail</text>
+  <rect x="480" y="350" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">All mutations logged: who, what, when, from where</text>
+  <rect x="480" y="382" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="399" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Immutable audit log (append-only, cryptographically signed)</text>
+  <rect x="480" y="414" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Retention: 7 years for compliance (SOC 2, HIPAA)</text>
+  <rect x="480" y="446" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="463" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Events: user_created, email_verified, password_changed</text>
+  <rect x="480" y="478" width="360" height="15" rx="3" fill="#faf5ff"/>
+  <text x="660" y="489" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#6b21a8">Audit events published to message bus for downstream consumption</text>
+</svg>

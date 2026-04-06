@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Rate Limiting Scaling: Distributed Enforcement</text>
+  <!-- Single node -->
+  <rect x="40" y="70" width="400" height="180" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#991b1b">Single Node Limiting</text>
+  <rect x="60" y="120" width="360" height="30" rx="5" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">In-memory counter per client ID</text>
+  <rect x="60" y="157" width="360" height="30" rx="5" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="177" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Limit applies to single node only</text>
+  <rect x="60" y="194" width="360" height="30" rx="5" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="214" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Client can bypass by hitting different nodes</text>
+  <rect x="60" y="231" width="360" height="15" rx="3" fill="#fef2f2"/>
+  <text x="240" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#991b1b">Effective limit = per-node-limit &#215; number-of-nodes (bypass!)</text>
+  <!-- Distributed with Redis -->
+  <rect x="460" y="70" width="400" height="180" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534">Distributed with Redis</text>
+  <rect x="480" y="120" width="360" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="660" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Shared counter in Redis (INCR + EXPIRE)</text>
+  <rect x="480" y="157" width="360" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="660" y="177" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">All nodes check same counter</text>
+  <rect x="480" y="194" width="360" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="660" y="214" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Atomic operations prevent race conditions</text>
+  <rect x="480" y="231" width="360" height="15" rx="3" fill="#f0fdf4"/>
+  <text x="660" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#166534">Latency: 1-5ms per check, Redis cluster for HA</text>
+  <!-- Sliding window in Redis -->
+  <rect x="40" y="280" width="400" height="205" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="240" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e40af">Scaling with Redis Sorted Sets</text>
+  <rect x="60" y="330" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">ZADD with timestamp as score, member = request ID</text>
+  <rect x="60" y="367" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="387" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">ZREMRANGEBYSCORE to remove expired entries</text>
+  <rect x="60" y="404" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="424" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">ZCARD to count current window requests</text>
+  <rect x="60" y="441" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="461" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">EXPIRE to auto-clean stale keys</text>
+  <!-- Hierarchical limits -->
+  <rect x="460" y="280" width="400" height="205" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="660" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Hierarchical Rate Limits</text>
+  <rect x="480" y="330" width="360" height="30" rx="5" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Global limit &#8594; per-tenant limit &#8594; per-user limit</text>
+  <rect x="480" y="367" width="360" height="30" rx="5" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="387" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Each level enforced independently</text>
+  <rect x="480" y="404" width="360" height="30" rx="5" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="424" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Different windows per level (1s, 1min, 1hr)</text>
+  <rect x="480" y="441" width="360" height="30" rx="5" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="461" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Multi-tenant: isolate noisy neighbors</text>
+</svg>

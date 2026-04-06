@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Media Processing Pipeline &#8212; Transcoding &#38; Adaptive Bitrate</text>
+
+  <!-- Input Media -->
+  <rect x="30" y="65" width="180" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="120" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">Input Media</text>
+  <text x="120" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Original: 4K, 60fps</text>
+  <text x="120" y="133" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">H.265, 20 Mbps</text>
+  <text x="120" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Stereo audio, 48kHz</text>
+
+  <!-- Transcoding Step -->
+  <rect x="240" y="65" width="200" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="340" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Transcoding Engine</text>
+  <text x="340" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">FFmpeg with GPU accel</text>
+  <text x="340" y="133" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">NVENC / QuickSync</text>
+  <text x="340" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Parallel segment encoding</text>
+
+  <!-- Output Variants -->
+  <rect x="470" y="65" width="400" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#166534">Output Variants (Adaptive Bitrate Ladder)</text>
+
+  <rect x="485" y="108" width="80" height="45" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="525" y="126" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">4K</text>
+  <text x="525" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">15 Mbps</text>
+
+  <rect x="575" y="108" width="80" height="45" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="615" y="126" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">1080p</text>
+  <text x="615" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">5 Mbps</text>
+
+  <rect x="665" y="108" width="80" height="45" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="705" y="126" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">720p</text>
+  <text x="705" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">2.5 Mbps</text>
+
+  <rect x="755" y="108" width="80" height="45" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="795" y="126" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">480p</text>
+  <text x="795" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">1 Mbps</text>
+
+  <rect x="845" y="108" width="25" height="45" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="857" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">...</text>
+
+  <!-- HLS Packaging -->
+  <rect x="30" y="200" width="420" height="150" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="240" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">HLS/DASH Packaging</text>
+
+  <rect x="50" y="250" width="380" height="25" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="240" y="267" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Master Playlist (index.m3u8) - references all variant playlists</text>
+
+  <rect x="50" y="285" width="110" height="50" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="105" y="303" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#6b21a8">Variant 1</text>
+  <text x="105" y="318" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">seg_001.ts</text>
+  <text x="105" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">seg_002.ts</text>
+
+  <rect x="170" y="285" width="110" height="50" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="225" y="303" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#6b21a8">Variant 2</text>
+  <text x="225" y="318" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">seg_001.ts</text>
+  <text x="225" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">seg_002.ts</text>
+
+  <rect x="290" y="285" width="110" height="50" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="345" y="303" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#6b21a8">Variant N</text>
+  <text x="345" y="318" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">seg_001.ts</text>
+  <text x="345" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">seg_002.ts</text>
+
+  <!-- Segment Duration -->
+  <rect x="480" y="200" width="390" height="150" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="675" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Segment Configuration</text>
+
+  <rect x="495" y="250" width="360" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="675" y="267" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Segment duration: 2-6 seconds (typically 4s)</text>
+
+  <rect x="495" y="285" width="170" height="50" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="580" y="303" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Shorter segments</text>
+  <text x="580" y="318" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Faster adaptation</text>
+  <text x="580" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">More HTTP requests</text>
+
+  <rect x="680" y="285" width="175" height="50" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="767" y="303" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Longer segments</text>
+  <text x="767" y="318" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Fewer requests</text>
+  <text x="767" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Slower adaptation</text>
+
+  <!-- Image Processing Detail -->
+  <rect x="30" y="380" width="420" height="145" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="240" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Image Processing Chain</text>
+
+  <rect x="50" y="425" width="90" height="40" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="95" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#9f1239">Original</text>
+  <text x="95" y="457" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">4000x3000</text>
+
+  <line x1="140" y1="445" x2="155" y2="445" stroke="#64748b" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <rect x="155" y="425" width="90" height="40" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="200" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#9f1239">Large</text>
+  <text x="200" y="457" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">1200x900</text>
+
+  <line x1="245" y1="445" x2="260" y2="445" stroke="#64748b" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <rect x="260" y="425" width="90" height="40" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="305" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#9f1239">Medium</text>
+  <text x="305" y="457" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">600x450</text>
+
+  <line x1="350" y1="445" x2="365" y2="445" stroke="#64748b" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <rect x="365" y="425" width="75" height="40" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="402" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#9f1239">Thumb</text>
+  <text x="402" y="457" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">150x150</text>
+
+  <rect x="50" y="475" width="380" height="35" rx="4" fill="#fff1f2" stroke="#f43f5e" stroke-width="1"/>
+  <text x="240" y="497" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Formats: JPEG (fallback), WebP (modern), AVIF (next-gen) + SVG for icons</text>
+
+  <!-- Format Comparison -->
+  <rect x="480" y="380" width="390" height="145" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="675" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0c4a6e">Format Size Comparison (same quality)</text>
+
+  <rect x="495" y="425" width="170" height="35" rx="4" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="580" y="447" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0c4a6e">JPEG: 100% (baseline)</text>
+
+  <rect x="495" y="468" width="170" height="35" rx="4" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="580" y="490" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0c4a6e">WebP: ~70% of JPEG</text>
+
+  <rect x="680" y="425" width="175" height="35" rx="4" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="767" y="447" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0c4a6e">AVIF: ~50% of JPEG</text>
+
+  <rect x="680" y="468" width="175" height="35" rx="4" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="767" y="490" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0c4a6e">SVG: vector (icons only)</text>
+
+  <!-- Bottom -->
+  <rect x="30" y="520" width="840" height="25" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="120" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0c4a6e">Pipeline Output:</text>
+  <text x="220" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Multi-format, multi-resolution, CDN-ready assets with manifest files</text>
+  <text x="650" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Processing time: 0.5-5x source duration</text>
+</svg>

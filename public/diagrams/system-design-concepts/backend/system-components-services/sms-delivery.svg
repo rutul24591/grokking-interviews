@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">SMS Delivery Pipeline: Routing, Provider Selection, Receipt Processing</text>
+  <!-- Message submission -->
+  <rect x="40" y="70" width="190" height="120" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="135" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Message Submission</text>
+  <text x="135" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Validate phone number format</text>
+  <text x="135" y="145" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Check DNC/opt-out list</text>
+  <text x="135" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Apply rate limits</text>
+  <text x="135" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Enqueue message</text>
+  <!-- Arrow -->
+  <line x1="230" y1="130" x2="260" y2="130" stroke="#64748b" stroke-width="2"/>
+  <polygon points="260,125 270,130 260,135" fill="#64748b"/>
+  <!-- Provider routing -->
+  <rect x="270" y="70" width="200" height="120" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#a16207">Provider Routing</text>
+  <text x="370" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Select provider by region, cost</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Failover if primary unavailable</text>
+  <text x="370" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Submit via API or SMPP</text>
+  <text x="370" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Track message ID for receipt</text>
+  <!-- Arrow -->
+  <line x1="470" y1="130" x2="500" y2="130" stroke="#64748b" stroke-width="2"/>
+  <polygon points="500,125 510,130 500,135" fill="#64748b"/>
+  <!-- Delivery -->
+  <rect x="510" y="70" width="180" height="120" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="600" y="100" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="14" font-weight="700" fill="#166534">SMS Delivery</text>
+  <text x="600" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Provider routes through SMSC</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">SMSC delivers to recipient</text>
+  <text x="600" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Delivery receipt generated</text>
+  <text x="600" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Webhook callback to app</text>
+  <!-- Arrow -->
+  <line x1="690" y1="130" x2="720" y2="130" stroke="#64748b" stroke-width="2"/>
+  <polygon points="720,125 730,130 720,135" fill="#64748b"/>
+  <!-- Receipt processing -->
+  <rect x="730" y="70" width="140" height="120" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="800" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Receipt Processing</text>
+  <text x="800" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Match receipt to message ID</text>
+  <text x="800" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Update delivery status</text>
+  <text x="800" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Trigger retry on failure</text>
+  <text x="800" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">Log for analytics</text>
+  <!-- OTP Flow -->
+  <rect x="40" y="220" width="820" height="130" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#991b1b">OTP Verification Flow</text>
+  <rect x="60" y="270" width="150" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="135" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Generate 6-digit code</text>
+  <text x="135" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Store hash in Redis, TTL 5min</text>
+  <rect x="230" y="270" width="150" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="305" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Send via SMS</text>
+  <text x="305" y="312" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Prioritize OTP queue</text>
+  <rect x="400" y="270" width="150" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="475" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">User enters code</text>
+  <text x="475" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Max 3 attempts, 5min expiry</text>
+  <rect x="570" y="270" width="150" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="645" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Verify code</text>
+  <text x="645" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Compare hash, timing attack safe</text>
+  <rect x="740" y="270" width="100" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="790" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Success/Fail</text>
+  <text x="790" y="312" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#475569">Delete code, create session</text>
+  <!-- Compliance -->
+  <rect x="40" y="380" width="400" height="105" rx="10" fill="#ecfdf5" stroke="#22c55e" stroke-width="2"/>
+  <text x="240" y="408" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534">Compliance Requirements</text>
+  <text x="240" y="432" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">TCPA (US): consent required for marketing SMS</text>
+  <text x="240" y="452" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">GDPR (EU): data processing consent, right to erasure</text>
+  <text x="240" y="472" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">10DLC registration: carrier-approved sender IDs</text>
+  <!-- Provider comparison -->
+  <rect x="460" y="380" width="400" height="105" rx="10" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="660" y="408" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Provider Selection Criteria</text>
+  <text x="660" y="432" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Delivery rate by country/region (varies 80-99%)</text>
+  <text x="660" y="452" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cost per message ($0.005 domestic, $0.05+ intl)</text>
+  <text x="660" y="472" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Delivery receipt latency (real-time vs delayed)</text>
+</svg>

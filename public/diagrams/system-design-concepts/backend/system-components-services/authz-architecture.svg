@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="550" viewBox="0 0 900 550">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="arrow-accent" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <rect x="0" y="0" width="900" height="55" fill="#f9fafb" rx="0"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Authorization Service Architecture</text>
+
+  <!-- Client Request -->
+  <rect x="30" y="90" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="100" y="122" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Client Request</text>
+  <text x="100" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">User + Action + Resource</text>
+  <text x="100" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">with Auth Token</text>
+
+  <!-- API Gateway -->
+  <rect x="230" y="90" width="140" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="300" y="122" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#78350f">API Gateway</text>
+  <text x="300" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Coarse-grained check</text>
+  <text x="300" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">(auth + rate limit)</text>
+
+  <!-- Policy Engine -->
+  <rect x="430" y="70" width="170" height="120" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="2.5"/>
+  <text x="515" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#3730a3">Policy Engine</text>
+  <text x="515" y="122" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Evaluate RBAC/ABAC/ReBAC</text>
+  <text x="515" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">against entitlements</text>
+  <text x="515" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Decision: ALLOW / DENY</text>
+  <text x="515" y="176" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">+ Reason Code</text>
+
+  <!-- Entitlement Sources -->
+  <rect x="660" y="70" width="210" height="120" rx="10" fill="#fdf2f8" stroke="#ec4899" stroke-width="2"/>
+  <text x="765" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#9d174d">Entitlement Sources</text>
+  <text x="765" y="122" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Role Assignments (RBAC)</text>
+  <text x="765" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Attributes (ABAC)</text>
+  <text x="765" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Relationships (ReBAC)</text>
+  <text x="765" y="176" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Org / Tenant Config</text>
+
+  <!-- Decision Cache -->
+  <rect x="430" y="240" width="170" height="70" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="515" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534">Decision Cache</text>
+  <text x="515" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">TTL: 30s-5min per action risk</text>
+
+  <!-- Resource Service -->
+  <rect x="30" y="240" width="170" height="100" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="115" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#5b21b6">Resource Service</text>
+  <text x="115" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Enforces decision</text>
+  <text x="115" y="308" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Executes action or</text>
+  <text x="115" y="326" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">returns 403 with reason</text>
+
+  <!-- Audit Logger -->
+  <rect x="260" y="240" width="130" height="100" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="325" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#9a3412">Audit Logger</text>
+  <text x="325" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Decision log:</text>
+  <text x="325" y="313" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">who, what, when,</text>
+  <text x="325" y="331" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">why (reason code)</text>
+
+  <!-- Policy Store -->
+  <rect x="660" y="240" width="210" height="100" rx="10" fill="#ecfeff" stroke="#06b6d4" stroke-width="2"/>
+  <text x="765" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#155e75">Policy Store</text>
+  <text x="765" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Policy definitions (versioned)</text>
+  <text x="765" y="308" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Policy bundles for distribution</text>
+  <text x="765" y="326" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Change history &amp; rollback</text>
+
+  <!-- Arrows: Client to Gateway -->
+  <line x1="170" y1="130" x2="225" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrows: Gateway to Policy Engine -->
+  <line x1="370" y1="130" x2="425" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrows: Policy Engine to Entitlements -->
+  <line x1="600" y1="130" x2="655" y2="130" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-accent)"/>
+
+  <!-- Arrows: Policy Engine to Cache -->
+  <line x1="515" y1="190" x2="515" y2="235" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrows: Cache to Resource Service -->
+  <path d="M 430 275 Q 250 275 205 290" stroke="#16a34a" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="310" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#16a34a">Cached decision</text>
+
+  <!-- Arrows: Policy Engine to Resource (miss path) -->
+  <path d="M 430 155 Q 250 155 205 235" stroke="#6b7280" stroke-width="2" fill="none" stroke-dasharray="6,3" marker-end="url(#arrow)"/>
+  <text x="280" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#6b7280">Cache miss</text>
+
+  <!-- Arrows: Policy Engine to Audit -->
+  <line x1="450" y1="190" x2="360" y2="235" stroke="#6b7280" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrows: Policy Engine to Policy Store -->
+  <path d="M 600 130 Q 700 190 765 235" stroke="#06b6d4" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Arrows: Entitlements to Policy Engine (read) -->
+  <path d="M 660 155 Q 600 175 600 155" stroke="#6366f1" stroke-width="2" fill="none" stroke-dasharray="6,3" marker-end="url(#arrow-accent)"/>
+
+  <!-- Decision Flow Labels -->
+  <text x="115" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827">Decision Flow</text>
+
+  <rect x="30" y="385" width="400" height="140" rx="8" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="50" y="410" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#374151">1. Gateway parses token, extracts identity</text>
+  <text x="50" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#374151">2. Request forwarded to resource service</text>
+  <text x="50" y="460" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#374151">3. Resource service queries decision cache</text>
+  <text x="50" y="485" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#374151">4. Cache miss &#8594; policy engine evaluates</text>
+  <text x="50" y="510" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#374151">5. Decision cached, enforced, and logged</text>
+  <text x="50" y="535" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#374151">6. Resource service returns result or 403</text>
+
+  <!-- Right side: Enforcement Models -->
+  <rect x="460" y="385" width="410" height="140" rx="8" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="665" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827">Enforcement Models</text>
+  <rect x="480" y="422" width="370" height="35" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="665" y="444" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#374151">Centralized: All decisions via policy engine (consistent but high-QPS dependency)</text>
+  <rect x="480" y="462" width="370" height="35" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="665" y="484" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#374151">Embedded: Policy bundles distributed to services (available but versioning complexity)</text>
+  <rect x="480" y="502" width="370" height="25" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="665" y="519" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#6b7280">Hybrid: Central for sensitive, embedded for common paths</text>
+</svg>

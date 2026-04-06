@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Payment Processing &#8212; Scaling Strategies</text>
+
+  <!-- Horizontal Scaling -->
+  <rect x="30" y="65" width="410" height="130" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">API Gateway Scaling</text>
+
+  <rect x="50" y="110" width="370" height="25" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="235" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Load-balanced stateless API instances across regions</text>
+
+  <rect x="50" y="145" width="80" height="35" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="90" y="163" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">API-1</text>
+  <text x="90" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">us-east</text>
+
+  <rect x="140" y="145" width="80" height="35" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="180" y="163" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">API-2</text>
+  <text x="180" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">us-west</text>
+
+  <rect x="230" y="145" width="80" height="35" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="270" y="163" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">API-3</text>
+  <text x="270" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">eu-west</text>
+
+  <rect x="320" y="145" width="100" height="35" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="370" y="163" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">API-N (scaled)</text>
+  <text x="370" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">auto-scale on RPS</text>
+
+  <!-- Multi-Processor -->
+  <rect x="470" y="65" width="400" height="130" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">Multi-Processor Routing</text>
+
+  <rect x="485" y="110" width="370" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Route to different processors by region, currency, card type</text>
+
+  <rect x="485" y="145" width="110" height="35" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="540" y="163" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">Stripe</text>
+  <text x="540" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">Primary (US)</text>
+
+  <rect x="605" y="145" width="110" height="35" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="660" y="163" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">Adyen</text>
+  <text x="660" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">Primary (EU)</text>
+
+  <rect x="725" y="145" width="120" height="35" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="785" y="163" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#374151">Failover backup</text>
+  <text x="785" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">auto-switch</text>
+
+  <!-- Database Scaling -->
+  <rect x="30" y="225" width="410" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Database Scaling for Payment Records</text>
+
+  <rect x="50" y="270" width="370" height="25" rx="4" fill="#fefce8" stroke="#f59e0b" stroke-width="1"/>
+  <text x="235" y="287" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Strong consistency required: no eventual consistency for payments</text>
+
+  <rect x="50" y="305" width="170" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="135" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#92400e">Primary DB</text>
+  <text x="135" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">all writes</text>
+
+  <rect x="235" y="305" width="80" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="275" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#92400e">Replica 1</text>
+  <text x="275" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">reads only</text>
+
+  <rect x="325" y="305" width="80" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="365" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#92400e">Replica 2</text>
+  <text x="365" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">reads only</text>
+
+  <!-- Concurrency Control -->
+  <rect x="470" y="225" width="400" height="130" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Concurrency Control: Preventing Double Charges</text>
+
+  <rect x="485" y="270" width="370" height="25" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="670" y="287" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Pessimistic locking + idempotency keys at database level</text>
+
+  <rect x="485" y="305" width="175" height="35" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="572" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#6b21a8">Unique constraint on</text>
+  <text x="572" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">idempotency_key column</text>
+
+  <rect x="675" y="305" width="175" height="35" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="762" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#6b21a8">SELECT FOR UPDATE on</text>
+  <text x="762" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">payment row during capture</text>
+
+  <!-- Regional Deployment -->
+  <rect x="30" y="385" width="410" height="135" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Regional Deployment for Low Latency</text>
+
+  <rect x="50" y="430" width="120" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="110" y="448" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#155e75">us-east-1</text>
+  <text x="110" y="460" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">Primary region</text>
+
+  <rect x="180" y="430" width="120" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="240" y="448" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#155e75">eu-west-1</text>
+  <text x="240" y="460" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">EU data residency</text>
+
+  <rect x="310" y="430" width="120" height="35" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="370" y="448" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#155e75">ap-south-1</text>
+  <text x="370" y="460" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">APAC low latency</text>
+
+  <rect x="50" y="475" width="370" height="30" rx="4" fill="#ecfeff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="235" y="494" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#155e75">Each region has local processor connection + async replication to primary for audit</text>
+
+  <!-- Key Scaling Metrics -->
+  <rect x="470" y="385" width="400" height="135" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Scaling Targets</text>
+
+  <rect x="485" y="430" width="180" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="575" y="447" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Throughput: 10K TPS</text>
+
+  <rect x="680" y="430" width="175" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="767" y="447" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">p99 latency: &#60; 5s</text>
+
+  <rect x="485" y="465" width="180" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="575" y="482" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Auth success: &#62; 95%</text>
+
+  <rect x="680" y="465" width="175" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="767" y="482" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Fraud rate: &#60; 0.1%</text>
+
+  <!-- Bottom -->
+  <rect x="30" y="520" width="840" height="25" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="120" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0c4a6e">Scaling Principle:</text>
+  <text x="240" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Stateless API tier scales horizontally, database maintains strong consistency, multi-provider for resilience</text>
+  <text x="740" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Regional for latency</text>
+</svg>

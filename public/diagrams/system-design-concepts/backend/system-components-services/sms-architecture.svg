@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <rect width="900" height="550" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">SMS Service Architecture</text>
+  <!-- Application -->
+  <rect x="40" y="70" width="240" height="130" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e40af">Application Layer</text>
+  <rect x="60" y="115" width="200" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="160" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">OTP generation and verification</text>
+  <rect x="60" y="145" width="200" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="160" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Notification templating</text>
+  <rect x="60" y="175" width="200" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="160" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Rate limiting per recipient</text>
+  <!-- SMS Queue -->
+  <rect x="310" y="70" width="240" height="130" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="430" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#a16207">SMS Queue &amp; Router</text>
+  <rect x="330" y="115" width="200" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="430" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Prioritize OTP over marketing</text>
+  <rect x="330" y="145" width="200" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="430" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Provider selection (cost, deliverability)</text>
+  <rect x="330" y="175" width="200" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="430" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Retry with exponential backoff</text>
+  <!-- SMS Providers -->
+  <rect x="580" y="70" width="280" height="130" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="720" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#166534">SMS Providers</text>
+  <rect x="600" y="115" width="240" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="720" y="132" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Twilio, Vonage, SNS, Plivo, Bandwidth</text>
+  <rect x="600" y="145" width="240" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="720" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">SMPP protocol, REST API, webhooks</text>
+  <rect x="600" y="175" width="240" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="720" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Delivery receipts, error callbacks</text>
+  <!-- Delivery Tracking -->
+  <rect x="40" y="230" width="400" height="130" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="240" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Delivery Tracking</text>
+  <rect x="60" y="275" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="240" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Webhook handlers for delivery receipts</text>
+  <rect x="60" y="305" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="240" y="322" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Status states: queued, sent, delivered, failed</text>
+  <rect x="60" y="335" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="240" y="352" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="500" fill="#334155">OTP verification code validation</text>
+  <!-- Compliance & Analytics -->
+  <rect x="460" y="230" width="400" height="130" rx="10" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="660" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Compliance &amp; Analytics</text>
+  <rect x="480" y="275" width="360" height="25" rx="4" fill="#ffffff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="660" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">TCPA, GDPR, DNC list compliance</text>
+  <rect x="480" y="305" width="360" height="25" rx="4" fill="#ffffff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="660" y="322" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Sender ID registration (10DLC, A2P)</text>
+  <rect x="480" y="335" width="360" height="25" rx="4" fill="#ffffff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="660" y="352" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Delivery rate, cost tracking, opt-out management</text>
+  <!-- Arrows -->
+  <line x1="280" y1="130" x2="310" y2="130" stroke="#64748b" stroke-width="2"/>
+  <polygon points="310,125 320,130 310,135" fill="#64748b"/>
+  <line x1="550" y1="130" x2="580" y2="130" stroke="#64748b" stroke-width="2"/>
+  <polygon points="580,125 590,130 580,135" fill="#64748b"/>
+  <line x1="440" y1="295" x2="460" y2="295" stroke="#64748b" stroke-width="2"/>
+  <polygon points="460,290 470,295 460,300" fill="#64748b"/>
+  <!-- Key principle -->
+  <rect x="40" y="390" width="820" height="80" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="418" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#991b1b">Critical Considerations</text>
+  <text x="200" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">OTP expiry (5-10 min), retry limits (max 3)</text>
+  <text x="450" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Rate limits per number (1/min OTP, 10/day marketing)</text>
+  <text x="700" y="445" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cost per message ($0.005-$0.05)</text>
+  <!-- Key metrics -->
+  <rect x="40" y="495" width="400" height="40" rx="8" fill="#ecfdf5" stroke="#22c55e" stroke-width="1"/>
+  <text x="240" y="520" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534">Delivery rate &gt; 95%, OTP verification rate &gt; 85%</text>
+  <rect x="460" y="495" width="400" height="40" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="1"/>
+  <text x="660" y="520" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#854d0e">Average delivery latency: 2-10 seconds depending on region</text>
+</svg>

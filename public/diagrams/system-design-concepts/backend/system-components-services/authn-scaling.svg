@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="550" viewBox="0 0 900 550">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="arrow-accent" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <rect x="0" y="0" width="900" height="55" fill="#f9fafb" rx="0"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Scaling Authentication Services</text>
+
+  <!-- Top: Stateless Validation Path -->
+  <rect x="30" y="80" width="260" height="200" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="160" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534">Path A: Stateless Validation</text>
+  <text x="160" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">High throughput, low latency</text>
+
+  <rect x="55" y="145" width="210" height="35" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1"/>
+  <text x="160" y="167" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">Gateway validates JWT locally</text>
+  <rect x="55" y="185" width="210" height="35" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1"/>
+  <text x="160" y="207" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">JWKS cached (refresh every 5m)</text>
+  <rect x="55" y="225" width="210" height="35" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1"/>
+  <text x="160" y="247" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">No network call to auth service</text>
+
+  <!-- Bottom: Stateful Issuance Path -->
+  <rect x="30" y="310" width="260" height="200" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="160" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#3730a3">Path B: Stateful Issuance</text>
+  <text x="160" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Lower QPS, higher compute</text>
+
+  <rect x="55" y="375" width="210" height="35" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1"/>
+  <text x="160" y="397" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#3730a3">Auth service verifies credentials</text>
+  <rect x="55" y="415" width="210" height="35" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1"/>
+  <text x="160" y="437" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#3730a3">MFA challenge if risk threshold</text>
+  <rect x="55" y="455" width="210" height="35" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1"/>
+  <text x="160" y="477" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#3730a3">Issues JWT + rotating refresh token</text>
+
+  <!-- Right: Scaling Strategies -->
+  <rect x="330" y="80" width="540" height="430" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="600" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#111827">Scaling Strategies</text>
+
+  <!-- Strategy 1: Read-Heavy Path -->
+  <rect x="360" y="135" width="480" height="90" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1.5"/>
+  <text x="600" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#0c4a6e">Strategy 1: Separate Read vs Write Paths</text>
+  <text x="600" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#374151">Validation (read) scales horizontally with cached JWKS. Issuance (write) scales with</text>
+  <text x="600" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#374151">stateless auth nodes behind load balancer. Identity store is the scaling bottleneck.</text>
+
+  <!-- Strategy 2: Session Store -->
+  <rect x="360" y="245" width="480" height="90" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="600" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#78350f">Strategy 2: Session Store Sharding</text>
+  <text x="600" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#374151">If using server-side sessions, shard by user ID. Use Redis Cluster or DynamoDB with</text>
+  <text x="600" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#374151">consistent hashing. Cache hot sessions in L1/L2 cache at gateway level.</text>
+
+  <!-- Strategy 3: Login Storm Prevention -->
+  <rect x="360" y="355" width="480" height="90" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="600" y="380" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534">Strategy 3: Login Storm Prevention</text>
+  <text x="600" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#374151">Stagger token expiry with jitter. Use backoff on refresh failures. Avoid synchronized</text>
+  <text x="600" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#374151">expiry windows. Pre-warm caches during deploy. Circuit breaker on identity store calls.</text>
+
+  <!-- Strategy 4: Rate Limiting -->
+  <rect x="360" y="465" width="480" height="35" rx="8" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="600" y="487" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#9d174d">Strategy 4: Tiered Rate Limiting at edge + per-account + per-IP</text>
+</svg>

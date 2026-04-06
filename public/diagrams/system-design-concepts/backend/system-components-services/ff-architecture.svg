@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Feature Flag System Architecture</text>
+
+  <!-- Control Plane -->
+  <rect x="30" y="65" width="220" height="120" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="140" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Control Plane</text>
+  <text x="140" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">UI Dashboard</text>
+  <text x="140" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">REST/gRPC API</text>
+  <text x="140" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Audit Log</text>
+  <text x="140" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Approval Workflows</text>
+
+  <!-- Flag Store -->
+  <rect x="30" y="220" width="220" height="90" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="140" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">Flag Store</text>
+  <text x="140" y="273" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">PostgreSQL / DynamoDB</text>
+  <text x="140" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Versioned Configurations</text>
+
+  <!-- Distribution Layer -->
+  <rect x="30" y="340" width="220" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="140" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Distribution Layer</text>
+  <text x="140" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Polling Endpoint (HTTP)</text>
+  <text x="140" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Streaming (SSE / WebSocket)</text>
+  <text x="140" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">CDN Edge Cache</text>
+  <text x="140" y="455" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Redis Pub/Sub</text>
+
+  <!-- Application Services -->
+  <rect x="340" y="65" width="240" height="130" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="460" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Server SDKs</text>
+  <text x="460" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">In-Memory Config Cache</text>
+  <text x="460" y="138" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Local Rule Evaluation</text>
+  <text x="460" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Consistent Hashing</text>
+  <text x="460" y="178" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Async Exposure Logging</text>
+
+  <!-- Client SDKs -->
+  <rect x="340" y="230" width="240" height="130" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="460" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Client SDKs</text>
+  <text x="460" y="283" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Browser / Mobile / Edge</text>
+  <text x="460" y="303" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">LocalStorage / In-Memory</text>
+  <text x="460" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Polling / Streaming Updates</text>
+  <text x="460" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Safe Default Values</text>
+
+  <!-- Analytics Pipeline -->
+  <rect x="340" y="395" width="240" height="100" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="460" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Analytics Pipeline</text>
+  <text x="460" y="448" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Exposure Events</text>
+  <text x="460" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">A/B Test Analysis</text>
+  <text x="460" y="482" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Flag Usage Monitoring</text>
+
+  <!-- Application -->
+  <rect x="630" y="100" width="240" height="180" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="750" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#334155">Application Services</text>
+  <text x="750" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Web Frontend</text>
+  <text x="750" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Backend APIs</text>
+  <text x="750" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Mobile App</text>
+  <text x="750" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Edge Functions</text>
+  <text x="750" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Worker Jobs</text>
+  <text x="750" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Batch Processors</text>
+
+  <!-- Flag Types -->
+  <rect x="630" y="320" width="240" height="150" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="750" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0c4a6e">Flag Types</text>
+  <text x="750" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Boolean (On/Off Toggle)</text>
+  <text x="750" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Multivariate (A/B/C Variants)</text>
+  <text x="750" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Targeting (Rule-Based)</text>
+  <text x="750" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Percentage Rollout</text>
+  <text x="750" y="455" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#374151">Kill Switch (Emergency Off)</text>
+
+  <!-- Arrows -->
+  <line x1="140" y1="185" x2="140" y2="220" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="140" y1="310" x2="140" y2="340" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="250" y1="140" x2="340" y2="140" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="250" y1="300" x2="340" y2="300" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="250" y1="405" x2="340" y2="445" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="580" y1="130" x2="630" y2="130" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="580" y1="295" x2="630" y2="200" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <line x1="580" y1="430" x2="630" y2="380" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <line x1="500" y1="195" x2="500" y2="230" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+  <line x1="420" y1="360" x2="420" y2="395" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)"/>
+
+  <!-- Legend -->
+  <rect x="30" y="495" width="15" height="15" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="55" y="507" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Control Plane</text>
+  <rect x="155" y="495" width="15" height="15" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="180" y="507" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Store</text>
+  <rect x="240" y="495" width="15" height="15" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="265" y="507" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Distribution</text>
+  <rect x="380" y="495" width="15" height="15" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="405" y="507" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Server SDK</text>
+  <rect x="510" y="495" width="15" height="15" fill="#ecfeff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="535" y="507" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Client SDK</text>
+  <rect x="640" y="495" width="15" height="15" fill="#f8fafc" stroke="#64748b" stroke-width="1"/>
+  <text x="665" y="507" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Application</text>
+  <rect x="770" y="495" width="15" height="15" fill="#fff1f2" stroke="#f43f5e" stroke-width="1"/>
+  <text x="795" y="507" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Analytics</text>
+  <line x1="30" y1="525" x2="60" y2="525" stroke="#3b82f6" stroke-width="2"/>
+  <text x="70" y="529" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Sync</text>
+  <line x1="130" y1="525" x2="160" y2="525" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="170" y="529" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Async</text>
+</svg>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowred" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Geolocation Service &#8212; Failure Modes &#38; Degradation</text>
+
+  <!-- Failure Mode 1: IP DB Stale -->
+  <rect x="30" y="65" width="270" height="120" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+  <text x="165" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#991b1b">Failure Mode 1: Stale IP Database</text>
+
+  <rect x="45" y="110" width="240" height="28" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="165" y="128" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">IP assignments change, DB not updated</text>
+
+  <rect x="45" y="145" width="115" height="28" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="102" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">Monthly DB updates</text>
+  <text x="102" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">from MaxMind/IP2Location</text>
+
+  <rect x="170" y="145" width="115" height="28" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="1"/>
+  <text x="227" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#9a3412">Accuracy degrades</text>
+  <text x="227" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">over time between updates</text>
+
+  <!-- Failure Mode 2: GPS Unavailable -->
+  <rect x="330" y="65" width="270" height="120" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+  <text x="465" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#991b1b">Failure Mode 2: GPS Signal Unavailable</text>
+
+  <rect x="345" y="110" width="240" height="28" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="465" y="128" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Indoor, underground, or jamming</text>
+
+  <rect x="345" y="145" width="115" height="28" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="402" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">Fallback to WiFi/CSS</text>
+  <text x="402" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">then cell tower, then IP</text>
+
+  <rect x="470" y="145" width="115" height="28" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="1"/>
+  <text x="527" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#9a3412">Lower accuracy</text>
+  <text x="527" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">100m+ vs 10m GPS</text>
+
+  <!-- Failure Mode 3: External API Down -->
+  <rect x="630" y="65" width="240" height="120" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+  <text x="750" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#991b1b">Failure Mode 3: External API Down</text>
+
+  <rect x="645" y="110" width="210" height="28" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="750" y="128" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Google/Apple geocoding API outage</text>
+
+  <rect x="645" y="145" width="100" height="28" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="695" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">Use local DB</text>
+  <text x="695" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">(Nominatim/OSM)</text>
+
+  <rect x="755" y="145" width="100" height="28" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="1"/>
+  <text x="805" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#9a3412">Reduced features</text>
+  <text x="805" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">no place details</text>
+
+  <!-- Degradation Strategy -->
+  <rect x="30" y="220" width="420" height="160" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="240" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">Graceful Degradation Strategy</text>
+
+  <rect x="50" y="270" width="380" height="28" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="240" y="288" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#166534">Level 1: Full accuracy (GPS + WiFi + Cell + IP)</text>
+
+  <rect x="50" y="305" width="380" height="28" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="240" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">Level 2: WiFi + Cell + IP (GPS unavailable)</text>
+
+  <rect x="50" y="340" width="380" height="28" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="240" y="358" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Level 3: IP only (WiFi/Cell unavailable)</text>
+
+  <rect x="50" y="375" width="380" height="28" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="240" y="393" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#991b1b">Level 4: Cached result (all sources down)</text>
+
+  <!-- Privacy Considerations -->
+  <rect x="480" y="220" width="390" height="160" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="675" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Privacy &#38; Compliance Considerations</text>
+
+  <rect x="495" y="270" width="360" height="28" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="675" y="288" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">GDPR: location data is personal data, requires consent</text>
+
+  <rect x="495" y="305" width="170" height="60" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="580" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Consent Management</text>
+  <text x="580" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Explicit opt-in required</text>
+  <text x="580" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Granular permissions</text>
+
+  <rect x="680" y="305" width="175" height="60" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="767" y="323" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Data Minimization</text>
+  <text x="767" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Store only needed precision</text>
+  <text x="767" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Auto-delete after TTL</text>
+
+  <!-- Recovery Strategy -->
+  <rect x="30" y="410" width="840" height="110" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="450" y="440" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Recovery Strategy After Source Restoration</text>
+
+  <rect x="50" y="460" width="150" height="45" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="125" y="478" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">1. Health Probe</text>
+  <text x="125" y="495" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Verify source online</text>
+
+  <rect x="215" y="460" width="150" height="45" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="290" y="478" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">2. Test Query</text>
+  <text x="290" y="495" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Validate response format</text>
+
+  <rect x="380" y="460" width="150" height="45" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="455" y="478" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">3. Gradual Shift</text>
+  <text x="455" y="495" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Route 10% of traffic</text>
+
+  <rect x="545" y="460" width="150" height="45" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="620" y="478" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">4. Full Restore</text>
+  <text x="620" y="495" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Normal operation resumes</text>
+
+  <rect x="710" y="460" width="140" height="45" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="780" y="478" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">5. Cache Warm</text>
+  <text x="780" y="495" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Populate cache entries</text>
+
+  <!-- Key Metrics -->
+  <rect x="30" y="520" width="840" height="25" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="120" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0c4a6e">Resilience Metrics:</text>
+  <text x="240" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Accuracy score per response</text>
+  <text x="450" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Source availability: target &#62; 99.9%</text>
+  <text x="660" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Degradation level tracked per request</text>
+</svg>

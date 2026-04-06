@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Analytics Scaling: Real-Time vs Batch Processing</text>
+
+  <!-- Real-time path -->
+  <rect x="40" y="70" width="400" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Real-Time Stream Processing</text>
+  <text x="240" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Latency: 100ms - 5s</text>
+  <rect x="60" y="140" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Kafka / Kinesis event stream</text>
+  <rect x="60" y="177" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="197" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Flink / Spark Streaming processors</text>
+  <rect x="60" y="214" width="360" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="240" y="234" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Write to real-time store: Redis, Druid</text>
+  <rect x="60" y="251" width="360" height="15" rx="3" fill="#eff6ff"/>
+  <text x="240" y="262" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#1e40af">Use case: live dashboards, alerting, personalization</text>
+
+  <!-- Batch path -->
+  <rect x="460" y="70" width="400" height="200" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534">Batch Processing Pipeline</text>
+  <text x="660" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Latency: 15min - 24h</text>
+  <rect x="480" y="140" width="360" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="660" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Raw events stored in data lake (S3, GCS)</text>
+  <rect x="480" y="177" width="360" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="660" y="197" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Spark / Hive ETL jobs (scheduled)</text>
+  <rect x="480" y="214" width="360" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="660" y="234" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#334155">Write to analytical warehouse: BigQuery, Snowflake</text>
+  <rect x="480" y="251" width="360" height="15" rx="3" fill="#f0fdf4"/>
+  <text x="660" y="262" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#166534">Use case: historical analysis, ML training, BI reports</text>
+
+  <!-- Comparison -->
+  <rect x="40" y="300" width="820" height="185" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="450" y="328" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e293b">Trade-offs: Real-Time vs Batch</text>
+
+  <!-- Row 1 -->
+  <rect x="60" y="345" width="250" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Data Accuracy</text>
+  <rect x="320" y="345" width="250" height="30" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="445" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#1e40af">Approximate (dedup lag)</text>
+  <rect x="580" y="345" width="250" height="30" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="705" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#166534">Authoritative (complete)</text>
+
+  <!-- Row 2 -->
+  <rect x="60" y="382" width="250" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Cost per Event</text>
+  <rect x="320" y="382" width="250" height="30" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="445" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#1e40af">Higher (streaming infra)</text>
+  <rect x="580" y="382" width="250" height="30" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="705" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#166534">Lower (batch compute)</text>
+
+  <!-- Row 3 -->
+  <rect x="60" y="419" width="250" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="439" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Complexity</text>
+  <rect x="320" y="419" width="250" height="30" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="445" y="439" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#1e40af">High (ordering, dedup)</text>
+  <rect x="580" y="419" width="250" height="30" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="705" y="439" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#166534">Moderate (scheduled jobs)</text>
+
+  <!-- Row 4 -->
+  <rect x="60" y="456" width="250" height="20" rx="3" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#334155">Reconciliation</text>
+  <rect x="320" y="456" width="510" height="20" rx="3" fill="#fefce8" stroke="#fef08a" stroke-width="1"/>
+  <text x="575" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#854d0e">Batch results overwrite real-time during daily reconciliation to ensure accuracy</text>
+
+  <!-- Column headers -->
+  <rect x="320" y="330" width="250" height="18" rx="3" fill="#e0f2fe"/>
+  <text x="445" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#1e40af">Real-Time</text>
+  <rect x="580" y="330" width="250" height="18" rx="3" fill="#dcfce7"/>
+  <text x="705" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#166534">Batch</text>
+</svg>

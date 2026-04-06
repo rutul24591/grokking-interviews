@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <defs>
+    <marker id="arrowhead7" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect width="900" height="500" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#111827">Scaling Feature Flag Delivery</text>
+  <!-- SDK Cache Layer -->
+  <rect x="30" y="70" width="260" height="100" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="160" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#065f46">SDK Local Cache</text>
+  <text x="160" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Zero network round-trip for eval</text>
+  <text x="160" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Background polling or streaming</text>
+  <text x="160" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Refresh interval: 30s-5min</text>
+  <!-- Edge/CDN Cache -->
+  <rect x="320" y="70" width="260" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#3730a3">Edge / CDN Cache</text>
+  <text x="450" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Flags served at edge nodes</text>
+  <text x="450" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Geo-distributed, sub-10ms latency</text>
+  <text x="450" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">TTL-based invalidation</text>
+  <!-- Streaming Updates -->
+  <rect x="610" y="70" width="260" height="100" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="740" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#92400e">Streaming Updates</text>
+  <text x="740" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">SSE or WebSocket push on change</text>
+  <text x="740" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Delta updates (only changed flags)</text>
+  <text x="740" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Reduces bandwidth significantly</text>
+  <!-- Control Plane Scaling -->
+  <rect x="30" y="220" width="260" height="100" rx="8" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+  <text x="160" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#9d174d">Control Plane Scaling</text>
+  <text x="160" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Write-heavy: flag changes are rare</text>
+  <text x="160" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Single primary + read replicas</text>
+  <text x="160" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Event sourcing for audit trail</text>
+  <!-- Evaluation at Scale -->
+  <rect x="320" y="220" width="260" height="100" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#065f46">Evaluation at Scale</text>
+  <text x="450" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Pre-computed flag payloads</text>
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">SDK evaluates locally</text>
+  <text x="450" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">O(1) lookup, no network</text>
+  <!-- Analytics Pipeline -->
+  <rect x="610" y="220" width="260" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="740" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#3730a3">Analytics Pipeline</text>
+  <text x="740" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Async exposure events</text>
+  <text x="740" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Batched, sampled, or streamed</text>
+  <text x="740" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">Feeds A/B test analysis</text>
+  <!-- Scaling pattern arrows -->
+  <line x1="160" y1="170" x2="160" y2="215" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead7)"/>
+  <line x1="450" y1="170" x2="450" y2="215" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead7)"/>
+  <line x1="740" y1="170" x2="740" y2="215" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead7)"/>
+  <!-- Key insight -->
+  <rect x="30" y="360" width="840" height="60" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="450" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#374151">Key Insight: Decouple Flag Delivery from Flag Evaluation</text>
+  <text x="450" y="408" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">The control plane delivers flag configs; SDKs evaluate locally. This means millions of evals/sec with zero dependency on the service.</text>
+  <!-- Scaling metrics -->
+  <rect x="30" y="440" width="270" height="40" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text x="165" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#065f46">SDK Cache: 0ms network, &#60;1ms eval</text>
+  <rect x="315" y="440" width="270" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="450" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">Edge: ~10ms, shared across tenants</text>
+  <rect x="600" y="440" width="270" height="40" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="735" y="465" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Streaming: ~100ms propagation, efficient</text>
+</svg>

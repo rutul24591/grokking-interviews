@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Rate Limiting Failure Modes and Mitigations</text>
+  <!-- Failure 1 -->
+  <rect x="40" y="70" width="400" height="180" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#991b1b">Counter Drift in Distributed Systems</text>
+  <rect x="60" y="120" width="360" height="25" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cause: Clock skew between nodes, Redis replica lag</text>
+  <rect x="60" y="152" width="360" height="25" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Impact: Inconsistent limit enforcement across nodes</text>
+  <rect x="60" y="184" width="360" height="25" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Mitigation: Use Redis single source, NTP sync, read-your-writes</text>
+  <rect x="60" y="216" width="360" height="25" rx="4" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+  <text x="240" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Monitor: Counter consistency checks, replica lag alerts</text>
+  <!-- Failure 2 -->
+  <rect x="460" y="70" width="400" height="180" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="660" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#a16207">Redis Outage</text>
+  <rect x="480" y="120" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="660" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cause: Redis cluster failure, network partition</text>
+  <rect x="480" y="152" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="660" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Impact: Cannot check limits, must fail open or closed</text>
+  <rect x="480" y="184" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="660" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Mitigation: Fail-open (allow all) with local fallback, Redis HA</text>
+  <rect x="480" y="216" width="360" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="660" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Monitor: Redis connectivity, failover events, fallback activation</text>
+  <!-- Failure 3 -->
+  <rect x="40" y="280" width="400" height="205" rx="10" fill="#ecfdf5" stroke="#22c55e" stroke-width="2"/>
+  <text x="240" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#166534">Overly Aggressive Limits</text>
+  <rect x="60" y="330" width="360" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="240" y="347" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cause: Limits set too low, not accounting for retry storms</text>
+  <rect x="60" y="362" width="360" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="240" y="379" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Impact: Legitimate traffic rejected, cascading failures</text>
+  <rect x="60" y="394" width="360" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="240" y="411" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Mitigation: Capacity-based limits, gradual rollout, monitoring</text>
+  <rect x="60" y="426" width="360" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="240" y="443" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Include retry budget in limit calculation</text>
+  <rect x="60" y="458" width="360" height="18" rx="3" fill="#ecfdf5"/>
+  <text x="240" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#166534">Test limits under load before production deployment</text>
+  <!-- Failure 4 -->
+  <rect x="460" y="280" width="400" height="205" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="660" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Client Identification Evasion</text>
+  <rect x="480" y="330" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="347" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Cause: Client rotates IPs, API keys, or user agents</text>
+  <rect x="480" y="362" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="379" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Impact: Abuser bypasses per-client limits</text>
+  <rect x="480" y="394" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="411" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Mitigation: Multi-factor identification (IP + API key + fingerprint)</text>
+  <rect x="480" y="426" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="660" y="443" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Rate limit at multiple layers (edge, API, application)</text>
+  <rect x="480" y="458" width="360" height="18" rx="3" fill="#faf5ff"/>
+  <text x="660" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#6b21a8">Use authenticated identity when possible, IP as fallback</text>
+</svg>

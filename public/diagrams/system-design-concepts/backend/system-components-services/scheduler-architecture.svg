@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Job Scheduler Architecture</text>
+
+  <!-- Job Producers -->
+  <rect x="30" y="65" width="200" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="130" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Job Producers</text>
+  <text x="130" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">User Actions</text>
+  <text x="130" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Cron Triggers</text>
+  <text x="130" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Event-Driven Triggers</text>
+
+  <!-- Job Queue -->
+  <rect x="260" y="65" width="200" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="360" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">Job Queue</text>
+  <text x="360" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Priority Queues</text>
+  <text x="360" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Delayed Jobs</text>
+  <text x="360" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Dead Letter Queue</text>
+
+  <!-- Scheduler -->
+  <rect x="490" y="65" width="200" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="590" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Scheduler Engine</text>
+  <text x="590" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Priority Ordering</text>
+  <text x="590" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Rate Limiting</text>
+  <text x="590" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Concurrency Control</text>
+
+  <!-- Workers -->
+  <rect x="720" y="65" width="150" height="100" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="795" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Worker Pool</text>
+  <text x="795" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Worker-1</text>
+  <text x="795" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Worker-2</text>
+  <text x="795" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Worker-N</text>
+
+  <!-- State Management -->
+  <rect x="30" y="200" width="420" height="120" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="240" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Job State Management</text>
+  <text x="80" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Pending &#8594; Running</text>
+  <text x="80" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">&#8594; Completed</text>
+  <text x="80" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">&#8594; Failed &#8594; Retrying</text>
+  <text x="280" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Redis / PostgreSQL</text>
+  <text x="280" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Distributed Locking</text>
+  <text x="280" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Idempotency Keys</text>
+  <text x="380" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Heartbeat Tracking</text>
+  <text x="380" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Timeout Detection</text>
+  <text x="380" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Claim-based Dispatch</text>
+
+  <!-- Monitoring -->
+  <rect x="480" y="200" width="390" height="120" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="675" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Monitoring &amp; Observability</text>
+  <text x="570" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Queue Depth</text>
+  <text x="570" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Processing Rate</text>
+  <text x="570" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Error Rate</text>
+  <text x="720" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Job Duration (p50/p95/p99)</text>
+  <text x="720" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Retry Counts</text>
+  <text x="720" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Dead Letter Queue Size</text>
+  <text x="830" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Worker Utilization</text>
+  <text x="830" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Stale Job Detection</text>
+  <text x="830" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Alerting Rules</text>
+
+  <!-- Job Types -->
+  <rect x="30" y="355" width="270" height="170" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="165" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0c4a6e">Job Types</text>
+  <text x="165" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Immediate (process now)</text>
+  <text x="165" y="430" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Delayed (process at time T)</text>
+  <text x="165" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Recurring/Cron (periodic)</text>
+  <text x="165" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Chained (job B after job A)</text>
+  <text x="165" y="490" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Batch (group of related jobs)</text>
+  <text x="165" y="510" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Priority (urgent vs normal)</text>
+
+  <!-- Delivery Guarantees -->
+  <rect x="330" y="355" width="270" height="170" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="465" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#334155">Delivery Guarantees</text>
+  <text x="465" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">At-Most-Once: fire and forget</text>
+  <text x="465" y="430" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">At-Least-Once: retry on failure</text>
+  <text x="465" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Exactly-Once: idempotency key</text>
+  <text x="465" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">+ deduplication</text>
+  <text x="465" y="495" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#334155">Recommended: At-Least-Once</text>
+  <text x="465" y="515" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">with idempotent handlers</text>
+
+  <!-- Scaling -->
+  <rect x="630" y="355" width="240" height="170" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="750" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Scaling Model</text>
+  <text x="750" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Horizontal: add workers</text>
+  <text x="750" y="430" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Auto-scale on queue depth</text>
+  <text x="750" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Queue partitioning by type</text>
+  <text x="750" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Worker pools by capability</text>
+  <text x="750" y="495" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#92400e">K8s HPA on queue depth</text>
+  <text x="750" y="515" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Scale 1-100+ workers</text>
+
+  <!-- Arrows -->
+  <line x1="230" y1="115" x2="260" y2="115" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="460" y1="115" x2="490" y2="115" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="690" y1="115" x2="720" y2="115" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="590" y1="165" x2="590" y2="200" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <line x1="590" y1="165" x2="675" y2="200" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+</svg>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Job Scheduler &#8212; Scaling Strategies</text>
+
+  <!-- Horizontal Worker Scaling -->
+  <rect x="30" y="65" width="410" height="140" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Horizontal Worker Scaling</text>
+
+  <rect x="50" y="110" width="370" height="30" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="235" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">K8s HPA: Scale on Queue Depth</text>
+
+  <rect x="50" y="150" width="80" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="90" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">W-1</text>
+  <text x="90" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">pod-1</text>
+
+  <rect x="140" y="150" width="80" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="180" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">W-2</text>
+  <text x="180" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">pod-2</text>
+
+  <rect x="230" y="150" width="80" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="270" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">W-3</text>
+  <text x="270" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">pod-3</text>
+
+  <rect x="320" y="150" width="100" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="370" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">W-N</text>
+  <text x="370" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">auto-scaled</text>
+
+  <!-- Queue Partitioning -->
+  <rect x="470" y="65" width="400" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">Queue Partitioning by Type</text>
+
+  <rect x="485" y="110" width="370" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#166534">Separate queues per job type prevent head-of-line blocking</text>
+
+  <rect x="485" y="150" width="110" height="40" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="540" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Email Queue</text>
+  <text x="540" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">50 workers</text>
+
+  <rect x="605" y="150" width="110" height="40" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="660" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Image Queue</text>
+  <text x="660" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">20 GPU workers</text>
+
+  <rect x="725" y="150" width="120" height="40" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="785" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Report Queue</text>
+  <text x="785" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">5 CPU workers</text>
+
+  <!-- Auto-Scaling Triggers -->
+  <rect x="30" y="235" width="410" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Auto-Scaling Triggers</text>
+
+  <rect x="50" y="280" width="370" height="25" rx="4" fill="#fefce8" stroke="#f59e0b" stroke-width="1"/>
+  <text x="235" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Queue depth &#62; 1000 jobs: scale up by 2x</text>
+
+  <rect x="50" y="315" width="370" height="25" rx="4" fill="#fefce8" stroke="#f59e0b" stroke-width="1"/>
+  <text x="235" y="332" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Queue depth &#60; 100 for 5min: scale down by 50%</text>
+
+  <rect x="50" y="350" width="170" height="20" rx="4" fill="#fefce8" stroke="#f59e0b" stroke-width="1"/>
+  <text x="135" y="364" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#92400e">Min workers: 1</text>
+
+  <rect x="235" y="350" width="185" height="20" rx="4" fill="#fefce8" stroke="#f59e0b" stroke-width="1"/>
+  <text x="327" y="364" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#92400e">Max workers: 100+</text>
+
+  <!-- Delayed Job Handling -->
+  <rect x="470" y="235" width="400" height="140" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Delayed Job Handling</text>
+
+  <rect x="485" y="280" width="370" height="25" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="670" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Sorted Set (Redis ZADD) ordered by execution time</text>
+
+  <rect x="485" y="315" width="170" height="45" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="570" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">ZPOPMIN poll</text>
+  <text x="570" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">check every 1s</text>
+
+  <rect x="665" y="315" width="175" height="45" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="752" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Move to ready queue</text>
+  <text x="752" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">when time arrived</text>
+
+  <!-- Scheduling Algorithms -->
+  <rect x="30" y="405" width="410" height="120" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Scheduling Algorithms Comparison</text>
+
+  <rect x="50" y="450" width="120" height="60" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="110" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">FIFO</text>
+  <text x="110" y="487" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Simple, fair</text>
+  <text x="110" y="500" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">No priority</text>
+
+  <rect x="180" y="450" width="120" height="60" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="240" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Priority Queue</text>
+  <text x="240" y="487" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Urgent first</text>
+  <text x="240" y="500" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Starvation risk</text>
+
+  <rect x="310" y="450" width="120" height="60" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="370" y="470" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Weighted Fair</text>
+  <text x="370" y="487" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Balanced</text>
+  <text x="370" y="500" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Complex config</text>
+
+  <!-- Key Metrics -->
+  <rect x="470" y="405" width="400" height="120" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Scaling Key Metrics</text>
+
+  <rect x="485" y="450" width="170" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="570" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Throughput: jobs/sec</text>
+
+  <rect x="665" y="450" width="185" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="757" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Latency: enqueue to start</text>
+
+  <rect x="485" y="485" width="170" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="570" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Worker utilization: %</text>
+
+  <rect x="665" y="485" width="185" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="757" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Queue age: oldest job wait</text>
+
+  <!-- Bottom -->
+  <rect x="30" y="520" width="840" height="25" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="120" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0c4a6e">Scaling Rule:</text>
+  <text x="220" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Scale workers on queue depth, partition queues by job type, use HPA for auto-scaling</text>
+  <text x="680" y="537" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Target: &#60; 30s queue wait</text>
+</svg>

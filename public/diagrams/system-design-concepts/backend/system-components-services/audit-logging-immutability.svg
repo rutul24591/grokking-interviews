@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a90d9"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1a1a2e">Immutability &amp; Tamper-Evidence Design</text>
+  <text x="450" y="56" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="normal" fill="#555555">Hash-chained append-only blocks with cryptographic anchoring</text>
+
+  <!-- Hash Chain Diagram -->
+  <text x="450" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1a1a2e">Hash Chain of Audit Events</text>
+
+  <!-- Block 1 -->
+  <rect x="40" y="115" width="155" height="120" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+  <text x="117" y="138" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Block #1</text>
+  <text x="50" y="158" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">Event: user.login</text>
+  <text x="50" y="173" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">ts: 2026-04-01T10:00:00Z</text>
+  <text x="50" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">prev_hash: 0x0000...0000</text>
+  <text x="50" y="203" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">hash: SHA-256(block_1)</text>
+  <text x="50" y="218" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#4caf50">&#10004; Genesis block</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="195" y1="175" x2="235" y2="175" stroke="#4a90d9" stroke-width="2.5" marker-end="url(#arrow2)"/>
+  <text x="215" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="normal" fill="#4a90d9">H1</text>
+
+  <!-- Block 2 -->
+  <rect x="240" y="115" width="155" height="120" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+  <text x="317" y="138" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Block #2</text>
+  <text x="250" y="158" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">Event: role.update</text>
+  <text x="250" y="173" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">ts: 2026-04-01T10:05:00Z</text>
+  <text x="250" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">prev_hash: SHA-256(b1)</text>
+  <text x="250" y="203" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">hash: SHA-256(block_2)</text>
+  <text x="250" y="218" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#4caf50">&#10004; Chained</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="395" y1="175" x2="435" y2="175" stroke="#4a90d9" stroke-width="2.5" marker-end="url(#arrow2)"/>
+  <text x="415" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="normal" fill="#4a90d9">H2</text>
+
+  <!-- Block 3 -->
+  <rect x="440" y="115" width="155" height="120" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+  <text x="517" y="138" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Block #3</text>
+  <text x="450" y="158" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">Event: data.export</text>
+  <text x="450" y="173" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">ts: 2026-04-01T10:12:00Z</text>
+  <text x="450" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">prev_hash: SHA-256(b2)</text>
+  <text x="450" y="203" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">hash: SHA-256(block_3)</text>
+  <text x="450" y="218" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#4caf50">&#10004; Chained</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="595" y1="175" x2="635" y2="175" stroke="#4a90d9" stroke-width="2.5" marker-end="url(#arrow2)"/>
+  <text x="615" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="normal" fill="#4a90d9">H3</text>
+
+  <!-- Block 4 (highlighted as latest) -->
+  <rect x="640" y="115" width="155" height="120" rx="8" fill="#fff3e0" stroke="#f5a623" stroke-width="2"/>
+  <text x="717" y="138" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Block #N (latest)</text>
+  <text x="650" y="158" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">Event: config.change</text>
+  <text x="650" y="173" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">ts: 2026-04-01T10:30:00Z</text>
+  <text x="650" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">prev_hash: SHA-256(bN-1)</text>
+  <text x="650" y="203" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">hash: SHA-256(block_N)</text>
+  <text x="650" y="218" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#f5a623">&#9888; Tip of chain</text>
+
+  <!-- Ellipsis between block 3 and 4 -->
+  <text x="615" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#555555">...</text>
+
+  <!-- Tamper Detection Section -->
+  <text x="450" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1a1a2e">Tamper Detection Mechanisms</text>
+
+  <!-- Mechanism 1 -->
+  <rect x="40" y="310" width="250" height="80" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+  <text x="165" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Hash Chain Verification</text>
+  <text x="55" y="355" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">Each block includes hash of previous</text>
+  <text x="55" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">block. Modifying any event breaks</text>
+  <text x="55" y="385" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">all subsequent hashes. O(n) verify.</text>
+
+  <!-- Mechanism 2 -->
+  <rect x="325" y="310" width="250" height="80" rx="8" fill="#e3f2fd" stroke="#2196f3" stroke-width="1.5"/>
+  <text x="450" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Merkle Tree Root Anchoring</text>
+  <text x="340" y="355" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">Periodic Merkle root published to</text>
+  <text x="340" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">external ledger (blockchain, trusted</text>
+  <text x="340" y="385" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">timestamp authority). O(log n) proof.</text>
+
+  <!-- Mechanism 3 -->
+  <rect x="610" y="310" width="250" height="80" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+  <text x="735" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Append-Only Storage Enforce</text>
+  <text x="625" y="355" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">Database permissions deny UPDATE</text>
+  <text x="625" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">and DELETE. Object lock (S3 GLACIER)</text>
+  <text x="625" y="385" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#333333">prevents deletion until retention expiry.</text>
+
+  <!-- Chain of custody flow at bottom -->
+  <rect x="40" y="420" width="820" height="55" rx="8" fill="#f0f4f8" stroke="#c8d6e5" stroke-width="1.5"/>
+  <text x="450" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1a1a2e">Chain of Custody:</text>
+  <text x="450" y="462" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="normal" fill="#555555">Event generated &#8594; Signed by service identity &#8594; Written to append-only log &#8594; Hash anchored to external authority &#8594; Access logged separately</text>
+</svg>

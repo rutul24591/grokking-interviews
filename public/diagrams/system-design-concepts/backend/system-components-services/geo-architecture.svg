@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Geolocation Service Architecture</text>
+
+  <!-- Client Requests -->
+  <rect x="30" y="65" width="270" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="165" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Client Requests</text>
+  <text x="165" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">IP Address Lookup</text>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">GPS Coordinates (Mobile)</text>
+  <text x="165" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">WiFi/CSS Positioning</text>
+
+  <!-- Geolocation API Gateway -->
+  <rect x="30" y="195" width="270" height="90" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="165" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">Geolocation API Gateway</text>
+  <text x="165" y="248" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Rate Limiting &amp; Quotas</text>
+  <text x="165" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Request Validation</text>
+  <text x="165" y="282" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Response Caching</text>
+
+  <!-- Resolution Pipeline -->
+  <rect x="30" y="315" width="270" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="165" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Resolution Pipeline</text>
+  <text x="80" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">IP &#8594; Geo Database</text>
+  <text x="80" y="390" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Coords &#8594; Reverse Geocode</text>
+  <text x="250" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Cell ID &#8594; Location</text>
+  <text x="250" y="390" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">WiFi BSSID &#8594; Location</text>
+  <text x="165" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Fallback: WiFi &#8594; IP</text>
+  <text x="165" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Confidence Score (0-100)</text>
+
+  <!-- Data Sources -->
+  <rect x="340" y="65" width="260" height="180" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="470" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Geolocation Data Sources</text>
+  <text x="470" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">IP Geolocation DB (MaxMind)</text>
+  <text x="470" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">GPS Satellite Constellation</text>
+  <text x="470" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Cell Tower Database</text>
+  <text x="470" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">WiFi Access Point DB</text>
+  <text x="470" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">OpenStreetMap / Nominatim</text>
+  <text x="470" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Google/Apple Location APIs</text>
+
+  <!-- Processing Layer -->
+  <rect x="340" y="275" width="260" height="180" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="470" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Processing Layer</text>
+  <text x="470" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Coordinate Transformation</text>
+  <text x="470" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Spatial Indexing (S2/H3)</text>
+  <text x="470" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Geohash Encoding</text>
+  <text x="470" y="390" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Distance Calculations</text>
+  <text x="470" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Polygon Containment Tests</text>
+  <text x="470" y="430" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Bounding Box Queries</text>
+
+  <!-- Response Assembly -->
+  <rect x="630" y="65" width="240" height="180" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="750" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Response Assembly</text>
+  <text x="750" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Latitude, Longitude</text>
+  <text x="750" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">City, Region, Country</text>
+  <text x="750" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Postal Code, Timezone</text>
+  <text x="750" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Accuracy Radius (meters)</text>
+  <text x="750" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Confidence Score</text>
+  <text x="750" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Source Attribution</text>
+
+  <!-- Cache Layer -->
+  <rect x="630" y="275" width="240" height="180" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="750" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0c4a6e">Cache Layer</text>
+  <text x="750" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Redis/Memcached Cluster</text>
+  <text x="750" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Key: IP hash / Geohash</text>
+  <text x="750" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">TTL: 24h (IP), 1h (GPS)</text>
+  <text x="750" y="390" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Cache Hit: &#60; 1ms</text>
+  <text x="750" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Cache Miss: 10-50ms</text>
+  <text x="750" y="430" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Hit Rate Target: &#62; 90%</text>
+
+  <!-- Arrows -->
+  <line x1="165" y1="165" x2="165" y2="195" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="165" y1="285" x2="165" y2="315" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="300" y1="155" x2="340" y2="155" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="300" y1="385" x2="340" y2="365" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="155" x2="630" y2="155" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="365" x2="630" y2="365" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="750" y1="245" x2="750" y2="275" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+
+  <!-- Bottom Summary -->
+  <rect x="30" y="490" width="840" height="45" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1"/>
+  <text x="100" y="510" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#334155">Latency Budget:</text>
+  <text x="190" y="510" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Cache hit: &#60;1ms</text>
+  <text x="330" y="510" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">DB lookup: 5-20ms</text>
+  <text x="470" y="510" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">External API: 50-200ms</text>
+  <text x="630" y="510" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Total p99: &#60; 100ms</text>
+</svg>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Recommendation Pipeline: Retrieval, Ranking, Filtering</text>
+  <!-- Funnel -->
+  <rect x="40" y="70" width="820" height="60" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="450" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e40af">Item Catalog: 1M+ items (all available products, videos, articles)</text>
+  <text x="450" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Full catalog is too large for scoring every item per request</text>
+  <!-- Arrow -->
+  <line x1="450" y1="130" x2="450" y2="155" stroke="#64748b" stroke-width="2"/>
+  <polygon points="445,155 450,165 455,155" fill="#64748b"/>
+  <!-- Retrieval -->
+  <rect x="40" y="170" width="820" height="80" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="200" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534">Step 1: Retrieval (Candidate Generation)</text>
+  <text x="200" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">1M &#8594; 500 candidates</text>
+  <text x="600" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Methods: collaborative filtering, content-based, embedding similarity</text>
+  <text x="600" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Goal: high recall, fast (&lt;20ms)</text>
+  <!-- Arrow -->
+  <line x1="450" y1="250" x2="450" y2="275" stroke="#64748b" stroke-width="2"/>
+  <polygon points="445,275 450,285 455,275" fill="#64748b"/>
+  <!-- Ranking -->
+  <rect x="40" y="290" width="820" height="80" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="200" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#a16207">Step 2: Ranking (Scoring)</text>
+  <text x="200" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">500 &#8594; 50 ranked items</text>
+  <text x="600" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Methods: deep learning models, feature crossing, attention</text>
+  <text x="600" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Goal: high precision, accurate scoring (&lt;30ms)</text>
+  <!-- Arrow -->
+  <line x1="450" y1="370" x2="450" y2="395" stroke="#64748b" stroke-width="2"/>
+  <polygon points="445,395 450,405 455,395" fill="#64748b"/>
+  <!-- Filtering -->
+  <rect x="40" y="410" width="820" height="75" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="440" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#6b21a8">Step 3: Filtering (Business Rules)</text>
+  <text x="200" y="460" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">50 &#8594; 10 final recommendations</text>
+  <text x="600" y="440" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Rules: diversity, freshness, already-purchased, age-appropriate</text>
+  <text x="600" y="460" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Goal: business-aligned, diverse, relevant</text>
+</svg>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Email Deliverability: SPF, DKIM, and DMARC</text>
+  <!-- SPF -->
+  <rect x="40" y="70" width="260" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="170" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e40af">SPF (Sender Policy Framework)</text>
+  <text x="170" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">DNS record listing authorized senders</text>
+  <rect x="60" y="150" width="220" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">v=spf1 include:_spf.google.com ~all</text>
+  <rect x="60" y="190" width="220" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Verifies: is this IP authorized to send?</text>
+  <rect x="60" y="230" width="220" height="30" rx="5" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Scope: envelope sender (MAIL FROM)</text>
+  <!-- DKIM -->
+  <rect x="320" y="70" width="260" height="200" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#166534">DKIM (DomainKeys Identified Mail)</text>
+  <text x="450" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Cryptographic signature on email headers</text>
+  <rect x="340" y="150" width="220" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Private key signs headers, public key in DNS</text>
+  <rect x="340" y="190" width="220" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Verifies: was this email modified in transit?</text>
+  <rect x="340" y="230" width="220" height="30" rx="5" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Scope: message headers and body</text>
+  <!-- DMARC -->
+  <rect x="600" y="70" width="260" height="200" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="730" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#a16207">DMARC (Domain-based Message Auth)</text>
+  <text x="730" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Policy combining SPF and DKIM results</text>
+  <rect x="620" y="150" width="220" height="30" rx="5" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">v=DMARC1; p=reject; rua=mailto:reports</text>
+  <rect x="620" y="190" width="220" height="30" rx="5" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Actions: none, quarantine, reject</text>
+  <rect x="620" y="230" width="220" height="30" rx="5" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Reports: aggregate and forensic feedback</text>
+  <!-- Flow diagram -->
+  <rect x="40" y="300" width="820" height="185" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Delivery Decision Flow</text>
+  <!-- Step 1 -->
+  <rect x="60" y="350" width="180" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#334155">1. Check SPF</text>
+  <text x="150" y="388" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">IP authorized?</text>
+  <!-- Arrow -->
+  <line x1="240" y1="375" x2="270" y2="375" stroke="#64748b" stroke-width="2"/>
+  <polygon points="270,370 280,375 270,380" fill="#64748b"/>
+  <!-- Step 2 -->
+  <rect x="280" y="350" width="180" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="370" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#334155">2. Check DKIM</text>
+  <text x="370" y="388" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Signature valid?</text>
+  <!-- Arrow -->
+  <line x1="460" y1="375" x2="490" y2="375" stroke="#64748b" stroke-width="2"/>
+  <polygon points="490,370 500,375 490,380" fill="#64748b"/>
+  <!-- Step 3 -->
+  <rect x="500" y="350" width="180" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#334155">3. Apply DMARC</text>
+  <text x="590" y="388" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Pass SPF or DKIM?</text>
+  <!-- Arrow -->
+  <line x1="680" y1="375" x2="710" y2="375" stroke="#64748b" stroke-width="2"/>
+  <polygon points="710,370 720,375 710,380" fill="#64748b"/>
+  <!-- Step 4 -->
+  <rect x="720" y="350" width="120" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="780" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">Deliver</text>
+  <text x="780" y="388" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#475569">or Reject</text>
+  <!-- Result -->
+  <rect x="60" y="415" width="780" height="55" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="450" y="438" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#475569">Both SPF and DKIM fail &#8594; DMARC policy applies (quarantine or reject)</text>
+  <text x="450" y="458" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#475569">Either SPF or DKIM passes with alignment &#8594; DMARC passes, email delivered</text>
+</svg>

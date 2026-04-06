@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Notification Service &#8212; Scaling Strategies</text>
+
+  <!-- Queue-Based Scaling -->
+  <rect x="30" y="65" width="410" height="140" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Queue-Based Scaling per Channel</text>
+
+  <rect x="50" y="110" width="370" height="30" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="235" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">Separate queues per channel enable independent scaling</text>
+
+  <rect x="50" y="150" width="110" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Email Queue</text>
+  <text x="105" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">50 workers</text>
+
+  <rect x="170" y="150" width="110" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="225" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">Push Queue</text>
+  <text x="225" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">100 workers</text>
+
+  <rect x="290" y="150" width="130" height="40" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="355" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#374151">SMS Queue</text>
+  <text x="355" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">20 workers (costly)</text>
+
+  <!-- Rate Limiting at Scale -->
+  <rect x="470" y="65" width="400" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#166534">Distributed Rate Limiting</text>
+
+  <rect x="485" y="110" width="370" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#166534">Token bucket algorithm in Redis for distributed rate limiting</text>
+
+  <rect x="485" y="150" width="170" height="40" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="570" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Per-user limits</text>
+  <text x="570" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">10 notifications/hour</text>
+
+  <rect x="665" y="150" width="185" height="40" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="757" y="168" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Global limits</text>
+  <text x="757" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">10K emails/min (provider)</text>
+
+  <!-- Provider Failover -->
+  <rect x="30" y="235" width="410" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Multi-Provider Failover</text>
+
+  <rect x="50" y="280" width="370" height="30" rx="4" fill="#fefce8" stroke="#f59e0b" stroke-width="1"/>
+  <text x="235" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Multiple providers per channel for resilience</text>
+
+  <rect x="50" y="320" width="170" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="135" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Primary: SendGrid</text>
+  <text x="135" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">90% of traffic</text>
+
+  <rect x="235" y="320" width="185" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="327" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Backup: AWS SES</text>
+  <text x="327" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">10% traffic, auto-scale</text>
+
+  <!-- Digest Batching -->
+  <rect x="470" y="235" width="400" height="140" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#6b21a8">Digest Batching for Low-Priority</text>
+
+  <rect x="485" y="280" width="370" height="30" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="670" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#6b21a8">Aggregate low-priority notifications into periodic digest emails</text>
+
+  <rect x="485" y="320" width="170" height="40" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="570" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Daily Digest</text>
+  <text x="570" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">8 AM local time</text>
+
+  <rect x="665" y="320" width="185" height="40" rx="4" fill="#ffffff" stroke="#a855f7" stroke-width="1"/>
+  <text x="757" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#6b21a8">Weekly Summary</text>
+  <text x="757" y="353" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Monday morning</text>
+
+  <!-- Scaling Metrics -->
+  <rect x="30" y="405" width="410" height="115" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="235" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Throughput Targets</text>
+  <rect x="50" y="450" width="170" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="135" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Email: 10K/min</text>
+  <rect x="235" y="450" width="185" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="327" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Push: 100K/min</text>
+  <rect x="50" y="485" width="170" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="135" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">SMS: 1K/min (cost)</text>
+  <rect x="235" y="485" width="185" height="25" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="327" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">In-App: 500K/min</text>
+
+  <!-- Cost Management -->
+  <rect x="470" y="405" width="400" height="115" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Cost Management at Scale</text>
+  <rect x="485" y="450" width="175" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="572" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">SMS: $0.0079/msg (Twilio)</text>
+  <rect x="675" y="450" width="180" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="765" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Email: $0.0004/msg (SES)</text>
+  <rect x="485" y="485" width="175" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="572" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Push: ~$0.0001/msg (FCM)</text>
+  <rect x="675" y="485" width="180" height="25" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="765" y="502" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Prefer cheaper channels first</text>
+</svg>

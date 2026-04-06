@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">Search Scaling: Sharding, Replication, and Caching</text>
+  <!-- Sharding -->
+  <rect x="40" y="70" width="260" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="170" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#1e40af">Horizontal Sharding</text>
+  <rect x="60" y="120" width="220" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Split index by document range or hash</text>
+  <rect x="60" y="152" width="220" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Each shard handles a subset of documents</text>
+  <rect x="60" y="184" width="220" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Query fans out to all shards in parallel</text>
+  <rect x="60" y="216" width="220" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Scales read/write throughput linearly</text>
+  <rect x="60" y="248" width="220" height="15" rx="3" fill="#eff6ff"/>
+  <text x="170" y="259" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#1e40af">Shard count &#8594; parallelism and capacity</text>
+  <!-- Replication -->
+  <rect x="320" y="70" width="260" height="200" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#166534">Replica Strategy</text>
+  <rect x="340" y="120" width="220" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Each shard has 1+ replica copies</text>
+  <rect x="340" y="152" width="220" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Reads distributed across replicas</text>
+  <rect x="340" y="184" width="220" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Writes go to primary, replicate to secondaries</text>
+  <rect x="340" y="216" width="220" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Automatic failover if primary fails</text>
+  <rect x="340" y="248" width="220" height="15" rx="3" fill="#f0fdf4"/>
+  <text x="450" y="259" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#166534">Replica count &#8594; read throughput and HA</text>
+  <!-- Caching -->
+  <rect x="600" y="70" width="260" height="200" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="730" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#a16207">Query Result Caching</text>
+  <rect x="620" y="120" width="220" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Cache frequent queries (Redis, CDN)</text>
+  <rect x="620" y="152" width="220" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Cache key: normalized query string + filters</text>
+  <rect x="620" y="184" width="220" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">TTL-based invalidation on index updates</text>
+  <rect x="620" y="216" width="220" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Cache hit rate: 40-70% for typical workloads</text>
+  <rect x="620" y="248" width="220" height="15" rx="3" fill="#fefce8"/>
+  <text x="730" y="259" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#854d0e">Reduces index load for popular queries</text>
+  <!-- Scaling patterns -->
+  <rect x="40" y="300" width="820" height="185" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Scaling Patterns by Workload</text>
+  <!-- Row 1 -->
+  <rect x="60" y="350" width="180" height="25" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Read-heavy workload</text>
+  <rect x="250" y="350" width="600" height="25" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="550" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Add replicas, increase cache size, use read replicas for query fan-out</text>
+  <!-- Row 2 -->
+  <rect x="60" y="382" width="180" height="25" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="399" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Write-heavy (frequent indexing)</text>
+  <rect x="250" y="382" width="600" height="25" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="550" y="399" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Increase shards, batch index updates, use async replication, optimize refresh interval</text>
+  <!-- Row 3 -->
+  <rect x="60" y="414" width="180" height="25" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">Large index size</text>
+  <rect x="250" y="414" width="600" height="25" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="550" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Increase shard count, use compressed index formats, offload cold data to tiered storage</text>
+  <!-- Row 4 -->
+  <rect x="60" y="446" width="180" height="25" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="463" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#334155">High query concurrency</text>
+  <rect x="250" y="446" width="600" height="25" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="550" y="463" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Add query coordinator nodes, increase cache hit rate, use connection pooling, implement query timeout</text>
+</svg>

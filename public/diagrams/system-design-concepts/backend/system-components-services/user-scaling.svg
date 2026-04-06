@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#ffffff" rx="12"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b">User Service Scaling: Caching, Sharding, and Multi-Region</text>
+  <!-- Caching strategy -->
+  <rect x="40" y="70" width="260" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="170" y="100" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="15" font-weight="700" fill="#1e40af">Multi-Layer Caching</text>
+  <rect x="60" y="120" width="220" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">L1: In-process cache (user profile, 5min TTL)</text>
+  <rect x="60" y="152" width="220" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="169" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="500" fill="#334155">L2: Redis cache (all user fields, 30min TTL)</text>
+  <rect x="60" y="184" width="220" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">L3: PostgreSQL (system of record)</text>
+  <rect x="60" y="216" width="220" height="25" rx="4" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="170" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Cache invalidation on user update events</text>
+  <rect x="60" y="248" width="220" height="15" rx="3" fill="#eff6ff"/>
+  <text x="170" y="259" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#1e40af">Cache hit rate target: &gt;95% for reads</text>
+  <!-- Database sharding -->
+  <rect x="320" y="70" width="260" height="200" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#166534">Database Sharding</text>
+  <rect x="340" y="120" width="220" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Shard by user ID hash (consistent hashing)</text>
+  <rect x="340" y="152" width="220" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Read replicas per shard for read scaling</text>
+  <rect x="340" y="184" width="220" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Cross-shard queries avoided (denormalize)</text>
+  <rect x="340" y="216" width="220" height="25" rx="4" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="450" y="233" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Email/phone lookup: separate index table</text>
+  <rect x="340" y="248" width="220" height="15" rx="3" fill="#f0fdf4"/>
+  <text x="450" y="259" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="10" font-weight="500" fill="#166534">Unique constraints: global index for email, phone</text>
+  <!-- Multi-region -->
+  <rect x="600" y="70" width="260" height="200" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="730" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#a16207">Multi-Region Deployment</text>
+  <rect x="620" y="120" width="220" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Active-active: reads served from local region</text>
+  <rect x="620" y="152" width="220" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Writes routed to primary region (single writer)</text>
+  <rect x="620" y="184" width="220" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="201" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Async replication to read regions (eventual)</text>
+  <rect x="620" y="216" width="220" height="25" rx="4" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="730" y="233" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Failover: promote read region on primary failure</text>
+  <rect x="620" y="248" width="220" height="15" rx="3" fill="#fefce8"/>
+  <text x="730" y="259" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#854d0e">Replication lag: typically &lt;1s, monitor continuously</text>
+  <!-- Scale patterns -->
+  <rect x="40" y="300" width="400" height="185" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="240" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#6b21a8">Scaling Patterns by Workload</text>
+  <rect x="60" y="350" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="240" y="367" text-anchor="middle" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Read-heavy: add read replicas, increase cache TTL</text>
+  <rect x="60" y="382" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="240" y="399" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Write-heavy: increase shards, batch writes, async events</text>
+  <rect x="60" y="414" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="240" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Large user base: shard by ID, global lookup indexes</text>
+  <rect x="60" y="446" width="360" height="25" rx="4" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="240" y="463" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Multi-tenant: shard by tenant_id for isolation</text>
+  <!-- Performance targets -->
+  <rect x="460" y="300" width="400" height="185" rx="10" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="660" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#0c4a6e">Performance Targets</text>
+  <rect x="480" y="350" width="360" height="25" rx="4" fill="#ffffff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="660" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">User lookup by ID: &lt;5ms (cached), &lt;20ms (DB)</text>
+  <rect x="480" y="382" width="360" height="25" rx="4" fill="#ffffff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="660" y="399" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">User update: &lt;50ms (including cache invalidation)</text>
+  <rect x="480" y="414" width="360" height="25" rx="4" fill="#ffffff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="660" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Search by email/phone: &lt;10ms (unique index)</text>
+  <rect x="480" y="446" width="360" height="25" rx="4" fill="#ffffff" stroke="#bae6fd" stroke-width="1"/>
+  <text x="660" y="463" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#334155">Bulk export: paginated, cursor-based, async for large</text>
+  <rect x="480" y="478" width="360" height="15" rx="3" fill="#f0f9ff"/>
+  <text x="660" y="489" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#0c4a6e">Target: 99.99% availability for user lookups (authentication dependency)</text>
+</svg>

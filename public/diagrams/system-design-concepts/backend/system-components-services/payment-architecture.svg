@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#111827">Payment Processing Architecture</text>
+
+  <!-- Checkout Request -->
+  <rect x="30" y="65" width="180" height="80" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="120" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">Checkout Request</text>
+  <text x="120" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Cart + Payment Method</text>
+  <text x="120" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Idempotency Key</text>
+
+  <!-- Payment Gateway -->
+  <rect x="240" y="65" width="180" height="80" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="330" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#166534">Payment Gateway</text>
+  <text x="330" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Validation &amp; Fraud Check</text>
+  <text x="330" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Idempotency Guard</text>
+
+  <!-- Payment Processor -->
+  <rect x="450" y="65" width="200" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="550" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Payment Processor</text>
+  <text x="550" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Stripe / Adyen / Braintree</text>
+  <text x="550" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Card Network Routing</text>
+
+  <!-- Bank/Issuer -->
+  <rect x="680" y="65" width="190" height="80" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="775" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#6b21a8">Bank / Card Issuer</text>
+  <text x="775" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Authorization Decision</text>
+  <text x="775" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">3D Secure / SCA</text>
+
+  <!-- Payment State Machine -->
+  <rect x="30" y="180" width="420" height="180" rx="8" fill="#ecfeff" stroke="#06b6d4" stroke-width="2" filter="url(#shadow)"/>
+  <text x="240" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#155e75">Payment State Machine</text>
+
+  <rect x="50" y="230" width="100" height="35" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="100" y="252" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Created</text>
+
+  <line x1="150" y1="247" x2="170" y2="247" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="170" y="230" width="100" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="220" y="252" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Processing</text>
+
+  <line x1="270" y1="247" x2="290" y2="247" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="290" y="230" width="100" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="340" y="252" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Authorized</text>
+
+  <line x1="220" y1="265" x2="220" y2="280" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="170" y="280" width="100" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="302" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Captured</text>
+
+  <line x1="270" y1="297" x2="290" y2="297" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="290" y="280" width="100" height="35" rx="4" fill="#ecfeff" stroke="#06b6d4" stroke-width="1"/>
+  <text x="340" y="302" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#155e75">Settled</text>
+
+  <line x1="170" y1="247" x2="100" y2="280" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowred)"/>
+
+  <rect x="50" y="280" width="100" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="100" y="302" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">Failed</text>
+
+  <!-- Refund Flow -->
+  <rect x="50" y="325" width="380" height="25" rx="4" fill="#fff1f2" stroke="#f43f5e" stroke-width="1"/>
+  <text x="240" y="342" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">Refund Path: Settled &#8594; Refund Initiated &#8594; Refund Processing &#8594; Refunded</text>
+
+  <!-- Security Layer -->
+  <rect x="480" y="180" width="390" height="180" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="2" filter="url(#shadow)"/>
+  <text x="675" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9f1239">Security &#38; Compliance Layer</text>
+
+  <rect x="495" y="230" width="360" height="28" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="675" y="248" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">PCI DSS compliance: never store raw card numbers, use tokenization</text>
+
+  <rect x="495" y="268" width="170" height="35" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="580" y="286" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">3D Secure / SCA</text>
+  <text x="580" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Strong Customer Auth</text>
+
+  <rect x="680" y="268" width="175" height="35" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="767" y="286" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">Tokenization</text>
+  <text x="767" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">card &#8594; token vault</text>
+
+  <rect x="495" y="313" width="170" height="35" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="580" y="331" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">Fraud Detection</text>
+  <text x="580" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">ML-based scoring</text>
+
+  <rect x="680" y="313" width="175" height="35" rx="4" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+  <text x="767" y="331" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">Audit Logging</text>
+  <text x="767" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Immutable trail</text>
+
+  <!-- Webhooks -->
+  <rect x="30" y="390" width="420" height="130" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="240" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0c4a6e">Webhook Event Processing</text>
+
+  <rect x="50" y="440" width="380" height="28" rx="4" fill="#ffffff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="240" y="458" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="normal" fill="#374151">Processor sends async events: payment.succeeded, payment.failed, charge.refunded</text>
+
+  <rect x="50" y="478" width="180" height="30" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="140" y="497" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#0c4a6e">Verify webhook signature</text>
+
+  <rect x="250" y="478" width="180" height="30" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="340" y="497" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#0c4a6e">Update payment state</text>
+
+  <rect x="50" y="515" width="180" height="30" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="140" y="534" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#0c4a6e">Trigger downstream actions</text>
+
+  <rect x="250" y="515" width="180" height="30" rx="4" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="340" y="534" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#0c4a6e">Handle duplicate events</text>
+
+  <!-- Key Metrics -->
+  <rect x="480" y="390" width="390" height="130" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="675" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Payment Processing Metrics</text>
+
+  <rect x="495" y="440" width="170" height="25" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="580" y="457" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Authorization rate: &#62; 95%</text>
+
+  <rect x="680" y="440" width="175" height="25" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="767" y="457" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Fraud rate: &#60; 0.1%</text>
+
+  <rect x="495" y="475" width="170" height="25" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="580" y="492" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">p99 latency: &#60; 5 seconds</text>
+
+  <rect x="680" y="475" width="175" height="25" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="767" y="492" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Chargeback rate: &#60; 0.5%</text>
+
+  <!-- Arrows -->
+  <line x1="210" y1="105" x2="240" y2="105" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="420" y1="105" x2="450" y2="105" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="650" y1="105" x2="680" y2="105" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>

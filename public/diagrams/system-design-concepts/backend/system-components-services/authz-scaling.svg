@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="550" viewBox="0 0 900 550">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="550" fill="#ffffff"/>
+  <rect x="0" y="0" width="900" height="55" fill="#f9fafb" rx="0"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Scaling Authorization Services</text>
+
+  <!-- Left: Performance Tiers -->
+  <rect x="30" y="80" width="400" height="440" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="230" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#111827">Decision Latency Tiers</text>
+
+  <rect x="55" y="130" width="350" height="85" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="230" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#166534">Tier 1: Local Cache (1-5 ms)</text>
+  <text x="230" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Gateway-level cache of frequent decisions</text>
+  <text x="230" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">TTL: 30s-2min. For: listing feeds, viewing profiles</text>
+  <text x="230" y="209" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Risk: Low. Staleness tolerated for read-heavy paths.</text>
+
+  <rect x="55" y="230" width="350" height="85" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="230" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#78350f">Tier 2: Local Policy Bundle (5-15 ms)</text>
+  <text x="230" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Service carries compiled policy logic (WASM/SDK)</text>
+  <text x="230" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Entitlements cached, refreshed on write events</text>
+  <text x="230" y="309" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Risk: Medium. Staleness bounded by event propagation.</text>
+
+  <rect x="55" y="330" width="350" height="85" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="230" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#991b1b">Tier 3: Central Policy Engine (20-50 ms)</text>
+  <text x="230" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">RPC to centralized policy engine for sensitive actions</text>
+  <text x="230" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Fresh entitlements, full audit trail, no caching</text>
+  <text x="230" y="409" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Risk: High. Admin actions, exports, billing, deletions.</text>
+
+  <rect x="55" y="430" width="350" height="70" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="230" y="455" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#3730a3">Key Design Rule</text>
+  <text x="230" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Classify actions by risk. Route to appropriate tier.</text>
+  <text x="230" y="492" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Never cache decisions for high-risk actions.</text>
+
+  <!-- Right: Scaling Patterns -->
+  <rect x="460" y="80" width="410" height="440" rx="10" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="665" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#111827">Scaling Patterns</text>
+
+  <rect x="485" y="130" width="360" height="95" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="665" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#374151">Pattern 1: Policy Bundle Distribution</text>
+  <text x="665" y="177" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Compile policies to WASM or native SDK bundles.</text>
+  <text x="665" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Distribute via CDN or pub/sub to services.</text>
+  <text x="665" y="213" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Services evaluate locally, no RPC overhead.</text>
+  <text x="665" y="231" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Challenge: version consistency, rollback safety.</text>
+
+  <rect x="485" y="245" width="360" height="95" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="665" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#374151">Pattern 2: Entitlement Graph Replication</text>
+  <text x="665" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Replicate role/relationship graphs to edge caches.</text>
+  <text x="665" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Use consistent hashing for sharding by tenant.</text>
+  <text x="665" y="328" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Propagate writes via event log (Kafka/PubSub).</text>
+  <text x="665" y="346" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Challenge: eventual consistency windows, conflict resolution.</text>
+
+  <rect x="485" y="360" width="360" height="95" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="665" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#374151">Pattern 3: Decision Log Fan-Out</text>
+  <text x="665" y="407" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Stream decisions asynchronously to audit systems.</text>
+  <text x="665" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">Use buffered batch writes to avoid blocking the</text>
+  <text x="665" y="443" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">decision path. Separate concerns: fast decision,</text>
+  <text x="665" y="461" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#6b7280">async logging. Loss of audit log must not block authz.</text>
+
+  <rect x="485" y="475" width="360" height="35" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="665" y="497" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#0c4a6e">Target: 99.99% decision availability, P99 &#060; 50ms</text>
+</svg>

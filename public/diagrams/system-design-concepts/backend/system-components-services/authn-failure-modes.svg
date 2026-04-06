@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#ffffff"/>
+  <rect x="0" y="0" width="900" height="55" fill="#f9fafb" rx="0"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#111827">Authentication Failure Modes</text>
+
+  <!-- Failure Mode 1: Login Storm -->
+  <rect x="30" y="80" width="400" height="120" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="230" y="108" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#991b1b">1. Login / Refresh Storm</text>
+  <text x="230" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Deploy or key rotation causes mass re-authentication</text>
+  <rect x="55" y="145" width="350" height="40" rx="6" fill="#ffffff" stroke="#dc2626" stroke-width="1"/>
+  <text x="230" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Mitigation: Stagger TTLs with jitter, backoff on refresh, avoid synchronized expiry</text>
+
+  <!-- Failure Mode 2: Key Rotation -->
+  <rect x="470" y="80" width="400" height="120" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="670" y="108" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#991b1b">2. Key Rotation Failure</text>
+  <text x="670" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Downstream services reject new keys or expire old keys too early</text>
+  <rect x="495" y="145" width="350" height="40" rx="6" fill="#ffffff" stroke="#dc2626" stroke-width="1"/>
+  <text x="670" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Mitigation: Staged rotation with overlap, well-defined JWKS discovery endpoint</text>
+
+  <!-- Failure Mode 3: Identity Store -->
+  <rect x="30" y="220" width="400" height="120" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="230" y="248" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#854d0e">3. Identity Store Degradation</text>
+  <text x="230" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Database latency or connection pool exhaustion slows all logins</text>
+  <rect x="55" y="285" width="350" height="40" rx="6" fill="#ffffff" stroke="#eab308" stroke-width="1"/>
+  <text x="230" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#854d0e">Mitigation: Connection pooling, read replicas, circuit breaker, fail to cached tokens</text>
+
+  <!-- Failure Mode 4: Clock Skew -->
+  <rect x="470" y="220" width="400" height="120" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="670" y="248" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#854d0e">4. Clock Skew &amp; TTL Edge Cases</text>
+  <text x="670" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">NTP drift causes token validity disagreements across regions</text>
+  <rect x="495" y="285" width="350" height="40" rx="6" fill="#ffffff" stroke="#eab308" stroke-width="1"/>
+  <text x="670" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#854d0e">Mitigation: NTP sync, conservative leeway (5min), monitor region-correlated failures</text>
+
+  <!-- Failure Mode 5: MFA Provider -->
+  <rect x="30" y="360" width="400" height="120" rx="10" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="230" y="388" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#9a3412">5. MFA Provider Outage</text>
+  <text x="230" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">SMS/TOTP/Push provider becomes unavailable during MFA challenge</text>
+  <rect x="55" y="425" width="350" height="40" rx="6" fill="#ffffff" stroke="#f97316" stroke-width="1"/>
+  <text x="230" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#9a3412">Mitigation: Multiple MFA providers, fallback to TOTP, backup codes, graceful degradation</text>
+
+  <!-- Failure Mode 6: Credential Stuffing -->
+  <rect x="470" y="360" width="400" height="120" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="670" y="388" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#166534">6. Credential Stuffing Attack</text>
+  <text x="670" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#6b7280">Distributed botnet attempts leaked password combinations at scale</text>
+  <rect x="495" y="425" width="350" height="40" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1"/>
+  <text x="670" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534">Mitigation: Rate limits, CAPTCHA, IP reputation, breached password detection, MFA step-up</text>
+</svg>
