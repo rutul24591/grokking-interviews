@@ -1,0 +1,68 @@
+/**
+ * Shimmer animation for loading skeleton placeholders.
+ *
+ * This CSS defines a keyframe animation that sweeps a light gradient band
+ * across the element background, creating the characteristic "shimmer"
+ * loading effect.
+ *
+ * The animation runs on the compositor thread for smooth 60fps performance.
+ * It respects the `prefers-reduced-motion` media query to disable animation
+ * for users who prefer reduced motion.
+ *
+ * Import this file in your app entry point (e.g., app/globals.css or
+ * app/layout.tsx) to make the `animate-shimmer` class available.
+ *
+ * Usage:
+ *   Apply the `animate-shimmer` class to any skeleton element.
+ *
+ *   <div className="animate-shimmer h-4 w-full rounded-md" />
+ */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    #e5e7eb 0%,
+    #f3f4f6 50%,
+    #e5e7eb 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+  will-change: background-position;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      #374151 0%,
+      #4b5563 50%,
+      #374151 100%
+    );
+    background-size: 200% 100%;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer {
+    animation: none;
+    background: #e5e7eb;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (prefers-color-scheme: dark) {
+  .animate-shimmer {
+    animation: none;
+    background: #374151;
+  }
+}

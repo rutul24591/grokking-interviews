@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" fill="none" font-family="system-ui, sans-serif">
+  <rect width="700" height="260" fill="transparent"/>
+
+  <rect x="30" y="90" width="130" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="95" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">User Click/Hover</text>
+  <text x="50" y="148" font-size="11" fill="#3b82f6">mouse / keyboard</text>
+
+  <line x1="160" y1="130" x2="240" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="240" y="70" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="340" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Rating Store</text>
+  <text x="260" y="125" font-size="11" fill="#92400e">• value: number (0-5)</text>
+  <text x="260" y="145" font-size="11" fill="#92400e">• hoverValue: number | null</text>
+  <text x="260" y="165" font-size="11" fill="#92400e">• maxStars: number</text>
+  <text x="260" y="190" font-size="10" fill="#b45309">setValue, setHover, clearHover</text>
+
+  <line x1="440" y1="130" x2="520" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="520" y="80" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="600" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Star Renderer</text>
+  <text x="540" y="135" font-size="11" fill="#166534">• filled / half / empty</text>
+  <text x="540" y="155" font-size="11" fill="#166534">• clip-path for half-fill</text>
+  <text x="540" y="175" font-size="10" fill="#15803d">keyboard + ARIA slider</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+</svg>

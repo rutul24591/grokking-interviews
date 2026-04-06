@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" fill="none" font-family="system-ui, sans-serif">
+  <rect width="700" height="300" fill="transparent"/>
+
+  <rect x="30" y="110" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="100" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Cmd+K Trigger</text>
+  <text x="50" y="168" font-size="11" fill="#3b82f6">keyboard shortcut</text>
+
+  <line x1="170" y1="150" x2="250" y2="150" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="250" y="70" width="200" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Command Palette Store</text>
+  <text x="270" y="125" font-size="11" fill="#92400e">• isOpen: boolean</text>
+  <text x="270" y="145" font-size="11" fill="#92400e">• query: string</text>
+  <text x="270" y="165" font-size="11" fill="#92400e">• results: CommandResult[]</text>
+  <text x="270" y="185" font-size="11" fill="#92400e">• highlightIdx: number</text>
+  <text x="270" y="205" font-size="11" fill="#92400e">• recent: Command[]</text>
+  <text x="270" y="230" font-size="10" fill="#b45309">open, close, execute, search</text>
+
+  <line x1="450" y1="150" x2="530" y2="150" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="530" y="90" width="150" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="605" y="120" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Fuzzy Matcher</text>
+  <text x="550" y="145" font-size="11" fill="#166534">• exact → prefix → fuzzy</text>
+  <text x="550" y="165" font-size="11" fill="#166534">• scoring tiers</text>
+  <text x="550" y="185" font-size="11" fill="#166534">• grouped results</text>
+  <text x="550" y="210" font-size="10" fill="#15803d">Portal + focus trap</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+</svg>

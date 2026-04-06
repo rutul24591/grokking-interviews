@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" fill="none" font-family="system-ui, sans-serif">
+  <rect width="700" height="260" fill="transparent"/>
+
+  <rect x="30" y="90" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="100" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Color Selection</text>
+  <text x="50" y="148" font-size="11" fill="#3b82f6">HSV area / sliders</text>
+
+  <line x1="170" y1="130" x2="250" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="250" y="70" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Color Picker Store</text>
+  <text x="270" y="125" font-size="11" fill="#92400e">• hsv: { h, s, v, a }</text>
+  <text x="270" y="145" font-size="11" fill="#92400e">• palettes: string[]</text>
+  <text x="270" y="165" font-size="11" fill="#92400e">• bgContrast: string</text>
+  <text x="270" y="190" font-size="10" fill="#b45309">setHSV, savePalette</text>
+
+  <line x1="450" y1="130" x2="530" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="530" y="80" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="605" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Converters + Contrast</text>
+  <text x="550" y="135" font-size="11" fill="#166534">• HSV ↔ RGB ↔ Hex</text>
+  <text x="550" y="155" font-size="11" fill="#166534">• WCAG ratio check</text>
+  <text x="550" y="175" font-size="10" fill="#15803d">AA/AAA badges</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+</svg>

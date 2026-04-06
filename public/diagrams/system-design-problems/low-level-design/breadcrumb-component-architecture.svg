@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 240" fill="none" font-family="system-ui, sans-serif">
+  <rect width="700" height="240" fill="transparent"/>
+
+  <rect x="30" y="80" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="100" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Route Path</text>
+  <text x="50" y="138" font-size="11" fill="#3b82f6">/products/123/reviews</text>
+
+  <line x1="170" y1="120" x2="250" y2="120" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="250" y="60" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="350" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Breadcrumb Generator</text>
+  <text x="270" y="115" font-size="11" fill="#92400e">• split path → segments</text>
+  <text x="270" y="135" font-size="11" fill="#92400e">• slug → label conversion</text>
+  <text x="270" y="155" font-size="11" fill="#92400e">• manual label overrides</text>
+  <text x="270" y="180" font-size="10" fill="#b45309">truncation (ellipsis)</text>
+
+  <line x1="450" y1="120" x2="530" y2="120" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="530" y="70" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="605" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Breadcrumb Renderer</text>
+  <text x="550" y="125" font-size="11" fill="#166534">• nav + aria-label</text>
+  <text x="550" y="145" font-size="11" fill="#166534">• separators</text>
+  <text x="550" y="165" font-size="10" fill="#15803d">JSON-LD injection</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" fill="none" font-family="system-ui, sans-serif">
+  <rect width="700" height="300" fill="transparent"/>
+
+  <!-- Trigger -->
+  <rect x="30" y="110" width="130" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="95" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Trigger</text>
+  <text x="50" y="170" font-size="11" fill="#3b82f6">click / keyboard</text>
+
+  <line x1="160" y1="150" x2="240" y2="150" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Store -->
+  <rect x="240" y="80" width="180" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="330" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Modal Store</text>
+  <text x="260" y="140" font-size="11" fill="#92400e">• modals: Modal[]</text>
+  <text x="260" y="160" font-size="11" fill="#92400e">• activeId: string | null</text>
+  <text x="260" y="180" font-size="11" fill="#92400e">• zStack: number[]</text>
+  <text x="260" y="205" font-size="10" fill="#b45309">open, close, confirm, reject</text>
+
+  <line x1="420" y1="150" x2="500" y2="150" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Container -->
+  <rect x="500" y="100" width="170" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="585" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">ModalContainer</text>
+  <text x="520" y="158" font-size="11" fill="#166534">• Portal to body</text>
+  <text x="520" y="178" font-size="11" fill="#166534">• Scroll lock</text>
+  <text x="520" y="198" font-size="11" fill="#166534">• Escape handler</text>
+
+  <!-- Sub-components -->
+  <path d="M 585 200 Q 585 240 500 240" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrowhead)"/>
+  <path d="M 585 200 Q 585 240 585 240" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrowhead)"/>
+  <path d="M 585 200 Q 585 240 670 240" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrowhead)"/>
+
+  <rect x="440" y="240" width="120" height="40" rx="6" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+  <text x="500" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="#6b21a8">Backdrop</text>
+
+  <rect x="560" y="240" width="120" height="40" rx="6" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+  <text x="620" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="#6b21a8">Modal Panel</text>
+
+  <rect x="680" y="240" width="0" height="0" rx="0" fill="transparent"/>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+</svg>
