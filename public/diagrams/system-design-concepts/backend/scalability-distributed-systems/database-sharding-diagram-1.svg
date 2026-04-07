@@ -1,11 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Database Sharding Diagram 1</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Components</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Flow</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Data</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="system-ui, sans-serif">
+  <title>Database sharding architecture showing monolithic database partitioned into independent shards</title>
+
+  <rect width="900" height="520" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Database Sharding Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#64748b">How a monolithic database is partitioned into independent shards</text>
+  
+  <!-- BEFORE: Single Monolithic Database -->
+  <text x="225" y="95" text-anchor="middle" font-size="15" font-weight="700" fill="#dc2626">Monolithic Database</text>
+  <rect x="80" y="110" width="290" height="200" rx="12" fill="#dc2626" opacity="0.06" stroke="#dc2626" stroke-width="2"/>
+  
+  <!-- Database cylinder -->
+  <ellipse cx="225" cy="165" rx="100" ry="30" fill="#64748b" opacity="0.15" stroke="#64748b" stroke-width="1.5"/>
+  <rect x="125" y="165" width="200" height="100" fill="#64748b" opacity="0.15" stroke="#64748b" stroke-width="1.5"/>
+  <ellipse cx="225" cy="265" rx="100" ry="30" fill="#dc2626" opacity="0.06" stroke="#64748b" stroke-width="1.5"/>
+  <text x="225" y="205" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Single DB</text>
+  <text x="225" y="225" text-anchor="middle" font-size="11" fill="#64748b">All tables + indexes</text>
+  
+  <!-- Bottleneck indicators -->
+  <text x="225" y="345" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">&#9888; Single write bottleneck</text>
+  <text x="225" y="365" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">&#9888; Vertical scaling limit</text>
+  <text x="225" y="385" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">&#9888; Index size grows unbounded</text>
+  
+  <!-- Arrow -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <path d="M 400 235 L 470 235" fill="none" stroke="#4f46e5" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  
+  <!-- AFTER: Sharded Databases -->
+  <text x="675" y="95" text-anchor="middle" font-size="15" font-weight="700" fill="#16a34a">Sharded Database</text>
+  
+  <!-- Shard Router -->
+  <rect x="540" y="110" width="270" height="50" rx="8" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="2"/>
+  <text x="675" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#4f46e5">Shard Router / Lookup Service</text>
+  <text x="675" y="148" text-anchor="middle" font-size="10" fill="#64748b">shard_key → shard_id mapping</text>
+  
+  <!-- Shard 1 -->
+  <rect x="490" y="180" width="100" height="80" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="2"/>
+  <ellipse cx="540" cy="200" rx="35" ry="10" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="1"/>
+  <rect x="505" y="200" width="70" height="40" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="1"/>
+  <ellipse cx="540" cy="240" rx="35" ry="10" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="1"/>
+  <text x="540" y="225" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">Shard 0</text>
+  <text x="490" y="280" text-anchor="middle" font-size="10" fill="#64748b">user_id: A-F</text>
+  
+  <!-- Shard 2 -->
+  <rect x="625" y="180" width="100" height="80" rx="8" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="2"/>
+  <ellipse cx="675" cy="200" rx="35" ry="10" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1"/>
+  <rect x="640" y="200" width="70" height="40" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1"/>
+  <ellipse cx="675" cy="240" rx="35" ry="10" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="1"/>
+  <text x="675" y="225" text-anchor="middle" font-size="10" font-weight="700" fill="#16a34a">Shard 1</text>
+  <text x="625" y="280" text-anchor="middle" font-size="10" fill="#64748b">user_id: G-M</text>
+  
+  <!-- Shard 3 -->
+  <rect x="760" y="180" width="100" height="80" rx="8" fill="#d97706" opacity="0.06" stroke="#d97706" stroke-width="2"/>
+  <ellipse cx="810" cy="200" rx="35" ry="10" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="1"/>
+  <rect x="775" y="200" width="70" height="40" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="1"/>
+  <ellipse cx="810" cy="240" rx="35" ry="10" fill="#d97706" opacity="0.06" stroke="#d97706" stroke-width="1"/>
+  <text x="810" y="225" text-anchor="middle" font-size="10" font-weight="700" fill="#d97706">Shard 2</text>
+  <text x="760" y="280" text-anchor="middle" font-size="10" fill="#64748b">user_id: N-Z</text>
+  
+  <!-- Routing arrows -->
+  <path d="M 675 160 L 540 180" fill="none" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <path d="M 675 160 L 675 180" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <path d="M 675 160 L 810 180" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 2"/>
+  
+  <!-- Benefits -->
+  <rect x="490" y="320" width="370" height="160" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="505" y="348" font-size="13" font-weight="700" fill="#16a34a">Benefits of Sharding:</text>
+  <text x="505" y="375" font-size="11" fill="#1a1822">&#9989; Horizontal write scaling - each shard handles its own writes</text>
+  <text x="505" y="398" font-size="11" fill="#1a1822">&#9989; Bounded index size - each shard maintains smaller indexes</text>
+  <text x="505" y="421" font-size="11" fill="#1a1822">&#9989; Fault isolation - one shard down does not affect others</text>
+  <text x="505" y="444" font-size="11" fill="#1a1822">&#9989; Independent scaling - add shards for hot partitions only</text>
 </svg>

@@ -1,562 +1,116 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="182.09055"
-   height="225.38977"
-   id="svg2"
-   version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="Master-Slave-Replication.svg">
-  <defs
-     id="defs4" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="195.43253"
-     inkscape:cy="103.33162"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:snap-bbox="false"
-     inkscape:object-paths="true"
-     inkscape:object-nodes="true"
-     units="mm"
-     fit-margin-top="2"
-     fit-margin-right="2"
-     fit-margin-bottom="2"
-     fit-margin-left="2">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2985"
-       empspacing="5"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       spacingx="1mm"
-       units="mm"
-       spacingy="1mm"
-       originx="-21.324306mm"
-       originy="-138.85889mm" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata7">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Ebene 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(-75.558566,-334.95272)">
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3803"
-       width="49.6063"
-       height="49.6063"
-       x="148.81889"
-       y="357.87399" />
-    <rect
-       style="fill:#ff9569;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769"
-       width="14.173223"
-       height="14.173234"
-       x="155.90552"
-       y="364.9606" />
-    <rect
-       style="fill:#b4ff69;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-1"
-       width="14.173223"
-       height="14.173234"
-       x="155.90552"
-       y="386.22046" />
-    <rect
-       style="fill:#ffff69;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-7"
-       width="14.173223"
-       height="14.173234"
-       x="177.16536"
-       y="386.22046" />
-    <rect
-       style="fill:#82b4e6;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-4"
-       width="14.173223"
-       height="14.173234"
-       x="177.16536"
-       y="364.9606" />
-    <path
-       style="fill:none;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 148.8189,361.4173 -42.51969,0"
-       id="path3805"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 148.8189,375.59053 -42.51969,0"
-       id="path3807"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 148.8189,389.76375 -42.51969,0"
-       id="path3809"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 148.8189,403.93698 -42.51969,0"
-       id="path3811"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#ff9569;fill-opacity:1;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 138.18898,357.87399 0,7.08661 10.62992,-3.5433 z"
-       id="path3815"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#82b4e6;fill-opacity:1;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 138.18898,372.04722 0,7.08661 10.62992,-3.5433 z"
-       id="path3817"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#b4ff69;fill-opacity:1;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 138.18898,386.22045 0,7.08661 10.62992,-3.54331 z"
-       id="path3819"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#ffff69;fill-opacity:1;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 138.18898,400.39368 0,7.08661 10.62992,-3.54331 z"
-       id="path3821"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#ff9569;fill-opacity:1;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 116.92913,357.87399 0,7.08661 -10.62992,-3.5433 z"
-       id="path3815-0"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#82b4e6;fill-opacity:1;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 116.92913,372.04722 0,7.08661 -10.62992,-3.5433 z"
-       id="path3817-9"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#b4ff69;fill-opacity:1;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 116.92913,386.22045 0,7.08661 -10.62992,-3.54331 z"
-       id="path3819-4"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:#ffff69;fill-opacity:1;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 116.92913,400.39368 0,7.08661 -10.62992,-3.54331 z"
-       id="path3821-8"
-       inkscape:connector-curvature="0" />
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3803-1"
-       width="49.6063"
-       height="49.6063"
-       x="148.81889"
-       y="432.28345" />
-    <rect
-       style="fill:#ff9569;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-74"
-       width="14.173223"
-       height="14.173234"
-       x="155.90552"
-       y="439.37006" />
-    <rect
-       style="fill:#b4ff69;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-1-0"
-       width="14.173223"
-       height="14.173234"
-       x="155.90552"
-       y="460.62991" />
-    <rect
-       style="fill:#ffff69;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-7-9"
-       width="14.173223"
-       height="14.173234"
-       x="177.16536"
-       y="460.62991" />
-    <rect
-       style="fill:#82b4e6;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-4-4"
-       width="14.173223"
-       height="14.173234"
-       x="177.16536"
-       y="439.37006" />
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3803-1-8"
-       width="49.6063"
-       height="49.6063"
-       x="148.81889"
-       y="503.14957" />
-    <rect
-       style="fill:#ff9569;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-74-8"
-       width="14.173223"
-       height="14.173234"
-       x="155.90552"
-       y="510.23618" />
-    <rect
-       style="fill:#b4ff69;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-1-0-2"
-       width="14.173223"
-       height="14.173234"
-       x="155.90552"
-       y="531.49597" />
-    <rect
-       style="fill:#ffff69;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-7-9-4"
-       width="14.173223"
-       height="14.173234"
-       x="177.16536"
-       y="531.49597" />
-    <rect
-       style="fill:#82b4e6;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3769-4-4-5"
-       width="14.173223"
-       height="14.173234"
-       x="177.16536"
-       y="510.23618" />
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="173.62204"
-       y="350.78738"
-       id="text3828"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan3830"
-         x="173.62204"
-         y="350.78738">Master</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="173.62204"
-       y="428.74014"
-       id="text3832"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan3834"
-         x="173.62204"
-         y="428.74014">Slave</tspan></text>
-    <g
-       id="g3916"
-       transform="translate(3.0637727e-6,3.5432996)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3805-5"
-         d="m 148.8189,432.28345 -42.51969,0"
-         style="fill:none;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3815-0-6"
-         d="m 116.92913,428.74014 0,7.08661 -10.62992,-3.5433 z"
-         style="fill:#ff9569;fill-opacity:1;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3923"
-       transform="translate(3.0637727e-6,3.5432996)">
-      <g
-         id="g3920">
-        <path
-           style="fill:none;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           d="m 148.8189,446.45668 -42.51969,0"
-           id="path3807-1"
-           inkscape:connector-curvature="0" />
-      </g>
-      <path
-         inkscape:connector-curvature="0"
-         id="path3817-9-1"
-         d="m 116.92913,442.91337 0,7.08661 -10.62992,-3.5433 z"
-         style="fill:#82b4e6;fill-opacity:1;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3928"
-       transform="translate(3.0637727e-6,3.5432996)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3809-7"
-         d="m 148.8189,460.6299 -42.51969,0"
-         style="fill:none;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3819-4-4"
-         d="m 116.92913,457.0866 0,7.08661 -10.62992,-3.54331 z"
-         style="fill:#b4ff69;fill-opacity:1;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3935"
-       transform="translate(3.0637727e-6,3.5432996)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3811-1"
-         d="m 148.8189,474.80313 -42.51969,0"
-         style="fill:none;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3821-8-2"
-         d="m 116.92913,471.25983 0,7.08661 -10.62992,-3.54331 z"
-         style="fill:#ffff69;fill-opacity:1;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3939"
-       transform="translate(7.2689508e-6,17.716533)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3805-3"
-         d="m 148.8189,488.97636 -42.5197,0"
-         style="fill:none;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3815-0-8"
-         d="m 116.92913,485.43305 0,7.08661 -10.62993,-3.5433 z"
-         style="fill:#ff9569;fill-opacity:1;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3943"
-       transform="translate(7.2689508e-6,17.716533)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3807-2"
-         d="m 148.8189,503.14959 -42.5197,0"
-         style="fill:none;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3817-9-9"
-         d="m 116.92913,499.60628 0,7.08661 -10.62993,-3.5433 z"
-         style="fill:#82b4e6;fill-opacity:1;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3947"
-       transform="translate(7.2689508e-6,17.716533)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3809-2"
-         d="m 148.8189,517.32281 -42.5197,0"
-         style="fill:none;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3819-4-2"
-         d="m 116.92913,513.77951 0,7.08661 -10.62993,-3.54331 z"
-         style="fill:#b4ff69;fill-opacity:1;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3951"
-       transform="translate(7.2689508e-6,17.716533)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3811-16"
-         d="m 148.8189,531.49604 -42.5197,0"
-         style="fill:none;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3821-8-7"
-         d="m 116.92913,527.95274 0,7.08661 -10.62993,-3.54331 z"
-         style="fill:#ffff69;fill-opacity:1;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g4066"
-       transform="translate(3.0637727e-6,3.5432996)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3805-5-5"
-         d="m 198.4252,432.28345 17.71653,-1e-5 0,-74.40944 -17.71653,0"
-         style="fill:none;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         sodipodi:nodetypes="cccc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3815-0-6-4"
-         d="m 209.05512,428.74014 0,7.08661 -10.62992,-3.5433 z"
-         style="fill:#ff9569;fill-opacity:1;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g4070"
-       transform="translate(3.0637727e-6,3.5432996)">
-      <g
-         transform="translate(92.125988,-4.5367869e-7)"
-         id="g3920-1">
-        <path
-           style="fill:none;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           d="m 106.29921,446.45668 24.80315,-1e-5 0,-74.40944 -24.80315,0"
-           id="path3807-1-2"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cccc" />
-      </g>
-      <path
-         inkscape:connector-curvature="0"
-         id="path3817-9-1-3"
-         d="m 209.05512,442.91337 0,7.08661 -10.62992,-3.5433 z"
-         style="fill:#82b4e6;fill-opacity:1;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g4075"
-       transform="translate(3.0637727e-6,3.5432996)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3809-7-4"
-         d="m 198.4252,460.6299 31.88976,0 0,-74.40944 -31.88976,0"
-         style="fill:none;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         sodipodi:nodetypes="cccc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3819-4-4-1"
-         d="m 209.05512,457.0866 0,7.08661 -10.62992,-3.54331 z"
-         style="fill:#b4ff69;fill-opacity:1;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g4079"
-       transform="translate(3.0637727e-6,3.5432996)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3811-1-3"
-         d="m 198.4252,474.80313 38.97638,0 -1e-5,-74.40944 -38.97637,0"
-         style="fill:none;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         sodipodi:nodetypes="cccc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3821-8-2-8"
-         d="m 209.05512,471.25983 0,7.08661 -10.62992,-3.54331 z"
-         style="fill:#ffff69;fill-opacity:1;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="457.08658"
-       y="-244.48819"
-       id="text4054"
-       sodipodi:linespacing="125%"
-       transform="matrix(0,1,-1,0,0,0)"><tspan
-         sodipodi:role="line"
-         id="tspan4056"
-         x="457.08658"
-         y="-244.48819"
-         style="font-size:8px">Replikation</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="-382.67715"
-       y="88.58268"
-       id="text4058"
-       sodipodi:linespacing="125%"
-       transform="matrix(0,-1,1,0,0,0)"><tspan
-         sodipodi:role="line"
-         id="tspan4060"
-         x="-382.67715"
-         y="88.58268"
-         style="font-size:8px">Lesen &amp;</tspan><tspan
-         sodipodi:role="line"
-         x="-382.67715"
-         y="98.58268"
-         style="font-size:8px"
-         id="tspan4170">Schreiben</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="-488.97635"
-       y="99.212601"
-       id="text4062"
-       sodipodi:linespacing="125%"
-       transform="matrix(0,-1,1,0,0,0)"><tspan
-         sodipodi:role="line"
-         id="tspan4064"
-         x="-488.97635"
-         y="99.212601"
-         style="font-size:8px">nur Lesezugriff</tspan></text>
-    <g
-       transform="translate(5.379187e-6,74.409442)"
-       id="g4066-0">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3805-5-5-2"
-         d="m 198.4252,432.28345 17.71653,-1e-5 0,-70.86614"
-         style="fill:none;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         sodipodi:nodetypes="ccc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3815-0-6-4-8"
-         d="m 209.05512,428.74014 0,7.08661 -10.62992,-3.5433 z"
-         style="fill:#ff9569;fill-opacity:1;stroke:#ff9569;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       transform="translate(5.379187e-6,74.409442)"
-       id="g4070-6">
-      <g
-         transform="translate(92.125988,-4.5367869e-7)"
-         id="g3920-1-0">
-        <path
-           style="fill:none;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           d="m 106.29921,446.45668 24.80315,-1e-5 0,-70.86614"
-           id="path3807-1-2-2"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="ccc" />
-      </g>
-      <path
-         inkscape:connector-curvature="0"
-         id="path3817-9-1-3-4"
-         d="m 209.05512,442.91337 0,7.08661 -10.62992,-3.5433 z"
-         style="fill:#82b4e6;fill-opacity:1;stroke:#82b4e6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       transform="translate(5.379187e-6,74.409442)"
-       id="g4075-8">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3809-7-4-6"
-         d="m 198.4252,460.6299 31.88976,0 0,-70.86614"
-         style="fill:none;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         sodipodi:nodetypes="ccc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3819-4-4-1-5"
-         d="m 209.05512,457.0866 0,7.08661 -10.62992,-3.54331 z"
-         style="fill:#b4ff69;fill-opacity:1;stroke:#b4ff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       transform="translate(5.379187e-6,74.409442)"
-       id="g4079-0">
-      <path
-         inkscape:connector-curvature="0"
-         id="path3811-1-3-9"
-         d="m 198.4252,474.80313 38.97638,0 -1e-5,-70.86614"
-         style="fill:none;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         sodipodi:nodetypes="ccc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3821-8-2-8-0"
-         d="m 209.05512,471.25983 0,7.08661 -10.62992,-3.54331 z"
-         style="fill:#ffff69;fill-opacity:1;stroke:#ffff69;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       x="173.62204"
-       y="499.60626"
-       id="text3832-0"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan3834-6"
-         x="173.62204"
-         y="499.60626">Slave</tspan></text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="100%" height="100%" font-family="system-ui, sans-serif">
+  <title>Synchronous vs Asynchronous Replication comparison showing write flow and consistency properties</title>
+  <rect width="900" height="520" fill="#f3f1f8" rx="12"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" font-family="system-ui, sans-serif" font-size="22" font-weight="bold" fill="#1a1822" text-anchor="middle">Synchronous vs Asynchronous Replication</text>
+  
+  <!-- ==================== SYNCHRONOUS SECTION ==================== -->
+  <rect x="20" y="55" width="860" height="220" rx="8" fill="#16a34a" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="85" font-family="system-ui, sans-serif" font-size="17" font-weight="bold" fill="#16a34a" text-anchor="middle">Synchronous Replication</text>
+  
+  <!-- Client -->
+  <rect x="40" y="120" width="110" height="40" rx="6" fill="#2563eb" stroke="#60a5fa" stroke-width="1"/>
+  <text x="95" y="145" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">Client</text>
+  
+  <!-- Arrow: Client to Primary -->
+  <line x1="150" y1="140" x2="280" y2="140" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="215" y="130" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#1a1822" text-anchor="middle">1. Write</text>
+  
+  <!-- Primary -->
+  <rect x="280" y="115" width="130" height="50" rx="6" fill="#4f46e5" stroke="#818cf8" stroke-width="1"/>
+  <text x="345" y="145" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">Primary</text>
+  
+  <!-- Arrow: Primary to Replica 1 -->
+  <line x1="380" y1="140" x2="520" y2="140" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="450" y="130" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#1a1822" text-anchor="middle">2. Replicate</text>
+  
+  <!-- Replica 1 -->
+  <rect x="520" y="115" width="120" height="50" rx="6" fill="#4f46e5" opacity="0.08" stroke="#475569" stroke-width="1.5"/>
+  <text x="580" y="145" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1a1822" text-anchor="middle">Replica 1</text>
+  
+  <!-- Arrow: Primary to Replica 2 -->
+  <line x1="345" y1="165" x2="345" y2="220" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="360" y="200" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#1a1822" text-anchor="start">2. Replicate</text>
+  
+  <!-- Replica 2 -->
+  <rect x="285" y="220" width="120" height="40" rx="6" fill="#4f46e5" opacity="0.08" stroke="#475569" stroke-width="1.5"/>
+  <text x="345" y="245" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1a1822" text-anchor="middle">Replica 2</text>
+  
+  <!-- Acknowledgment arrows (dashed) -->
+  <line x1="520" y1="170" x2="380" y2="170" stroke="#16a34a" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>
+  <text x="450" y="188" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#16a34a" text-anchor="middle">3. ACK</text>
+  
+  <line x1="345" y1="220" x2="345" y2="165" stroke="#16a34a" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>
+  
+  <!-- Arrow: Primary back to Client (ACK) -->
+  <line x1="280" y1="155" x2="150" y2="155" stroke="#16a34a" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>
+  <text x="215" y="175" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#16a34a" text-anchor="middle">4. ACK to Client</text>
+  
+  <!-- Sync note -->
+  <rect x="660" y="100" width="200" height="150" rx="6" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="1"/>
+  <text x="675" y="128" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">Properties:</text>
+  <text x="675" y="152" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Write waits for</text>
+  <text x="675" y="168" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">all replicas</text>
+  <text x="675" y="192" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Strong consistency</text>
+  <text x="675" y="216" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Higher latency</text>
+  <text x="675" y="240" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">No data loss on fail</text>
+  
+  <!-- ==================== ASYNCHRONOUS SECTION ==================== -->
+  <rect x="20" y="290" width="860" height="220" rx="8" fill="#d97706" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="320" font-family="system-ui, sans-serif" font-size="17" font-weight="bold" fill="#d97706" text-anchor="middle">Asynchronous Replication</text>
+  
+  <!-- Client -->
+  <rect x="40" y="355" width="110" height="40" rx="6" fill="#2563eb" stroke="#60a5fa" stroke-width="1"/>
+  <text x="95" y="380" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">Client</text>
+  
+  <!-- Arrow: Client to Primary -->
+  <line x1="150" y1="375" x2="280" y2="375" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="215" y="365" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#1a1822" text-anchor="middle">1. Write</text>
+  
+  <!-- Primary -->
+  <rect x="280" y="350" width="130" height="50" rx="6" fill="#4f46e5" stroke="#818cf8" stroke-width="1"/>
+  <text x="345" y="380" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">Primary</text>
+  
+  <!-- Arrow: Primary to Replica 1 -->
+  <line x1="380" y1="375" x2="520" y2="375" stroke="#d97706" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowOrange)"/>
+  <text x="450" y="365" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#d97706" text-anchor="middle">later: Replicate</text>
+  
+  <!-- Replica 1 -->
+  <rect x="520" y="350" width="120" height="50" rx="6" fill="#d97706" opacity="0.08" stroke="#475569" stroke-width="1.5"/>
+  <text x="580" y="380" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1a1822" text-anchor="middle">Replica 1</text>
+  
+  <!-- Arrow: Primary to Replica 2 -->
+  <line x1="345" y1="400" x2="345" y2="455" stroke="#d97706" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowOrange)"/>
+  <text x="360" y="435" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#d97706" text-anchor="start">later: Replicate</text>
+  
+  <!-- Replica 2 -->
+  <rect x="285" y="455" width="120" height="40" rx="6" fill="#d97706" opacity="0.08" stroke="#475569" stroke-width="1.5"/>
+  <text x="345" y="480" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1a1822" text-anchor="middle">Replica 2</text>
+  
+  <!-- Immediate ACK arrow -->
+  <line x1="280" y1="390" x2="150" y2="390" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="215" y="410" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#16a34a" text-anchor="middle">2. Immediate ACK</text>
+  
+  <!-- Async note -->
+  <rect x="660" y="335" width="200" height="155" rx="6" fill="#d97706" opacity="0.06" stroke="#d97706" stroke-width="1"/>
+  <text x="675" y="363" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#d97706">Properties:</text>
+  <text x="675" y="387" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Write returns immediately</text>
+  <text x="675" y="411" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Eventual consistency</text>
+  <text x="675" y="435" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Lower latency</text>
+  <text x="675" y="459" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Risk of data loss on</text>
+  <text x="675" y="475" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">primary failure</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+  </defs>
 </svg>

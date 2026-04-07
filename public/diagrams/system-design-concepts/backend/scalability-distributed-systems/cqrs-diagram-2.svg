@@ -1,11 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">CQRS Diagram 2</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Control</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Coordination</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">State</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="system-ui, sans-serif">
+  <title>Read Model Projection Pipeline</title>
+  <rect width="900" height="520" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">Read Model Projection Pipeline</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">How domain events from the write side are projected into denormalized read models</text>
+
+  <!-- Event Stream at top -->
+  <rect x="30" y="80" width="840" height="50" rx="8" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Event Stream (Kafka / Event Store)</text>
+  <text x="450" y="118" text-anchor="middle" font-size="10" fill="#64748b">OrderCreated &#8594; ItemAdded &#8594; OrderConfirmed &#8594; OrderShipped</text>
+
+  <!-- Projection 1: Order Summary -->
+  <rect x="30" y="160" width="260" height="150" rx="8" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="2"/>
+  <text x="160" y="185" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca">Projection 1: Order Summary</text>
+
+  <!-- Subscribed events -->
+  <text x="50" y="210" font-size="10" fill="#64748b">Subscribes to:</text>
+  <text x="50" y="230" font-size="10" fill="#1a1822">  OrderCreated</text>
+  <text x="50" y="250" font-size="10" fill="#1a1822">  OrderConfirmed</text>
+  <text x="50" y="270" font-size="10" fill="#1a1822">  OrderShipped</text>
+
+  <!-- Output -->
+  <text x="50" y="295" font-size="10" fill="#64748b">Read model:</text>
+  <text x="50" y="315" font-size="10" fill="#15803d">  { order_id, status,</text>
+  <text x="50" y="335" font-size="10" fill="#15803d">    customer_name, total }</text>
+
+  <!-- Projection 2: Customer Dashboard -->
+  <rect x="320" y="160" width="260" height="150" rx="8" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="185" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">Projection 2: Customer Dashboard</text>
+
+  <text x="340" y="210" font-size="10" fill="#64748b">Subscribes to:</text>
+  <text x="340" y="230" font-size="10" fill="#15803d">  OrderCreated</text>
+  <text x="340" y="250" font-size="10" fill="#15803d">  OrderConfirmed</text>
+  <text x="340" y="270" font-size="10" fill="#15803d">  ItemAdded, ItemRemoved</text>
+
+  <text x="340" y="295" font-size="10" fill="#64748b">Read model:</text>
+  <text x="340" y="315" font-size="10" fill="#15803d">  { customer_id,</text>
+  <text x="340" y="335" font-size="10" fill="#15803d">    order_count, total_spent,</text>
+  <text x="340" y="355" font-size="10" fill="#15803d">    recent_orders[] }</text>
+
+  <!-- Projection 3: Analytics Aggregates -->
+  <rect x="610" y="160" width="260" height="150" rx="8" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="2"/>
+  <text x="740" y="185" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Projection 3: Analytics</text>
+
+  <text x="630" y="210" font-size="10" fill="#64748b">Subscribes to:</text>
+  <text x="630" y="230" font-size="10" fill="#1a1822">  ALL events</text>
+
+  <text x="630" y="255" font-size="10" fill="#64748b">Read model:</text>
+  <text x="630" y="275" font-size="10" fill="#15803d">  { daily_revenue,</text>
+  <text x="630" y="295" font-size="10" fill="#15803d">    avg_order_value,</text>
+  <text x="630" y="315" font-size="10" fill="#15803d">    top_products[],</text>
+  <text x="630" y="335" font-size="10" fill="#15803d">    conversion_rate }</text>
+
+  <!-- Arrows from event stream to projections -->
+  <path d="M 160 130 L 160 160" fill="none" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#purpleArrow)"/>
+  <path d="M 450 130 L 450 160" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#greenArrow)"/>
+  <path d="M 740 130 L 740 160" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#yellowArrow)"/>
+
+  <!-- Replay capability -->
+  <rect x="30" y="340" width="840" height="60" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="45" y="362" font-size="12" font-weight="bold" fill="#4338ca">Projection Replay Capability:</text>
+  <text x="45" y="385" font-size="11" fill="#64748b">When a new read model is needed, replay ALL events from the event stream through a new projection.</text>
+
+  <!-- Read databases below projections -->
+  <rect x="50" y="420" width="220" height="40" rx="6" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="1"/>
+  <text x="160" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="#4338ca">PostgreSQL (Order queries)</text>
+
+  <rect x="340" y="420" width="220" height="40" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">Elasticsearch (Search queries)</text>
+
+  <rect x="630" y="420" width="220" height="40" rx="6" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="1"/>
+  <text x="740" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">ClickHouse (Analytics queries)</text>
+
+  <!-- Arrows from projections to databases -->
+  <path d="M 160 310 L 160 420" fill="none" stroke="#4f46e5" stroke-width="1" stroke-dasharray="3 2"/>
+  <path d="M 450 310 L 450 420" fill="none" stroke="#16a34a" stroke-width="1" stroke-dasharray="3 2"/>
+  <path d="M 740 310 L 740 420" fill="none" stroke="#d97706" stroke-width="1" stroke-dasharray="3 2"/>
+
+  <defs>
+    <marker id="purpleArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="yellowArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,11 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Database Sharding Diagram 2</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Control</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Coordination</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">State</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="system-ui, sans-serif">
+  <title>Shard key selection strategies comparing range, hash, directory, and geo-based partitioning</title>
+
+  <rect width="900" height="520" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">Shard Key Selection Strategies</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Range, hash, directory, and geo-based partitioning compared</text>
+  
+  <!-- Strategy 1: Range-based -->
+  <rect x="30" y="80" width="410" height="190" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="2"/>
+  <text x="235" y="108" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Range-Based Partitioning</text>
+  
+  <!-- Range bars -->
+  <rect x="60" y="125" width="100" height="35" rx="4" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1"/>
+  <text x="110" y="147" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">A - F</text>
+  <rect x="170" y="125" width="100" height="35" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1"/>
+  <text x="220" y="147" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">G - M</text>
+  <rect x="280" y="125" width="100" height="35" rx="4" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1"/>
+  <text x="330" y="147" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">N - Z</text>
+  
+  <!-- Characteristics -->
+  <text x="50" y="185" font-size="10" fill="#64748b">+ Efficient range queries (WHERE name BETWEEN)</text>
+  <text x="50" y="205" font-size="10" fill="#64748b">+ Ordered data within each shard</text>
+  <text x="50" y="225" font-size="10" fill="#dc2626">- Hot spots on popular ranges (e.g., common names)</text>
+  <text x="50" y="245" font-size="10" fill="#dc2626">- Requires range splitting when shard grows</text>
+  <text x="50" y="265" font-size="10" fill="#64748b">Used by: MongoDB, HBase, Bigtable</text>
+  
+  <!-- Strategy 2: Hash-based -->
+  <rect x="460" y="80" width="410" height="190" rx="8" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="2"/>
+  <text x="665" y="108" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">Hash-Based Partitioning</text>
+  
+  <!-- Hash distribution dots -->
+  <circle cx="510" cy="145" r="5" fill="#4f46e5" opacity="0.7"/>
+  <circle cx="560" cy="145" r="5" fill="#16a34a" opacity="0.7"/>
+  <circle cx="610" cy="145" r="5" fill="#d97706" opacity="0.7"/>
+  <circle cx="660" cy="145" r="5" fill="#4f46e5" opacity="0.7"/>
+  <circle cx="710" cy="145" r="5" fill="#16a34a" opacity="0.7"/>
+  <circle cx="760" cy="145" r="5" fill="#d97706" opacity="0.7"/>
+  <circle cx="810" cy="145" r="5" fill="#4f46e5" opacity="0.7"/>
+  <circle cx="535" cy="165" r="5" fill="#16a34a" opacity="0.7"/>
+  <circle cx="585" cy="165" r="5" fill="#d97706" opacity="0.7"/>
+  <circle cx="635" cy="165" r="5" fill="#4f46e5" opacity="0.7"/>
+  <circle cx="685" cy="165" r="5" fill="#16a34a" opacity="0.7"/>
+  <circle cx="735" cy="165" r="5" fill="#d97706" opacity="0.7"/>
+  <circle cx="785" cy="165" r="5" fill="#4f46e5" opacity="0.7"/>
+  <text x="665" y="195" text-anchor="middle" font-size="10" fill="#64748b">hash(key) % N &#8594; shard_id</text>
+  
+  <!-- Characteristics -->
+  <text x="480" y="215" font-size="10" fill="#64748b">+ Uniform distribution - no hot spots</text>
+  <text x="480" y="235" font-size="10" fill="#64748b">+ Simple computation - O(1) lookup</text>
+  <text x="480" y="255" font-size="10" fill="#dc2626">- Range queries require fan-out to all shards</text>
+  <text x="480" y="275" font-size="10" fill="#dc2626">- Rebalancing moves most keys on N change</text>
+  
+  <!-- Strategy 3: Directory-based -->
+  <rect x="30" y="290" width="410" height="190" rx="8" fill="#d97706" opacity="0.06" stroke="#d97706" stroke-width="2"/>
+  <text x="235" y="318" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Directory-Based Partitioning</text>
+  
+  <!-- Lookup table visualization -->
+  <rect x="80" y="335" width="300" height="80" rx="6" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1.5"/>
+  <text x="230" y="355" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Lookup Table</text>
+  <text x="120" y="375" font-size="10" fill="#64748b">user:1001 &#8594; Shard 0</text>
+  <text x="120" y="395" font-size="10" fill="#64748b">user:1002 &#8594; Shard 2</text>
+  <text x="120" y="415" font-size="10" fill="#64748b">user:1003 &#8594; Shard 1</text>
+  <text x="290" y="375" font-size="10" fill="#64748b">user:1004 &#8594; Shard 0</text>
+  <text x="290" y="395" font-size="10" fill="#64748b">user:1005 &#8594; Shard 2</text>
+  <text x="290" y="415" font-size="10" fill="#64748b">user:1006 &#8594; Shard 1</text>
+  
+  <!-- Characteristics -->
+  <text x="50" y="445" font-size="10" fill="#64748b">+ Arbitrary shard assignment - full flexibility</text>
+  <text x="50" y="465" font-size="10" fill="#64748b">+ Easy rebalancing - update directory entry only</text>
+  <text x="50" y="485" font-size="10" fill="#dc2626">- Single point of failure - directory service</text>
+  
+  <!-- Strategy 4: Geo-based -->
+  <rect x="460" y="290" width="410" height="190" rx="8" fill="#dc2626" opacity="0.06" stroke="#dc2626" stroke-width="2"/>
+  <text x="665" y="318" text-anchor="middle" font-size="14" font-weight="bold" fill="#991b1b">Geographic Partitioning</text>
+  
+  <!-- Globe with regions -->
+  <circle cx="665" cy="390" r="50" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1.5"/>
+  <!-- North America -->
+  <path d="M 630 370 Q 640 360 655 365 Q 665 370 660 380 Q 650 385 630 370" fill="#4f46e5" opacity="0.7"/>
+  <!-- Europe -->
+  <path d="M 665 365 Q 675 360 685 370 Q 690 380 680 385 Q 670 380 665 365" fill="#16a34a" opacity="0.7"/>
+  <!-- Asia -->
+  <path d="M 690 375 Q 700 370 710 380 Q 715 390 705 395 Q 695 390 690 375" fill="#d97706" opacity="0.7"/>
+  
+  <text x="625" y="375" font-size="8" font-weight="bold" fill="#1a1822">US</text>
+  <text x="670" y="375" font-size="8" font-weight="bold" fill="#1a1822">EU</text>
+  <text x="700" y="388" font-size="8" font-weight="bold" fill="#1a1822">APAC</text>
+  
+  <!-- Characteristics -->
+  <text x="480" y="455" font-size="10" fill="#64748b">+ Data sovereignty compliance (GDPR, etc.)</text>
+  <text x="480" y="475" font-size="10" fill="#64748b">+ Low latency for regional users</text>
+  <text x="480" y="495" font-size="10" fill="#dc2626">- Cross-region queries are expensive</text>
 </svg>

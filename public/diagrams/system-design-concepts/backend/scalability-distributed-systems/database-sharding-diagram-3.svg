@@ -1,11 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Database Sharding Diagram 3</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Failure</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Mitigation</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Signals</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="system-ui, sans-serif">
+  <title>Cross-shard query patterns showing distributed query execution across independent shard boundaries</title>
+
+  <rect width="900" height="520" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">Cross-Shard Query Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">How distributed queries execute across independent shard boundaries</text>
+  
+  <!-- Three shards -->
+  <rect x="30" y="80" width="250" height="160" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="2"/>
+  <text x="155" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca">Shard 0</text>
+  <text x="50" y="130" font-size="10" fill="#64748b">Orders Table:</text>
+  <text x="50" y="150" font-size="10" fill="#1a1822">| order_id | user_id | total |</text>
+  <text x="50" y="168" font-size="10" fill="#1a1822">| 1001     | U001    | $50   |</text>
+  <text x="50" y="186" font-size="10" fill="#1a1822">| 1002     | U002    | $75   |</text>
+  <text x="50" y="204" font-size="10" fill="#1a1822">| 1003     | U001    | $30   |</text>
+  <text x="50" y="222" font-size="10" fill="#64748b">user_id: U001-U033</text>
+  
+  <rect x="325" y="80" width="250" height="160" rx="8" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">Shard 1</text>
+  <text x="345" y="130" font-size="10" fill="#64748b">Orders Table:</text>
+  <text x="345" y="150" font-size="10" fill="#1a1822">| order_id | user_id | total |</text>
+  <text x="345" y="168" font-size="10" fill="#15803d">| 1004     | U034    | $90   |</text>
+  <text x="345" y="186" font-size="10" fill="#15803d">| 1005     | U035    | $25   |</text>
+  <text x="345" y="204" font-size="10" fill="#15803d">| 1006     | U040    | $60   |</text>
+  <text x="345" y="222" font-size="10" fill="#64748b">user_id: U034-U066</text>
+  
+  <rect x="620" y="80" width="250" height="160" rx="8" fill="#d97706" opacity="0.06" stroke="#d97706" stroke-width="2"/>
+  <text x="745" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Shard 2</text>
+  <text x="640" y="130" font-size="10" fill="#64748b">Orders Table:</text>
+  <text x="640" y="150" font-size="10" fill="#1a1822">| order_id | user_id | total |</text>
+  <text x="640" y="168" font-size="10" fill="#1a1822">| 1007     | U067    | $40   |</text>
+  <text x="640" y="186" font-size="10" fill="#1a1822">| 1008     | U070    | $85   |</text>
+  <text x="640" y="204" font-size="10" fill="#1a1822">| 1009     | U080    | $55   |</text>
+  <text x="640" y="222" font-size="10" fill="#64748b">user_id: U067-U100</text>
+  
+  <!-- Query Coordinator -->
+  <rect x="200" y="270" width="500" height="80" rx="8" fill="#db2777" opacity="0.08" stroke="#db2777" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#9d174d">Query Coordinator</text>
+  <text x="450" y="315" text-anchor="middle" font-size="11" fill="#64748b">SELECT user_id, SUM(total) FROM orders GROUP BY user_id HAVING SUM(total) &gt; 100</text>
+  <text x="450" y="335" text-anchor="middle" font-size="11" fill="#db2777">Fan-out &#8594; execute on each shard &#8594; merge results &#8594; return</text>
+  
+  <!-- Arrows from coordinator to shards -->
+  <path d="M 300 270 L 155 240" fill="none" stroke="#db2777" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <path d="M 450 270 L 450 240" fill="none" stroke="#db2777" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <path d="M 600 270 L 745 240" fill="none" stroke="#db2777" stroke-width="1.5" stroke-dasharray="4 2"/>
+  
+  <!-- Partial Results -->
+  <rect x="30" y="380" width="250" height="110" rx="8" fill="#64748b" opacity="0.06" stroke="#64748b" stroke-width="1.5"/>
+  <text x="155" y="400" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Partial Result (Shard 0)</text>
+  <text x="50" y="425" font-size="10" fill="#64748b">U001: $80</text>
+  <text x="50" y="445" font-size="10" fill="#64748b">U002: $75</text>
+  <text x="50" y="465" font-size="10" fill="#64748b">Max: $80, Count: 2</text>
+  <text x="50" y="485" font-size="10" fill="#92400e">&#8594; No match (none &gt; $100)</text>
+  
+  <rect x="325" y="380" width="250" height="110" rx="8" fill="#64748b" opacity="0.06" stroke="#64748b" stroke-width="1.5"/>
+  <text x="450" y="400" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Partial Result (Shard 1)</text>
+  <text x="345" y="425" font-size="10" fill="#64748b">U034: $90</text>
+  <text x="345" y="445" font-size="10" fill="#64748b">U035: $25</text>
+  <text x="345" y="465" font-size="10" fill="#64748b">U040: $60</text>
+  <text x="345" y="485" font-size="10" fill="#92400e">&#8594; No match</text>
+  
+  <rect x="620" y="380" width="250" height="110" rx="8" fill="#64748b" opacity="0.06" stroke="#64748b" stroke-width="1.5"/>
+  <text x="745" y="400" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Partial Result (Shard 2)</text>
+  <text x="640" y="425" font-size="10" fill="#64748b">U067: $40</text>
+  <text x="640" y="445" font-size="10" fill="#64748b">U070: $85</text>
+  <text x="640" y="465" font-size="10" fill="#64748b">U080: $55</text>
+  <text x="640" y="485" font-size="10" fill="#92400e">&#8594; No match</text>
+  
+  <!-- Final aggregation note -->
+  <rect x="250" y="500" width="400" height="15" rx="4" fill="#db2777" opacity="0.08" stroke="#db2777" stroke-width="1"/>
+  <text x="450" y="512" text-anchor="middle" font-size="10" font-weight="bold" fill="#9d174d">Final: Cross-shard merge needed for users spanning multiple shards</text>
 </svg>

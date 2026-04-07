@@ -1,11 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">CQRS Diagram 3</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Failure</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Mitigation</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Signals</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="system-ui, sans-serif">
+  <title>Consistency Latency and Cost Trade-offs for CQRS</title>
+  <rect width="900" height="520" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">Consistency Latency &amp; Cost Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">CQRS vs CRUD across read lag, write throughput, operational complexity, and query flexibility</text>
+
+  <!-- Read Lag visualization -->
+  <text x="225" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1822">Read Lag (Eventual Consistency)</text>
+  <rect x="30" y="115" width="390" height="180" rx="8" fill="#4f46e5" opacity="0.06" stroke="#64748b" stroke-width="1"/>
+
+  <!-- Time axis -->
+  <line x1="60" y1="260" x2="390" y2="260" stroke="#64748b" stroke-width="1"/>
+  <text x="395" y="265" font-size="9" fill="#64748b">time</text>
+
+  <!-- Write line -->
+  <path d="M 60 250 L 120 180 L 180 140 L 240 140 L 300 100" fill="none" stroke="#4f46e5" stroke-width="2"/>
+  <text x="305" y="95" font-size="9" fill="#4338ca">Write DB</text>
+
+  <!-- Read line (lagging) -->
+  <path d="M 60 250 L 120 240 L 180 200 L 240 160 L 300 120" fill="none" stroke="#16a34a" stroke-width="2"/>
+  <text x="305" y="115" font-size="9" fill="#15803d">Read DB</text>
+
+  <!-- Lag arrows -->
+  <path d="M 180 140 L 180 200" fill="none" stroke="#92400e" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <text x="185" y="175" font-size="9" fill="#92400e">lag</text>
+
+  <path d="M 240 140 L 240 160" fill="none" stroke="#92400e" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <text x="245" y="155" font-size="9" fill="#92400e">lag</text>
+
+  <text x="60" y="285" font-size="10" fill="#64748b">Typical lag: 10ms - 500ms depending on projection complexity</text>
+
+  <!-- Throughput comparison -->
+  <text x="675" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1822">Throughput Scaling</text>
+  <rect x="450" y="115" width="420" height="180" rx="8" fill="#16a34a" opacity="0.06" stroke="#64748b" stroke-width="1"/>
+
+  <!-- CRUD bar -->
+  <text x="470" y="145" font-size="11" fill="#1a1822">CRUD (single DB):</text>
+  <rect x="610" y="135" width="150" height="18" rx="3" fill="#4f46e5" opacity="0.15"/>
+  <text x="765" y="148" font-size="10" fill="#1a1822">10K writes + 10K reads/s</text>
+
+  <!-- CQRS bars -->
+  <text x="470" y="175" font-size="11" fill="#1a1822">CQRS (scaled):</text>
+  <rect x="610" y="160" width="60" height="18" rx="3" fill="#4f46e5" opacity="0.15"/>
+  <text x="675" y="173" font-size="9" fill="#1a1822">10K writes</text>
+  <rect x="680" y="160" width="200" height="18" rx="3" fill="#16a34a" opacity="0.15"/>
+  <text x="785" y="173" font-size="9" fill="#15803d">100K+ reads (scaled independently)</text>
+
+  <text x="470" y="210" font-size="10" fill="#15803d">&#9989; Read side scales independently</text>
+  <text x="470" y="230" font-size="10" fill="#15803d">&#9989; Write side optimized for transactions</text>
+  <text x="470" y="250" font-size="10" fill="#15803d">&#9989; Read side uses optimal storage per query</text>
+  <text x="470" y="270" font-size="10" fill="#92400e">&#9888; 2-3x operational complexity</text>
+  <text x="470" y="290" font-size="10" fill="#92400e">&#9888; Eventual consistency between sides</text>
+
+  <!-- Decision matrix -->
+  <rect x="30" y="320" width="840" height="185" rx="8" fill="#4f46e5" opacity="0.04" stroke="#64748b" stroke-width="1"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">CQRS Adoption Decision Matrix</text>
+
+  <rect x="50" y="360" width="390" height="130" rx="6" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="1"/>
+  <text x="245" y="380" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">Use CQRS When:</text>
+  <text x="70" y="405" font-size="10" fill="#64748b">&#8226; Read/write workloads have very different patterns</text>
+  <text x="70" y="425" font-size="10" fill="#64748b">&#8226; Read scale vastly exceeds write scale (10:1+)</text>
+  <text x="70" y="445" font-size="10" fill="#64748b">&#8226; Multiple read models needed for different queries</text>
+  <text x="70" y="465" font-size="10" fill="#64748b">&#8226; Collaboration with multiple teams on same domain</text>
+  <text x="70" y="485" font-size="10" fill="#64748b">&#8226; Event sourcing or event-driven architecture in use</text>
+
+  <rect x="460" y="360" width="390" height="130" rx="6" fill="#dc2626" opacity="0.06" stroke="#dc2626" stroke-width="1"/>
+  <text x="655" y="380" text-anchor="middle" font-size="12" font-weight="bold" fill="#dc2626">Avoid CQRS When:</text>
+  <text x="480" y="405" font-size="10" fill="#64748b">&#8226; Simple CRUD application with moderate traffic</text>
+  <text x="480" y="425" font-size="10" fill="#64748b">&#8226; Strong consistency required for all reads</text>
+  <text x="480" y="445" font-size="10" fill="#64748b">&#8226; Small team without distributed systems expertise</text>
+  <text x="480" y="465" font-size="10" fill="#64748b">&#8226; Low read/write ratio (reads similar to writes)</text>
+  <text x="480" y="485" font-size="10" fill="#64748b">&#8226; Schema changes are frequent and unpredictable</text>
 </svg>

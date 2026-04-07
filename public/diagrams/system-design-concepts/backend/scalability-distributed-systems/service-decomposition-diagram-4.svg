@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Service Decomposition Strategies</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">Four approaches to decomposing a monolith: by business capability, subdomain, verb, and data ownership</text>
+
+  <!-- Strategy 1: By Business Capability -->
+  <rect x="30" y="80" width="410" height="120" rx="8" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="2"/>
+  <text x="235" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">By Business Capability</text>
+  <text x="50" y="128" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Decompose based on organizational structure and business functions</text>
+  <text x="50" y="148" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Services: User Mgmt, Order Processing, Inventory, Payment, Shipping</text>
+  <text x="50" y="170" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Aligns with team structure, intuitive boundaries</text>
+  <text x="50" y="188" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">&#9888; May create coarse-grained services with internal coupling</text>
+
+  <!-- Strategy 2: By Subdomain (DDD) -->
+  <rect x="460" y="80" width="410" height="120" rx="8" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="2"/>
+  <text x="665" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">By Subdomain (Domain-Driven Design)</text>
+  <text x="480" y="128" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Decompose based on bounded contexts and ubiquitous language</text>
+  <text x="480" y="148" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Services: Core domain (Order), Supporting (User), Generic (Payment)</text>
+  <text x="480" y="170" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Strong domain boundaries, clear data ownership</text>
+  <text x="480" y="188" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">&#9888; Requires DDD expertise, time-consuming analysis</text>
+
+  <!-- Strategy 3: By Verb (Action) -->
+  <rect x="30" y="220" width="410" height="120" rx="8" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="2"/>
+  <text x="235" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">By Verb (Action)</text>
+  <text x="50" y="268" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Decompose based on operations: Query Service, Command Service</text>
+  <text x="50" y="288" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Services: Read Service (queries), Write Service (mutations)</text>
+  <text x="50" y="310" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Natural CQRS split, independent read/write scaling</text>
+  <text x="50" y="328" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">&#9888; Cross-cutting concerns split, complex data consistency</text>
+
+  <!-- Strategy 4: By Data Ownership -->
+  <rect x="460" y="220" width="410" height="120" rx="8" fill="#2563eb" opacity="0.08" stroke="#2563eb" stroke-width="2"/>
+  <text x="665" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">By Data Ownership</text>
+  <text x="480" y="268" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Decompose based on data tables/entities and their relationships</text>
+  <text x="480" y="288" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Services: User Data Service, Order Data Service, Product Data Service</text>
+  <text x="480" y="310" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Clear data boundaries, easy database-per-service</text>
+  <text x="480" y="328" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">&#9888; May create anemic services (CRUD-only, no business logic)</text>
+
+  <!-- Recommendation -->
+  <rect x="30" y="365" width="840" height="140" rx="8" fill="#4f46e5" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="390" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Recommended Approach: Hybrid (DDD + Business Capability)</text>
+
+  <text x="50" y="415" font-size="11" fill="#1a1822" font-family="system-ui, sans-serif">1. Identify bounded contexts using DDD (subdomain analysis)</text>
+  <text x="50" y="435" font-size="11" fill="#1a1822" font-family="system-ui, sans-serif">2. Align services with business capabilities (team structure, organizational boundaries)</text>
+  <text x="50" y="455" font-size="11" fill="#1a1822" font-family="system-ui, sans-serif">3. Ensure each service owns its data (database-per-service)</text>
+  <text x="50" y="475" font-size="11" fill="#1a1822" font-family="system-ui, sans-serif">4. Use events for cross-service communication (not shared databases or synchronous calls)</text>
+  <text x="450" y="415" font-size="11" fill="#4b5563" font-family="system-ui, sans-serif">This hybrid approach provides strong domain boundaries while aligning with the organization&apos;s</text>
+  <text x="450" y="435" font-size="11" fill="#4b5563" font-family="system-ui, sans-serif">structure, ensuring that each service can be developed, deployed, and operated independently.</text>
+  <text x="450" y="460" font-size="11" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Independent deployability | &#9989; Clear data ownership | &#9989; Team autonomy | &#9989; Fault isolation</text>
+</svg>

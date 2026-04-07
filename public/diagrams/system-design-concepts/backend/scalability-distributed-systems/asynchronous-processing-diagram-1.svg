@@ -1,11 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Asynchronous Processing Diagram 1</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Components</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Flow</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Data</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Asynchronous Processing Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">Producer → message queue → consumer pipeline decoupling write and processing paths</text>
+
+  <!-- Producer -->
+  <rect x="40" y="100" width="180" height="70" rx="8" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="2"/>
+  <text x="130" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Producer</text>
+  <text x="130" y="145" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Web API / Service</text>
+  <text x="130" y="160" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Publishes events</text>
+
+  <!-- Arrow to queue -->
+  <path d="M 220 135 L 310 135" fill="none" stroke="#4f46e5" stroke-width="2" marker-end="url(#purpleArrow)"/>
+  <text x="265" y="125" text-anchor="middle" font-size="10" fill="#4338ca" font-family="system-ui, sans-serif">publish</text>
+
+  <!-- Message Queue -->
+  <rect x="310" y="90" width="280" height="90" rx="8" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Message Queue / Event Bus</text>
+  <text x="450" y="135" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Kafka / RabbitMQ / SQS</text>
+
+  <!-- Queue visual -->
+  <rect x="350" y="145" width="40" height="20" rx="3" fill="#d97706" opacity="0.3" stroke="#d97706" stroke-width="1"/>
+  <text x="370" y="159" text-anchor="middle" font-size="8" fill="#1a1822" font-family="system-ui, sans-serif">M1</text>
+  <rect x="395" y="145" width="40" height="20" rx="3" fill="#d97706" opacity="0.3" stroke="#d97706" stroke-width="1"/>
+  <text x="415" y="159" text-anchor="middle" font-size="8" fill="#1a1822" font-family="system-ui, sans-serif">M2</text>
+  <rect x="440" y="145" width="40" height="20" rx="3" fill="#d97706" opacity="0.3" stroke="#d97706" stroke-width="1"/>
+  <text x="460" y="159" text-anchor="middle" font-size="8" fill="#1a1822" font-family="system-ui, sans-serif">M3</text>
+  <rect x="485" y="145" width="40" height="20" rx="3" fill="#d97706" opacity="0.3" stroke="#d97706" stroke-width="1"/>
+  <text x="505" y="159" text-anchor="middle" font-size="8" fill="#1a1822" font-family="system-ui, sans-serif">M4</text>
+  <rect x="530" y="145" width="40" height="20" rx="3" fill="#d97706" opacity="0.3" stroke="#d97706" stroke-width="1"/>
+  <text x="550" y="159" text-anchor="middle" font-size="8" fill="#1a1822" font-family="system-ui, sans-serif">M5</text>
+
+  <!-- Arrows from queue to consumers -->
+  <path d="M 380 180 L 200 300" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#greenArrow)"/>
+  <path d="M 450 180 L 450 300" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#blueArrow)"/>
+  <path d="M 520 180 L 700 300" fill="none" stroke="#db2777" stroke-width="1.5" marker-end="url(#pinkArrow)"/>
+
+  <!-- Consumer 1 -->
+  <rect x="40" y="300" width="200" height="70" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="2"/>
+  <text x="140" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Consumer 1</text>
+  <text x="140" y="345" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Email Service</text>
+  <text x="140" y="360" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Processes: OrderCreated</text>
+
+  <!-- Consumer 2 -->
+  <rect x="350" y="300" width="200" height="70" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">Consumer 2</text>
+  <text x="450" y="345" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Inventory Service</text>
+  <text x="450" y="360" text-anchor="middle" font-size="10" fill="#1d4ed8" font-family="system-ui, sans-serif">Processes: OrderCreated</text>
+
+  <!-- Consumer 3 -->
+  <rect x="660" y="300" width="200" height="70" rx="8" fill="#db2777" opacity="0.12" stroke="#db2777" stroke-width="2"/>
+  <text x="760" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="#9d174d" font-family="system-ui, sans-serif">Consumer 3</text>
+  <text x="760" y="345" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Analytics Service</text>
+  <text x="760" y="360" text-anchor="middle" font-size="10" fill="#9d174d" font-family="system-ui, sans-serif">Processes: ALL events</text>
+
+  <!-- Result stores -->
+  <rect x="60" y="410" width="160" height="40" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="140" y="435" text-anchor="middle" font-size="10" fill="#15803d" font-family="system-ui, sans-serif">Email Queue → SMTP</text>
+
+  <rect x="370" y="410" width="160" height="40" rx="6" fill="#2563eb" opacity="0.08" stroke="#2563eb" stroke-width="1"/>
+  <text x="450" y="435" text-anchor="middle" font-size="10" fill="#1d4ed8" font-family="system-ui, sans-serif">Inventory DB update</text>
+
+  <rect x="680" y="410" width="160" height="40" rx="6" fill="#db2777" opacity="0.08" stroke="#db2777" stroke-width="1"/>
+  <text x="760" y="435" text-anchor="middle" font-size="10" fill="#9d174d" font-family="system-ui, sans-serif">Analytics DB (ClickHouse)</text>
+
+  <!-- Benefits -->
+  <rect x="30" y="470" width="840" height="40" rx="6" fill="#4f46e5" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="50" y="488" font-size="11" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Decouples producers from consumers</text>
+  <text x="280" y="488" font-size="11" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Independent scaling of each consumer</text>
+  <text x="530" y="488" font-size="11" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Buffers traffic spikes</text>
+  <text x="720" y="488" font-size="11" fill="#92400e" font-family="system-ui, sans-serif">&#9888; Eventual consistency</text>
+
+  <defs>
+    <marker id="purpleArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="blueArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="pinkArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#db2777"/>
+    </marker>
+  </defs>
 </svg>

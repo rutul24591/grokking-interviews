@@ -1,11 +1,111 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Microservices Architecture Diagram 1</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Components</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Flow</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Data</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="100%" height="100%" font-family="system-ui, sans-serif">
+  <title>Microservices Architecture Topology</title>
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="520" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">Microservices Architecture Topology</text>
+
+  <!-- API Gateway -->
+  <rect x="280" y="70" width="240" height="56" rx="10" fill="#4f46e5" fill-opacity="0.2" stroke="#4f46e5" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1a1822">API Gateway</text>
+  <text x="400" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#4b5563">Auth / Rate Limit / Routing</text>
+
+  <!-- Arrow from Gateway to services -->
+  <line x1="320" y1="126" x2="140" y2="190" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4,3" fill="none"/>
+  <line x1="400" y1="126" x2="400" y2="190" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4,3" fill="none"/>
+  <line x1="480" y1="126" x2="660" y2="190" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- User Service -->
+  <rect x="60" y="190" width="160" height="50" rx="8" fill="#2563eb" fill-opacity="0.2" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1a1822">User Service</text>
+  <text x="140" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#4b5563">REST API</text>
+
+  <!-- User Service Sidecar -->
+  <rect x="230" y="195" width="40" height="40" rx="6" fill="#d97706" fill-opacity="0.2" stroke="#d97706" stroke-width="1.5"/>
+  <text x="250" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" font-weight="400" fill="#4b5563">Sidecar</text>
+
+  <!-- User Service DB -->
+  <rect x="80" y="260" width="120" height="40" rx="6" fill="#16a34a" fill-opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="140" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#4b5563">User DB</text>
+
+  <line x1="140" y1="240" x2="140" y2="260" stroke="#4b5563" stroke-width="1.5" fill="none"/>
+
+  <!-- Order Service -->
+  <rect x="320" y="190" width="160" height="50" rx="8" fill="#db2777" fill-opacity="0.2" stroke="#db2777" stroke-width="2"/>
+  <text x="400" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1a1822">Order Service</text>
+  <text x="400" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#4b5563">gRPC API</text>
+
+  <!-- Order Service Sidecar -->
+  <rect x="490" y="195" width="40" height="40" rx="6" fill="#d97706" fill-opacity="0.2" stroke="#d97706" stroke-width="1.5"/>
+  <text x="510" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" font-weight="400" fill="#4b5563">Sidecar</text>
+
+  <!-- Order Service DB -->
+  <rect x="340" y="260" width="120" height="40" rx="6" fill="#16a34a" fill-opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="400" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#4b5563">Order DB</text>
+
+  <line x1="400" y1="240" x2="400" y2="260" stroke="#4b5563" stroke-width="1.5" fill="none"/>
+
+  <!-- Payment Service -->
+  <rect x="580" y="190" width="160" height="50" rx="8" fill="#dc2626" fill-opacity="0.2" stroke="#dc2626" stroke-width="2"/>
+  <text x="660" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1a1822">Payment Service</text>
+  <text x="660" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#4b5563">gRPC API</text>
+
+  <!-- Payment Service Sidecar -->
+  <rect x="530" y="195" width="40" height="40" rx="6" fill="#d97706" fill-opacity="0.2" stroke="#d97706" stroke-width="1.5"/>
+  <text x="550" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" font-weight="400" fill="#4b5563">Sidecar</text>
+
+  <!-- Payment Service DB -->
+  <rect x="600" y="260" width="120" height="40" rx="6" fill="#16a34a" fill-opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="660" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#4b5563">Payment DB</text>
+
+  <line x1="660" y1="240" x2="660" y2="260" stroke="#4b5563" stroke-width="1.5" fill="none"/>
+
+  <!-- Inter-service communication arrows -->
+  <line x1="220" y1="215" x2="320" y2="215" stroke="#4b5563" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <line x1="320" y1="225" x2="220" y2="225" stroke="#4b5563" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <line x1="480" y1="215" x2="580" y2="215" stroke="#4b5563" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <line x1="580" y1="225" x2="480" y2="225" stroke="#4b5563" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Message Queue -->
+  <rect x="250" y="340" width="300" height="50" rx="10" fill="#d97706" fill-opacity="0.15" stroke="#d97706" stroke-width="2"/>
+  <text x="400" y="362" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1a1822">Message Queue / Event Bus</text>
+  <text x="400" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#4b5563">Async Communication (Kafka / RabbitMQ)</text>
+
+  <!-- Arrows from services to message queue -->
+  <line x1="140" y1="300" x2="320" y2="340" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4,3" fill="none"/>
+  <line x1="400" y1="300" x2="400" y2="340" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4,3" fill="none"/>
+  <line x1="660" y1="300" x2="480" y2="340" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- Service Mesh label -->
+  <rect x="580" y="420" width="180" height="36" rx="8" fill="#4f46e5" fill-opacity="0.1" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="670" y="438" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1a1822">Service Mesh</text>
+  <text x="670" y="452" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#4b5563">mTLS + Observability</text>
+
+  <!-- Mesh connects to sidecars -->
+  <line x1="580" y1="438" x2="530" y2="215" stroke="#4f46e5" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+  <line x1="580" y1="438" x2="510" y2="215" stroke="#4f46e5" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+
+  <!-- Arrow marker -->
+  <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#4b5563"/>
+  </marker>
+
+  <!-- Legend -->
+  <rect x="30" y="430" width="180" height="80" rx="8" fill="#4f46e5" fill-opacity="0.05" stroke="#4f46e5" stroke-opacity="0.3" stroke-width="1"/>
+  <rect x="42" y="444" width="14" height="10" rx="2" fill="#2563eb" fill-opacity="0.3" stroke="#2563eb" stroke-width="1"/>
+  <text x="64" y="453" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#4b5563">Service</text>
+  <rect x="42" y="460" width="14" height="10" rx="2" fill="#d97706" fill-opacity="0.3" stroke="#d97706" stroke-width="1"/>
+  <text x="64" y="469" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#4b5563">Sidecar Proxy</text>
+  <rect x="42" y="476" width="14" height="10" rx="2" fill="#16a34a" fill-opacity="0.3" stroke="#16a34a" stroke-width="1"/>
+  <text x="64" y="485" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#4b5563">Database (per service)</text>
+  <line x1="42" y1="498" x2="56" y2="498" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="64" y="502" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#4b5563">Communication</text>
 </svg>

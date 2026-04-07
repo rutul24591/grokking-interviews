@@ -1,11 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Distributed Locks Diagram 2</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Control</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Coordination</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">State</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="system-ui, sans-serif">
+  <title>ZooKeeper Sequential Lock: Fair Lock Ordering</title>
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">ZooKeeper Sequential Lock: Fair Lock Ordering</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">Ephemeral sequential znodes ensure FIFO lock ordering and automatic release on client disconnect</text>
+
+  <!-- ZooKeeper cluster -->
+  <rect x="40" y="80" width="260" height="420" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="170" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">ZooKeeper Cluster</text>
+
+  <!-- Lock node -->
+  <rect x="60" y="120" width="220" height="35" rx="4" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1.5"/>
+  <text x="170" y="143" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">/locks/resource-X</text>
+
+  <!-- Sequential znodes -->
+  <rect x="80" y="170" width="180" height="30" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="2"/>
+  <text x="170" y="190" text-anchor="middle" font-size="10" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">lock-0000000001 (Client A)</text>
+
+  <rect x="80" y="210" width="180" height="30" rx="4" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="2"/>
+  <text x="170" y="230" text-anchor="middle" font-size="10" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">lock-0000000002 (Client B)</text>
+
+  <rect x="80" y="250" width="180" height="30" rx="4" fill="#db2777" opacity="0.15" stroke="#db2777" stroke-width="2"/>
+  <text x="170" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#9d174d" font-family="system-ui, sans-serif">lock-0000000003 (Client C)</text>
+
+  <rect x="80" y="290" width="180" height="30" rx="4" fill="#7c3aed" opacity="0.15" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="170" y="310" text-anchor="middle" font-size="10" fill="#5b21b6" font-family="system-ui, sans-serif">lock-0000000004 (Client D)</text>
+
+  <!-- Legend -->
+  <rect x="60" y="340" width="220" height="140" rx="6" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="170" y="360" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Legend</text>
+  <circle cx="80" cy="385" r="6" fill="#16a34a" opacity="0.3"/>
+  <text x="95" y="389" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">= Lock holder (active)</text>
+  <circle cx="80" cy="405" r="6" fill="#2563eb" opacity="0.3"/>
+  <text x="95" y="409" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">= Next in queue</text>
+  <circle cx="80" cy="425" r="6" fill="#db2777" opacity="0.3"/>
+  <text x="95" y="429" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">= Waiting in queue</text>
+  <circle cx="80" cy="445" r="6" fill="#7c3aed" opacity="0.3"/>
+  <text x="95" y="449" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">= Also waiting</text>
+  <text x="95" y="470" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Ephemeral: auto-deleted on disconnect</text>
+
+  <!-- Client side (right) -->
+  <rect x="340" y="80" width="530" height="420" rx="8" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="605" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Client-Side Lock Protocol</text>
+
+  <!-- Step 1 -->
+  <rect x="360" y="120" width="490" height="60" rx="6" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="1"/>
+  <text x="375" y="140" font-size="11" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Step 1: Create ephemeral sequential znode</text>
+  <text x="375" y="160" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client calls create(&quot;/locks/resource-X/lock-&quot;, EPHEMERAL | SEQUENTIAL)</text>
+  <text x="375" y="175" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">ZK assigns next sequence number and returns full path (e.g., /locks/resource-X/lock-0000000003)</text>
+
+  <!-- Step 2 -->
+  <rect x="360" y="195" width="490" height="60" rx="6" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="1"/>
+  <text x="375" y="215" font-size="11" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Step 2: Get children and check if I am first</text>
+  <text x="375" y="235" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client calls getChildren(&quot;/locks/resource-X&quot;) and sorts by sequence number</text>
+  <text x="375" y="250" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">If my znode is first: I hold the lock! If not: watch the predecessor</text>
+
+  <!-- Step 3 -->
+  <rect x="360" y="270" width="490" height="60" rx="6" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="1"/>
+  <text x="375" y="290" font-size="11" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Step 3: Watch predecessor for deletion</text>
+  <text x="375" y="310" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client sets a watch on the znode with the next-lower sequence number</text>
+  <text x="375" y="325" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">When predecessor is deleted (lock released or client disconnected), I get notified</text>
+
+  <!-- Step 4 -->
+  <rect x="360" y="345" width="490" height="60" rx="6" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="1"/>
+  <text x="375" y="365" font-size="11" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Step 4: On notification, go to Step 2</text>
+  <text x="375" y="385" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">When notified, re-check children — if I am now first, I hold the lock</text>
+  <text x="375" y="400" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">If not (a new client jumped ahead), watch the new predecessor</text>
+
+  <!-- Key benefits -->
+  <rect x="360" y="420" width="490" height="65" rx="6" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="1"/>
+  <text x="375" y="440" font-size="11" font-weight="bold" fill="#16a34a" font-family="system-ui, sans-serif">Key Benefits:</text>
+  <text x="375" y="460" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Fair ordering: FIFO — clients acquire lock in arrival order</text>
+  <text x="375" y="478" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Automatic release: ephemeral znodes deleted on client disconnect</text>
+  <text x="560" y="460" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; No thundering herd: each client watches only its predecessor</text>
 </svg>

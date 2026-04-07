@@ -1,11 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Consistent Hashing Diagram 1</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Components</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Flow</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Data</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+  </defs>
+
+  <title>Consistent hash ring showing server nodes positioned by hash values with data keys mapped via clockwise traversal</title>
+
+  <rect width="900" height="520" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Consistent Hash Ring Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each node positioned by hashing its identifier; keys assigned to first clockwise node</text>
+  
+  <!-- Hash Ring Circle -->
+  <circle cx="450" cy="280" r="180" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-dasharray="6 4"/>
+  
+  <!-- Ring direction arrow -->
+  <path d="M 630 280 A 180 180 0 0 1 610 340" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="650" y="315" font-size="11" fill="#64748b">clockwise</text>
+  
+  <!-- Node A - Server 1 -->
+  <circle cx="450" cy="100" r="28" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="2"/>
+  <text x="450" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#4f46e5">Node A</text>
+  <text x="450" y="112" text-anchor="middle" font-size="10" fill="#64748b">Hash: 0x1A</text>
+  
+  <!-- Node B - Server 2 -->
+  <circle cx="630" cy="280" r="28" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="2"/>
+  <text x="630" y="276" text-anchor="middle" font-size="13" font-weight="700" fill="#16a34a">Node B</text>
+  <text x="630" y="292" text-anchor="middle" font-size="10" fill="#64748b">Hash: 0x5C</text>
+  
+  <!-- Node C - Server 3 -->
+  <circle cx="270" cy="280" r="28" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="2"/>
+  <text x="270" y="276" text-anchor="middle" font-size="13" font-weight="700" fill="#d97706">Node C</text>
+  <text x="270" y="292" text-anchor="middle" font-size="10" fill="#64748b">Hash: 0x9F</text>
+  
+  <!-- Node D - Server 4 -->
+  <circle cx="450" cy="460" r="28" fill="#dc2626" opacity="0.12" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="456" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">Node D</text>
+  <text x="450" y="472" text-anchor="middle" font-size="10" fill="#64748b">Hash: 0xD3</text>
+  
+  <!-- Data Keys mapped to ring -->
+  <circle cx="520" cy="130" r="16" fill="#818cf8" opacity="0.2" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="520" y="134" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">K1</text>
+  <line x1="520" y1="146" x2="630" y2="252" stroke="#818cf8" stroke-width="1" stroke-dasharray="4 2"/>
+  
+  <circle cx="560" cy="200" r="16" fill="#15803d" opacity="0.2" stroke="#15803d" stroke-width="1.5"/>
+  <text x="560" y="204" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">K2</text>
+  <line x1="544" y1="200" x2="602" y2="268" stroke="#15803d" stroke-width="1" stroke-dasharray="4 2"/>
+  
+  <circle cx="340" cy="160" r="16" fill="#92400e" opacity="0.2" stroke="#92400e" stroke-width="1.5"/>
+  <text x="340" y="164" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">K3</text>
+  <line x1="340" y1="176" x2="270" y2="252" stroke="#92400e" stroke-width="1" stroke-dasharray="4 2"/>
+  
+  <circle cx="350" cy="390" r="16" fill="#991b1b" opacity="0.2" stroke="#991b1b" stroke-width="1.5"/>
+  <text x="350" y="394" text-anchor="middle" font-size="11" font-weight="700" fill="#991b1b">K4</text>
+  <line x1="350" y1="406" x2="450" y2="432" stroke="#991b1b" stroke-width="1" stroke-dasharray="4 2"/>
+  
+  <circle cx="550" cy="400" r="16" fill="#991b1b" opacity="0.2" stroke="#991b1b" stroke-width="1.5"/>
+  <text x="550" y="404" text-anchor="middle" font-size="11" font-weight="700" fill="#991b1b">K5</text>
+  <line x1="538" y1="412" x2="474" y2="448" stroke="#991b1b" stroke-width="1" stroke-dasharray="4 2"/>
+  
+  <!-- Ownership arcs -->
+  <path d="M 450 128 A 180 180 0 0 1 630 252" fill="none" stroke="#4f46e5" stroke-width="3" opacity="0.4"/>
+  <path d="M 630 308 A 180 180 0 0 1 450 432" fill="none" stroke="#16a34a" stroke-width="3" opacity="0.3"/>
+  <path d="M 270 308 A 180 180 0 0 1 450 432" fill="none" stroke="#d97706" stroke-width="3" opacity="0.3"/>
+  <path d="M 450 432 A 180 180 0 0 1 270 252" fill="none" stroke="#dc2626" stroke-width="3" opacity="0.3"/>
+  
+  <!-- Legend -->
+  <rect x="680" y="80" width="190" height="140" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="775" y="102" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Legend</text>
+  <circle cx="705" cy="125" r="8" fill="#4f46e5" opacity="0.2" stroke="#4f46e5" stroke-width="2"/>
+  <text x="720" y="129" font-size="11" fill="#1a1822">Server Node</text>
+  <circle cx="705" cy="150" r="8" fill="#818cf8" opacity="0.3" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="720" y="154" font-size="11" fill="#1a1822">Data Key</text>
+  <line x1="697" y1="173" x2="713" y2="173" stroke="#4f46e5" stroke-width="2" opacity="0.4"/>
+  <text x="720" y="177" font-size="11" fill="#1a1822">Ownership Range</text>
+  
+  <!-- Hash Range labels -->
+  <text x="450" y="70" text-anchor="middle" font-size="10" fill="#64748b">0x00</text>
+  <text x="700" y="120" font-size="10" fill="#64748b">0x40</text>
+  <text x="700" y="440" font-size="10" fill="#64748b">0x80</text>
+  <text x="450" y="500" text-anchor="middle" font-size="10" fill="#64748b">0xFF</text>
+  
+  <!-- Assignment Rule -->
+  <rect x="20" y="400" width="230" height="90" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="35" y="425" font-size="12" font-weight="700" fill="#4f46e5">Lookup Rule:</text>
+  <text x="35" y="448" font-size="10" fill="#1a1822">1. Hash(key) → ring position</text>
+  <text x="35" y="465" font-size="10" fill="#1a1822">2. Walk clockwise</text>
+  <text x="35" y="482" font-size="10" fill="#1a1822">3. First node = responsible</text>
 </svg>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Horizontal vs Vertical Scaling Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">Cost, throughput, fault tolerance, and operational complexity compared across scaling strategies</text>
+
+  <!-- Vertical scaling side -->
+  <rect x="30" y="80" width="410" height="200" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="2"/>
+  <text x="235" y="105" text-anchor="middle" font-size="15" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Vertical Scaling (Scale Up)</text>
+
+  <!-- Server getting bigger -->
+  <rect x="100" y="120" width="80" height="50" rx="4" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="140" y="140" text-anchor="middle" font-size="10" fill="#4338ca" font-family="system-ui, sans-serif">4 cores</text>
+  <text x="140" y="155" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">16 GB RAM</text>
+  <text x="200" y="145" font-size="18" fill="#4b5563" font-family="system-ui, sans-serif">&#8594;</text>
+  <rect x="230" y="120" width="80" height="50" rx="4" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="270" y="140" text-anchor="middle" font-size="10" fill="#4338ca" font-family="system-ui, sans-serif">32 cores</text>
+  <text x="270" y="155" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">256 GB RAM</text>
+  <text x="330" y="145" font-size="18" fill="#d97706" font-family="system-ui, sans-serif">&#8594;</text>
+  <rect x="350" y="110" width="70" height="70" rx="4" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1.5"/>
+  <text x="385" y="140" text-anchor="middle" font-size="9" fill="#92400e" font-family="system-ui, sans-serif">128 cores</text>
+  <text x="385" y="155" text-anchor="middle" font-size="9" fill="#92400e" font-family="system-ui, sans-serif">2 TB RAM</text>
+  <text x="385" y="170" text-anchor="middle" font-size="8" fill="#dc2626" font-family="system-ui, sans-serif">$$$</text>
+
+  <!-- Cost curve -->
+  <text x="50" y="200" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Cost per core: $10 &#8594; $50 &#8594; $200 (exponential)</text>
+  <text x="50" y="220" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Max throughput: bounded by single machine</text>
+  <text x="50" y="240" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Fault tolerance: single point of failure</text>
+  <text x="50" y="260" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Operational complexity: Low (one machine)</text>
+
+  <!-- Horizontal scaling side -->
+  <rect x="460" y="80" width="410" height="200" rx="8" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="2"/>
+  <text x="665" y="105" text-anchor="middle" font-size="15" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Horizontal Scaling (Scale Out)</text>
+
+  <!-- More servers -->
+  <rect x="490" y="120" width="70" height="50" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="525" y="140" text-anchor="middle" font-size="10" fill="#15803d" font-family="system-ui, sans-serif">Node 1</text>
+  <text x="525" y="155" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">4 cores</text>
+  <text x="570" y="145" font-size="18" fill="#4b5563" font-family="system-ui, sans-serif">+</text>
+  <rect x="590" y="120" width="70" height="50" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="625" y="140" text-anchor="middle" font-size="10" fill="#15803d" font-family="system-ui, sans-serif">Node 2</text>
+  <text x="625" y="155" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">4 cores</text>
+  <text x="670" y="145" font-size="18" fill="#4b5563" font-family="system-ui, sans-serif">+</text>
+  <rect x="690" y="120" width="70" height="50" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="725" y="140" text-anchor="middle" font-size="10" fill="#15803d" font-family="system-ui, sans-serif">Node 3</text>
+  <text x="725" y="155" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">4 cores</text>
+  <text x="770" y="145" font-size="18" fill="#16a34a" font-family="system-ui, sans-serif">...</text>
+  <rect x="795" y="120" width="55" height="50" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="822" y="140" text-anchor="middle" font-size="9" fill="#15803d" font-family="system-ui, sans-serif">Node N</text>
+  <text x="822" y="155" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">4 cores</text>
+
+  <text x="480" y="200" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Cost per node: constant ($10/core)</text>
+  <text x="480" y="220" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Max throughput: linear with node count</text>
+  <text x="480" y="240" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Fault tolerance: node failures tolerated</text>
+  <text x="480" y="260" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Operational complexity: High (distributed)</text>
+
+  <!-- Trade-off comparison chart -->
+  <rect x="30" y="310" width="840" height="195" rx="8" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Scaling Strategy Decision Guide</text>
+
+  <!-- Headers -->
+  <text x="150" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Vertical</text>
+  <text x="450" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Horizontal</text>
+  <text x="750" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Hybrid (Recommended)</text>
+
+  <!-- Rows -->
+  <text x="50" y="385" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Max Capacity:</text>
+  <text x="150" y="385" text-anchor="middle" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">Limited</text>
+  <text x="450" y="385" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Unlimited</text>
+  <text x="750" y="385" text-anchor="middle" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">Practically unlimited</text>
+
+  <text x="50" y="410" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Cost Scaling:</text>
+  <text x="150" y="410" text-anchor="middle" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">Exponential</text>
+  <text x="450" y="410" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Linear</text>
+  <text x="750" y="410" text-anchor="middle" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">Linear (commodity HW)</text>
+
+  <text x="50" y="435" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Availability:</text>
+  <text x="150" y="435" text-anchor="middle" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">Single point</text>
+  <text x="450" y="435" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Multi-node</text>
+  <text x="750" y="435" text-anchor="middle" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">Multi-AZ, multi-region</text>
+
+  <text x="50" y="460" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Complexity:</text>
+  <text x="150" y="460" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Low</text>
+  <text x="450" y="460" text-anchor="middle" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">High</text>
+  <text x="750" y="460" text-anchor="middle" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">Moderate (managed)</text>
+
+  <text x="50" y="485" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Best For:</text>
+  <text x="150" y="485" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Small apps</text>
+  <text x="450" y="485" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Web-scale apps</text>
+  <text x="750" y="485" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Start with vertical,</text>
+  <text x="750" y="500" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">transition to horizontal</text>
+</svg>

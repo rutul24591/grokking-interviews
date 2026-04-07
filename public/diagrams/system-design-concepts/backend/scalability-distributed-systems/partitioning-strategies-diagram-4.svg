@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Cross-Partition Query Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">When a query spans multiple partitions, scatter-gather or colocation strategies apply</text>
+
+  <!-- Query arrives at coordinator -->
+  <rect x="320" y="80" width="260" height="55" rx="8" fill="#db2777" opacity="0.12" stroke="#db2777" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="#9d174d" font-family="system-ui, sans-serif">Query Coordinator</text>
+  <text x="450" y="120" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">SELECT * WHERE region = 'US' AND status = 'active'</text>
+
+  <!-- Scatter arrows -->
+  <path d="M 380 135 L 180 200" fill="none" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#purpleArrow)"/>
+  <path d="M 450 135 L 450 200" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#greenArrow)"/>
+  <path d="M 520 135 L 720 200" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#amberArrow)"/>
+  <text x="270" y="170" font-size="10" fill="#4338ca" font-family="system-ui, sans-serif">scatter</text>
+  <text x="470" y="170" font-size="10" fill="#15803d" font-family="system-ui, sans-serif">scatter</text>
+  <text x="630" y="170" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">scatter</text>
+
+  <!-- Partition A -->
+  <rect x="40" y="200" width="270" height="90" rx="8" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="2"/>
+  <text x="175" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Partition A (US-East)</text>
+  <text x="175" y="248" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Local filter: region=US AND status=active</text>
+  <text x="175" y="268" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Found: 1,200 rows (2,400 scanned)</text>
+  <text x="175" y="285" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Latency: 12ms</text>
+
+  <!-- Partition B -->
+  <rect x="315" y="200" width="270" height="90" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Partition B (US-West)</text>
+  <text x="450" y="248" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Local filter: region=US AND status=active</text>
+  <text x="450" y="268" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Found: 800 rows (1,600 scanned)</text>
+  <text x="450" y="285" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Latency: 8ms</text>
+
+  <!-- Partition C -->
+  <rect x="590" y="200" width="270" height="90" rx="8" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="2"/>
+  <text x="725" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Partition C (EU-West)</text>
+  <text x="725" y="248" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Local filter: region=US AND status=active</text>
+  <text x="725" y="268" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Found: 50 rows (40,000 scanned)</text>
+  <text x="725" y="285" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Latency: 85ms &#8592; bottleneck</text>
+
+  <!-- Gather arrows -->
+  <path d="M 175 290 L 175 340 L 450 340" fill="none" stroke="#4f46e5" stroke-width="1.5"/>
+  <path d="M 450 290 L 450 340" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+  <path d="M 725 290 L 725 340 L 450 340" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <text x="450" y="355" text-anchor="middle" font-size="12" font-weight="bold" fill="#db2777" font-family="system-ui, sans-serif">Merge: 2,050 rows total | Total latency: 85ms (slowest partition)</text>
+
+  <!-- Result -->
+  <rect x="320" y="375" width="260" height="55" rx="8" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="2"/>
+  <text x="450" y="395" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Merged Result: 2,050 rows</text>
+  <text x="450" y="415" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Returned to client</text>
+
+  <!-- Mitigation strategies -->
+  <rect x="40" y="450" width="820" height="55" rx="6" fill="#4f46e5" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="55" y="470" font-size="11" fill="#1a1822" font-family="system-ui, sans-serif">Mitigations: (1) Colocate related data on same partition key</text>
+  <text x="380" y="470" font-size="11" fill="#1a1822" font-family="system-ui, sans-serif">(2) Use partition-aware routing (query only relevant partitions)</text>
+  <text x="680" y="470" font-size="11" fill="#1a1822" font-family="system-ui, sans-serif">(3) Denormalize to avoid cross-partition queries</text>
+
+  <defs>
+    <marker id="purpleArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="amberArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,1007 +1,114 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://web.resource.org/cc/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.0"
-   width="600"
-   height="900"
-   id="svg2"
-   sodipodi:version="0.32"
-   inkscape:version="0.44.1"
-   sodipodi:docname="Esquema_consenso.svg"
-   sodipodi:docbase="C:\Documents and Settings\Patrícia\Ambiente de trabalho">
-  <metadata
-     id="metadata126">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <sodipodi:namedview
-     inkscape:window-height="746"
-     inkscape:window-width="1028"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
-     pagecolor="#ffffff"
-     id="base"
-     inkscape:zoom="1.0689567"
-     inkscape:cx="255.11886"
-     inkscape:cy="236.05809"
-     inkscape:window-x="0"
-     inkscape:window-y="10"
-     inkscape:current-layer="g3731"
-     showgrid="true"
-     gridspacingx="10px"
-     gridspacingy="10px"
-     inkscape:grid-points="true"
-     gridtolerance="10000"
-     inkscape:grid-bbox="true"
-     inkscape:object-paths="false"
-     showguides="true"
-     width="600px"
-     height="900px" />
-  <defs
-     id="defs4">
-    <marker
-       inkscape:stockid="Arrow2Mend"
-       orient="auto"
-       refY="0"
-       refX="0"
-       id="Arrow2Mend"
-       style="overflow:visible">
-      <path
-         id="path3446"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
-         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.97309,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
-         transform="scale(-0.6,-0.6)" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="100%" height="100%">
+  <defs>
+    <marker id="arrow-paxos" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#db2777"/>
     </marker>
-    <marker
-       inkscape:stockid="Arrow2Lend"
-       orient="auto"
-       refY="0"
-       refX="0"
-       id="Arrow2Lend"
-       style="overflow:visible">
-      <path
-         id="path3452"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
-         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.97309,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
-         transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
+    <marker id="arrow-raft" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
     </marker>
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient1521">
-      <stop
-         style="stop-color:none"
-         offset="0"
-         id="stop1523" />
-      <stop
-         style="stop-color:#00e700;stop-opacity:0;"
-         offset="1"
-         id="stop1525" />
-    </linearGradient>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       style="overflow:visible"
-       id="Arrow1Lstart">
-      <path
-         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
-         transform="scale(0.8,0.8)"
-         style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none"
-         id="path3516" />
-    </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       style="overflow:visible"
-       id="Arrow1Lend">
-      <path
-         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
-         transform="scale(-0.8,-0.8)"
-         style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none"
-         id="path3513" />
-    </marker>
-    <linearGradient
-       id="linearGradient3972">
-      <stop
-         style="stop-color:#000000;stop-opacity:1"
-         offset="0"
-         id="stop3974" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0"
-         offset="1"
-         id="stop3976" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3089">
-      <stop
-         style="stop-color:#000000;stop-opacity:1"
-         offset="0"
-         id="stop3091" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0"
-         offset="1"
-         id="stop3093" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3065">
-      <stop
-         style="stop-color:#000000;stop-opacity:1"
-         offset="0"
-         id="stop3067" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0"
-         offset="1"
-         id="stop3069" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient1309">
-      <stop
-         style="stop-color:#000000;stop-opacity:1"
-         offset="0"
-         id="stop1311" />
-      <stop
-         style="stop-color:#00e700;stop-opacity:0"
-         offset="1"
-         id="stop1313" />
-    </linearGradient>
-    <linearGradient
-       x1="320.07315"
-       y1="481.8851"
-       x2="199.99995"
-       y2="186.01836"
-       id="linearGradient3071"
-       xlink:href="#linearGradient3065"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.351109,0,0,0.933334,-189.8921,-61.28126)" />
-    <linearGradient
-       x1="-300.36081"
-       y1="602.62408"
-       x2="-256.00275"
-       y2="425.02655"
-       id="linearGradient3095"
-       xlink:href="#linearGradient3089"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(2.233646,-9.152754e-7,-9.152754e-7,2.233646,163.7954,-485.1767)" />
-    <linearGradient
-       x1="320.07315"
-       y1="481.8851"
-       x2="199.99995"
-       y2="186.01836"
-       id="linearGradient4539"
-       xlink:href="#linearGradient3065"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.351109,0,0,0.933334,-190.5525,710.1572)" />
-    <linearGradient
-       x1="320.07315"
-       y1="481.8851"
-       x2="199.99995"
-       y2="186.01836"
-       id="linearGradient4541"
-       xlink:href="#linearGradient3065"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.351109,0,0,0.933334,-189.8921,578.7187)" />
-    <linearGradient
-       x1="-300.36081"
-       y1="602.62408"
-       x2="-256.00275"
-       y2="425.02655"
-       id="linearGradient4543"
-       xlink:href="#linearGradient3089"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(2.214232,3.751144e-8,3.751144e-8,2.214232,-396.2141,91.21277)" />
-    <linearGradient
-       x1="-300.36081"
-       y1="602.62408"
-       x2="-256.00275"
-       y2="425.02655"
-       id="linearGradient4545"
-       xlink:href="#linearGradient3089"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(2.259864,-1.189918e-6,-1.189918e-6,2.259864,-8.979954,-312.3179)" />
-    <linearGradient
-       x1="320.07315"
-       y1="481.8851"
-       x2="199.99995"
-       y2="186.01836"
-       id="linearGradient4573"
-       xlink:href="#linearGradient3065"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.351109,0,0,0.933334,-509.8921,10.15714)" />
-    <linearGradient
-       x1="-300.36081"
-       y1="602.62408"
-       x2="-256.00275"
-       y2="425.02655"
-       id="linearGradient4601"
-       xlink:href="#linearGradient3089"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(2.259868,-1.189918e-6,-1.189918e-6,2.259868,228.7918,-125.2768)" />
-    <linearGradient
-       x1="354.44446"
-       y1="317.96405"
-       x2="331.62036"
-       y2="230.02423"
-       id="linearGradient4612"
-       xlink:href="#linearGradient3972"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.852487,0,0,1,-714.3851,129.7222)" />
-    <linearGradient
-       x1="354.44446"
-       y1="317.96405"
-       x2="331.62036"
-       y2="230.02423"
-       id="linearGradient4633"
-       xlink:href="#linearGradient3972"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.852487,0,0,1,-714.3851,129.7222)" />
-    <linearGradient
-       x1="320.07315"
-       y1="481.8851"
-       x2="199.99995"
-       y2="186.01836"
-       id="linearGradient1445"
-       xlink:href="#linearGradient3065"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.351109,0,0,0.933334,229.3223,-61.84274)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient1521"
-       id="linearGradient1527"
-       x1="795.83038"
-       y1="589.60693"
-       x2="844.55103"
-       y2="606.08862"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3972"
-       id="linearGradient1442"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.852487,0,0,1,-714.3851,129.7222)"
-       x1="354.44446"
-       y1="317.96405"
-       x2="331.62036"
-       y2="230.02423" />
   </defs>
-  <g
-     id="g3731"
-     transform="translate(-2.824215,-4.261719e-5)">
-    <g
-       transform="translate(323.8994,-439.9999)"
-       id="g3485"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <g
-         id="g3493"
-         style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-    </g>
-    <text
-       sodipodi:linespacing="102%"
-       id="text7528"
-       y="-400.77515"
-       x="353.83514"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         y="-400.77515"
-         x="353.83514"
-         id="tspan7530"
-         sodipodi:role="line" /></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text1451"
-       y="753.67584"
-       x="315.70508"
-       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:102%;writing-mode:lr-tb;text-anchor:start;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
-         id="tspan1456"
-         y="753.67584"
-         x="315.70508"
-         sodipodi:role="line"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:102%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans">*<tspan
-   style="font-style:italic"
-   id="tspan2045">O consenso pode-se alterar. </tspan></tspan><tspan
-         id="tspan1478"
-         y="772.03584"
-         x="315.70508"
-         sodipodi:role="line"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:102%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans">Cada consenso é um novo</tspan><tspan
-         y="790.39584"
-         x="315.70508"
-         sodipodi:role="line"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:102%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans"
-         id="tspan2413">ponto de partida. Você ou</tspan><tspan
-         y="808.75584"
-         x="315.70508"
-         sodipodi:role="line"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:102%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans"
-         id="tspan2415">outro editor pode fazer nova</tspan><tspan
-         y="827.11584"
-         x="315.70508"
-         sodipodi:role="line"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:102%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans"
-         id="tspan2417">edição com vista a recomeçar</tspan><tspan
-         y="845.47584"
-         x="315.70508"
-         sodipodi:role="line"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:102%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans"
-         id="tspan2419">o processo, quantas vezes o</tspan><tspan
-         id="tspan2114"
-         y="863.83584"
-         x="315.70508"
-         sodipodi:role="line"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:102%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans">necessário.</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2395"
-       y="61.399605"
-       x="262.20413"
-       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
-         y="61.399605"
-         x="262.20413"
-         id="tspan2397"
-         sodipodi:role="line">*</tspan></text>
-    <g
-       transform="matrix(1.038351,0,0,1,-17.01088,-2.36214)"
-       id="g5668"
-       inkscape:transform-center-x="-23.097574"
-       style="text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle">
-      <rect
-         style="text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;opacity:1;fill:#c3d9f1;fill-opacity:1;fill-rule:nonzero;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect2923"
-         width="200"
-         height="40"
-         x="100"
-         y="32.362183"
-         ry="20" />
-      <text
-         xml:space="preserve"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:sans"
-         x="198.66557"
-         y="59.403198"
-         id="text5642"
-         sodipodi:linespacing="102%"><tspan
-           id="tspan2482"
-           sodipodi:role="line"
-           x="198.66557"
-           y="59.403198">Consenso prévio</tspan></text>
-    </g>
-    <g
-       transform="translate(-10.00001,17.63792)"
-       id="g7501"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <rect
-         style="fill:#c3d9f1;fill-opacity:1;fill-rule:nonzero;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         id="rect5673"
-         width="200"
-         height="80"
-         x="100"
-         y="112.36218"
-         ry="0" />
-      <text
-         sodipodi:linespacing="102%"
-         id="text5686"
-         y="156.6991"
-         x="199.83691"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-         xml:space="preserve"><tspan
-           y="156.6991"
-           x="199.83691"
-           id="tspan5688"
-           sodipodi:role="line">Edite o artigo</tspan></text>
-    </g>
-    <g
-       transform="translate(250,17.63784)"
-       id="g7506"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <rect
-         style="fill:#c3d9f1;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.05725741;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         id="rect7508"
-         width="211.76695"
-         height="79.942741"
-         x="100.02863"
-         y="112.39081"
-         ry="0" />
-      <text
-         sodipodi:linespacing="102%"
-         id="text7510"
-         y="131.4213"
-         x="212.81664"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-         xml:space="preserve"
-         transform="scale(0.960972,1.040613)"><tspan
-           y="131.4213"
-           x="212.81664"
-           id="tspan7512"
-           sodipodi:role="line">Pense numa possível </tspan><tspan
-           y="149.06475"
-           x="212.81663"
-           sodipodi:role="line"
-           id="tspan2405">alteração que possa </tspan><tspan
-           id="tspan7516"
-           y="166.7082"
-           x="215.21531"
-           sodipodi:role="line">integrar as várias ideias </tspan><tspan
-           id="tspan7518"
-           y="184.35165"
-           x="212.81664"
-           sodipodi:role="line" /></text>
-    </g>
-    <text
-       sodipodi:linespacing="102%"
-       id="text7522"
-       y="120.00005"
-       x="316.41699"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="120.00005"
-         x="316.41699"
-         id="tspan7524"
-         sodipodi:role="line">Implemente</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text7532"
-       y="24.843792"
-       x="190.58594"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="24.843792"
-         x="190.58594"
-         id="tspan7534"
-         sodipodi:role="line">Começo:</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text11126"
-       y="237.76573"
-       x="245.75586"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="237.76573"
-         x="245.75586"
-         id="tspan11128"
-         sodipodi:role="line">Aguarde</tspan></text>
-    <g
-       transform="matrix(1.0140509,0,0,0.9901282,-11.391055,19.931696)"
-       id="g11138"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         style="fill:#c3d9f1;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 100,282.36218 L 200,232.36218 L 300,282.36218 L 200,332.36218 L 100,282.36218 z "
-         id="path7536" />
-      <text
-         xml:space="preserve"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:sans"
-         x="196.76932"
-         y="266.23737"
-         id="text11132"
-         sodipodi:linespacing="102%"><tspan
-           sodipodi:role="line"
-           x="196.76932"
-           y="266.23737"
-           id="tspan11136">O artigo</tspan><tspan
-           sodipodi:role="line"
-           x="199.26541"
-           y="284.59737"
-           id="tspan2333">sofreu edição</tspan><tspan
-           sodipodi:role="line"
-           x="196.76932"
-           y="302.95737"
-           id="tspan2335">  posterior?</tspan></text>
-    </g>
-    <g
-       transform="translate(-10.00001,297.6378)"
-       id="g11178"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <g
-         transform="translate(-9.06567,2.617188e-6)"
-         id="g11180"
-         style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-        <path
-           id="path11182"
-           d="M 109.06567,282.36218 L 209.06567,232.36218 L 309.06567,282.36218 L 209.06567,332.36218 L 109.06567,282.36218 z "
-           style="fill:#c3d9f1;fill-opacity:1;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-        <text
-           sodipodi:linespacing="100%"
-           id="text11184"
-           y="279.6991"
-           x="209.49634"
-           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:sans"
-           xml:space="preserve"><tspan
-             id="tspan11190"
-             y="279.6991"
-             x="209.49634"
-             sodipodi:role="line">Concorda com</tspan><tspan
-             y="298.0591"
-             x="209.49634"
-             sodipodi:role="line"
-             id="tspan2396"> a reversão?</tspan></text>
-      </g>
-    </g>
-    <g
-       transform="translate(-8.175785,558.63786)"
-       id="g11198"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <rect
-         style="fill:#c3d9f1;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         id="rect11200"
-         width="200"
-         height="80"
-         x="101"
-         y="111.36218"
-         ry="0" />
-      <text
-         sodipodi:linespacing="102%"
-         id="text11202"
-         y="139.36218"
-         x="197"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:sans"
-         xml:space="preserve"><tspan
-           id="tspan11210"
-           y="139.36218"
-           x="197"
-           sodipodi:role="line">Leve o assunto</tspan><tspan
-           y="157.72218"
-           x="197"
-           sodipodi:role="line"
-           id="tspan2351"> para a página</tspan><tspan
-           y="176.08218"
-           x="197"
-           sodipodi:role="line"
-           id="tspan2354"> de discussão</tspan></text>
-    </g>
-    <g
-       transform="translate(-10.00001,677.6378)"
-       id="g11212"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <rect
-         style="fill:#c3d9f1;fill-opacity:1;fill-rule:nonzero;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         id="rect11214"
-         width="200"
-         height="80"
-         x="100"
-         y="112.36218"
-         ry="0" />
-      <text
-         sodipodi:linespacing="102%"
-         id="text11216"
-         y="138.03802"
-         x="198.17871"
-         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:sans"
-         xml:space="preserve"><tspan
-           id="tspan11218"
-           y="138.03802"
-           x="198.17871"
-           sodipodi:role="line">Ache um meio-termo</tspan><tspan
-           y="156.39802"
-           x="200.6748"
-           sodipodi:role="line"
-           id="tspan2356">que satisfaça a</tspan><tspan
-           id="tspan11220"
-           y="174.75802"
-           x="198.17871"
-           sodipodi:role="line">todas as partes</tspan></text>
-    </g>
-    <g
-       transform="translate(-8.175785,158.63786)"
-       id="g11144"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <g
-         transform="translate(-9.06567,2.617188e-6)"
-         id="g11158"
-         style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-        <path
-           id="path11146"
-           d="M 109.06567,282.36218 L 209.06567,232.36218 L 309.06567,282.36218 L 209.06567,332.36218 L 109.06567,282.36218 z "
-           style="fill:#c3d9f1;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-        <text
-           sodipodi:linespacing="102%"
-           id="text11148"
-           y="271.36218"
-           x="206.83521"
-           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:sans"
-           xml:space="preserve"><tspan
-             id="tspan11152"
-             y="277.36218"
-             x="209.3313"
-             sodipodi:role="line">A edição foi</tspan><tspan
-             y="295.72218"
-             x="206.83521"
-             sodipodi:role="line"
-             id="tspan2380"> uma reversão?</tspan></text>
-      </g>
-    </g>
-    <g
-       transform="translate(250,157.6378)"
-       id="g11244"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <g
-         transform="translate(-9.06567,2.617188e-6)"
-         id="g11246"
-         style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-        <path
-           id="path11248"
-           d="M 109.06567,282.36218 L 209.06567,232.36218 L 309.06567,282.36218 L 209.06567,332.36218 L 109.06567,282.36218 z "
-           style="fill:#c3d9f1;fill-opacity:1;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-        <text
-           sodipodi:linespacing="102%"
-           id="text11250"
-           y="276.89056"
-           x="207.88306"
-           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:sans"
-           xml:space="preserve"><tspan
-             id="tspan11256"
-             y="280.89056"
-             x="207.88306"
-             sodipodi:role="line">Concorda com</tspan><tspan
-             y="299.25056"
-             x="207.88306"
-             sodipodi:role="line"
-             id="tspan2392"> a alteração?</tspan></text>
-      </g>
-    </g>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2351"
-       y="290.00003"
-       x="318.82422"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="290.00003"
-         x="318.82422"
-         id="tspan2353"
-         sodipodi:role="line">Não</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2355"
-       y="369.76575"
-       x="219.94141"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan2361"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="369.76575"
-         x="219.94141"
-         sodipodi:role="line">Sim</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2367"
-       y="509.76575"
-       x="248.42773"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan2369"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="512.76575"
-         x="222.42773"
-         sodipodi:role="line">Sim</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2371"
-       y="420.14261"
-       x="314.66797"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan2373"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="428.14261"
-         x="316.66797"
-         sodipodi:role="line">Não</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2375"
-       y="561.75592"
-       x="325.22656"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan2377"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="571.75592"
-         x="315.22656"
-         sodipodi:role="line">Sim</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2379"
-       y="645.79108"
-       x="246.45703"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan2381"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="650.79108"
-         x="223.45703"
-         sodipodi:role="line">Não</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2383"
-       y="774.31647"
-       x="241.41797"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan2385"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="774.31647"
-         x="241.41797"
-         sodipodi:role="line">Debata</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2387"
-       y="528.56061"
-       x="498.17773"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan2389"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="512.56061"
-         x="475.17773"
-         sodipodi:role="line">Sim</tspan></text>
-    <text
-       sodipodi:linespacing="102%"
-       id="text2391"
-       y="364.31644"
-       x="494.08398"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan2393"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="382.31644"
-         x="476.08398"
-         sodipodi:role="line">Não</tspan></text>
-    <g
-       transform="translate(-10.00001,17.63792)"
-       id="g4405"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         id="path3491"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z " />
-      <path
-         sodipodi:nodetypes="cc"
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 200.00001,52.362117 L 200,112.36218"
-         id="path3505" />
-    </g>
-    <g
-       transform="translate(-8.372025,137.63786)"
-       id="g4409"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         id="path4411"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z " />
-      <path
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 200,72.362183 L 200,112.36218"
-         id="path4413" />
-    </g>
-    <g
-       transform="translate(-10.03524,277.6378)"
-       id="g4415"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         id="path4417"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z " />
-      <path
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 200,72.362183 L 200,112.36218"
-         id="path4419" />
-    </g>
-    <g
-       transform="translate(-10.03524,417.6378)"
-       id="g4421"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         id="path4423"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z " />
-      <path
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 200,72.362183 L 200,112.36218"
-         id="path4425" />
-    </g>
-    <g
-       transform="translate(-10.03524,557.6378)"
-       id="g4427"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         id="path4429"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z " />
-      <path
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 200,72.362183 L 200,112.36218"
-         id="path4431" />
-    </g>
-    <g
-       transform="translate(-10.03524,677.6378)"
-       id="g4433"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         id="path4435"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z " />
-      <path
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 200,72.362183 L 200,112.36218"
-         id="path4437" />
-    </g>
-    <g
-       id="g5342"
-       transform="matrix(0,-1,1,0,237.6378,640.0352)"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z "
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         id="path5344" />
-      <path
-         sodipodi:nodetypes="cc"
-         id="path5346"
-         d="M 200.0352,52.3622 L 200,112.36218"
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-    </g>
-    <g
-       id="g5348"
-       transform="matrix(0,1,-1,0,402.3622,-30.03512)"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z "
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         id="path5350" />
-      <path
-         sodipodi:nodetypes="cc"
-         id="path5352"
-         d="M 200.03514,52.3622 L 200,112.36218"
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-    </g>
-    <g
-       id="g5374"
-       transform="matrix(0,-1,1,0,557.6378,640.0352)"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-    <g
-       transform="matrix(-1,0,0,-1,650.0353,322.3622)"
-       id="g5380"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         id="path5382"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z " />
-      <path
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 200.0353,-67.637783 L 200,112.36218"
-         id="path5384"
-         sodipodi:nodetypes="cc" />
-    </g>
-    <g
-       id="g5386"
-       transform="matrix(0,-1,1,0,-22.36221,370.0352)"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <g
-         id="g2072"
-         style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-        <path
-           id="path5388"
-           style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-           d="M 208.87422,90.981287 L 200.03523,115.01822 L 191.19624,90.981286 C 196.41478,94.821382 203.55464,94.799255 208.87422,90.981287 z " />
-        <path
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-           d="M 200,112.36218 L 200.03522,72.3622 L -459.9648,72.36221 L -459.9648,112.36221"
-           id="path5390"
-           sodipodi:nodetypes="cccc" />
-      </g>
-    </g>
-    <text
-       transform="matrix(0,-1,1,0,0,0)"
-       sodipodi:linespacing="102%"
-       id="text5396"
-       y="38.849606"
-       x="-761.44537"
-       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan5400"
-         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;font-family:sans"
-         y="38.849606"
-         x="-761.44537"
-         sodipodi:role="line">Implemente</tspan></text>
-    <g
-       transform="translate(229,588.6378)"
-       id="g2163"
-       style="text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle">
-      <g
-         transform="translate(21,49.00002)"
-         id="g2171"
-         style="text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle">
-        <rect
-           ry="20"
-           y="32.362183"
-           x="100"
-           height="40"
-           width="200"
-           id="rect2165"
-           style="text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;opacity:1;fill:#c3d9f1;fill-opacity:1;fill-rule:nonzero;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-        <text
-           sodipodi:linespacing="102%"
-           id="text2167"
-           y="57.520386"
-           x="200.99902"
-           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:102%;writing-mode:lr-tb;text-anchor:middle;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:sans"
-           xml:space="preserve"><tspan
-             y="57.520386"
-             x="200.99902"
-             id="tspan2169"
-             sodipodi:role="line">Novo consenso*</tspan></text>
-      </g>
-    </g>
-    <g
-       transform="translate(-30,20.00002)"
-       id="g2510"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <path
-         sodipodi:nodetypes="cc"
-         id="path5378"
-         d="M 480,470 L 480,645.9631"
-         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-      <path
-         d="M 488.839,625.96307 L 480.00001,650 L 471.16102,625.96307 C 476.37956,629.80316 483.51942,629.78103 488.839,625.96307 z "
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         id="path5364" />
-    </g>
-    <g
-       transform="translate(-30,20.00002)"
-       id="g2514"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <g
-         id="g5368"
-         transform="matrix(0,-1,1,0,337.6378,760.0352)"
-         style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-        <path
-           sodipodi:nodetypes="ccc"
-           id="path5372"
-           d="M 200.0352,-17.6378 L 200.0352,92.3622 L 120.0352,92.3622"
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-      </g>
-      <path
-         d="M 438.83899,625.96307 L 430,650 L 421.16101,625.96307 C 426.37955,629.80316 433.51941,629.78103 438.83899,625.96307 z "
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         id="path2469" />
-    </g>
-    <g
-       transform="translate(-30,20.00002)"
-       id="g2519"
-       style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-      <g
-         id="g5354"
-         transform="matrix(0,-1,1,0,337.6378,480.0352)"
-         style="text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%">
-        <path
-           sodipodi:nodetypes="ccccccc"
-           id="path5358"
-           d="M 200.0352,-17.6378 L 200.03522,132.3622 C 210.03522,132.3622 210.03522,152.3622 199.91119,152.4302 L 200.0352,262.3622 L -79.9648,262.3622 L -79.9648,192.3622 L -159.9648,192.3622"
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:black;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%" />
-      </g>
-      <path
-         id="path2467"
-         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;text-anchor:middle;text-align:center;writing-mode:lr;line-height:102%"
-         d="M 538.83899,625.96307 L 530,650 L 521.16101,625.96307 C 526.37955,629.80316 533.51941,629.78103 538.83899,625.96307 z " />
-    </g>
-  </g>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#1a1822" text-anchor="middle">Paxos vs Raft: Protocol Comparison</text>
+  <text x="450" y="55" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822" text-anchor="middle">Message flow complexity and phase differences</text>
+
+  <!-- Divider Line -->
+  <line x1="450" y1="70" x2="450" y2="500" stroke="#94a3b8" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- PAXOS Side -->
+  <rect x="30" y="70" width="400" height="40" rx="8" fill="#db2777" opacity="0.15" stroke="#db2777" stroke-width="2"/>
+  <text x="230" y="96" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#db2777" text-anchor="middle">Paxos Protocol</text>
+
+  <!-- Paxos Nodes -->
+  <rect x="60" y="130" width="90" height="45" rx="8" fill="#db2777" opacity="0.15" stroke="#db2777" stroke-width="1.5"/>
+  <text x="105" y="157" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#db2777" text-anchor="middle">P1</text>
+
+  <rect x="185" y="130" width="90" height="45" rx="8" fill="#db2777" opacity="0.15" stroke="#db2777" stroke-width="1.5"/>
+  <text x="230" y="157" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#db2777" text-anchor="middle">P2</text>
+
+  <rect x="310" y="130" width="90" height="45" rx="8" fill="#db2777" opacity="0.15" stroke="#db2777" stroke-width="1.5"/>
+  <text x="355" y="157" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#db2777" text-anchor="middle">P3</text>
+
+  <!-- Paxos Phase 1: Prepare -->
+  <text x="230" y="200" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#d97706" text-anchor="middle">Phase 1: Prepare (Proposer sends prepare with proposal n)</text>
+  <path d="M 105 178 L 105 215" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+  <path d="M 230 178 L 230 215" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+  <path d="M 355 178 L 355 215" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+
+  <!-- Paxos Phase 2: Promise -->
+  <text x="230" y="260" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#16a34a" text-anchor="middle">Phase 2: Promise (Acceptors respond with highest accepted)</text>
+  <path d="M 105 245 L 105 222" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+  <path d="M 230 245 L 230 222" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+  <path d="M 355 245 L 355 222" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+
+  <!-- Paxos Phase 3: Accept -->
+  <text x="230" y="305" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#4f46e5" text-anchor="middle">Phase 3: Accept (Proposer sends accept with value v)</text>
+  <path d="M 105 275 L 105 312" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+  <path d="M 230 275 L 230 312" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+  <path d="M 355 275 L 355 312" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+
+  <!-- Paxos Phase 4: Accepted -->
+  <text x="230" y="350" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="middle">Phase 4: Accepted (Acceptors acknowledge value)</text>
+  <path d="M 105 340 L 105 317" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+  <path d="M 230 340 L 230 317" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+  <path d="M 355 340 L 355 317" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-paxos)"/>
+
+  <!-- Paxos Phase 5: Commit -->
+  <text x="230" y="395" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#dc2626" text-anchor="middle">Phase 5: Commit (Value learned by all acceptors)</text>
+  <rect x="60" y="405" width="340" height="35" rx="8" fill="#dc2626" opacity="0.15" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="230" y="428" font-family="system-ui, sans-serif" font-size="12" fill="#4b5563" text-anchor="middle">Value committed across majority of acceptors</text>
+
+  <!-- Message Count for Paxos -->
+  <rect x="60" y="455" width="340" height="35" rx="8" fill="#db2777" opacity="0.1" stroke="#db2777" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="230" y="477" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#db2777" text-anchor="middle">Total Messages: 4N (N = number of nodes)</text>
+
+  <!-- RAFT Side -->
+  <rect x="470" y="70" width="400" height="40" rx="8" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="2"/>
+  <text x="670" y="96" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#2563eb" text-anchor="middle">Raft Protocol</text>
+
+  <!-- Raft Nodes -->
+  <rect x="500" y="130" width="90" height="45" rx="8" fill="#4f46e5" opacity="0.2" stroke="#4f46e5" stroke-width="2"/>
+  <text x="545" y="157" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#4f46e5" text-anchor="middle">Leader</text>
+
+  <rect x="625" y="130" width="90" height="45" rx="8" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="670" y="157" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="middle">Follower</text>
+
+  <rect x="750" y="130" width="90" height="45" rx="8" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="795" y="157" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="middle">Follower</text>
+
+  <!-- Raft Phase 1: Leader Election -->
+  <text x="670" y="200" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#d97706" text-anchor="middle">Phase 1: Leader Election (single round of voting)</text>
+  <path d="M 545 178 L 545 215" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-raft)"/>
+  <path d="M 670 178 L 670 215" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-raft)"/>
+  <path d="M 795 178 L 795 215" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-raft)"/>
+
+  <!-- Raft Election Response -->
+  <text x="670" y="260" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#16a34a" text-anchor="middle">Phase 2: Votes Granted (majority wins)</text>
+  <path d="M 545 245 L 545 222" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-raft)"/>
+  <path d="M 670 245 L 670 222" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-raft)"/>
+  <path d="M 795 245 L 795 222" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-raft)"/>
+
+  <!-- Raft Phase 3: Log Replication -->
+  <text x="670" y="305" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#4f46e5" text-anchor="middle">Phase 3: AppendEntries (log replication + heartbeat)</text>
+  <path d="M 545 275 L 545 312" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrow-raft)"/>
+  <path d="M 670 275 L 670 312" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrow-raft)"/>
+  <path d="M 795 275 L 795 312" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrow-raft)"/>
+
+  <!-- Raft Phase 4: Ack + Commit -->
+  <text x="670" y="350" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="middle">Phase 4: Ack + Commit (single round-trip)</text>
+  <path d="M 545 340 L 545 317" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-raft)"/>
+  <path d="M 670 340 L 670 317" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-raft)"/>
+  <path d="M 795 340 L 795 317" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-raft)"/>
+
+  <!-- Raft Commit -->
+  <rect x="500" y="365" width="340" height="35" rx="8" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="670" y="388" font-family="system-ui, sans-serif" font-size="12" fill="#4b5563" text-anchor="middle">Leader commits after majority ack, applies to state machine</text>
+
+  <!-- Message Count for Raft -->
+  <rect x="500" y="455" width="340" height="35" rx="8" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="670" y="477" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#2563eb" text-anchor="middle">Total Messages: 2N (N = number of nodes)</text>
+
+  <!-- Key Difference -->
+  <rect x="30" y="495" width="840" height="20" rx="4" fill="#4b5563" opacity="0.1"/>
+  <text x="450" y="509" font-family="system-ui, sans-serif" font-size="11" fill="#4b5563" text-anchor="middle">Key Difference: Paxos requires 2 rounds of messaging per consensus. Raft combines election + replication into a simpler flow with a stable leader.</text>
 </svg>

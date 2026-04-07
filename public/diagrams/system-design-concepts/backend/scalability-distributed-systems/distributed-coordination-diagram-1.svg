@@ -1,11 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Distributed Coordination Diagram 1</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Components</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Flow</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Data</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Distributed Coordination Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">Clients use coordination service (ZooKeeper/etcd) for locks, configuration, discovery, and leader election</text>
+
+  <!-- Clients -->
+  <rect x="40" y="100" width="140" height="45" rx="6" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="110" y="120" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">Client 1</text>
+  <text x="110" y="135" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Service instance</text>
+
+  <rect x="40" y="160" width="140" height="45" rx="6" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="110" y="180" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">Client 2</text>
+  <text x="110" y="195" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Service instance</text>
+
+  <rect x="40" y="220" width="140" height="45" rx="6" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="110" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">Client 3</text>
+  <text x="110" y="255" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Service instance</text>
+
+  <!-- Arrows to coordination service -->
+  <path d="M 180 122 L 310 122" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#blueArrow)"/>
+  <path d="M 180 182 L 310 182" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#blueArrow)"/>
+  <path d="M 180 242 L 310 242" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#blueArrow)"/>
+
+  <!-- Coordination Service cluster -->
+  <rect x="310" y="80" width="280" height="210" rx="8" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Coordination Service Cluster</text>
+
+  <rect x="340" y="120" width="65" height="50" rx="4" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="372" y="140" text-anchor="middle" font-size="10" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Node 1</text>
+  <text x="372" y="157" text-anchor="middle" font-size="8" fill="#16a34a" font-family="system-ui, sans-serif">Leader</text>
+
+  <rect x="417" y="120" width="65" height="50" rx="4" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="450" y="140" text-anchor="middle" font-size="10" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Node 2</text>
+  <text x="450" y="157" text-anchor="middle" font-size="8" fill="#4b5563" font-family="system-ui, sans-serif">Follower</text>
+
+  <rect x="494" y="120" width="65" height="50" rx="4" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="526" y="140" text-anchor="middle" font-size="10" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Node 3</text>
+  <text x="526" y="157" text-anchor="middle" font-size="8" fill="#4b5563" font-family="system-ui, sans-serif">Follower</text>
+
+  <rect x="370" y="190" width="160" height="30" rx="4" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="210" text-anchor="middle" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">Consensus Protocol (Raft/Zab)</text>
+
+  <rect x="370" y="230" width="160" height="30" rx="4" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1"/>
+  <text x="450" y="250" text-anchor="middle" font-size="10" fill="#1d4ed8" font-family="system-ui, sans-serif">Replicated Log + State Machine</text>
+
+  <!-- Services that use coordination -->
+  <rect x="620" y="80" width="250" height="50" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="745" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Distributed Locks</text>
+  <text x="745" y="118" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Mutual exclusion across services</text>
+
+  <rect x="620" y="145" width="250" height="50" rx="6" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="1.5"/>
+  <text x="745" y="165" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Service Discovery</text>
+  <text x="745" y="183" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Register and discover service instances</text>
+
+  <rect x="620" y="210" width="250" height="50" rx="6" fill="#db2777" opacity="0.12" stroke="#db2777" stroke-width="1.5"/>
+  <text x="745" y="230" text-anchor="middle" font-size="12" font-weight="bold" fill="#9d174d" font-family="system-ui, sans-serif">Configuration Management</text>
+  <text x="745" y="248" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Dynamic config with watch notifications</text>
+
+  <rect x="620" y="275" width="250" height="50" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="745" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">Leader Election</text>
+  <text x="745" y="313" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Elect a single coordinator from candidates</text>
+
+  <!-- Coordination primitives table -->
+  <rect x="30" y="320" width="840" height="185" rx="8" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Coordination Primitives by System</text>
+
+  <!-- Headers -->
+  <text x="150" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">ZooKeeper</text>
+  <text x="375" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">etcd</text>
+  <text x="600" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Consul</text>
+  <text x="800" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="#9d174d" font-family="system-ui, sans-serif">Curator</text>
+
+  <!-- Locks -->
+  <text x="50" y="395" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Locks:</text>
+  <text x="150" y="395" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Sequential znodes</text>
+  <text x="375" y="395" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Lease-based</text>
+  <text x="600" y="395" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Session-based</text>
+  <text x="800" y="395" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Shared lock</text>
+
+  <!-- Config -->
+  <text x="50" y="420" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Config:</text>
+  <text x="150" y="420" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">znode data + watch</text>
+  <text x="375" y="420" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">key + watch</text>
+  <text x="600" y="420" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">KV store + watch</text>
+  <text x="800" y="420" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Dynamic props</text>
+
+  <!-- Discovery -->
+  <text x="50" y="445" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Discovery:</text>
+  <text x="150" y="445" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Ephemeral znodes</text>
+  <text x="375" y="445" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Lease-based keys</text>
+  <text x="600" y="445" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Built-in service catalog</text>
+  <text x="800" y="445" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">N/A (ZK wrapper)</text>
+
+  <!-- Election -->
+  <text x="50" y="470" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Election:</text>
+  <text x="150" y="470" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Leader recipe</text>
+  <text x="375" y="470" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Campaign API</text>
+  <text x="600" y="470" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Built-in election</text>
+  <text x="800" y="470" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Leader selector</text>
+
+  <text x="50" y="495" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Consensus:</text>
+  <text x="150" y="495" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Zab</text>
+  <text x="375" y="495" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Raft</text>
+  <text x="600" y="495" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Raft (via Serf)</text>
+  <text x="800" y="495" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Uses ZK</text>
+
+  <defs>
+    <marker id="blueArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+  </defs>
 </svg>

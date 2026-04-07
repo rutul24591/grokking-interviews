@@ -1,46 +1,69 @@
-<svg width="22cm" height="12cm" viewBox="343 250 437 222" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#fff" d="M468.075 251.9H540v58h-71.925z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M468.075 251.9H540v58h-71.925z"/>
-    <text font-size="12.8" x="504.038" y="284.8" text-anchor="middle" font-family="sans-serif">
-        <tspan x="504.038" y="284.8">
-            Server
-        </tspan>
-    </text>
-    <path fill="#fff" d="M467.975 331.9H539v59h-71.025z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M467.975 331.9H539v59h-71.025z"/>
-    <text font-size="12.8" x="503.488" y="365.3" text-anchor="middle" font-family="sans-serif">
-        <tspan x="503.488" y="365.3">
-            Server
-        </tspan>
-    </text>
-    <path fill="#fff" d="M467.875 412.9H539v58h-71.125z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M467.875 412.9H539v58h-71.125z"/>
-    <text font-size="12.8" x="503.437" y="445.8" text-anchor="middle" font-family="sans-serif">
-        <tspan x="503.437" y="445.8">
-            Server
-        </tspan>
-    </text>
-    <path fill="#fff" d="M574.875 332.9h90.2v58h-90.2z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M574.875 332.9h90.2v58h-90.2z"/>
-    <text font-size="12.8" x="619.975" y="365.8" text-anchor="middle" font-family="sans-serif">
-        <tspan x="619.975" y="365.8">
-            Distributor
-        </tspan>
-    </text>
-    <path fill="#fff" d="M698.625 331.9H779v59h-80.375z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M698.625 331.9H779v59h-80.375z"/>
-    <text font-size="12.8" x="738.812" y="365.3" text-anchor="middle" font-family="sans-serif">
-        <tspan x="738.812" y="365.3">
-            Browser
-        </tspan>
-    </text>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M540 280.9l34.875 52M539 361.4l35.875.5M539 441.9l35.875-51M665.075 361.9l33.55-.5"/>
-    <path fill="#fff" d="M344.4 331.9h90.2v58h-90.2z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M344.4 331.9h90.2v58h-90.2z"/>
-    <text font-size="12.8" x="389.5" y="364.8" text-anchor="middle" font-family="sans-serif">
-        <tspan x="389.5" y="364.8">
-            Database
-        </tspan>
-    </text>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M468.075 280.9l-33.475 51M467.975 361.4l-33.375-.5M434.6 389.9l33.275 52"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Horizontal Scaling Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">Load balancer distributing traffic across dynamically scaling stateless service instances</text>
+
+  <!-- Load Balancer -->
+  <rect x="320" y="80" width="260" height="60" rx="8" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="15" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Load Balancer</text>
+  <text x="450" y="125" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Round-robin / Least connections / Consistent hash</text>
+
+  <!-- Client -->
+  <rect x="40" y="85" width="120" height="50" rx="8" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="100" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">Client</text>
+  <text x="100" y="122" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Requests</text>
+
+  <path d="M 160 110 L 320 110" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#blueArrow)"/>
+
+  <!-- Service instances -->
+  <rect x="80" y="200" width="160" height="60" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="2"/>
+  <text x="160" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Instance 1</text>
+  <text x="160" y="245" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">CPU: 45% | 200 req/s</text>
+
+  <rect x="370" y="200" width="160" height="60" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Instance 2</text>
+  <text x="450" y="245" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">CPU: 52% | 220 req/s</text>
+
+  <rect x="660" y="200" width="160" height="60" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="2"/>
+  <text x="740" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Instance 3</text>
+  <text x="740" y="245" text-anchor="middle" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">CPU: 38% | 180 req/s</text>
+
+  <!-- LB to instances -->
+  <path d="M 400 140 L 160 200" fill="none" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#purpleArrow)"/>
+  <path d="M 450 140 L 450 200" fill="none" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#purpleArrow)"/>
+  <path d="M 500 140 L 740 200" fill="none" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#purpleArrow)"/>
+
+  <!-- New instance being added -->
+  <rect x="660" y="310" width="160" height="60" rx="8" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="740" y="335" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Instance 4 (New)</text>
+  <text x="740" y="355" text-anchor="middle" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">Provisioning...</text>
+
+  <path d="M 500 140 L 740 310" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#amberArrow)"/>
+  <text x="620" y="220" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">Auto-scale: adding instance</text>
+
+  <!-- Shared state -->
+  <rect x="300" y="410" width="300" height="60" rx="8" fill="#db2777" opacity="0.12" stroke="#db2777" stroke-width="2"/>
+  <text x="450" y="435" text-anchor="middle" font-size="13" font-weight="bold" fill="#9d174d" font-family="system-ui, sans-serif">Shared State (Stateless)</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Database | Cache (Redis) | Object Store (S3)</text>
+
+  <!-- Instances to shared state -->
+  <path d="M 160 260 L 380 410" fill="none" stroke="#db2777" stroke-width="1" stroke-dasharray="3 2"/>
+  <path d="M 450 260 L 450 410" fill="none" stroke="#db2777" stroke-width="1" stroke-dasharray="3 2"/>
+  <path d="M 740 260 L 520 410" fill="none" stroke="#db2777" stroke-width="1" stroke-dasharray="3 2"/>
+
+  <!-- Key principle -->
+  <rect x="30" y="485" width="840" height="25" rx="4" fill="#4f46e5" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="503" text-anchor="middle" font-size="11" fill="#4b5563" font-family="system-ui, sans-serif">Key principle: Service instances are stateless — any instance can handle any request, enabling seamless scaling</text>
+
+  <defs>
+    <marker id="blueArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="purpleArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+    <marker id="amberArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
 </svg>

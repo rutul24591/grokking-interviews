@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520" font-family="system-ui, sans-serif">
+  <title>Resolution Strategies Comparison for split-brain conflicts: LWW, Version Vectors, CRDTs, and Manual Merge</title>
+  <defs>
+    <marker id="arrP" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+    <marker id="arrG2" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrB2" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrAm" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="520" fill="#f3f1f8" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="32" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#1a1822">Resolution Strategies Comparison</text>
+  <text x="400" y="52" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="normal" fill="#64748b">LWW, Version Vectors, CRDTs, and Manual Merge for resolving split-brain conflicts</text>
+
+  <!-- Strategy 1: LWW -->
+  <rect x="30" y="80" width="340" height="170" rx="12" fill="#4f46e5" fill-opacity="0.1" stroke="#4f46e5" stroke-width="2"/>
+  <text x="200" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#4f46e5">Last-Writer-Wins (LWW)</text>
+
+  <!-- LWW timeline -->
+  <line x1="60" y1="140" x2="340" y2="140" stroke="#475569" stroke-width="2"/>
+  <circle cx="120" cy="140" r="8" fill="#4f46e5" fill-opacity="0.85"/>
+  <text x="120" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#ffffff">W1</text>
+  <text x="120" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="normal" fill="#64748b">t=100</text>
+  <circle cx="220" cy="140" r="8" fill="#db2777" fill-opacity="0.85"/>
+  <text x="220" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#ffffff">W2</text>
+  <text x="220" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="normal" fill="#64748b">t=105</text>
+
+  <!-- Winner annotation -->
+  <rect x="260" y="155" width="90" height="28" rx="6" fill="#16a34a" fill-opacity="0.2" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="305" y="174" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">W2 wins</text>
+
+  <!-- LWW pros/cons -->
+  <text x="60" y="200" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">+ Simple, low overhead</text>
+  <text x="60" y="216" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#dc2626">- Data loss if W1 &gt; W2 value</text>
+  <text x="60" y="232" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#dc2626">- Clock skew causes wrong winner</text>
+
+  <!-- Strategy 2: Version Vectors -->
+  <rect x="410" y="80" width="360" height="170" rx="12" fill="#16a34a" fill-opacity="0.1" stroke="#16a34a" stroke-width="2"/>
+  <text x="590" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#16a34a">Version Vectors</text>
+
+  <!-- Version vector boxes -->
+  <rect x="430" y="125" width="140" height="50" rx="6" fill="#4f46e5" fill-opacity="0.3" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="500" y="146" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#1a1822">Partition A: {A:3, B:1}</text>
+  <text x="500" y="164" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">x = &quot;hello&quot;</text>
+
+  <rect x="610" y="125" width="140" height="50" rx="6" fill="#db2777" fill-opacity="0.3" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="680" y="146" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#9d174d">Partition B: {A:1, B:3}</text>
+  <text x="680" y="164" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">x = &quot;world&quot;</text>
+
+  <!-- Conflict detected -->
+  <rect x="500" y="190" width="180" height="30" rx="6" fill="#d97706" fill-opacity="0.2" stroke="#d97706" stroke-width="1.5"/>
+  <text x="590" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Conflict detected - merge!</text>
+
+  <!-- Version vectors pros/cons -->
+  <text x="430" y="240" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">+ Tracks causality, detects conflicts</text>
+  <text x="430" y="256" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#dc2626">- O(N) metadata per key (N = nodes)</text>
+  <text x="430" y="272" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#dc2626">- Requires application-level merge fn</text>
+
+  <!-- Strategy 3: CRDTs -->
+  <rect x="30" y="290" width="340" height="170" rx="12" fill="#2563eb" fill-opacity="0.1" stroke="#2563eb" stroke-width="2"/>
+  <text x="200" y="318" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">CRDTs (Conflict-free Replicated Data Types)</text>
+
+  <!-- CRDT merge illustration -->
+  <rect x="60" y="340" width="100" height="50" rx="8" fill="#4f46e5" fill-opacity="0.6" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="110" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Set A</text>
+  <text x="110" y="378" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#e0e7ff">{1, 2, 3}</text>
+
+  <rect x="240" y="340" width="100" height="50" rx="8" fill="#db2777" fill-opacity="0.6" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="290" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Set B</text>
+  <text x="290" y="378" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#fce7f3">{3, 4, 5}</text>
+
+  <!-- Merge arrow -->
+  <line x1="160" y1="365" x2="240" y2="365" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrB2)"/>
+  <text x="200" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#2563eb">merge</text>
+
+  <!-- Result -->
+  <rect x="120" y="405" width="160" height="40" rx="8" fill="#16a34a" fill-opacity="0.3" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="200" y="422" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">Result: {1, 2, 3, 4, 5}</text>
+  <text x="200" y="438" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="normal" fill="#15803d">Convergent, no conflicts</text>
+
+  <!-- CRDTs pros/cons -->
+  <text x="60" y="480" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">+ Strong eventual consistency, no coord.</text>
+  <text x="60" y="496" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#dc2626">- Limited to commutative/associative ops</text>
+  <text x="60" y="512" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#dc2626">- G-Counter grows unbounded</text>
+
+  <!-- Strategy 4: Manual Merge -->
+  <rect x="410" y="290" width="360" height="170" rx="12" fill="#d97706" fill-opacity="0.1" stroke="#d97706" stroke-width="2"/>
+  <text x="590" y="318" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#92400e">Manual / Operator Merge</text>
+
+  <!-- Manual merge flow -->
+  <rect x="430" y="340" width="100" height="40" rx="8" fill="#dc2626" fill-opacity="0.3" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="480" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#991b1b">Conflict!</text>
+
+  <line x1="530" y1="360" x2="580" y2="360" stroke="#d97706" stroke-width="2" marker-end="url(#arrAm)"/>
+
+  <rect x="580" y="340" width="100" height="40" rx="8" fill="#d97706" fill-opacity="0.3" stroke="#92400e" stroke-width="1.5"/>
+  <text x="630" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Alert ops</text>
+  <text x="630" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="normal" fill="#64748b">team</text>
+
+  <line x1="630" y1="380" x2="630" y2="410" stroke="#d97706" stroke-width="2" marker-end="url(#arrAm)"/>
+
+  <rect x="560" y="415" width="140" height="35" rx="8" fill="#4f46e5" fill-opacity="0.3" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="630" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#1a1822">Human resolves</text>
+
+  <!-- Manual merge pros/cons -->
+  <text x="430" y="470" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">+ Domain-correct resolution possible</text>
+  <text x="430" y="486" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#dc2626">- Slow, error-prone, not scalable</text>
+  <text x="430" y="502" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#dc2626">- Requires operational playbook</text>
+
+  <!-- Strategy summary bar -->
+  <rect x="30" y="460" width="340" height="45" rx="8" fill="#64748b" opacity="0.08" stroke="#475569" stroke-width="1"/>
+  <text x="200" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#1a1822">Choose based on: data semantics,</text>
+  <text x="200" y="496" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">conflict frequency, and SLOs</text>
+</svg>

@@ -1,11 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Split-Brain Problem Diagram 3</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Failure</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Mitigation</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Signals</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" font-family="system-ui, sans-serif">
+  <title>CAP Theorem Trade-Offs During Network Partition showing consistency, availability, and partition tolerance</title>
+  <defs>
+    <linearGradient id="cpGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="apGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="caGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f3f1f8" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="36" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#1a1822">CAP Theorem: Trade-Offs During Network Partition</text>
+  <text x="400" y="56" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="normal" fill="#64748b">When a partition (P) occurs, you must choose between Consistency (C) and Availability (A)</text>
+
+  <!-- Triangle -->
+  <!-- Consistency vertex (top) -->
+  <polygon points="400,100 150,420 650,420" fill="none" stroke="#475569" stroke-width="2"/>
+
+  <!-- Triangle filled regions -->
+  <polygon points="400,100 400,260 150,420" fill="url(#cpGrad)" stroke="none"/>
+  <polygon points="400,100 400,260 650,420" fill="url(#apGrad)" stroke="none"/>
+  <polygon points="150,420 650,420 400,260" fill="url(#caGrad)" stroke="none"/>
+
+  <!-- Vertex labels -->
+  <circle cx="400" cy="100" r="40" fill="#4f46e5" fill-opacity="0.85" stroke="#818cf8" stroke-width="2"/>
+  <text x="400" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#ffffff">C</text>
+  <text x="400" y="72" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#4f46e5">Consistency</text>
+  <text x="400" y="52" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">Linearizable reads</text>
+
+  <circle cx="150" cy="420" r="40" fill="#16a34a" fill-opacity="0.85" stroke="#4ade80" stroke-width="2"/>
+  <text x="150" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#ffffff">A</text>
+  <text x="150" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#16a34a">Availability</text>
+  <text x="150" y="483" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">Every request responds</text>
+
+  <circle cx="650" cy="420" r="40" fill="#d97706" fill-opacity="0.85" stroke="#92400e" stroke-width="2"/>
+  <text x="650" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#ffffff">P</text>
+  <text x="650" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Partition Tolerance</text>
+  <text x="650" y="483" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">System survives splits</text>
+
+  <!-- Edge annotations -->
+  <!-- CP edge -->
+  <rect x="230" y="230" width="160" height="60" rx="8" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="310" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#4f46e5">CP Systems</text>
+  <text x="310" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">etcd, ZooKeeper, HBase</text>
+  <text x="310" y="284" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">Sacrifice availability during P</text>
+
+  <!-- AP edge -->
+  <rect x="410" y="230" width="170" height="60" rx="8" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="495" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">AP Systems</text>
+  <text x="495" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">DynamoDB, Cassandra, Riak</text>
+  <text x="495" y="284" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">Serve stale reads during P</text>
+
+  <!-- CA edge (bottom) - not possible in distributed systems -->
+  <rect x="310" y="390" width="180" height="50" rx="8" fill="#dc2626" fill-opacity="0.15" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="400" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">CA: Not Possible in Practice</text>
+  <text x="400" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">Networks always partition eventually</text>
+
+  <!-- Partition zone highlight -->
+  <rect x="580" y="100" width="190" height="120" rx="10" fill="#db2777" fill-opacity="0.1" stroke="#db2777" stroke-width="1.5"/>
+  <text x="675" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#db2777">During Partition</text>
+  <text x="675" y="148" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">Nodes cannot communicate</text>
+  <text x="675" y="164" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">P is forced. Choice:</text>
+  <text x="675" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#64748b">C (wait/fail) or A (serve stale)</text>
+
+  <!-- Arrow from P to partition zone -->
+  <line x1="650" y1="380" x2="675" y2="220" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,4"/>
 </svg>

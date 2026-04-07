@@ -1,11 +1,81 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Service Decomposition Diagram 3</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Failure</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Mitigation</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Signals</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Database-per-Service Pattern</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">Each service owns its database — no shared databases between services</text>
+
+  <!-- Service A -->
+  <rect x="50" y="80" width="240" height="170" rx="8" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="2"/>
+  <text x="170" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">User Service</text>
+  <rect x="80" y="120" width="180" height="50" rx="4" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="1"/>
+  <text x="170" y="140" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Handles: /api/users/*</text>
+  <text x="170" y="158" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Business logic for users</text>
+  <ellipse cx="170" cy="215" rx="60" ry="18" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1.5"/>
+  <rect x="110" y="215" width="120" height="25" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="1.5"/>
+  <ellipse cx="170" cy="240" rx="60" ry="18" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="170" y="232" text-anchor="middle" font-size="10" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">User DB</text>
+  <text x="170" y="255" text-anchor="middle" font-size="8" fill="#4b5563" font-family="system-ui, sans-serif">users, profiles, addresses</text>
+  <path d="M 170 170 L 170 197" fill="none" stroke="#4f46e5" stroke-width="1.5"/>
+
+  <!-- Service B -->
+  <rect x="330" y="80" width="240" height="170" rx="8" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Order Service</text>
+  <rect x="360" y="120" width="180" height="50" rx="4" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="140" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Handles: /api/orders/*</text>
+  <text x="450" y="158" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Business logic for orders</text>
+  <ellipse cx="450" cy="215" rx="60" ry="18" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <rect x="390" y="215" width="120" height="25" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <ellipse cx="450" cy="240" rx="60" ry="18" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="450" y="232" text-anchor="middle" font-size="10" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Order DB</text>
+  <text x="450" y="255" text-anchor="middle" font-size="8" fill="#4b5563" font-family="system-ui, sans-serif">orders, items, status</text>
+  <path d="M 450 170 L 450 197" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+
+  <!-- Service C -->
+  <rect x="610" y="80" width="240" height="170" rx="8" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="2"/>
+  <text x="730" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Product Service</text>
+  <rect x="640" y="120" width="180" height="50" rx="4" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="1"/>
+  <text x="730" y="140" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Handles: /api/products/*</text>
+  <text x="730" y="158" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Business logic for products</text>
+  <ellipse cx="730" cy="215" rx="60" ry="18" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="670" y="215" width="120" height="25" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1.5"/>
+  <ellipse cx="730" cy="240" rx="60" ry="18" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="1.5"/>
+  <text x="730" y="232" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Product DB</text>
+  <text x="730" y="255" text-anchor="middle" font-size="8" fill="#4b5563" font-family="system-ui, sans-serif">products, categories, prices</text>
+  <path d="M 730 170 L 730 197" fill="none" stroke="#d97706" stroke-width="1.5"/>
+
+  <!-- Cross-service communication -->
+  <rect x="30" y="280" width="840" height="115" rx="8" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Cross-Service Data Access: No Direct DB Access</text>
+
+  <!-- Wrong way -->
+  <rect x="50" y="320" width="390" height="60" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="245" y="340" text-anchor="middle" font-size="11" font-weight="bold" fill="#991b1b" font-family="system-ui, sans-serif">&#10007; WRONG: Order Service queries User DB directly</text>
+  <text x="245" y="360" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Creates tight coupling, shared schema, migration coordination</text>
+  <text x="245" y="375" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Violates service autonomy and data ownership</text>
+
+  <!-- Right way -->
+  <rect x="460" y="320" width="390" height="60" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="655" y="340" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">&#9989; CORRECT: Order Service calls User Service API</text>
+  <text x="655" y="360" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Services communicate via APIs or events, never shared databases</text>
+  <text x="655" y="375" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Each service owns and controls its own data</text>
+
+  <!-- Event-driven sync -->
+  <rect x="30" y="415" width="840" height="90" rx="8" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="440" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Data Synchronization via Events (not shared DB)</text>
+
+  <rect x="50" y="455" width="200" height="35" rx="4" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="1"/>
+  <text x="150" y="477" text-anchor="middle" font-size="10" fill="#4338ca" font-family="system-ui, sans-serif">User Service: publishes</text>
+
+  <path d="M 250 472 L 400 472" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#amberArrow)"/>
+  <text x="325" y="465" text-anchor="middle" font-size="9" fill="#92400e" font-family="system-ui, sans-serif">UserUpdated event</text>
+
+  <rect x="400" y="455" width="200" height="35" rx="4" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1"/>
+  <text x="500" y="477" text-anchor="middle" font-size="10" fill="#15803d" font-family="system-ui, sans-serif">Order Service: consumes</text>
+
+  <text x="650" y="477" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Updates local user cache</text>
+
+  <defs>
+    <marker id="amberArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
 </svg>

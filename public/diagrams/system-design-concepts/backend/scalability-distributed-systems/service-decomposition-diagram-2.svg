@@ -1,11 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Service Decomposition Diagram 2</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Control</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Coordination</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">State</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Bounded Context Mapping and Service Boundaries</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">Domain-Driven Design: identifying bounded contexts and their relationships</text>
+
+  <!-- E-commerce domain -->
+  <rect x="30" y="80" width="840" height="425" rx="8" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="105" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">E-Commerce Domain: Bounded Contexts</text>
+
+  <!-- User Context -->
+  <rect x="50" y="125" width="250" height="130" rx="8" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="2"/>
+  <text x="175" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">User Context</text>
+  <text x="70" y="175" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Entities: User, Profile, Address</text>
+  <text x="70" y="195" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Ubiquitous Language:</text>
+  <text x="70" y="212" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">"Customer", "Account", "Preferences"</text>
+  <text x="70" y="235" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Database: user_db</text>
+  <text x="70" y="250" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">API: /api/users/*</text>
+
+  <!-- Order Context -->
+  <rect x="325" y="125" width="250" height="130" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="2"/>
+  <text x="450" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Order Context</text>
+  <text x="345" y="175" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Entities: Order, OrderItem, Status</text>
+  <text x="345" y="195" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Ubiquitous Language:</text>
+  <text x="345" y="212" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">"Order", "Line Item", "Fulfillment"</text>
+  <text x="345" y="235" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Database: order_db</text>
+  <text x="345" y="250" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">API: /api/orders/*</text>
+
+  <!-- Product Context -->
+  <rect x="600" y="125" width="250" height="130" rx="8" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="2"/>
+  <text x="725" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Product Context</text>
+  <text x="620" y="175" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Entities: Product, Category, Price</text>
+  <text x="620" y="195" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Ubiquitous Language:</text>
+  <text x="620" y="212" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">"SKU", "Catalog", "Inventory"</text>
+  <text x="620" y="235" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">Database: product_db</text>
+  <text x="620" y="250" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">API: /api/products/*</text>
+
+  <!-- Relationships -->
+  <path d="M 300 190 L 325 190" fill="none" stroke="#db2777" stroke-width="1.5"/>
+  <text x="312" y="180" text-anchor="middle" font-size="8" fill="#9d174d" font-family="system-ui, sans-serif">Customer ID</text>
+
+  <path d="M 575 190 L 600 190" fill="none" stroke="#db2777" stroke-width="1.5"/>
+  <text x="587" y="180" text-anchor="middle" font-size="8" fill="#9d174d" font-family="system-ui, sans-serif">Product ID</text>
+
+  <!-- Anti-corruption layer -->
+  <rect x="50" y="280" width="800" height="80" rx="8" fill="#db2777" opacity="0.08" stroke="#db2777" stroke-width="1.5" stroke-dasharray="6 3"/>
+  <text x="450" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="#9d174d" font-family="system-ui, sans-serif">Anti-Corruption Layer (ACL)</text>
+  <text x="450" y="325" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Translates between contexts: UserContext "Customer" &#8594; OrderContext "Buyer"</text>
+  <text x="450" y="345" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Prevents domain model contamination — each context maintains its own ubiquitous language</text>
+
+  <!-- Shared kernel -->
+  <rect x="50" y="385" width="800" height="55" rx="8" fill="#2563eb" opacity="0.08" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="450" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">Shared Kernel</text>
+  <text x="450" y="425" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Common types: Money, Currency, Address, DateRange — shared across all contexts to avoid duplication</text>
+
+  <!-- Key rules -->
+  <rect x="50" y="460" width="800" height="35" rx="6" fill="#4f46e5" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="50" y="482" font-size="10" fill="#1a1822" font-family="system-ui, sans-serif">Rule: Each bounded context has its own database, its own API, and its own ubiquitous language.</text>
+  <text x="450" y="482" font-size="10" fill="#92400e" font-family="system-ui, sans-serif">Contexts communicate via events or ACLs — never by sharing databases.</text>
 </svg>

@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Async vs Sync Processing Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">When to use asynchronous message queues versus synchronous direct calls</text>
+
+  <!-- Synchronous flow (top) -->
+  <text x="225" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#4f46e5" font-family="system-ui, sans-serif">Synchronous (REST/gRPC)</text>
+  <rect x="30" y="115" width="390" height="170" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="1.5"/>
+
+  <rect x="50" y="130" width="120" height="40" rx="6" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="2"/>
+  <text x="110" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Service A</text>
+
+  <path d="M 170 150 L 280 150" fill="none" stroke="#4f46e5" stroke-width="2" marker-end="url(#purpleArrow)"/>
+  <text x="225" y="140" text-anchor="middle" font-size="10" fill="#4338ca" font-family="system-ui, sans-serif">HTTP/gRPC call</text>
+
+  <rect x="280" y="130" width="120" height="40" rx="6" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="2"/>
+  <text x="340" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Service B</text>
+
+  <!-- Timeline -->
+  <line x1="110" y1="180" x2="110" y2="260" stroke="#475569" stroke-width="0.5"/>
+  <line x1="340" y1="180" x2="340" y2="260" stroke="#475569" stroke-width="0.5"/>
+  <path d="M 110 190 L 340 200" fill="none" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#purpleArrow)"/>
+  <text x="225" y="195" text-anchor="middle" font-size="9" fill="#4338ca" font-family="system-ui, sans-serif">Request</text>
+  <path d="M 340 220 L 110 230" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#greenArrow)"/>
+  <text x="225" y="225" text-anchor="middle" font-size="9" fill="#15803d" font-family="system-ui, sans-serif">Response</text>
+  <text x="225" y="255" text-anchor="middle" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Total: ~50ms (blocking)</text>
+
+  <!-- Async flow (bottom) -->
+  <text x="675" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#16a34a" font-family="system-ui, sans-serif">Asynchronous (Message Queue)</text>
+  <rect x="480" y="115" width="390" height="170" rx="8" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="1.5"/>
+
+  <rect x="500" y="130" width="100" height="40" rx="6" fill="#4f46e5" opacity="0.15" stroke="#4f46e5" stroke-width="2"/>
+  <text x="550" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Service A</text>
+
+  <path d="M 600 150 L 660 150" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#amberArrow)"/>
+  <rect x="660" y="135" width="60" height="30" rx="4" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1"/>
+  <text x="690" y="155" text-anchor="middle" font-size="9" fill="#92400e" font-family="system-ui, sans-serif">Queue</text>
+
+  <path d="M 720 150 L 780 150" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#greenArrow)"/>
+  <rect x="780" y="130" width="80" height="40" rx="6" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="2"/>
+  <text x="820" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Service B</text>
+
+  <!-- Timeline -->
+  <line x1="550" y1="180" x2="550" y2="260" stroke="#475569" stroke-width="0.5"/>
+  <line x1="820" y1="180" x2="820" y2="260" stroke="#475569" stroke-width="0.5"/>
+  <path d="M 550 190 L 690 195" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#amberArrow)"/>
+  <text x="620" y="190" text-anchor="middle" font-size="9" fill="#92400e" font-family="system-ui, sans-serif">Publish</text>
+  <text x="550" y="215" text-anchor="middle" font-size="9" fill="#16a34a" font-family="system-ui, sans-serif">ACK: ~5ms</text>
+  <text x="550" y="230" text-anchor="middle" font-size="9" fill="#16a34a" font-family="system-ui, sans-serif">Non-blocking!</text>
+  <path d="M 690 235 L 820 230" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#greenArrow)"/>
+  <text x="755" y="235" text-anchor="middle" font-size="9" fill="#15803d" font-family="system-ui, sans-serif">Consume: later</text>
+
+  <!-- Comparison table -->
+  <rect x="30" y="310" width="840" height="195" rx="8" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Decision Matrix: When to Use Async vs Sync</text>
+
+  <!-- Headers -->
+  <text x="150" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="#4f46e5" font-family="system-ui, sans-serif">Use Sync When:</text>
+  <text x="450" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a" font-family="system-ui, sans-serif">Use Async When:</text>
+  <text x="750" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="#d97706" font-family="system-ui, sans-serif">Hybrid Approach:</text>
+
+  <!-- Sync list -->
+  <text x="50" y="385" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Client needs immediate response</text>
+  <text x="50" y="405" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Simple request-response pattern</text>
+  <text x="50" y="425" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Low-latency service dependency</text>
+  <text x="50" y="445" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Strong consistency required</text>
+  <text x="50" y="465" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Few downstream consumers (1-2)</text>
+  <text x="50" y="485" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Example: Authentication, validation</text>
+
+  <!-- Async list -->
+  <text x="350" y="385" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Fire-and-forget operations</text>
+  <text x="350" y="405" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Multiple downstream consumers</text>
+  <text x="350" y="425" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Spike buffering needed</text>
+  <text x="350" y="445" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Independent scaling needed</text>
+  <text x="350" y="465" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Eventual consistency acceptable</text>
+  <text x="350" y="485" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Example: Email, analytics, audit</text>
+
+  <!-- Hybrid list -->
+  <text x="650" y="385" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Sync for validation, async for work</text>
+  <text x="650" y="405" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Sync returns job ID, async completes</text>
+  <text x="650" y="425" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Sync for critical path, async for side</text>
+  <text x="650" y="445" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Optimistic sync + async reconciliation</text>
+  <text x="650" y="465" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">&#8226; Example: Order placed (sync) + email</text>
+  <text x="650" y="485" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">(async), inventory (async), analytics</text>
+
+  <defs>
+    <marker id="purpleArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="amberArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
+</svg>

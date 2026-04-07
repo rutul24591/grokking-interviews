@@ -1,11 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Distributed Coordination Diagram 2</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Control</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Coordination</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">State</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="system-ui, sans-serif">
+  <title>Leader Election Using Ephemeral Sequential Znodes</title>
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Leader Election Using Ephemeral Sequential Znodes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">ZooKeeper recipe: each candidate creates an ephemeral sequential znode, lowest sequence wins</text>
+
+  <!-- ZooKeeper ensemble -->
+  <rect x="40" y="80" width="260" height="420" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="170" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">ZooKeeper Ensemble</text>
+
+  <!-- Lock path -->
+  <rect x="60" y="120" width="220" height="30" rx="4" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1.5"/>
+  <text x="170" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">/election/leader</text>
+
+  <!-- Sequential znodes -->
+  <rect x="80" y="165" width="180" height="35" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="2"/>
+  <text x="170" y="182" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">_c_0000000001 (Client A)</text>
+  <text x="170" y="197" text-anchor="middle" font-size="9" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; LEADER</text>
+
+  <rect x="80" y="210" width="180" height="35" rx="4" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="170" y="227" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8" font-family="system-ui, sans-serif">_c_0000000002 (Client B)</text>
+  <text x="170" y="242" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Watching #1</text>
+
+  <rect x="80" y="255" width="180" height="35" rx="4" fill="#db2777" opacity="0.15" stroke="#db2777" stroke-width="1.5"/>
+  <text x="170" y="272" text-anchor="middle" font-size="11" font-weight="bold" fill="#9d174d" font-family="system-ui, sans-serif">_c_0000000003 (Client C)</text>
+  <text x="170" y="287" text-anchor="middle" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">Watching #2</text>
+
+  <!-- Legend -->
+  <rect x="60" y="310" width="220" height="175" rx="6" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="170" y="330" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Election Rules</text>
+  <text x="80" y="355" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">1. Create ephemeral sequential znode</text>
+  <text x="80" y="375" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">2. Get children, sort by sequence</text>
+  <text x="80" y="395" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">3. If lowest: I am leader</text>
+  <text x="80" y="415" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">4. If not: watch predecessor</text>
+  <text x="80" y="435" font-size="9" fill="#4b5563" font-family="system-ui, sans-serif">5. On deletion: go to step 2</text>
+  <text x="80" y="460" font-size="9" fill="#16a34a" font-family="system-ui, sans-serif">Ephemeral: auto-deleted on disconnect</text>
+  <text x="80" y="478" font-size="9" fill="#16a34a" font-family="system-ui, sans-serif">Sequential: fair FIFO ordering</text>
+
+  <!-- Client side -->
+  <rect x="340" y="80" width="530" height="420" rx="8" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="605" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Election Process Timeline</text>
+
+  <!-- Step 1 -->
+  <rect x="360" y="120" width="490" height="55" rx="6" fill="#4f46e5" opacity="0.08" stroke="#4f46e5" stroke-width="1"/>
+  <text x="375" y="140" font-size="11" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Step 1: All candidates create ephemeral sequential znodes</text>
+  <text x="375" y="160" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client A, B, C simultaneously create znodes under /election/leader</text>
+  <text x="375" y="175" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">ZK assigns sequence numbers: A=1, B=2, C=3 (order of creation)</text>
+
+  <!-- Step 2 -->
+  <rect x="360" y="185" width="490" height="55" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="375" y="205" font-size="11" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Step 2: Each candidate checks if it has the lowest sequence</text>
+  <text x="375" y="225" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client A: I have #1 (lowest) &#8594; I am the LEADER</text>
+  <text x="375" y="240" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client B: I have #2 &#8594; watch #1 (predecessor). Client C: I have #3 &#8594; watch #2</text>
+
+  <!-- Step 3 -->
+  <rect x="360" y="250" width="490" height="55" rx="6" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1"/>
+  <text x="375" y="270" font-size="11" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Step 3: Leader performs coordination duties</text>
+  <text x="375" y="290" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client A processes tasks, sends heartbeats, maintains leadership</text>
+  <text x="375" y="305" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Clients B and C are standby, watching their predecessors</text>
+
+  <!-- Step 4: Leader failure -->
+  <rect x="360" y="315" width="490" height="55" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="375" y="335" font-size="11" font-weight="bold" fill="#991b1b" font-family="system-ui, sans-serif">Step 4: Leader fails (crash, network partition, session expiry)</text>
+  <text x="375" y="355" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">ZK deletes Client A&apos;s ephemeral znode automatically</text>
+  <text x="375" y="370" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client B receives watch notification: predecessor #1 deleted</text>
+
+  <!-- Step 5: New leader -->
+  <rect x="360" y="380" width="490" height="55" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="375" y="400" font-size="11" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">Step 5: Next candidate becomes leader</text>
+  <text x="375" y="420" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client B re-checks: I now have #2 (lowest remaining) &#8594; I am the new LEADER</text>
+  <text x="375" y="435" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client C now watches #2 (new predecessor)</text>
+
+  <!-- Key benefits -->
+  <rect x="360" y="445" width="490" height="45" rx="6" fill="#4f46e5" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="375" y="465" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Fair: FIFO ordering</text>
+  <text x="530" y="465" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; No thundering herd: each watches only predecessor</text>
+  <text x="740" y="465" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Auto-release: ephemeral znodes</text>
 </svg>

@@ -1,11 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
-  <rect width="900" height="420" fill="#f6f2ff" />
-  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
-  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Data Denormalization Diagram 3</text>
-  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
-  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Failure</text>
-  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Mitigation</text>
-  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Signals</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Write Amplification: One Logical Update to Multiple Denormalized Copies</title>
+  <defs>
+    <marker id="arrowRed3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowBlue3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowPink3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#db2777"/>
+    </marker>
+    <marker id="arrowPurple3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4f46e5"/>
+    </marker>
+    <marker id="arrowGreen3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1822">Write Amplification: One Logical Update to Multiple Denormalized Copies</text>
+
+  <!-- Single source update -->
+  <rect x="330" y="70" width="240" height="80" rx="10" fill="#dc2626" opacity="0.12" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="98" text-anchor="middle" font-size="15" font-weight="bold" fill="#991b1b">1 Logical Write</text>
+  <text x="450" y="118" text-anchor="middle" font-size="12" fill="#991b1b">UPDATE users SET name=&apos;Jane&apos;</text>
+  <text x="450" y="136" text-anchor="middle" font-size="12" fill="#991b1b">WHERE id = 42</text>
+
+  <!-- Fan out arrows to 5 copies -->
+  <line x1="370" y1="150" x2="80" y2="220" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowRed3)"/>
+  <line x1="400" y1="150" x2="240" y2="220" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowBlue3)"/>
+  <line x1="450" y1="150" x2="410" y2="220" stroke="#db2777" stroke-width="3" marker-end="url(#arrowPink3)"/>
+  <line x1="500" y1="150" x2="580" y2="220" stroke="#4f46e5" stroke-width="3" marker-end="url(#arrowPurple3)"/>
+  <line x1="530" y1="150" x2="760" y2="220" stroke="#16a34a" stroke-width="3" marker-end="url(#arrowGreen3)"/>
+
+  <!-- 5 Denormalized copies -->
+  <rect x="20" y="220" width="160" height="110" rx="8" fill="#dc2626" opacity="0.12" stroke="#dc2626" stroke-width="2"/>
+  <text x="100" y="248" text-anchor="middle" font-size="13" font-weight="bold" fill="#991b1b">Copy 1</text>
+  <text x="100" y="268" text-anchor="middle" font-size="11" fill="#991b1b">orders table</text>
+  <text x="100" y="286" text-anchor="middle" font-size="10" fill="#64748b">(user_name field)</text>
+  <text x="100" y="310" text-anchor="middle" font-size="11" font-weight="bold" fill="#991b1b">~50K rows</text>
+
+  <rect x="200" y="220" width="160" height="110" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="2"/>
+  <text x="280" y="248" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">Copy 2</text>
+  <text x="280" y="268" text-anchor="middle" font-size="11" fill="#1d4ed8">search index</text>
+  <text x="280" y="286" text-anchor="middle" font-size="10" fill="#64748b">(user doc)</text>
+  <text x="280" y="310" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">1 doc</text>
+
+  <rect x="380" y="220" width="160" height="110" rx="8" fill="#db2777" opacity="0.12" stroke="#db2777" stroke-width="2"/>
+  <text x="460" y="248" text-anchor="middle" font-size="13" font-weight="bold" fill="#9d174d">Copy 3</text>
+  <text x="460" y="268" text-anchor="middle" font-size="11" fill="#9d174d">analytics DB</text>
+  <text x="460" y="286" text-anchor="middle" font-size="10" fill="#64748b">(daily rollups)</text>
+  <text x="460" y="310" text-anchor="middle" font-size="11" font-weight="bold" fill="#9d174d">~365 rows</text>
+
+  <rect x="560" y="220" width="160" height="110" rx="8" fill="#4f46e5" opacity="0.12" stroke="#4f46e5" stroke-width="2"/>
+  <text x="640" y="248" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca">Copy 4</text>
+  <text x="640" y="268" text-anchor="middle" font-size="11" fill="#4338ca">read replica</text>
+  <text x="640" y="286" text-anchor="middle" font-size="10" fill="#64748b">(user profile)</text>
+  <text x="640" y="310" text-anchor="middle" font-size="11" font-weight="bold" fill="#4338ca">1 row</text>
+
+  <rect x="740" y="220" width="160" height="110" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="2"/>
+  <text x="820" y="248" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">Copy 5</text>
+  <text x="820" y="268" text-anchor="middle" font-size="11" fill="#15803d">cache layer</text>
+  <text x="820" y="286" text-anchor="middle" font-size="10" fill="#64748b">(Redis key)</text>
+  <text x="820" y="310" text-anchor="middle" font-size="11" font-weight="bold" fill="#15803d">1 key</text>
+
+  <!-- Impact summary -->
+  <rect x="150" y="370" width="600" height="100" rx="12" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="16" font-weight="bold" fill="#92400e">Write Amplification Factor: 1 to 50,867 physical writes</text>
+  <text x="450" y="422" text-anchor="middle" font-size="12" fill="#92400e">Single user name update triggers writes across orders (50K), search (1), analytics (365),</text>
+  <text x="450" y="440" text-anchor="middle" font-size="12" fill="#92400e">read replica (1), and cache invalidation (1). Each write consumes IOPS, network bandwidth,</text>
+  <text x="450" y="458" text-anchor="middle" font-size="12" fill="#92400e">and increases replication lag. At 1000 updates/sec, write amplification becomes the bottleneck.</text>
 </svg>

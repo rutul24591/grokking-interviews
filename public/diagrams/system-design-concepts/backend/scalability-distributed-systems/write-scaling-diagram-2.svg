@@ -1,41 +1,76 @@
-<svg width="16cm" height="12cm" viewBox="384 196 314 222" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#fff" d="M386.1 197.9h71.925v58H386.1z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M386.1 197.9h71.925v58H386.1z"/>
-    <text font-size="12.8" x="422.063" y="230.8" text-anchor="middle" font-family="sans-serif">
-        <tspan x="422.063" y="230.8">
-            Server
-        </tspan>
-    </text>
-    <path fill="#fff" d="M386 277.9h71.025v59H386z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M386 277.9h71.025v59H386z"/>
-    <text font-size="12.8" x="421.513" y="311.3" text-anchor="middle" font-family="sans-serif">
-        <tspan x="421.513" y="311.3">
-            Server
-        </tspan>
-    </text>
-    <path fill="#fff" d="M385.9 358.9h71.125v58H385.9z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M385.9 358.9h71.125v58H385.9z"/>
-    <text font-size="12.8" x="421.462" y="391.8" text-anchor="middle" font-family="sans-serif">
-        <tspan x="421.462" y="391.8">
-            Server
-        </tspan>
-    </text>
-    <path fill="#fff" d="M497.974 278.9h80.05v58h-80.05z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M497.974 278.9h80.05v58h-80.05z"/>
-    <text font-size="12.8" x="537.999" y="303.8" text-anchor="middle" font-family="sans-serif">
-        <tspan x="537.999" y="303.8">
-            Session
-        </tspan>
-        <tspan x="537.999" y="319.8">
-            Director
-        </tspan>
-    </text>
-    <path fill="#fff" d="M616.65 277.9h80.375v59H616.65z"/>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M616.65 277.9h80.375v59H616.65z"/>
-    <text font-size="12.8" x="656.838" y="311.3" text-anchor="middle" font-family="sans-serif">
-        <tspan x="656.838" y="311.3">
-            Browser
-        </tspan>
-    </text>
-    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M458.025 226.9l39.95 52M457.025 307.4l40.95.5M457.025 387.9l40.95-51M578.024 307.9l38.626-.5M458.025 226.9l158.625 51"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="#f3f1f8" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Write Amplification</text>
+  <text x="400" y="58" text-anchor="middle" font-size="13" font-weight="400" fill="#4b5563">One logical write triggers multiple physical writes</text>
+
+  <!-- Logical Write -->
+  <rect x="310" y="85" width="180" height="55" rx="8" fill="#4f46e5" fill-opacity="0.3" stroke="#4f46e5" stroke-width="2.5"/>
+  <text x="400" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#4338ca">UPDATE users SET ...</text>
+  <text x="400" y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#4338ca">1 logical write</text>
+
+  <!-- Arrow down to trunk -->
+  <line x1="400" y1="140" x2="400" y2="175" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="415" y="168" font-size="11" font-weight="400" fill="#4b5563">amplifies to</text>
+
+  <!-- Branch lines -->
+  <line x1="400" y1="175" x2="150" y2="175" stroke="#374151" stroke-width="2"/>
+  <line x1="400" y1="175" x2="650" y2="175" stroke="#374151" stroke-width="2"/>
+
+  <!-- Branch 1: Primary Index -->
+  <line x1="150" y1="175" x2="150" y2="210" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <rect x="40" y="215" width="220" height="50" rx="8" fill="#d97706" fill-opacity="0.2" stroke="#d97706" stroke-width="2"/>
+  <text x="150" y="237" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Primary Index Update</text>
+  <text x="150" y="255" text-anchor="middle" font-size="10" font-weight="400" fill="#d97706">B-tree leaf + internal nodes</text>
+
+  <!-- Branch 2: Secondary Indexes -->
+  <line x1="400" y1="175" x2="400" y2="210" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <rect x="290" y="215" width="220" height="50" rx="8" fill="#2563eb" fill-opacity="0.2" stroke="#2563eb" stroke-width="2"/>
+  <text x="400" y="237" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Secondary Index Updates (3)</text>
+  <text x="400" y="255" text-anchor="middle" font-size="10" font-weight="400" fill="#2563eb">email_idx, name_idx, status_idx</text>
+
+  <!-- Branch 3: Replication -->
+  <line x1="650" y1="175" x2="650" y2="210" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <rect x="540" y="215" width="220" height="50" rx="8" fill="#16a34a" fill-opacity="0.2" stroke="#16a34a" stroke-width="2"/>
+  <text x="650" y="237" text-anchor="middle" font-size="13" font-weight="700" fill="#15803d">Replication Writes (x3)</text>
+  <text x="650" y="255" text-anchor="middle" font-size="10" font-weight="400" fill="#16a34a">replica-1, replica-2, replica-3</text>
+
+  <!-- Sub-branches from Replication -->
+  <line x1="570" y1="265" x2="500" y2="300" stroke="#374151" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="650" y1="265" x2="650" y2="300" stroke="#374151" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="730" y1="265" x2="800" y2="300" stroke="#374151" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="440" y="305" width="120" height="40" rx="6" fill="#16a34a" fill-opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="500" y="330" text-anchor="middle" font-size="11" font-weight="400" fill="#15803d">Replica 1</text>
+
+  <rect x="590" y="305" width="120" height="40" rx="6" fill="#16a34a" fill-opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="650" y="330" text-anchor="middle" font-size="11" font-weight="400" fill="#15803d">Replica 2</text>
+
+  <rect x="740" y="305" width="60" height="40" rx="6" fill="#16a34a" fill-opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="770" y="330" text-anchor="middle" font-size="11" font-weight="400" fill="#15803d">R3</text>
+
+  <!-- Branch 4: Materialized Views -->
+  <line x1="150" y1="265" x2="150" y2="310" stroke="#374151" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="30" y="315" width="240" height="50" rx="8" fill="#db2777" fill-opacity="0.2" stroke="#db2777" stroke-width="2"/>
+  <text x="150" y="337" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Materialized View Updates (2)</text>
+  <text x="150" y="355" text-anchor="middle" font-size="10" font-weight="400" fill="#db2777">user_stats, activity_feed</text>
+
+  <!-- Branch 5: WAL/Log -->
+  <line x1="400" y1="265" x2="400" y2="310" stroke="#374151" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="290" y="315" width="220" height="50" rx="8" fill="#dc2626" fill-opacity="0.2" stroke="#dc2626" stroke-width="2"/>
+  <text x="400" y="337" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">WAL / Commit Log</text>
+  <text x="400" y="355" text-anchor="middle" font-size="10" font-weight="400" fill="#dc2626">sequential append (fsync)</text>
+
+  <!-- Amplification Summary -->
+  <rect x="250" y="400" width="300" height="45" rx="8" fill="#4f46e5" fill-opacity="0.15" stroke="#4f46e5" stroke-width="2"/>
+  <text x="400" y="420" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Total: 1 logical write = 10+ physical writes</text>
+  <text x="400" y="438" text-anchor="middle" font-size="11" font-weight="400" fill="#4338ca">amplification factor: 10x</text>
+
+  <!-- Arrow from summary to total -->
+  <line x1="400" y1="365" x2="400" y2="400" stroke="#374151" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 </svg>

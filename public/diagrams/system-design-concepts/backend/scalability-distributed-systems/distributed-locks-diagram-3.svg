@@ -1,259 +1,68 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="system-ui, sans-serif">
+  <title>Lock Failure Scenarios and Fencing Protection</title>
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">Lock Failure Scenarios and Fencing Protection</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#4b5563" font-family="system-ui, sans-serif">How distributed locks fail and the fencing token pattern that prevents stale access</text>
 
-<svg
-   version="1.1"
-   id="svg3847"
-   width="205"
-   height="200"
-   viewBox="0 0 205 200"
-   sodipodi:docname="Netzwerktopologie_Ring.svg"
-   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs3851" />
-  <sodipodi:namedview
-     id="namedview3849"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="false"
-     showguides="true"
-     inkscape:zoom="1.4654788"
-     inkscape:cx="212.8997"
-     inkscape:cy="98.261401"
-     inkscape:window-width="1920"
-     inkscape:window-height="1009"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g3853" />
-  <g
-     inkscape:groupmode="layer"
-     inkscape:label="Image"
-     id="g3853">
-    <path
-       sodipodi:type="star"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:bevel;stroke-dasharray:none"
-       id="path4147"
-       inkscape:flatsided="false"
-       sodipodi:sides="5"
-       sodipodi:cx="99.967331"
-       sodipodi:cy="105.76748"
-       sodipodi:r1="83.899017"
-       sodipodi:r2="67.958206"
-       sodipodi:arg1="0.85158377"
-       sodipodi:arg2="1.4799023"
-       inkscape:rounded="0"
-       inkscape:randomized="0"
-       d="m 155.23937,168.88678 -49.10355,4.55837 -49.118516,4.3941 L 37.508208,132.54762 18.150714,87.190979 55.196977,54.64084 92.351908,22.214798 134.75685,47.389342 177.07736,72.705583 166.23879,120.81444 Z"
-       inkscape:transform-center-x="0.056447975"
-       inkscape:transform-center-y="-7.6621171"
-       transform="rotate(5.1444324,77.783172,135.32565)" />
-    <g
-       id="use3335"
-       transform="translate(79.336231,-60.388803)">
-      <rect
-         style="fill:#000000;stroke-width:1.30589;stroke-linejoin:bevel"
-         id="rect4020"
-         width="40.722496"
-         height="13.15797"
-         x="2.8025205"
-         y="91.030281" />
-      <rect
-         style="fill:#c0c0c0;fill-opacity:1;stroke-width:1.55309;stroke-linejoin:bevel"
-         id="rect4022"
-         width="36.235485"
-         height="8.9787035"
-         x="5.1030984"
-         y="92.96283" />
-      <rect
-         style="fill:#a0a0a0;fill-opacity:1;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="rect4024"
-         width="15.498954"
-         height="4.9169092"
-         x="20.014162"
-         y="93.871399" />
-      <rect
-         style="fill:#a0a0a0;fill-opacity:1;stroke-width:1.29698;stroke-linejoin:bevel"
-         id="rect4026"
-         width="11.437159"
-         height="4.9169092"
-         x="6.9024024"
-         y="93.871399" />
-      <ellipse
-         style="fill:#0c9e1d;fill-opacity:1;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="ellipse4028"
-         cx="9.0794649"
-         cy="97.394272"
-         rx="1.284897"
-         ry="0.75897098" />
-      <circle
-         style="fill:#000000;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="circle4030"
-         cx="21.706573"
-         cy="97.395447"
-         r="0.62352109" />
-      <rect
-         style="fill:#000000;stroke-width:1.56274;stroke-linejoin:bevel"
-         id="rect4032"
-         width="8.7030535"
-         height="0.81948495"
-         x="8.1204519"
-         y="94.947655"
-         ry="0.40974247" />
-      <rect
-         style="fill:#808080;fill-opacity:1;stroke-width:0.708188;stroke-linejoin:bevel"
-         id="rect4034"
-         width="1.7872841"
-         height="0.81948495"
-         x="15.11851"
-         y="97.083336"
-         ry="0.40974247" />
-      <rect
-         style="fill:#000000;stroke-width:1.89058;stroke-linejoin:bevel"
-         id="rect4036"
-         width="12.737646"
-         height="0.81948495"
-         x="21.154314"
-         y="94.922462"
-         ry="0.40974247" />
-      <ellipse
-         style="fill:#d38704;fill-opacity:1;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="ellipse4038"
-         cx="24.130938"
-         cy="97.395447"
-         rx="1.284897"
-         ry="0.75897098" />
-      <circle
-         style="fill:#1eeb08;fill-opacity:1;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="circle4040"
-         cx="39.766735"
-         cy="97.375565"
-         r="0.62352109" />
-      <circle
-         style="fill:#db3c0a;fill-opacity:1;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="circle4042"
-         cx="39.766735"
-         cy="99.353302"
-         r="0.62352109" />
-      <circle
-         style="fill:#000000;stroke-width:0.992172;stroke-linejoin:bevel"
-         id="circle4044"
-         cx="39.766735"
-         cy="95.48719"
-         r="0.40974247" />
-      <rect
-         style="fill:#808080;fill-opacity:1;stroke-width:0.708188;stroke-linejoin:bevel"
-         id="rect4046"
-         width="1.7872841"
-         height="0.81948495"
-         x="32.300858"
-         y="97.083336"
-         ry="0.40974247" />
-      <rect
-         style="display:inline;fill:#000000;fill-opacity:1;stroke-width:1.45743;stroke-linejoin:bevel"
-         id="rect4048"
-         width="28.361303"
-         height="22.575958"
-         x="8.8798542"
-         y="68.449539" />
-      <rect
-         style="display:inline;fill:#c0c0c0;fill-opacity:1;stroke-width:1.55339;stroke-linejoin:bevel"
-         id="rect4050"
-         width="24.709885"
-         height="20.099972"
-         x="10.705563"
-         y="70.464935" />
-      <rect
-         style="display:inline;fill:#000000;fill-opacity:1;stroke-width:1.73959;stroke-linejoin:bevel"
-         id="rect4052"
-         width="19.981554"
-         height="16.159817"
-         x="13.0943"
-         y="72.708832" />
-      <circle
-         style="fill:#fbfbfb;fill-opacity:1;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="circle4054"
-         cx="14.60625"
-         cy="74.240967"
-         r="0.35864875" />
-      <rect
-         style="fill:#fbfbfb;fill-opacity:1;stroke-width:1.4289;stroke-linejoin:bevel"
-         id="rect4056"
-         width="1.684815"
-         height="0.71716559"
-         x="16.307747"
-         y="73.882385"
-         ry="0.35858279" />
-      <circle
-         style="fill:#fbfbfb;fill-opacity:1;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="circle4058"
-         cx="19.635675"
-         cy="74.240967"
-         r="0.35864875" />
-      <rect
-         style="fill:#fbfbfb;fill-opacity:1;stroke-width:1.4289;stroke-linejoin:bevel"
-         id="rect4060"
-         width="1.684815"
-         height="0.71716559"
-         x="14.247602"
-         y="75.917511"
-         ry="0.35858279" />
-      <circle
-         style="fill:#fbfbfb;fill-opacity:1;stroke-width:1.50982;stroke-linejoin:bevel"
-         id="circle4062"
-         cx="17.608891"
-         cy="76.276093"
-         r="0.35864875" />
-      <rect
-         style="fill:#fbfbfb;fill-opacity:1;stroke-width:1.86468;stroke-linejoin:bevel"
-         id="rect4064"
-         width="2.86919"
-         height="0.71716559"
-         x="19.318729"
-         y="75.917511"
-         ry="0.35858279" />
-      <rect
-         style="fill:#fbfbfb;fill-opacity:1;stroke-width:1.86468;stroke-linejoin:bevel"
-         id="rect4066"
-         width="2.86919"
-         height="0.71716559"
-         x="14.247602"
-         y="77.927612"
-         ry="0.35858279" />
-    </g>
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use3335"
-       id="use4512"
-       transform="translate(78.472646,50.495442)" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use4512"
-       id="use4514"
-       transform="translate(-155.58055)" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use4514"
-       id="use4516"
-       transform="translate(28.31839,90.755321)" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#use4516"
-       id="use4518"
-       transform="translate(97.237844)" />
-  </g>
+  <!-- Scenario 1: Network Partition -->
+  <rect x="30" y="80" width="410" height="130" rx="8" fill="#dc2626" opacity="0.06" stroke="#dc2626" stroke-width="2"/>
+  <text x="235" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#991b1b" font-family="system-ui, sans-serif">Scenario 1: Network Partition During Lock Hold</text>
+  <text x="50" y="130" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client A holds lock (TTL=30s), gets partitioned from lock service</text>
+  <text x="50" y="150" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Lock expires after 30s, Client B acquires lock</text>
+  <text x="50" y="170" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client A recovers, still thinks it holds the lock &#8594; writes to resource</text>
+  <text x="50" y="195" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">&#9888; Both clients writing to the resource simultaneously!</text>
+
+  <!-- Scenario 2: GC Pause -->
+  <rect x="460" y="80" width="410" height="130" rx="8" fill="#d97706" opacity="0.06" stroke="#d97706" stroke-width="2"/>
+  <text x="665" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e" font-family="system-ui, sans-serif">Scenario 2: GC Pause Causes Lock Timeout</text>
+  <text x="480" y="130" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client A holds lock, enters 35s GC pause (TTL=30s)</text>
+  <text x="480" y="150" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Lock expires, Client B acquires lock and writes to resource</text>
+  <text x="480" y="170" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client A resumes, still thinks it holds the lock &#8594; writes to resource</text>
+  <text x="480" y="195" font-size="10" fill="#d97706" font-family="system-ui, sans-serif">&#9888; Concurrent writes corrupt the resource state!</text>
+
+  <!-- Fencing token solution -->
+  <rect x="30" y="240" width="840" height="265" rx="8" fill="#4f46e5" opacity="0.06" stroke="#4f46e5" stroke-width="2"/>
+  <text x="450" y="265" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca" font-family="system-ui, sans-serif">Solution: Fencing Token Pattern</text>
+
+  <!-- Without fencing -->
+  <rect x="50" y="285" width="390" height="100" rx="6" fill="#dc2626" opacity="0.06" stroke="#dc2626" stroke-width="1"/>
+  <text x="245" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b" font-family="system-ui, sans-serif">Without Fencing (Broken)</text>
+
+  <!-- Timeline without fencing -->
+  <line x1="70" y1="320" x2="420" y2="320" stroke="#475569" stroke-width="0.5"/>
+  <rect x="70" y="310" width="100" height="20" rx="3" fill="#4f46e5" opacity="0.3"/>
+  <text x="120" y="324" text-anchor="middle" font-size="8" fill="#4338ca" font-family="system-ui, sans-serif">Client A: lock</text>
+  <rect x="200" y="310" width="100" height="20" rx="3" fill="#16a34a" opacity="0.3"/>
+  <text x="250" y="324" text-anchor="middle" font-size="8" fill="#15803d" font-family="system-ui, sans-serif">Client B: lock</text>
+  <rect x="70" y="340" width="80" height="20" rx="3" fill="#4f46e5" opacity="0.3"/>
+  <text x="110" y="354" text-anchor="middle" font-size="8" fill="#4338ca" font-family="system-ui, sans-serif">A writes</text>
+  <rect x="200" y="340" width="80" height="20" rx="3" fill="#16a34a" opacity="0.3"/>
+  <text x="240" y="354" text-anchor="middle" font-size="8" fill="#15803d" font-family="system-ui, sans-serif">B writes</text>
+  <text x="320" y="350" font-size="10" fill="#dc2626" font-family="system-ui, sans-serif">&#10007; Both write, corruption!</text>
+
+  <!-- With fencing -->
+  <rect x="460" y="285" width="390" height="100" rx="6" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="1"/>
+  <text x="655" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d" font-family="system-ui, sans-serif">With Fencing Token (Correct)</text>
+
+  <!-- Timeline with fencing -->
+  <line x1="480" y1="320" x2="830" y2="320" stroke="#475569" stroke-width="0.5"/>
+  <rect x="480" y="310" width="100" height="20" rx="3" fill="#4f46e5" opacity="0.3"/>
+  <text x="530" y="324" text-anchor="middle" font-size="8" fill="#4338ca" font-family="system-ui, sans-serif">A: lock, token=1</text>
+  <rect x="610" y="310" width="100" height="20" rx="3" fill="#16a34a" opacity="0.3"/>
+  <text x="660" y="324" text-anchor="middle" font-size="8" fill="#15803d" font-family="system-ui, sans-serif">B: lock, token=2</text>
+  <rect x="480" y="340" width="80" height="20" rx="3" fill="#4f46e5" opacity="0.3"/>
+  <text x="520" y="354" text-anchor="middle" font-size="8" fill="#4338ca" font-family="system-ui, sans-serif">A: write(1)</text>
+  <rect x="610" y="340" width="80" height="20" rx="3" fill="#16a34a" opacity="0.3"/>
+  <text x="650" y="354" text-anchor="middle" font-size="8" fill="#15803d" font-family="system-ui, sans-serif">B: write(2)</text>
+  <text x="720" y="350" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Resource rejects A (1&lt;2)</text>
+
+  <!-- Fencing explanation -->
+  <rect x="50" y="400" width="800" height="90" rx="6" fill="#4f46e5" opacity="0.04" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="420" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822" font-family="system-ui, sans-serif">How Fencing Works:</text>
+  <text x="70" y="442" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">1. Lock service returns a monotonically increasing token with each lock grant (token=1, token=2, ...)</text>
+  <text x="70" y="462" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">2. Client includes the token in every write to the protected resource</text>
+  <text x="70" y="482" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">3. Resource rejects writes with tokens lower than the highest token it has seen</text>
+  <text x="450" y="442" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">Client A writes with token=1, then Client B writes with token=2</text>
+  <text x="450" y="462" font-size="10" fill="#4b5563" font-family="system-ui, sans-serif">If Client A tries to write again with token=1, the resource rejects it (1 &lt; 2)</text>
+  <text x="450" y="482" font-size="10" fill="#16a34a" font-family="system-ui, sans-serif">&#9989; Stale clients cannot corrupt the resource, even if they think they hold the lock</text>
 </svg>

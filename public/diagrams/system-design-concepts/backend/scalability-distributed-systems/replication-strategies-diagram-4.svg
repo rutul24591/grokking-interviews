@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="100%" height="100%" font-family="system-ui, sans-serif">
+  <title>Replication Lag and Consistency Trade-offs showing timeline and consistency levels</title>
+  <rect width="900" height="520" fill="#f3f1f8" rx="12"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" font-family="system-ui, sans-serif" font-size="22" font-weight="bold" fill="#1a1822" text-anchor="middle">Replication Lag &amp; Consistency Trade-offs</text>
+  
+  <!-- ==================== TIMELINE SECTION ==================== -->
+  <text x="450" y="80" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#d97706" text-anchor="middle">Replication Lag Timeline</text>
+  
+  <!-- Timeline axis -->
+  <line x1="60" y1="140" x2="840" y2="140" stroke="#475569" stroke-width="2"/>
+  
+  <!-- Time markers -->
+  <line x1="100" y1="130" x2="100" y2="150" stroke="#475569" stroke-width="1.5"/>
+  <text x="100" y="170" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="middle">t0</text>
+  
+  <line x1="300" y1="130" x2="300" y2="150" stroke="#475569" stroke-width="1.5"/>
+  <text x="300" y="170" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="middle">t1</text>
+  
+  <line x1="500" y1="130" x2="500" y2="150" stroke="#475569" stroke-width="1.5"/>
+  <text x="500" y="170" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="middle">t2</text>
+  
+  <line x1="700" y1="130" x2="700" y2="150" stroke="#475569" stroke-width="1.5"/>
+  <text x="700" y="170" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="middle">t3</text>
+  
+  <line x1="840" y1="130" x2="840" y2="150" stroke="#475569" stroke-width="1.5"/>
+  <text x="840" y="170" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b" text-anchor="middle">t4</text>
+  
+  <!-- Primary timeline -->
+  <text x="30" y="210" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#4f46e5" text-anchor="end">Primary</text>
+  <rect x="90" y="195" width="20" height="30" rx="4" fill="#4f46e5"/>
+  <text x="100" y="245" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#1a1822" text-anchor="middle">Write</text>
+  <text x="100" y="260" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#1a1822" text-anchor="middle">X=10</text>
+  
+  <!-- Replication delay zone -->
+  <rect x="120" y="195" width="380" height="30" rx="0" fill="#dc2626" fill-opacity="0.15" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="310" y="215" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#dc2626" text-anchor="middle">Replication Lag (stale data)</text>
+  
+  <!-- Replica catches up -->
+  <text x="30" y="310" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#16a34a" text-anchor="end">Replica</text>
+  <rect x="500" y="295" width="20" height="30" rx="4" fill="#16a34a"/>
+  <text x="510" y="345" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#1a1822" text-anchor="middle">Catches</text>
+  <text x="510" y="360" font-family="system-ui, sans-serif" font-size="10" font-weight="normal" fill="#1a1822" text-anchor="middle">up</text>
+  
+  <!-- Stale read indicator -->
+  <rect x="150" y="295" width="340" height="30" rx="4" fill="#d97706" fill-opacity="0.2" stroke="#d97706" stroke-width="1.5"/>
+  <text x="320" y="315" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#d97706" text-anchor="middle">Read from replica returns X=old (stale read)</text>
+  
+  <!-- ==================== CONSISTENCY LEVELS ==================== -->
+  <text x="450" y="410" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#4f46e5" text-anchor="middle">Consistency Levels &amp; How They Handle Lag</text>
+  
+  <!-- Strong Consistency -->
+  <rect x="30" y="430" width="270" height="75" rx="8" fill="#dc2626" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="165" y="455" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#dc2626" text-anchor="middle">Strong Consistency</text>
+  <text x="45" y="480" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Read from primary or wait for</text>
+  <text x="45" y="495" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">replication. No stale reads.</text>
+  
+  <!-- Eventual Consistency -->
+  <rect x="315" y="430" width="270" height="75" rx="8" fill="#d97706" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="450" y="455" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#d97706" text-anchor="middle">Eventual Consistency</text>
+  <text x="330" y="480" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Read from any replica. Stale</text>
+  <text x="330" y="495" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">reads possible. Converges later.</text>
+  
+  <!-- Causal Consistency -->
+  <rect x="600" y="430" width="270" height="75" rx="8" fill="#16a34a" opacity="0.06" stroke="#475569" stroke-width="1"/>
+  <text x="735" y="455" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#16a34a" text-anchor="middle">Causal Consistency</text>
+  <text x="615" y="480" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">Causally related ops are</text>
+  <text x="615" y="495" font-family="system-ui, sans-serif" font-size="11" font-weight="normal" fill="#64748b">ordered. Unrelated ops may differ.</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>
