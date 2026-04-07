@@ -16,6 +16,15 @@ const CATEGORY_DIR_MAP: Record<string, string> = {
   "backend-concepts": "backend",
   "functional-requirements": "functional-requirements",
   "non-functional-requirements": "non-functional-requirements",
+  "high-level-design": "high-level-design",
+  "low-level-design": "low-level-design",
+};
+
+// Map domain slugs to content directory names
+const DOMAIN_DIR_MAP: Record<string, string> = {
+  "system-design-concepts": "system-design",
+  "requirements": "requirements",
+  "system-design-problems": "system-design-problems",
 };
 
 export default async function SubcategoryPage({ params }: SubcategoryPageProps) {
@@ -23,13 +32,14 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
 
   // Map category to filesystem directory
   const fsCategory = CATEGORY_DIR_MAP[category] || category;
+  const fsDomain = DOMAIN_DIR_MAP[domain] || domain;
 
   // Build the path to articles
   const articlesDir = path.join(
     process.cwd(),
     "content",
     "articles",
-    domain === "system-design-concepts" ? "system-design" : domain,
+    fsDomain,
     fsCategory,
     subcategory
   );
