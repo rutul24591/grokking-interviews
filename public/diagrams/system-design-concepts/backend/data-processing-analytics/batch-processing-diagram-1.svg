@@ -1,10 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Batch Processing Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Batch Processing</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <rect width="960" height="440" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Batch Processing Pipeline Architecture</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Ingest, transform, aggregate, and output — each stage processes a complete data slice</text>
+
+  <!-- Ingest -->
+  <rect x="30" y="90" width="180" height="120" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="120" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Ingest</text>
+  <text x="120" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Read from source</text>
+  <text x="120" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">S3, HDFS, databases</text>
+  <text x="120" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Schema validation</text>
+  <text x="120" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Partition discovery</text>
+  <text x="120" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Data quality checks</text>
+
+  <!-- Arrow -->
+  <defs>
+    <marker id="arrBP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="210" y1="150" x2="260" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrBP)"/>
+
+  <!-- Transform -->
+  <rect x="260" y="90" width="220" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="370" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Transform</text>
+  <text x="370" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Filter, map, join</text>
+  <text x="370" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Data cleaning</text>
+  <text x="370" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Schema evolution</text>
+  <text x="370" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Enrichment</text>
+  <text x="370" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Normalization</text>
+
+  <line x1="480" y1="150" x2="530" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrBP)"/>
+
+  <!-- Aggregate -->
+  <rect x="530" y="90" width="200" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="630" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#3730a3">Aggregate</text>
+  <text x="630" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Group by, sum, count</text>
+  <text x="630" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Rollups</text>
+  <text x="630" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Windowed metrics</text>
+  <text x="630" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Deduplication</text>
+  <text x="630" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Reconciliation</text>
+
+  <line x1="730" y1="150" x2="780" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrBP)"/>
+
+  <!-- Output -->
+  <rect x="780" y="90" width="150" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="855" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#166534">Output</text>
+  <text x="855" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Write results</text>
+  <text x="855" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Data warehouse</text>
+  <text x="855" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Data lake</text>
+  <text x="855" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Cache layer</text>
+  <text x="855" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Downstream APIs</text>
+
+  <!-- Schedule trigger -->
+  <rect x="260" y="260" width="470" height="60" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="495" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Schedule Trigger: Cron, Airflow, or Event-Based</text>
+  <text x="495" y="302" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Processes a complete data slice (daily, hourly) with reproducible, idempotent execution</text>
+
+  <line x1="495" y1="260" x2="495" y2="210" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- Validation gate -->
+  <rect x="260" y="350" width="470" height="60" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="495" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#991b1b">Validation Gate: Row counts, checksums, invariants</text>
+  <text x="495" y="392" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">If validation fails, alert and halt. Do not write partial or corrupt output.</text>
+
+  <line x1="495" y1="350" x2="495" y2="320" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- Key principles -->
+  <rect x="30" y="350" width="210" height="70" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="135" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534">Reproducible</text>
+  <text x="135" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">Same input, same code,</text>
+  <text x="135" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">same output. Always.</text>
+
+  <rect x="730" y="350" width="200" height="70" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="830" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534">Idempotent</text>
+  <text x="830" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">Safe to rerun without</text>
+  <text x="830" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">duplicating or corrupting data</text>
 </svg>

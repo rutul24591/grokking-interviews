@@ -1,118 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
-  <title id="title">Aggregation Failure Modes</title>
-  <desc id="desc">Aggregation failure modes: skew, stale results, and approximate vs exact trade-offs</desc>
-  
-  <!-- Background -->
-  <rect width="900" height="550" fill="#f8fafc"/>
-  
-  <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Aggregation Failure Modes</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Skew, stale results, and approximate vs exact trade-offs</text>
-  
-  <!-- Data Skew -->
-  <rect x="30" y="85" width="280" height="210" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
-  <text x="170" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Data Skew in Aggregation</text>
-  
-  <rect x="50" y="125" width="240" height="150" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
-  <text x="170" y="155" text-anchor="middle" font-size="10" fill="#64748b">Uneven key distribution causes</text>
-  <text x="170" y="175" text-anchor="middle" font-size="10" fill="#64748b">one reducer to handle most data,</text>
-  <text x="170" y="190" text-anchor="middle" font-size="10" fill="#64748b">becoming a bottleneck</text>
-  <text x="170" y="215" text-anchor="middle" font-size="10" fill="#b91c1c">Signal:</text>
-  <text x="210" y="215" text-anchor="middle" font-size="10" fill="#64748b">One task takes 10x longer,</text>
-  <text x="170" y="235" text-anchor="middle" font-size="10" fill="#64748b">job waits on single reducer</text>
-  <text x="170" y="255" text-anchor="middle" font-size="10" fill="#b91c1c">Mitigation:</text>
-  <text x="220" y="255" text-anchor="middle" font-size="10" fill="#64748b">Salting, two-phase aggregation,</text>
-  <text x="170" y="275" text-anchor="middle" font-size="10" fill="#64748b">combiner before shuffle</text>
-  
-  <!-- Stale Results -->
-  <rect x="325" y="85" width="280" height="210" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
-  <text x="465" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Stale Results</text>
-  
-  <rect x="345" y="125" width="240" height="150" rx="4" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
-  <text x="465" y="155" text-anchor="middle" font-size="10" fill="#64748b">Aggregation not updated due to</text>
-  <text x="465" y="175" text-anchor="middle" font-size="10" fill="#64748b">pipeline delays, failures, or</text>
-  <text x="465" y="190" text-anchor="middle" font-size="10" fill="#64748b">stale materialized views</text>
-  <text x="465" y="215" text-anchor="middle" font-size="10" fill="#b45309">Signal:</text>
-  <text x="505" y="215" text-anchor="middle" font-size="10" fill="#64748b">Metrics don't match reality,</text>
-  <text x="465" y="235" text-anchor="middle" font-size="10" fill="#64748b">last_update timestamp old</text>
-  <text x="465" y="255" text-anchor="middle" font-size="10" fill="#b45309">Mitigation:</text>
-  <text x="515" y="255" text-anchor="middle" font-size="10" fill="#64748b">Monitor freshness, alert on delays,</text>
-  <text x="465" y="275" text-anchor="middle" font-size="10" fill="#64748b">auto-retry failed updates</text>
-  
-  <!-- Approximation Errors -->
-  <rect x="620" y="85" width="250" height="210" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
-  <text x="745" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Approximation Errors</text>
-  
-  <rect x="640" y="125" width="210" height="150" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="745" y="155" text-anchor="middle" font-size="10" fill="#64748b">HLL, t-digest, sampling give</text>
-  <text x="745" y="175" text-anchor="middle" font-size="10" fill="#64748b">approximate results that may</text>
-  <text x="745" y="190" text-anchor="middle" font-size="10" fill="#64748b">drift from exact values</text>
-  <text x="745" y="215" text-anchor="middle" font-size="10" fill="#4338ca">Signal:</text>
-  <text x="785" y="215" text-anchor="middle" font-size="10" fill="#64748b">Counts don't match exact query,</text>
-  <text x="745" y="235" text-anchor="middle" font-size="10" fill="#64748b">error rate exceeds threshold</text>
-  <text x="745" y="255" text-anchor="middle" font-size="10" fill="#4338ca">Mitigation:</text>
-  <text x="795" y="255" text-anchor="middle" font-size="10" fill="#64748b">Tune accuracy params, periodic</text>
-  <text x="745" y="275" text-anchor="middle" font-size="10" fill="#64748b">reconciliation with exact</text>
-  
-  <!-- Double Counting -->
-  <rect x="30" y="310" width="280" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
-  <text x="170" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Double Counting</text>
-  
-  <rect x="50" y="350" width="240" height="150" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
-  <text x="170" y="380" text-anchor="middle" font-size="10" fill="#64748b">Events counted multiple times</text>
-  <text x="170" y="395" text-anchor="middle" font-size="10" fill="#64748b">due to retries, reprocessing,</text>
-  <text x="170" y="410" text-anchor="middle" font-size="10" fill="#64748b">or overlapping windows</text>
-  <text x="170" y="435" text-anchor="middle" font-size="10" fill="#1e293b">Signal:</text>
-  <text x="210" y="435" text-anchor="middle" font-size="10" fill="#64748b">Totals exceed source count,</text>
-  <text x="170" y="450" text-anchor="middle" font-size="10" fill="#64748b">metrics grow faster than expected</text>
-  <text x="170" y="470" text-anchor="middle" font-size="10" fill="#1e293b">Mitigation:</text>
-  <text x="220" y="470" text-anchor="middle" font-size="10" fill="#64748b">Idempotent aggregation, dedup</text>
-  <text x="170" y="490" text-anchor="middle" font-size="10" fill="#64748b">before aggregate, exact windows</text>
-  
-  <!-- Memory Exhaustion -->
-  <rect x="325" y="310" width="280" height="210" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
-  <text x="465" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">Memory Exhaustion</text>
-  
-  <rect x="345" y="350" width="240" height="150" rx="4" fill="#f0fdf4" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="465" y="380" text-anchor="middle" font-size="10" fill="#64748b">Unbounded state (distinct values,</text>
-  <text x="465" y="395" text-anchor="middle" font-size="10" fill="#64748b">large windows) causes OOM</text>
-  <text x="465" y="410" text-anchor="middle" font-size="10" fill="#64748b">during aggregation</text>
-  <text x="465" y="435" text-anchor="middle" font-size="10" fill="#047857">Signal:</text>
-  <text x="505" y="435" text-anchor="middle" font-size="10" fill="#64748b">OOM errors, GC pressure,</text>
-  <text x="465" y="450" text-anchor="middle" font-size="10" fill="#64748b">task failures on large datasets</text>
-  <text x="465" y="470" text-anchor="middle" font-size="10" fill="#047857">Mitigation:</text>
-  <text x="515" y="470" text-anchor="middle" font-size="10" fill="#64748b">Use approximate algorithms,</text>
-  <text x="465" y="490" text-anchor="middle" font-size="10" fill="#64748b">spill to disk, limit cardinality</text>
-  
-  <!-- Inconsistent Aggregates -->
-  <rect x="620" y="310" width="250" height="210" rx="8" fill="#ffedd5" stroke="#fdba74" stroke-width="2"/>
-  <text x="745" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#c2410c">Inconsistent Aggregates</text>
-  
-  <rect x="640" y="350" width="210" height="150" rx="4" fill="#fff7ed" stroke="#fdba74" stroke-width="1"/>
-  <text x="745" y="380" text-anchor="middle" font-size="10" fill="#64748b">Different queries return different</text>
-  <text x="745" y="395" text-anchor="middle" font-size="10" fill="#64748b">aggregates due to timing,</text>
-  <text x="745" y="410" text-anchor="middle" font-size="10" fill="#64748b">partial updates, or race conditions</text>
-  <text x="745" y="435" text-anchor="middle" font-size="10" fill="#c2410c">Signal:</text>
-  <text x="785" y="435" text-anchor="middle" font-size="10" fill="#64748b">Dashboard mismatches, users</text>
-  <text x="745" y="450" text-anchor="middle" font-size="10" fill="#64748b">report conflicting numbers</text>
-  <text x="745" y="470" text-anchor="middle" font-size="10" fill="#c2410c">Mitigation:</text>
-  <text x="795" y="470" text-anchor="middle" font-size="10" fill="#64748b">Atomic updates, consistent</text>
-  <text x="745" y="490" text-anchor="middle" font-size="10" fill="#64748b">snapshots, single source of truth</text>
-  
-  <!-- Best Practices -->
-  <rect x="30" y="530" width="280" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
-  <text x="170" y="542" text-anchor="middle" font-size="8" fill="#b45309">Monitor aggregation freshness and accuracy</text>
-  
-  <rect x="325" y="530" width="280" height="15" rx="2" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="465" y="542" text-anchor="middle" font-size="8" fill="#4338ca">Use combiners to reduce shuffle</text>
-  
-  <rect x="620" y="530" width="250" height="15" rx="2" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="745" y="542" text-anchor="middle" font-size="8" fill="#047857">Reconcile approximate with exact periodically</text>
-  
-  <!-- Arrow markers -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Aggregation Failure Modes and Detection</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Common failure modes: hot keys, late data, duplicate inflation, non-determinism, sketch errors</text>
+
+  <!-- Failure Mode 1: Hot Keys -->
+  <rect x="30" y="80" width="280" height="110" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="170" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#991b1b">1. Hot Key Skew</text>
+  <text x="170" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">One key dominates data volume,</text>
+  <text x="170" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">forcing one worker to process</text>
+  <text x="170" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">95% of data, stalling the job.</text>
+  <text x="170" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">Detect: Top-key volume charts</text>
+
+  <!-- Failure Mode 2: Late Data -->
+  <rect x="340" y="80" width="280" height="110" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="480" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#9a3412">2. Late Data Undercounting</text>
+  <text x="480" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">Events arrive after window closes,</text>
+  <text x="480" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">leading to undercounting unless</text>
+  <text x="480" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">late-data correction policy exists.</text>
+  <text x="480" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#9a3412">Detect: Watermark lag metrics</text>
+
+  <!-- Failure Mode 3: Duplicate Inflation -->
+  <rect x="650" y="80" width="280" height="110" rx="8" fill="#fefce8" stroke="#fef08a" stroke-width="1.5"/>
+  <text x="790" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#854d0e">3. Duplicate Inflation</text>
+  <text x="790" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">Retries or replays process the</text>
+  <text x="790" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">same events twice, inflating</text>
+  <text x="790" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">counts when idempotency is missing.</text>
+  <text x="790" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#854d0e">Detect: Reconciliation vs source</text>
+
+  <!-- Failure Mode 4: Non-Determinism -->
+  <rect x="30" y="220" width="280" height="110" rx="8" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1.5"/>
+  <text x="170" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#9d174d">4. Non-Determinism</text>
+  <text x="170" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#831843">Random ordering or time-dependent</text>
+  <text x="170" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#831843">filters produce different results on</text>
+  <text x="170" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#831843">rerun, making debugging impossible.</text>
+  <text x="170" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#9d174d">Detect: Rerun diff comparison</text>
+
+  <!-- Failure Mode 5: Sketch Error Bounds -->
+  <rect x="340" y="220" width="280" height="110" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1.5"/>
+  <text x="480" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">5. Approximation Without Bounds</text>
+  <text x="480" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#312e81">Using approximate algorithms (HLL,</text>
+  <text x="480" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#312e81">t-digest) without publishing error</text>
+  <text x="480" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#312e81">bounds leads to false confidence.</text>
+  <text x="480" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#3730a3">Detect: Error bound validation</text>
+
+  <!-- Correctness vs Performance matrix -->
+  <rect x="650" y="220" width="280" height="200" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="790" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Detection Matrix</text>
+
+  <rect x="665" y="260" width="250" height="30" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="790" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#991b1b">Skew: Monitor top-key volume &amp; state size per worker</text>
+
+  <rect x="665" y="295" width="250" height="30" rx="4" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+  <text x="790" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#9a3412">Late data: Track watermark lag vs event-time SLAs</text>
+
+  <rect x="665" y="330" width="250" height="30" rx="4" fill="#fefce8" stroke="#fef08a" stroke-width="1"/>
+  <text x="790" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#854d0e">Duplicates: Reconcile output counts vs source totals</text>
+
+  <rect x="665" y="365" width="250" height="30" rx="4" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="790" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3730a3">Non-determinism: Rerun with same inputs, diff output</text>
+
+  <!-- Bottom summary banner -->
+  <rect x="30" y="370" width="590" height="60" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="325" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#166534">Key Principle: Correctness Over Performance</text>
+  <text x="325" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">A fast pipeline that produces wrong numbers is worse than a slow one. Always validate output against trusted invariants, and publish error bounds for approximate results.</text>
 </svg>

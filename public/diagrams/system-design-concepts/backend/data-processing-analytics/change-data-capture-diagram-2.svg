@@ -1,117 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
-  <title id="title">CDC Data Flow and Transformation</title>
-  <desc id="desc">CDC data flow showing change event structure, transformation, and routing to downstream systems</desc>
-  
-  <!-- Background -->
-  <rect width="900" height="550" fill="#f8fafc"/>
-  
-  <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">CDC Data Flow &amp; Transformation</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Change event structure, transformation, and routing to downstream systems</text>
-  
-  <!-- Database Changes -->
-  <rect x="30" y="85" width="200" height="180" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
-  <text x="130" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Database Changes</text>
-  
-  <rect x="50" y="125" width="160" height="45" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="130" y="148" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e40af">INSERT</text>
-  <text x="130" y="163" text-anchor="middle" font-size="8" fill="#64748b">New row added</text>
-  
-  <rect x="50" y="180" width="160" height="45" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="130" y="203" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309">UPDATE</text>
-  <text x="130" y="218" text-anchor="middle" font-size="8" fill="#64748b">Row modified (before/after)</text>
-  
-  <rect x="50" y="235" width="160" height="25" rx="4" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
-  <text x="130" y="252" text-anchor="middle" font-size="10" font-weight="bold" fill="#b91c1c">DELETE</text>
-  
-  <!-- Change Event Format -->
-  <rect x="260" y="85" width="280" height="260" rx="8" fill="#7c3aed" stroke="#6d28d9" stroke-width="2"/>
-  <text x="400" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Change Event Format</text>
-  
-  <rect x="280" y="125" width="240" height="210" rx="4" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1"/>
-  <text x="295" y="148" text-anchor="start" font-size="9" fill="#64748b">{</text>
-  <text x="310" y="165" text-anchor="start" font-size="9" fill="#64748b">"op": "u",</text>
-  <text x="310" y="182" text-anchor="start" font-size="9" fill="#64748b">"ts_ms": 1678901234567,</text>
-  <text x="310" y="199" text-anchor="start" font-size="9" fill="#64748b">"source": {</text>
-  <text x="325" y="216" text-anchor="start" font-size="8" fill="#64748b">"db": "ecommerce",</text>
-  <text x="325" y="230" text-anchor="start" font-size="8" fill="#64748b">"table": "orders",</text>
-  <text x="325" y="244" text-anchor="start" font-size="8" fill="#64748b">"file": "binlog.000123",</text>
-  <text x="325" y="258" text-anchor="start" font-size="8" fill="#64748b">"pos": 456789</text>
-  <text x="310" y="275" text-anchor="start" font-size="9" fill="#64748b">},</text>
-  <text x="310" y="292" text-anchor="start" font-size="9" fill="#64748b">"before": { "id": 123, "status": "pending" },</text>
-  <text x="310" y="309" text-anchor="start" font-size="9" fill="#64748b">"after": { "id": 123, "status": "shipped" }</text>
-  <text x="295" y="326" text-anchor="start" font-size="9" fill="#64748b">}</text>
-  
-  <!-- Event Routing -->
-  <rect x="570" y="85" width="300" height="180" rx="8" fill="#06b6d4" stroke="#0891b2" stroke-width="2"/>
-  <text x="720" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Event Routing</text>
-  
-  <rect x="590" y="125" width="260" height="50" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
-  <text x="720" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#0e7490">Topic: db.ecommerce.orders</text>
-  <text x="720" y="168" text-anchor="middle" font-size="9" fill="#64748b">Partition key: order_id</text>
-  
-  <rect x="590" y="185" width="260" height="70" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="2"/>
-  <text x="720" y="210" text-anchor="middle" font-size="10" font-weight="bold" fill="#0e7490">Routing Rules</text>
-  <text x="720" y="230" text-anchor="middle" font-size="9" fill="#64748b">INSERT → analytics, warehouse</text>
-  <text x="720" y="245" text-anchor="middle" font-size="9" fill="#64748b">UPDATE → cache, search</text>
-  <text x="720" y="260" text-anchor="middle" font-size="9" fill="#64748b">DELETE → invalidate cache</text>
-  
-  <!-- Transformation Pipeline -->
-  <rect x="30" y="280" width="280" height="180" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
-  <text x="170" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Transformation Pipeline</text>
-  
-  <rect x="50" y="320" width="240" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
-  <text x="170" y="345" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309">Filter</text>
-  <text x="170" y="360" text-anchor="middle" font-size="9" fill="#64748b">Only certain tables/columns</text>
-  
-  <rect x="50" y="380" width="240" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
-  <text x="170" y="405" text-anchor="middle" font-size="10" font-weight="bold" fill="#b45309">Mask/Redact</text>
-  <text x="170" y="420" text-anchor="middle" font-size="9" fill="#64748b">PII protection (email, SSN)</text>
-  
-  <rect x="50" y="440" width="240" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
-  <text x="170" y="452" text-anchor="middle" font-size="8" fill="#64748b">Enrich → Aggregate → Route</text>
-  
-  <!-- Downstream Consumers -->
-  <rect x="325" y="360" width="280" height="180" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
-  <text x="465" y="385" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Downstream Consumers</text>
-  
-  <rect x="345" y="400" width="110" height="50" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
-  <text x="400" y="425" text-anchor="middle" font-size="9" fill="#64748b">Data Warehouse</text>
-  <text x="400" y="440" text-anchor="middle" font-size="8" fill="#64748b">(Snowflake, Redshift)</text>
-  
-  <rect x="470" y="400" width="110" height="50" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
-  <text x="525" y="425" text-anchor="middle" font-size="9" fill="#64748b">Search Index</text>
-  <text x="525" y="440" text-anchor="middle" font-size="8" fill="#64748b">(Elasticsearch)</text>
-  
-  <rect x="345" y="460" width="110" height="50" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
-  <text x="400" y="485" text-anchor="middle" font-size="9" fill="#64748b">Cache Layer</text>
-  <text x="400" y="500" text-anchor="middle" font-size="8" fill="#64748b">(Redis, Memcached)</text>
-  
-  <rect x="470" y="460" width="110" height="50" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
-  <text x="525" y="485" text-anchor="middle" font-size="9" fill="#64748b">Analytics</text>
-  <text x="525" y="500" text-anchor="middle" font-size="8" fill="#64748b">(Real-time dashboards)</text>
-  
-  <!-- Ordering Guarantee -->
-  <rect x="620" y="280" width="250" height="140" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
-  <text x="745" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Ordering Guarantee</text>
-  
-  <rect x="640" y="325" width="210" height="85" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="745" y="350" text-anchor="middle" font-size="10" fill="#64748b">Same key → same partition</text>
-  <text x="745" y="370" text-anchor="middle" font-size="10" fill="#64748b">→ FIFO ordering preserved</text>
-  <text x="745" y="395" text-anchor="middle" font-size="10" fill="#4338ca">Critical for:</text>
-  <text x="745" y="410" text-anchor="middle" font-size="9" fill="#64748b">UPDATE after INSERT</text>
-  <text x="745" y="425" text-anchor="middle" font-size="9" fill="#64748b">DELETE after UPDATE</text>
-  
-  <!-- Flow Arrows -->
-  <line x1="235" y1="185" x2="255" y2="185" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
-  <line x1="545" y1="185" x2="565" y2="185" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
-  <path d="M 720 270 L 720 295 L 170 295 L 170 315" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5"/>
-  <path d="M 720 270 L 720 295 L 465 295 L 465 355" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5"/>
-  
-  <!-- Arrow markers -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">CDC Lag and Its Impact on Downstream Systems</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">CDC lag accumulates across the pipeline: database log flush, connector read, broker write, consumer process</text>
+
+  <!-- Source DB timeline -->
+  <text x="80" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Source Database</text>
+  <line x1="40" y1="110" x2="920" y2="110" stroke="#3b82f6" stroke-width="3"/>
+  <text x="920" y="105" text-anchor="end" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Time &#x2192;</text>
+
+  <!-- Change events on DB timeline -->
+  <circle cx="200" cy="110" r="8" fill="#3b82f6"/>
+  <text x="200" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">T1: INSERT</text>
+  <circle cx="400" cy="110" r="8" fill="#3b82f6"/>
+  <text x="400" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">T2: UPDATE</text>
+  <circle cx="600" cy="110" r="8" fill="#3b82f6"/>
+  <text x="600" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">T3: DELETE</text>
+  <circle cx="800" cy="110" r="8" fill="#3b82f6"/>
+  <text x="800" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">T4: INSERT</text>
+
+  <!-- Connector lag -->
+  <text x="80" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">CDC Connector</text>
+  <line x1="40" y1="195" x2="920" y2="195" stroke="#f59e0b" stroke-width="3"/>
+
+  <circle cx="220" cy="195" r="8" fill="#f59e0b"/>
+  <text x="220" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">T1 read (+20ms)</text>
+  <circle cx="420" cy="195" r="8" fill="#f59e0b"/>
+  <text x="420" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">T2 read (+15ms)</text>
+  <circle cx="620" cy="195" r="8" fill="#f59e0b"/>
+  <text x="620" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">T3 read (+25ms)</text>
+  <circle cx="820" cy="195" r="8" fill="#f59e0b"/>
+  <text x="820" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">T4 read (+30ms)</text>
+
+  <!-- Broker lag -->
+  <text x="80" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Message Broker</text>
+  <line x1="40" y1="280" x2="920" y2="280" stroke="#6366f1" stroke-width="3"/>
+
+  <circle cx="235" cy="280" r="8" fill="#6366f1"/>
+  <text x="235" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3730a3">T1 committed (+10ms)</text>
+  <circle cx="435" cy="280" r="8" fill="#6366f1"/>
+  <text x="435" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3730a3">T2 committed (+8ms)</text>
+  <circle cx="635" cy="280" r="8" fill="#6366f1"/>
+  <text x="635" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3730a3">T3 committed (+12ms)</text>
+  <circle cx="835" cy="280" r="8" fill="#6366f1"/>
+  <text x="835" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3730a3">T4 committed (+15ms)</text>
+
+  <!-- Consumer lag -->
+  <text x="80" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Consumer Application</text>
+  <line x1="40" y1="365" x2="920" y2="365" stroke="#22c55e" stroke-width="3"/>
+
+  <circle cx="270" cy="365" r="8" fill="#22c55e"/>
+  <text x="270" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">T1 processed (+35ms)</text>
+  <circle cx="470" cy="365" r="8" fill="#22c55e"/>
+  <text x="470" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">T2 processed (+30ms)</text>
+  <circle cx="670" cy="365" r="8" fill="#22c55e"/>
+  <text x="670" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">T3 processed (+45ms)</text>
+  <circle cx="870" cy="365" r="8" fill="#22c55e"/>
+  <text x="870" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">T4 processed (+50ms)</text>
+
+  <!-- Total lag annotation -->
+  <rect x="40" y="410" width="880" height="40" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="480" y="428" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">End-to-End CDC Lag = Connector Read + Broker Commit + Consumer Process</text>
+  <text x="480" y="444" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">Typical range: 50ms-5s. Monitor at each stage. Alert when consumer lag exceeds SLA threshold.</text>
 </svg>

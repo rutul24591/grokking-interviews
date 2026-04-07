@@ -1,10 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Exactly-Once Semantics Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Exactly-Once Semantics</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Delivery Semantics: At-Most-Once, At-Least-Once, Exactly-Once</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Each semantic trades off between data loss, duplication, and system complexity</text>
+
+  <!-- At-Most-Once -->
+  <rect x="30" y="80" width="280" height="200" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="170" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#991b1b">At-Most-Once</text>
+
+  <rect x="50" y="120" width="240" height="25" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="170" y="137" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#991b1b">Commit BEFORE processing</text>
+
+  <text x="170" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; Message may be lost if processing fails</text>
+  <text x="170" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; No duplicates — each message processed 0 or 1 time</text>
+  <text x="170" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; Lowest complexity, fastest processing</text>
+
+  <rect x="50" y="210" width="240" height="25" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="170" y="227" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#334155">Use: metrics, logs (loss acceptable)</text>
+
+  <rect x="50" y="245" width="240" height="25" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="170" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#334155">Risk: silent data loss</text>
+
+  <!-- At-Least-Once -->
+  <rect x="340" y="80" width="280" height="200" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="480" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#9a3412">At-Least-Once</text>
+
+  <rect x="360" y="120" width="240" height="25" rx="4" fill="#ffedd5" stroke="#fed7aa" stroke-width="1"/>
+  <text x="480" y="137" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#9a3412">Commit AFTER processing</text>
+
+  <text x="480" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; No message loss — each message processed 1+ times</text>
+  <text x="480" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; Duplicates possible if commit fails after processing</text>
+  <text x="480" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; Requires idempotent processing to handle dupes</text>
+
+  <rect x="360" y="210" width="240" height="25" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="480" y="227" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#334155">Use: most pipelines (with dedup)</text>
+
+  <rect x="360" y="245" width="240" height="25" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="480" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#334155">Risk: duplicate processing</text>
+
+  <!-- Exactly-Once -->
+  <rect x="650" y="80" width="280" height="200" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="790" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#166534">Exactly-Once</text>
+
+  <rect x="670" y="120" width="240" height="25" rx="4" fill="#d1fae5" stroke="#86efac" stroke-width="1"/>
+  <text x="790" y="137" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#166534">Transactional commit + process</text>
+
+  <text x="790" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; No loss, no duplicates — each message processed exactly 1 time</text>
+  <text x="790" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; Requires transactional writes + idempotent producers</text>
+  <text x="790" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">&#x2022; Highest complexity, performance overhead</text>
+
+  <rect x="670" y="210" width="240" height="25" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="790" y="227" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#334155">Use: billing, financial systems</text>
+
+  <rect x="670" y="245" width="240" height="25" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="790" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#334155">Risk: complexity, performance cost</text>
+
+  <!-- Comparison matrix -->
+  <rect x="30" y="310" width="900" height="130" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Semantic Comparison</text>
+
+  <rect x="50" y="355" width="260" height="24" rx="3" fill="#e2e8f0"/>
+  <text x="180" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Semantic</text>
+  <text x="400" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Data Loss?</text>
+  <text x="550" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Duplicates?</text>
+  <text x="700" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Complexity</text>
+  <text x="850" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Latency Impact</text>
+
+  <rect x="50" y="379" width="260" height="22" rx="2" fill="#ffffff"/>
+  <text x="180" y="394" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">At-Most-Once</text>
+  <text x="400" y="394" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dc2626">Yes</text>
+  <text x="550" y="394" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#16a34a">No</text>
+  <text x="700" y="394" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#16a34a">Low</text>
+  <text x="850" y="394" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#16a34a">None</text>
+
+  <rect x="50" y="401" width="260" height="22" rx="2" fill="#f8fafc"/>
+  <text x="180" y="416" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">At-Least-Once</text>
+  <text x="400" y="416" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#16a34a">No</text>
+  <text x="550" y="416" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dc2626">Yes</text>
+  <text x="700" y="416" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ca8a04">Medium</text>
+  <text x="850" y="416" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ca8a04">Minimal</text>
+
+  <rect x="50" y="423" width="260" height="16" rx="2" fill="#ffffff"/>
+  <text x="180" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Exactly-Once</text>
+  <text x="400" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#16a34a">No</text>
+  <text x="550" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#16a34a">No</text>
+  <text x="700" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dc2626">High</text>
+  <text x="850" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dc2626">Significant</text>
 </svg>

@@ -1,10 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Message Ordering Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Message Ordering</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <rect width="960" height="440" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Out-of-Order Events and Late Data Handling</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Network delays, clock skew, and retries cause events to arrive out of order or late</text>
+
+  <!-- Timeline -->
+  <text x="80" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Event Timeline</text>
+  <line x1="40" y1="120" x2="920" y2="120" stroke="#64748b" stroke-width="2"/>
+  <text x="920" y="115" text-anchor="end" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Wall-clock time &#x2192;</text>
+
+  <!-- Events on timeline -->
+  <circle cx="120" cy="120" r="12" fill="#3b82f6"/>
+  <text x="120" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">E1 (t=100)</text>
+  <text x="120" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Arrived: t=102</text>
+
+  <circle cx="240" cy="120" r="12" fill="#3b82f6"/>
+  <text x="240" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">E2 (t=110)</text>
+  <text x="240" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Arrived: t=115</text>
+
+  <circle cx="360" cy="120" r="12" fill="#f59e0b"/>
+  <text x="360" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">E3 (t=105)</text>
+  <text x="360" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Arrived: t=150 (LATE!)</text>
+
+  <circle cx="480" cy="120" r="12" fill="#3b82f6"/>
+  <text x="480" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">E4 (t=120)</text>
+  <text x="480" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Arrived: t=125</text>
+
+  <circle cx="600" cy="120" r="12" fill="#f59e0b"/>
+  <text x="600" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">E5 (t=108)</text>
+  <text x="600" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Arrived: t=180 (VERY LATE)</text>
+
+  <!-- Watermark -->
+  <line x1="400" y1="85" x2="400" y2="155" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="400" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#dc2626">Watermark: t=115</text>
+  <text x="400" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">All events with event-time &#x2264; 115 expected</text>
+
+  <!-- Late event zone -->
+  <rect x="320" y="85" width="160" height="70" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" opacity="0.5"/>
+  <text x="400" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#92400e">Late event zone</text>
+  <text x="400" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#92400e">E3 arrives after watermark</text>
+
+  <!-- Consumer view -->
+  <rect x="30" y="200" width="900" height="220" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Consumer Processing Strategies</text>
+
+  <rect x="50" y="245" width="270" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Drop late events</text>
+  <text x="185" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Simple but loses data</text>
+
+  <rect x="345" y="245" width="270" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="480" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Buffer and reorder</text>
+  <text x="480" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Wait for gaps, then process in order</text>
+
+  <rect x="640" y="245" width="270" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="775" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Accept late events</text>
+  <text x="775" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Update results, emit corrections</text>
+
+  <rect x="50" y="305" width="270" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Speculative processing</text>
+  <text x="185" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Process early, revise if late data arrives</text>
+
+  <rect x="345" y="305" width="270" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="480" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Versioned state</text>
+  <text x="480" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Keep history, merge out-of-order updates</text>
+
+  <rect x="640" y="305" width="270" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="775" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Idempotent updates</text>
+  <text x="775" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Order doesn't matter — final state is same</text>
 </svg>

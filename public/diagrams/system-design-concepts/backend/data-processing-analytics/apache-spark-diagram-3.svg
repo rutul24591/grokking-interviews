@@ -1,10 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Apache Spark Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Apache Spark</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <rect width="960" height="440" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Spark Failure Modes and Mitigation Strategies</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Common failure modes: skew, OOM, shuffle spill, stragglers, and speculative execution</text>
+
+  <!-- Failure Mode 1: Data Skew -->
+  <rect x="30" y="80" width="280" height="120" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="170" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">1. Data Skew</text>
+  <text x="170" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">One partition receives</text>
+  <text x="170" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">disproportionate data,</text>
+  <text x="170" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">creating a straggler task.</text>
+  <rect x="50" y="170" width="240" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="170" y="186" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#991b1b">Mitigation: salting, AQE skew join</text>
+
+  <!-- Failure Mode 2: OOM -->
+  <rect x="340" y="80" width="280" height="120" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="480" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9a3412">2. Out of Memory</text>
+  <text x="480" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">Executor runs out of memory</text>
+  <text x="480" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">during shuffle, join, or</text>
+  <text x="480" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">aggregation operations.</text>
+  <rect x="360" y="170" width="240" height="22" rx="4" fill="#ffedd5" stroke="#fed7aa" stroke-width="1"/>
+  <text x="480" y="186" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#9a3412">Mitigation: increase memory, repartition</text>
+
+  <!-- Failure Mode 3: Shuffle Spill -->
+  <rect x="650" y="80" width="280" height="120" rx="8" fill="#fefce8" stroke="#fef08a" stroke-width="1.5"/>
+  <text x="790" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#854d0e">3. Shuffle Spill to Disk</text>
+  <text x="790" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">Intermediate data exceeds</text>
+  <text x="790" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">executor memory, spilling</text>
+  <text x="790" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">to disk during shuffle.</text>
+  <rect x="670" y="170" width="240" height="22" rx="4" fill="#fef9c3" stroke="#fef08a" stroke-width="1"/>
+  <text x="790" y="186" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#854d0e">Mitigation: increase memory, coalesce</text>
+
+  <!-- Failure Mode 4: Stragglers -->
+  <rect x="30" y="230" width="280" height="120" rx="8" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1.5"/>
+  <text x="170" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9d174d">4. Straggler Tasks</text>
+  <text x="170" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#831843">One or more tasks take much</text>
+  <text x="170" y="293" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#831843">longer than others, blocking</text>
+  <text x="170" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#831843">the entire stage completion.</text>
+  <rect x="50" y="320" width="240" height="22" rx="4" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1"/>
+  <text x="170" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#9d174d">Mitigation: speculative execution</text>
+
+  <!-- Failure Mode 5: GC Pressure -->
+  <rect x="340" y="230" width="280" height="120" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1.5"/>
+  <text x="480" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">5. Garbage Collection Pressure</text>
+  <text x="480" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#312e81">High object creation rate causes</text>
+  <text x="480" y="293" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#312e81">frequent GC pauses, reducing</text>
+  <text x="480" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#312e81">effective compute time.</text>
+  <rect x="360" y="320" width="240" height="22" rx="4" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="480" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3730a3">Mitigation: Kryo serialization, tune GC</text>
+
+  <!-- Mitigation Matrix -->
+  <rect x="650" y="230" width="280" height="190" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="790" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Operational Checklist</text>
+
+  <rect x="665" y="270" width="250" height="22" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="790" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Monitor task duration distribution per stage</text>
+
+  <rect x="665" y="298" width="250" height="22" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="790" y="314" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Track shuffle read/write bytes per task</text>
+
+  <rect x="665" y="326" width="250" height="22" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="790" y="342" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Alert on spill-to-disk rate above threshold</text>
+
+  <rect x="665" y="354" width="250" height="22" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="790" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Enable AQE for automatic skew handling</text>
+
+  <rect x="665" y="382" width="250" height="22" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="790" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Use broadcast joins for small dimension tables</text>
+
+  <!-- Bottom banner -->
+  <rect x="30" y="380" width="590" height="50" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="325" y="402" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534">Key Principle: Minimize Shuffle, Maximize Parallelism</text>
+  <text x="325" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">Every optimization decision in Spark trades off shuffle cost against parallelism and memory usage.</text>
 </svg>

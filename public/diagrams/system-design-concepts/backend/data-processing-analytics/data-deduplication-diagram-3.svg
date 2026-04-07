@@ -1,118 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
-  <title id="title">Deduplication Failure Modes</title>
-  <desc id="desc">Deduplication failure modes: false positives, state loss, and performance issues</desc>
-  
-  <!-- Background -->
-  <rect width="900" height="550" fill="#f8fafc"/>
-  
-  <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Deduplication Failure Modes</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">False positives, state loss, and performance issues</text>
-  
-  <!-- False Positives -->
-  <rect x="30" y="85" width="280" height="210" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
-  <text x="170" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">False Positives (Over-Dedup)</text>
-  
-  <rect x="50" y="125" width="240" height="150" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
-  <text x="170" y="155" text-anchor="middle" font-size="10" fill="#64748b">Valid records incorrectly</text>
-  <text x="170" y="175" text-anchor="middle" font-size="10" fill="#64748b">identified as duplicates,</text>
-  <text x="170" y="190" text-anchor="middle" font-size="10" fill="#64748b">causing data loss</text>
-  <text x="170" y="215" text-anchor="middle" font-size="10" fill="#b91c1c">Signal:</text>
-  <text x="210" y="215" text-anchor="middle" font-size="10" fill="#64748b">Missing records, lower counts</text>
-  <text x="170" y="235" text-anchor="middle" font-size="10" fill="#64748b">than source, user complaints</text>
-  <text x="170" y="255" text-anchor="middle" font-size="10" fill="#b91c1c">Mitigation:</text>
-  <text x="220" y="255" text-anchor="middle" font-size="10" fill="#64748b">Use exact match for critical data,</text>
-  <text x="170" y="275" text-anchor="middle" font-size="10" fill="#64748b">tune Bloom filter false positive rate</text>
-  
-  <!-- False Negatives -->
-  <rect x="325" y="85" width="280" height="210" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
-  <text x="465" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">False Negatives (Under-Dedup)</text>
-  
-  <rect x="345" y="125" width="240" height="150" rx="4" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
-  <text x="465" y="155" text-anchor="middle" font-size="10" fill="#64748b">Duplicates not detected,</text>
-  <text x="465" y="175" text-anchor="middle" font-size="10" fill="#64748b">causing inflated counts and</text>
-  <text x="465" y="190" text-anchor="middle" font-size="10" fill="#64748b">duplicate side effects</text>
-  <text x="465" y="215" text-anchor="middle" font-size="10" fill="#b45309">Signal:</text>
-  <text x="505" y="215" text-anchor="middle" font-size="10" fill="#64748b">Duplicate charges, inflated</text>
-  <text x="465" y="235" text-anchor="middle" font-size="10" fill="#64748b">metrics, duplicate emails</text>
-  <text x="465" y="255" text-anchor="middle" font-size="10" fill="#b45309">Mitigation:</text>
-  <text x="515" y="255" text-anchor="middle" font-size="10" fill="#64748b">Idempotent sinks, post-hoc</text>
-  <text x="465" y="275" text-anchor="middle" font-size="10" fill="#64748b">dedup job, reconciliation</text>
-  
-  <!-- State Loss -->
-  <rect x="620" y="85" width="250" height="210" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
-  <text x="745" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">State Loss</text>
-  
-  <rect x="640" y="125" width="210" height="150" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="745" y="155" text-anchor="middle" font-size="10" fill="#64748b">Dedup state (seen IDs) lost</text>
-  <text x="745" y="175" text-anchor="middle" font-size="10" fill="#64748b">due to crash, eviction, or</text>
-  <text x="745" y="190" text-anchor="middle" font-size="10" fill="#64748b">TTL expiry</text>
-  <text x="745" y="215" text-anchor="middle" font-size="10" fill="#4338ca">Signal:</text>
-  <text x="785" y="215" text-anchor="middle" font-size="10" fill="#64748b">Duplicates appear after restart,</text>
-  <text x="745" y="235" text-anchor="middle" font-size="10" fill="#64748b">cache miss rate spikes</text>
-  <text x="745" y="255" text-anchor="middle" font-size="10" fill="#4338ca">Mitigation:</text>
-  <text x="795" y="255" text-anchor="middle" font-size="10" fill="#64748b">Persist state, replicate across</text>
-  <text x="745" y="275" text-anchor="middle" font-size="10" fill="#64748b">nodes, use durable storage</text>
-  
-  <!-- Hash Collisions -->
-  <rect x="30" y="310" width="280" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
-  <text x="170" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Hash Collisions</text>
-  
-  <rect x="50" y="350" width="240" height="150" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
-  <text x="170" y="380" text-anchor="middle" font-size="10" fill="#64748b">Different records produce</text>
-  <text x="170" y="395" text-anchor="middle" font-size="10" fill="#64748b">same hash, causing incorrect</text>
-  <text x="170" y="410" text-anchor="middle" font-size="10" fill="#64748b">deduplication</text>
-  <text x="170" y="435" text-anchor="middle" font-size="10" fill="#1e293b">Signal:</text>
-  <text x="210" y="435" text-anchor="middle" font-size="10" fill="#64748b">Rare but catastrophic data</text>
-  <text x="170" y="450" text-anchor="middle" font-size="10" fill="#64748b">loss, hard to debug</text>
-  <text x="170" y="470" text-anchor="middle" font-size="10" fill="#1e293b">Mitigation:</text>
-  <text x="220" y="470" text-anchor="middle" font-size="10" fill="#64748b">Use strong hash (SHA256),</text>
-  <text x="170" y="490" text-anchor="middle" font-size="10" fill="#64748b">double-hash for critical data</text>
-  
-  <!-- Performance Degradation -->
-  <rect x="325" y="310" width="280" height="210" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
-  <text x="465" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">Performance Degradation</text>
-  
-  <rect x="345" y="350" width="240" height="150" rx="4" fill="#f0fdf4" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="465" y="380" text-anchor="middle" font-size="10" fill="#64748b">Dedup state grows too large,</text>
-  <text x="465" y="395" text-anchor="middle" font-size="10" fill="#64748b">causing slow lookups and</text>
-  <text x="465" y="410" text-anchor="middle" font-size="10" fill="#64748b">memory pressure</text>
-  <text x="465" y="435" text-anchor="middle" font-size="10" fill="#047857">Signal:</text>
-  <text x="505" y="435" text-anchor="middle" font-size="10" fill="#64748b">Latency increases over time,</text>
-  <text x="465" y="450" text-anchor="middle" font-size="10" fill="#64748b">memory usage grows</text>
-  <text x="465" y="470" text-anchor="middle" font-size="10" fill="#047857">Mitigation:</text>
-  <text x="515" y="470" text-anchor="middle" font-size="10" fill="#64748b">TTL on state, partition dedup</text>
-  <text x="465" y="490" text-anchor="middle" font-size="10" fill="#64748b">state, use probabilistic structures</text>
-  
-  <!-- Race Conditions -->
-  <rect x="620" y="310" width="250" height="210" rx="8" fill="#ffedd5" stroke="#fdba74" stroke-width="2"/>
-  <text x="745" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#c2410c">Race Conditions</text>
-  
-  <rect x="640" y="350" width="210" height="150" rx="4" fill="#fff7ed" stroke="#fdba74" stroke-width="1"/>
-  <text x="745" y="380" text-anchor="middle" font-size="10" fill="#64748b">Concurrent processing of</text>
-  <text x="745" y="395" text-anchor="middle" font-size="10" fill="#64748b">same record before dedup</text>
-  <text x="745" y="410" text-anchor="middle" font-size="10" fill="#64748b">check completes</text>
-  <text x="745" y="435" text-anchor="middle" font-size="10" fill="#c2410c">Signal:</text>
-  <text x="785" y="435" text-anchor="middle" font-size="10" fill="#64748b">Duplicates during high load,</text>
-  <text x="745" y="450" text-anchor="middle" font-size="10" fill="#64748b">TOCTOU (time-of-check-time-of-use)</text>
-  <text x="745" y="470" text-anchor="middle" font-size="10" fill="#c2410c">Mitigation:</text>
-  <text x="795" y="470" text-anchor="middle" font-size="10" fill="#64748b">Atomic check-and-insert,</text>
-  <text x="745" y="490" text-anchor="middle" font-size="10" fill="#64748b">distributed locks, serialization</text>
-  
-  <!-- Best Practices -->
-  <rect x="30" y="530" width="280" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
-  <text x="170" y="542" text-anchor="middle" font-size="8" fill="#b45309">Use idempotent sinks as final safety net</text>
-  
-  <rect x="325" y="530" width="280" height="15" rx="2" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="465" y="542" text-anchor="middle" font-size="8" fill="#4338ca">Monitor dedup rate for anomalies</text>
-  
-  <rect x="620" y="530" width="250" height="15" rx="2" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="745" y="542" text-anchor="middle" font-size="8" fill="#047857">Persist dedup state for recovery</text>
-  
-  <!-- Arrow markers -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Deduplication Failure Modes and State Management</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">State growth, key collisions, clock skew, and window boundary issues cause dedup failures</text>
+
+  <!-- Failure Mode 1 -->
+  <rect x="30" y="80" width="280" height="110" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="170" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">1. State Growth OOM</text>
+  <text x="170" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">Dedup state (hash set, Bloom</text>
+  <text x="170" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">filter) grows without bound,</text>
+  <text x="170" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">eventually exhausting memory.</text>
+  <rect x="50" y="168" width="240" height="18" rx="3" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="170" y="181" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991b1b">Mitigate: TTL, windowed state, eviction</text>
+
+  <!-- Failure Mode 2 -->
+  <rect x="340" y="80" width="280" height="110" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="480" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9a3412">2. Key Collision (Hash)</text>
+  <text x="480" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">Two different records produce</text>
+  <text x="480" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">same hash, one is incorrectly</text>
+  <text x="480" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">discarded as a duplicate.</text>
+  <rect x="360" y="168" width="240" height="18" rx="3" fill="#ffedd5" stroke="#fed7aa" stroke-width="1"/>
+  <text x="480" y="181" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#9a3412">Mitigate: 128-bit+ hashes, composite keys</text>
+
+  <!-- Failure Mode 3 -->
+  <rect x="650" y="80" width="280" height="110" rx="8" fill="#fefce8" stroke="#fef08a" stroke-width="1.5"/>
+  <text x="790" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#854d0e">3. Clock Skew / Time Gaps</text>
+  <text x="790" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">Late events arrive after the</text>
+  <text x="790" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">dedup window closed, treated</text>
+  <text x="790" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">as new records instead of dupes.</text>
+  <rect x="670" y="168" width="240" height="18" rx="3" fill="#fef9c3" stroke="#fef08a" stroke-width="1"/>
+  <text x="790" y="181" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#854d0e">Mitigate: generous window, watermark</text>
+
+  <!-- State management patterns -->
+  <rect x="30" y="220" width="440" height="210" rx="10" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="250" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0369a1">Dedup State Management Strategies</text>
+
+  <rect x="50" y="265" width="400" height="35" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="250" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">In-Memory Hash Set:</text>
+  <text x="250" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Fast, exact, but unbounded growth — needs TTL or windowing</text>
+
+  <rect x="50" y="306" width="400" height="35" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="250" y="321" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Bloom Filter:</text>
+  <text x="250" y="337" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Fixed memory, may have false positives, no deletion without Counting BF</text>
+
+  <rect x="50" y="347" width="400" height="35" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="250" y="362" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">External Store (Redis/DB):</text>
+  <text x="250" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Persistent, scalable, but adds network latency per record</text>
+
+  <rect x="50" y="388" width="400" height="35" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="250" y="403" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Idempotent Sink:</text>
+  <text x="250" y="419" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">No dedup state needed — sink handles duplicates via upsert by key</text>
+
+  <!-- Monitoring -->
+  <rect x="500" y="220" width="430" height="210" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="715" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Dedup Health Monitoring</text>
+
+  <rect x="520" y="265" width="390" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="715" y="284" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Duplicate rate: duplicates / total records (should trend to zero)</text>
+
+  <rect x="520" y="299" width="390" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="715" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">State size: memory/disk used by dedup store (alert on growth)</text>
+
+  <rect x="520" y="333" width="390" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="715" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Late event rate: events arriving after dedup window closed</text>
+
+  <rect x="520" y="367" width="390" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="715" y="386" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">False positive rate: for Bloom filters, estimated from fill ratio</text>
+
+  <rect x="520" y="401" width="390" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="715" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Dedup latency: time spent checking dedup store per record</text>
 </svg>

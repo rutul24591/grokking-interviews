@@ -1,10 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Exactly-Once Semantics Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Exactly-Once Semantics</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <rect width="960" height="440" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Achieving Exactly-Once: Idempotent Producers and Transactional Writes</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Exactly-once requires coordination between producer, broker, and consumer — no single component can guarantee it alone</text>
+
+  <!-- Step 1: Idempotent Producer -->
+  <rect x="30" y="80" width="280" height="140" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="170" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">1. Idempotent Producer</text>
+  <text x="170" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Producer assigns sequence numbers</text>
+
+  <rect x="50" y="140" width="240" height="65" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="170" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Each record: producer_id + sequence</text>
+  <text x="170" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Broker deduplicates by sequence</text>
+  <text x="170" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Retries don't produce duplicates</text>
+
+  <!-- Arrow -->
+  <defs>
+    <marker id="arrEOS" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="310" y1="150" x2="360" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrEOS)"/>
+
+  <!-- Step 2: Transactional Broker -->
+  <rect x="360" y="80" width="280" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="500" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#92400e">2. Transactional Broker</text>
+  <text x="500" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Atomic write across partitions</text>
+
+  <rect x="380" y="140" width="240" height="65" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="500" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Begin transaction, write records</text>
+  <text x="500" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Commit or abort atomically</text>
+  <text x="500" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Consumers read only committed</text>
+
+  <line x1="640" y1="150" x2="690" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrEOS)"/>
+
+  <!-- Step 3: Consumer offset commits -->
+  <rect x="690" y="80" width="240" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="810" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#166534">3. Consumer Offset Commit</text>
+  <text x="810" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Offset committed with output</text>
+
+  <rect x="710" y="140" width="200" height="65" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="810" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Process record, write output</text>
+  <text x="810" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Commit offset atomically</text>
+  <text x="810" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">No partial state on failure</text>
+
+  <!-- Failure scenarios -->
+  <rect x="30" y="250" width="900" height="170" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Failure Scenarios and How Exactly-Once Handles Them</text>
+
+  <rect x="50" y="295" width="420" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Producer crash: idempotent producer retries, broker deduplicates by sequence number</text>
+
+  <rect x="50" y="331" width="420" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="351" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Broker crash: transactional broker aborts incomplete tx, consumers see nothing</text>
+
+  <rect x="50" y="367" width="420" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Consumer crash: uncommitted offset, consumer reprocesses from last committed offset</text>
+
+  <rect x="500" y="295" width="410" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="705" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Network partition: transaction times out, aborts, no partial writes visible</text>
+
+  <rect x="500" y="331" width="410" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="705" y="351" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Exactly-once scope: within partition, across partitions, or end-to-end pipeline</text>
+
+  <rect x="500" y="367" width="410" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="705" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Performance cost: 20-50% throughput reduction vs at-least-once</text>
 </svg>

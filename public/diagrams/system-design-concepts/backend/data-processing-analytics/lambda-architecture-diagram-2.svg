@@ -1,10 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Lambda Architecture Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Lambda Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <rect width="960" height="440" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Lambda Architecture: Batch vs Speed Layer Trade-offs</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Batch layer provides accuracy; speed layer provides low latency — together they cover all use cases</text>
+
+  <!-- Comparison table -->
+  <rect x="30" y="80" width="900" height="330" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Batch Layer vs Speed Layer Comparison</text>
+
+  <!-- Header -->
+  <rect x="50" y="120" width="860" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="200" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Dimension</text>
+  <text x="480" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Batch Layer</text>
+  <text x="760" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Speed Layer</text>
+
+  <!-- Rows -->
+  <rect x="50" y="150" width="860" height="28" rx="2" fill="#ffffff"/>
+  <text x="200" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Data Scope</text>
+  <text x="480" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">All historical data</text>
+  <text x="760" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Recent data only</text>
+
+  <rect x="50" y="178" width="860" height="28" rx="2" fill="#f8fafc"/>
+  <text x="200" y="196" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Latency</text>
+  <text x="480" y="196" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Hours to days</text>
+  <text x="760" y="196" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Seconds to minutes</text>
+
+  <rect x="50" y="206" width="860" height="28" rx="2" fill="#ffffff"/>
+  <text x="200" y="224" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Accuracy</text>
+  <text x="480" y="224" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Exact (full recomputation)</text>
+  <text x="760" y="224" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Approximate (incremental)</text>
+
+  <rect x="50" y="234" width="860" height="28" rx="2" fill="#f8fafc"/>
+  <text x="200" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Computation Model</text>
+  <text x="480" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Scheduled, batch jobs</text>
+  <text x="760" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Continuous, streaming</text>
+
+  <rect x="50" y="262" width="860" height="28" rx="2" fill="#ffffff"/>
+  <text x="200" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Fault Tolerance</text>
+  <text x="480" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Recompute from source</text>
+  <text x="760" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">State recovery from checkpoint</text>
+
+  <rect x="50" y="290" width="860" height="28" rx="2" fill="#f8fafc"/>
+  <text x="200" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Technology</text>
+  <text x="480" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Hadoop, Spark, Hive</text>
+  <text x="760" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Storm, Flink, Spark Streaming</text>
+
+  <rect x="50" y="318" width="860" height="28" rx="2" fill="#ffffff"/>
+  <text x="200" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">View Updates</text>
+  <text x="480" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Overwrites entire view</text>
+  <text x="760" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Incremental updates</text>
+
+  <rect x="50" y="346" width="860" height="28" rx="2" fill="#f8fafc"/>
+  <text x="200" y="364" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Role in Architecture</text>
+  <text x="480" y="364" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Source of truth</text>
+  <text x="760" y="364" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Fills gap until batch is ready</text>
+
+  <!-- Key insight -->
+  <rect x="50" y="380" width="860" height="24" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="480" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#166534">Key Insight: Batch provides accuracy, speed provides freshness — together they provide both</text>
 </svg>

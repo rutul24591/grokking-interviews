@@ -1,10 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Data Pipelines Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Data Pipelines</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Data Pipeline Patterns: ETL, ELT, CDC, and Stream</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Different pipeline patterns for different use cases: batch, streaming, change-driven, and hybrid</text>
+
+  <!-- ETL Pattern -->
+  <rect x="30" y="80" width="210" height="160" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="135" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">ETL Pipeline</text>
+  <text x="135" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Extract &#x2192; Transform &#x2192; Load</text>
+
+  <rect x="50" y="135" width="170" height="25" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="135" y="152" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">Extract: read from source</text>
+
+  <rect x="50" y="165" width="170" height="25" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="135" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">Transform: clean, join, agg</text>
+
+  <rect x="50" y="195" width="170" height="25" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="135" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">Load: write to warehouse</text>
+
+  <rect x="50" y="225" width="170" height="18" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="135" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Batch, scheduled, reliable</text>
+
+  <!-- ELT Pattern -->
+  <rect x="270" y="80" width="210" height="160" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="375" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#166534">ELT Pipeline</text>
+  <text x="375" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Extract &#x2192; Load &#x2192; Transform</text>
+
+  <rect x="290" y="135" width="170" height="25" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="375" y="152" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">Extract: read from source</text>
+
+  <rect x="290" y="165" width="170" height="25" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="375" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">Load: write raw to lake</text>
+
+  <rect x="290" y="195" width="170" height="25" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="375" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">Transform: SQL in warehouse</text>
+
+  <rect x="290" y="225" width="170" height="18" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="375" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Cloud-native, flexible, SQL-based</text>
+
+  <!-- CDC Pattern -->
+  <rect x="510" y="80" width="210" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="615" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#92400e">CDC Pipeline</text>
+  <text x="615" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Log-based change streaming</text>
+
+  <rect x="530" y="135" width="170" height="25" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="615" y="152" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">Read: database transaction log</text>
+
+  <rect x="530" y="165" width="170" height="25" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="615" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">Parse: change events to stream</text>
+
+  <rect x="530" y="195" width="170" height="25" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="615" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">Apply: replicate to targets</text>
+
+  <rect x="530" y="225" width="170" height="18" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="615" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Real-time, low-latency sync</text>
+
+  <!-- Stream Pattern -->
+  <rect x="750" y="80" width="180" height="160" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="840" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Stream Pipeline</text>
+  <text x="840" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Continuous event processing</text>
+
+  <rect x="770" y="135" width="140" height="25" rx="4" fill="#eef2ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="840" y="152" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3730a3">Ingest: consume events</text>
+
+  <rect x="770" y="165" width="140" height="25" rx="4" fill="#eef2ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="840" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3730a3">Process: transform, agg</text>
+
+  <rect x="770" y="195" width="140" height="25" rx="4" fill="#eef2ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="840" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3730a3">Output: write results</text>
+
+  <rect x="770" y="225" width="140" height="18" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="840" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Sub-second latency, always-on</text>
+
+  <!-- Pipeline orchestration -->
+  <rect x="30" y="270" width="900" height="170" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Pipeline Orchestration and Dependency Management</text>
+
+  <rect x="50" y="315" width="260" height="110" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="180" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">DAG-Based Orchestration</text>
+  <text x="180" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Tasks as DAG nodes</text>
+  <text x="180" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Dependencies as edges</text>
+  <text x="180" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Airflow, Dagster, Prefect</text>
+  <text x="180" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Retry, alert, backfill support</text>
+
+  <rect x="340" y="315" width="260" height="110" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="470" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Data Quality Gates</text>
+  <text x="470" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Row count checks</text>
+  <text x="470" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Schema validation</text>
+  <text x="470" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Freshness SLAs</text>
+  <text x="470" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Halt on failure</text>
+
+  <rect x="630" y="315" width="280" height="110" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="770" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Monitoring and Alerting</text>
+  <text x="770" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Pipeline duration trends</text>
+  <text x="770" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Data volume anomalies</text>
+  <text x="770" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">SLA breach alerts</text>
+  <text x="770" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Recovery dashboards</text>
 </svg>

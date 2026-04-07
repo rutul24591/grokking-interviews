@@ -1,10 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Kappa Architecture Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Kappa Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <rect width="960" height="440" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Kappa vs Lambda: Single Pipeline vs Dual Pipeline</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Kappa uses one pipeline for all processing; Lambda uses separate batch and speed layers</text>
+
+  <!-- Lambda (left side) -->
+  <rect x="30" y="80" width="430" height="330" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="245" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Lambda Architecture (Dual Pipeline)</text>
+
+  <rect x="50" y="125" width="390" height="80" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="245" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Batch Layer</text>
+  <text x="245" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Processes all historical data, high latency</text>
+  <text x="245" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Accurate but slow, runs on schedule</text>
+
+  <rect x="50" y="215" width="390" height="80" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="245" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534">Speed Layer</text>
+  <text x="245" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Processes recent data, low latency</text>
+  <text x="245" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Approximate but fast, continuous</text>
+
+  <rect x="50" y="305" width="390" height="80" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="245" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#3730a3">Serving Layer</text>
+  <text x="245" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Merges batch + speed results</text>
+  <text x="245" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Complex merge logic required</text>
+
+  <!-- Kappa (right side) -->
+  <rect x="500" y="80" width="430" height="330" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="715" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#166534">Kappa Architecture (Single Pipeline)</text>
+
+  <rect x="520" y="125" width="390" height="80" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="715" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Immutable Log</text>
+  <text x="715" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">All data in one log (Kafka/Pulsar)</text>
+  <text x="715" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Long retention enables reprocessing</text>
+
+  <rect x="520" y="215" width="390" height="80" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="715" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#3730a3">Single Stream Processor</text>
+  <text x="715" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Same code for real-time + reprocessing</text>
+  <text x="715" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">No separate batch system needed</text>
+
+  <rect x="520" y="305" width="390" height="80" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="715" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534">Serving Layer</text>
+  <text x="715" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Direct query on processed results</text>
+  <text x="715" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">No merge logic — single source of truth</text>
 </svg>

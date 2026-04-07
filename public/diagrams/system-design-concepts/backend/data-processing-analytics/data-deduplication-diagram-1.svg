@@ -1,98 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
-  <title id="title">Data Deduplication Strategies</title>
-  <desc id="desc">Data deduplication strategies: exact match, fuzzy match, and deduplication at different layers</desc>
-  
-  <!-- Background -->
-  <rect width="900" height="550" fill="#f8fafc"/>
-  
-  <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Data Deduplication Strategies</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Exact match, fuzzy match, and deduplication at different layers</text>
-  
-  <!-- Deduplication Approaches -->
-  <rect x="30" y="85" width="280" height="240" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
-  <text x="170" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Exact Match Deduplication</text>
-  
-  <rect x="50" y="125" width="240" height="80" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
-  <text x="170" y="150" text-anchor="middle" font-size="10" fill="#64748b">Compare full record or hash</text>
-  <text x="170" y="170" text-anchor="middle" font-size="10" fill="#64748b">MD5, SHA256 of content</text>
-  <text x="170" y="190" text-anchor="middle" font-size="10" fill="#64748b">Keep first or latest occurrence</text>
-  
-  <rect x="50" y="215" width="240" height="100" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
-  <text x="170" y="240" text-anchor="middle" font-size="10" fill="#10b981">✓ Fast, deterministic</text>
-  <text x="170" y="260" text-anchor="middle" font-size="10" fill="#10b981">✓ Low false positives</text>
-  <text x="170" y="280" text-anchor="middle" font-size="10" fill="#ef4444">✗ Misses near-duplicates</text>
-  <text x="170" y="300" text-anchor="middle" font-size="10" fill="#64748b">Use: Event dedup, backups</text>
-  
-  <!-- Fuzzy Deduplication -->
-  <rect x="325" y="85" width="280" height="240" rx="8" fill="#7c3aed" stroke="#6d28d9" stroke-width="2"/>
-  <text x="465" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Fuzzy/Near Deduplication</text>
-  
-  <rect x="345" y="125" width="240" height="80" rx="4" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1"/>
-  <text x="465" y="150" text-anchor="middle" font-size="10" fill="#64748b">Similarity scoring</text>
-  <text x="465" y="170" text-anchor="middle" font-size="10" fill="#64748b">Levenshtein, Jaccard, cosine</text>
-  <text x="465" y="190" text-anchor="middle" font-size="10" fill="#64748b">Threshold-based matching</text>
-  
-  <rect x="345" y="215" width="240" height="100" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
-  <text x="465" y="240" text-anchor="middle" font-size="10" fill="#10b981">✓ Catches near-duplicates</text>
-  <text x="465" y="260" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ Computationally expensive</text>
-  <text x="465" y="280" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ False positives possible</text>
-  <text x="465" y="300" text-anchor="middle" font-size="10" fill="#64748b">Use: Record linkage, MDM</text>
-  
-  <!-- Bloom Filter Dedup -->
-  <rect x="620" y="85" width="250" height="240" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
-  <text x="745" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Bloom Filter Deduplication</text>
-  
-  <rect x="640" y="125" width="210" height="80" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
-  <text x="745" y="150" text-anchor="middle" font-size="10" fill="#64748b">Probabilistic data structure</text>
-  <text x="745" y="170" text-anchor="middle" font-size="10" fill="#64748b">"Definitely not seen" or</text>
-  <text x="745" y="190" text-anchor="middle" font-size="10" fill="#64748b">"Probably seen"</text>
-  
-  <rect x="640" y="215" width="210" height="100" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="745" y="240" text-anchor="middle" font-size="10" fill="#10b981">✓ Very memory efficient</text>
-  <text x="745" y="260" text-anchor="middle" font-size="10" fill="#10b981">✓ Fast O(k) lookup</text>
-  <text x="745" y="280" text-anchor="middle" font-size="10" fill="#ef4444">✗ False positives</text>
-  <text x="745" y="300" text-anchor="middle" font-size="10" fill="#64748b">Use: Distributed dedup</text>
-  
-  <!-- Deduplication Layers -->
-  <rect x="30" y="340" width="400" height="190" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
-  <text x="230" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Deduplication at Different Layers</text>
-  
-  <rect x="50" y="380" width="360" height="140" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
-  
-  <text x="70" y="405" text-anchor="start" font-size="10" font-weight="bold" fill="#b91c1c">Source Level:</text>
-  <text x="180" y="405" text-anchor="start" font-size="9" fill="#64748b">Idempotent producers</text>
-  
-  <text x="70" y="425" text-anchor="start" font-size="10" font-weight="bold" fill="#b91c1c">Ingestion Level:</text>
-  <text x="190" y="425" text-anchor="start" font-size="9" fill="#64748b">Kafka exactly-once</text>
-  
-  <text x="70" y="445" text-anchor="start" font-size="10" font-weight="bold" fill="#b91c1c">Processing Level:</text>
-  <text x="200" y="445" text-anchor="start" font-size="9" fill="#64748b">Stateful dedup operators</text>
-  
-  <text x="70" y="465" text-anchor="start" font-size="10" font-weight="bold" fill="#b91c1c">Storage Level:</text>
-  <text x="185" y="465" text-anchor="start" font-size="9" fill="#64748b">Database constraints, UPSERT</text>
-  
-  <text x="70" y="485" text-anchor="start" font-size="10" font-weight="bold" fill="#b91c1c">Query Level:</text>
-  <text x="170" y="485" text-anchor="start" font-size="9" fill="#64748b">ROW_NUMBER, DISTINCT</text>
-  
-  <text x="70" y="510" text-anchor="start" font-size="9" fill="#64748b">Best: Dedup as early as possible</text>
-  
-  <!-- Dedup Window -->
-  <rect x="450" y="340" width="420" height="190" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
-  <text x="660" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Deduplication Window</text>
-  
-  <rect x="470" y="380" width="380" height="140" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="490" y="405" text-anchor="start" font-size="9" fill="#64748b">Time-bounded deduplication:</text>
-  <text x="490" y="425" text-anchor="start" font-size="9" fill="#64748b">• Keep seen IDs for N minutes/hours</text>
-  <text x="490" y="445" text-anchor="start" font-size="9" fill="#64748b">• Evict old entries automatically</text>
-  <text x="490" y="465" text-anchor="start" font-size="9" fill="#64748b">• Balance: window size vs memory</text>
-  <text x="490" y="490" text-anchor="start" font-size="9" fill="#4338ca">Window size depends on:</text>
-  <text x="490" y="510" text-anchor="start" font-size="9" fill="#64748b">• Max expected duplicate delay</text>
-  
-  <!-- Arrow markers -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Data Deduplication: Exact vs Probabilistic Approaches</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Exact deduplication uses hashes or unique keys; probabilistic uses sketches for bounded memory</text>
+
+  <!-- Exact deduplication flow -->
+  <rect x="30" y="80" width="430" height="350" rx="10" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
+  <text x="245" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#0369a1">Exact Deduplication</text>
+
+  <rect x="50" y="125" width="390" height="55" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="245" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 1: Compute unique key for each record</text>
+  <text x="245" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Primary key, hash of content, or business key</text>
+
+  <rect x="50" y="190" width="390" height="55" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="245" y="213" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 2: Check key against seen-keys store</text>
+  <text x="245" y="233" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Hash set, Bloom filter (with false positives), or DB index</text>
+
+  <rect x="50" y="255" width="390" height="55" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="245" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 3: Keep first occurrence, discard duplicates</text>
+  <text x="245" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Or keep latest (last-write-wins) based on timestamp</text>
+
+  <rect x="50" y="320" width="390" height="55" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="245" y="343" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 4: Output deduplicated records</text>
+  <text x="245" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Each unique key appears exactly once in output</text>
+
+  <!-- Probabilistic deduplication flow -->
+  <rect x="500" y="80" width="430" height="350" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#92400e">Probabilistic Deduplication</text>
+
+  <rect x="520" y="125" width="390" height="55" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Use: when exact dedup exceeds memory budget</text>
+  <text x="715" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Billions of unique keys cannot fit in a hash set</text>
+
+  <rect x="520" y="190" width="390" height="55" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="213" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Bloom Filter: fixed-size bit array + hash functions</text>
+  <text x="715" y="233" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">May return false positive, never false negative</text>
+
+  <rect x="520" y="255" width="390" height="55" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">HyperLogLog: estimate unique count</text>
+  <text x="715" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Fixed ~12 KB memory, ~1-2% error for billions of keys</text>
+
+  <rect x="520" y="320" width="390" height="55" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="343" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Trade-off: bounded memory, bounded error</text>
+  <text x="715" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Acceptable for analytics, not for billing/compliance</text>
+
+  <!-- Bottom comparison -->
+  <rect x="30" y="440" width="430" height="16" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="245" y="453" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">Exact: 100% correct, memory grows with unique keys</text>
+
+  <rect x="500" y="440" width="430" height="16" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="715" y="453" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">Probabilistic: fixed memory, known error bounds</text>
 </svg>

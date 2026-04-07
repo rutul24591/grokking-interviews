@@ -1,10 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Change Data Capture Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Change Data Capture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Change Data Capture Architecture</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Capture database changes from transaction log and stream them to downstream consumers</text>
+
+  <!-- Source Database -->
+  <rect x="40" y="90" width="200" height="120" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="140" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Source Database</text>
+  <text x="140" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">PostgreSQL / MySQL /</text>
+  <text x="140" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">MongoDB / Oracle</text>
+  <rect x="60" y="165" width="160" height="35" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="140" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1e40af">Transaction Log (WAL/Binlog)</text>
+  <text x="140" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Append-only change records</text>
+
+  <!-- CDC Connector -->
+  <rect x="280" y="90" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="370" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#92400e">CDC Connector</text>
+  <text x="370" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Debezium / Canal /</text>
+  <text x="370" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Maxwell / Custom</text>
+  <rect x="300" y="165" width="160" height="35" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="380" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#92400e">Reads WAL, emits change events</text>
+  <text x="380" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">INSERT, UPDATE, DELETE events</text>
+
+  <!-- Message Broker -->
+  <rect x="500" y="90" width="180" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="590" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#3730a3">Message Broker</text>
+  <text x="590" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Apache Kafka /</text>
+  <text x="590" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Redpanda / Pulsar</text>
+  <rect x="520" y="165" width="140" height="35" rx="4" fill="#eef2ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="590" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3730a3">Topic per table or database</text>
+  <text x="590" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Ordered by transaction log</text>
+
+  <!-- Consumers -->
+  <rect x="720" y="90" width="200" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="820" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#166534">Downstream Consumers</text>
+  <text x="820" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Cache, Search, Analytics</text>
+  <text x="820" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Data Warehouse, ML</text>
+  <rect x="740" y="165" width="160" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="820" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#166534">Each consumer maintains its own</text>
+  <text x="820" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">offset and processes independently</text>
+
+  <!-- Arrows -->
+  <defs>
+    <marker id="arrCDC" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="240" y1="150" x2="280" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrCDC)"/>
+  <line x1="460" y1="150" x2="500" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrCDC)"/>
+  <line x1="680" y1="150" x2="720" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrCDC)"/>
+
+  <!-- Event structure -->
+  <rect x="40" y="250" width="880" height="180" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">CDC Event Structure (per change record)</text>
+
+  <rect x="60" y="295" width="180" height="120" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Metadata</text>
+  <text x="150" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">source database</text>
+  <text x="150" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">table name</text>
+  <text x="150" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">transaction ID</text>
+  <text x="150" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">LSN / offset</text>
+  <text x="150" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">timestamp (event + source)</text>
+
+  <rect x="260" y="295" width="180" height="120" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="350" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Operation Type</text>
+  <text x="350" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#16a34a">c = CREATE (INSERT)</text>
+  <text x="350" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f59e0b">u = UPDATE</text>
+  <text x="350" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ef4444">d = DELETE</text>
+  <text x="350" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">r = READ (snapshot)</text>
+  <text x="350" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">t = TRUNCATE</text>
+
+  <rect x="460" y="295" width="200" height="120" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="560" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Before State (UPDATE/DELETE)</text>
+  <text x="560" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Full row state before change</text>
+  <text x="560" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Only for UPDATE and DELETE</text>
+  <text x="560" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">null for INSERT</text>
+  <text x="560" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Key: primary key or unique index</text>
+  <text x="560" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#94a3b8">Depends on REPLICA IDENTITY</text>
+
+  <rect x="680" y="295" width="220" height="120" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="790" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">After State (INSERT/UPDATE)</text>
+  <text x="790" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Full row state after change</text>
+  <text x="790" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Only for INSERT and UPDATE</text>
+  <text x="790" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">null for DELETE</text>
+  <text x="790" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Key: primary key or unique index</text>
+  <text x="790" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#94a3b8">Complete row or key-only mode</text>
 </svg>

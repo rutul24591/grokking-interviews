@@ -1,10 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">ETL/ELT Pipelines Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">ETL/ELT Pipelines</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">ETL vs ELT: Where Transformation Happens</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">ETL transforms before loading; ELT loads raw then transforms in the destination</text>
+
+  <!-- ETL Flow -->
+  <rect x="30" y="80" width="430" height="350" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="245" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af">ETL: Extract → Transform → Load</text>
+
+  <rect x="50" y="130" width="390" height="60" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="245" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Step 1: Extract</text>
+  <text x="245" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Read raw data from source systems (databases, APIs, files)</text>
+
+  <line x1="245" y1="190" x2="245" y2="210" stroke="#64748b" stroke-width="2"/>
+  <polygon points="242,210 245,218 248,210" fill="#64748b"/>
+
+  <rect x="50" y="218" width="390" height="60" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="245" y="241" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Step 2: Transform (in ETL engine)</text>
+  <text x="245" y="261" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Clean, join, aggregate in Spark/dbt/Stitch before loading</text>
+
+  <line x1="245" y1="278" x2="245" y2="298" stroke="#64748b" stroke-width="2"/>
+  <polygon points="242,298 245,306 248,298" fill="#64748b"/>
+
+  <rect x="50" y="306" width="390" height="60" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="245" y="329" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Step 3: Load (transformed data)</text>
+  <text x="245" y="349" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Write transformed data to warehouse — ready for queries</text>
+
+  <rect x="50" y="380" width="390" height="38" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="245" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">Pros: Data quality before load, less storage</text>
+  <text x="245" y="414" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#991b1b">Cons: Transform bottleneck, hard to reprocess raw</text>
+
+  <!-- ELT Flow -->
+  <rect x="500" y="80" width="430" height="350" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="715" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#166534">ELT: Extract → Load → Transform</text>
+
+  <rect x="520" y="130" width="390" height="60" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Step 1: Extract</text>
+  <text x="715" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Read raw data from source systems (same as ETL)</text>
+
+  <line x1="715" y1="190" x2="715" y2="210" stroke="#64748b" stroke-width="2"/>
+  <polygon points="712,210 715,218 718,210" fill="#64748b"/>
+
+  <rect x="520" y="218" width="390" height="60" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="241" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Step 2: Load (raw data)</text>
+  <text x="715" y="261" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Write raw data to lake/warehouse — no transformation yet</text>
+
+  <line x1="715" y1="278" x2="715" y2="298" stroke="#64748b" stroke-width="2"/>
+  <polygon points="712,298 715,306 718,298" fill="#64748b"/>
+
+  <rect x="520" y="306" width="390" height="60" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="329" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Step 3: Transform (in warehouse)</text>
+  <text x="715" y="349" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">SQL transformations in BigQuery/Snowflake/Redshift</text>
+
+  <rect x="520" y="380" width="390" height="38" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="715" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#166534">Pros: Raw data preserved, SQL-based, flexible</text>
+  <text x="715" y="414" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#166534">Cons: More storage, transform cost in warehouse</text>
 </svg>

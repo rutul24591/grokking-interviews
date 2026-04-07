@@ -1,118 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
-  <title id="title">Serialization Failure Modes</title>
-  <desc id="desc">Serialization failure modes: schema drift, version mismatch, and deserialization errors</desc>
-  
-  <!-- Background -->
-  <rect width="900" height="550" fill="#f8fafc"/>
-  
-  <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Serialization Failure Modes</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Schema drift, version mismatch, and deserialization errors</text>
-  
-  <!-- Schema Drift -->
-  <rect x="30" y="85" width="280" height="210" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
-  <text x="170" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Schema Drift</text>
-  
-  <rect x="50" y="125" width="240" height="150" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
-  <text x="170" y="155" text-anchor="middle" font-size="10" fill="#64748b">Producer and consumer schemas</text>
-  <text x="170" y="175" text-anchor="middle" font-size="10" fill="#64748b">diverge over time without proper</text>
-  <text x="170" y="190" text-anchor="middle" font-size="10" fill="#64748b">versioning or compatibility checks</text>
-  <text x="170" y="215" text-anchor="middle" font-size="10" fill="#b91c1c">Signal:</text>
-  <text x="210" y="215" text-anchor="middle" font-size="10" fill="#64748b">Deserialization errors, missing</text>
-  <text x="170" y="235" text-anchor="middle" font-size="10" fill="#64748b">fields, type mismatches</text>
-  <text x="170" y="255" text-anchor="middle" font-size="10" fill="#b91c1c">Mitigation:</text>
-  <text x="220" y="255" text-anchor="middle" font-size="10" fill="#64748b">Schema registry, compatibility</text>
-  <text x="170" y="275" text-anchor="middle" font-size="10" fill="#64748b">checks in CI, versioned schemas</text>
-  
-  <!-- Version Mismatch -->
-  <rect x="325" y="85" width="280" height="210" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
-  <text x="465" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Version Mismatch</text>
-  
-  <rect x="345" y="125" width="240" height="150" rx="4" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
-  <text x="465" y="155" text-anchor="middle" font-size="10" fill="#64748b">Reader expects different schema</text>
-  <text x="465" y="175" text-anchor="middle" font-size="10" fill="#64748b">version than writer produced,</text>
-  <text x="465" y="190" text-anchor="middle" font-size="10" fill="#64748b">causing parse failures</text>
-  <text x="465" y="215" text-anchor="middle" font-size="10" fill="#b45309">Signal:</text>
-  <text x="505" y="215" text-anchor="middle" font-size="10" fill="#64748b">"Unknown schema" errors, version</text>
-  <text x="465" y="235" text-anchor="middle" font-size="10" fill="#64748b">ID not found in registry</text>
-  <text x="465" y="255" text-anchor="middle" font-size="10" fill="#b45309">Mitigation:</text>
-  <text x="515" y="255" text-anchor="middle" font-size="10" fill="#64748b">Embed schema version in message,</text>
-  <text x="465" y="275" text-anchor="middle" font-size="10" fill="#64748b">schema registry with versioning</text>
-  
-  <!-- Buffer Overflow -->
-  <rect x="620" y="85" width="250" height="210" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
-  <text x="745" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Buffer Overflow</text>
-  
-  <rect x="640" y="125" width="210" height="150" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="745" y="155" text-anchor="middle" font-size="10" fill="#64748b">Malformed or malicious data</text>
-  <text x="745" y="175" text-anchor="middle" font-size="10" fill="#64748b">causes deserializer to allocate</text>
-  <text x="745" y="190" text-anchor="middle" font-size="10" fill="#64748b">excessive memory</text>
-  <text x="745" y="215" text-anchor="middle" font-size="10" fill="#4338ca">Signal:</text>
-  <text x="785" y="215" text-anchor="middle" font-size="10" fill="#64748b">OOM errors, unusually large</text>
-  <text x="745" y="235" text-anchor="middle" font-size="10" fill="#64748b">allocation requests</text>
-  <text x="745" y="255" text-anchor="middle" font-size="10" fill="#4338ca">Mitigation:</text>
-  <text x="795" y="255" text-anchor="middle" font-size="10" fill="#64748b">Size limits, streaming parse,</text>
-  <text x="745" y="275" text-anchor="middle" font-size="10" fill="#64748b">validate before deserialize</text>
-  
-  <!-- Silent Data Corruption -->
-  <rect x="30" y="310" width="280" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
-  <text x="170" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Silent Data Corruption</text>
-  
-  <rect x="50" y="350" width="240" height="150" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
-  <text x="170" y="380" text-anchor="middle" font-size="10" fill="#64748b">Data parsed successfully but</text>
-  <text x="170" y="395" text-anchor="middle" font-size="10" fill="#64748b">values are wrong due to type</text>
-  <text x="170" y="410" text-anchor="middle" font-size="10" fill="#64748b">mismatch or encoding issues</text>
-  <text x="170" y="435" text-anchor="middle" font-size="10" fill="#1e293b">Signal:</text>
-  <text x="210" y="435" text-anchor="middle" font-size="10" fill="#64748b">Business logic errors, data</text>
-  <text x="170" y="450" text-anchor="middle" font-size="10" fill="#64748b">validation failures downstream</text>
-  <text x="170" y="470" text-anchor="middle" font-size="10" fill="#1e293b">Mitigation:</text>
-  <text x="220" y="470" text-anchor="middle" font-size="10" fill="#64748b">Strong typing, checksums,</text>
-  <text x="170" y="490" text-anchor="middle" font-size="10" fill="#64748b">data validation at boundaries</text>
-  
-  <!-- Encoding Mismatch -->
-  <rect x="325" y="310" width="280" height="210" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
-  <text x="465" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">Encoding Mismatch</text>
-  
-  <rect x="345" y="350" width="240" height="150" rx="4" fill="#f0fdf4" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="465" y="380" text-anchor="middle" font-size="10" fill="#64748b">String encoding mismatch</text>
-  <text x="465" y="395" text-anchor="middle" font-size="10" fill="#64748b">(UTF-8 vs Latin-1) or number</text>
-  <text x="465" y="410" text-anchor="middle" font-size="10" fill="#64748b">endianness issues</text>
-  <text x="465" y="435" text-anchor="middle" font-size="10" fill="#047857">Signal:</text>
-  <text x="505" y="435" text-anchor="middle" font-size="10" fill="#64748b">Garbled text, wrong numeric</text>
-  <text x="465" y="450" text-anchor="middle" font-size="10" fill="#64748b">values, character corruption</text>
-  <text x="465" y="470" text-anchor="middle" font-size="10" fill="#047857">Mitigation:</text>
-  <text x="515" y="470" text-anchor="middle" font-size="10" fill="#64748b">Explicit encoding in protocol,</text>
-  <text x="465" y="490" text-anchor="middle" font-size="10" fill="#64748b">use network byte order</text>
-  
-  <!-- Missing Schema Registry -->
-  <rect x="620" y="310" width="250" height="210" rx="8" fill="#ffedd5" stroke="#fdba74" stroke-width="2"/>
-  <text x="745" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#c2410c">Missing Schema Registry</text>
-  
-  <rect x="640" y="350" width="210" height="150" rx="4" fill="#fff7ed" stroke="#fdba74" stroke-width="1"/>
-  <text x="745" y="380" text-anchor="middle" font-size="10" fill="#64748b">No central schema management</text>
-  <text x="745" y="395" text-anchor="middle" font-size="10" fill="#64748b">leads to incompatible changes</text>
-  <text x="745" y="410" text-anchor="middle" font-size="10" fill="#64748b">deployed without coordination</text>
-  <text x="745" y="435" text-anchor="middle" font-size="10" fill="#c2410c">Signal:</text>
-  <text x="785" y="435" text-anchor="middle" font-size="10" fill="#64748b">Production failures after deploy,</text>
-  <text x="745" y="450" text-anchor="middle" font-size="10" fill="#64748b">schema conflicts discovered late</text>
-  <text x="745" y="470" text-anchor="middle" font-size="10" fill="#c2410c">Mitigation:</text>
-  <text x="795" y="470" text-anchor="middle" font-size="10" fill="#64748b">Implement schema registry,</text>
-  <text x="745" y="490" text-anchor="middle" font-size="10" fill="#64748b">compatibility checks in CI/CD</text>
-  
-  <!-- Best Practices -->
-  <rect x="30" y="530" width="280" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
-  <text x="170" y="542" text-anchor="middle" font-size="8" fill="#b45309">Always use schema registry for binary formats</text>
-  
-  <rect x="325" y="530" width="280" height="15" rx="2" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="465" y="542" text-anchor="middle" font-size="8" fill="#4338ca">Test schema evolution before deploy</text>
-  
-  <rect x="620" y="530" width="250" height="15" rx="2" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="745" y="542" text-anchor="middle" font-size="8" fill="#047857">Validate data at system boundaries</text>
-  
-  <!-- Arrow markers -->
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Serialization Pipeline: Schema Registry and Compatibility Checks</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Schema registry manages schema versions and enforces compatibility during schema evolution</text>
+
+  <!-- Producer flow -->
+  <rect x="30" y="80" width="200" height="260" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="130" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">Producer Flow</text>
+
+  <rect x="50" y="120" width="160" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="130" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">1. Define schema</text>
+  <text x="130" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Write .proto or Avro schema</text>
+
+  <rect x="50" y="170" width="160" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="130" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">2. Register schema</text>
+  <text x="130" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Submit to schema registry</text>
+
+  <rect x="50" y="220" width="160" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="130" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">3. Compatibility check</text>
+  <text x="130" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Registry checks compat</text>
+
+  <rect x="50" y="270" width="160" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="130" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">4. Serialize + write</text>
+  <text x="130" y="304" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Encode data with schema</text>
+
+  <!-- Schema Registry -->
+  <rect x="260" y="80" width="440" height="130" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="480" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Schema Registry</text>
+
+  <rect x="280" y="120" width="180" height="75" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="370" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Version Store</text>
+  <text x="370" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Subject: topic-value</text>
+  <text x="370" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">v1: {name, age}</text>
+  <text x="370" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">v2: {name, age, email}</text>
+
+  <rect x="490" y="120" width="190" height="75" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="585" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Compatibility Engine</text>
+  <text x="585" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Mode: BACKWARD</text>
+  <text x="585" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Check: v2 vs v1</text>
+  <text x="585" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#16a34a">&#x2713; Compatible - accepted</text>
+
+  <!-- Consumer flow -->
+  <rect x="730" y="80" width="200" height="260" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="830" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#166534">Consumer Flow</text>
+
+  <rect x="750" y="120" width="160" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="830" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">1. Read schema ID</text>
+  <text x="830" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">From message header</text>
+
+  <rect x="750" y="170" width="160" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="830" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">2. Fetch schema</text>
+  <text x="830" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">From registry by ID</text>
+
+  <rect x="750" y="220" width="160" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="830" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">3. Deserialize</text>
+  <text x="830" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Decode data with schema</text>
+
+  <rect x="750" y="270" width="160" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="830" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">4. Process data</text>
+  <text x="830" y="304" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Handle missing fields</text>
+
+  <!-- Arrows -->
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    <marker id="arrSR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
     </marker>
   </defs>
+  <line x1="230" y1="145" x2="260" y2="145" stroke="#64748b" stroke-width="2" marker-end="url(#arrSR)"/>
+  <line x1="700" y1="145" x2="730" y2="145" stroke="#64748b" stroke-width="2" marker-end="url(#arrSR)"/>
+
+  <!-- Bottom: compatibility modes -->
+  <rect x="30" y="370" width="900" height="70" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Registry Compatibility Modes</text>
+  <text x="180" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">BACKWARD: new reads old</text>
+  <text x="380" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">FORWARD: old reads new</text>
+  <text x="580" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">FULL: both directions</text>
+  <text x="780" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">NONE: no checks</text>
 </svg>

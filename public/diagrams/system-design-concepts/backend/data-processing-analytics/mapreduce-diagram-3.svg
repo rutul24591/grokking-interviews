@@ -1,10 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">MapReduce Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">MapReduce</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">MapReduce vs Spark: Execution Model Comparison</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">MapReduce writes to disk after each stage; Spark keeps data in memory across stages</text>
+
+  <!-- MapReduce flow -->
+  <rect x="30" y="80" width="430" height="200" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="245" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">MapReduce: Disk After Each Stage</text>
+
+  <rect x="50" y="125" width="80" height="50" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="90" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Map</text>
+  <text x="90" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Process input</text>
+
+  <line x1="130" y1="150" x2="170" y2="150" stroke="#ef4444" stroke-width="2"/>
+  <text x="150" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#dc2626">Disk</text>
+  <polygon points="170,147 178,150 170,153" fill="#ef4444"/>
+
+  <rect x="178" y="125" width="80" height="50" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="218" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Shuffle</text>
+  <text x="218" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Group by key</text>
+
+  <line x1="258" y1="150" x2="298" y2="150" stroke="#ef4444" stroke-width="2"/>
+  <text x="278" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#dc2626">Disk</text>
+  <polygon points="298,147 306,150 298,153" fill="#ef4444"/>
+
+  <rect x="306" y="125" width="80" height="50" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="346" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Reduce</text>
+  <text x="346" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Aggregate</text>
+
+  <rect x="50" y="200" width="380" height="65" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="240" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">Multi-stage: each stage writes to disk</text>
+  <text x="240" y="242" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7f1d1d">Map → Disk → Shuffle → Disk → Reduce → Disk</text>
+  <text x="240" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7f1d1d">High I/O overhead, slow for iterative workloads</text>
+
+  <!-- Spark flow -->
+  <rect x="500" y="80" width="430" height="200" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="715" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#166534">Spark: In-Memory Across Stages</text>
+
+  <rect x="520" y="125" width="80" height="50" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="560" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Map</text>
+  <text x="560" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Process input</text>
+
+  <line x1="600" y1="150" x2="640" y2="150" stroke="#22c55e" stroke-width="2"/>
+  <text x="620" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Memory</text>
+  <polygon points="640,147 648,150 640,153" fill="#22c55e"/>
+
+  <rect x="648" y="125" width="80" height="50" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="688" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Shuffle</text>
+  <text x="688" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Group by key</text>
+
+  <line x1="728" y1="150" x2="768" y2="150" stroke="#22c55e" stroke-width="2"/>
+  <text x="748" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Memory</text>
+  <polygon points="768,147 776,150 768,153" fill="#22c55e"/>
+
+  <rect x="776" y="125" width="80" height="50" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="816" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Reduce</text>
+  <text x="816" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Aggregate</text>
+
+  <rect x="520" y="200" width="380" height="65" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="710" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#166534">DAG execution: memory between stages</text>
+  <text x="710" y="242" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#15803d">Map → Memory → Shuffle → Memory → Reduce</text>
+  <text x="710" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#15803d">10-100x faster for iterative and interactive workloads</text>
+
+  <!-- Performance comparison -->
+  <rect x="30" y="310" width="900" height="130" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Performance Comparison</text>
+
+  <rect x="50" y="355" width="250" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="175" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">MapReduce: 100 GB sort in ~70 minutes</text>
+
+  <rect x="50" y="389" width="250" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="175" y="407" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Spark: 100 GB sort in ~23 minutes</text>
+
+  <rect x="340" y="355" width="280" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="480" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">MapReduce: best for batch-only, linear pipelines</text>
+
+  <rect x="340" y="389" width="280" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="480" y="407" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Spark: best for iterative ML, interactive queries</text>
+
+  <rect x="660" y="355" width="250" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="785" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">MapReduce: disk-based, fault-tolerant</text>
+
+  <rect x="660" y="389" width="250" height="28" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="785" y="407" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Spark: memory-based, lineage-based recovery</text>
 </svg>

@@ -1,10 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Batch Processing Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Batch Processing</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Batch Processing Failure Modes and Recovery</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Common failures: source schema drift, data quality issues, compute failures, and output corruption</text>
+
+  <!-- Failure Mode 1 -->
+  <rect x="30" y="80" width="280" height="110" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="170" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">1. Schema Drift at Source</text>
+  <text x="170" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">Source system changes column</text>
+  <text x="170" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">names, types, or adds/removes</text>
+  <text x="170" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7f1d1d">fields without notifying pipeline.</text>
+  <rect x="50" y="168" width="240" height="18" rx="3" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="170" y="181" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#991b1b">Detect: schema validation on ingest</text>
+
+  <!-- Failure Mode 2 -->
+  <rect x="340" y="80" width="280" height="110" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="480" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9a3412">2. Data Quality Violations</text>
+  <text x="480" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">Null required fields, duplicate</text>
+  <text x="480" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">primary keys, out-of-range values</text>
+  <text x="480" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7c2d12">corrupt downstream aggregates.</text>
+  <rect x="360" y="168" width="240" height="18" rx="3" fill="#ffedd5" stroke="#fed7aa" stroke-width="1"/>
+  <text x="480" y="181" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#9a3412">Detect: row counts, null checks, invariants</text>
+
+  <!-- Failure Mode 3 -->
+  <rect x="650" y="80" width="280" height="110" rx="8" fill="#fefce8" stroke="#fef08a" stroke-width="1.5"/>
+  <text x="790" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#854d0e">3. Compute Failure Mid-Job</text>
+  <text x="790" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">Executor failure, OOM, or network</text>
+  <text x="790" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">partitioning causes partial output</text>
+  <text x="790" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#713f12">that is written to the output store.</text>
+  <rect x="670" y="168" width="240" height="18" rx="3" fill="#fef9c3" stroke="#fef08a" stroke-width="1"/>
+  <text x="790" y="181" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#854d0e">Mitigate: atomic writes, temp tables</text>
+
+  <!-- Recovery patterns -->
+  <rect x="30" y="220" width="440" height="210" rx="10" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="250" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0369a1">Recovery: Idempotent Rerun Pattern</text>
+
+  <rect x="50" y="265" width="400" height="45" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="250" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 1: Write to temporary output location</text>
+  <text x="250" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Output goes to temp path, not production</text>
+
+  <rect x="50" y="318" width="400" height="45" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="250" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 2: Validate output correctness</text>
+  <text x="250" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Check row counts, checksums, invariants</text>
+
+  <rect x="50" y="371" width="400" height="45" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="250" y="389" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 3: Atomically swap temp to production</text>
+  <text x="250" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">RENAME or atomic partition swap</text>
+
+  <!-- Failure mode 4 -->
+  <rect x="500" y="220" width="430" height="210" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="715" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Backfill and Reprocessing</text>
+
+  <rect x="520" y="265" width="390" height="45" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Trigger: bug fix or source data correction</text>
+  <text x="715" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Re-run pipeline on affected date range</text>
+
+  <rect x="520" y="318" width="390" height="45" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="336" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Requirement: idempotent writes</text>
+  <text x="715" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Rerunning must not duplicate or corrupt data</text>
+
+  <rect x="520" y="371" width="390" height="45" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="715" y="389" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Verification: diff old vs new output</text>
+  <text x="715" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Confirm expected changes, no unintended drift</text>
 </svg>

@@ -1,10 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Apache Spark Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Apache Spark</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Spark Execution Model: DAG, Stages, and Task Execution</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Spark builds a DAG of transformations, splits into stages at shuffle boundaries, and executes tasks per partition</text>
+
+  <!-- DAG -->
+  <text x="480" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">DAG of Transformations</text>
+
+  <rect x="60" y="105" width="120" height="50" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="120" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">Read Source</text>
+
+  <line x1="180" y1="130" x2="240" y2="130" stroke="#64748b" stroke-width="1.5"/>
+  <polygon points="240,127 248,130 240,133" fill="#64748b"/>
+
+  <rect x="248" y="105" width="120" height="50" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="308" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">Filter</text>
+
+  <line x1="368" y1="130" x2="428" y2="130" stroke="#64748b" stroke-width="1.5"/>
+  <polygon points="428,127 436,130 428,133" fill="#64748b"/>
+
+  <rect x="436" y="105" width="120" height="50" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="496" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">Map</text>
+
+  <line x1="556" y1="130" x2="616" y2="130" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="616,127 624,130 616,133" fill="#ef4444"/>
+  <text x="586" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#dc2626">Shuffle</text>
+
+  <rect x="624" y="105" width="120" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="684" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e">GroupByKey</text>
+
+  <line x1="744" y1="130" x2="804" y2="130" stroke="#64748b" stroke-width="1.5"/>
+  <polygon points="804,127 812,130 804,133" fill="#64748b"/>
+
+  <rect x="812" y="105" width="120" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="872" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534">Reduce / Action</text>
+
+  <!-- Stage boundary -->
+  <line x1="596" y1="80" x2="596" y2="170" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="596" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#dc2626">Stage Boundary (Shuffle)</text>
+
+  <!-- Stages -->
+  <rect x="40" y="200" width="540" height="80" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="310" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0369a1">Stage 0: Narrow Transformations</text>
+  <text x="310" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Read Source &#x2192; Filter &#x2192; Map (pipelined, no shuffle)</text>
+  <text x="310" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Tasks: one per input partition, executed in parallel</text>
+
+  <rect x="620" y="200" width="300" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="770" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Stage 1: Shuffle + Reduce</text>
+  <text x="770" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">GroupByKey &#x2192; Reduce (requires shuffle)</text>
+  <text x="770" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Tasks: one per output partition, after shuffle</text>
+
+  <!-- Task Execution -->
+  <text x="480" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Task Execution on Workers</text>
+
+  <rect x="40" y="340" width="280" height="100" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="180" y="362" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Worker 1 (Executor)</text>
+  <text x="180" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 0: Partition 0</text>
+  <text x="180" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 1: Partition 1</text>
+  <text x="180" y="412" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 2: Partition 2</text>
+  <text x="180" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#94a3b8">Processes sequentially or in threads</text>
+
+  <rect x="340" y="340" width="280" height="100" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="362" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Worker 2 (Executor)</text>
+  <text x="480" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 3: Partition 3</text>
+  <text x="480" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 4: Partition 4</text>
+  <text x="480" y="412" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 5: Partition 5</text>
+  <text x="480" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#94a3b8">Processes sequentially or in threads</text>
+
+  <rect x="640" y="340" width="280" height="100" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="780" y="362" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Worker 3 (Executor)</text>
+  <text x="780" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 6: Partition 6</text>
+  <text x="780" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 7: Partition 7</text>
+  <text x="780" y="412" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Task 8: Partition 8</text>
+  <text x="780" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#94a3b8">Processes sequentially or in threads</text>
 </svg>

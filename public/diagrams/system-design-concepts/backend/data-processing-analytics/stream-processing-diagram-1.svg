@@ -1,10 +1,81 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Stream Processing Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Stream Processing</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Stream Processing: Continuous Computation on Unbounded Data</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Events flow continuously through processing operators that maintain state and produce results</text>
+
+  <!-- Source -->
+  <rect x="30" y="80" width="140" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="100" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Event Source</text>
+  <text x="100" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Kafka / Kinesis</text>
+  <text x="100" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Unbounded stream</text>
+  <text x="100" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Events arrive continuously</text>
+
+  <!-- Arrows -->
+  <defs>
+    <marker id="arrSP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="170" y1="130" x2="230" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrSP)"/>
+
+  <!-- Processing operators -->
+  <rect x="230" y="80" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="310" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Filter / Map</text>
+  <text x="310" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Transform events</text>
+  <text x="310" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Stateless operations</text>
+  <text x="310" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Low latency</text>
+
+  <line x1="390" y1="130" x2="450" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrSP)"/>
+
+  <rect x="450" y="80" width="160" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="530" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">Windowed Aggregate</text>
+  <text x="530" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Group by time windows</text>
+  <text x="530" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Maintain state per window</text>
+  <text x="530" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Emit results on window close</text>
+
+  <line x1="610" y1="130" x2="670" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrSP)"/>
+
+  <rect x="670" y="80" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="750" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534">Join / Enrich</text>
+  <text x="750" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Stream-stream joins</text>
+  <text x="750" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Stream-table joins</text>
+  <text x="750" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Stateful operations</text>
+
+  <line x1="830" y1="130" x2="890" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrSP)"/>
+
+  <!-- Sink -->
+  <rect x="890" y="80" width="40" height="100" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="910" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#334155" transform="rotate(90, 910, 120)">Output Sink</text>
+
+  <!-- State management -->
+  <rect x="230" y="220" width="600" height="100" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="530" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">State Management</text>
+
+  <rect x="250" y="265" width="170" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="335" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Local State (RocksDB)</text>
+  <text x="335" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Fast access, disk-backed</text>
+
+  <rect x="445" y="265" width="170" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="530" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Checkpointing</text>
+  <text x="530" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Periodic state snapshots</text>
+
+  <rect x="640" y="265" width="170" height="40" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="725" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Fault Recovery</text>
+  <text x="725" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Restore from checkpoint</text>
+
+  <!-- Processing models -->
+  <rect x="30" y="350" width="900" height="90" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Stream Processing Models</text>
+
+  <rect x="50" y="395" width="270" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Record-at-a-time: process each event individually</text>
+  <text x="185" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Storm, early Kafka Streams</text>
+
+  <rect x="345" y="395" width="270" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="480" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Micro-batch: process small batches periodically</text>
+  <text x="480" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Spark Streaming</text>
+
+  <rect x="640" y="395" width="270" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="775" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Continuous operator: native continuous processing</text>
+  <text x="775" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Flink, Kafka Streams</text>
 </svg>

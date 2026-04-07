@@ -1,116 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
-  <title id="title">Data Serialization Formats</title>
-  <desc id="desc">Data serialization formats comparison: JSON, Avro, Protobuf, and their trade-offs</desc>
-  
-  <!-- Background -->
-  <rect width="900" height="550" fill="#f8fafc"/>
-  
-  <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Data Serialization Formats</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">JSON, Avro, Protobuf, and their trade-offs for data systems</text>
-  
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Serialization Format Comparison: JSON, Avro, Parquet, Protobuf</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Choosing the right format based on schema evolution needs, compression, and processing requirements</text>
+
   <!-- JSON -->
-  <rect x="30" y="85" width="280" height="240" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
-  <text x="170" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">JSON (Text-based)</text>
-  
-  <rect x="50" y="125" width="240" height="90" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
-  <text x="170" y="148" text-anchor="middle" font-size="9" fill="#64748b">{</text>
-  <text x="170" y="165" text-anchor="middle" font-size="9" fill="#64748b">"id": 123,</text>
-  <text x="170" y="182" text-anchor="middle" font-size="9" fill="#64748b">"name": "Order",</text>
-  <text x="170" y="199" text-anchor="middle" font-size="9" fill="#64748b">"items": [...]</text>
-  <text x="170" y="216" text-anchor="middle" font-size="9" fill="#64748b">}</text>
-  
-  <rect x="50" y="225" width="240" height="90" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
-  <text x="170" y="250" text-anchor="middle" font-size="10" fill="#10b981">✓ Human readable</text>
-  <text x="170" y="270" text-anchor="middle" font-size="10" fill="#10b981">✓ Schema-less, flexible</text>
-  <text x="170" y="290" text-anchor="middle" font-size="10" fill="#10b981">✓ Universal support</text>
-  <text x="170" y="310" text-anchor="middle" font-size="10" fill="#ef4444">✗ Verbose (large size)</text>
-  <text x="170" y="330" text-anchor="middle" font-size="10" fill="#ef4444">✗ Slow parsing</text>
-  <text x="170" y="350" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ No schema enforcement</text>
-  
+  <rect x="30" y="80" width="210" height="150" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="135" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">JSON</text>
+  <text x="135" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Human-readable text format</text>
+  <text x="50" y="145" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Schema: schemaless</text>
+  <text x="50" y="160" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Size: large (text overhead)</text>
+  <text x="50" y="175" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Speed: slow parse/serialize</text>
+  <text x="50" y="190" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Evolution: no enforcement</text>
+  <text x="50" y="205" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Use: APIs, configs, logs</text>
+  <text x="135" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">Best for: interchange</text>
+
   <!-- Avro -->
-  <rect x="325" y="85" width="280" height="240" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
-  <text x="465" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Avro (Binary + Schema)</text>
-  
-  <rect x="345" y="125" width="240" height="90" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
-  <text x="465" y="148" text-anchor="middle" font-size="9" fill="#64748b">Schema (JSON):</text>
-  <text x="465" y="165" text-anchor="middle" font-size="9" fill="#64748b">{"type":"record", "fields":[...]}</text>
-  <text x="465" y="185" text-anchor="middle" font-size="9" fill="#64748b">Data (Binary):</text>
-  <text x="465" y="205" text-anchor="middle" font-size="9" fill="#64748b">[bytes without field names]</text>
-  
-  <rect x="345" y="225" width="240" height="90" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="465" y="250" text-anchor="middle" font-size="10" fill="#10b981">✓ Compact binary</text>
-  <text x="465" y="270" text-anchor="middle" font-size="10" fill="#10b981">✓ Schema evolution</text>
-  <text x="465" y="290" text-anchor="middle" font-size="10" fill="#10b981">✓ Fast serialization</text>
-  <text x="465" y="310" text-anchor="middle" font-size="10" fill="#ef4444">✗ Requires schema</text>
-  <text x="465" y="330" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ Schema registry needed</text>
-  
+  <rect x="270" y="80" width="210" height="150" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="375" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#166534">Avro</text>
+  <text x="375" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Binary with schema in file header</text>
+  <text x="290" y="145" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Schema: JSON schema in header</text>
+  <text x="290" y="160" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Size: compact binary</text>
+  <text x="290" y="175" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Speed: fast serialize/deserialize</text>
+  <text x="290" y="190" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Evolution: full compat support</text>
+  <text x="290" y="205" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Use: Kafka, Hadoop, CDC</text>
+  <text x="375" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">Best for: event streaming</text>
+
   <!-- Protobuf -->
-  <rect x="620" y="85" width="250" height="240" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
-  <text x="745" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Protobuf (Binary + .proto)</text>
-  
-  <rect x="640" y="125" width="210" height="90" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
-  <text x="745" y="148" text-anchor="middle" font-size="9" fill="#64748b">.proto file:</text>
-  <text x="745" y="165" text-anchor="middle" font-size="9" fill="#64748b">message Order {</text>
-  <text x="745" y="182" text-anchor="middle" font-size="9" fill="#64748b">int32 id = 1;</text>
-  <text x="745" y="199" text-anchor="middle" font-size="9" fill="#64748b">string name = 2;</text>
-  <text x="745" y="216" text-anchor="middle" font-size="9" fill="#64748b">}</text>
-  
-  <rect x="640" y="225" width="210" height="90" rx="4" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
-  <text x="745" y="250" text-anchor="middle" font-size="10" fill="#10b981">✓ Very compact</text>
-  <text x="745" y="270" text-anchor="middle" font-size="10" fill="#10b981">✓ Very fast</text>
-  <text x="745" y="290" text-anchor="middle" font-size="10" fill="#10b981">✓ Strong typing</text>
-  <text x="745" y="310" text-anchor="middle" font-size="10" fill="#ef4444">✗ Code generation needed</text>
-  <text x="745" y="330" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ Less flexible evolution</text>
-  
-  <!-- Size Comparison -->
-  <rect x="30" y="340" width="280" height="190" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
-  <text x="170" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Size Comparison</text>
-  
-  <rect x="50" y="380" width="240" height="140" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
-  
-  <!-- Bar chart -->
-  <rect x="70" y="400" width="200" height="25" rx="2" fill="#fca5a5"/>
-  <text x="80" y="418" text-anchor="start" font-size="9" fill="#b91c1c">JSON</text>
-  <text x="275" y="418" text-anchor="end" font-size="9" fill="#64748b">100%</text>
-  
-  <rect x="70" y="430" width="100" height="25" rx="2" fill="#fbbf24"/>
-  <text x="80" y="448" text-anchor="start" font-size="9" fill="#b45309">Avro</text>
-  <text x="175" y="448" text-anchor="end" font-size="9" fill="#64748b">~50%</text>
-  
-  <rect x="70" y="460" width="80" height="25" rx="2" fill="#6ee7b7"/>
-  <text x="80" y="478" text-anchor="start" font-size="9" fill="#047857">Protobuf</text>
-  <text x="155" y="478" text-anchor="end" font-size="9" fill="#64748b">~40%</text>
-  
-  <text x="170" y="510" text-anchor="middle" font-size="9" fill="#64748b">Relative size for same data</text>
-  
-  <!-- Use Cases -->
-  <rect x="325" y="340" width="280" height="190" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
-  <text x="465" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Use Cases</text>
-  
-  <rect x="345" y="380" width="240" height="140" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
-  <text x="365" y="405" text-anchor="start" font-size="9" fill="#64748b">JSON: APIs, config, debugging</text>
-  <text x="365" y="425" text-anchor="start" font-size="9" fill="#64748b">Avro: Kafka, data lakes, CDC</text>
-  <text x="365" y="445" text-anchor="start" font-size="9" fill="#64748b">Protobuf: gRPC, internal RPC</text>
-  <text x="365" y="465" text-anchor="start" font-size="9" fill="#64748b">Parquet: Analytics, columnar</text>
-  <text x="365" y="485" text-anchor="start" font-size="9" fill="#64748b">MessagePack: Caching</text>
-  
-  <!-- Schema Evolution -->
-  <rect x="620" y="340" width="250" height="190" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
-  <text x="745" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">Schema Evolution</text>
-  
-  <rect x="640" y="380" width="210" height="140" rx="4" fill="#f0fdf4" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="660" y="405" text-anchor="start" font-size="9" fill="#64748b">Backward compatible:</text>
-  <text x="660" y="425" text-anchor="start" font-size="9" fill="#64748b">• Add optional field</text>
-  <text x="660" y="445" text-anchor="start" font-size="9" fill="#64748b">• Add field with default</text>
-  <text x="660" y="465" text-anchor="start" font-size="9" fill="#ef4444">Breaking changes:</text>
-  <text x="660" y="485" text-anchor="start" font-size="9" fill="#ef4444">• Remove required field</text>
-  <text x="660" y="505" text-anchor="start" font-size="9" fill="#ef4444">• Change field type</text>
-  
-  <!-- Arrow markers -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
-    </marker>
-  </defs>
+  <rect x="510" y="80" width="210" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="615" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Protobuf</text>
+  <text x="615" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Binary with .proto schema</text>
+  <text x="530" y="145" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Schema: .proto definition</text>
+  <text x="530" y="160" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Size: very compact binary</text>
+  <text x="530" y="175" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Speed: fastest encode/decode</text>
+  <text x="530" y="190" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Evolution: backward compat</text>
+  <text x="530" y="205" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Use: gRPC, microservices</text>
+  <text x="615" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">Best for: RPC, low-latency</text>
+
+  <!-- Parquet -->
+  <rect x="750" y="80" width="180" height="150" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="840" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Parquet</text>
+  <text x="840" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Columnar binary format</text>
+  <text x="770" y="145" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Schema: embedded in footer</text>
+  <text x="770" y="160" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Size: most compact</text>
+  <text x="770" y="175" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Speed: column-level read</text>
+  <text x="770" y="190" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Evolution: schema evolution</text>
+  <text x="770" y="205" font-family="Arial, sans-serif" font-size="9" fill="#334155">&#x2022; Use: data lakes, warehouses</text>
+  <text x="840" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">Best for: analytics</text>
+
+  <!-- Decision matrix -->
+  <rect x="30" y="260" width="900" height="180" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Serialization Format Decision Matrix</text>
+
+  <!-- Table header -->
+  <rect x="50" y="300" width="860" height="24" rx="3" fill="#e2e8f0"/>
+  <text x="150" y="317" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Use Case</text>
+  <text x="300" y="317" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Recommended Format</text>
+  <text x="500" y="317" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Why</text>
+  <text x="750" y="317" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Avoid</text>
+
+  <!-- Rows -->
+  <rect x="50" y="324" width="860" height="22" rx="2" fill="#ffffff"/>
+  <text x="150" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">API request/response</text>
+  <text x="300" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">JSON / Protobuf</text>
+  <text x="500" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Human-readable or fast binary</text>
+  <text x="750" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Parquet (not row-oriented)</text>
+
+  <rect x="50" y="346" width="860" height="22" rx="2" fill="#f8fafc"/>
+  <text x="150" y="361" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Event streaming (Kafka)</text>
+  <text x="300" y="361" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">Avro</text>
+  <text x="500" y="361" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Schema in header, compat checks</text>
+  <text x="750" y="361" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">JSON (large, no schema)</text>
+
+  <rect x="50" y="368" width="860" height="22" rx="2" fill="#ffffff"/>
+  <text x="150" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Data lake storage</text>
+  <text x="300" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">Parquet</text>
+  <text x="500" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Columnar, predicate pushdown</text>
+  <text x="750" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">JSON (large, no pruning)</text>
+
+  <rect x="50" y="390" width="860" height="22" rx="2" fill="#f8fafc"/>
+  <text x="150" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Microservice RPC</text>
+  <text x="300" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">Protobuf (gRPC)</text>
+  <text x="500" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Fast, typed, auto-generated code</text>
+  <text x="750" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">JSON (slow, no type safety)</text>
+
+  <rect x="50" y="412" width="860" height="22" rx="2" fill="#ffffff"/>
+  <text x="150" y="427" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Configuration files</text>
+  <text x="300" y="427" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">JSON / YAML</text>
+  <text x="500" y="427" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Human-readable, widely supported</text>
+  <text x="750" y="427" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#334155">Protobuf (not human-readable)</text>
 </svg>

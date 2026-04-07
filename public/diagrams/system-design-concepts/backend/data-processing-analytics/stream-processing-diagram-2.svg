@@ -1,10 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Stream Processing Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Stream Processing</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <rect width="960" height="440" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Stream Processing: Stateful Operators and Fault Tolerance</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Stateful operators maintain computation state; checkpointing enables recovery from failures</text>
+
+  <!-- Stateful operator flow -->
+  <rect x="30" y="80" width="900" height="160" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Stateful Operator Processing</text>
+
+  <!-- Events flowing through operator -->
+  <rect x="50" y="130" width="60" height="30" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="80" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#1e40af">Event 1</text>
+
+  <rect x="120" y="130" width="60" height="30" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="150" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#1e40af">Event 2</text>
+
+  <rect x="190" y="130" width="60" height="30" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="220" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#1e40af">Event 3</text>
+
+  <rect x="260" y="130" width="60" height="30" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="290" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#1e40af">Event 4</text>
+
+  <line x1="320" y1="145" x2="380" y2="145" stroke="#64748b" stroke-width="2"/>
+  <polygon points="380,142 388,145 380,148" fill="#64748b"/>
+
+  <rect x="388" y="120" width="160" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="468" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Stateful Operator</text>
+  <text x="468" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Maintains running state</text>
+  <text x="468" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Updates state per event</text>
+
+  <line x1="548" y1="145" x2="608" y2="145" stroke="#64748b" stroke-width="2"/>
+  <polygon points="608,142 616,145 608,148" fill="#64748b"/>
+
+  <rect x="616" y="130" width="60" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="646" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Result 1</text>
+
+  <rect x="686" y="130" width="60" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="716" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Result 2</text>
+
+  <rect x="756" y="130" width="60" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="786" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Result 3</text>
+
+  <rect x="826" y="130" width="60" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="856" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#166534">Result 4</text>
+
+  <!-- State store -->
+  <rect x="388" y="200" width="160" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <text x="468" y="217" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#3730a3">State Store</text>
+  <text x="468" y="233" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">RocksDB / In-memory</text>
+  <line x1="468" y1="180" x2="468" y2="200" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Checkpointing -->
+  <rect x="30" y="270" width="900" height="150" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Checkpointing and Recovery</text>
+
+  <!-- Checkpoint timeline -->
+  <line x1="60" y1="340" x2="900" y2="340" stroke="#64748b" stroke-width="2"/>
+  <text x="900" y="335" text-anchor="end" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Time &#x2192;</text>
+
+  <!-- Checkpoints -->
+  <circle cx="200" cy="340" r="10" fill="#22c55e"/>
+  <text x="200" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">Checkpoint 1</text>
+  <text x="200" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">State saved to S3</text>
+
+  <circle cx="400" cy="340" r="10" fill="#22c55e"/>
+  <text x="400" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">Checkpoint 2</text>
+  <text x="400" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">State saved to S3</text>
+
+  <circle cx="600" cy="340" r="10" fill="#ef4444"/>
+  <text x="600" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dc2626">Task Failure</text>
+  <text x="600" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Task crashes</text>
+
+  <circle cx="700" cy="340" r="10" fill="#f59e0b"/>
+  <text x="700" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">Recovery</text>
+  <text x="700" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Restore from CP2</text>
+
+  <circle cx="850" cy="340" r="10" fill="#22c55e"/>
+  <text x="850" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">Resume Processing</text>
+  <text x="850" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Continue from CP2 offset</text>
+
+  <!-- Recovery gap -->
+  <rect x="600" y="320" width="100" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" opacity="0.5"/>
+  <text x="650" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#92400e">Re-processing</text>
+  <text x="650" y="358" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#92400e">gap: events between</text>
+  <text x="650" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#92400e">CP2 and failure</text>
 </svg>

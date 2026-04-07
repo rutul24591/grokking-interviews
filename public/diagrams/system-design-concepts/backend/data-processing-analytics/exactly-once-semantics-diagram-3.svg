@@ -1,10 +1,76 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Exactly-Once Semantics Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Exactly-Once Semantics</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">End-to-End Exactly-Once: From Source to Sink</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Exactly-once requires coordination at every hop — source, broker, processor, and sink</text>
+
+  <!-- Source -->
+  <rect x="30" y="80" width="160" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="110" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Source</text>
+  <text x="110" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Idempotent producer</text>
+  <text x="110" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">or transactional read</text>
+  <text x="110" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Sequence numbers</text>
+
+  <!-- Arrow -->
+  <defs>
+    <marker id="arrEOE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="190" y1="130" x2="270" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrEOE)"/>
+  <text x="230" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Tx write</text>
+
+  <!-- Broker -->
+  <rect x="270" y="80" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="350" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Message Broker</text>
+  <text x="350" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Transactional writes</text>
+  <text x="350" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Dedup by sequence</text>
+  <text x="350" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Atomic commit/abort</text>
+
+  <line x1="430" y1="130" x2="510" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrEOE)"/>
+  <text x="470" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Consume</text>
+
+  <!-- Processor -->
+  <rect x="510" y="80" width="160" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="590" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">Processor</text>
+  <text x="590" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Idempotent processing</text>
+  <text x="590" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">or transactional write</text>
+  <text x="590" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">State management</text>
+
+  <line x1="670" y1="130" x2="750" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrEOE)"/>
+  <text x="710" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Tx output</text>
+
+  <!-- Sink -->
+  <rect x="750" y="80" width="180" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="840" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534">Sink</text>
+  <text x="840" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Idempotent write or</text>
+  <text x="840" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">transactional commit</text>
+  <text x="840" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Offset committed atomically</text>
+
+  <!-- Scope levels -->
+  <rect x="30" y="220" width="900" height="220" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Exactly-Once Scope Levels</text>
+
+  <rect x="50" y="270" width="270" height="150" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="185" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Level 1: Producer → Broker</text>
+  <text x="185" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Idempotent producer ensures</text>
+  <text x="185" y="333" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">no duplicates in the broker</text>
+  <text x="185" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Guarantee: message written</text>
+  <text x="185" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">exactly once to topic</text>
+  <text x="185" y="393" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Kafka: enable.idempotence=true</text>
+
+  <rect x="345" y="270" width="270" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="480" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Level 2: Broker → Processor</text>
+  <text x="480" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Transactional reads ensure</text>
+  <text x="480" y="333" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">processor sees committed data</text>
+  <text x="480" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Guarantee: processor reads</text>
+  <text x="480" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">each message exactly once</text>
+  <text x="480" y="393" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Kafka: isolation.level=read_committed</text>
+
+  <rect x="640" y="270" width="270" height="150" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="775" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534">Level 3: End-to-End</text>
+  <text x="775" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Atomic output + offset commit</text>
+  <text x="775" y="333" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">ensures sink receives exactly once</text>
+  <text x="775" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Guarantee: output written</text>
+  <text x="775" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">exactly once to sink</text>
+  <text x="775" y="393" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#166534">Kafka: transactions + idempotent sink</text>
 </svg>

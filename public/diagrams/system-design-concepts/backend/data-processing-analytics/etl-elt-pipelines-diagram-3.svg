@@ -1,10 +1,73 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">ETL/ELT Pipelines Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">ETL/ELT Pipelines</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Modern Data Stack: ELT with dbt, Fivetran, and Snowflake</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">The modern ELT stack separates ingestion (Fivetran), transformation (dbt), and storage (Snowflake)</text>
+
+  <!-- Source systems -->
+  <rect x="30" y="80" width="160" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="110" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Source Systems</text>
+  <text x="110" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">PostgreSQL, Salesforce,</text>
+  <text x="110" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Stripe, APIs, S3</text>
+  <text x="110" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Various formats</text>
+
+  <!-- Arrow -->
+  <defs>
+    <marker id="arrELT" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="190" y1="130" x2="240" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrELT)"/>
+
+  <!-- Ingestion layer -->
+  <rect x="240" y="80" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="320" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Ingestion (Fivetran)</text>
+  <text x="320" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">CDC, API connectors</text>
+  <text x="320" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Schema detection</text>
+  <text x="320" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Raw load to warehouse</text>
+
+  <line x1="400" y1="130" x2="460" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrELT)"/>
+
+  <!-- Storage layer -->
+  <rect x="460" y="80" width="160" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="540" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">Storage (Snowflake)</text>
+  <text x="540" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Raw schema (staging)</text>
+  <text x="540" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Transformed schemas</text>
+  <text x="540" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Materialized views</text>
+
+  <line x1="620" y1="130" x2="680" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrELT)"/>
+
+  <!-- Transformation layer -->
+  <rect x="680" y="80" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="760" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534">Transform (dbt)</text>
+  <text x="760" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">SQL models</text>
+  <text x="760" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Tests &amp; docs</text>
+  <text x="760" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Version controlled</text>
+
+  <!-- Feedback arrows -->
+  <line x1="760" y1="180" x2="760" y2="220" stroke="#22c55e" stroke-width="2"/>
+  <text x="770" y="210" font-family="Arial, sans-serif" font-size="9" fill="#166534">SQL in warehouse</text>
+
+  <!-- Consumers -->
+  <rect x="30" y="250" width="900" height="180" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Data Consumers</text>
+
+  <rect x="50" y="295" width="200" height="60" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">BI Dashboards</text>
+  <text x="150" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Looker, Tableau, Power BI</text>
+
+  <rect x="280" y="295" width="200" height="60" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="380" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Data Science</text>
+  <text x="380" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Python, R, ML training</text>
+
+  <rect x="510" y="295" width="200" height="60" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="610" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Reverse ETL</text>
+  <text x="610" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Sync back to CRM, ads</text>
+
+  <rect x="740" y="295" width="170" height="60" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="825" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">APIs</text>
+  <text x="825" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Internal services</text>
+
+  <!-- Bottom note -->
+  <rect x="30" y="440" width="900" height="16" rx="4" fill="#e2e8f0"/>
+  <text x="480" y="453" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Key benefit: analysts write SQL transformations (dbt) instead of engineers writing pipeline code — faster iteration, version controlled, tested</text>
 </svg>

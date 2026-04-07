@@ -1,10 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Lambda Architecture Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Lambda Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Serving Layer Merge: Combining Batch and Speed Views</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">The serving layer merges batch and speed views to provide accurate, low-latency query results</text>
+
+  <!-- Batch View timeline -->
+  <rect x="30" y="80" width="900" height="150" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="480" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">Batch View: Accurate but Stale</text>
+
+  <!-- Timeline bar -->
+  <line x1="60" y1="140" x2="900" y2="140" stroke="#3b82f6" stroke-width="3"/>
+  <text x="900" y="135" text-anchor="end" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Time &#x2192;</text>
+
+  <!-- Batch view points -->
+  <circle cx="200" cy="140" r="10" fill="#3b82f6"/>
+  <text x="200" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">Batch run 1</text>
+  <text x="200" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">T-24h</text>
+
+  <circle cx="500" cy="140" r="10" fill="#3b82f6"/>
+  <text x="500" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">Batch run 2</text>
+  <text x="500" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">T-0h (now)</text>
+
+  <!-- Gap between batch runs -->
+  <rect x="210" y="125" width="290" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="355" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#92400e">Gap: batch view is stale, speed view fills this</text>
+
+  <!-- Speed View timeline -->
+  <rect x="30" y="230" width="900" height="150" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="480" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#166534">Speed View: Fresh but Approximate</text>
+
+  <!-- Timeline bar -->
+  <line x1="60" y1="290" x2="900" y2="290" stroke="#22c55e" stroke-width="3"/>
+  <text x="900" y="285" text-anchor="end" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Time &#x2192;</text>
+
+  <!-- Speed view continuous updates -->
+  <circle cx="200" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="250" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="300" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="350" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="400" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="450" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="500" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="550" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="600" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="650" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="700" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="750" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="800" cy="290" r="6" fill="#22c55e"/>
+  <circle cx="850" cy="290" r="6" fill="#22c55e"/>
+
+  <text x="500" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">Continuous incremental updates</text>
+  <text x="500" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Each dot = new event processed, view updated</text>
+
+  <!-- Merge logic -->
+  <rect x="30" y="400" width="900" height="50" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Merge Logic: For query at time T, use batch view for data up to last batch run, speed view for data since then</text>
+  <text x="480" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Result = BatchView(T &#x2264; T_batch) + SpeedView(T &gt; T_batch)</text>
 </svg>

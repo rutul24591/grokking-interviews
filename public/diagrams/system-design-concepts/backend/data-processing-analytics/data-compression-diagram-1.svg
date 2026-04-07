@@ -1,121 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
-  <title id="title">Data Compression Algorithms</title>
-  <desc id="desc">Data compression algorithms comparison: Gzip, Snappy, LZ4, Zstd with trade-offs</desc>
-  
-  <!-- Background -->
-  <rect width="900" height="550" fill="#f8fafc"/>
-  
-  <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Data Compression Algorithms</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Gzip, Snappy, LZ4, Zstd with speed and ratio trade-offs</text>
-  
-  <!-- Compression Spectrum -->
-  <rect x="30" y="85" width="840" height="100" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
-  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Compression Spectrum: Speed vs Ratio</text>
-  
-  <!-- Speed axis -->
-  <line x1="60" y1="150" x2="840" y2="150" stroke="#64748b" stroke-width="2"/>
-  <text x="60" y="140" text-anchor="middle" font-size="10" fill="#64748b">Fast</text>
-  <text x="840" y="140" text-anchor="middle" font-size="10" fill="#64748b">Slow</text>
-  
-  <!-- Ratio axis -->
-  <line x1="60" y1="150" x2="60" y2="60" stroke="#64748b" stroke-width="2"/>
-  <text x="50" y="60" text-anchor="end" font-size="10" fill="#64748b">High</text>
-  <text x="50" y="150" text-anchor="end" font-size="10" fill="#64748b">Low</text>
-  
-  <!-- Algorithm positions -->
-  <circle cx="150" cy="130" r="25" fill="#10b981" opacity="0.8"/>
-  <text x="150" y="135" text-anchor="middle" font-size="9" fill="white">LZ4</text>
-  
-  <circle cx="280" cy="110" r="25" fill="#f59e0b" opacity="0.8"/>
-  <text x="280" y="115" text-anchor="middle" font-size="9" fill="white">Snappy</text>
-  
-  <circle cx="450" cy="90" r="25" fill="#8b5cf6" opacity="0.8"/>
-  <text x="450" y="95" text-anchor="middle" font-size="9" fill="white">Zstd</text>
-  
-  <circle cx="650" cy="75" r="25" fill="#3b82f6" opacity="0.8"/>
-  <text x="650" y="80" text-anchor="middle" font-size="9" fill="white">Gzip</text>
-  
-  <circle cx="780" cy="65" r="25" fill="#ef4444" opacity="0.8"/>
-  <text x="780" y="70" text-anchor="middle" font-size="9" fill="white">Brotli</text>
-  
-  <!-- Algorithm Details -->
-  <rect x="30" y="200" width="200" height="160" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
-  <text x="130" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="white">LZ4</text>
-  
-  <rect x="50" y="240" width="160" height="110" rx="4" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
-  <text x="130" y="265" text-anchor="middle" font-size="10" fill="#047857">✓ Fastest compression</text>
-  <text x="130" y="285" text-anchor="middle" font-size="10" fill="#047857">✓ Fastest decompression</text>
-  <text x="130" y="305" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ Lower ratio (~2:1)</text>
-  <text x="130" y="325" text-anchor="middle" font-size="10" fill="#047857">Use: Real-time, caching</text>
-  
-  <rect x="240" y="200" width="200" height="160" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
-  <text x="340" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Snappy</text>
-  
-  <rect x="260" y="240" width="160" height="110" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
-  <text x="340" y="265" text-anchor="middle" font-size="10" fill="#92400e">✓ Very fast</text>
-  <text x="340" y="285" text-anchor="middle" font-size="10" fill="#92400e">✓ Good ratio (~2.5:1)</text>
-  <text x="340" y="305" text-anchor="middle" font-size="10" fill="#92400e">✓ Google supported</text>
-  <text x="340" y="325" text-anchor="middle" font-size="10" fill="#92400e">Use: Bigtable, Kafka</text>
-  
-  <rect x="450" y="200" width="200" height="160" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
-  <text x="550" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Zstd</text>
-  
-  <rect x="470" y="240" width="160" height="110" rx="4" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1"/>
-  <text x="550" y="265" text-anchor="middle" font-size="10" fill="#5b21b6">✓ Best balance</text>
-  <text x="550" y="285" text-anchor="middle" font-size="10" fill="#5b21b6">✓ Tunable levels</text>
-  <text x="550" y="305" text-anchor="middle" font-size="10" fill="#5b21b6">✓ Great ratio (~3-4:1)</text>
-  <text x="550" y="325" text-anchor="middle" font-size="10" fill="#5b21b6">Use: General purpose</text>
-  
-  <rect x="660" y="200" width="210" height="160" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
-  <text x="765" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Gzip/Deflate</text>
-  
-  <rect x="680" y="240" width="170" height="110" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
-  <text x="765" y="265" text-anchor="middle" font-size="10" fill="#1e40af">✓ Universal support</text>
-  <text x="765" y="285" text-anchor="middle" font-size="10" fill="#1e40af">✓ Good ratio (~3:1)</text>
-  <text x="765" y="305" text-anchor="middle" font-size="10" fill="#ef4444">✗ Slower</text>
-  <text x="765" y="325" text-anchor="middle" font-size="10" fill="#1e40af">Use: HTTP, archives</text>
-  
-  <!-- Compression Ratio Comparison -->
-  <rect x="30" y="375" width="400" height="155" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
-  <text x="230" y="400" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Compression Ratio (Higher = Better)</text>
-  
-  <rect x="50" y="415" width="360" height="105" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
-  
-  <rect x="70" y="435" width="80" height="25" rx="2" fill="#10b981"/>
-  <text x="60" y="452" text-anchor="end" font-size="9" fill="#64748b">LZ4</text>
-  <text x="155" y="452" text-anchor="start" font-size="9" fill="#64748b">2.0x</text>
-  
-  <rect x="70" y="465" width="120" height="25" rx="2" fill="#f59e0b"/>
-  <text x="60" y="482" text-anchor="end" font-size="9" fill="#64748b">Snappy</text>
-  <text x="195" y="482" text-anchor="start" font-size="9" fill="#64748b">2.5x</text>
-  
-  <rect x="70" y="495" width="180" height="25" rx="2" fill="#8b5cf6"/>
-  <text x="60" y="512" text-anchor="end" font-size="9" fill="#64748b">Zstd</text>
-  <text x="255" y="512" text-anchor="start" font-size="9" fill="#64748b">3.5x</text>
-  
-  <!-- Speed Comparison -->
-  <rect x="450" y="375" width="420" height="155" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
-  <text x="660" y="400" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Throughput (MB/s, Higher = Faster)</text>
-  
-  <rect x="470" y="415" width="380" height="105" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
-  
-  <rect x="490" y="435" width="340" height="25" rx="2" fill="#10b981"/>
-  <text x="480" y="452" text-anchor="end" font-size="9" fill="#64748b">LZ4</text>
-  <text x="835" y="452" text-anchor="end" font-size="9" fill="#64748b">500+</text>
-  
-  <rect x="490" y="465" width="280" height="25" rx="2" fill="#f59e0b"/>
-  <text x="480" y="482" text-anchor="end" font-size="9" fill="#64748b">Snappy</text>
-  <text x="775" y="482" text-anchor="end" font-size="9" fill="#64748b">400</text>
-  
-  <rect x="490" y="495" width="200" height="25" rx="2" fill="#8b5cf6"/>
-  <text x="480" y="512" text-anchor="end" font-size="9" fill="#64748b">Zstd</text>
-  <text x="695" y="512" text-anchor="end" font-size="9" fill="#64748b">300</text>
-  
-  <!-- Arrow markers -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Compression Algorithm Comparison: CPU vs Ratio vs Speed</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Choosing the right compression algorithm based on workload: CPU budget, compression ratio, and throughput needs</text>
+
+  <!-- Compression spectrum bar -->
+  <rect x="60" y="90" width="840" height="40" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="60" y="90" width="140" height="40" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="130" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534">Fast / Low CPU</text>
+
+  <rect x="200" y="90" width="200" height="40" rx="0" fill="#fef9c3" stroke="#eab308" stroke-width="1"/>
+  <text x="300" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#854d0e">Balanced</text>
+
+  <rect x="400" y="90" width="200" height="40" rx="0" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="500" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e">High Compression</text>
+
+  <rect x="600" y="90" width="300" height="40" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="750" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#991b1b">Maximum Compression / High CPU</text>
+
+  <!-- Algorithms positioned along the spectrum -->
+  <circle cx="100" cy="170" r="40" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="100" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534">LZ4</text>
+  <text x="100" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Fastest</text>
+  <line x1="100" y1="130" x2="100" y2="130" stroke="#22c55e" stroke-width="2"/>
+
+  <circle cx="230" cy="170" r="40" fill="#fef9c3" stroke="#eab308" stroke-width="2"/>
+  <text x="230" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#854d0e">Snappy</text>
+  <text x="230" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Balanced</text>
+
+  <circle cx="360" cy="170" r="40" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="360" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e">Zstd</text>
+  <text x="360" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Tunable</text>
+
+  <circle cx="490" cy="170" r="40" fill="#ffedd5" stroke="#f97316" stroke-width="2"/>
+  <text x="490" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#9a3412">Gzip</text>
+  <text x="490" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Universal</text>
+
+  <circle cx="620" cy="170" r="40" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="620" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#991b1b">Brotli</text>
+  <text x="620" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Web</text>
+
+  <circle cx="750" cy="170" r="40" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="750" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#991b1b">Zstandard</text>
+  <text x="750" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Level 22</text>
+
+  <!-- Comparison table -->
+  <rect x="30" y="240" width="900" height="200" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Compression Algorithm Comparison (JSON/Log Data)</text>
+
+  <!-- Table header -->
+  <rect x="50" y="280" width="860" height="30" rx="4" fill="#e2e8f0"/>
+  <text x="180" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Algorithm</text>
+  <text x="340" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Compression Ratio</text>
+  <text x="500" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Compress Speed</text>
+  <text x="660" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Decompress Speed</text>
+  <text x="820" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Best Use Case</text>
+
+  <!-- Rows -->
+  <rect x="50" y="310" width="860" height="24" rx="2" fill="#ffffff"/>
+  <text x="180" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">LZ4</text>
+  <text x="340" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">2.1x</text>
+  <text x="500" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#16a34a">Very Fast</text>
+  <text x="660" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#16a34a">Very Fast</text>
+  <text x="820" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Real-time streams</text>
+
+  <rect x="50" y="334" width="860" height="24" rx="2" fill="#f8fafc"/>
+  <text x="180" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Snappy</text>
+  <text x="340" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">2.3x</text>
+  <text x="500" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#16a34a">Fast</text>
+  <text x="660" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#16a34a">Fast</text>
+  <text x="820" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Kafka, Parquet</text>
+
+  <rect x="50" y="358" width="860" height="24" rx="2" fill="#ffffff"/>
+  <text x="180" y="374" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Zstd (level 3)</text>
+  <text x="340" y="374" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">2.8x</text>
+  <text x="500" y="374" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ca8a04">Moderate</text>
+  <text x="660" y="374" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#16a34a">Fast</text>
+  <text x="820" y="374" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Default for new systems</text>
+
+  <rect x="50" y="382" width="860" height="24" rx="2" fill="#f8fafc"/>
+  <text x="180" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Gzip (level 6)</text>
+  <text x="340" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">3.0x</text>
+  <text x="500" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#dc2626">Slow</text>
+  <text x="660" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ca8a04">Moderate</text>
+  <text x="820" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">HTTP, S3 objects</text>
+
+  <rect x="50" y="406" width="860" height="24" rx="2" fill="#ffffff"/>
+  <text x="180" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Brotli (level 6)</text>
+  <text x="340" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">3.5x</text>
+  <text x="500" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#dc2626">Slow</text>
+  <text x="660" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#16a34a">Fast</text>
+  <text x="820" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Web content, APIs</text>
 </svg>

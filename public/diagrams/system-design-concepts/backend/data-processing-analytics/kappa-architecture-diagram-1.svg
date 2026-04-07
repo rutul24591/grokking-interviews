@@ -1,10 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Kappa Architecture Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Kappa Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Kappa Architecture: Single Stream Processing Pipeline</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">All data flows through a single streaming pipeline — batch is a special case of stream</text>
+
+  <!-- Kappa flow -->
+  <rect x="30" y="80" width="160" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="110" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Event Sources</text>
+  <text x="110" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Application events,</text>
+  <text x="110" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">CDC, IoT sensors</text>
+  <text x="110" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">All events to log</text>
+
+  <defs>
+    <marker id="arrK" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="190" y1="130" x2="270" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrK)"/>
+
+  <rect x="270" y="80" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="350" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Immutable Log</text>
+  <text x="350" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Kafka / Pulsar</text>
+  <text x="350" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Append-only, ordered</text>
+  <text x="350" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Long retention (days+)</text>
+
+  <line x1="430" y1="130" x2="510" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrK)"/>
+
+  <rect x="510" y="80" width="160" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="590" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">Stream Processor</text>
+  <text x="590" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Flink / Kafka Streams</text>
+  <text x="590" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Single codebase for</text>
+  <text x="590" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">real-time + reprocessing</text>
+
+  <line x1="670" y1="130" x2="750" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrK)"/>
+
+  <rect x="750" y="80" width="180" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="840" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534">Serving Layer</text>
+  <text x="840" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Database, cache, API</text>
+  <text x="840" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Queryable results</text>
+  <text x="840" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">Always up-to-date</text>
+
+  <!-- Reprocessing flow -->
+  <rect x="30" y="220" width="900" height="210" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Reprocessing: Historical Data Through the Same Pipeline</text>
+
+  <rect x="50" y="265" width="420" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 1: Rewind log to historical point</text>
+  <text x="260" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Set consumer offset to desired historical timestamp</text>
+  <text x="260" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Log must retain data for the reprocessing window</text>
+
+  <rect x="50" y="345" width="420" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 2: Run same stream processor</text>
+  <text x="260" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Same code processes historical + real-time data</text>
+  <text x="260" y="402" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">No separate batch system needed</text>
+
+  <rect x="500" y="265" width="410" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="705" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 3: Write to parallel serving table</text>
+  <text x="705" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Reprocessed results go to new table/version</text>
+  <text x="705" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Swap tables when reprocessing completes</text>
+
+  <rect x="500" y="345" width="410" height="70" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="705" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Step 4: Serve from reprocessed table</text>
+  <text x="705" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Queries switch to reprocessed results</text>
+  <text x="705" y="402" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Stream processor continues real-time updates</text>
 </svg>

@@ -1,10 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">MapReduce Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">MapReduce</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <rect width="960" height="460" fill="#f8fafc"/>
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">MapReduce: Map Phase, Shuffle, and Reduce Phase</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Distributed computation model: map transforms input, shuffle groups by key, reduce aggregates results</text>
+
+  <!-- Input -->
+  <rect x="30" y="80" width="140" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="100" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Input Splits</text>
+  <text x="100" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">(key1, val1)</text>
+  <text x="100" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">(key2, val2)</text>
+  <text x="100" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">(key1, val3)</text>
+  <text x="100" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">(key3, val4)</text>
+
+  <!-- Arrow -->
+  <defs>
+    <marker id="arrMR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="170" y1="130" x2="220" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrMR)"/>
+
+  <!-- Map Phase -->
+  <rect x="220" y="80" width="160" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="300" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Map Phase</text>
+
+  <rect x="240" y="120" width="120" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="300" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Map Worker 1</text>
+  <text x="300" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">(k,v) → (k',v') list</text>
+
+  <rect x="240" y="175" width="120" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="300" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Map Worker 2</text>
+  <text x="300" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">(k,v) → (k',v') list</text>
+
+  <rect x="240" y="230" width="120" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="300" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Map Worker 3</text>
+  <text x="300" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">(k,v) → (k',v') list</text>
+
+  <line x1="380" y1="180" x2="440" y2="180" stroke="#64748b" stroke-width="2" marker-end="url(#arrMR)"/>
+
+  <!-- Shuffle Phase -->
+  <rect x="440" y="80" width="200" height="200" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="540" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Shuffle &amp; Sort</text>
+
+  <rect x="460" y="120" width="160" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="540" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Partition by key</text>
+  <text x="540" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">hash(key) % R reducers</text>
+
+  <rect x="460" y="175" width="160" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="540" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Network transfer</text>
+  <text x="540" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">All same-key to same reducer</text>
+
+  <rect x="460" y="230" width="160" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="540" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Sort by key</text>
+  <text x="540" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">Group (k, [v1, v2, ...])</text>
+
+  <line x1="640" y1="180" x2="700" y2="180" stroke="#64748b" stroke-width="2" marker-end="url(#arrMR)"/>
+
+  <!-- Reduce Phase -->
+  <rect x="700" y="80" width="160" height="200" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="780" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#166534">Reduce Phase</text>
+
+  <rect x="720" y="120" width="120" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="780" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Reduce Worker 1</text>
+  <text x="780" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">(k, [v...]) → output</text>
+
+  <rect x="720" y="175" width="120" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="780" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Reduce Worker 2</text>
+  <text x="780" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">(k, [v...]) → output</text>
+
+  <rect x="720" y="230" width="120" height="45" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <text x="780" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0f172a">Reduce Worker 3</text>
+  <text x="780" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#64748b">(k, [v...]) → output</text>
+
+  <line x1="860" y1="180" x2="900" y2="180" stroke="#64748b" stroke-width="2" marker-end="url(#arrMR)"/>
+
+  <!-- Output -->
+  <rect x="900" y="130" width="40" height="100" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="920" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#334155" transform="rotate(90, 920, 170)">Output</text>
+
+  <!-- Key properties -->
+  <rect x="30" y="310" width="900" height="130" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="480" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">MapReduce Key Properties</text>
+
+  <rect x="50" y="355" width="270" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Map and Reduce are user-defined functions</text>
+
+  <rect x="340" y="355" width="270" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="475" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Shuffle is automatic — framework handles grouping</text>
+
+  <rect x="630" y="355" width="280" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="770" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Fault tolerance: failed tasks are re-executed elsewhere</text>
+
+  <rect x="50" y="391" width="270" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="185" y="411" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Data locality: map tasks run where data is stored</text>
+
+  <rect x="340" y="391" width="270" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="475" y="411" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Combiner: optional local reduce before shuffle</text>
+
+  <rect x="630" y="391" width="280" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="770" y="411" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#334155">Deterministic: same input → same output always</text>
 </svg>
