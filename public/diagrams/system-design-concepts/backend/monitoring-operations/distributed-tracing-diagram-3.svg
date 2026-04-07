@@ -1,10 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Distributed Tracing Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Distributed Tracing</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <defs>
+    <marker id="ah3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="440" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="480" y="34" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#0f172a">Distributed Tracing Governance Framework</text>
+
+  <!-- Layer 1: Naming Standards -->
+  <rect x="30" y="56" width="280" height="150" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="170" y="82" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#0c4a6e">Naming Standards</text>
+  <line x1="60" y1="92" x2="280" y2="92" stroke="#7dd3fc" stroke-width="1"/>
+  <text x="50" y="114" font-family="Arial" font-size="11" fill="#475569">- Stable transaction names per route</text>
+  <text x="50" y="132" font-family="Arial" font-size="11" fill="#475569">- Consistent span naming: resource-op</text>
+  <text x="50" y="150" font-family="Arial" font-size="11" fill="#475569">- Defined span boundaries per service</text>
+  <text x="50" y="168" font-family="Arial" font-size="11" fill="#475569">- Error status conventions (timeout,</text>
+  <text x="50" y="182" text-anchor="start" font-family="Arial" font-size="11" fill="#475569">  retry, business failure)</text>
+  <text x="50" y="198" font-family="Arial" font-size="10" fill="#64748b" font-style="italic">Enforced via linting + CI checks</text>
+
+  <!-- Layer 2: Attribute Budgets -->
+  <rect x="340" y="56" width="280" height="150" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="480" y="82" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#052e16">Attribute Budgets</text>
+  <line x1="370" y1="92" x2="590" y2="92" stroke="#86efac" stroke-width="1"/>
+  <text x="360" y="114" font-family="Arial" font-size="11" fill="#475569">- Required: route, status, version,</text>
+  <text x="360" y="128" text-anchor="start" font-family="Arial" font-size="11" fill="#475569">    region, tenant-tier</text>
+  <text x="360" y="148" font-family="Arial" font-size="11" fill="#475569">- Allowed: db-system, cache hit/miss,</text>
+  <text x="360" y="162" text-anchor="start" font-family="Arial" font-size="11" fill="#475569">    dependency-name</text>
+  <text x="360" y="182" font-family="Arial" font-size="11" fill="#475569">- Bounded cardinality: max 500 unique</text>
+  <text x="360" y="198" font-family="Arial" font-size="10" fill="#64748b" font-style="italic">Schema reviewed like an API contract</text>
+
+  <!-- Layer 3: Sampling Policies -->
+  <rect x="650" y="56" width="280" height="150" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+  <text x="790" y="82" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#422006">Sampling Policies</text>
+  <line x1="680" y1="92" x2="900" y2="92" stroke="#fde68a" stroke-width="1"/>
+  <text x="670" y="114" font-family="Arial" font-size="11" fill="#475569">- Baseline: 1% uniform for trends</text>
+  <text x="670" y="132" font-family="Arial" font-size="11" fill="#475569">- Errors: 100% retention always</text>
+  <text x="670" y="150" font-family="Arial" font-size="11" fill="#475569">- Tail latency: head-based + adaptive</text>
+  <text x="670" y="168" font-family="Arial" font-size="11" fill="#475569">- Incident mode: dynamic increase</text>
+  <text x="670" y="186" font-family="Arial" font-size="11" fill="#475569">  to 10-25% temporarily</text>
+  <text x="670" y="198" font-family="Arial" font-size="10" fill="#64748b" font-style="italic">Predictable during outages</text>
+
+  <!-- Down arrows -->
+  <line x1="170" y1="206" x2="170" y2="240" stroke="#475569" stroke-width="2" marker-end="url(#ah3)"/>
+  <line x1="480" y1="206" x2="480" y2="240" stroke="#475569" stroke-width="2" marker-end="url(#ah3)"/>
+  <line x1="790" y1="206" x2="790" y2="240" stroke="#475569" stroke-width="2" marker-end="url(#ah3)"/>
+
+  <!-- Layer 4: Privacy Rules -->
+  <rect x="30" y="240" width="900" height="80" rx="8" fill="#fdf2f8" stroke="#ec4899" stroke-width="2"/>
+  <text x="480" y="266" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#500724">Privacy Rules (applies across all layers)</text>
+  <line x1="60" y1="276" x2="900" y2="276" stroke="#f9a8d4" stroke-width="1"/>
+  <text x="60" y="298" font-family="Arial" font-size="11" fill="#475569">- Redact PII: emails, phone numbers, auth tokens, payment details</text>
+  <text x="60" y="314" font-family="Arial" font-size="11" fill="#475569">- Hash user identifiers before indexing; never store raw payloads in span attributes</text>
+
+  <!-- Outcome -->
+  <line x1="480" y1="320" x2="480" y2="348" stroke="#475569" stroke-width="2" marker-end="url(#ah3)"/>
+
+  <rect x="120" y="348" width="720" height="76" rx="8" fill="#f0fdf4" stroke="#4ade80" stroke-width="2"/>
+  <text x="480" y="374" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#052e16">Outcome: Traces that are Consistent, Queryable, and Cost-Bounded</text>
+  <text x="480" y="396" text-anchor="middle" font-family="Arial" font-size="12" fill="#475569">Cross-service analysis works | Incident pivots are fast | Storage costs stay predictable | Compliance requirements met</text>
 </svg>

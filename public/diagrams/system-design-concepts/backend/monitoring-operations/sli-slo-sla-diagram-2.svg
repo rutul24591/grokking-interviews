@@ -1,10 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">SLI/SLO/SLA Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">SLI/SLO/SLA</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="450" viewBox="0 0 960 450">
+  <defs>
+    <linearGradient id="budget-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="used-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ef4444" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#dc2626" stop-opacity="0.5"/>
+    </linearGradient>
+    <marker id="arrow-down" markerWidth="8" markerHeight="6" refX="4" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="450" rx="8" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="480" y="36" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a" text-anchor="middle">SLO Target and Error Budget Over a 30-Day Window</text>
+
+  <!-- Left side: Budget bar visualization -->
+  <text x="200" y="76" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a" text-anchor="middle">Error Budget Visualization</text>
+
+  <!-- Full budget bar -->
+  <rect x="80" y="100" width="240" height="40" rx="6" fill="#e2e8f0" stroke="#94a3b8"/>
+  <text x="200" y="125" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#334155" text-anchor="middle">Total 30-Day Budget (0.1%)</text>
+
+  <!-- Arrow down -->
+  <line x1="200" y1="140" x2="200" y2="160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-down)"/>
+
+  <!-- Budget breakdown bar -->
+  <rect x="80" y="165" width="192" height="40" rx="6" fill="url(#budget-fill)" stroke="#f59e0b"/>
+  <text x="176" y="190" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e" text-anchor="middle">Remaining: 0.06%</text>
+
+  <rect x="272" y="165" width="48" height="40" rx="6" fill="url(#used-fill)" stroke="#dc2626"/>
+  <text x="296" y="190" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#fef2f2" text-anchor="middle">Used</text>
+
+  <!-- Budget math -->
+  <rect x="80" y="230" width="240" height="90" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="200" y="255" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">Budget Math</text>
+  <text x="95" y="278" font-family="Arial, sans-serif" font-size="11" fill="#475569">99.9% SLO = 43.2 min downtime/month</text>
+  <text x="95" y="296" font-family="Arial, sans-serif" font-size="11" fill="#475569">Incident used 12 min = 27.8% of budget</text>
+  <text x="95" y="314" font-family="Arial, sans-serif" font-size="11" fill="#475569">Remaining: 31.2 min for the month</text>
+
+  <!-- Right side: Burn Rate Table -->
+  <text x="720" y="76" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a" text-anchor="middle">Burn Rate Multiplier</text>
+
+  <!-- Table header -->
+  <rect x="540" y="100" width="360" height="36" rx="6" fill="#1e293b"/>
+  <text x="630" y="123" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f8fafc" text-anchor="middle">Burn Rate</text>
+  <text x="810" y="123" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f8fafc" text-anchor="middle">Budget Exhausted In</text>
+
+  <!-- Row 1 -->
+  <rect x="540" y="136" width="360" height="32" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="630" y="157" font-family="Arial, sans-serif" font-size="12" fill="#0f172a" text-anchor="middle">1x</text>
+  <text x="810" y="157" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">Exactly at SLO (no breach)</text>
+
+  <!-- Row 2 -->
+  <rect x="540" y="168" width="360" height="32" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="630" y="189" font-family="Arial, sans-serif" font-size="12" fill="#0f172a" text-anchor="middle">2x</text>
+  <text x="810" y="189" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">15 days (half window)</text>
+
+  <!-- Row 3 -->
+  <rect x="540" y="200" width="360" height="32" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="630" y="221" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#b45309" text-anchor="middle">5x</text>
+  <text x="810" y="221" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">6 days (page immediately)</text>
+
+  <!-- Row 4 -->
+  <rect x="540" y="232" width="360" height="32" fill="#fef2f2" stroke="#fca5a5"/>
+  <text x="630" y="253" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626" text-anchor="middle">10x</text>
+  <text x="810" y="253" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">3 days (critical incident)</text>
+
+  <!-- Row 5 -->
+  <rect x="540" y="264" width="360" height="32" fill="#fef2f2" stroke="#fca5a5"/>
+  <text x="630" y="285" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626" text-anchor="middle">14.4x</text>
+  <text x="810" y="285" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">2 days (SLO breach guaranteed)</text>
+
+  <!-- Burn rate formula -->
+  <rect x="540" y="316" width="360" height="70" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="720" y="341" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">Burn Rate Formula</text>
+  <text x="720" y="363" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="middle">Burn Rate = (Actual Error Rate) / (Allowed Error Rate)</text>
+  <text x="720" y="379" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">If burn rate &gt; 1, you will miss your SLO</text>
+
+  <!-- Bottom insight -->
+  <rect x="60" y="400" width="840" height="40" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="480" y="424" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">Multi-window burn rate alerting: combine short-window (fast burn) + long-window (slow burn) for precision</text>
 </svg>

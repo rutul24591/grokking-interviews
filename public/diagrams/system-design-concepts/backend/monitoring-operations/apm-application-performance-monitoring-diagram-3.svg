@@ -1,10 +1,134 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">APM (Application Performance Monitoring) Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">APM (Application Performance Monitoring)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- Light mode background -->
+  <rect class="bg" width="960" height="460" fill="#f8fafc" rx="8"/>
+
+  <!-- Title -->
+  <text x="480" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="#0f172a" class="title-text">APM Governance and Failure Modes</text>
+
+  <!-- FAILURE MODE 1: Broken Propagation -->
+  <rect x="30" y="70" width="280" height="175" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+
+  <rect x="50" y="85" width="240" height="30" fill="#fef2f2" stroke="#fca5a5" stroke-width="1" rx="4"/>
+  <text x="170" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="13" fill="#991b1b">Broken Context Propagation</text>
+
+  <text x="170" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">Trace context lost at queue boundary</text>
+  <text x="170" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">Background jobs spawn orphan spans</text>
+  <text x="170" y="171" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">End-to-end path is invisible</text>
+
+  <!-- Mini diagram: broken chain -->
+  <rect x="60" y="190" width="50" height="22" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="3"/>
+  <text x="85" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">Service A</text>
+
+  <line x1="110" y1="201" x2="140" y2="201" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="125" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#dc2626">lost</text>
+
+  <rect x="140" y="190" width="50" height="22" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1" rx="3"/>
+  <text x="165" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4b5563">Queue</text>
+
+  <line x1="190" y1="201" x2="220" y2="201" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="205" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#dc2626">orphan</text>
+
+  <rect x="220" y="190" width="50" height="22" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1" rx="3"/>
+  <text x="245" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4b5563">Worker</text>
+
+  <text x="170" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#166534">Fix: propagate trace_id in message headers</text>
+
+  <!-- FAILURE MODE 2: Cardinality Explosion -->
+  <rect x="340" y="70" width="280" height="175" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+
+  <rect x="360" y="85" width="240" height="30" fill="#fefce8" stroke="#fde047" stroke-width="1" rx="4"/>
+  <text x="480" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="13" fill="#854d0e">Cardinality Explosion</text>
+
+  <text x="480" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">user_id, request_id in indexed attrs</text>
+  <text x="480" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">Query performance degrades</text>
+  <text x="480" y="171" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">Storage costs spike unpredictably</text>
+
+  <!-- Mini diagram: cardinality tree -->
+  <text x="480" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#475569">GET /checkout</text>
+
+  <line x1="480" y1="205" x2="400" y2="220" stroke="#475569" stroke-width="1"/>
+  <line x1="480" y1="205" x2="480" y2="220" stroke="#475569" stroke-width="1"/>
+  <line x1="480" y1="205" x2="560" y2="220" stroke="#475569" stroke-width="1"/>
+  <text x="400" y="234" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#475569">region=us</text>
+  <text x="480" y="234" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#475569">region=eu</text>
+  <text x="560" y="234" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#475569">region=ap</text>
+
+  <line x1="400" y1="240" x2="380" y2="255" stroke="#475569" stroke-width="1" stroke-dasharray="2,1"/>
+  <line x1="400" y1="240" x2="420" y2="255" stroke="#475569" stroke-width="1" stroke-dasharray="2,1"/>
+  <text x="380" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#dc2626">user=...</text>
+  <text x="420" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#dc2626">user=...</text>
+
+  <text x="480" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ca8a04" font-weight="bold">unbounded growth</text>
+
+  <text x="480" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#166534">Fix: attribute allowlists, budget limits</text>
+
+  <!-- FAILURE MODE 3: Sampling Bias -->
+  <rect x="650" y="70" width="280" height="175" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+
+  <rect x="670" y="85" width="240" height="30" fill="#eff6ff" stroke="#93c5fd" stroke-width="1" rx="4"/>
+  <text x="790" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="13" fill="#1e40af">Sampling Bias</text>
+
+  <text x="790" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">Uniform sampling misses rare failures</text>
+  <text x="790" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">Tail-only sampling hides trends</text>
+  <text x="790" y="171" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#475569">You keep wrong traces for diagnosis</text>
+
+  <!-- Mini diagram: sampling bias -->
+  <text x="730" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#475569">Uniform</text>
+  <text x="850" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#475569">Tail-based</text>
+
+  <!-- Dots for uniform - misses the red rare failure -->
+  <circle cx="710" cy="220" r="4" fill="#3b82f6"/>
+  <circle cx="725" cy="218" r="4" fill="#3b82f6"/>
+  <circle cx="740" cy="222" r="4" fill="#3b82f6"/>
+  <circle cx="755" cy="219" r="4" fill="#3b82f6"/>
+  <circle cx="750" cy="235" r="4" fill="#dc2626"/>
+  <text x="750" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#dc2626" font-weight="bold">missed</text>
+
+  <!-- Dots for tail - only keeps red, misses context -->
+  <circle cx="835" cy="220" r="4" fill="#9ca3af"/>
+  <circle cx="850" cy="218" r="4" fill="#9ca3af"/>
+  <circle cx="865" cy="222" r="4" fill="#dc2626"/>
+  <text x="865" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#ca8a04" font-weight="bold">no baseline</text>
+
+  <text x="790" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#166534">Fix: adaptive + budgeted hybrid</text>
+
+  <!-- GOVERNANCE SECTION -->
+  <rect x="30" y="270" width="900" height="175" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" rx="8"/>
+
+  <text x="480" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="16" fill="#1e293b">APM Governance Guardrails</text>
+
+  <!-- Guardrail items in columns -->
+  <rect x="55" y="320" width="200" height="100" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" rx="6"/>
+  <text x="155" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#1e40af">Transaction Naming</text>
+  <text x="155" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Enforce stable route-level</text>
+  <text x="155" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">names; reject unique</text>
+  <text x="155" y="396" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">identifiers in span names</text>
+  <text x="155" y="414" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Review on each PR</text>
+
+  <rect x="280" y="320" width="200" height="100" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" rx="6"/>
+  <text x="380" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#1e40af">Attribute Budgets</text>
+  <text x="380" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Require allowlists for</text>
+  <text x="380" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">indexed attributes; cap</text>
+  <text x="380" y="396" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">cardinality per service;</text>
+  <text x="380" y="414" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">enforce in CI pipeline</text>
+
+  <rect x="505" y="320" width="200" height="100" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" rx="6"/>
+  <text x="605" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#1e40af">PII Redaction</text>
+  <text x="605" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Drop email, token, SSN</text>
+  <text x="605" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">patterns at collector;</text>
+  <text x="605" y="396" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">audit error payloads;</text>
+  <text x="605" y="414" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">automated scanning</text>
+
+  <rect x="730" y="320" width="175" height="100" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" rx="6"/>
+  <text x="817" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#1e40af">Async Propagation</text>
+  <text x="817" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Require trace context</text>
+  <text x="817" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">in all queue messages,</text>
+  <text x="817" y="396" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">cron jobs, scheduled</text>
+  <text x="817" y="414" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">tasks and callbacks</text>
 </svg>

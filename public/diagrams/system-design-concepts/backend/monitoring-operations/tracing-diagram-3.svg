@@ -1,10 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Tracing Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Tracing</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="960" height="420" rx="8" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="480" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a">Metrics-to-Trace Pivot Workflow</text>
+  <text x="480" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Impact metrics identify problem, traces provide evidence, logs confirm details</text>
+
+  <!-- Phase 1: Metrics (Left) -->
+  <rect x="30" y="80" width="260" height="280" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="160" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#dc2626">Phase 1: Impact Signals</text>
+  <text x="160" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#0f172a">(Metrics Layer)</text>
+
+  <!-- Mini chart: p99 spike -->
+  <rect x="55" y="145" width="210" height="80" rx="6" fill="#fef2f2"/>
+  <text x="160" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">p99 Latency Spike</text>
+  <!-- Chart line -->
+  <polyline points="65,210 90,208 115,205 140,200 165,190 190,175 215,165 240,162" stroke="#ef4444" stroke-width="2" fill="none"/>
+  <line x1="65" y1="170" x2="260" y2="170" stroke="#fca5a5" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="260" y="168" font-family="Arial, sans-serif" font-size="8" fill="#dc2626">SLO</text>
+  <text x="70" y="220" font-family="Arial, sans-serif" font-size="9" fill="#64748b">14:00</text>
+  <text x="225" y="220" font-family="Arial, sans-serif" font-size="9" fill="#64748b">14:30</text>
+
+  <!-- Error rate -->
+  <rect x="55" y="235" width="210" height="50" rx="6" fill="#fef2f2"/>
+  <text x="90" y="255" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#991b1b">Error Rate: 2.4%</text>
+  <text x="90" y="273" font-family="Arial, sans-serif" font-size="9" fill="#64748b">baseline: 0.1%</text>
+  <text x="210" y="255" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ef4444">!</text>
+
+  <!-- Arrow: Metrics to Traces -->
+  <line x1="290" y1="220" x2="370" y2="220" stroke="#f59e0b" stroke-width="3"/>
+  <polygon points="370,214 382,220 370,226" fill="#f59e0b"/>
+  <text x="336" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Pivot</text>
+  <text x="336" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">exemplar trace_id</text>
+
+  <!-- Phase 2: Traces (Center) -->
+  <rect x="380" y="80" width="280" height="280" rx="10" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <text x="520" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">Phase 2: Evidence</text>
+  <text x="520" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#0f172a">(Trace Layer)</text>
+
+  <!-- Span timeline visualization -->
+  <rect x="405" y="145" width="230" height="190" rx="6" fill="#eff6ff"/>
+  <text x="520" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Representative Trace</text>
+
+  <!-- Span bars -->
+  <text x="415" y="185" font-family="Arial, sans-serif" font-size="9" fill="#0f172a">root</text>
+  <rect x="450" y="177" width="170" height="14" rx="3" fill="#3b82f6"/>
+
+  <text x="415" y="207" font-family="Arial, sans-serif" font-size="9" fill="#0f172a">auth</text>
+  <rect x="450" y="199" width="30" height="14" rx="3" fill="#94a3b8"/>
+
+  <text x="415" y="229" font-family="Arial, sans-serif" font-size="9" fill="#0f172a">db</text>
+  <rect x="450" y="221" width="120" height="14" rx="3" fill="#ef4444"/>
+  <text x="575" y="232" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#dc2626">SLOW</text>
+
+  <text x="415" y="251" font-family="Arial, sans-serif" font-size="9" fill="#0f172a">cache</text>
+  <rect x="450" y="243" width="20" height="14" rx="3" fill="#22c55e"/>
+
+  <text x="415" y="273" font-family="Arial, sans-serif" font-size="9" fill="#0f172a">payment</text>
+  <rect x="450" y="265" width="90" height="14" rx="3" fill="#f59e0b"/>
+  <text x="545" y="276" font-family="Arial, sans-serif" font-size="8" fill="#92400e">retry x3</text>
+
+  <text x="415" y="305" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Finding: db span = 72%</text>
+  <text x="415" y="322" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">of total latency</text>
+
+  <!-- Arrow: Traces to Logs -->
+  <line x1="660" y1="220" x2="720" y2="220" stroke="#f59e0b" stroke-width="3"/>
+  <polygon points="720,214 732,220 720,226" fill="#f59e0b"/>
+  <text x="696" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Drill</text>
+  <text x="696" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#64748b">span_id + trace_id</text>
+
+  <!-- Phase 3: Logs (Right) -->
+  <rect x="730" y="80" width="200" height="280" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+  <text x="830" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#16a34a">Phase 3: Details</text>
+  <text x="830" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#0f172a">(Log Layer)</text>
+
+  <!-- Log entries -->
+  <rect x="750" y="145" width="160" height="200" rx="6" fill="#f0fdf4"/>
+
+  <text x="760" y="165" font-family="monospace" font-size="8" fill="#166534">14:23:01.234 [db]</text>
+  <text x="760" y="178" font-family="monospace" font-size="8" fill="#166534">  query: SELECT *</text>
+  <text x="760" y="191" font-family="monospace" font-size="8" fill="#166534">  rows: 12000</text>
+  <text x="760" y="204" font-family="monospace" font-size="8" fill="#dc2626">  WARN: full scan</text>
+  <text x="760" y="217" font-family="monospace" font-size="8" fill="#166534">  idx: missing</text>
+
+  <text x="760" y="240" font-family="monospace" font-size="8" fill="#166534">14:23:01.312 [db]</text>
+  <text x="760" y="253" font-family="monospace" font-size="8" fill="#166534">  conn_pool: 95%</text>
+  <text x="760" y="266" font-family="monospace" font-size="8" fill="#dc2626">  ERROR: timeout</text>
+
+  <text x="830" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#166534">Root Cause: Missing index</text>
+  <text x="830" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#166534">on orders.user_id</text>
+
+  <!-- Bottom workflow summary -->
+  <rect x="30" y="380" width="900" height="28" rx="6" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="480" y="399" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Workflow: Metrics (what is broken) &#x2192; Traces (where it is broken) &#x2192; Logs (why it is broken)</text>
 </svg>

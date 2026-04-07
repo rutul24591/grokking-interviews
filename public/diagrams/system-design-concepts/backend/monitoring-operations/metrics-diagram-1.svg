@@ -1,10 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Metrics Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Metrics</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect fill="#f8fafc" width="960" height="440"/>
+
+  <!-- Title -->
+  <text x="480" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Metrics Pipeline: From Instrumentation to Action</text>
+
+  <!-- Stage 1: Instrumentation -->
+  <rect x="30" y="90" width="150" height="80" fill="#e8f0fe" stroke="#1a73e8" stroke-width="2" rx="8"/>
+  <text x="105" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a">Instrumentation</text>
+  <text x="105" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Counters, Gauges,</text>
+  <text x="105" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Histograms</text>
+
+  <!-- Arrow 1-2 -->
+  <line x1="180" y1="130" x2="230" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 2: Collection -->
+  <rect x="230" y="90" width="150" height="80" fill="#e8f0fe" stroke="#1a73e8" stroke-width="2" rx="8"/>
+  <text x="305" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a">Collection</text>
+  <text x="305" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Scrape / Push,</text>
+  <text x="305" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Buffering</text>
+
+  <!-- Arrow 2-3 -->
+  <line x1="380" y1="130" x2="430" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 3: Aggregation -->
+  <rect x="430" y="90" width="150" height="80" fill="#e8f0fe" stroke="#1a73e8" stroke-width="2" rx="8"/>
+  <text x="505" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a">Aggregation</text>
+  <text x="505" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Rate calc,</text>
+  <text x="505" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Quantile merge</text>
+
+  <!-- Arrow 3-4 -->
+  <line x1="580" y1="130" x2="630" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 4: Storage -->
+  <rect x="630" y="90" width="150" height="80" fill="#e8f0fe" stroke="#1a73e8" stroke-width="2" rx="8"/>
+  <text x="705" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a">Storage</text>
+  <text x="705" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Time-series DB,</text>
+  <text x="705" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Downsampling</text>
+
+  <!-- Arrow down to outputs -->
+  <line x1="705" y1="170" x2="705" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Split to two outputs -->
+  <!-- Dashboard -->
+  <rect x="560" y="220" width="150" height="80" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="8"/>
+  <text x="635" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a">Dashboards</text>
+  <text x="635" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Visualization,</text>
+  <text x="635" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Segmentation</text>
+
+  <!-- Alerts -->
+  <rect x="760" y="220" width="150" height="80" fill="#f8d7da" stroke="#dc3545" stroke-width="2" rx="8"/>
+  <text x="835" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a">Alerts</text>
+  <text x="835" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Burn-rate rules,</text>
+  <text x="835" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Pager routing</text>
+
+  <!-- Horizontal arrows from storage to outputs -->
+  <line x1="705" y1="255" x2="560" y2="255" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="780" y1="255" x2="760" y2="255" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Key insights box -->
+  <rect x="30" y="340" width="900" height="80" rx="8" fill="#fff3cd" stroke="#ffc107" stroke-width="2"/>
+  <text x="480" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a">Key Design Principles</text>
+  <text x="480" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569">Bounded labels | Stable semantics | Tail-aware latency | SLO-aligned alerting | Monitored pipeline health</text>
 </svg>

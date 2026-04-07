@@ -1,10 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Monitoring Tools Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Monitoring Tools</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440">
+  <defs>
+    <linearGradient id="headerGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="cardBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="440" fill="#ffffff" rx="8"/>
+
+  <!-- Header -->
+  <rect width="960" height="48" fill="url(#headerGrad)" rx="8"/>
+  <rect y="24" width="960" height="24" fill="url(#headerGrad)"/>
+  <text x="480" y="32" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold" font-size="18">Monitoring Tool Selection Criteria</text>
+
+  <!-- Center circle -->
+  <circle cx="480" cy="240" r="52" fill="#6366f1" filter="url(#shadow)"/>
+  <text x="480" y="235" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold" font-size="13">Monitoring</text>
+  <text x="480" y="253" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold" font-size="13">Stack</text>
+
+  <!-- Card 1: Correlation - Top Left -->
+  <rect x="60" y="72" width="195" height="96" rx="8" fill="url(#cardBg)" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="60" y="72" width="6" height="96" rx="3" fill="#3b82f6"/>
+  <text x="165" y="100" text-anchor="middle" fill="#1e293b" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Correlation</text>
+  <text x="165" y="122" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">Pivot across metrics,</text>
+  <text x="165" y="138" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">logs, traces via shared</text>
+  <text x="165" y="154" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">identifiers</text>
+
+  <!-- Card 2: Query Performance - Top Right -->
+  <rect x="705" y="72" width="195" height="96" rx="8" fill="url(#cardBg)" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="705" y="72" width="6" height="96" rx="3" fill="#10b981"/>
+  <text x="808" y="100" text-anchor="middle" fill="#1e293b" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Query Performance</text>
+  <text x="808" y="122" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">Sub-second latency under</text>
+  <text x="808" y="138" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">incident traffic and</text>
+  <text x="808" y="154" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">concurrent responders</text>
+
+  <!-- Card 3: Cost Predictability - Bottom Left -->
+  <rect x="60" y="310" width="195" height="96" rx="8" fill="url(#cardBg)" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="60" y="310" width="6" height="96" rx="3" fill="#f59e0b"/>
+  <text x="165" y="338" text-anchor="middle" fill="#1e293b" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Cost Predictability</text>
+  <text x="165" y="360" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">Budgets, quotas, retention</text>
+  <text x="165" y="376" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">tiers, cardinality controls</text>
+  <text x="165" y="392" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">prevent surprise bills</text>
+
+  <!-- Card 4: Governance - Bottom Right -->
+  <rect x="705" y="310" width="195" height="96" rx="8" fill="url(#cardBg)" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="705" y="310" width="6" height="96" rx="3" fill="#ef4444"/>
+  <text x="808" y="338" text-anchor="middle" fill="#1e293b" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Governance</text>
+  <text x="808" y="360" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">Access control, audit logs,</text>
+  <text x="808" y="376" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">naming standards, review</text>
+  <text x="808" y="392" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">processes for telemetry</text>
+
+  <!-- Card 5: Operational Ergonomics - Bottom Center -->
+  <rect x="345" y="340" width="270" height="80" rx="8" fill="url(#cardBg)" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="345" y="340" width="6" height="80" rx="3" fill="#8b5cf6"/>
+  <text x="483" y="368" text-anchor="middle" fill="#1e293b" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Operational Ergonomics</text>
+  <text x="483" y="390" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">On-call experience: fast global search, stable dashboards,</text>
+  <text x="483" y="406" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="12">incident integrations (paging, deploy markers, timelines)</text>
+
+  <!-- Connecting lines -->
+  <line x1="255" y1="120" x2="428" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="705" y1="120" x2="532" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="255" y1="358" x2="428" y2="270" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="705" y1="358" x2="532" y2="270" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="480" y1="340" x2="480" y2="292" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
 </svg>

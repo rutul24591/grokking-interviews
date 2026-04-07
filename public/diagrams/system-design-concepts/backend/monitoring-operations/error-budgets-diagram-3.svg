@@ -1,10 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Error Budgets Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Error Budgets</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="100%" height="100%">
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #0f172a; }
+    .label { font-family: Arial, sans-serif; font-size: 15px; font-weight: bold; }
+    .sublabel { font-family: Arial, sans-serif; font-size: 13px; font-weight: normal; }
+  </style>
+
+  <!-- Background -->
+  <rect fill="#f8fafc" width="960" height="440" rx="8"/>
+
+  <!-- Title -->
+  <text class="title" x="480" y="35" text-anchor="middle">
+    Policy Ladder: Budget-Driven Operational Responses
+  </text>
+
+  <!-- State 1: Healthy -->
+  <rect x="60" y="70" width="260" height="310" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+  <text class="label" x="190" y="105" text-anchor="middle" fill="#2e7d32">HEALTHY BUDGET</text>
+  <text class="sublabel" x="190" y="125" text-anchor="middle" fill="#388e3c">&gt; 50% remaining</text>
+
+  <!-- Healthy items -->
+  <rect x="80" y="145" width="220" height="40" rx="4" fill="#c8e6c9"/>
+  <text class="sublabel" x="190" y="170" text-anchor="middle" fill="#1b5e20">Normal deploy velocity</text>
+
+  <rect x="80" y="195" width="220" height="40" rx="4" fill="#c8e6c9"/>
+  <text class="sublabel" x="190" y="220" text-anchor="middle" fill="#1b5e20">Routine incident response</text>
+
+  <rect x="80" y="245" width="220" height="40" rx="4" fill="#c8e6c9"/>
+  <text class="sublabel" x="190" y="270" text-anchor="middle" fill="#1b5e20">Standard change management</text>
+
+  <rect x="80" y="295" width="220" height="40" rx="4" fill="#c8e6c9"/>
+  <text class="sublabel" x="190" y="320" text-anchor="middle" fill="#1b5e20">Continue reliability backlog</text>
+
+  <!-- Arrow 1 to 2 -->
+  <path d="M 320 225 L 360 225" stroke="#ff9800" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- State 2: Low -->
+  <rect x="360" y="70" width="260" height="310" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+  <text class="label" x="490" y="105" text-anchor="middle" fill="#e65100">LOW BUDGET</text>
+  <text class="sublabel" x="490" y="125" text-anchor="middle" fill="#bf360c">10% - 50% remaining</text>
+
+  <!-- Low items -->
+  <rect x="380" y="145" width="220" height="40" rx="4" fill="#ffe0b2"/>
+  <text class="sublabel" x="490" y="170" text-anchor="middle" fill="#e65100">Tighten change management</text>
+
+  <rect x="380" y="195" width="220" height="40" rx="4" fill="#ffe0b2"/>
+  <text class="sublabel" x="490" y="220" text-anchor="middle" fill="#e65100">Prioritize mitigations</text>
+
+  <rect x="380" y="245" width="220" height="40" rx="4" fill="#ffe0b2"/>
+  <text class="sublabel" x="490" y="270" text-anchor="middle" fill="#e65100">Reduce risk appetite</text>
+
+  <rect x="380" y="295" width="220" height="40" rx="4" fill="#ffe0b2"/>
+  <text class="sublabel" x="490" y="320" text-anchor="middle" fill="#e65100">Extra review for deploys</text>
+
+  <!-- Arrow 2 to 3 -->
+  <path d="M 620 225 L 660 225" stroke="#f44336" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- State 3: Exhausted -->
+  <rect x="660" y="70" width="260" height="310" rx="8" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+  <text class="label" x="790" y="105" text-anchor="middle" fill="#c62828">EXHAUSTED BUDGET</text>
+  <text class="sublabel" x="790" y="125" text-anchor="middle" fill="#b71c1c">&lt; 10% remaining</text>
+
+  <!-- Exhausted items -->
+  <rect x="680" y="145" width="220" height="40" rx="4" fill="#ffcdd2"/>
+  <text class="sublabel" x="790" y="170" text-anchor="middle" fill="#c62828">Stabilize systems first</text>
+
+  <rect x="680" y="195" width="220" height="40" rx="4" fill="#ffcdd2"/>
+  <text class="sublabel" x="790" y="220" text-anchor="middle" fill="#c62828">Pause risky releases</text>
+
+  <rect x="680" y="245" width="220" height="40" rx="4" fill="#ffcdd2"/>
+  <text class="sublabel" x="790" y="270" text-anchor="middle" fill="#c62828">Invest in reliability fixes</text>
+
+  <rect x="680" y="295" width="220" height="40" rx="4" fill="#ffcdd2"/>
+  <text class="sublabel" x="790" y="320" text-anchor="middle" fill="#c62828">Post-incident review req.</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ff9800"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f44336"/>
+    </marker>
+  </defs>
 </svg>

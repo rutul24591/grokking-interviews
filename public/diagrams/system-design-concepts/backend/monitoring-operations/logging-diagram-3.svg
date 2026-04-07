@@ -1,10 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Logging Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Logging</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480">
+  <title>Logging Failure Modes</title>
+  <defs>
+    <style>
+      .title { fill: #0f172a; font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; }
+      .subtitle { fill: #475569; font-family: Arial, sans-serif; font-size: 13px; }
+      .box-title { font-family: Arial, sans-serif; font-size: 15px; font-weight: bold; }
+      .desc { fill: #475569; font-family: Arial, sans-serif; font-size: 12px; }
+      .mitigation { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; }
+      .divider { stroke-width: 1; opacity: 0.4; }
+      .annotation { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; font-style: italic; }
+    </style>
+  </defs>
+  <rect fill="#f8fafc" width="960" height="480" />
+  <text x="480" y="36" text-anchor="middle" class="title">Logging Failure Modes</text>
+  <text x="480" y="56" text-anchor="middle" class="subtitle">Five common failure patterns and their operational impact</text>
+
+  <!-- Log Storms -->
+  <rect x="40" y="90" width="270" height="160" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2" />
+  <text x="175" y="120" text-anchor="middle" class="box-title" fill="#991b1b">Log Storms</text>
+  <line x1="60" y1="130" x2="290" y2="130" class="divider" stroke="#dc2626" />
+  <text x="60" y="155" class="desc">Retry loops amplify errors into</text>
+  <text x="60" y="172" class="desc">millions of identical log lines.</text>
+  <text x="60" y="189" class="desc">Ingestion saturates; search slows;</text>
+  <text x="60" y="206" class="desc">critical errors buried in noise.</text>
+  <text x="175" y="235" text-anchor="middle" class="mitigation" fill="#991b1b">Mitigate: rate limit + sampling</text>
+
+  <!-- Schema Drift -->
+  <rect x="345" y="90" width="270" height="160" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2" />
+  <text x="480" y="120" text-anchor="middle" class="box-title" fill="#92400e">Schema Drift</text>
+  <line x1="365" y1="130" x2="595" y2="130" class="divider" stroke="#d97706" />
+  <text x="365" y="155" class="desc">Field names change across deploys;</text>
+  <text x="365" y="172" class="desc">saved queries return no results.</text>
+  <text x="365" y="189" class="desc">Correlation breaks when trace_id</text>
+  <text x="365" y="206" class="desc">becomes traceId or request_id.</text>
+  <text x="480" y="235" text-anchor="middle" class="mitigation" fill="#92400e">Mitigate: schema contracts + CI</text>
+
+  <!-- Missing Correlation -->
+  <rect x="650" y="90" width="270" height="160" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" />
+  <text x="785" y="120" text-anchor="middle" class="box-title" fill="#3730a3">Missing Correlation</text>
+  <line x1="670" y1="130" x2="900" y2="130" class="divider" stroke="#6366f1" />
+  <text x="670" y="155" class="desc">Async paths drop context; half of</text>
+  <text x="670" y="172" class="desc">logs lack trace_id. Cross-service</text>
+  <text x="670" y="189" class="desc">reconstruction becomes manual.</text>
+  <text x="670" y="206" class="desc">Responders distrust the system.</text>
+  <text x="785" y="235" text-anchor="middle" class="mitigation" fill="#3730a3">Mitigate: context propagation</text>
+
+  <!-- PII Leakage -->
+  <rect x="40" y="290" width="270" height="160" rx="10" fill="#fce7f3" stroke="#db2777" stroke-width="2" />
+  <text x="175" y="320" text-anchor="middle" class="box-title" fill="#9d174d">PII Leakage</text>
+  <line x1="60" y1="330" x2="290" y2="330" class="divider" stroke="#db2777" />
+  <text x="60" y="355" class="desc">Tokens, emails, SSNs appear in</text>
+  <text x="60" y="372" class="desc">centralized stores. Blast radius</text>
+  <text x="60" y="389" class="desc">expands with aggregation. GDPR</text>
+  <text x="60" y="406" class="desc">compliance violations result.</text>
+  <text x="175" y="435" text-anchor="middle" class="mitigation" fill="#9d174d">Mitigate: redaction at source</text>
+
+  <!-- Ingestion Lag -->
+  <rect x="345" y="290" width="270" height="160" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" />
+  <text x="480" y="320" text-anchor="middle" class="box-title" fill="#166534">Ingestion Lag</text>
+  <line x1="365" y1="330" x2="595" y2="330" class="divider" stroke="#16a34a" />
+  <text x="365" y="355" class="desc">Pipeline queue depth grows; logs</text>
+  <text x="365" y="372" class="desc">arrive minutes behind real-time.</text>
+  <text x="365" y="389" class="desc">Responders make decisions on</text>
+  <text x="365" y="406" class="desc">stale or incomplete evidence.</text>
+  <text x="480" y="435" text-anchor="middle" class="mitigation" fill="#166534">Mitigate: monitor lag + drops</text>
+
+  <!-- Bottom annotation -->
+  <text x="480" y="470" text-anchor="middle" class="annotation">Each failure mode degrades diagnostic capability; combined, they create compounding operational risk during incidents</text>
 </svg>

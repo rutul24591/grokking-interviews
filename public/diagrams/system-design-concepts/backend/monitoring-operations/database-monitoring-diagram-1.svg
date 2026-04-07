@@ -1,10 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Database Monitoring Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Database Monitoring</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .body { font-family: Arial, sans-serif; font-size: 12px; font-weight: normal; }
+      .label { font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="460" fill="#ffffff" rx="8"/>
+
+  <!-- Main Title -->
+  <text x="480" y="36" class="title" text-anchor="middle" fill="#1f2937">Two Views of Database Health</text>
+
+  <!-- LEFT PANEL: Outside-In (App Symptoms) -->
+  <rect x="30" y="60" width="430" height="380" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="245" y="90" class="subtitle" text-anchor="middle" fill="#1f2937">Outside-In: Application Symptoms</text>
+
+  <!-- App Layer Box -->
+  <rect x="60" y="110" width="370" height="80" rx="6" fill="#ffffff" stroke="#9ca3af" stroke-width="1"/>
+  <text x="245" y="135" class="subtitle" text-anchor="middle" fill="#374151">Application Tier</text>
+  <text x="80" y="160" class="label" fill="#4b5563">&#x2022; Request latency (p50/p95/p99)</text>
+  <text x="80" y="180" class="label" fill="#4b5563">&#x2022; Error rate (timeouts, 5xx)</text>
+
+  <!-- Arrow down -->
+  <line x1="245" y1="190" x2="245" y2="230" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="260" y="215" class="label" fill="#6b7280">symptoms</text>
+
+  <!-- Pool Wait Box -->
+  <rect x="60" y="235" width="370" height="70" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="245" y="260" class="subtitle" text-anchor="middle" fill="#92400e">Connection Pool Wait</text>
+  <text x="80" y="280" class="label" fill="#78350f">&#x2022; Queue depth increasing</text>
+  <text x="80" y="300" class="label" fill="#78350f">&#x2022; Clients timing out before query</text>
+
+  <!-- Arrow down -->
+  <line x1="245" y1="305" x2="245" y2="345" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- DB Symptom Box -->
+  <rect x="60" y="350" width="370" height="70" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="245" y="375" class="subtitle" text-anchor="middle" fill="#991b1b">Database Impact</text>
+  <text x="80" y="395" class="label" fill="#7f1d1d">&#x2022; Query latency spike (p99)</text>
+  <text x="80" y="415" class="label" fill="#7f1d1d">&#x2022; Connection exhaustion</text>
+
+  <!-- RIGHT PANEL: Inside-Out (DB Internals) -->
+  <rect x="500" y="60" width="430" height="380" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="715" y="90" class="subtitle" text-anchor="middle" fill="#1f2937">Inside-Out: Database Internals</text>
+
+  <!-- Queries Box -->
+  <rect x="530" y="110" width="370" height="70" rx="6" fill="#ffffff" stroke="#9ca3af" stroke-width="1"/>
+  <text x="715" y="135" class="subtitle" text-anchor="middle" fill="#374151">Query Behavior</text>
+  <text x="550" y="155" class="label" fill="#4b5563">&#x2022; Slow query fingerprints</text>
+  <text x="550" y="175" class="label" fill="#4b5563">&#x2022; Plan changes, full scans</text>
+
+  <!-- Locks Box -->
+  <rect x="530" y="195" width="370" height="70" rx="6" fill="#ffffff" stroke="#9ca3af" stroke-width="1"/>
+  <text x="715" y="220" class="subtitle" text-anchor="middle" fill="#374151">Lock Contention</text>
+  <text x="550" y="240" class="label" fill="#4b5563">&#x2022; Lock wait time</text>
+  <text x="550" y="260" class="label" fill="#4b5563">&#x2022; Blocked queries, deadlocks</text>
+
+  <!-- I/O Box -->
+  <rect x="530" y="280" width="370" height="70" rx="6" fill="#ffffff" stroke="#9ca3af" stroke-width="1"/>
+  <text x="715" y="305" class="subtitle" text-anchor="middle" fill="#374151">I/O and Storage</text>
+  <text x="550" y="325" class="label" fill="#4b5563">&#x2022; Buffer cache hit ratio</text>
+  <text x="550" y="345" class="label" fill="#4b5563">&#x2022; Disk IOPS, write amplification</text>
+
+  <!-- Replication Box -->
+  <rect x="530" y="365" width="370" height="60" rx="6" fill="#ffffff" stroke="#9ca3af" stroke-width="1"/>
+  <text x="715" y="390" class="subtitle" text-anchor="middle" fill="#374151">Replication Health</text>
+  <text x="550" y="410" class="label" fill="#4b5563">&#x2022; Lag, replay delay, slot pressure</text>
+
+  <!-- Bridge arrow between panels -->
+  <line x1="460" y1="250" x2="500" y2="250" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrowBlue)"/>
+  <text x="480" y="240" class="label" fill="#2563eb" text-anchor="middle" font-weight="bold">correlate</text>
+
+  <!-- Arrow markers -->
+  <marker id="arrowGray" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+  </marker>
+  <marker id="arrowBlue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+  </marker>
 </svg>

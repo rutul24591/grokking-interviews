@@ -1,10 +1,83 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Log Aggregation Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Log Aggregation</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="460" fill="url(#bgGrad)" rx="8"/>
+
+  <!-- Title -->
+  <text x="480" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1e293b" text-anchor="middle">Incident Response: Log Aggregation Operational Workflow</text>
+  <text x="480" y="62" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle">Confirm impact &#8594; Use stable pivots &#8594; Correlate to traces/metrics &#8594; Preserve evidence</text>
+
+  <!-- Step 1: Confirm Impact -->
+  <rect x="40" y="100" width="210" height="140" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="145" y="130" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">1. Confirm Impact</text>
+  <text x="55" y="160" font-family="Arial, sans-serif" font-size="12" fill="#1e3a8a">Start from a signal:</text>
+  <text x="55" y="182" font-family="Arial, sans-serif" font-size="12" fill="#1e3a8a">error-rate spike, latency</text>
+  <text x="55" y="204" font-family="Arial, sans-serif" font-size="12" fill="#1e3a8a">degradation, or user</text>
+  <text x="55" y="226" font-family="Arial, sans-serif" font-size="12" fill="#1e3a8a">reports. Validate that the</text>
+  <text x="55" y="248" font-family="Arial, sans-serif" font-size="12" fill="#1e3a8a">pipeline is healthy before</text>
+  <text x="55" y="270" font-family="Arial, sans-serif" font-size="12" fill="#1e3a8a">trusting log data.</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="250" y1="170" x2="298" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Use Stable Pivots -->
+  <rect x="300" y="100" width="210" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="405" y="130" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#166534" text-anchor="middle">2. Use Stable Pivots</text>
+  <text x="315" y="160" font-family="Arial, sans-serif" font-size="12" fill="#14532d">Filter by error fingerprint,</text>
+  <text x="315" y="182" font-family="Arial, sans-serif" font-size="12" fill="#14532d">deploy version, region,</text>
+  <text x="315" y="204" font-family="Arial, sans-serif" font-size="12" fill="#14532d">tenant tier. Group logs</text>
+  <text x="315" y="226" font-family="Arial, sans-serif" font-size="12" fill="#14532d">by service and correlation</text>
+  <text x="315" y="248" font-family="Arial, sans-serif" font-size="12" fill="#14532d">ID to isolate blast radius</text>
+  <text x="315" y="270" font-family="Arial, sans-serif" font-size="12" fill="#14532d">and narrow scope.</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="510" y1="170" x2="558" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Correlate to Traces/Metrics -->
+  <rect x="560" y="100" width="210" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="130" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#92400e" text-anchor="middle">3. Correlate Traces/</text>
+  <text x="665" y="148" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#92400e" text-anchor="middle">Metrics</text>
+  <text x="575" y="178" font-family="Arial, sans-serif" font-size="12" fill="#78350f">Join logs with distributed</text>
+  <text x="575" y="200" font-family="Arial, sans-serif" font-size="12" fill="#78350f">traces via trace ID. Cross-</text>
+  <text x="575" y="222" font-family="Arial, sans-serif" font-size="12" fill="#78350f">reference metrics (CPU,</text>
+  <text x="575" y="244" font-family="Arial, sans-serif" font-size="12" fill="#78350f">memory, queue depth) to</text>
+  <text x="575" y="266" font-family="Arial, sans-serif" font-size="12" fill="#78350f">confirm infrastructure</text>
+  <text x="575" y="288" font-family="Arial, sans-serif" font-size="12" fill="#78350f">contributing factors.</text>
+
+  <!-- Arrow 3->4 (curved down) -->
+  <path d="M 665 240 L 665 330 L 480 330 L 480 348" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: Preserve Evidence -->
+  <rect x="300" y="350" width="360" height="90" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="480" y="380" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#5b21b6" text-anchor="middle">4. Preserve Evidence</text>
+  <text x="320" y="405" font-family="Arial, sans-serif" font-size="12" fill="#4c1d95">Export query results, save incident timelines, and tag logs for extended retention.</text>
+  <text x="320" y="425" font-family="Arial, sans-serif" font-size="12" fill="#4c1d95">Post-incident analysis depends on having durable, trustworthy log data.</text>
+
+  <!-- Feedback loop arrow -->
+  <path d="M 300 395 L 145 395 L 145 240" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowhead)"/>
+  <text x="145" y="370" font-family="Arial, sans-serif" font-size="10" fill="#6b7280" text-anchor="middle" transform="rotate(-90 145 370)">Feed findings back</text>
+
+  <!-- Legend -->
+  <rect x="790" y="100" width="140" height="100" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="860" y="122" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#475569" text-anchor="middle">Legend</text>
+  <rect x="800" y="135" width="12" height="12" rx="2" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="818" y="145" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Confirm</text>
+  <rect x="800" y="153" width="12" height="12" rx="2" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="818" y="163" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Pivot</text>
+  <rect x="800" y="171" width="12" height="12" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="818" y="181" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Correlate</text>
+  <rect x="800" y="189" width="12" height="12" rx="2" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="818" y="199" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Preserve</text>
 </svg>

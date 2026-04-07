@@ -1,10 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Observability Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Observability</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#334155" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="440" fill="#f8fafc" />
+
+  <!-- Title -->
+  <text x="480" y="38" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#0f172a">Observability Signal Correlation</text>
+  <text x="480" y="58" text-anchor="middle" font-family="Arial" font-size="13" fill="#475569">Metrics detect impact, traces isolate root cause, logs confirm details -- connected by trace IDs</text>
+
+  <!-- Metrics Box -->
+  <rect x="40" y="100" width="260" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" />
+  <text x="170" y="132" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#0f172a">METRICS</text>
+  <text x="170" y="155" text-anchor="middle" font-family="Arial" font-size="12" fill="#475569">Impact Detection</text>
+
+  <text x="60" y="185" font-family="Arial" font-size="12" fill="#334155">- SLO burn rate</text>
+  <text x="60" y="210" font-family="Arial" font-size="12" fill="#334155">- p50/p95/p99 latency</text>
+  <text x="60" y="235" font-family="Arial" font-size="12" fill="#334155">- Error rate by service</text>
+  <text x="60" y="260" font-family="Arial" font-size="12" fill="#334155">- Saturation (CPU, memory)</text>
+
+  <!-- Arrow 1: Metrics to Traces -->
+  <line x1="300" y1="200" x2="355" y2="200" stroke="#334155" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="328" y="190" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#475569">trace_id</text>
+
+  <!-- Traces Box -->
+  <rect x="360" y="100" width="260" height="200" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" />
+  <text x="490" y="132" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#0f172a">TRACES</text>
+  <text x="490" y="155" text-anchor="middle" font-family="Arial" font-size="12" fill="#475569">Root Cause Isolation</text>
+
+  <text x="380" y="185" font-family="Arial" font-size="12" fill="#334155">- Span hierarchy</text>
+  <text x="380" y="210" font-family="Arial" font-size="12" fill="#334155">- Per-hop latency</text>
+  <text x="380" y="235" font-family="Arial" font-size="12" fill="#334155">- Dependency graph</text>
+  <text x="380" y="260" font-family="Arial" font-size="12" fill="#334155">- Error propagation path</text>
+
+  <!-- Arrow 2: Traces to Logs -->
+  <line x1="620" y1="200" x2="675" y2="200" stroke="#334155" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="648" y="190" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#475569">trace_id</text>
+
+  <!-- Logs Box -->
+  <rect x="680" y="100" width="260" height="200" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+  <text x="810" y="132" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#0f172a">LOGS</text>
+  <text x="810" y="155" text-anchor="middle" font-family="Arial" font-size="12" fill="#475569">Detail Confirmation</text>
+
+  <text x="700" y="185" font-family="Arial" font-size="12" fill="#334155">- Stack traces</text>
+  <text x="700" y="210" font-family="Arial" font-size="12" fill="#334155">- Retry loop evidence</text>
+  <text x="700" y="235" font-family="Arial" font-size="12" fill="#334155">- Payload inspection</text>
+  <text x="700" y="260" font-family="Arial" font-size="12" fill="#334155">- Config state snapshot</text>
+
+  <!-- Bottom flow annotation -->
+  <text x="480" y="350" text-anchor="middle" font-family="Arial" font-size="13" fill="#475569">Workflow: Metrics flag anomaly -- Traces isolate the failing hop -- Logs confirm the exact error</text>
+
+  <!-- Bidirectional arrows at bottom -->
+  <path d="M 170 310 Q 490 340 810 310" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="6,4" />
+  <text x="480" y="380" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Shared correlation context: trace_id, service_name, deploy_version, region</text>
+
+  <!-- Legend -->
+  <rect x="40" y="395" width="12" height="12" rx="2" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" />
+  <text x="58" y="406" font-family="Arial" font-size="11" fill="#475569">Metrics = aggregated time-series</text>
+
+  <rect x="260" y="395" width="12" height="12" rx="2" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5" />
+  <text x="278" y="406" font-family="Arial" font-size="11" fill="#475569">Traces = request flow</text>
+
+  <rect x="440" y="395" width="12" height="12" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5" />
+  <text x="458" y="406" font-family="Arial" font-size="11" fill="#475569">Logs = discrete events</text>
+
+  <text x="620" y="406" font-family="Arial" font-size="11" fill="#475569">Arrows = trace_id pivot</text>
 </svg>

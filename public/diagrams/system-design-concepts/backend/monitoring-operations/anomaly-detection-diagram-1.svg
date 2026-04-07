@@ -1,10 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Anomaly Detection Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Anomaly Detection</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480">
+  <style>
+    .bg { fill: #f8fafc; }
+    .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; }
+    .title { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #0f172a; }
+    .box-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #0f172a; }
+    .box-desc { font-family: Arial, sans-serif; font-size: 11px; fill: #475569; }
+    .arrow { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    .label { font-family: Arial, sans-serif; font-size: 11px; fill: #475569; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="960" height="480"/>
+  <text class="title" x="40" y="40">Anomaly Detection Architecture: Signals to Baselines to Events</text>
+  <rect class="box" x="40" y="80" width="180" height="100" rx="8"/>
+  <text class="box-title" x="60" y="110">Time Series</text>
+  <text class="box-title" x="60" y="127">Signals</text>
+  <text class="box-desc" x="60" y="148">Request volume,</text>
+  <text class="box-desc" x="60" y="163">latency, error rates,</text>
+  <text class="box-desc" x="60" y="178">queue depth</text>
+  <path class="arrow" d="M 220 130 L 260 130"/>
+  <rect class="box" x="260" y="80" width="200" height="100" rx="8"/>
+  <text class="box-title" x="280" y="110">Baseline</text>
+  <text class="box-title" x="280" y="127">Computation</text>
+  <text class="box-desc" x="280" y="148">Rolling statistics,</text>
+  <text class="box-desc" x="280" y="163">seasonal models,</text>
+  <text class="box-desc" x="280" y="178">percentile ranges</text>
+  <path class="arrow" d="M 460 130 L 500 130"/>
+  <rect class="box" x="500" y="80" width="200" height="100" rx="8"/>
+  <text class="box-title" x="520" y="110">Deviation</text>
+  <text class="box-title" x="520" y="127">Analysis</text>
+  <text class="box-desc" x="520" y="148">Compare current</text>
+  <text class="box-desc" x="520" y="163">value to expected</text>
+  <text class="box-desc" x="520" y="178">range, compute score</text>
+  <path class="arrow" d="M 700 130 L 740 130"/>
+  <rect class="box" x="740" y="80" width="180" height="100" rx="8"/>
+  <text class="box-title" x="760" y="110">Anomaly</text>
+  <text class="box-title" x="760" y="127">Events</text>
+  <text class="box-desc" x="760" y="148">Scored deviations</text>
+  <text class="box-desc" x="760" y="163">with context and</text>
+  <text class="box-desc" x="760" y="178">severity labels</text>
+  <rect class="box" x="40" y="240" width="880" height="70" rx="8"/>
+  <text class="box-title" x="60" y="270">Seasonality Engine: Weekly patterns, time-of-day profiles, batch/cron cycle awareness</text>
+  <path class="arrow" d="M 360 180 L 360 240" stroke-dasharray="4,4"/>
+  <text class="label" x="365" y="215">Seasonal model</text>
+  <path class="arrow" d="M 360 310 L 360 360"/>
+  <rect class="box" x="40" y="360" width="280" height="80" rx="8"/>
+  <text class="box-title" x="60" y="390">Dashboard Enrichment</text>
+  <text class="box-desc" x="60" y="410">Anomaly context overlaid</text>
+  <text class="box-desc" x="60" y="425">on operational dashboards</text>
+  <rect class="box" x="340" y="360" width="280" height="80" rx="8"/>
+  <text class="box-title" x="360" y="390">Incident Gating</text>
+  <text class="box-desc" x="360" y="410">Impact confirmation</text>
+  <text class="box-desc" x="360" y="425">before paging decision</text>
+  <rect class="box" x="640" y="360" width="280" height="80" rx="8"/>
+  <text class="box-title" x="660" y="390">Investigation Queue</text>
+  <text class="box-desc" x="660" y="410">Anomalies stored for</text>
+  <text class="box-desc" x="660" y="425">post-incident correlation</text>
+  <path class="arrow" d="M 500 310 L 500 360"/>
+  <path class="arrow" d="M 640 310 L 640 360"/>
 </svg>

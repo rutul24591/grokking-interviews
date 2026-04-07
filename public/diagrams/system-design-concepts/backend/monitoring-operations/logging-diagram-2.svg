@@ -1,10 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Logging Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Logging</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <title>Telemetry Correlation</title>
+  <defs>
+    <style>
+      .title { fill: #0f172a; font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; }
+      .subtitle { fill: #475569; font-family: Arial, sans-serif; font-size: 13px; }
+      .label { fill: #0f172a; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .label-sub { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; }
+      .desc { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; }
+      .connector { stroke: #64748b; stroke-width: 2; stroke-dasharray: 6,4; }
+      .connector-label { fill: #0f172a; font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; }
+      .annotation { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; font-style: italic; }
+    </style>
+  </defs>
+  <rect fill="#f8fafc" width="960" height="460" />
+  <text x="480" y="36" text-anchor="middle" class="title">Telemetry Correlation via Trace IDs</text>
+  <text x="480" y="56" text-anchor="middle" class="subtitle">How logs, traces, and metrics link through shared identifiers</text>
+
+  <!-- Central Trace ID Hub -->
+  <circle cx="480" cy="200" r="60" fill="#f1f5f9" stroke="#64748b" stroke-width="2" />
+  <text x="480" y="195" text-anchor="middle" class="label">trace_id</text>
+  <text x="480" y="212" text-anchor="middle" class="label-sub">W3C Trace Context</text>
+  <text x="480" y="227" text-anchor="middle" class="label-sub">stable correlation key</text>
+
+  <!-- Logs Box (Left) -->
+  <rect x="60" y="140" width="220" height="140" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+  <text x="170" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#92400e">Logs</text>
+  <text x="170" y="198" text-anchor="middle" class="desc">Structured events with</text>
+  <text x="170" y="213" text-anchor="middle" class="desc">timestamp, level, service,</text>
+  <text x="170" y="228" text-anchor="middle" class="desc">error context, route</text>
+  <text x="170" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e">+ trace_id for pivot</text>
+
+  <!-- Traces Box (Right) -->
+  <rect x="680" y="140" width="220" height="140" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2" />
+  <text x="790" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af">Traces</text>
+  <text x="790" y="198" text-anchor="middle" class="desc">Distributed spans with</text>
+  <text x="790" y="213" text-anchor="middle" class="desc">service boundaries, latency,</text>
+  <text x="790" y="228" text-anchor="middle" class="desc">dependency graph</text>
+  <text x="790" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e40af">+ trace_id as primary key</text>
+
+  <!-- Metrics Box (Bottom) -->
+  <rect x="370" y="320" width="220" height="120" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2" />
+  <text x="480" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#166534">Metrics</text>
+  <text x="480" y="378" text-anchor="middle" class="desc">Aggregated time-series:</text>
+  <text x="480" y="393" text-anchor="middle" class="desc">error rate, latency, throughput</text>
+  <text x="480" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534">correlated via service + version</text>
+
+  <!-- Connector Lines: Logs to Trace ID -->
+  <line x1="280" y1="200" x2="418" y2="200" class="connector" />
+  <text x="340" y="190" text-anchor="middle" class="connector-label">pivot</text>
+
+  <!-- Connector Lines: Traces to Trace ID -->
+  <line x1="542" y1="200" x2="680" y2="200" class="connector" />
+  <text x="620" y="190" text-anchor="middle" class="connector-label">identify</text>
+
+  <!-- Connector Lines: Trace ID to Metrics -->
+  <line x1="480" y1="262" x2="480" y2="318" class="connector" />
+  <text x="495" y="295" text-anchor="start" class="connector-label">scope</text>
+
+  <!-- Bottom annotation -->
+  <text x="480" y="450" text-anchor="middle" class="annotation">Trace IDs link log events to distributed spans; service name and version correlate both to metric time-series for incident context</text>
 </svg>

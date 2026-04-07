@@ -1,10 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">SLI/SLO/SLA Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">SLI/SLO/SLA</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="450" viewBox="0 0 960 450">
+  <defs>
+    <marker id="arrowhead-sli" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="450" rx="8" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="480" y="38" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a" text-anchor="middle">SLI, SLO, SLA — Relationship Hierarchy</text>
+
+  <!-- SLI Box -->
+  <rect x="60" y="80" width="240" height="280" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="180" y="115" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">SLI</text>
+  <text x="180" y="135" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="middle">Service Level Indicator</text>
+
+  <rect x="80" y="155" width="200" height="50" rx="6" fill="#ffffff" stroke="#bfdbfe"/>
+  <text x="180" y="175" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">What does it measure?</text>
+  <text x="180" y="193" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">User-facing properties</text>
+
+  <rect x="80" y="215" width="200" height="50" rx="6" fill="#ffffff" stroke="#bfdbfe"/>
+  <text x="180" y="235" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">Examples</text>
+  <text x="180" y="253" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">Availability, latency, throughput</text>
+
+  <rect x="80" y="275" width="200" height="50" rx="6" fill="#ffffff" stroke="#bfdbfe"/>
+  <text x="180" y="295" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">Question answered</text>
+  <text x="180" y="313" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">&quot;How is the system performing?&quot;</text>
+
+  <rect x="80" y="335" width="200" height="15" rx="4" fill="#3b82f6" opacity="0.15"/>
+  <text x="180" y="347" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1e40af" text-anchor="middle">MEASUREMENT</text>
+
+  <!-- Arrow SLI → SLO -->
+  <line x1="300" y1="220" x2="350" y2="220" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-sli)"/>
+  <text x="325" y="210" font-family="Arial, sans-serif" font-size="10" fill="#3b82f6" text-anchor="middle">feeds</text>
+
+  <!-- SLO Box -->
+  <rect x="360" y="80" width="240" height="280" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="480" y="115" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#15803d" text-anchor="middle">SLO</text>
+  <text x="480" y="135" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="middle">Service Level Objective</text>
+
+  <rect x="380" y="155" width="200" height="50" rx="6" fill="#ffffff" stroke="#bbf7d0"/>
+  <text x="480" y="175" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">What does it set?</text>
+  <text x="480" y="193" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">Targets for SLIs over time</text>
+
+  <rect x="380" y="215" width="200" height="50" rx="6" fill="#ffffff" stroke="#bbf7d0"/>
+  <text x="480" y="235" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">Examples</text>
+  <text x="480" y="253" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">99.9% success rate in 30 days</text>
+
+  <rect x="380" y="275" width="200" height="50" rx="6" fill="#ffffff" stroke="#bbf7d0"/>
+  <text x="480" y="295" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">Question answered</text>
+  <text x="480" y="313" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">&quot;What reliability do we target?&quot;</text>
+
+  <rect x="380" y="335" width="200" height="15" rx="4" fill="#22c55e" opacity="0.15"/>
+  <text x="480" y="347" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#15803d" text-anchor="middle">TARGET SETTING</text>
+
+  <!-- Arrow SLO → SLA -->
+  <line x1="600" y1="220" x2="650" y2="220" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead-sli)"/>
+  <text x="625" y="210" font-family="Arial, sans-serif" font-size="10" fill="#22c55e" text-anchor="middle">informs</text>
+
+  <!-- SLA Box -->
+  <rect x="660" y="80" width="240" height="280" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="780" y="115" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#b91c1c" text-anchor="middle">SLA</text>
+  <text x="780" y="135" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="middle">Service Level Agreement</text>
+
+  <rect x="680" y="155" width="200" height="50" rx="6" fill="#ffffff" stroke="#fecaca"/>
+  <text x="780" y="175" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">What does it define?</text>
+  <text x="780" y="193" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">External commitments + penalties</text>
+
+  <rect x="680" y="215" width="200" height="50" rx="6" fill="#ffffff" stroke="#fecaca"/>
+  <text x="780" y="235" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">Examples</text>
+  <text x="780" y="253" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">99.5% uptime, credits if breached</text>
+
+  <rect x="680" y="275" width="200" height="50" rx="6" fill="#ffffff" stroke="#fecaca"/>
+  <text x="780" y="295" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">Question answered</text>
+  <text x="780" y="313" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">&quot;What do we promise customers?&quot;</text>
+
+  <rect x="680" y="335" width="200" height="15" rx="4" fill="#ef4444" opacity="0.15"/>
+  <text x="780" y="347" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#b91c1c" text-anchor="middle">CONTRACTUAL</text>
+
+  <!-- Key takeaway bar -->
+  <rect x="60" y="390" width="840" height="40" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="480" y="414" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">Key Insight: SLOs should be tighter than SLAs — the buffer protects against contractual breach</text>
 </svg>

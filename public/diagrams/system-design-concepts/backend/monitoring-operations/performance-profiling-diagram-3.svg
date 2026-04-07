@@ -1,10 +1,127 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Performance Profiling Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Performance Profiling</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440">
+  <defs>
+    <linearGradient id="step1Grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+    <linearGradient id="step2Grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="step3Grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="step4Grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="step5Grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <filter id="shadow3" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="440" fill="#f8fafc" rx="8"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="960" height="56" fill="#f1f5f9" rx="8"/>
+  <rect x="0" y="32" width="960" height="24" fill="#f1f5f9"/>
+  <text x="480" y="36" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a" text-anchor="middle">Profiling Incident Workflow</text>
+
+  <!-- Step 1: Detect User Impact -->
+  <rect x="30" y="100" width="160" height="100" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2" filter="url(#shadow3)"/>
+  <rect x="30" y="100" width="160" height="34" rx="10" fill="url(#step1Grad)"/>
+  <rect x="30" y="118" width="160" height="16" fill="url(#step1Grad)"/>
+  <text x="110" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">Step 1: Detect</text>
+  <text x="110" y="156" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">Confirm user impact:</text>
+  <text x="110" y="172" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">tail latency SLO burn,</text>
+  <text x="110" y="188" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">error-rate spike, or</text>
+  <text x="110" y="204" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">saturation alarm.</text>
+
+  <!-- Arrow 1 to 2 -->
+  <line x1="195" y1="150" x2="265" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Isolate Cohort -->
+  <rect x="270" y="100" width="160" height="100" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="2" filter="url(#shadow3)"/>
+  <rect x="270" y="100" width="160" height="34" rx="10" fill="url(#step2Grad)"/>
+  <rect x="270" y="118" width="160" height="16" fill="url(#step2Grad)"/>
+  <text x="350" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">Step 2: Isolate</text>
+  <text x="350" y="156" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">Segment affected cohort:</text>
+  <text x="350" y="172" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">which endpoint, tenant</text>
+  <text x="350" y="188" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">tier, region, or deploy</text>
+  <text x="350" y="204" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">version drives p99?</text>
+
+  <!-- Arrow 2 to 3 -->
+  <line x1="435" y1="150" x2="505" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Profile Safely -->
+  <rect x="510" y="100" width="160" height="100" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow3)"/>
+  <rect x="510" y="100" width="160" height="34" rx="10" fill="url(#step3Grad)"/>
+  <rect x="510" y="118" width="160" height="16" fill="url(#step3Grad)"/>
+  <text x="590" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">Step 3: Profile</text>
+  <text x="590" y="156" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">Start bounded, low-</text>
+  <text x="590" y="172" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">overhead sampling on</text>
+  <text x="590" y="188" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">the cohort instances.</text>
+  <text x="590" y="204" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">Avoid high-overhead modes.</text>
+
+  <!-- Arrow 3 to 4 -->
+  <line x1="675" y1="150" x2="745" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: Apply Fix -->
+  <rect x="750" y="100" width="180" height="100" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="2" filter="url(#shadow3)"/>
+  <rect x="750" y="100" width="180" height="34" rx="10" fill="url(#step4Grad)"/>
+  <rect x="750" y="118" width="180" height="16" fill="url(#step4Grad)"/>
+  <text x="840" y="122" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">Step 4: Apply Fix</text>
+  <text x="840" y="156" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">Form hypothesis from</text>
+  <text x="840" y="172" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">dominant frame. Apply</text>
+  <text x="840" y="188" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">mitigation: reduce work,</text>
+  <text x="840" y="204" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="middle">cache, batch, or rollback.</text>
+
+  <!-- Arrow down from step 4 -->
+  <line x1="840" y1="205" x2="840" y2="270" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5: Verify with Impact Signals -->
+  <rect x="640" y="275" width="400" height="90" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow3)"/>
+  <rect x="640" y="275" width="400" height="34" rx="10" fill="url(#step5Grad)"/>
+  <rect x="640" y="293" width="400" height="16" fill="url(#step5Grad)"/>
+  <text x="840" y="298" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Step 5: Verify with Impact Signals</text>
+  <text x="840" y="328" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="middle">Re-profile the same cohort and confirm the dominant frame shrank.</text>
+  <text x="840" y="346" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="middle">Validate that p95/p99 latency, SLO burn-rate, and saturation metrics improved.</text>
+
+  <!-- Feedback loop arrow -->
+  <path d="M 640 320 C 300 320, 110 320, 110 205" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="8,4" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="340" y="310" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#7c3aed">Feedback loop: if not resolved, iterate</text>
+
+  <!-- Safety guardrails box -->
+  <rect x="30" y="275" width="570" height="90" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" filter="url(#shadow3)"/>
+  <text x="315" y="298" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a" text-anchor="middle">Safety Guardrails During Profiling</text>
+  <line x1="50" y1="308" x2="580" y2="308" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="50" y="326" font-family="Arial, sans-serif" font-size="11" fill="#334155">Cap sampling rate and duration (e.g., 100 Hz, 5-minute windows). Never enable</text>
+  <text x="50" y="342" font-family="Arial, sans-serif" font-size="11" fill="#334155">high-overhead instrumentation during an active incident. Treat profile data as</text>
+  <text x="50" y="358" font-family="Arial, sans-serif" font-size="11" fill="#334155">sensitive -- it can reveal code paths, data shapes, and internal infrastructure topology.</text>
+
+  <!-- Bottom annotation -->
+  <text x="480" y="400" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#475569" text-anchor="middle">The workflow is iterative: profile, form hypothesis, apply fix, verify -- and repeat until user impact is eliminated.</text>
+
+  <!-- Timeline bar at bottom -->
+  <rect x="60" y="415" width="840" height="12" rx="6" fill="#f1f5f9"/>
+  <rect x="60" y="415" width="120" height="12" rx="6" fill="#ef4444"/>
+  <rect x="180" y="415" width="120" height="12" rx="6" fill="#f59e0b"/>
+  <rect x="300" y="415" width="120" height="12" rx="6" fill="#3b82f6"/>
+  <rect x="420" y="415" width="120" height="12" rx="6" fill="#10b981"/>
+  <rect x="540" y="415" width="160" height="12" rx="6" fill="#8b5cf6"/>
+  <text x="120" y="440" font-family="Arial, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Detect</text>
+  <text x="240" y="440" font-family="Arial, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Isolate</text>
+  <text x="360" y="440" font-family="Arial, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Profile</text>
+  <text x="480" y="440" font-family="Arial, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Fix</text>
+  <text x="620" y="440" font-family="Arial, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Verify and close incident</text>
 </svg>

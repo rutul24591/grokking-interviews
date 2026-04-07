@@ -1,10 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Log Aggregation Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Log Aggregation</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="boxGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="440" fill="url(#bgGrad)" rx="8"/>
+
+  <!-- Title -->
+  <text x="480" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1e293b" text-anchor="middle">Log Aggregation Pipeline Architecture</text>
+  <text x="480" y="62" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle">Emit &#8594; Collect &#8594; Buffer &#8594; Parse/Enrich &#8594; Store &#8594; Query</text>
+
+  <!-- Pipeline Stage 1: Emit -->
+  <rect x="40" y="130" width="130" height="180" rx="8" fill="url(#boxGrad)" stroke="#94a3b8" stroke-width="2"/>
+  <text x="105" y="160" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1e293b" text-anchor="middle">Emit</text>
+  <text x="105" y="185" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">Application</text>
+  <text x="105" y="203" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">Services</text>
+  <text x="105" y="235" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Structured JSON</text>
+  <text x="105" y="253" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Trace/Request IDs</text>
+  <text x="105" y="271" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Timestamps</text>
+  <text x="105" y="295" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">stdout, files, syslog</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="170" y1="220" x2="208" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Pipeline Stage 2: Collect -->
+  <rect x="210" y="130" width="130" height="180" rx="8" fill="url(#boxGrad)" stroke="#94a3b8" stroke-width="2"/>
+  <text x="275" y="160" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1e293b" text-anchor="middle">Collect</text>
+  <text x="275" y="185" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">Agent per node</text>
+  <text x="275" y="203" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">(Fluent Bit, Vector)</text>
+  <text x="275" y="235" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Tail log files</text>
+  <text x="275" y="253" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Backpressure</text>
+  <text x="275" y="271" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Batch shipping</text>
+  <text x="275" y="295" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Low overhead</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="340" y1="220" x2="378" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Pipeline Stage 3: Buffer -->
+  <rect x="380" y="130" width="130" height="180" rx="8" fill="url(#boxGrad)" stroke="#94a3b8" stroke-width="2"/>
+  <text x="445" y="160" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1e293b" text-anchor="middle">Buffer</text>
+  <text x="445" y="185" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">Kafka, Redis,</text>
+  <text x="445" y="203" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">Disk queue</text>
+  <text x="445" y="235" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Absorb spikes</text>
+  <text x="445" y="253" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Durability</text>
+  <text x="445" y="271" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Replay support</text>
+  <text x="445" y="295" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Memory + disk fallback</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="510" y1="220" x2="548" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Pipeline Stage 4: Parse/Enrich -->
+  <rect x="550" y="130" width="130" height="180" rx="8" fill="url(#boxGrad)" stroke="#94a3b8" stroke-width="2"/>
+  <text x="615" y="160" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1e293b" text-anchor="middle">Parse/Enrich</text>
+  <text x="615" y="185" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">Schema</text>
+  <text x="615" y="203" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">validation</text>
+  <text x="615" y="235" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Attach metadata</text>
+  <text x="615" y="253" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">(service, region)</text>
+  <text x="615" y="271" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Redact PII</text>
+  <text x="615" y="295" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Gro patterns, parsers</text>
+
+  <!-- Arrow 4->5 -->
+  <line x1="680" y1="220" x2="718" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Pipeline Stage 5: Store -->
+  <rect x="720" y="130" width="200" height="180" rx="8" fill="url(#boxGrad)" stroke="#94a3b8" stroke-width="2"/>
+  <text x="820" y="160" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1e293b" text-anchor="middle">Store (Tiered)</text>
+  <text x="820" y="185" font-family="Arial, sans-serif" font-size="12" fill="#475569" text-anchor="middle">Hot, Warm, Cold</text>
+  <text x="820" y="215" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Hot: Elasticsearch</text>
+  <text x="820" y="233" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">  (indexed, fast)</text>
+  <text x="820" y="257" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Warm: Compressed</text>
+  <text x="820" y="275" font-family="Arial, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">  (slower search)</text>
+  <text x="820" y="295" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Cold: S3, Glacier</text>
+
+  <!-- Arrow to Query -->
+  <path d="M 820 310 L 820 350 L 480 350 L 480 340" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Query Section -->
+  <rect x="380" y="350" width="200" height="70" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="480" y="378" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1e40af" text-anchor="middle">Query and Search</text>
+  <text x="480" y="398" font-family="Arial, sans-serif" font-size="11" fill="#1e40af" text-anchor="middle">Kibana, Grafana, custom UI</text>
+  <text x="480" y="414" font-family="Arial, sans-serif" font-size="11" fill="#1e40af" text-anchor="middle">Alerting integration</text>
+
+  <!-- Legend -->
+  <rect x="40" y="370" width="15" height="15" rx="3" fill="url(#boxGrad)" stroke="#94a3b8" stroke-width="1"/>
+  <text x="62" y="382" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Pipeline stage</text>
+  <line x1="40" y1="400" x2="55" y2="400" stroke="#475569" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="62" y="404" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Log flow</text>
 </svg>

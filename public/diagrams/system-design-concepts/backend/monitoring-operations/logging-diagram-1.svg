@@ -1,10 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Logging Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Logging</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <title>Structured Logging Schema</title>
+  <defs>
+    <style>
+      .title { fill: #0f172a; font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; }
+      .subtitle { fill: #475569; font-family: Arial, sans-serif; font-size: 13px; }
+      .section-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; }
+      .field { fill: #0f172a; font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; }
+      .desc { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; }
+      .line { stroke: #cbd5e1; stroke-width: 1; }
+      .annotation { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; font-style: italic; }
+    </style>
+  </defs>
+  <rect fill="#f8fafc" width="960" height="440" />
+  <text x="480" y="36" text-anchor="middle" class="title">Structured Logging Schema</text>
+  <text x="480" y="56" text-anchor="middle" class="subtitle">Required and optional fields for production-grade log events</text>
+
+  <!-- Required Fields Section -->
+  <rect x="40" y="80" width="420" height="340" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2" />
+  <text x="250" y="108" text-anchor="middle" class="section-title" fill="#1e40af">Required Fields</text>
+  <line x1="60" y1="118" x2="440" y2="118" class="line" />
+
+  <text x="60" y="145" class="field">timestamp</text>
+  <text x="60" y="162" class="desc">ISO 8601 with timezone; monotonic clock fallback</text>
+
+  <text x="60" y="190" class="field">level</text>
+  <text x="60" y="207" class="desc">DEBUG, INFO, WARN, ERROR, FATAL - consistent semantics</text>
+
+  <text x="60" y="235" class="field">service</text>
+  <text x="60" y="252" class="desc">Service name matching service registry</text>
+
+  <text x="60" y="280" class="field">trace_id</text>
+  <text x="60" y="297" class="desc">W3C Trace Context identifier for correlation</text>
+
+  <text x="60" y="325" class="field">environment</text>
+  <text x="60" y="342" class="desc">production, staging, dev - isolation boundary</text>
+
+  <text x="60" y="370" class="field">version</text>
+  <text x="60" y="387" class="desc">Build or deploy version for regression correlation</text>
+
+  <!-- Optional Fields Section -->
+  <rect x="500" y="80" width="420" height="340" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" />
+  <text x="710" y="108" text-anchor="middle" class="section-title" fill="#166534">Optional Fields</text>
+  <line x1="520" y1="118" x2="900" y2="118" class="line" />
+
+  <text x="520" y="145" class="field">route</text>
+  <text x="520" y="162" class="desc">Normalized HTTP route pattern</text>
+
+  <text x="520" y="190" class="field">dependency</text>
+  <text x="520" y="207" class="desc">Downstream service or external API called</text>
+
+  <text x="520" y="235" class="field">error</text>
+  <text x="520" y="252" class="desc">Error type, fingerprint, and cause summary</text>
+
+  <text x="520" y="280" class="field">tenant</text>
+  <text x="520" y="297" class="desc">Tenant or organization identifier</text>
+
+  <text x="520" y="325" class="field">region</text>
+  <text x="520" y="342" class="desc">Geographic or availability region</text>
+
+  <text x="520" y="370" class="field">user_agent</text>
+  <text x="520" y="387" class="desc">Client platform and version context</text>
+
+  <!-- Bottom annotation -->
+  <text x="480" y="425" text-anchor="middle" class="annotation">Required fields enable cross-service correlation; optional fields add domain context bounded by cardinality and privacy constraints</text>
 </svg>

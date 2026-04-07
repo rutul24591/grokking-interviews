@@ -1,10 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Capacity Planning Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Capacity Planning</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4b5563"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="480" fill="none"/>
+
+  <!-- Title -->
+  <text x="480" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#111827" class="title-text">Capacity Planning Loop</text>
+
+  <!-- Loop nodes positioned in a circular arrangement -->
+  <!-- Node 1: Forecast (top) -->
+  <rect x="410" y="55" width="140" height="52" rx="8" ry="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="480" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#111827">1. Forecast</text>
+  <text x="480" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#4b5563">Demand &amp; growth</text>
+
+  <!-- Node 2: Model (top-right) -->
+  <rect x="640" y="110" width="140" height="52" rx="8" ry="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="710" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#111827">2. Model</text>
+  <text x="710" y="151" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#4b5563">Constraints &amp; bottlenecks</text>
+
+  <!-- Node 3: Measure (right) -->
+  <rect x="760" y="210" width="140" height="52" rx="8" ry="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="830" y="233" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#111827">3. Measure</text>
+  <text x="830" y="251" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#4b5563">Saturation signals</text>
+
+  <!-- Node 4: Test (bottom-right) -->
+  <rect x="640" y="320" width="140" height="52" rx="8" ry="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="710" y="343" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#111827">4. Test</text>
+  <text x="710" y="361" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#4b5563">Load, stress, soak</text>
+
+  <!-- Node 5: Decide (bottom-left) -->
+  <rect x="180" y="320" width="140" height="52" rx="8" ry="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="250" y="343" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#111827">5. Decide</text>
+  <text x="250" y="361" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#4b5563">Scale, tune, or defer</text>
+
+  <!-- Node 6: Verify (left) -->
+  <rect x="60" y="210" width="140" height="52" rx="8" ry="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="130" y="233" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#111827">6. Verify</text>
+  <text x="130" y="251" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#4b5563">Production headroom</text>
+
+  <!-- Connecting arrows -->
+  <!-- Forecast to Model -->
+  <line x1="550" y1="81" x2="640" y2="136" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Model to Measure -->
+  <line x1="710" y1="162" x2="800" y2="210" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Measure to Test -->
+  <line x1="830" y1="262" x2="760" y2="320" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Test to Decide -->
+  <line x1="640" y1="346" x2="320" y2="346" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Decide to Verify -->
+  <line x1="180" y1="346" x2="200" y2="262" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Verify to Forecast (completing the loop) -->
+  <line x1="130" y1="210" x2="410" y2="107" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Center label -->
+  <rect x="340" y="195" width="280" height="80" rx="12" ry="12" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="480" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#111827">Continuous Feedback Loop</text>
+  <text x="480" y="242" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#4b5563">Repeat at regular cadence or after</text>
+  <text x="480" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#4b5563">every launch, incident, or traffic shift</text>
+
+  <!-- Key insight box -->
+  <rect x="60" y="405" width="840" height="60" rx="6" ry="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="480" y="428" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Key Insight:</text>
+  <text x="480" y="448" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#78350f">Capacity planning is iterative — a single forecast is a snapshot, not a guarantee.</text>
 </svg>

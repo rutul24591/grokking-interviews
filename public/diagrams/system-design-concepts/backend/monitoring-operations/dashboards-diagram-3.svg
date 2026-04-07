@@ -1,10 +1,119 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Dashboards Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Dashboards</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460">
+  <!-- Background -->
+  <rect width="960" height="460" fill="#ffffff"/>
+  <rect width="960" height="460" fill="#111827"/>
+
+  <!-- Title -->
+  <text x="480" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#111827">Dashboard Governance Lifecycle</text>
+  <text x="480" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#f9fafb">Dashboard Governance Lifecycle</text>
+
+  <!-- Governance cycle arrows forming a loop -->
+  <!-- Ownership -->
+  <rect x="40" y="70" width="210" height="140" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <rect x="40" y="70" width="210" height="140" rx="8" fill="#14532d" stroke="#16a34a" stroke-width="2"/>
+  
+  <circle cx="145" cy="105" r="18" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5"/>
+  <circle cx="145" cy="105" r="18" fill="#14532d" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="145" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#166534">1</text>
+  <text x="145" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#86efac">1</text>
+  
+  <text x="145" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#166534">Ownership</text>
+  <text x="145" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#86efac">Ownership</text>
+  <text x="145" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">Each dashboard has a</text>
+  <text x="145" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">named owner and team</text>
+  <text x="145" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">assignment in version</text>
+  <text x="145" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">control</text>
+  <text x="145" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">Each dashboard has a</text>
+  <text x="145" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">named owner and team</text>
+  <text x="145" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">assignment in version</text>
+  <text x="145" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">control</text>
+
+  <!-- Arrow 1->2 -->
+  <path d="M 260 140 L 310 140" stroke="#6b7280" stroke-width="2" fill="none"/>
+  <polygon points="315,140 305,133 305,147" fill="#6b7280"/>
+
+  <!-- Review Cadence -->
+  <rect x="320" y="70" width="210" height="140" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <rect x="320" y="70" width="210" height="140" rx="8" fill="#1e3a5f" stroke="#2563eb" stroke-width="2"/>
+  
+  <circle cx="425" cy="105" r="18" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.5"/>
+  <circle cx="425" cy="105" r="18" fill="#1e3a5f" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="425" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">2</text>
+  <text x="425" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#93c5fd">2</text>
+  
+  <text x="425" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1e40af">Review Cadence</text>
+  <text x="425" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#93c5fd">Review Cadence</text>
+  <text x="425" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">Quarterly review after</text>
+  <text x="425" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">major incidents. Panels</text>
+  <text x="425" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">validated against current</text>
+  <text x="425" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">service architecture</text>
+  <text x="425" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">Quarterly review after</text>
+  <text x="425" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">major incidents. Panels</text>
+  <text x="425" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">validated against current</text>
+  <text x="425" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">service architecture</text>
+
+  <!-- Arrow 2->3 -->
+  <path d="M 540 140 L 590 140" stroke="#6b7280" stroke-width="2" fill="none"/>
+  <polygon points="595,140 585,133 585,147" fill="#6b7280"/>
+
+  <!-- Deprecation -->
+  <rect x="600" y="70" width="210" height="140" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <rect x="600" y="70" width="210" height="140" rx="8" fill="#451a03" stroke="#d97706" stroke-width="2"/>
+  
+  <circle cx="705" cy="105" r="18" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+  <circle cx="705" cy="105" r="18" fill="#451a03" stroke="#d97706" stroke-width="1.5"/>
+  <text x="705" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#92400e">3</text>
+  <text x="705" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fcd34d">3</text>
+  
+  <text x="705" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#92400e">Deprecation</text>
+  <text x="705" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#fcd34d">Deprecation</text>
+  <text x="705" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">Unused dashboards archived</text>
+  <text x="705" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">after 90 days. Panels that</text>
+  <text x="705" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">no longer map to decisions</text>
+  <text x="705" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">are removed proactively</text>
+  <text x="705" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">Unused dashboards archived</text>
+  <text x="705" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">after 90 days. Panels that</text>
+  <text x="705" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">no longer map to decisions</text>
+  <text x="705" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">are removed proactively</text>
+
+  <!-- Arrow 3->4 (down) -->
+  <path d="M 705 220 L 705 260" stroke="#6b7280" stroke-width="2" fill="none"/>
+  <polygon points="705,265 698,255 712,255" fill="#6b7280"/>
+
+  <!-- Cost-Aware Incident Dashboards -->
+  <rect x="320" y="270" width="380" height="140" rx="8" fill="#fdf2f8" stroke="#db2777" stroke-width="2"/>
+  <rect x="320" y="270" width="380" height="140" rx="8" fill="#500724" stroke="#db2777" stroke-width="2"/>
+  
+  <circle cx="510" cy="305" r="18" fill="#fbcfe8" stroke="#db2777" stroke-width="1.5"/>
+  <circle cx="510" cy="305" r="18" fill="#500724" stroke="#db2777" stroke-width="1.5"/>
+  <text x="510" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#9d174d">4</text>
+  <text x="510" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f9a8d4">4</text>
+  
+  <text x="510" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#9d174d">Cost-Aware Incident Dashboards</text>
+  <text x="510" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#f9a8d4">Cost-Aware Incident Dashboards</text>
+  <text x="510" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">Minimal fast-query set for incidents. Pre-computed</text>
+  <text x="510" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">aggregations. Stable semantics under telemetry</text>
+  <text x="510" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#374151">spikes. Query cost budget enforced per dashboard.</text>
+  <text x="510" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">Minimal fast-query set for incidents. Pre-computed</text>
+  <text x="510" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">aggregations. Stable semantics under telemetry</text>
+  <text x="510" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#d1d5db">spikes. Query cost budget enforced per dashboard.</text>
+
+  <!-- Arrow 4->1 (loop back) -->
+  <path d="M 310 340 L 145 340 L 145 220" stroke="#6b7280" stroke-width="2" fill="none"/>
+  <polygon points="145,215 138,225 152,225" fill="#6b7280"/>
+
+  <!-- Governance principles box at bottom left -->
+  <rect x="40" y="270" width="210" height="140" rx="8" fill="#f5f5f4" stroke="#78716c" stroke-width="2"/>
+  <rect x="40" y="270" width="210" height="140" rx="8" fill="#292524" stroke="#78716c" stroke-width="2"/>
+  
+  <text x="145" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#44403c">Governance Principles</text>
+  <text x="145" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d6d3d1">Governance Principles</text>
+  <text x="55" y="328" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#57534e">- Dashboards as code (versioned)</text>
+  <text x="55" y="328" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#a8a29e">- Dashboards as code (versioned)</text>
+  <text x="55" y="348" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#57534e">- Panel intent documented</text>
+  <text x="55" y="348" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#a8a29e">- Panel intent documented</text>
+  <text x="55" y="368" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#57534e">- Access control enforced</text>
+  <text x="55" y="368" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#a8a29e">- Access control enforced</text>
+  <text x="55" y="388" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#57534e">- Query budgets tracked</text>
+  <text x="55" y="388" font-family="Arial, sans-serif" font-size="11" font-weight="normal" fill="#a8a29e">- Query budgets tracked</text>
 </svg>

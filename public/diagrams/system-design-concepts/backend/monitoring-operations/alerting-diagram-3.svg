@@ -1,10 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Alerting Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Alerting</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480">
+  <style>
+    .bg { fill: #f8fafc; }
+    .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; }
+    .title { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #0f172a; }
+    .box-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #0f172a; }
+    .box-desc { font-family: Arial, sans-serif; font-size: 11px; fill: #475569; }
+    .arrow { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    .label { font-family: Arial, sans-serif; font-size: 11px; fill: #475569; }
+    .dashed { stroke-dasharray: 5,5; }
+    .highlight { fill: #fee2e2; stroke: #f87171; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="960" height="480"/>
+  <text class="title" x="40" y="40">Alert Routing and Governance Model</text>
+  <rect class="box" x="60" y="70" width="200" height="80" rx="8"/>
+  <text class="box-title" x="80" y="100">Service A</text>
+  <text class="box-desc" x="80" y="118">Checkout alerts</text>
+  <rect class="box" x="60" y="180" width="200" height="80" rx="8"/>
+  <text class="box-title" x="80" y="210">Service B</text>
+  <text class="box-desc" x="80" y="228">Search alerts</text>
+  <rect class="box" x="60" y="290" width="200" height="80" rx="8"/>
+  <text class="box-title" x="80" y="320">Service C</text>
+  <text class="box-desc" x="80" y="338">Auth alerts</text>
+  <path class="arrow" d="M 260 110 L 320 110"/>
+  <path class="arrow" d="M 260 220 L 320 220"/>
+  <path class="arrow" d="M 260 330 L 320 330"/>
+  <rect class="highlight" x="320" y="80" width="220" height="280" rx="8"/>
+  <text class="box-title" x="340" y="110">Grouping and</text>
+  <text class="box-title" x="340" y="127">Deduplication</text>
+  <text class="box-desc" x="340" y="148">Merge by incident,</text>
+  <text class="box-desc" x="340" y="163">suppress duplicates,</text>
+  <text class="box-desc" x="340" y="178">apply maintenance</text>
+  <text class="box-desc" x="340" y="193">windows</text>
+  <path class="arrow" d="M 540 220 L 600 220"/>
+  <rect class="box" x="600" y="80" width="160" height="280" rx="8"/>
+  <text class="box-title" x="620" y="110">Routing Engine</text>
+  <text class="box-desc" x="620" y="135">Severity mapping</text>
+  <text class="box-desc" x="620" y="155">Team ownership</text>
+  <text class="box-desc" x="620" y="175">Escalation policy</text>
+  <text class="box-desc" x="620" y="195">On-call rotation</text>
+  <text class="box-desc" x="620" y="215">Time-based routing</text>
+  <path class="arrow" d="M 760 140 L 820 140"/>
+  <path class="arrow" d="M 760 220 L 820 220"/>
+  <path class="arrow" d="M 760 300 L 820 300"/>
+  <rect class="box" x="820" y="80" width="100" height="80" rx="8"/>
+  <text class="box-title" x="835" y="110">PagerDuty</text>
+  <text class="box-desc" x="835" y="128">(Page)</text>
+  <rect class="box" x="820" y="180" width="100" height="80" rx="8"/>
+  <text class="box-title" x="835" y="210">Slack</text>
+  <text class="box-desc" x="835" y="228">(Notify)</text>
+  <rect class="box" x="820" y="280" width="100" height="80" rx="8"/>
+  <text class="box-title" x="835" y="310">Jira</text>
+  <text class="box-desc" x="835" y="328">(Ticket)</text>
+  <rect class="box" x="320" y="390" width="520" height="60" rx="8"/>
+  <text class="box-title" x="340" y="415">Governance: Alerts-as-Code Review, Quarterly Pruning, Runbook Required</text>
+  <text class="box-desc" x="340" y="433">Every page must have owner, escalation path, and runbook link</text>
+  <path class="arrow dashed" d="M 580 360 L 580 390"/>
 </svg>

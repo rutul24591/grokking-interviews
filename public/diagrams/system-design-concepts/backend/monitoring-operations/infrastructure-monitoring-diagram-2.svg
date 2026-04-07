@@ -1,10 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Infrastructure Monitoring Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Infrastructure Monitoring</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f4f6f8"/>
+    </linearGradient>
+    <style>
+      .title { font: bold 20px Arial, sans-serif; fill: #1a1a2e; }
+      .mode-label { font: bold 14px Arial, sans-serif; fill: #1a1a2e; }
+      .mode-sub { font: 12px Arial, sans-serif; fill: #555555; }
+      .symptom-label { font: bold 13px Arial, sans-serif; fill: #c0392b; }
+      .symptom-sub { font: 11px Arial, sans-serif; fill: #777777; }
+      .arrow-fail { fill: none; stroke: #e74c3c; stroke-width: 2; marker-end: url(#arrow-red); }
+      .box { rx: 8; ry: 8; }
+    </style>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="460" fill="url(#bg)" rx="12"/>
+
+  <!-- Title -->
+  <text x="480" y="36" class="title" text-anchor="middle">Infrastructure Failure Modes and Application Symptoms</text>
+
+  <!-- Failure Mode 1: Memory Pressure / OOM -->
+  <rect x="30" y="64" width="440" height="96" fill="#fdedec" rx="10" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="250" y="92" class="mode-label" text-anchor="middle">Memory Pressure / OOM Kills</text>
+  <text x="250" y="112" class="mode-sub" text-anchor="middle">Working set exceeds limits → kernel OOM killer terminates pods</text>
+  <text x="250" y="134" class="mode-sub" text-anchor="middle">Signals: page faults ↑, memory utilization ↑, OOM kill events</text>
+  <line x1="470" y1="112" x2="600" y2="112" class="arrow-fail"/>
+  <rect x="610" y="72" width="320" height="80" fill="#ffffff" rx="8" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="770" y="100" class="symptom-label" text-anchor="middle">Pod Restarts + Request Drops</text>
+  <text x="770" y="120" class="symptom-sub" text-anchor="middle">Connections reset mid-flight, client retries</text>
+  <text x="770" y="138" class="symptom-sub" text-anchor="middle">amplify load on remaining pods</text>
+
+  <!-- Failure Mode 2: Disk I/O Saturation -->
+  <rect x="30" y="180" width="440" height="96" fill="#fef9e7" rx="10" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="250" y="208" class="mode-label" text-anchor="middle">Disk I/O Saturation</text>
+  <text x="250" y="228" class="mode-sub" text-anchor="middle">Logging, compaction, or backups consume IOPS</text>
+  <text x="250" y="250" class="mode-sub" text-anchor="middle">Signals: disk latency ↑, queue depth ↑, iowait ↑</text>
+  <line x1="470" y1="228" x2="600" y2="228" class="arrow-fail"/>
+  <rect x="610" y="188" width="320" height="80" fill="#ffffff" rx="8" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="770" y="216" class="symptom-label" text-anchor="middle">Database / Cache Timeouts</text>
+  <text x="770" y="236" class="symptom-sub" text-anchor="middle">Read/write latency spikes, connection pool</text>
+  <text x="770" y="254" class="symptom-sub" text-anchor="middle">exhaustion, cascading service timeouts</text>
+
+  <!-- Failure Mode 3: Packet Loss -->
+  <rect x="30" y="296" width="440" height="96" fill="#eaf2fb" rx="10" stroke="#3498db" stroke-width="1.5"/>
+  <text x="250" y="324" class="mode-label" text-anchor="middle">Network Packet Loss</text>
+  <text x="250" y="344" class="mode-sub" text-anchor="middle">NIC saturation, MTU mismatch, or switch congestion</text>
+  <text x="250" y="366" class="mode-sub" text-anchor="middle">Signals: retransmits ↑, drop rate ↑, DNS resolution latency</text>
+  <line x1="470" y1="344" x2="600" y2="344" class="arrow-fail"/>
+  <rect x="610" y="304" width="320" height="80" fill="#ffffff" rx="8" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="770" y="332" class="symptom-label" text-anchor="middle">Intermittent Downstream Failures</text>
+  <text x="770" y="352" class="symptom-sub" text-anchor="middle">Random 504/502 errors, asymmetric impact</text>
+  <text x="770" y="370" class="symptom-sub" text-anchor="middle">("only some users are slow")</text>
+
+  <!-- Failure Mode 4: Scheduling Failures -->
+  <rect x="30" y="412" width="440" height="44" fill="#e8f8f5" rx="10" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="250" y="440" class="mode-label" text-anchor="middle">Scheduling Failures</text>
+  <text x="540" y="440" class="mode-sub" font-size="11" fill="#555555">Pending pods, insufficient resources</text>
+  <line x1="470" y1="434" x2="600" y2="434" class="arrow-fail"/>
+  <rect x="610" y="412" width="320" height="44" fill="#ffffff" rx="8" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="770" y="440" class="symptom-label" text-anchor="middle">App Timeouts During Scale-Out</text>
 </svg>

@@ -1,10 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Error Budgets Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Error Budgets</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="100%" height="100%">
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #0f172a; }
+    .label { font-family: Arial, sans-serif; font-size: 15px; font-weight: bold; }
+    .sublabel { font-family: Arial, sans-serif; font-size: 13px; font-weight: normal; }
+    .value { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; }
+    .divider { stroke: #e0e0e0; stroke-width: 1; }
+    .box-good { fill: #4caf50; }
+    .box-budget { fill: #ff9800; }
+    .arrow { stroke: #666; stroke-width: 2; fill: none; }
+  </style>
+
+  <!-- Background -->
+  <rect fill="#f8fafc" width="960" height="440" rx="8"/>
+
+  <!-- Title -->
+  <text class="title" x="480" y="40" text-anchor="middle">Error Budget: 30-Day Window</text>
+
+  <!-- Main bar: 99.9% SLO target -->
+  <rect x="80" y="80" width="800" height="80" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+  <text class="label" x="480" y="115" text-anchor="middle" fill="#2e7d32">
+    SLO Target: 99.9% Availability (Successful Requests)
+  </text>
+  <text class="value" x="480" y="145" text-anchor="middle" fill="#2e7d32">
+    ~43 minutes allowed downtime over 30 days
+  </text>
+
+  <!-- Breakdown section -->
+  <text class="label" x="80" y="200" fill="#0f172a">Budget Breakdown</text>
+  <line class="divider" x1="80" y1="210" x2="880" y2="210"/>
+
+  <!-- Successful requests bar -->
+  <rect x="80" y="240" width="719" height="60" rx="4" class="box-good"/>
+  <text x="440" y="270" text-anchor="middle" class="value" fill="#ffffff">
+    99.9% -- Successful Requests
+  </text>
+  <text class="sublabel" x="440" y="292" text-anchor="middle" fill="#e8f5e9">
+    ~43,157 minutes of acceptable operation
+  </text>
+
+  <!-- Error budget bar -->
+  <rect x="800" y="240" width="80" height="60" rx="4" class="box-budget"/>
+  <text x="840" y="265" text-anchor="middle" class="value" fill="#0f172a">
+    0.1%
+  </text>
+  <text class="sublabel" x="840" y="287" text-anchor="middle" fill="#3e2723">
+    Budget
+  </text>
+
+  <!-- Time equivalence box -->
+  <rect x="80" y="330" width="800" height="80" rx="6" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+  <text class="label" x="480" y="362" text-anchor="middle" fill="#e65100">
+    Error Budget = 0.1% of 30 days &amp;#x2248; 43 minutes
+  </text>
+  <text class="sublabel" x="480" y="390" text-anchor="middle" fill="#bf360c">
+    This is the total allowable &quot;bad&quot; time -- not a target to hit, but a ceiling to stay under
+  </text>
+
+  <!-- Arrow annotation -->
+  <line class="arrow" x1="800" y1="270" x2="800" y2="360" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
 </svg>

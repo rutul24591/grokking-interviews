@@ -1,10 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Observability Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Observability</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="460" fill="#f8fafc" />
+
+  <!-- Title -->
+  <text x="480" y="36" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#0f172a">Incident Workflow Using Observability</text>
+  <text x="480" y="56" text-anchor="middle" font-family="Arial" font-size="13" fill="#475569">From SLO burn to mitigation: a deterministic path through correlated signals</text>
+
+  <!-- Step 1: SLO Burn -->
+  <rect x="40" y="90" width="170" height="100" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2" />
+  <text x="125" y="122" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#0f172a">1. SLO Burn</text>
+  <text x="125" y="145" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Error budget consumed</text>
+  <text x="125" y="162" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Rate exceeds threshold</text>
+  <text x="125" y="179" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Alert fires</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="210" y1="140" x2="255" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step 2: Trace Analysis -->
+  <rect x="260" y="90" width="170" height="100" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" />
+  <text x="345" y="122" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#0f172a">2. Trace Analysis</text>
+  <text x="345" y="145" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Sample slow/failing reqs</text>
+  <text x="345" y="162" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Find dominant span</text>
+  <text x="345" y="179" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Identify bottleneck hop</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="430" y1="140" x2="475" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step 3: Log Correlation -->
+  <rect x="480" y="90" width="170" height="100" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+  <text x="565" y="122" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#0f172a">3. Log Correlation</text>
+  <text x="565" y="145" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Filter by trace_id</text>
+  <text x="565" y="162" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Confirm error details</text>
+  <text x="565" y="179" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Find retry loops</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="650" y1="140" x2="695" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step 4: Metrics Verification -->
+  <rect x="700" y="90" width="220" height="100" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" />
+  <text x="810" y="122" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#0f172a">4. Metrics Verification</text>
+  <text x="810" y="145" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Scope by region, version, tier</text>
+  <text x="810" y="162" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Confirm blast radius</text>
+  <text x="810" y="179" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Baseline for recovery check</text>
+
+  <!-- Vertical arrow down to Mitigation -->
+  <line x1="810" y1="190" x2="810" y2="250" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step 5: Mitigation -->
+  <rect x="640" y="260" width="340" height="100" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2" />
+  <text x="810" y="292" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#0f172a">5. Mitigation</text>
+  <text x="810" y="315" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Rollback, degrade optional work, shed load, reroute traffic</text>
+  <text x="810" y="335" text-anchor="middle" font-family="Arial" font-size="11" fill="#334155">Verify recovery on same SLO/latency panels used for detection</text>
+
+  <!-- Feedback loop arrow -->
+  <path d="M 640 310 Q 300 310 125 200" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#arrow)" />
+  <text x="370" y="300" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#475569">Feedback: post-incident review improves instrumentation</text>
+
+  <!-- Key principle annotation -->
+  <rect x="40" y="370" width="880" height="70" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+  <text x="480" y="398" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#0f172a">Key Principle: Verify on the Same Signal That Detected</text>
+  <text x="480" y="420" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">Recovery must be confirmed using the same SLO burn or latency panel that triggered the alert. Internal-only metrics can mask partial recovery.</text>
 </svg>

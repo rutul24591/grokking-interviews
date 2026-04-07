@@ -1,10 +1,133 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Monitoring Tools Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Monitoring Tools</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460">
+  <defs>
+    <linearGradient id="headerGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="cardBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="460" fill="#ffffff" rx="8"/>
+
+  <!-- Header -->
+  <rect width="960" height="48" fill="url(#headerGrad)" rx="8"/>
+  <rect y="24" width="960" height="24" fill="url(#headerGrad)"/>
+  <text x="480" y="32" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold" font-size="18">Monitoring Governance Model</text>
+
+  <!-- Governance layers as stacked horizontal bands -->
+
+  <!-- Layer 1: Paved Paths -->
+  <rect x="30" y="68" width="900" height="80" rx="8" fill="url(#cardBg)" stroke="#86efac" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="30" y="68" width="8" height="80" rx="4" fill="#22c55e"/>
+  <text x="62" y="96" fill="#166534" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Paved Paths</text>
+  <text x="62" y="118" fill="#475569" font-family="Arial, sans-serif" font-size="12">Default monitoring stack pre-configured for all teams</text>
+  <text x="62" y="136" fill="#475569" font-family="Arial, sans-serif" font-size="12">Auto-provisioned collectors, dashboards, alerting templates</text>
+
+  <rect x="420" y="80" width="140" height="56" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="490" y="100" text-anchor="middle" fill="#166534" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Default Stack</text>
+  <text x="490" y="118" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Metrics + Logs + Traces</text>
+
+  <text x="580" y="112" text-anchor="middle" fill="#22c55e" font-family="Arial, sans-serif" font-size="18">&#8594;</text>
+
+  <rect x="610" y="80" width="140" height="56" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="680" y="100" text-anchor="middle" fill="#166534" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Auto-Config</text>
+  <text x="680" y="118" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Collectors + Templates</text>
+
+  <text x="770" y="112" text-anchor="middle" fill="#22c55e" font-family="Arial, sans-serif" font-size="18">&#8594;</text>
+
+  <rect x="800" y="80" width="110" height="56" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="855" y="100" text-anchor="middle" fill="#166534" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Day-1 Ready</text>
+  <text x="855" y="118" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Zero setup</text>
+
+  <!-- Layer 2: Shared Standards -->
+  <rect x="30" y="164" width="900" height="80" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="30" y="164" width="8" height="80" rx="4" fill="#3b82f6"/>
+  <text x="62" y="192" fill="#1e40af" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Shared Standards</text>
+  <text x="62" y="214" fill="#475569" font-family="Arial, sans-serif" font-size="12">Naming conventions, required attributes, correlation IDs</text>
+  <text x="62" y="232" fill="#475569" font-family="Arial, sans-serif" font-size="12">OpenTelemetry instrumentation, consistent context propagation</text>
+
+  <rect x="420" y="176" width="110" height="56" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="475" y="196" text-anchor="middle" fill="#1e40af" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Naming</text>
+  <text x="475" y="214" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Conventions</text>
+
+  <text x="550" y="208" text-anchor="middle" fill="#3b82f6" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="570" y="176" width="110" height="56" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="625" y="196" text-anchor="middle" fill="#1e40af" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Required</text>
+  <text x="625" y="214" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Attributes</text>
+
+  <text x="700" y="208" text-anchor="middle" fill="#3b82f6" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="720" y="176" width="110" height="56" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="775" y="196" text-anchor="middle" fill="#1e40af" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Correlation</text>
+  <text x="775" y="214" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Identifiers</text>
+
+  <text x="850" y="208" text-anchor="middle" fill="#3b82f6" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="870" y="176" width="50" height="56" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="895" y="208" text-anchor="middle" fill="#1e40af" font-family="Arial, sans-serif" font-weight="bold" font-size="14">OTel</text>
+
+  <!-- Layer 3: Budgets -->
+  <rect x="30" y="260" width="900" height="80" rx="8" fill="#fefce8" stroke="#fde047" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="30" y="260" width="8" height="80" rx="4" fill="#eab308"/>
+  <text x="62" y="288" fill="#854d0e" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Budgets and Guardrails</text>
+  <text x="62" y="310" fill="#475569" font-family="Arial, sans-serif" font-size="12">Cardinality limits, retention tiers, per-team quotas, sampling policies</text>
+  <text x="62" y="328" fill="#475569" font-family="Arial, sans-serif" font-size="12">Cost attribution, anomaly detection on ingestion volume, automated alerts</text>
+
+  <rect x="420" y="272" width="100" height="56" rx="6" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="470" y="292" text-anchor="middle" fill="#854d0e" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Cardinality</text>
+  <text x="470" y="310" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Limits</text>
+
+  <text x="540" y="304" text-anchor="middle" fill="#eab308" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="560" y="272" width="100" height="56" rx="6" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="610" y="292" text-anchor="middle" fill="#854d0e" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Retention</text>
+  <text x="610" y="310" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Tiers</text>
+
+  <text x="680" y="304" text-anchor="middle" fill="#eab308" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="700" y="272" width="100" height="56" rx="6" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="750" y="292" text-anchor="middle" fill="#854d0e" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Per-Team</text>
+  <text x="750" y="310" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Quotas</text>
+
+  <text x="820" y="304" text-anchor="middle" fill="#eab308" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="840" y="272" width="80" height="56" rx="6" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+  <text x="880" y="292" text-anchor="middle" fill="#854d0e" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Sampling</text>
+  <text x="880" y="310" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Policies</text>
+
+  <!-- Layer 4: Review Process -->
+  <rect x="30" y="356" width="900" height="80" rx="8" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="30" y="356" width="8" height="80" rx="4" fill="#a855f7"/>
+  <text x="62" y="384" fill="#6b21a8" font-family="Arial, sans-serif" font-weight="bold" font-size="14">Review Processes</text>
+  <text x="62" y="406" fill="#475569" font-family="Arial, sans-serif" font-size="12">Telemetry review gates, post-incident feedback loops, cost reviews</text>
+  <text x="62" y="424" fill="#475569" font-family="Arial, sans-serif" font-size="12">Exception process for non-standard tools, migration planning</text>
+
+  <rect x="420" y="368" width="120" height="56" rx="6" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="480" y="388" text-anchor="middle" fill="#6b21a8" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Telemetry</text>
+  <text x="480" y="406" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Review Gates</text>
+
+  <text x="560" y="400" text-anchor="middle" fill="#a855f7" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="580" y="368" width="120" height="56" rx="6" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="640" y="388" text-anchor="middle" fill="#6b21a8" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Post-Incident</text>
+  <text x="640" y="406" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Feedback Loops</text>
+
+  <text x="720" y="400" text-anchor="middle" fill="#a855f7" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="740" y="368" width="120" height="56" rx="6" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="800" y="388" text-anchor="middle" fill="#6b21a8" font-family="Arial, sans-serif" font-weight="bold" font-size="11">Exception</text>
+  <text x="800" y="406" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">Process</text>
+
+  <text x="880" y="400" text-anchor="middle" fill="#a855f7" font-family="Arial, sans-serif" font-size="16">+</text>
+
+  <rect x="900" y="368" width="30" height="56" rx="6" fill="#ffffff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="915" y="400" text-anchor="middle" fill="#6b21a8" font-family="Arial, sans-serif" font-weight="bold" font-size="12">...</text>
 </svg>

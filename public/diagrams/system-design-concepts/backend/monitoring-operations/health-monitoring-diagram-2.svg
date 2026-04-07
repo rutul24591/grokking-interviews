@@ -1,10 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Health Monitoring Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Health Monitoring</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="460" fill="#f8fafc" />
+  <text x="480" y="40" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#0f172a">Health Check Failure Loop: Cascading Outage</text>
+
+  <!-- Step 1 -->
+  <rect x="40" y="80" width="200" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="40" y="80" width="200" height="36" rx="10" fill="#fef2f2" />
+  <text x="140" y="104" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#dc2626">Step 1: Strict Check</text>
+  <text x="140" y="140" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">Readiness check fails</text>
+  <text x="140" y="158" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">on a subset of</text>
+  <text x="140" y="176" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">instances</text>
+
+  <!-- Arrow 1 to 2 -->
+  <path d="M 250 140 C 310 140, 310 140, 370 140" fill="none" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowhead)" />
+
+  <!-- Step 2 -->
+  <rect x="370" y="80" width="200" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="370" y="80" width="200" height="36" rx="10" fill="#fef2f2" />
+  <text x="470" y="104" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#dc2626">Step 2: Eject Capacity</text>
+  <text x="470" y="140" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">Load balancer removes</text>
+  <text x="470" y="158" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">failing instances from</text>
+  <text x="470" y="176" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">the traffic pool</text>
+
+  <!-- Arrow 2 to 3 -->
+  <path d="M 580 140 C 640 140, 640 140, 700 140" fill="none" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowhead)" />
+
+  <!-- Step 3 -->
+  <rect x="700" y="80" width="220" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="700" y="80" width="220" height="36" rx="10" fill="#fef2f2" />
+  <text x="810" y="104" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#dc2626">Step 3: Traffic Concentrates</text>
+  <text x="810" y="140" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">Remaining instances absorb</text>
+  <text x="810" y="158" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">the redistributed load —</text>
+  <text x="810" y="176" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">CPU, memory, connections rise</text>
+
+  <!-- Arrow 3 to 4 (down) -->
+  <path d="M 810 210 L 810 300" fill="none" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowhead)" />
+
+  <!-- Step 4 -->
+  <rect x="700" y="300" width="220" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="700" y="300" width="220" height="36" rx="10" fill="#fef2f2" />
+  <text x="810" y="324" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#dc2626">Step 4: Saturation</text>
+  <text x="810" y="360" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">Thread pools exhaust,</text>
+  <text x="810" y="378" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">latency spikes, health</text>
+  <text x="810" y="396" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">checks timeout</text>
+
+  <!-- Arrow 4 to 5 -->
+  <path d="M 690 360 C 630 360, 630 360, 580 360" fill="none" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowhead)" />
+
+  <!-- Step 5 -->
+  <rect x="370" y="300" width="200" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="370" y="300" width="200" height="36" rx="10" fill="#fef2f2" />
+  <text x="470" y="324" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#dc2626">Step 5: More Fail Readiness</text>
+  <text x="470" y="360" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">Saturated instances now</text>
+  <text x="470" y="378" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">also fail readiness —</text>
+  <text x="470" y="396" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">more ejected</text>
+
+  <!-- Arrow 5 to 6 -->
+  <path d="M 360 360 C 300 360, 300 360, 250 360" fill="none" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowhead)" />
+
+  <!-- Step 6 -->
+  <rect x="40" y="300" width="200" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="40" y="300" width="200" height="36" rx="10" fill="#fef2f2" />
+  <text x="140" y="324" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#dc2626">Step 6: Cascading Outage</text>
+  <text x="140" y="360" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">Feedback loop repeats</text>
+  <text x="140" y="378" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">until insufficient capacity</text>
+  <text x="140" y="396" text-anchor="middle" font-family="Arial" font-size="12" fill="#334155">remains to serve traffic</text>
+
+  <!-- Loop-back arrow (6 to 1) -->
+  <path d="M 140 290 L 140 220" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#arrowhead)" />
+  <text x="100" y="260" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#dc2626">LOOP</text>
 </svg>

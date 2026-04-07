@@ -1,10 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Alerting Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Alerting</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480">
+  <style>
+    .bg { fill: #f8fafc; }
+    .bg-dark { fill: #0f172a; }
+    .title { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: #0f172a; }
+    .title-dark { fill: #f1f5f9; }
+    .box-bg { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; }
+    .box-bg-dark { fill: #1e293b; stroke: #475569; stroke-width: 2; }
+    .box-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #0f172a; }
+    .box-title-dark { fill: #f1f5f9; }
+    .box-desc { font-family: Arial, sans-serif; font-size: 11px; fill: #475569; }
+    .box-desc-dark { fill: #94a3b8; }
+    .arrow { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    .arrow-dark { stroke: #94a3b8; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
+    .label { font-family: Arial, sans-serif; font-size: 11px; fill: #475569; }
+    .label-dark { fill: #94a3b8; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="960" height="480"/>
+  <text class="title" x="40" y="40">Alerting Pipeline: Signals to Response</text>
+  <rect class="box-bg" x="60" y="80" width="160" height="100" rx="8"/>
+  <text class="box-title" x="80" y="110">Signal Emission</text>
+  <text class="box-desc" x="80" y="130">Metrics, logs, traces</text>
+  <text class="box-desc" x="80" y="145">from services</text>
+  <path class="arrow" d="M 220 130 L 270 130"/>
+  <rect class="box-bg" x="270" y="80" width="160" height="100" rx="8"/>
+  <text class="box-title" x="290" y="110">Rule Evaluation</text>
+  <text class="box-desc" x="290" y="130">Threshold checks,</text>
+  <text class="box-desc" x="290" y="145">burn-rate calc</text>
+  <path class="arrow" d="M 430 130 L 480 130"/>
+  <rect class="box-bg" x="480" y="80" width="160" height="100" rx="8"/>
+  <text class="box-title" x="500" y="110">Grouping and</text>
+  <text class="box-title" x="500" y="127">Deduplication</text>
+  <text class="box-desc" x="500" y="145">Merge related alerts</text>
+  <path class="arrow" d="M 640 130 L 690 130"/>
+  <rect class="box-bg" x="690" y="80" width="160" height="100" rx="8"/>
+  <text class="box-title" x="710" y="110">Routing and</text>
+  <text class="box-title" x="710" y="127">Escalation</text>
+  <text class="box-desc" x="710" y="145">On-call rotation,</text>
+  <text class="box-desc" x="710" y="160">severity-based routing</text>
+  <rect class="box-bg" x="270" y="240" width="420" height="80" rx="8"/>
+  <text class="box-title" x="290" y="270">Enrichment Layer</text>
+  <text class="box-desc" x="290" y="290">Runbook links, deploy markers, scope context, dependency health</text>
+  <path class="arrow" d="M 570 180 L 570 240"/>
+  <rect class="box-bg" x="270" y="360" width="420" height="80" rx="8"/>
+  <text class="box-title" x="290" y="390">Responder Action</text>
+  <text class="box-desc" x="290" y="410">Acknowledge, triage using runbook, mitigate, verify recovery</text>
+  <path class="arrow" d="M 480 320 L 480 360"/>
+  <text class="label" x="480" y="345">Page payload</text>
+  <path class="arrow" d="M 480 180 L 480 240" stroke-dasharray="4,4"/>
+  <text class="label" x="490" y="215" transform="rotate(90, 490, 215)">Context</text>
 </svg>
