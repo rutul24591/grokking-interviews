@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1050" role="img" aria-labelledby="title desc" width="1200" height="1050">
+  <title id="title">Bulkhead Pattern with Circuit Breaker Integration</title>
+  <desc id="desc">Defense in depth architecture showing how bulkhead isolation combined with circuit breaker state transitions provides comprehensive fault tolerance</desc>
+
+  <defs>
+    <marker id="arr" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#374151"/>
+    </marker>
+    <marker id="arr-green" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#16a34a"/>
+    </marker>
+    <marker id="arr-red" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#dc2626"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#ea580c"/>
+    </marker>
+    <filter id="shadow" x="-3%" y="-3%" width="106%" height="106%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="healthyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dcfce7"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </linearGradient>
+    <linearGradient id="degradedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+    <linearGradient id="exhaustedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fee2e2"/>
+      <stop offset="100%" stop-color="#fecaca"/>
+    </linearGradient>
+    <linearGradient id="closedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dcfce7"/>
+      <stop offset="100%" stop-color="#86efac"/>
+    </linearGradient>
+    <linearGradient id="openGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fee2e2"/>
+      <stop offset="100%" stop-color="#fca5a5"/>
+    </linearGradient>
+    <linearGradient id="halfOpenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fcd34d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- White background -->
+  <rect width="1200" height="1050" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Pattern + Circuit Breaker: Defense in Depth</text>
+  <text x="600" y="58" text-anchor="middle" font-size="14" font-weight="400" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Resource isolation with pool exhaustion detection and automatic circuit breaker state transitions</text>
+
+  <!-- ==================== SECTION 1: BULKHEAD ARCHITECTURE ==================== -->
+  <text x="600" y="100" text-anchor="middle" font-size="17" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Resource Isolation Architecture</text>
+
+  <!-- Client requests -->
+  <rect x="460" y="115" width="280" height="45" rx="22" fill="#111827" filter="url(#shadow)"/>
+  <text x="600" y="144" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Incoming Requests</text>
+
+  <!-- Gateway / Router -->
+  <line x1="600" y1="160" x2="600" y2="190" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="420" y="190" width="360" height="50" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="2" filter="url(#shadow)"/>
+  <text x="600" y="213" text-anchor="middle" font-size="14" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Router / Load Balancer</text>
+  <text x="600" y="231" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Routes requests to appropriate pool based on service/tenant</text>
+
+  <!-- Bulkhead pools -->
+  <line x1="480" y1="240" x2="200" y2="280" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="560" y1="240" x2="500" y2="280" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="640" y1="240" x2="700" y2="280" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="720" y1="240" x2="1000" y2="280" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Pool 1: Healthy -->
+  <rect x="60" y="280" width="280" height="210" rx="10" fill="url(#healthyGrad)" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="80" y="295" width="240" height="32" rx="6" fill="#16a34a"/>
+  <text x="200" y="317" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool A: User Service</text>
+  <!-- Connection slots -->
+  <rect x="80" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="102" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">5/20</text>
+  <rect x="130" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="152" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">3/20</text>
+  <rect x="180" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="202" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">8/20</text>
+  <rect x="230" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="252" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">2/20</text>
+  <text x="200" y="405" text-anchor="middle" font-size="11" font-weight="600" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Status: HEALTHY</text>
+  <text x="200" y="423" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Utilization: 30% (18/80 slots)</text>
+  <text x="200" y="441" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit: CLOSED (passing)</text>
+  <text x="200" y="465" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Avg latency: 45ms | Error rate: 0.1%</text>
+  <text x="200" y="480" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Queue depth: 2 | Timeouts: 0</text>
+
+  <!-- Pool 2: Degraded -->
+  <rect x="360" y="280" width="280" height="210" rx="10" fill="url(#degradedGrad)" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="380" y="295" width="240" height="32" rx="6" fill="#ca8a04"/>
+  <text x="500" y="317" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool B: Payment Service</text>
+  <rect x="380" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="402" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">14/20</text>
+  <rect x="430" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="452" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">16/20</text>
+  <rect x="480" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="502" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">18/20</text>
+  <rect x="530" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="552" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">12/20</text>
+  <text x="500" y="405" text-anchor="middle" font-size="11" font-weight="600" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Status: DEGRADED</text>
+  <text x="500" y="423" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Utilization: 75% (60/80 slots)</text>
+  <text x="500" y="441" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit: CLOSED (watching)</text>
+  <text x="500" y="465" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Avg latency: 320ms | Error rate: 4.2%</text>
+  <text x="500" y="480" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Queue depth: 18 | Timeouts: 5/min</text>
+
+  <!-- Pool 3: Exhausted - Circuit Open -->
+  <rect x="660" y="280" width="280" height="210" rx="10" fill="url(#exhaustedGrad)" stroke="#dc2626" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="680" y="295" width="240" height="32" rx="6" fill="#dc2626"/>
+  <text x="800" y="317" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool C: Inventory Service</text>
+  <rect x="680" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="702" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">20/20</text>
+  <rect x="730" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="752" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">20/20</text>
+  <rect x="780" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="802" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">20/20</text>
+  <rect x="830" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="852" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">20/20</text>
+  <text x="800" y="405" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Status: EXHAUSTED</text>
+  <text x="800" y="423" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Utilization: 100% (80/80 slots)</text>
+  <text x="800" y="441" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit: OPEN (failing fast)</text>
+  <text x="800" y="465" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Avg latency: 5200ms | Error rate: 92%</text>
+  <text x="800" y="480" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Queue depth: 150+ | Timeouts: 200/min</text>
+
+  <!-- Pool 4: Healthy -->
+  <rect x="960" y="280" width="220" height="210" rx="10" fill="url(#healthyGrad)" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="980" y="295" width="180" height="32" rx="6" fill="#16a34a"/>
+  <text x="1070" y="317" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool D: Notification</text>
+  <rect x="980" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="1002" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">4/15</text>
+  <rect x="1030" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="1052" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">6/15</text>
+  <rect x="1080" y="340" width="45" height="35" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="1102" y="362" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">3/15</text>
+  <text x="1070" y="405" text-anchor="middle" font-size="11" font-weight="600" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Status: HEALTHY</text>
+  <text x="1070" y="423" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Utilization: 29% (13/45)</text>
+  <text x="1070" y="441" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit: CLOSED</text>
+  <text x="1070" y="465" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Avg latency: 80ms | Error: 0.05%</text>
+
+  <!-- ==================== SECTION 2: CIRCUIT BREAKER STATE TRANSITIONS ==================== -->
+  <text x="600" y="530" text-anchor="middle" font-size="17" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit Breaker State Machine with Pool Exhaustion Detection</text>
+
+  <!-- State diagram -->
+  <!-- CLOSED state -->
+  <rect x="60" y="565" width="280" height="180" rx="10" fill="url(#closedGrad)" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+  <text x="200" y="593" text-anchor="middle" font-size="16" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">CLOSED</text>
+  <text x="200" y="615" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Normal operation mode</text>
+  <text x="200" y="637" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">All requests pass through</text>
+  <text x="200" y="659" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Monitoring error rate and</text>
+  <text x="200" y="677" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">pool utilization metrics</text>
+  <text x="200" y="699" text-anchor="middle" font-size="11" font-weight="600" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool utilization &lt; 70%</text>
+  <text x="200" y="717" text-anchor="middle" font-size="11" font-weight="600" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Error rate &lt; 5%</text>
+  <text x="200" y="735" text-anchor="middle" font-size="11" font-weight="600" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Latency within SLA</text>
+
+  <!-- Transition: CLOSED -> OPEN -->
+  <path d="M 340 640 Q 500 560 660 620" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="430" y="555" width="160" height="35" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="510" y="569" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">TRIGGER: Pool exhausted</text>
+  <text x="510" y="583" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">OR error rate &gt; 50%</text>
+
+  <!-- OPEN state -->
+  <rect x="660" y="565" width="280" height="180" rx="10" fill="url(#openGrad)" stroke="#dc2626" stroke-width="2" filter="url(#shadow)"/>
+  <text x="800" y="593" text-anchor="middle" font-size="16" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">OPEN</text>
+  <text x="800" y="615" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit broken - failing fast</text>
+  <text x="800" y="637" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Requests rejected immediately</text>
+  <text x="800" y="659" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">with 503 or fallback response</text>
+  <text x="800" y="677" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Timer started for recovery</text>
+  <text x="800" y="699" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool utilization at 100%</text>
+  <text x="800" y="717" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Error rate exceeded threshold</text>
+  <text x="800" y="735" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Cooldown: 30 seconds</text>
+
+  <!-- Transition: OPEN -> HALF-OPEN -->
+  <line x1="800" y1="745" x2="800" y2="775" stroke="#ea580c" stroke-width="2" marker-end="url(#arr-orange)"/>
+  <rect x="720" y="750" width="160" height="30" rx="6" fill="#fff7ed" stroke="#ea580c" stroke-width="1"/>
+  <text x="800" y="770" text-anchor="middle" font-size="10" font-weight="700" fill="#c2410c" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Timer expired - allow probe</text>
+
+  <!-- HALF-OPEN state -->
+  <rect x="660" y="785" width="280" height="150" rx="10" fill="url(#halfOpenGrad)" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+  <text x="800" y="813" text-anchor="middle" font-size="16" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">HALF-OPEN</text>
+  <text x="800" y="835" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Limited probe requests allowed</text>
+  <text x="800" y="857" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Testing if service recovered</text>
+  <text x="800" y="875" text-anchor="middle" font-size="11" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Monitoring probe responses</text>
+  <text x="800" y="897" text-anchor="middle" font-size="11" font-weight="600" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Max 5 probe requests</text>
+  <text x="800" y="915" text-anchor="middle" font-size="11" font-weight="600" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Success rate determines next state</text>
+
+  <!-- Transition: HALF-OPEN -> CLOSED (recovery) -->
+  <path d="M 660 840 Q 400 750 340 700" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="440" y="745" width="140" height="35" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
+  <text x="510" y="759" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">RECOVERY: Probe</text>
+  <text x="510" y="773" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">success rate &gt; 80%</text>
+
+  <!-- Transition: HALF-OPEN -> OPEN (relapse) -->
+  <path d="M 800 785 L 800 755" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="810" y="760" width="140" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="880" y="780" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">RELAPSE: Probes fail</text>
+
+  <!-- ==================== SECTION 3: DEFENSE IN DEPTH ==================== -->
+  <text x="200" y="965" text-anchor="middle" font-size="17" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Defense in Depth: Bulkhead + Circuit Breaker</text>
+
+  <!-- Layer 1 -->
+  <rect x="40" y="980" width="280" height="55" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="180" y="1003" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Layer 1: Bulkhead Isolation</text>
+  <text x="180" y="1023" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Contains failure to single pool</text>
+
+  <!-- Layer 2 -->
+  <rect x="460" y="980" width="280" height="55" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="600" y="1003" text-anchor="middle" font-size="13" font-weight="700" fill="#6b21a8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Layer 2: Pool Exhaustion Detection</text>
+  <text x="600" y="1023" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Monitors utilization + error rates</text>
+
+  <!-- Layer 3 -->
+  <rect x="880" y="980" width="280" height="55" rx="8" fill="#fef3c7" stroke="#ca8a04" stroke-width="2"/>
+  <text x="1020" y="1003" text-anchor="middle" font-size="13" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Layer 3: Circuit Breaker</text>
+  <text x="1020" y="1023" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Fails fast, prevents cascade</text>
+</svg>

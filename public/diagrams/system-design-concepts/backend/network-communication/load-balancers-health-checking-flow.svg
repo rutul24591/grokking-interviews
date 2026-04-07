@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520">
+  <defs>
+    <style>
+      .bg-light { fill: #f8fafc; }
+      .title-light { fill: #0f172a; font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; }
+      .label-light { fill: #0f172a; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .subtext-light { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; }
+      .box-lb-light { fill: #dbeafe; stroke: #3b82f6; stroke-width: 2; rx: 8; }
+      .box-healthy-light { fill: #d1fae5; stroke: #10b981; stroke-width: 2; rx: 8; }
+      .box-unhealthy-light { fill: #fee2e2; stroke: #ef4444; stroke-width: 2; rx: 8; }
+      .box-draining-light { fill: #fef3c7; stroke: #f59e0b; stroke-width: 2; rx: 8; }
+      .arrow-light { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#ahl2); }
+      .arrow-green { stroke: #10b981; stroke-width: 2; fill: none; marker-end: url(#ahg); }
+      .arrow-red { stroke: #ef4444; stroke-width: 2; fill: none; marker-end: url(#ahr); }
+      .marker-light { fill: #64748b; }
+      .marker-green { fill: #10b981; }
+      .marker-red { fill: #ef4444; }
+    </style>
+    <marker id="ahl2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="marker-light"/>
+    </marker>
+    <marker id="ahg" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="marker-green"/>
+    </marker>
+    <marker id="ahr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="marker-red"/>
+    </marker>
+  </defs>
+
+  <g id="light-mode">
+    <rect class="bg-light" width="960" height="520"/>
+    <text class="title-light" x="40" y="40">Health Checking &amp; Instance Lifecycle</text>
+
+    <!-- Load Balancer -->
+    <rect class="box-lb-light" x="370" y="80" width="220" height="70"/>
+    <text class="label-light" x="400" y="110">Load Balancer</text>
+    <text class="subtext-light" x="390" y="130">Health Check Engine</text>
+
+    <!-- Active Health Check -->
+    <rect x="40" y="200" width="260" height="150" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="2"/>
+    <text class="label-light" x="60" y="230" fill="#166534">Active Health Checks</text>
+    <text class="subtext-light" x="55" y="255">- LB probes every 5-15s</text>
+    <text class="subtext-light" x="55" y="275">- HTTP GET /healthz</text>
+    <text class="subtext-light" x="55" y="295">- 3 failures = unhealthy</text>
+    <text class="subtext-light" x="55" y="315">- 2 successes = healthy</text>
+    <text class="subtext-light" x="55" y="335">- Timeout: 2-5 seconds</text>
+
+    <!-- Passive Health Check -->
+    <rect x="340" y="200" width="280" height="150" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+    <text class="label-light" x="360" y="230" fill="#1e40af">Passive Health Checks</text>
+    <text class="subtext-light" x="355" y="255">- Observes real traffic outcomes</text>
+    <text class="subtext-light" x="355" y="275">- Tracks 5xx rate per instance</text>
+    <text class="subtext-light" x="355" y="295">- Ejects on consecutive errors</text>
+    <text class="subtext-light" x="355" y="315">- Ejection time grows exp.</text>
+    <text class="subtext-light" x="355" y="335">- Auto-retrial after cool-off</text>
+
+    <!-- Outlier Detection -->
+    <rect x="660" y="200" width="260" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text class="label-light" x="680" y="230" fill="#92400e">Outlier Detection</text>
+    <text class="subtext-light" x="675" y="255">- Statistical analysis of</text>
+    <text class="subtext-light" x="675" y="275">  each instance vs pool avg</text>
+    <text class="subtext-light" x="675" y="295">- Ejects slow instances</text>
+    <text class="subtext-light" x="675" y="315">  (p99 above threshold)</text>
+    <text class="subtext-light" x="675" y="335">- Prevents tail-latency drag</text>
+
+    <!-- Instance States -->
+    <text class="label-light" x="40" y="400">Instance State Transitions</text>
+
+    <!-- Healthy -->
+    <rect class="box-healthy-light" x="40" y="420" width="130" height="60"/>
+    <text class="label-light" x="60" y="448" fill="#166534">Healthy</text>
+    <text class="subtext-light" x="50" y="468">Receiving traffic</text>
+
+    <!-- Arrow: Healthy to Draining -->
+    <line class="arrow-light" x1="170" y1="450" x2="225" y2="450"/>
+    <text class="subtext-light" x="172" y="440">Deploy/Scale</text>
+
+    <!-- Draining -->
+    <rect class="box-draining-light" x="230" y="420" width="130" height="60"/>
+    <text class="label-light" x="242" y="448" fill="#92400e">Draining</text>
+    <text class="subtext-light" x="235" y="468">Finish in-flight</text>
+
+    <!-- Arrow: Draining to Unhealthy -->
+    <line class="arrow-light" x1="360" y1="450" x2="415" y2="450"/>
+    <text class="subtext-light" x="365" y="440">Timeout</text>
+
+    <!-- Unhealthy -->
+    <rect class="box-unhealthy-light" x="420" y="420" width="130" height="60"/>
+    <text class="label-light" x="430" y="448" fill="#991b1b">Unhealthy</text>
+    <text class="subtext-light" x="428" y="468">Removed from pool</text>
+
+    <!-- Arrow: Unhealthy back to Healthy (recovery) -->
+    <path class="arrow-green" d="M 550 450 Q 600 380 105 380 L 105 415" stroke-dasharray="5,5"/>
+    <text class="subtext-light" x="280" y="375" fill="#166534">Passes health checks</text>
+
+    <!-- Arrow: Healthy to Unhealthy (failure) -->
+    <path class="arrow-red" d="M 170 480 Q 300 510 485 480" stroke-dasharray="5,5"/>
+    <text class="subtext-light" x="270" y="505" fill="#991b1b">Consecutive failures</text>
+
+    <!-- Key metrics box -->
+    <rect x="600" y="400" width="320" height="100" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    <text class="label-light" x="615" y="425">Key Production Metrics</text>
+    <text class="subtext-light" x="615" y="448">- Health check success rate per target</text>
+    <text class="subtext-light" x="615" y="465">- Mean time to detect &amp; eject (target: &lt;30s)</text>
+    <text class="subtext-light" x="615" y="482">- Ejection rate (false positives &lt; 0.1%)</text>
+  </g>
+</svg>

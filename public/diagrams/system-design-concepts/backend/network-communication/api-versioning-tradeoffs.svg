@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc" width="1200" height="900">
+  <title id="title">API Versioning Trade-offs Comparison</title>
+  <desc id="desc">Comprehensive comparison of four API versioning strategies with decision framework showing when to choose URI Path, Query Parameter, Header-based, or Content Negotiation</desc>
+
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#16a34a"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- White background -->
+  <rect width="1200" height="900" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="600" y="38" text-anchor="middle" font-size="24" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">API Versioning Trade-offs: Decision Framework</text>
+  <text x="600" y="62" text-anchor="middle" font-size="15" font-weight="400" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Comparing discoverability, cacheability, RESTful purity, and implementation complexity across strategies</text>
+
+  <!-- ==================== COMPARISON MATRIX ==================== -->
+  <text x="600" y="100" text-anchor="middle" font-size="17" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Strategy Comparison Matrix</text>
+
+  <!-- Table header -->
+  <rect x="40" y="115" width="1120" height="40" rx="6" fill="#111827"/>
+  <text x="180" y="141" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Strategy</text>
+  <text x="380" y="141" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Example</text>
+  <text x="600" y="141" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Discoverability</text>
+  <text x="760" y="141" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Cacheability</text>
+  <text x="920" y="141" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">RESTful Purity</text>
+  <text x="1070" y="141" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Implementation</text>
+
+  <!-- Row 1: URI Path -->
+  <rect x="40" y="160" width="1120" height="85" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="180" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">URI Path</text>
+  <text x="180" y="210" text-anchor="middle" font-size="11" fill="#374151" font-family="'Courier New', Courier, monospace">/api/v1/users</text>
+  <text x="180" y="230" text-anchor="middle" font-size="11" fill="#374151" font-family="'Courier New', Courier, monospace">/api/v2/users</text>
+  <text x="380" y="205" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Most Discoverable</text>
+  <text x="600" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Excellent</text>
+  <text x="600" y="210" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Each version has unique URL;</text>
+  <text x="600" y="228" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">CDN caches automatically</text>
+  <text x="760" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Excellent</text>
+  <text x="760" y="210" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Unique cache key per version</text>
+  <text x="760" y="228" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">No Vary header needed</text>
+  <text x="920" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#ea580c" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Low</text>
+  <text x="920" y="210" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Version in URL violates</text>
+  <text x="920" y="228" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">resource identification principle</text>
+  <text x="1070" y="205" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Simple</text>
+
+  <!-- Row 2: Query Param -->
+  <rect x="40" y="250" width="1120" height="85" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+  <text x="180" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#7c3aed" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Query Parameter</text>
+  <text x="180" y="300" text-anchor="middle" font-size="11" fill="#374151" font-family="'Courier New', Courier, monospace">/api/users?v=1</text>
+  <text x="180" y="320" text-anchor="middle" font-size="11" fill="#374151" font-family="'Courier New', Courier, monospace">/api/users?version=2</text>
+  <text x="380" y="295" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Moderately Discoverable</text>
+  <text x="600" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#ca8a04" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Moderate</text>
+  <text x="600" y="300" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Some CDNs ignore query params</text>
+  <text x="600" y="318" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Requires explicit cache config</text>
+  <text x="760" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#ca8a04" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Moderate</text>
+  <text x="760" y="300" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">CDN needs Vary: query config;</text>
+  <text x="760" y="318" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">may conflict with other params</text>
+  <text x="920" y="280" text-anchor="middle" font-size="14" font-weight="700" fill="#dc2626" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Very Low</text>
+  <text x="920" y="300" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Query params should filter data,</text>
+  <text x="920" y="318" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">not change response semantics</text>
+  <text x="1070" y="295" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Simple</text>
+
+  <!-- Row 3: Custom Header -->
+  <rect x="40" y="340" width="1120" height="85" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="180" y="370" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Custom Header</text>
+  <text x="180" y="390" text-anchor="middle" font-size="11" fill="#374151" font-family="'Courier New', Courier, monospace">GET /api/users</text>
+  <text x="180" y="410" text-anchor="middle" font-size="11" fill="#374151" font-family="'Courier New', Courier, monospace">Api-Version: 2</text>
+  <text x="380" y="385" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Low Discoverability</text>
+  <text x="600" y="370" text-anchor="middle" font-size="14" font-weight="700" fill="#ca8a04" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Moderate</text>
+  <text x="600" y="390" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Requires Vary: Api-Version;</text>
+  <text x="600" y="408" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">CDN must be configured properly</text>
+  <text x="760" y="370" text-anchor="middle" font-size="14" font-weight="700" fill="#ca8a04" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Moderate</text>
+  <text x="760" y="390" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">URL clean but header requires</text>
+  <text x="760" y="408" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">custom Vary header handling</text>
+  <text x="920" y="370" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">High</text>
+  <text x="920" y="390" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Version as metadata in header;</text>
+  <text x="920" y="408" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">separate from resource URL</text>
+  <text x="1070" y="370" text-anchor="middle" font-size="14" font-weight="700" fill="#ca8a04" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Moderate</text>
+
+  <!-- Row 4: Content Negotiation -->
+  <rect x="40" y="430" width="1120" height="85" rx="4" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+  <text x="180" y="460" text-anchor="middle" font-size="14" font-weight="700" fill="#ea580c" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Content Negotiation</text>
+  <text x="180" y="480" text-anchor="middle" font-size="11" fill="#374151" font-family="'Courier New', Courier, monospace">Accept: application/vnd.api.v2+json</text>
+  <text x="180" y="500" text-anchor="middle" font-size="11" fill="#374151" font-family="'Courier New', Courier, monospace">Content-Type: application/vnd.api.v2+json</text>
+  <text x="380" y="475" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Very Low Discoverability</text>
+  <text x="600" y="460" text-anchor="middle" font-size="14" font-weight="700" fill="#dc2626" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Poor</text>
+  <text x="600" y="480" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Vary: Accept multiplies cache keys;</text>
+  <text x="600" y="498" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">complex CDN configuration</text>
+  <text x="760" y="460" text-anchor="middle" font-size="14" font-weight="700" fill="#dc2626" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Poor</text>
+  <text x="760" y="480" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Vary: Accept explodes cache keys</text>
+  <text x="760" y="498" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">with multiple Accept values</text>
+  <text x="920" y="460" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Highest</text>
+  <text x="920" y="480" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Uses HTTP spec as intended;</text>
+  <text x="920" y="498" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">most standards-compliant</text>
+  <text x="1070" y="460" text-anchor="middle" font-size="14" font-weight="700" fill="#dc2626" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Complex</text>
+
+  <!-- ==================== DECISION FLOWCHART ==================== -->
+  <text x="600" y="555" text-anchor="middle" font-size="17" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Decision Framework: When to Choose Which Strategy</text>
+
+  <!-- Start node -->
+  <rect x="460" y="575" width="280" height="50" rx="25" fill="#111827" filter="url(#shadow)"/>
+  <text x="600" y="606" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Start: API Design Decision</text>
+
+  <!-- Q1 -->
+  <line x1="600" y1="625" x2="600" y2="655" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="440" y="655" width="320" height="55" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="2" filter="url(#shadow)"/>
+  <text x="600" y="678" text-anchor="middle" font-size="13" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Is public API with external consumers?</text>
+  <text x="600" y="696" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">(mobile apps, third-party integrations)</text>
+
+  <!-- Q1 -> Yes -->
+  <line x1="440" y1="682" x2="280" y2="682" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="350" y="672" text-anchor="middle" font-size="12" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">YES</text>
+
+  <!-- Q1 -> No -->
+  <line x1="760" y1="682" x2="920" y2="682" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="850" y="672" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">NO</text>
+
+  <!-- YES branch -> Q2 -->
+  <rect x="80" y="655" width="240" height="55" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2" filter="url(#shadow)"/>
+  <text x="200" y="678" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Need CDN caching?</text>
+  <text x="200" y="696" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">and easy debugging?</text>
+
+  <!-- CDN YES -->
+  <line x1="80" y1="682" x2="40" y2="720" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="50" y="715" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">YES</text>
+  <rect x="20" y="720" width="160" height="50" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+  <text x="100" y="743" text-anchor="middle" font-size="13" font-weight="700" fill="#166534" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">URI Path</text>
+  <text x="100" y="760" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Best for public REST APIs</text>
+
+  <!-- CDN NO -->
+  <line x1="200" y1="710" x2="200" y2="720" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="215" y="718" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">NO</text>
+  <rect x="120" y="720" width="160" height="50" rx="8" fill="#fef3c7" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+  <text x="200" y="743" text-anchor="middle" font-size="13" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Custom Header</text>
+  <text x="200" y="760" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">RESTful-pure with control</text>
+
+  <!-- NO branch -> Q3 -->
+  <rect x="920" y="655" width="260" height="55" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1050" y="678" text-anchor="middle" font-size="13" font-weight="700" fill="#6b21a8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Strict HTTP spec compliance?</text>
+  <text x="1050" y="696" text-anchor="middle" font-size="11" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">(enterprise/government standards)</text>
+
+  <!-- Strict YES -->
+  <line x1="920" y1="682" x2="920" y2="720" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="935" y="715" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">YES</text>
+  <rect x="920" y="720" width="160" height="50" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1000" y="743" text-anchor="middle" font-size="13" font-weight="700" fill="#c2410c" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Content Negotiation</text>
+  <text x="1000" y="760" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Most standards-compliant</text>
+
+  <!-- Strict NO -->
+  <line x1="1050" y1="710" x2="1050" y2="720" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="1065" y="718" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">NO</text>
+  <rect x="970" y="720" width="160" height="50" rx="8" fill="#fef3c7" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1050" y="743" text-anchor="middle" font-size="13" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Query Parameter</text>
+  <text x="1050" y="760" text-anchor="middle" font-size="10" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Internal / legacy systems</text>
+
+  <!-- ==================== KEY TAKEAWAYS ==================== -->
+  <rect x="40" y="800" width="1120" height="85" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+  <text x="600" y="825" text-anchor="middle" font-size="14" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Key Takeaways for Production Systems</text>
+  <text x="100" y="850" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">1. Public APIs: URI Path (discoverability + CDN wins)</text>
+  <text x="400" y="850" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">2. Enterprise APIs: Custom Header (RESTful purity)</text>
+  <text x="720" y="850" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">3. Internal APIs: Query Param (simplicity)</text>
+  <text x="100" y="872" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">4. Never mix strategies: pick one and enforce at gateway level</text>
+  <text x="600" y="872" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">5. Always plan deprecation: sunset header + timeline communication</text>
+</svg>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" width="900" height="720">
+  <!-- White background -->
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#111827">Reverse Proxy Processing Pipeline</text>
+  <text x="450" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#374151">Request flow through a reverse proxy: Security, Performance, and Routing</text>
+  
+  <!-- Client -->
+  <rect x="50" y="110" width="100" height="60" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="100" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827">Client</text>
+  <text x="100" y="153" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Browser / API</text>
+  
+  <!-- Arrow to proxy -->
+  <line x1="150" y1="140" x2="200" y2="140" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="200,135 210,140 200,145" fill="#2563eb"/>
+  <text x="165" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#2563eb">HTTPS</text>
+  
+  <!-- Main proxy boundary -->
+  <rect x="200" y="90" width="650" height="520" rx="10" fill="none" stroke="#7c3aed" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="210" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#7c3aed">REVERSE PROXY (NGINX / Envoy / HAProxy)</text>
+  
+  <!-- Stage 1: TLS Termination -->
+  <rect x="220" y="125" width="120" height="55" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="280" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">TLS Termination</text>
+  <text x="280" y="163" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Decrypt HTTPS</text>
+  
+  <!-- Stage 2: Security Layer -->
+  <rect x="360" y="125" width="180" height="55" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Security Layer</text>
+  <text x="370" y="163" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">WAF | Rate Limit | IP Whitelist</text>
+  
+  <!-- Security details -->
+  <rect x="365" y="185" width="170" height="60" rx="4" fill="#fff1f2" stroke="#e11d48" stroke-width="1"/>
+  <text x="375" y="202" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#9f1239">Web Application Firewall</text>
+  <text x="375" y="217" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151">SQL injection, XSS, CSRF blocking</text>
+  <text x="375" y="232" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151">OWASP Top 10 rule sets</text>
+  
+  <!-- Stage 3: Request Parsing -->
+  <rect x="220" y="255" width="140" height="55" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="290" y="277" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Request Parsing</text>
+  <text x="290" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Header extraction</text>
+  
+  <!-- Stage 4: Routing -->
+  <rect x="380" y="255" width="140" height="55" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="450" y="277" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Routing Engine</text>
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Path-based / Host-based</text>
+  
+  <!-- Stage 5: Caching -->
+  <rect x="540" y="255" width="130" height="55" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="605" y="277" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Cache Layer</text>
+  <text x="605" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Redis / Memcached</text>
+  
+  <!-- Cache decision -->
+  <rect x="540" y="315" width="130" height="40" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="548" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#166534">Cache Hit?</text>
+  <text x="548" y="347" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#374151">Return cached response</text>
+  
+  <!-- Stage 6: Compression -->
+  <rect x="690" y="255" width="130" height="55" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="755" y="277" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Compression</text>
+  <text x="755" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">gzip / brotli / zstd</text>
+  
+  <!-- Stage 7: Connection Pooling -->
+  <rect x="540" y="380" width="150" height="55" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="615" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Connection Pooling</text>
+  <text x="615" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Reuse backend connections</text>
+  
+  <!-- Stage 8: Forward to Backend -->
+  <rect x="710" y="380" width="130" height="55" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="775" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Backend Forward</text>
+  <text x="775" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">HTTP/gRPC</text>
+  
+  <!-- Backend servers -->
+  <rect x="580" y="460" width="80" height="45" rx="5" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="620" y="478" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827">Backend 1</text>
+  <text x="620" y="493" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Service A</text>
+  
+  <rect x="670" y="460" width="80" height="45" rx="5" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="710" y="478" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827">Backend 2</text>
+  <text x="710" y="493" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Service B</text>
+  
+  <rect x="760" y="460" width="80" height="45" rx="5" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="800" y="478" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827">Backend 3</text>
+  <text x="800" y="493" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Service C</text>
+  
+  <!-- Response path -->
+  <rect x="540" y="530" width="150" height="55" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="615" y="552" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Response Processing</text>
+  <text x="615" y="570" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Header transform, compress</text>
+  
+  <!-- Stage 9: TLS Encryption (response) -->
+  <rect x="710" y="530" width="130" height="55" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="775" y="552" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">TLS Encryption</text>
+  <text x="775" y="570" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Encrypt for response</text>
+  
+  <!-- Response arrow back to client -->
+  <line x1="840" y1="555" x2="880" y2="555" stroke="#2563eb" stroke-width="2"/>
+  <line x1="880" y1="555" x2="880" y2="140" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="880" y1="140" x2="150" y2="140" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="150,135 140,140 150,145" fill="#2563eb"/>
+  <text x="890" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#2563eb">Response</text>
+  <text x="890" y="365" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Path</text>
+  
+  <!-- Flow arrows between stages -->
+  <line x1="340" y1="152" x2="360" y2="152" stroke="#374151" stroke-width="2"/>
+  <polygon points="358,148 365,152 358,156" fill="#374151"/>
+  
+  <line x1="450" y1="180" x2="450" y2="255" stroke="#374151" stroke-width="2"/>
+  <polygon points="446,250 450,260 454,250" fill="#374151"/>
+  
+  <line x1="360" y1="282" x2="380" y2="282" stroke="#374151" stroke-width="2"/>
+  <polygon points="378,278 385,282 378,286" fill="#374151"/>
+  
+  <line x1="520" y1="282" x2="540" y2="282" stroke="#374151" stroke-width="2"/>
+  <polygon points="538,278 545,282 538,286" fill="#374151"/>
+  
+  <line x1="670" y1="282" x2="690" y2="282" stroke="#374151" stroke-width="2"/>
+  <polygon points="688,278 695,282 688,286" fill="#374151"/>
+  
+  <line x1="755" y1="310" x2="755" y2="380" stroke="#374151" stroke-width="2"/>
+  <polygon points="751,375 755,385 759,375" fill="#374151"/>
+  
+  <line x1="690" y1="407" x2="710" y2="407" stroke="#374151" stroke-width="2"/>
+  <polygon points="708,403 715,407 708,411" fill="#374151"/>
+  
+  <line x1="775" y1="435" x2="775" y2="460" stroke="#374151" stroke-width="2"/>
+  <polygon points="771,455 775,465 779,455" fill="#374151"/>
+  
+  <line x1="710" y1="480" x2="690" y2="480" stroke="#374151" stroke-width="2"/>
+  <line x1="690" y1="480" x2="690" y2="555" stroke="#374151" stroke-width="2"/>
+  <polygon points="686,550 690,560 694,550" fill="#374151"/>
+  
+  <line x1="690" y1="555" x2="710" y2="555" stroke="#374151" stroke-width="2"/>
+  <polygon points="708,551 715,555 708,559" fill="#374151"/>
+  
+  <!-- Rate limiting detail -->
+  <rect x="365" y="250" width="170" height="0" rx="0" fill="#fff1f2" stroke="#e11d48" stroke-width="1"/>
+  
+  <!-- Feature legend -->
+  <rect x="220" y="620" width="210" height="80" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="230" y="642" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#991b1b">Security Features</text>
+  <text x="230" y="660" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- Web Application Firewall (WAF)</text>
+  <text x="230" y="676" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- Rate limiting (token bucket)</text>
+  <text x="230" y="692" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- IP whitelisting / blacklisting</text>
+  
+  <rect x="450" y="620" width="210" height="80" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text x="460" y="642" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#166534">Performance Features</text>
+  <text x="460" y="660" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- Response caching (Redis)</text>
+  <text x="460" y="676" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- Compression (gzip/brotli)</text>
+  <text x="460" y="692" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- Connection pooling (keep-alive)</text>
+  
+  <rect x="680" y="620" width="170" height="80" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="690" y="642" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e40af">Routing Features</text>
+  <text x="690" y="660" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- Path-based routing</text>
+  <text x="690" y="676" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- Load balancing</text>
+  <text x="690" y="692" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#1f2937">- Canary deployments</text>
+</svg>

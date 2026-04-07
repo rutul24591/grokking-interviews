@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 870" width="900" height="870">
+  <!-- Background -->
+  <rect width="900" height="870" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#111827">GraphQL Federation Architecture</text>
+  <text x="450" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151">Gateway composes multiple subgraphs into a unified schema with cross-service type extension</text>
+
+  <!-- Client -->
+  <rect x="350" y="100" width="200" height="60" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="450" y="128" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827">Client</text>
+  <text x="450" y="146" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Single GraphQL endpoint</text>
+
+  <!-- Arrow to Gateway -->
+  <line x1="450" y1="160" x2="450" y2="210" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead-down)"/>
+
+  <!-- Gateway Box -->
+  <rect x="250" y="210" width="400" height="120" rx="12" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <rect x="250" y="210" width="400" height="34" rx="12" fill="#1f2937"/>
+  <rect x="250" y="234" width="400" height="10" fill="#1f2937"/>
+  <text x="450" y="234" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#ffffff">GraphQL Gateway (Federated Router)</text>
+
+  <!-- Gateway sub-functions -->
+  <rect x="270" y="258" width="110" height="55" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="325" y="278" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1e40af">Schema</text>
+  <text x="325" y="296" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#1e40af">Composition</text>
+  <text x="325" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Merges subgraphs</text>
+
+  <rect x="395" y="258" width="110" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="450" y="278" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#92400e">Query</text>
+  <text x="450" y="296" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#92400e">Planning</text>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Routes to subgraphs</text>
+
+  <!-- Arrow from Gateway to subgraphs -->
+  <line x1="325" y1="330" x2="150" y2="400" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="330" x2="450" y2="400" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead-down)"/>
+  <line x1="575" y1="330" x2="750" y2="400" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <text x="260" y="375" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Routes user queries</text>
+  <text x="465" y="375" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Routes post queries</text>
+  <text x="660" y="375" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">Routes review queries</text>
+
+  <!-- Subgraph 1: Users Service -->
+  <rect x="40" y="400" width="220" height="150" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <rect x="40" y="400" width="220" height="30" rx="10" fill="#1f2937"/>
+  <rect x="40" y="420" width="220" height="10" fill="#1f2937"/>
+  <text x="150" y="421" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Users Service</text>
+  <text x="55" y="455" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827">Subgraph Schema:</text>
+  <text x="55" y="475" font-family="monospace" font-size="10" font-weight="400" fill="#374151">type User @key(fields: &quot;id&quot;) {</text>
+  <text x="55" y="491" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  id: ID!</text>
+  <text x="55" y="507" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  name: String!</text>
+  <text x="55" y="523" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  email: String!</text>
+  <text x="55" y="539" font-family="monospace" font-size="10" font-weight="400" fill="#374151">}</text>
+
+  <!-- Subgraph 2: Products Service -->
+  <rect x="340" y="400" width="220" height="150" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <rect x="340" y="400" width="220" height="30" rx="10" fill="#1f2937"/>
+  <rect x="340" y="420" width="220" height="10" fill="#1f2937"/>
+  <text x="450" y="421" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Products Service</text>
+  <text x="355" y="455" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827">Subgraph Schema:</text>
+  <text x="355" y="475" font-family="monospace" font-size="10" font-weight="400" fill="#374151">type Product @key(fields: &quot;id&quot;) {</text>
+  <text x="355" y="491" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  id: ID!</text>
+  <text x="355" y="507" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  title: String!</text>
+  <text x="355" y="523" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  seller: User!  &lt;-- ref</text>
+  <text x="355" y="539" font-family="monospace" font-size="10" font-weight="400" fill="#374151">}</text>
+
+  <!-- Subgraph 3: Reviews Service -->
+  <rect x="640" y="400" width="220" height="150" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <rect x="640" y="400" width="220" height="30" rx="10" fill="#1f2937"/>
+  <rect x="640" y="420" width="220" height="10" fill="#1f2937"/>
+  <text x="750" y="421" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Reviews Service</text>
+  <text x="655" y="455" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827">Subgraph Schema:</text>
+  <text x="655" y="475" font-family="monospace" font-size="10" font-weight="400" fill="#374151">type Review @key(fields: &quot;id&quot;) {</text>
+  <text x="655" y="491" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  id: ID!</text>
+  <text x="655" y="507" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  rating: Int!</text>
+  <text x="655" y="523" font-family="monospace" font-size="10" font-weight="400" fill="#374151">  author: User!  &lt;-- ref</text>
+  <text x="655" y="539" font-family="monospace" font-size="10" font-weight="400" fill="#374151">}</text>
+
+  <!-- Type Extension Section -->
+  <rect x="40" y="580" width="820" height="2" fill="#e5e7eb"/>
+  <text x="40" y="615" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827">Type Extension Across Services</text>
+  <text x="40" y="640" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#374151">Services extend types defined by other services using @extends and @external directives</text>
+
+  <!-- Extension 1: Products extends User -->
+  <rect x="40" y="660" width="400" height="55" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="55" y="683" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Products extends User:</text>
+  <text x="55" y="703" font-family="monospace" font-size="11" font-weight="400" fill="#374151">extend type User @key(fields: &quot;id&quot;) { id: ID! @external, products: [Product!] }</text>
+
+  <!-- Extension 2: Reviews extends User -->
+  <rect x="460" y="660" width="400" height="55" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="475" y="683" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Reviews extends User:</text>
+  <text x="475" y="703" font-family="monospace" font-size="11" font-weight="400" fill="#374151">extend type User @key(fields: &quot;id&quot;) { id: ID! @external, reviews: [Review!] }</text>
+
+  <!-- Unified Schema result -->
+  <rect x="40" y="730" width="820" height="40" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="450" y="756" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#065f46">Unified Schema: Client queries User { name, products { title }, reviews { rating } } across all 3 services</text>
+
+  <!-- Federation Benefits -->
+  <rect x="40" y="785" width="260" height="2" fill="#e5e7eb"/>
+  <text x="40" y="810" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#111827">Federation Benefits</text>
+
+  <rect x="40" y="825" width="400" height="30" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="55" y="845" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Independent service deployment - each team owns their subgraph</text>
+
+  <rect x="460" y="825" width="400" height="30" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="475" y="845" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Single endpoint for clients - no client-side data aggregation needed</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-down" viewBox="0 0 10 7" refX="5" refY="6" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#1f2937"/>
+    </marker>
+    <marker id="arrowhead" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937"/>
+    </marker>
+  </defs>
+</svg>

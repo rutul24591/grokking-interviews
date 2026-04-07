@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580" width="900" height="580">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="580" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">TCP Timeout Types</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Connection Timeout, Read Timeout, Write Timeout — Where Each Occurs in the TCP Lifecycle</text>
+
+  <!-- TCP LIFECYCLE TIMELINE -->
+  <rect x="20" y="85" width="860" height="60" rx="10" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="105" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">TCP Connection Lifecycle</text>
+  <text x="450" y="125" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">CLOSED → SYN → SYN-ACK → ESTABLISHED → DATA TRANSFER → FIN → CLOSED</text>
+
+  <!-- Phase markers on timeline -->
+  <rect x="40" y="100" width="100" height="30" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="90" y="120" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">Handshake</text>
+
+  <rect x="260" y="100" width="100" height="30" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text x="310" y="120" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">Established</text>
+
+  <rect x="480" y="100" width="160" height="30" rx="4" fill="#fefce8" stroke="#ca8a04" stroke-width="1"/>
+  <text x="560" y="120" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">Data Transfer</text>
+
+  <rect x="760" y="100" width="100" height="30" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="810" y="120" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">Teardown</text>
+
+  <!-- CONNECTION TIMEOUT SECTION -->
+  <rect x="20" y="170" width="420" height="180" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="230" y="195" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#dc2626" text-anchor="middle">Connection Timeout</text>
+  <text x="230" y="215" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Occurs during TCP 3-way handshake</text>
+
+  <!-- Handshake flow with timeout -->
+  <rect x="40" y="230" width="360" height="100" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+
+  <!-- Client sends SYN -->
+  <text x="60" y="255" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Client</text>
+  <text x="340" y="255" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Server</text>
+
+  <!-- SYN -->
+  <line x1="100" y1="270" x2="300" y2="270" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="200" y="265" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">SYN</text>
+
+  <!-- SYN-ACK (never arrives) -->
+  <line x1="300" y1="290" x2="100" y2="290" stroke="#374151" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="200" y="285" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#6b7280" text-anchor="middle">SYN-ACK (lost / no response)</text>
+
+  <!-- Timeout indicator -->
+  <rect x="130" y="300" width="140" height="24" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="200" y="317" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">TIMEOUT after 30s</text>
+
+  <!-- Connection timeout details -->
+  <rect x="40" y="235" width="360" height="0" rx="8" fill="none" stroke="none"/>
+  <text x="230" y="280" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Causes: Server unreachable, firewall drop, network partition</text>
+  <text x="230" y="298" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Default: 30-120s depending on OS (tcp_syn_retries)</text>
+  <text x="230" y="316" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Linux: net.ipv4.tcp_syn_retries (default: 6, ~127s)</text>
+  <text x="230" y="334" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Application: Set connect timeout (e.g., 5-10s) for faster failure</text>
+
+  <!-- READ TIMEOUT SECTION -->
+  <rect x="460" y="170" width="420" height="180" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="670" y="195" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ca8a04" text-anchor="middle">Read Timeout</text>
+  <text x="670" y="215" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Occurs while waiting for data on established connection</text>
+
+  <!-- Read timeout flow -->
+  <rect x="480" y="230" width="360" height="100" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+
+  <!-- Client reads -->
+  <text x="500" y="255" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Client (read)</text>
+  <text x="780" y="255" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Server</text>
+
+  <!-- Waiting for data -->
+  <rect x="530" y="270" width="200" height="24" rx="4" fill="#fefce8" stroke="#ca8a04" stroke-width="1"/>
+  <text x="630" y="287" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#ca8a04" text-anchor="middle">Waiting for data...</text>
+
+  <!-- Timeout -->
+  <rect x="560" y="300" width="140" height="24" rx="4" fill="#fefce8" stroke="#ca8a04" stroke-width="1"/>
+  <text x="630" y="317" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#ca8a04" text-anchor="middle">READ TIMEOUT</text>
+
+  <!-- Read timeout details -->
+  <text x="670" y="345" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Causes: Server slow, dead connection, network congestion</text>
+  <text x="670" y="363" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Default: Often infinite (blocks forever) — must be set!</text>
+  <text x="670" y="381" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">SO_RCVTIMEO socket option (Linux)</text>
+  <text x="670" y="399" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Application: Set read timeout (e.g., 30s) for responsiveness</text>
+
+  <!-- WRITE TIMEOUT SECTION -->
+  <rect x="20" y="370" width="420" height="180" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="230" y="395" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#2563eb" text-anchor="middle">Write Timeout</text>
+  <text x="230" y="415" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Occurs while sending data and waiting for TCP acknowledgment</text>
+
+  <!-- Write timeout flow -->
+  <rect x="40" y="430" width="360" height="100" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+
+  <!-- Client writes -->
+  <text x="60" y="455" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Client (write)</text>
+  <text x="340" y="455" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Server</text>
+
+  <!-- Data sent -->
+  <line x1="100" y1="470" x2="300" y2="470" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="200" y="465" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#059669" text-anchor="middle">DATA (segment)</text>
+
+  <!-- ACK not received -->
+  <rect x="130" y="485" width="140" height="24" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="200" y="502" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">No ACK received</text>
+
+  <!-- Write timeout details -->
+  <text x="230" y="525" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Causes: Receiver window full, slow consumer, network drop</text>
+  <text x="230" y="543" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">SO_SNDTIMEO socket option (Linux)</text>
+  <text x="230" y="561" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Occurs when send buffer is full and cannot accept more data</text>
+
+  <!-- KEEP-ALIVE / IDLE TIMEOUT -->
+  <rect x="460" y="370" width="420" height="180" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="670" y="395" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#059669" text-anchor="middle">Idle / Keep-Alive Timeout</text>
+  <text x="670" y="415" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Detects dead connections on idle TCP links</text>
+
+  <!-- Keep-alive flow -->
+  <rect x="480" y="430" width="360" height="100" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+
+  <text x="500" y="455" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Client</text>
+  <text x="780" y="455" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Server</text>
+
+  <!-- Keep-alive probe -->
+  <line x1="540" y1="475" x2="740" y2="475" stroke="#059669" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-green)"/>
+  <text x="640" y="470" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#059669" text-anchor="middle">KEEP-ALIVE PROBE</text>
+
+  <!-- No response -->
+  <rect x="570" y="490" width="140" height="24" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="640" y="507" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">No response → CLOSE</text>
+
+  <!-- Keep-alive details -->
+  <text x="670" y="530" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">TCP keepalive: SO_KEEPALIVE (Linux default: 2 hours!)</text>
+  <text x="670" y="548" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Application-level keepalive: HTTP/2 PING, WebSocket ping</text>
+  <text x="670" y="566" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Load balancer idle timeout: AWS ALB (60s default), Nginx (75s)</text>
+
+  <!-- Summary at bottom -->
+  <rect x="20" y="560" width="860" height="15" rx="4" fill="#f9fafb" stroke="#6b7280" stroke-width="1"/>
+  <text x="450" y="573" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Always set explicit timeouts in production: connection (5-10s), read (30-60s), write (30s), idle (60-120s). Defaults are often too aggressive or infinite.</text>
+</svg>

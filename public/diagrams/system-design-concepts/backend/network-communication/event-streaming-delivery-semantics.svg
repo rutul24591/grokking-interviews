@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" fill="none" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .dark-bg { fill: #1a1a2e; }
+      .box { fill: #f0f4ff; stroke: #4a6cf7; stroke-width: 2; }
+      .dark-box { fill: #252545; stroke: #6b8aff; stroke-width: 2; }
+      .box-good { fill: #e8f5e9; stroke: #388e3c; stroke-width: 2; }
+      .dark-box-good { fill: #1e3a2f; stroke: #4caf50; stroke-width: 2; }
+      .box-warn { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .dark-box-warn { fill: #3e2723; stroke: #ff9800; stroke-width: 2; }
+      .box-bad { fill: #ffebee; stroke: #c62828; stroke-width: 2; }
+      .dark-box-bad { fill: #3e1a1a; stroke: #ef5350; stroke-width: 2; }
+      .title { font-size: 18px; font-weight: 700; fill: #1a1a2e; }
+      .dark-title { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .label { font-size: 13px; font-weight: 600; fill: #2d3748; }
+      .dark-label { font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .sublabel { font-size: 11px; font-weight: 400; fill: #718096; }
+      .dark-sublabel { font-size: 11px; font-weight: 400; fill: #a0aec0; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dark-arrow { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead); }
+      .arrow-good { stroke: #388e3c; stroke-width: 2; fill: none; marker-end: url(#arrowhead-good); }
+      .dark-arrow-good { stroke: #4caf50; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead-good); }
+      .arrow-bad { stroke: #c62828; stroke-width: 2; fill: none; marker-end: url(#arrowhead-bad); }
+      .dark-arrow-bad { stroke: #ef5350; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead-bad); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+    <marker id="dark-arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0" />
+    </marker>
+    <marker id="arrowhead-good" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#388e3c" />
+    </marker>
+    <marker id="dark-arrowhead-good" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50" />
+    </marker>
+    <marker id="arrowhead-bad" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c62828" />
+    </marker>
+    <marker id="dark-arrowhead-bad" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef5350" />
+    </marker>
+  </defs>
+
+  <!-- Light mode background -->
+  <rect class="bg" width="900" height="520" rx="8" />
+  <rect class="dark-bg" width="900" height="520" rx="8" style="display:none" />
+
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .bg { display: none; }
+      .dark-bg { display: block; }
+      .box { display: none; }
+      .dark-box { display: block; }
+      .box-good { display: none; }
+      .dark-box-good { display: block; }
+      .box-warn { display: none; }
+      .dark-box-warn { display: block; }
+      .box-bad { display: none; }
+      .dark-box-bad { display: block; }
+      .title { display: none; }
+      .dark-title { display: block; }
+      .label { display: none; }
+      .dark-label { display: block; }
+      .sublabel { display: none; }
+      .dark-sublabel { display: block; }
+      .arrow { display: none; }
+      .dark-arrow { display: block; }
+      .arrow-good { display: none; }
+      .dark-arrow-good { display: block; }
+      .arrow-bad { display: none; }
+      .dark-arrow-bad { display: block; }
+    }
+  </style>
+
+  <!-- Title -->
+  <text class="title" x="450" y="32" text-anchor="middle">Delivery Semantics Comparison</text>
+  <text class="dark-title" x="450" y="32" text-anchor="middle">Delivery Semantics Comparison</text>
+
+  <!-- AT-MOST-ONCE -->
+  <text class="label" x="150" y="70" text-anchor="middle" font-size="14">At-Most-Once</text>
+  <text class="dark-label" x="150" y="70" text-anchor="middle" font-size="14" style="display:none">At-Most-Once</text>
+
+  <rect class="box-bad" x="30" y="85" width="240" height="150" rx="6" />
+  <rect class="dark-box-bad" x="30" y="85" width="240" height="150" rx="6" style="display:none" />
+
+  <!-- Flow: commit before process -->
+  <rect class="box" x="50" y="100" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="50" y="100" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="90" y="124" text-anchor="middle">Commit</text>
+  <text class="dark-sublabel" x="90" y="124" text-anchor="middle" style="display:none">Commit</text>
+
+  <path class="arrow" d="M 130 120 L 170 120" />
+  <path class="dark-arrow" d="M 130 120 L 170 120" style="display:none" />
+
+  <rect class="box" x="170" y="100" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="170" y="100" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="210" y="124" text-anchor="middle">Process</text>
+  <text class="dark-sublabel" x="210" y="124" text-anchor="middle" style="display:none">Process</text>
+
+  <text class="sublabel" x="150" y="165" text-anchor="middle" font-size="11">Consumer crashes here</text>
+  <text class="dark-sublabel" x="150" y="165" text-anchor="middle" font-size="11" style="display:none">Consumer crashes here</text>
+  <text class="sublabel" x="150" y="182" text-anchor="middle" font-size="20" fill="#c62828">X</text>
+  <text class="dark-sublabel" x="150" y="182" text-anchor="middle" font-size="20" fill="#ef5350" style="display:none">X</text>
+
+  <text class="sublabel" x="150" y="210" text-anchor="middle" font-weight="600" fill="#c62828">Data lost</text>
+  <text class="dark-sublabel" x="150" y="210" text-anchor="middle" font-weight="600" fill="#ef5350" style="display:none">Data lost</text>
+  <text class="sublabel" x="150" y="228" text-anchor="middle">Simplest, accepts loss</text>
+  <text class="dark-sublabel" x="150" y="228" text-anchor="middle">Simplest, accepts loss</text>
+
+  <!-- AT-LEAST-ONCE -->
+  <text class="label" x="450" y="70" text-anchor="middle" font-size="14">At-Least-Once</text>
+  <text class="dark-label" x="450" y="70" text-anchor="middle" font-size="14" style="display:none">At-Least-Once</text>
+
+  <rect class="box-warn" x="330" y="85" width="240" height="150" rx="6" />
+  <rect class="dark-box-warn" x="330" y="85" width="240" height="150" rx="6" style="display:none" />
+
+  <!-- Flow: process before commit -->
+  <rect class="box" x="350" y="100" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="350" y="100" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="390" y="124" text-anchor="middle">Process</text>
+  <text class="dark-sublabel" x="390" y="124" text-anchor="middle" style="display:none">Process</text>
+
+  <path class="arrow" d="M 430 120 L 470 120" />
+  <path class="dark-arrow" d="M 430 120 L 470 120" style="display:none" />
+
+  <rect class="box" x="470" y="100" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="470" y="100" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="510" y="124" text-anchor="middle">Commit</text>
+  <text class="dark-sublabel" x="510" y="124" text-anchor="middle" style="display:none">Commit</text>
+
+  <text class="sublabel" x="450" y="165" text-anchor="middle" font-size="11">Consumer crashes here</text>
+  <text class="dark-sublabel" x="450" y="165" text-anchor="middle" font-size="11" style="display:none">Consumer crashes here</text>
+  <text class="sublabel" x="450" y="182" text-anchor="middle" font-size="20" fill="#f57c00">X</text>
+  <text class="dark-sublabel" x="450" y="182" text-anchor="middle" font-size="20" fill="#ff9800" style="display:none">X</text>
+
+  <text class="sublabel" x="450" y="210" text-anchor="middle" font-weight="600" fill="#f57c00">Duplicate on retry</text>
+  <text class="dark-sublabel" x="450" y="210" text-anchor="middle" font-weight="600" fill="#ff9800" style="display:none">Duplicate on retry</text>
+  <text class="sublabel" x="450" y="228" text-anchor="middle">Need idempotent consumer</text>
+  <text class="dark-sublabel" x="450" y="228" text-anchor="middle">Need idempotent consumer</text>
+
+  <!-- EXACTLY-ONCE -->
+  <text class="label" x="750" y="70" text-anchor="middle" font-size="14">Exactly-Once</text>
+  <text class="dark-label" x="750" y="70" text-anchor="middle" font-size="14" style="display:none">Exactly-Once</text>
+
+  <rect class="box-good" x="630" y="85" width="240" height="150" rx="6" />
+  <rect class="dark-box-good" x="630" y="85" width="240" height="150" rx="6" style="display:none" />
+
+  <!-- Flow: transactional -->
+  <rect class="box" x="650" y="100" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="650" y="100" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="690" y="124" text-anchor="middle">Process</text>
+  <text class="dark-sublabel" x="690" y="124" text-anchor="middle" style="display:none">Process</text>
+
+  <path class="arrow-good" d="M 730 120 L 770 120" />
+  <path class="dark-arrow-good" d="M 730 120 L 770 120" style="display:none" />
+
+  <rect class="box" x="770" y="100" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="770" y="100" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="810" y="124" text-anchor="middle">Txn Commit</text>
+  <text class="dark-sublabel" x="810" y="124" text-anchor="middle" style="display:none">Txn Commit</text>
+
+  <text class="sublabel" x="750" y="165" text-anchor="middle" font-size="11">Atomic: both succeed or both fail</text>
+  <text class="dark-sublabel" x="750" y="165" text-anchor="middle" font-size="11" style="display:none">Atomic: both succeed or both fail</text>
+
+  <text class="sublabel" x="750" y="195" text-anchor="middle" font-weight="600" fill="#388e3c">No loss, no duplicates</text>
+  <text class="dark-sublabel" x="750" y="195" text-anchor="middle" font-weight="600" fill="#4caf50" style="display:none">No loss, no duplicates</text>
+  <text class="sublabel" x="750" y="215" text-anchor="middle">+20-40% latency overhead</text>
+  <text class="dark-sublabel" x="750" y="215" text-anchor="middle">+20-40% latency overhead</text>
+
+  <!-- MIDDLE SECTION: Detailed comparison -->
+  <text class="label" x="450" y="270" text-anchor="middle" font-size="15">Semantics Trade-off Analysis</text>
+  <text class="dark-label" x="450" y="270" text-anchor="middle" font-size="15" style="display:none">Semantics Trade-off Analysis</text>
+
+  <!-- At-most-once details -->
+  <rect class="box" x="30" y="290" width="270" height="210" rx="6" />
+  <rect class="dark-box" x="30" y="290" width="270" height="210" rx="6" style="display:none" />
+  <text class="label" x="165" y="315" text-anchor="middle">At-Most-Once</text>
+  <text class="dark-label" x="165" y="315" text-anchor="middle" style="display:none">At-Most-Once</text>
+  <text class="sublabel" x="45" y="340">Commit offset BEFORE processing</text>
+  <text class="dark-sublabel" x="45" y="340" style="display:none">Commit offset BEFORE processing</text>
+  <text class="sublabel" x="45" y="360">If consumer crashes: event lost</text>
+  <text class="dark-sublabel" x="45" y="360" style="display:none">If consumer crashes: event lost</text>
+  <text class="sublabel" x="45" y="380">Latency: lowest</text>
+  <text class="dark-sublabel" x="45" y="380" style="display:none">Latency: lowest</text>
+  <text class="sublabel" x="45" y="400">Throughput: highest</text>
+  <text class="dark-sublabel" x="45" y="400" style="display:none">Throughput: highest</text>
+  <text class="sublabel" x="45" y="420">Complexity: minimal</text>
+  <text class="dark-sublabel" x="45" y="420" style="display:none">Complexity: minimal</text>
+  <text class="sublabel" x="45" y="445" font-weight="600" fill="#c62828">Use: non-critical metrics, logging</text>
+  <text class="dark-sublabel" x="45" y="445" font-weight="600" fill="#ef5350" style="display:none">Use: non-critical metrics, logging</text>
+  <text class="sublabel" x="45" y="465">Accepts data loss on failure</text>
+  <text class="dark-sublabel" x="45" y="465" style="display:none">Accepts data loss on failure</text>
+  <text class="sublabel" x="45" y="485">Not suitable for business-critical</text>
+  <text class="dark-sublabel" x="45" y="485" style="display:none">Not suitable for business-critical</text>
+
+  <!-- At-least-once details -->
+  <rect class="box" x="315" y="290" width="270" height="210" rx="6" />
+  <rect class="dark-box" x="315" y="290" width="270" height="210" rx="6" style="display:none" />
+  <text class="label" x="450" y="315" text-anchor="middle">At-Least-Once (Recommended)</text>
+  <text class="dark-label" x="450" y="315" text-anchor="middle" style="display:none">At-Least-Once (Recommended)</text>
+  <text class="sublabel" x="330" y="340">Commit offset AFTER processing</text>
+  <text class="dark-sublabel" x="330" y="340" style="display:none">Commit offset AFTER processing</text>
+  <text class="sublabel" x="330" y="360">If consumer crashes: event redelivered</text>
+  <text class="dark-sublabel" x="330" y="360" style="display:none">If consumer crashes: event redelivered</text>
+  <text class="sublabel" x="330" y="380">Latency: moderate</text>
+  <text class="dark-sublabel" x="330" y="380" style="display:none">Latency: moderate</text>
+  <text class="sublabel" x="330" y="400">Throughput: high</text>
+  <text class="dark-sublabel" x="330" y="400" style="display:none">Throughput: high</text>
+  <text class="sublabel" x="330" y="420">Complexity: idempotent consumer</text>
+  <text class="dark-sublabel" x="330" y="420" style="display:none">Complexity: idempotent consumer</text>
+  <text class="sublabel" x="330" y="445" font-weight="600" fill="#388e3c">Use: most production systems</text>
+  <text class="dark-sublabel" x="330" y="445" font-weight="600" fill="#4caf50" style="display:none">Use: most production systems</text>
+  <text class="sublabel" x="330" y="465">No data loss, handles duplicates</text>
+  <text class="dark-sublabel" x="330" y="465" style="display:none">No data loss, handles duplicates</text>
+  <text class="sublabel" x="330" y="485">Idempotency is baseline anyway</text>
+  <text class="dark-sublabel" x="330" y="485" style="display:none">Idempotency is baseline anyway</text>
+
+  <!-- Exactly-once details -->
+  <rect class="box" x="600" y="290" width="270" height="210" rx="6" />
+  <rect class="dark-box" x="600" y="290" width="270" height="210" rx="6" style="display:none" />
+  <text class="label" x="735" y="315" text-anchor="middle">Exactly-Once</text>
+  <text class="dark-label" x="735" y="315" text-anchor="middle" style="display:none">Exactly-Once</text>
+  <text class="sublabel" x="615" y="340">Atomic txn: process + commit</text>
+  <text class="dark-sublabel" x="615" y="340" style="display:none">Atomic txn: process + commit</text>
+  <text class="sublabel" x="615" y="360">If consumer crashes: txn rolls back</text>
+  <text class="dark-sublabel" x="615" y="360" style="display:none">If consumer crashes: txn rolls back</text>
+  <text class="sublabel" x="615" y="380">Latency: +20-40% overhead</text>
+  <text class="dark-sublabel" x="615" y="380" style="display:none">Latency: +20-40% overhead</text>
+  <text class="sublabel" x="615" y="400">Throughput: reduced</text>
+  <text class="dark-sublabel" x="615" y="400" style="display:none">Throughput: reduced</text>
+  <text class="sublabel" x="615" y="420">Complexity: distributed txn</text>
+  <text class="dark-sublabel" x="615" y="420" style="display:none">Complexity: distributed txn</text>
+  <text class="sublabel" x="615" y="445" font-weight="600" fill="#f57c00">Use: financial transactions</text>
+  <text class="dark-sublabel" x="615" y="445" font-weight="600" fill="#ff9800" style="display:none">Use: financial transactions</text>
+  <text class="sublabel" x="615" y="465">Scoped to single Kafka cluster</text>
+  <text class="dark-sublabel" x="615" y="465" style="display:none">Scoped to single Kafka cluster</text>
+  <text class="sublabel" x="615" y="485">Does not cover external side effects</text>
+  <text class="dark-sublabel" x="615" y="485" style="display:none">Does not cover external side effects</text>
+</svg>

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560">
+  <defs>
+    <style>
+      .bg-light { fill: #f8fafc; }
+      .title-light { fill: #0f172a; font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; }
+      .label-light { fill: #0f172a; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .subtext-light { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; }
+      .box-rr-light { fill: #dbeafe; stroke: #3b82f6; stroke-width: 2; rx: 8; }
+      .box-lc-light { fill: #d1fae5; stroke: #10b981; stroke-width: 2; rx: 8; }
+      .box-ih-light { fill: #fef3c7; stroke: #f59e0b; stroke-width: 2; rx: 8; }
+      .box-ch-light { fill: #ede9fe; stroke: #8b5cf6; stroke-width: 2; rx: 8; }
+      .arrow-light { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#ahl); }
+      .marker-light { fill: #64748b; }
+    </style>
+    <marker id="ahl" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="marker-light"/>
+    </marker>
+  </defs>
+
+  <g id="light-mode">
+    <rect class="bg-light" width="960" height="560"/>
+    <text class="title-light" x="40" y="40">Load Balancing Algorithms Comparison</text>
+
+    <!-- Round Robin -->
+    <rect class="box-rr-light" x="40" y="80" width="200" height="200"/>
+    <text class="label-light" x="70" y="110">Round Robin</text>
+    <text class="subtext-light" x="55" y="140">Sequential rotation:</text>
+    <text class="subtext-light" x="55" y="160">R1 -> S1, R2 -> S2,</text>
+    <text class="subtext-light" x="55" y="180">R3 -> S3, R4 -> S1</text>
+    <text class="subtext-light" x="55" y="210">Best for: uniform</text>
+    <text class="subtext-light" x="55" y="230">request costs</text>
+    <text class="subtext-light" x="55" y="260">Weakness: ignores</text>
+    <text class="subtext-light" x="55" y="280">server load &amp; capacity</text>
+
+    <!-- Least Connections -->
+    <rect class="box-lc-light" x="280" y="80" width="200" height="200"/>
+    <text class="label-light" x="290" y="110">Least Connections</text>
+    <text class="subtext-light" x="295" y="140">Tracks active conns:</text>
+    <text class="subtext-light" x="295" y="160">S1: 5, S2: 12, S3: 3</text>
+    <text class="subtext-light" x="295" y="180">Next -> S3 (lowest)</text>
+    <text class="subtext-light" x="295" y="210">Best for: long-lived</text>
+    <text class="subtext-light" x="295" y="230">connections (WS, SSE)</text>
+    <text class="subtext-light" x="295" y="260">Weakness: needs state</text>
+    <text class="subtext-light" x="295" y="280">tracking per request</text>
+
+    <!-- IP Hash -->
+    <rect class="box-ih-light" x="520" y="80" width="200" height="200"/>
+    <text class="label-light" x="560" y="110">IP Hash</text>
+    <text class="subtext-light" x="535" y="140">hash(client_ip) % N</text>
+    <text class="subtext-light" x="535" y="160">Maps same IP to same</text>
+    <text class="subtext-light" x="535" y="180">server consistently</text>
+    <text class="subtext-light" x="535" y="210">Best for: session</text>
+    <text class="subtext-light" x="535" y="230">affinity without cookies</text>
+    <text class="subtext-light" x="535" y="260">Weakness: NAT pools</text>
+    <text class="subtext-light" x="535" y="280">skew distribution</text>
+
+    <!-- Consistent Hashing -->
+    <rect class="box-ch-light" x="760" y="80" width="170" height="200"/>
+    <text class="label-light" x="770" y="110">Consistent Hashing</text>
+    <text class="subtext-light" x="770" y="140">Hash ring with</text>
+    <text class="subtext-light" x="770" y="160">virtual nodes (150-250</text>
+    <text class="subtext-light" x="770" y="180">per physical node)</text>
+    <text class="subtext-light" x="770" y="210">Best for: cache</text>
+    <text class="subtext-light" x="770" y="230">distrib., session data</text>
+    <text class="subtext-light" x="770" y="260">Weakness: complex</text>
+    <text class="subtext-light" x="770" y="280">ring management</text>
+
+    <!-- Hash Ring Visualization -->
+    <text class="label-light" x="40" y="340">Consistent Hashing Ring (visualized)</text>
+    <circle cx="480" cy="450" r="90" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+    <!-- Virtual nodes on ring -->
+    <circle cx="480" cy="360" r="5" fill="#3b82f6"/>
+    <text class="subtext-light" x="490" y="358">S1-v1</text>
+    <circle cx="560" cy="420" r="5" fill="#10b981"/>
+    <text class="subtext-light" x="570" y="418">S2-v1</text>
+    <circle cx="530" cy="510" r="5" fill="#f59e0b"/>
+    <text class="subtext-light" x="540" y="520">S3-v1</text>
+    <circle cx="400" cy="500" r="5" fill="#3b82f6"/>
+    <text class="subtext-light" x="360" y="520">S1-v2</text>
+    <circle cx="390" cy="400" r="5" fill="#10b981"/>
+    <text class="subtext-light" x="340" y="398">S2-v2</text>
+    <circle cx="430" cy="365" r="5" fill="#f59e0b"/>
+    <text class="subtext-light" x="395" y="355">S3-v2</text>
+    <!-- Client key on ring -->
+    <circle cx="510" cy="370" r="4" fill="#ec4899"/>
+    <text class="subtext-light" x="518" y="365" fill="#ec4899">Key-&gt;S1</text>
+
+    <!-- Algorithm comparison table -->
+    <rect x="40" y="320" width="880" height="1" fill="#cbd5e1"/>
+
+    <!-- Summary row -->
+    <rect x="40" y="490" width="880" height="50" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    <text class="label-light" x="60" y="515">Production Choice: Weighted Least Connections + EWMA for latency-aware routing</text>
+    <text class="subtext-light" x="60" y="532">Combines active connection count with exponentially weighted moving average of response time to route to fastest healthy instance.</text>
+  </g>
+</svg>

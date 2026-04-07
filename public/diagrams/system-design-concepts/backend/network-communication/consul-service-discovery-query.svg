@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" width="900" height="650">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="650" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Consul Service Discovery: Query Flow</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Client → DNS Query / API Call → Consul Agent → Catalog Lookup → Return Healthy Service Instances</text>
+
+  <!-- CLIENT APPLICATION -->
+  <rect x="20" y="85" width="200" height="200" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="110" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Client Application</text>
+
+  <rect x="40" y="125" width="160" height="45" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="144" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Order Service</text>
+  <text x="120" y="161" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Needs: payment-svc</text>
+
+  <rect x="40" y="180" width="160" height="45" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="198" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Resolve: payment-svc</text>
+  <text x="120" y="215" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">via DNS or HTTP API</text>
+
+  <rect x="40" y="235" width="160" height="40" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="252" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Local agent: 127.0.0.1:8600</text>
+
+  <!-- DNS QUERY PATH -->
+  <rect x="280" y="85" width="280" height="120" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="420" y="110" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Path A: DNS Query</text>
+
+  <rect x="300" y="125" width="240" height="30" rx="5" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="420" y="144" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="middle">payment-svc.service.consul</text>
+
+  <rect x="300" y="160" width="240" height="30" rx="5" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="420" y="179" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="middle">payment-svc.service.consul.</text>
+
+  <rect x="300" y="195" width="240" height="0" rx="5" fill="none" stroke="none"/>
+
+  <!-- HTTP API PATH -->
+  <rect x="280" y="220" width="280" height="120" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="420" y="245" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Path B: HTTP API</text>
+
+  <rect x="300" y="260" width="240" height="30" rx="5" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="420" y="279" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="middle">GET /v1/catalog/service/payment-svc</text>
+
+  <rect x="300" y="295" width="240" height="30" rx="5" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="420" y="314" font-family="monospace" font-size="11" font-weight="700" fill="#1f2937" text-anchor="middle">GET /v1/health/service/payment-svc</text>
+
+  <!-- CONSUL AGENT (handling query) -->
+  <rect x="620" y="85" width="260" height="200" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="750" y="110" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Local Consul Agent</text>
+
+  <rect x="640" y="125" width="220" height="45" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="750" y="144" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">DNS Handler (port 8600)</text>
+  <text x="750" y="161" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Translates DNS → API query</text>
+
+  <rect x="640" y="180" width="220" height="45" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="750" y="198" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">HTTP API Handler</text>
+  <text x="750" y="215" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Direct query to catalog</text>
+
+  <rect x="640" y="235" width="220" height="40" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="750" y="254" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Response Cache</text>
+  <text x="750" y="271" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">TTL: ~0 (real-time)</text>
+
+  <!-- SERVICE CATALOG LOOKUP -->
+  <rect x="20" y="320" width="860" height="120" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="345" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Consul Server — Catalog Lookup</text>
+
+  <rect x="40" y="360" width="260" height="65" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="170" y="380" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Query: payment-svc</text>
+  <text x="170" y="398" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Filter: passing health only</text>
+  <text x="170" y="414" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Tag filter: v1 (if specified)</text>
+
+  <rect x="320" y="360" width="260" height="65" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="380" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Datacenter: dc1</text>
+  <text x="450" y="398" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Namespace: default</text>
+  <text x="450" y="414" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Partition: default (Enterprise)</text>
+
+  <rect x="600" y="360" width="260" height="65" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="730" y="380" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Blocking Query (Watch)</text>
+  <text x="730" y="398" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">index=N → wait for change</text>
+  <text x="730" y="414" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Reduces polling overhead</text>
+
+  <!-- RESPONSE: Healthy Instances -->
+  <rect x="20" y="460" width="860" height="150" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="485" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Response: Healthy Service Instances</text>
+
+  <!-- Instance 1 -->
+  <rect x="40" y="500" width="260" height="90" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="170" y="520" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Instance 1 (PASSING)</text>
+  <text x="170" y="538" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Address: 10.0.2.30</text>
+  <text x="170" y="554" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Port: 8443 | Tags: v1, stable</text>
+  <text x="170" y="570" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Meta: zone=us-east-1a</text>
+  <text x="170" y="586" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#059669" text-anchor="middle">Selected by client → CONNECT</text>
+
+  <!-- Instance 2 -->
+  <rect x="320" y="500" width="260" height="90" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="520" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Instance 2 (PASSING)</text>
+  <text x="450" y="538" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Address: 10.0.2.31</text>
+  <text x="450" y="554" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Port: 8443 | Tags: v1, stable</text>
+  <text x="450" y="570" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Meta: zone=us-east-1b</text>
+  <text x="450" y="586" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Available (round-robin)</text>
+
+  <!-- Instance 3 (unhealthy) -->
+  <rect x="600" y="500" width="260" height="90" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="730" y="520" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">Instance 3 (CRITICAL)</text>
+  <text x="730" y="538" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Address: 10.0.2.32</text>
+  <text x="730" y="554" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Port: 8443 | Tags: v1, stable</text>
+  <text x="730" y="570" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Check: HTTP /health failed</text>
+  <text x="730" y="586" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">EXCLUDED from response</text>
+
+  <!-- Query flow arrows -->
+  <line x1="220" y1="195" x2="280" y2="195" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="560" y1="195" x2="620" y2="195" stroke="#ca8a04" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <path d="M 750 285 Q 750 350, 750 360" fill="none" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <path d="M 450 440 Q 450 450, 450 460" fill="none" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Footer -->
+  <text x="450" y="630" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">DNS queries return A records (IPs) or SRV records (IP + port). HTTP API returns full service definitions with health status and metadata.</text>
+  <text x="450" y="648" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Clients use client-side load balancing by selecting from the returned healthy instance list (random, round-robin, or least-connections).</text>
+</svg>

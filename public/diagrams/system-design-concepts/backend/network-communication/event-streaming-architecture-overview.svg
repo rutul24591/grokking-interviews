@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" fill="none" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .dark-bg { fill: #1a1a2e; }
+      .box { fill: #f0f4ff; stroke: #4a6cf7; stroke-width: 2; }
+      .dark-box { fill: #252545; stroke: #6b8aff; stroke-width: 2; }
+      .box-accent { fill: #e8f5e9; stroke: #388e3c; stroke-width: 2; }
+      .dark-box-accent { fill: #1e3a2f; stroke: #4caf50; stroke-width: 2; }
+      .box-warn { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .dark-box-warn { fill: #3e2723; stroke: #ff9800; stroke-width: 2; }
+      .title { font-size: 18px; font-weight: 700; fill: #1a1a2e; }
+      .dark-title { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .label { font-size: 13px; font-weight: 600; fill: #2d3748; }
+      .dark-label { font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .sublabel { font-size: 11px; font-weight: 400; fill: #718096; }
+      .dark-sublabel { font-size: 11px; font-weight: 400; fill: #a0aec0; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dark-arrow { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead); }
+      .partition-line { stroke: #cbd5e0; stroke-width: 1; stroke-dasharray: 4 4; }
+      .dark-partition-line { stroke: #4a5568; stroke-width: 1; stroke-dasharray: 4 4; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+    <marker id="dark-arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0" />
+    </marker>
+  </defs>
+
+  <!-- Light mode background -->
+  <rect class="bg" width="900" height="520" rx="8" />
+  <!-- Dark mode background (shown via CSS media query) -->
+  <rect class="dark-bg" width="900" height="520" rx="8" style="display:none" />
+
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .bg { display: none; }
+      .dark-bg { display: block; }
+      .box { display: none; }
+      .dark-box { display: block; }
+      .box-accent { display: none; }
+      .dark-box-accent { display: block; }
+      .box-warn { display: none; }
+      .dark-box-warn { display: block; }
+      .title { display: none; }
+      .dark-title { display: block; }
+      .label { display: none; }
+      .dark-label { display: block; }
+      .sublabel { display: none; }
+      .dark-sublabel { display: block; }
+      .arrow { display: none; }
+      .dark-arrow { display: block; }
+      .partition-line { display: none; }
+      .dark-partition-line { display: block; }
+    }
+  </style>
+
+  <!-- Title -->
+  <text class="title" x="450" y="32" text-anchor="middle">Event Streaming Architecture Overview</text>
+  <text class="dark-title" x="450" y="32" text-anchor="middle">Event Streaming Architecture Overview</text>
+
+  <!-- Producers Section -->
+  <rect class="box" x="30" y="60" width="180" height="120" rx="6" />
+  <rect class="dark-box" x="30" y="60" width="180" height="120" rx="6" style="display:none" />
+  <text class="label" x="120" y="85" text-anchor="middle">Producers</text>
+  <text class="dark-label" x="120" y="85" text-anchor="middle" style="display:none">Producers</text>
+  <text class="sublabel" x="120" y="105" text-anchor="middle">User Service</text>
+  <text class="dark-sublabel" x="120" y="105" text-anchor="middle" style="display:none">User Service</text>
+  <text class="sublabel" x="120" y="125" text-anchor="middle">Order Service</text>
+  <text class="dark-sublabel" x="120" y="125" text-anchor="middle" style="display:none">Order Service</text>
+  <text class="sublabel" x="120" y="145" text-anchor="middle">Payment Service</text>
+  <text class="dark-sublabel" x="120" y="145" text-anchor="middle" style="display:none">Payment Service</text>
+  <text class="sublabel" x="120" y="165" text-anchor="middle">Inventory Service</text>
+  <text class="dark-sublabel" x="120" y="165" text-anchor="middle" style="display:none">Inventory Service</text>
+
+  <!-- Arrow from Producers to Topic -->
+  <path class="arrow" d="M 210 120 L 290 120" />
+  <path class="dark-arrow" d="M 210 120 L 290 120" style="display:none" />
+
+  <!-- Topic with Partitions -->
+  <rect class="box-accent" x="290" y="55" width="320" height="130" rx="6" />
+  <rect class="dark-box-accent" x="290" y="55" width="320" height="130" rx="6" style="display:none" />
+  <text class="label" x="450" y="80" text-anchor="middle">Topic: order-events</text>
+  <text class="dark-label" x="450" y="80" text-anchor="middle" style="display:none">Topic: order-events</text>
+
+  <!-- Partition 0 -->
+  <rect class="box" x="300" y="90" width="95" height="85" rx="4" />
+  <rect class="dark-box" x="300" y="90" width="95" height="85" rx="4" style="display:none" />
+  <text class="label" x="347" y="110" text-anchor="middle" font-size="12">Partition 0</text>
+  <text class="dark-label" x="347" y="110" text-anchor="middle" font-size="12" style="display:none">Partition 0</text>
+  <text class="sublabel" x="347" y="130" text-anchor="middle">offset: 0</text>
+  <text class="dark-sublabel" x="347" y="130" text-anchor="middle" style="display:none">offset: 0</text>
+  <text class="sublabel" x="347" y="148" text-anchor="middle">offset: 1</text>
+  <text class="dark-sublabel" x="347" y="148" text-anchor="middle" style="display:none">offset: 1</text>
+  <text class="sublabel" x="347" y="166" text-anchor="middle">offset: 2</text>
+  <text class="dark-sublabel" x="347" y="166" text-anchor="middle" style="display:none">offset: 2</text>
+
+  <!-- Partition 1 -->
+  <rect class="box" x="402" y="90" width="95" height="85" rx="4" />
+  <rect class="dark-box" x="402" y="90" width="95" height="85" rx="4" style="display:none" />
+  <text class="label" x="449" y="110" text-anchor="middle" font-size="12">Partition 1</text>
+  <text class="dark-label" x="449" y="110" text-anchor="middle" font-size="12" style="display:none">Partition 1</text>
+  <text class="sublabel" x="449" y="130" text-anchor="middle">offset: 0</text>
+  <text class="dark-sublabel" x="449" y="130" text-anchor="middle" style="display:none">offset: 0</text>
+  <text class="sublabel" x="449" y="148" text-anchor="middle">offset: 1</text>
+  <text class="dark-sublabel" x="449" y="148" text-anchor="middle" style="display:none">offset: 1</text>
+  <text class="sublabel" x="449" y="166" text-anchor="middle">offset: 2</text>
+  <text class="dark-sublabel" x="449" y="166" text-anchor="middle" style="display:none">offset: 2</text>
+
+  <!-- Partition 2 -->
+  <rect class="box" x="504" y="90" width="95" height="85" rx="4" />
+  <rect class="dark-box" x="504" y="90" width="95" height="85" rx="4" style="display:none" />
+  <text class="label" x="551" y="110" text-anchor="middle" font-size="12">Partition 2</text>
+  <text class="dark-label" x="551" y="110" text-anchor="middle" font-size="12" style="display:none">Partition 2</text>
+  <text class="sublabel" x="551" y="130" text-anchor="middle">offset: 0</text>
+  <text class="dark-sublabel" x="551" y="130" text-anchor="middle" style="display:none">offset: 0</text>
+  <text class="sublabel" x="551" y="148" text-anchor="middle">offset: 1</text>
+  <text class="dark-sublabel" x="551" y="148" text-anchor="middle" style="display:none">offset: 1</text>
+  <text class="sublabel" x="551" y="166" text-anchor="middle">offset: 2</text>
+  <text class="dark-sublabel" x="551" y="166" text-anchor="middle" style="display:none">offset: 2</text>
+
+  <!-- Arrow from Topic to Stream Processor -->
+  <path class="arrow" d="M 450 185 L 450 230" />
+  <path class="dark-arrow" d="M 450 185 L 450 230" style="display:none" />
+
+  <!-- Stream Processor -->
+  <rect class="box-warn" x="290" y="230" width="320" height="100" rx="6" />
+  <rect class="dark-box-warn" x="290" y="230" width="320" height="100" rx="6" style="display:none" />
+  <text class="label" x="450" y="258" text-anchor="middle">Stream Processor</text>
+  <text class="dark-label" x="450" y="258" text-anchor="middle" style="display:none">Stream Processor</text>
+  <text class="sublabel" x="450" y="278" text-anchor="middle">Filter &#8594; Transform &#8594; Aggregate &#8594; Join</text>
+  <text class="dark-sublabel" x="450" y="278" text-anchor="middle" style="display:none">Filter &#8594; Transform &#8594; Aggregate &#8594; Join</text>
+  <text class="sublabel" x="450" y="298" text-anchor="middle">Windowed aggregations, stateful processing</text>
+  <text class="dark-sublabel" x="450" y="298" text-anchor="middle" style="display:none">Windowed aggregations, stateful processing</text>
+  <text class="sublabel" x="450" y="318" text-anchor="middle">Kafka Streams / Apache Flink</text>
+  <text class="dark-sublabel" x="450" y="318" text-anchor="middle" style="display:none">Kafka Streams / Apache Flink</text>
+
+  <!-- Arrow from Stream Processor to Output Topic -->
+  <path class="arrow" d="M 450 330 L 450 370" />
+  <path class="dark-arrow" d="M 450 330 L 450 370" style="display:none" />
+
+  <!-- Output Topic -->
+  <rect class="box-accent" x="310" y="370" width="280" height="50" rx="6" />
+  <rect class="dark-box-accent" x="310" y="370" width="280" height="50" rx="6" style="display:none" />
+  <text class="label" x="450" y="400" text-anchor="middle">Output Topic: order-metrics</text>
+  <text class="dark-label" x="450" y="400" text-anchor="middle" style="display:none">Output Topic: order-metrics</text>
+
+  <!-- Arrow from Output Topic to Consumer Groups -->
+  <path class="arrow" d="M 450 420 L 450 455" />
+  <path class="dark-arrow" d="M 450 420 L 450 455" style="display:none" />
+
+  <!-- Consumer Group A -->
+  <rect class="box" x="120" y="455" width="200" height="55" rx="6" />
+  <rect class="dark-box" x="120" y="455" width="200" height="55" rx="6" style="display:none" />
+  <text class="label" x="220" y="475" text-anchor="middle">Consumer Group A</text>
+  <text class="dark-label" x="220" y="475" text-anchor="middle" style="display:none">Consumer Group A</text>
+  <text class="sublabel" x="220" y="495" text-anchor="middle">Analytics Dashboard</text>
+  <text class="dark-sublabel" x="220" y="495" text-anchor="middle" style="display:none">Analytics Dashboard</text>
+
+  <!-- Consumer Group B -->
+  <rect class="box" x="370" y="455" width="200" height="55" rx="6" />
+  <rect class="dark-box" x="370" y="455" width="200" height="55" rx="6" style="display:none" />
+  <text class="label" x="470" y="475" text-anchor="middle">Consumer Group B</text>
+  <text class="dark-label" x="470" y="475" text-anchor="middle" style="display:none">Consumer Group B</text>
+  <text class="sublabel" x="470" y="495" text-anchor="middle">ML Feature Pipeline</text>
+  <text class="dark-sublabel" x="470" y="495" text-anchor="middle" style="display:none">ML Feature Pipeline</text>
+
+  <!-- Consumer Group C -->
+  <rect class="box" x="620" y="455" width="200" height="55" rx="6" />
+  <rect class="dark-box" x="620" y="455" width="200" height="55" rx="6" style="display:none" />
+  <text class="label" x="720" y="475" text-anchor="middle">Consumer Group C</text>
+  <text class="dark-label" x="720" y="475" text-anchor="middle" style="display:none">Consumer Group C</text>
+  <text class="sublabel" x="720" y="495" text-anchor="middle">Alerting System</text>
+  <text class="dark-sublabel" x="720" y="495" text-anchor="middle" style="display:none">Alerting System</text>
+
+  <!-- Arrow from Topic to Consumer Groups (fan-out) -->
+  <path class="arrow" d="M 610 120 L 720 120 L 720 455" />
+  <path class="dark-arrow" d="M 610 120 L 720 120 L 720 455" style="display:none" />
+
+  <!-- Fan-out label -->
+  <text class="sublabel" x="735" y="280" font-size="10">Fan-out:</text>
+  <text class="dark-sublabel" x="735" y="280" font-size="10" style="display:none">Fan-out:</text>
+  <text class="sublabel" x="735" y="295" font-size="10">Each group</text>
+  <text class="dark-sublabel" x="735" y="295" font-size="10" style="display:none">Each group</text>
+  <text class="sublabel" x="735" y="310" font-size="10">receives</text>
+  <text class="dark-sublabel" x="735" y="310" font-size="10" style="display:none">receives</text>
+  <text class="sublabel" x="735" y="325" font-size="10">full stream</text>
+  <text class="dark-sublabel" x="735" y="325" font-size="10" style="display:none">full stream</text>
+</svg>

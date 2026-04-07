@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" width="900" height="620">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="620" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Message Broker Architecture</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Producers, Broker with Queues/Topics, and Consumer Message Flow</text>
+
+  <!-- PRODUCERS SECTION -->
+  <rect x="20" y="90" width="200" height="440" rx="10" fill="#f0f9ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="115" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Producers</text>
+
+  <!-- Producer 1 -->
+  <rect x="40" y="140" width="160" height="50" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="160" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Order Service</text>
+  <text x="120" y="178" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Publish: order.created</text>
+
+  <!-- Producer 2 -->
+  <rect x="40" y="210" width="160" height="50" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="230" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">User Service</text>
+  <text x="120" y="248" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Publish: user.updated</text>
+
+  <!-- Producer 3 -->
+  <rect x="40" y="280" width="160" height="50" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="300" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Payment Gateway</text>
+  <text x="120" y="318" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Publish: payment.processed</text>
+
+  <!-- Producer 4 -->
+  <rect x="40" y="350" width="160" height="50" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="370" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Inventory Service</text>
+  <text x="120" y="388" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Publish: stock.low</text>
+
+  <!-- BROKER SECTION -->
+  <rect x="300" y="90" width="300" height="440" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="115" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Message Broker</text>
+
+  <!-- Queue Topic 1 -->
+  <rect x="320" y="140" width="260" height="70" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="160" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">Topic: order-events</text>
+  <rect x="335" y="172" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="365" y="189" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 1</text>
+  <rect x="400" y="172" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="430" y="189" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 2</text>
+  <rect x="465" y="172" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="495" y="189" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 3</text>
+  <text x="545" y="189" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151">FIFO Queue</text>
+
+  <!-- Queue Topic 2 -->
+  <rect x="320" y="225" width="260" height="70" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="245" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">Topic: user-events</text>
+  <rect x="335" y="257" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="365" y="274" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 1</text>
+  <rect x="400" y="257" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="430" y="274" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 2</text>
+  <text x="510" y="274" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151">FIFO Queue</text>
+
+  <!-- Queue Topic 3 -->
+  <rect x="320" y="310" width="260" height="70" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="330" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">Topic: payment-events</text>
+  <rect x="335" y="342" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="365" y="359" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 1</text>
+  <text x="440" y="359" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151">FIFO Queue</text>
+
+  <!-- Queue Topic 4 -->
+  <rect x="320" y="395" width="260" height="70" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="415" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1f2937" text-anchor="middle">Topic: inventory-events</text>
+  <rect x="335" y="427" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="365" y="444" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 1</text>
+  <rect x="400" y="427" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="430" y="444" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 2</text>
+  <rect x="465" y="427" width="60" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="495" y="444" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 3</text>
+  <rect x="530" y="427" width="40" height="24" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="550" y="444" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Msg 4</text>
+
+  <!-- Broker internal annotation -->
+  <text x="450" y="505" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Routing, Persistence, Deduplication, Ordering Guarantees</text>
+
+  <!-- CONSUMERS SECTION -->
+  <rect x="680" y="90" width="200" height="440" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="115" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Consumers</text>
+
+  <!-- Consumer 1 -->
+  <rect x="700" y="140" width="160" height="50" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="160" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Notification Svc</text>
+  <text x="780" y="178" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Subscribe: order.*</text>
+
+  <!-- Consumer 2 -->
+  <rect x="700" y="210" width="160" height="50" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="230" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Analytics Engine</text>
+  <text x="780" y="248" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Subscribe: all events</text>
+
+  <!-- Consumer 3 -->
+  <rect x="700" y="280" width="160" height="50" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="300" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Fraud Detection</text>
+  <text x="780" y="318" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Subscribe: payment.*</text>
+
+  <!-- Consumer 4 -->
+  <rect x="700" y="350" width="160" height="50" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="370" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Replenishment</text>
+  <text x="780" y="388" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Subscribe: inventory.*</text>
+
+  <!-- Consumer 5 -->
+  <rect x="700" y="420" width="160" height="50" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="440" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Audit Logger</text>
+  <text x="780" y="458" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Subscribe: all events</text>
+
+  <!-- Message Flow Arrows: Producer to Broker -->
+  <line x1="200" y1="165" x2="320" y2="175" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+  <line x1="200" y1="235" x2="320" y2="260" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+  <line x1="200" y1="305" x2="320" y2="345" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+  <line x1="200" y1="375" x2="320" y2="430" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+
+  <!-- Message Flow Arrows: Broker to Consumer -->
+  <line x1="580" y1="175" x2="700" y2="165" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  <line x1="580" y1="260" x2="700" y2="235" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  <line x1="580" y1="345" x2="700" y2="305" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  <line x1="580" y1="430" x2="700" y2="375" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  <line x1="580" y1="430" x2="700" y2="445" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+
+  <!-- Acknowledgment Flow -->
+  <path d="M 700 460 Q 600 490, 580 490 Q 450 490, 450 520" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowhead)"/>
+  <text x="520" y="510" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#374151" text-anchor="middle">ACK/NACK</text>
+
+  <!-- Footer annotation -->
+  <text x="450" y="560" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Delivery Guarantees: At-Least-Once | Exactly-Once | At-Most-Once</text>
+  <text x="450" y="580" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Message brokers decouple producers from consumers, enabling asynchronous communication with guaranteed delivery and ordering.</text>
+</svg>

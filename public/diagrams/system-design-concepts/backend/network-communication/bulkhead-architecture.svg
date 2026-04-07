@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Bulkhead Architecture Pattern</title>
+  <desc id="desc">Bulkhead pattern showing separate thread pools and connection pools for different services, comparing shared pool failure cascade with isolated pool failure containment</desc>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- White background -->
+  <rect width="1200" height="800" fill="#ffffff"/>
+
+  <!-- Title section -->
+  <text x="600" y="36" text-anchor="middle" font-size="22" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Architecture Pattern</text>
+  <text x="600" y="60" text-anchor="middle" font-size="15" font-weight="600" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Shared Pool Failure Cascade vs. Isolated Pool Failure Containment</text>
+
+  <!-- ==================== LEFT: SHARED POOL (Problem) ==================== -->
+  <rect x="20" y="85" width="570" height="340" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="40" y="100" width="530" height="38" rx="6" fill="#dc2626"/>
+  <text x="305" y="127" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Shared Thread Pool (No Bulkheads) -- PROBLEM</text>
+
+  <!-- Shared pool visualization -->
+  <rect x="50" y="155" width="500" height="80" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="300" y="178" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Shared Thread Pool: 100 threads total (all services compete)</text>
+
+  <!-- Threads - all exhausted -->
+  <!-- Service A threads (slow, causing exhaustion) -->
+  <rect x="60" y="190" width="280" height="35" rx="4" fill="#dc2626" stroke="#991b1b" stroke-width="1"/>
+  <text x="200" y="213" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service A: 80 threads (SLOW - DB timeout, all threads stuck)</text>
+
+  <!-- Service B threads -->
+  <rect x="350" y="190" width="100" height="35" rx="4" fill="#fbbf24" stroke="#92400e" stroke-width="1"/>
+  <text x="400" y="213" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service B: 15 threads</text>
+
+  <!-- Service C threads -->
+  <rect x="460" y="190" width="80" height="35" rx="4" fill="#fbbf24" stroke="#92400e" stroke-width="1"/>
+  <text x="500" y="213" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Svc C: 5 threads</text>
+
+  <!-- Cascade arrows -->
+  <line x1="200" y1="235" x2="200" y2="270" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <line x1="400" y1="235" x2="400" y2="270" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Cascade effect boxes -->
+  <rect x="60" y="275" width="260" height="50" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="190" y="298" text-anchor="middle" font-size="12" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service A: All threads blocked</text>
+  <text x="190" y="316" text-anchor="middle" font-size="10" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Requests queue up, timeout cascades</text>
+
+  <rect x="340" y="275" width="220" height="50" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="298" text-anchor="middle" font-size="12" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service B &amp; C: Starved!</text>
+  <text x="450" y="316" text-anchor="middle" font-size="10" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Healthy services get no threads</text>
+
+  <!-- Impact annotation -->
+  <rect x="50" y="340" width="500" height="70" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="300" y="363" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Impact: Total System Degradation</text>
+  <text x="65" y="383" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; One slow service exhausts ALL threads in the shared pool</text>
+  <text x="65" y="401" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Healthy services (B, C) cannot serve requests despite being operational</text>
+  <text x="65" y="419" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Cascading failure brings down the entire application</text>
+
+  <!-- ==================== RIGHT: BULKHEAD POOLS (Solution) ==================== -->
+  <rect x="610" y="85" width="570" height="340" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="630" y="100" width="530" height="38" rx="6" fill="#16a34a"/>
+  <text x="895" y="127" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Pattern (Isolated Pools) -- SOLUTION</text>
+
+  <!-- Service A Pool (exhausted but contained) -->
+  <rect x="630" y="155" width="170" height="170" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <rect x="640" y="165" width="150" height="28" rx="4" fill="#dc2626"/>
+  <text x="715" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool A (30 threads)</text>
+
+  <!-- All threads exhausted in Pool A -->
+  <rect x="645" y="205" width="140" height="22" rx="3" fill="#dc2626"/>
+  <text x="715" y="221" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Thread 1 - BLOCKED</text>
+  <rect x="645" y="230" width="140" height="22" rx="3" fill="#dc2626"/>
+  <text x="715" y="246" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Thread 2 - BLOCKED</text>
+  <rect x="645" y="255" width="140" height="22" rx="3" fill="#dc2626"/>
+  <text x="715" y="271" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">... 30 threads ALL BLOCKED</text>
+  <text x="715" y="300" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">POOL EXHAUSTED</text>
+  <text x="715" y="316" text-anchor="middle" font-size="9" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Requests rejected (503)</text>
+
+  <!-- Service B Pool (healthy) -->
+  <rect x="820" y="155" width="170" height="170" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <rect x="830" y="165" width="150" height="28" rx="4" fill="#16a34a"/>
+  <text x="905" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool B (40 threads)</text>
+
+  <!-- Threads healthy in Pool B -->
+  <rect x="835" y="205" width="140" height="22" rx="3" fill="#86efac"/>
+  <text x="905" y="221" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Thread 1 - ACTIVE</text>
+  <rect x="835" y="230" width="140" height="22" rx="3" fill="#86efac"/>
+  <text x="905" y="246" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Thread 2 - ACTIVE</text>
+  <rect x="835" y="255" width="140" height="22" rx="3" fill="#86efac"/>
+  <text x="905" y="271" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Thread 3 - ACTIVE</text>
+  <rect x="835" y="280" width="140" height="22" rx="3" fill="#bbf7d0"/>
+  <text x="905" y="296" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">... 37 more AVAILABLE</text>
+  <text x="905" y="316" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">HEALTHY</text>
+
+  <!-- Service C Pool (healthy) -->
+  <rect x="1010" y="155" width="150" height="170" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <rect x="1020" y="165" width="130" height="28" rx="4" fill="#16a34a"/>
+  <text x="1085" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool C (30 threads)</text>
+
+  <!-- Threads healthy in Pool C -->
+  <rect x="1025" y="205" width="120" height="22" rx="3" fill="#86efac"/>
+  <text x="1085" y="221" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Thread 1 - ACTIVE</text>
+  <rect x="1025" y="230" width="120" height="22" rx="3" fill="#86efac"/>
+  <text x="1085" y="246" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Thread 2 - ACTIVE</text>
+  <rect x="1025" y="255" width="120" height="22" rx="3" fill="#bbf7d0"/>
+  <text x="1085" y="271" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">... 28 more AVAILABLE</text>
+  <text x="1085" y="316" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">HEALTHY</text>
+
+  <!-- Containment annotation -->
+  <rect x="630" y="340" width="530" height="70" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="895" y="363" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Impact: Failure Contained to Service A Only</text>
+  <text x="645" y="383" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Service A pool exhausted -- only Service A requests fail with 503</text>
+  <text x="645" y="401" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Service B and C continue operating normally with full capacity</text>
+  <text x="645" y="419" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; System remains partially functional instead of total collapse</text>
+
+  <!-- ==================== BOTTOM: BULKHEAD CONFIGURATION ==================== -->
+  <text x="600" y="470" text-anchor="middle" font-size="16" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Configuration Comparison</text>
+
+  <!-- Shared Pool Config -->
+  <rect x="20" y="495" width="570" height="290" rx="10" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <rect x="40" y="510" width="530" height="32" rx="6" fill="#6b7280"/>
+  <text x="305" y="532" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Shared Pool Configuration</text>
+
+  <text x="35" y="565" font-size="12" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Thread Pool Executor:</text>
+  <text x="35" y="588" font-size="11" font-weight="600" fill="#1f2937" font-family="'Courier New', Courier, monospace">corePoolSize = 100</text>
+  <text x="35" y="608" font-size="11" font-weight="600" fill="#1f2937" font-family="'Courier New', Courier, monospace">maxPoolSize = 100</text>
+  <text x="35" y="628" font-size="11" font-weight="600" fill="#1f2937" font-family="'Courier New', Courier, monospace">queueCapacity = 1000</text>
+
+  <text x="35" y="660" font-size="12" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Resource Allocation:</text>
+  <rect x="50" y="675" width="460" height="22" rx="4" fill="#e5e7eb"/>
+  <rect x="50" y="675" width="320" height="22" rx="4" fill="#dc2626"/>
+  <text x="210" y="691" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service A: 80 threads (stuck)</text>
+  <rect x="375" y="675" width="70" height="22" rx="4" fill="#fbbf24"/>
+  <text x="410" y="691" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">B: 15</text>
+  <rect x="450" y="675" width="60" height="22" rx="4" fill="#fbbf24"/>
+  <text x="480" y="691" text-anchor="middle" font-size="9" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">C: 5</text>
+
+  <text x="35" y="720" font-size="12" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Result: Single point of failure affects all services. No isolation boundary.</text>
+
+  <!-- Bulkhead Pool Config -->
+  <rect x="610" y="495" width="570" height="290" rx="10" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <rect x="630" y="510" width="530" height="32" rx="6" fill="#6b7280"/>
+  <text x="895" y="532" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Pool Configuration</text>
+
+  <text x="625" y="565" font-size="12" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Isolated Thread Pool Executors:</text>
+  <text x="625" y="588" font-size="11" font-weight="600" fill="#1f2937" font-family="'Courier New', Courier, monospace">Pool A: corePoolSize = 30, maxPoolSize = 30</text>
+  <text x="625" y="608" font-size="11" font-weight="600" fill="#1f2937" font-family="'Courier New', Courier, monospace">Pool B: corePoolSize = 40, maxPoolSize = 40</text>
+  <text x="625" y="628" font-size="11" font-weight="600" fill="#1f2937" font-family="'Courier New', Courier, monospace">Pool C: corePoolSize = 30, maxPoolSize = 30</text>
+  <text x="625" y="648" font-size="11" font-weight="600" fill="#1f2937" font-family="'Courier New', Courier, monospace">Total: 100 threads (same total, but isolated)</text>
+
+  <text x="625" y="675" font-size="12" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Resource Allocation:</text>
+  <!-- Pool A bar -->
+  <rect x="640" y="695" width="140" height="22" rx="4" fill="#dc2626"/>
+  <text x="710" y="711" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool A: 30/30 EXHAUSTED</text>
+  <!-- Pool B bar -->
+  <rect x="800" y="695" width="170" height="22" rx="4" fill="#86efac"/>
+  <text x="885" y="711" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool B: 12/40 used (70% free)</text>
+  <!-- Pool C bar -->
+  <rect x="990" y="695" width="140" height="22" rx="4" fill="#86efac"/>
+  <text x="1060" y="711" text-anchor="middle" font-size="9" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool C: 8/30 used (73% free)</text>
+
+  <text x="625" y="740" font-size="12" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Result: Failure isolated. B and C unaffected. A fails fast with 503.</text>
+
+  <!-- Divider line -->
+  <line x1="600" y1="495" x2="600" y2="785" stroke="#d1d5db" stroke-width="2" stroke-dasharray="8 4"/>
+</svg>

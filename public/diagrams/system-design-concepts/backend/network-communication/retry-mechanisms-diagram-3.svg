@@ -1,10 +1,69 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Retry Mechanisms Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Retry Mechanisms</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+  <defs>
+    <style>
+      .bg-light { fill: #ffffff; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 18px; font-weight: 700; fill: #0f172a; }
+      .axis { stroke: #94a3b8; stroke-width: 1.5; }
+      .label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; fill: #0f172a; }
+      .label-small { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #475569; }
+      .label-bold { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; }
+      .grid { stroke: #e2e8f0; stroke-width: 0.5; stroke-dasharray: 4 4; }
+    </style>
+  </defs>
+
+  <rect class="bg-light" width="960" height="420" />
+
+  <!-- Title -->
+  <text x="480" y="35" text-anchor="middle" class="title">Retry Budget Enforcement: Preventing Retry Storms</text>
+
+  <!-- Axes -->
+  <line x1="100" y1="350" x2="860" y2="350" class="axis" />
+  <line x1="100" y1="350" x2="100" y2="60" class="axis" />
+  <text x="55" y="200" text-anchor="middle" class="label" transform="rotate(-90 55 200)">Request Rate</text>
+  <text x="480" y="390" text-anchor="middle" class="label">Time</text>
+
+  <!-- Grid -->
+  <line x1="100" y1="290" x2="860" y2="290" class="grid" />
+  <line x1="100" y1="230" x2="860" y2="230" class="grid" />
+  <line x1="100" y1="170" x2="860" y2="170" class="grid" />
+  <line x1="100" y1="110" x2="860" y2="110" class="grid" />
+
+  <!-- Y-axis labels -->
+  <text x="90" y="294" text-anchor="end" class="label-small">Low</text>
+  <text x="90" y="234" text-anchor="end" class="label-small">Medium</text>
+  <text x="90" y="174" text-anchor="end" class="label-small">High</text>
+  <text x="90" y="114" text-anchor="end" class="label-small">Critical</text>
+
+  <!-- Budget limit line -->
+  <line x1="100" y1="170" x2="860" y2="170" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="8 6" />
+  <rect x="720" y="148" width="130" height="24" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1" />
+  <text x="785" y="165" text-anchor="middle" class="label-small" font-weight="700" fill="#dc2626">Retry Budget Limit</text>
+
+  <!-- Original traffic line -->
+  <path d="M 100 290 Q 200 285 300 280 Q 400 270 450 260 Q 500 240 550 230 Q 600 220 650 210 Q 700 200 750 195 Q 800 190 860 185" stroke="#3b82f6" stroke-width="3" fill="none" />
+  <text x="200" y="275" class="label-small" font-weight="700" fill="#2563eb">Original Traffic</text>
+
+  <!-- Retry traffic (without budget - would spike) -->
+  <path d="M 450 290 Q 500 280 530 250 Q 560 200 590 140 Q 620 100 650 80 Q 680 70 720 65" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6 4" fill="none" />
+  <text x="560" y="120" class="label-small" font-weight="700" fill="#d9770e">Without Budget</text>
+  <text x="560" y="135" class="label-small" fill="#d9770e">(unbounded growth)</text>
+
+  <!-- Retry traffic (with budget - capped) -->
+  <path d="M 450 290 Q 500 280 530 250 Q 560 220 590 195 Q 620 178 650 170" stroke="#22c55e" stroke-width="3" fill="none" />
+  <text x="590" y="210" class="label-small" font-weight="700" fill="#16a34a">With Budget (capped)</text>
+
+  <!-- Event marker: transient failure -->
+  <rect x="430" y="305" width="120" height="22" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1" />
+  <text x="490" y="320" text-anchor="middle" class="label-small" font-weight="700" fill="#dc2626">Transient failure</text>
+  <line x1="490" y1="305" x2="490" y2="290" stroke="#ef4444" stroke-width="1.5" />
+
+  <!-- Event marker: budget exhausted -->
+  <circle cx="650" cy="170" r="6" fill="#ef4444" />
+  <rect x="660" y="155" width="110" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" />
+  <text x="715" y="170" text-anchor="middle" class="label-small" font-weight="700" fill="#92400e">Budget exhausted:</text>
+  <text x="715" y="185" text-anchor="middle" class="label-small" fill="#92400e">retries suppressed</text>
+
+  <!-- Bottom annotation -->
+  <rect x="200" y="395" width="560" height="20" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1" />
+  <text x="480" y="409" text-anchor="middle" class="label-small" fill="#1e40af">Budget = 10-20% of total traffic | Sliding window (e.g., 1 minute) | Stop retries when budget exhausted</text>
 </svg>

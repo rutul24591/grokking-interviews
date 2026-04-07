@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" width="900" height="650">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="650" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">TCP Acknowledgment Timeout Flow</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Sender Sends Segment → Timer Starts → ACK Not Received → Retransmit After RTO</text>
+
+  <!-- SENDER -->
+  <rect x="20" y="85" width="380" height="520" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="210" y="110" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Sender (Host A)</text>
+
+  <!-- RECEIVER -->
+  <rect x="500" y="85" width="380" height="520" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="690" y="110" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Receiver (Host B)</text>
+
+  <!-- SEQUENCE NUMBER tracking -->
+  <rect x="40" y="130" width="340" height="45" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="210" y="150" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Send Window: [Seq=1000, Size=4000]</text>
+  <text x="210" y="168" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Can send up to 4000 bytes before ACK required</text>
+
+  <rect x="520" y="130" width="340" height="45" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="690" y="150" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Expected Next: Seq=1000</text>
+  <text x="690" y="168" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Receive Window: 8000 bytes available</text>
+
+  <!-- STEP 1: Send Segment 1 -->
+  <rect x="40" y="195" width="340" height="55" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="210" y="215" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 1: Send Segment 1 (Seq=1000, 1000 bytes)</text>
+  <text x="210" y="235" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">RTO timer started: 200ms (initial estimate)</text>
+
+  <!-- Arrow to receiver -->
+  <line x1="380" y1="222" x2="500" y2="222" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="440" y="215" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">Seg 1</text>
+
+  <!-- Receiver gets Seg 1 -->
+  <rect x="520" y="195" width="340" height="55" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="690" y="215" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 2: Receive Seg 1</text>
+  <text x="690" y="235" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Buffer data, send ACK=2000 (cumulative)</text>
+
+  <!-- ACK back -->
+  <line x1="500" y1="270" x2="380" y2="270" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="440" y="263" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#059669" text-anchor="middle">ACK 2000</text>
+
+  <!-- ACK received -->
+  <rect x="40" y="260" width="340" height="45" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="210" y="280" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">ACK 2000 received — RTO timer stopped</text>
+  <text x="210" y="298" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">RTT updated, next RTO adjusted (e.g., 180ms)</text>
+
+  <!-- STEP 3: Send Segment 2 -->
+  <rect x="40" y="320" width="340" height="55" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="210" y="340" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 3: Send Segment 2 (Seq=2000, 1000 bytes)</text>
+  <text x="210" y="358" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">RTO timer started: 180ms</text>
+
+  <!-- Arrow to receiver (segment lost) -->
+  <line x1="380" y1="347" x2="500" y2="347" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+  <text x="440" y="340" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">Seg 2 (LOST)</text>
+
+  <!-- Segment lost annotation -->
+  <rect x="520" y="320" width="340" height="55" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="690" y="340" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">Step 4: Segment Lost in Network</text>
+  <text x="690" y="358" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Packet dropped — receiver sees gap</text>
+
+  <!-- Timer running -->
+  <rect x="40" y="390" width="340" height="55" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="210" y="410" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 5: RTO Timer Running...</text>
+  <text x="210" y="428" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Elapsed: 50ms ... 100ms ... 150ms ...</text>
+  <text x="210" y="444" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">No ACK received for Seg 2</text>
+
+  <!-- RTO Expires -->
+  <rect x="40" y="460" width="340" height="55" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="210" y="480" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">Step 6: RTO EXPIRED (180ms elapsed)</text>
+  <text x="210" y="498" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Timer fired — no ACK received in time</text>
+  <text x="210" y="514" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Congestion window halved (TCP Reno/Cubic)</text>
+
+  <!-- Retransmit -->
+  <rect x="40" y="530" width="340" height="55" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="210" y="550" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 7: Retransmit Segment 2 (Seq=2000)</text>
+  <text x="210" y="568" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">New RTO: 360ms (doubled — exponential backoff)</text>
+
+  <!-- Retransmit arrow -->
+  <line x1="380" y1="557" x2="500" y2="557" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="440" y="550" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">Seg 2 (retransmit)</text>
+
+  <!-- Receiver gets retransmit -->
+  <rect x="520" y="530" width="340" height="55" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="690" y="550" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Step 8: Receive Retransmitted Seg 2</text>
+  <text x="690" y="568" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Fill gap, send ACK=3000</text>
+
+  <!-- RTO formula box -->
+  <rect x="20" y="600" width="860" height="55" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="618" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">RTO = SRTT + max(G, K * RTTVAR)  |  Minimum RTO: 1s (RFC 6298)  |  Max retries: tcp_retries2 (Linux default: 15)</text>
+  <text x="450" y="635" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">SRTT = Smoothed RTT (EWMA)  |  RTTVAR = RTT Variance  |  Exponential backoff doubles RTO on each retransmit (max ~120s)</text>
+  <text x="450" y="652" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Fast Retransmit: 3 duplicate ACKs trigger immediate retransmit without waiting for RTO timeout.</text>
+  <text x="450" y="670" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">TCP Reno/Cubic: On timeout, cwnd = 1, ssthresh = cwnd/2. Slow start then ramps up again.</text>
+  <text x="450" y="690" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Selective Acknowledgment (SACK): Allows receiver to inform sender about non-contiguous blocks received, reducing unnecessary retransmissions.</text>
+  <text x="450" y="708" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Nagle's Algorithm: Buffers small segments to reduce packet count. Disable (TCP_NODELAY) for low-latency RPC/gRPC calls.</text>
+</svg>

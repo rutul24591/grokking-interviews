@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
+  <title id="title">Bulkhead Failure Containment and Recovery</title>
+  <desc id="desc">Failure containment flow showing Service A pool exhaustion, circuit breaker states (closed, open, half-open), request rejection with 503, and recovery flow back to closed state</desc>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ea580c"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- White background -->
+  <rect width="1200" height="850" fill="#ffffff"/>
+
+  <!-- Title section -->
+  <text x="600" y="36" text-anchor="middle" font-size="22" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Failure Containment &amp; Recovery</text>
+  <text x="600" y="60" text-anchor="middle" font-size="15" font-weight="600" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit Breaker State Transitions: Closed to Open to Half-Open to Closed</text>
+
+  <!-- ==================== CIRCUIT BREAKER STATE MACHINE (Top Section) ==================== -->
+  <text x="600" y="100" text-anchor="middle" font-size="17" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit Breaker State Machine</text>
+
+  <!-- State 1: CLOSED (Normal) -->
+  <rect x="30" y="125" width="300" height="140" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="50" y="140" width="260" height="30" rx="6" fill="#16a34a"/>
+  <text x="180" y="161" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">CLOSED (Normal)</text>
+  <text x="45" y="188" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Pool A: 30 threads, all healthy</text>
+  <text x="45" y="206" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Requests flow through normally</text>
+  <text x="45" y="224" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Error rate below threshold (&lt;50%)</text>
+  <text x="45" y="242" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Latency within acceptable range</text>
+
+  <!-- Arrow: CLOSED to OPEN -->
+  <line x1="330" y1="195" x2="428" y2="195" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <rect x="330" y="175" width="100" height="42" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="380" y="193" text-anchor="middle" font-size="9" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Error rate &gt; 50%</text>
+  <text x="380" y="208" text-anchor="middle" font-size="9" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">over 10s window</text>
+
+  <!-- State 2: OPEN (Failing) -->
+  <rect x="430" y="125" width="300" height="140" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="450" y="140" width="260" height="30" rx="6" fill="#dc2626"/>
+  <text x="580" y="161" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">OPEN (Failing Fast)</text>
+  <text x="445" y="188" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Pool A: 30/30 threads exhausted</text>
+  <text x="445" y="206" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; All requests rejected with 503</text>
+  <text x="445" y="224" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; No calls reach downstream service</text>
+  <text x="445" y="242" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Retry-After header set (30s)</text>
+
+  <!-- Arrow: OPEN to HALF-OPEN -->
+  <line x1="730" y1="195" x2="828" y2="195" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <rect x="730" y="175" width="100" height="42" rx="6" fill="#fff7ed" stroke="#ea580c" stroke-width="1"/>
+  <text x="780" y="193" text-anchor="middle" font-size="9" font-weight="700" fill="#c2410c" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Wait 30s cooldown</text>
+  <text x="780" y="208" text-anchor="middle" font-size="9" font-weight="700" fill="#c2410c" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">then probe</text>
+
+  <!-- State 3: HALF-OPEN (Testing) -->
+  <rect x="830" y="125" width="340" height="140" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="850" y="140" width="300" height="30" rx="6" fill="#ca8a04"/>
+  <text x="1000" y="161" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">HALF-OPEN (Testing Recovery)</text>
+  <text x="845" y="188" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Allow 3 test requests through</text>
+  <text x="845" y="206" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Monitor response: success or failure</text>
+  <text x="845" y="224" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; If any test fails: back to OPEN</text>
+  <text x="845" y="242" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; If all succeed: transition to CLOSED</text>
+
+  <!-- Arrow: HALF-OPEN back to CLOSED (success) -->
+  <path d="M 1000 265 C 1000 350, 180 350, 180 265" stroke="#16a34a" stroke-width="2" fill="none" marker-end="url(#arrow-green)" stroke-dasharray="6 3"/>
+  <rect x="500" y="310" width="180" height="42" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
+  <text x="590" y="330" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">All 3 test requests</text>
+  <text x="590" y="345" text-anchor="middle" font-size="10" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">succeed -- RECOVERED</text>
+
+  <!-- ==================== FAILURE FLOW (Middle Section) ==================== -->
+  <text x="600" y="400" text-anchor="middle" font-size="17" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Failure Containment Flow (Service A Pool Exhausted)</text>
+
+  <!-- Step 1: Incoming Request -->
+  <rect x="30" y="430" width="180" height="70" rx="8" fill="#1e3a8a" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="120" y="458" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Incoming Request</text>
+  <text x="120" y="478" text-anchor="middle" font-size="11" font-weight="600" fill="#bfdbfe" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">GET /api/service-a</text>
+
+  <!-- Arrow -->
+  <line x1="210" y1="465" x2="278" y2="465" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Bulkhead Check -->
+  <rect x="280" y="430" width="180" height="70" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="370" y="455" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Bulkhead Check</text>
+  <text x="295" y="478" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Pool A: 0/30 available</text>
+
+  <!-- Arrow -->
+  <line x1="460" y1="465" x2="528" y2="465" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="494" y="455" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">POOL FULL</text>
+
+  <!-- Step 3: Circuit Breaker Check -->
+  <rect x="530" y="430" width="180" height="70" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="620" y="455" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit Breaker</text>
+  <text x="545" y="478" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">State: OPEN</text>
+
+  <!-- Arrow -->
+  <line x1="710" y1="465" x2="778" y2="465" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="744" y="455" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">REJECT</text>
+
+  <!-- Step 4: 503 Response -->
+  <rect x="780" y="430" width="200" height="70" rx="8" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+  <text x="880" y="458" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">503 Service Unavailable</text>
+  <text x="880" y="478" text-anchor="middle" font-size="11" font-weight="600" fill="#fecaca" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Retry-After: 30</text>
+
+  <!-- Arrow -->
+  <line x1="980" y1="465" x2="1048" y2="465" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5: Client receives 503 -->
+  <rect x="1050" y="430" width="130" height="70" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="1115" y="458" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Client</text>
+  <text x="1115" y="478" text-anchor="middle" font-size="10" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Failover / Retry</text>
+
+  <!-- ==================== OTHER SERVICES UNAFFECTED ==================== -->
+  <rect x="30" y="520" width="1140" height="100" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="600" y="545" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Other Services: Completely Unaffected</text>
+
+  <!-- Service B -->
+  <rect x="80" y="560" width="200" height="45" rx="6" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="180" y="588" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service B: Pool 25/40 active</text>
+
+  <!-- Service C -->
+  <rect x="320" y="560" width="200" height="45" rx="6" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="420" y="588" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service C: Pool 18/30 active</text>
+
+  <!-- Service D -->
+  <rect x="560" y="560" width="200" height="45" rx="6" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="660" y="588" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service D: Pool 10/30 active</text>
+
+  <!-- Annotation -->
+  <rect x="800" y="555" width="350" height="55" rx="6" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+  <text x="815" y="578" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Service B, C, D operate at full capacity</text>
+  <text x="815" y="598" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Zero impact from Service A failure</text>
+
+  <!-- ==================== RECOVERY FLOW (Bottom Section) ==================== -->
+  <text x="600" y="660" text-anchor="middle" font-size="17" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Recovery Flow: Service A Recovers</text>
+
+  <!-- Recovery Step 1: Service A recovers -->
+  <rect x="30" y="690" width="220" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="140" y="718" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">1. Service A Recovers</text>
+  <text x="140" y="740" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">DB connection restored</text>
+
+  <!-- Arrow -->
+  <line x1="250" y1="725" x2="318" y2="725" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Recovery Step 2: Cooldown expires -->
+  <rect x="320" y="690" width="220" height="70" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="430" y="718" text-anchor="middle" font-size="13" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">2. Cooldown Expires (30s)</text>
+  <text x="430" y="740" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">CB transitions to HALF-OPEN</text>
+
+  <!-- Arrow -->
+  <line x1="540" y1="725" x2="608" y2="725" stroke="#ca8a04" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Recovery Step 3: Test requests -->
+  <rect x="610" y="690" width="220" height="70" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="720" y="718" text-anchor="middle" font-size="13" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">3. 3 Test Requests</text>
+  <text x="720" y="740" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">All 3 succeed (200 OK)</text>
+
+  <!-- Arrow -->
+  <line x1="830" y1="725" x2="898" y2="725" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Recovery Step 4: Circuit closes -->
+  <rect x="900" y="690" width="220" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="1010" y="718" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">4. Circuit CLOSED</text>
+  <text x="1010" y="740" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Normal traffic resumes</text>
+
+  <!-- Arrow to full recovery -->
+  <line x1="1120" y1="725" x2="1150" y2="725" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Recovery Result -->
+  <rect x="30" y="780" width="1140" height="55" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="600" y="805" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Service A Pool Restored: 30/30 threads available. Error rate reset to 0%. System fully operational.</text>
+  <text x="600" y="825" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Total downtime: ~60 seconds (30s open + 30s cooldown). No cascading failure to other services during entire incident.</text>
+</svg>

@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 780" role="img" aria-labelledby="title desc">
+  <title id="title">BFF Pattern Architecture</title>
+  <desc id="desc">Backend-For-Frontend pattern showing separate API gateways for Web, Mobile, and Third-Party clients, each with different aggregation and rate-limiting strategies connecting to shared microservices</desc>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ea580c"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- White background -->
+  <rect width="1100" height="780" fill="#ffffff"/>
+
+  <!-- Title section -->
+  <text x="550" y="36" text-anchor="middle" font-size="22" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Backend-For-Frontend (BFF) Pattern</text>
+  <text x="550" y="60" text-anchor="middle" font-size="15" font-weight="600" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Client-Specific API Gateways with Shared Microservice Layer</text>
+
+  <!-- ==================== CLIENT TIER ==================== -->
+  <rect x="30" y="85" width="1040" height="120" rx="10" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="550" y="110" text-anchor="middle" font-size="16" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Client Tier</text>
+
+  <!-- Web Client -->
+  <rect x="80" y="125" width="260" height="65" rx="8" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="210" y="152" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Web Browser</text>
+  <text x="210" y="172" text-anchor="middle" font-size="11" font-weight="600" fill="#dbeafe" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">React / Next.js SPA</text>
+
+  <!-- Mobile Client -->
+  <rect x="420" y="125" width="260" height="65" rx="8" fill="#7c3aed" stroke="#5b21b6" stroke-width="2"/>
+  <text x="550" y="152" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Mobile App</text>
+  <text x="550" y="172" text-anchor="middle" font-size="11" font-weight="600" fill="#ede9fe" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">iOS / Android Native</text>
+
+  <!-- Third Party Client -->
+  <rect x="760" y="125" width="260" height="65" rx="8" fill="#ea580c" stroke="#c2410c" stroke-width="2"/>
+  <text x="890" y="152" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Third-Party API Client</text>
+  <text x="890" y="172" text-anchor="middle" font-size="11" font-weight="600" fill="#ffedd5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">External Integrations / Partners</text>
+
+  <!-- ==================== BFF LAYER ==================== -->
+  <!-- Web BFF -->
+  <rect x="30" y="245" width="320" height="230" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="50" y="255" width="280" height="32" rx="6" fill="#2563eb"/>
+  <text x="190" y="277" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Web BFF Gateway</text>
+
+  <!-- Web BFF characteristics -->
+  <rect x="50" y="300" width="280" height="160" rx="6" fill="#ffffff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="190" y="322" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Granular Endpoints</text>
+  <text x="65" y="345" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Fine-grained REST endpoints</text>
+  <text x="65" y="363" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Server-side rendering support</text>
+  <text x="65" y="381" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Moderate aggregation (1-2 services)</text>
+  <text x="65" y="399" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Higher rate limit: 1000 req/min</text>
+  <text x="65" y="417" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Session cookie authentication</text>
+  <text x="65" y="435" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Response caching (CDN-friendly)</text>
+
+  <!-- Mobile BFF -->
+  <rect x="390" y="245" width="320" height="230" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="410" y="255" width="280" height="32" rx="6" fill="#7c3aed"/>
+  <text x="550" y="277" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Mobile BFF Gateway</text>
+
+  <!-- Mobile BFF characteristics -->
+  <rect x="410" y="300" width="280" height="160" rx="6" fill="#ffffff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="550" y="322" text-anchor="middle" font-size="12" font-weight="700" fill="#5b21b6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Aggressive Aggregation</text>
+  <text x="425" y="345" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Heavy response aggregation (5+ services)</text>
+  <text x="425" y="363" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Reduced payload size (binary proto)</text>
+  <text x="425" y="381" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Lower rate limit: 200 req/min</text>
+  <text x="425" y="399" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Device-aware optimizations</text>
+  <text x="425" y="417" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Offline-first data sync endpoints</text>
+  <text x="425" y="435" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Push notification routing</text>
+
+  <!-- Third Party BFF -->
+  <rect x="750" y="245" width="320" height="230" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="770" y="255" width="280" height="32" rx="6" fill="#ea580c"/>
+  <text x="910" y="277" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Third-Party API Gateway</text>
+
+  <!-- Third Party BFF characteristics -->
+  <rect x="770" y="300" width="280" height="160" rx="6" fill="#ffffff" stroke="#fdba74" stroke-width="1"/>
+  <text x="910" y="322" text-anchor="middle" font-size="12" font-weight="700" fill="#c2410c" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Restricted Exposure</text>
+  <text x="785" y="345" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Strict rate limit: 100 req/min</text>
+  <text x="785" y="363" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; OAuth 2.0 / API key auth</text>
+  <text x="785" y="381" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Scoped data access (ACLs)</text>
+  <text x="785" y="399" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Audit logging on all calls</text>
+  <text x="785" y="417" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Webhook callback support</text>
+  <text x="785" y="435" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Versioned API contracts (v1, v2)</text>
+
+  <!-- ==================== ARROWS FROM CLIENTS TO BFFs ==================== -->
+  <line x1="210" y1="205" x2="210" y2="240" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="550" y1="205" x2="550" y2="240" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <line x1="890" y1="205" x2="890" y2="240" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- ==================== ARROWS FROM BFFs TO SERVICES ==================== -->
+  <!-- Web BFF to Services -->
+  <line x1="130" y1="475" x2="180" y2="540" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" stroke-dasharray="none"/>
+  <line x1="190" y1="475" x2="350" y2="540" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Mobile BFF to Services -->
+  <line x1="490" y1="475" x2="350" y2="540" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <line x1="550" y1="475" x2="550" y2="540" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <line x1="610" y1="475" x2="750" y2="540" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <line x1="670" y1="475" x2="920" y2="540" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+  <!-- Third Party BFF to Services -->
+  <line x1="890" y1="475" x2="750" y2="540" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <line x1="890" y1="475" x2="920" y2="540" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- ==================== MICROSERVICE TIER ==================== -->
+  <rect x="30" y="545" width="1040" height="210" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+  <text x="550" y="572" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Shared Microservice Layer</text>
+
+  <!-- User Service -->
+  <rect x="80" y="590" width="200" height="70" rx="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="180" y="618" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">User Service</text>
+  <text x="180" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#bbf7d0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">gRPC / REST</text>
+
+  <!-- Order Service -->
+  <rect x="300" y="590" width="200" height="70" rx="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="400" y="618" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Order Service</text>
+  <text x="400" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#bbf7d0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">gRPC / REST</text>
+
+  <!-- Product Service -->
+  <rect x="520" y="590" width="200" height="70" rx="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="620" y="618" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Product Service</text>
+  <text x="620" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#bbf7d0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">gRPC / REST</text>
+
+  <!-- Payment Service -->
+  <rect x="740" y="590" width="200" height="70" rx="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="840" y="618" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Payment Service</text>
+  <text x="840" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#bbf7d0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">gRPC / REST</text>
+
+  <!-- Notification Service -->
+  <rect x="300" y="675" width="200" height="60" rx="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="400" y="703" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Notification Service</text>
+  <text x="400" y="722" text-anchor="middle" font-size="11" font-weight="600" fill="#bbf7d0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Event-driven / Async</text>
+
+  <!-- Search Service -->
+  <rect x="620" y="675" width="200" height="60" rx="8" fill="#16a34a" stroke="#065f46" stroke-width="2"/>
+  <text x="720" y="703" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Search Service</text>
+  <text x="720" y="722" text-anchor="middle" font-size="11" font-weight="600" fill="#bbf7d0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Elasticsearch API</text>
+
+  <!-- ==================== KEY ANNOTATIONS ==================== -->
+  <!-- Aggregation comparison annotation -->
+  <rect x="30" y="485" width="1040" height="48" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="100" y="507" font-size="12" font-weight="700" fill="#854d0e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">KEY DIFFERENCE:</text>
+  <text x="240" y="507" font-size="12" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Mobile BFF aggregates 4-5 services per call (reduce round-trips on slow networks) | Web BFF exposes granular 1-2 service endpoints (SSR can parallelize) | Third-party BFF restricts to 2-3 scoped services (security boundary)</text>
+  <text x="550" y="525" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Each BFF applies different rate limits, auth strategies, and response shapes — but all call the same underlying microservices</text>
+</svg>

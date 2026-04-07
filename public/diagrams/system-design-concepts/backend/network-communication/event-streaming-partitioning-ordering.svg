@@ -1,0 +1,263 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" fill="none" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .dark-bg { fill: #1a1a2e; }
+      .box { fill: #f0f4ff; stroke: #4a6cf7; stroke-width: 2; }
+      .dark-box { fill: #252545; stroke: #6b8aff; stroke-width: 2; }
+      .box-good { fill: #e8f5e9; stroke: #388e3c; stroke-width: 2; }
+      .dark-box-good { fill: #1e3a2f; stroke: #4caf50; stroke-width: 2; }
+      .box-bad { fill: #ffebee; stroke: #c62828; stroke-width: 2; }
+      .dark-box-bad { fill: #3e1a1a; stroke: #ef5350; stroke-width: 2; }
+      .title { font-size: 18px; font-weight: 700; fill: #1a1a2e; }
+      .dark-title { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .label { font-size: 13px; font-weight: 600; fill: #2d3748; }
+      .dark-label { font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .sublabel { font-size: 11px; font-weight: 400; fill: #718096; }
+      .dark-sublabel { font-size: 11px; font-weight: 400; fill: #a0aec0; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dark-arrow { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead); }
+      .arrow-good { stroke: #388e3c; stroke-width: 2; fill: none; marker-end: url(#arrowhead-good); }
+      .dark-arrow-good { stroke: #4caf50; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead-good); }
+      .arrow-bad { stroke: #c62828; stroke-width: 2; fill: none; marker-end: url(#arrowhead-bad); }
+      .dark-arrow-bad { stroke: #ef5350; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead-bad); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+    <marker id="dark-arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0" />
+    </marker>
+    <marker id="arrowhead-good" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#388e3c" />
+    </marker>
+    <marker id="dark-arrowhead-good" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50" />
+    </marker>
+    <marker id="arrowhead-bad" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c62828" />
+    </marker>
+    <marker id="dark-arrowhead-bad" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef5350" />
+    </marker>
+  </defs>
+
+  <!-- Light mode background -->
+  <rect class="bg" width="900" height="520" rx="8" />
+  <!-- Dark mode background -->
+  <rect class="dark-bg" width="900" height="520" rx="8" style="display:none" />
+
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .bg { display: none; }
+      .dark-bg { display: block; }
+      .box { display: none; }
+      .dark-box { display: block; }
+      .box-good { display: none; }
+      .dark-box-good { display: block; }
+      .box-bad { display: none; }
+      .dark-box-bad { display: block; }
+      .title { display: none; }
+      .dark-title { display: block; }
+      .label { display: none; }
+      .dark-label { display: block; }
+      .sublabel { display: none; }
+      .dark-sublabel { display: block; }
+      .arrow { display: none; }
+      .dark-arrow { display: block; }
+      .arrow-good { display: none; }
+      .dark-arrow-good { display: block; }
+      .arrow-bad { display: none; }
+      .dark-arrow-bad { display: block; }
+    }
+  </style>
+
+  <!-- Title -->
+  <text class="title" x="450" y="32" text-anchor="middle">Partitioning &amp; Ordering Guarantees</text>
+  <text class="dark-title" x="450" y="32" text-anchor="middle">Partitioning &amp; Ordering Guarantees</text>
+
+  <!-- LEFT SIDE: Correct partitioning -->
+  <text class="label" x="225" y="65" text-anchor="middle" font-size="14">Correct: Same key &#8594; Same partition</text>
+  <text class="dark-label" x="225" y="65" text-anchor="middle" font-size="14" style="display:none">Correct: Same key &#8594; Same partition</text>
+
+  <!-- Producer -->
+  <rect class="box" x="30" y="80" width="140" height="80" rx="6" />
+  <rect class="dark-box" x="30" y="80" width="140" height="80" rx="6" style="display:none" />
+  <text class="label" x="100" y="105" text-anchor="middle">Producer</text>
+  <text class="dark-label" x="100" y="105" text-anchor="middle" style="display:none">Producer</text>
+  <text class="sublabel" x="100" y="125" text-anchor="middle">key: customer_42</text>
+  <text class="dark-sublabel" x="100" y="125" text-anchor="middle" style="display:none">key: customer_42</text>
+  <text class="sublabel" x="100" y="145" text-anchor="middle">OrderCreated</text>
+  <text class="dark-sublabel" x="100" y="145" text-anchor="middle" style="display:none">OrderCreated</text>
+
+  <!-- Arrow to partition -->
+  <path class="arrow-good" d="M 170 120 L 250 120" />
+  <path class="dark-arrow-good" d="M 170 120 L 250 120" style="display:none" />
+
+  <!-- Partitions -->
+  <rect class="box" x="250" y="80" width="120" height="100" rx="4" />
+  <rect class="dark-box" x="250" y="80" width="120" height="100" rx="4" style="display:none" />
+  <text class="label" x="310" y="105" text-anchor="middle">Partition 0</text>
+  <text class="dark-label" x="310" y="105" text-anchor="middle" style="display:none">Partition 0</text>
+  <text class="sublabel" x="310" y="125" text-anchor="middle">evt: OrderCreated</text>
+  <text class="dark-sublabel" x="310" y="125" text-anchor="middle" style="display:none">evt: OrderCreated</text>
+  <text class="sublabel" x="310" y="143" text-anchor="middle">evt: PaymentAuth</text>
+  <text class="dark-sublabel" x="310" y="143" text-anchor="middle" style="display:none">evt: PaymentAuth</text>
+  <text class="sublabel" x="310" y="161" text-anchor="middle">evt: OrderShipped</text>
+  <text class="dark-sublabel" x="310" y="161" text-anchor="middle" style="display:none">evt: OrderShipped</text>
+  <text class="sublabel" x="310" y="175" text-anchor="middle" font-weight="600" fill="#388e3c">Total order guaranteed</text>
+  <text class="dark-sublabel" x="310" y="175" text-anchor="middle" font-weight="600" fill="#4caf50" style="display:none">Total order guaranteed</text>
+
+  <rect class="box" x="380" y="80" width="120" height="100" rx="4" />
+  <rect class="dark-box" x="380" y="80" width="120" height="100" rx="4" style="display:none" />
+  <text class="label" x="440" y="105" text-anchor="middle">Partition 1</text>
+  <text class="dark-label" x="440" y="105" text-anchor="middle" style="display:none">Partition 1</text>
+  <text class="sublabel" x="440" y="125" text-anchor="middle">key: customer_99</text>
+  <text class="dark-sublabel" x="440" y="125" text-anchor="middle" style="display:none">key: customer_99</text>
+  <text class="sublabel" x="440" y="143" text-anchor="middle">different key &#8594;</text>
+  <text class="dark-sublabel" x="440" y="143" text-anchor="middle" style="display:none">different key &#8594;</text>
+  <text class="sublabel" x="440" y="161" text-anchor="middle">different partition</text>
+  <text class="dark-sublabel" x="440" y="161" text-anchor="middle" style="display:none">different partition</text>
+
+  <!-- RIGHT SIDE: Incorrect partitioning -->
+  <text class="label" x="675" y="65" text-anchor="middle" font-size="14">Incorrect: Key changes &#8594; Order lost</text>
+  <text class="dark-label" x="675" y="65" text-anchor="middle" font-size="14" style="display:none">Incorrect: Key changes &#8594; Order lost</text>
+
+  <!-- Producer with changing keys -->
+  <rect class="box" x="500" y="80" width="140" height="80" rx="6" />
+  <rect class="dark-box" x="500" y="80" width="140" height="80" rx="6" style="display:none" />
+  <text class="label" x="570" y="105" text-anchor="middle">Producer</text>
+  <text class="dark-label" x="570" y="105" text-anchor="middle" style="display:none">Producer</text>
+  <text class="sublabel" x="570" y="125" text-anchor="middle">key: order_123 (t1)</text>
+  <text class="dark-sublabel" x="570" y="125" text-anchor="middle" style="display:none">key: order_123 (t1)</text>
+  <text class="sublabel" x="570" y="145" text-anchor="middle">key: customer_42 (t2)</text>
+  <text class="dark-sublabel" x="570" y="145" text-anchor="middle" style="display:none">key: customer_42 (t2)</text>
+
+  <!-- Arrow to different partitions -->
+  <path class="arrow-bad" d="M 640 105 L 690 105" />
+  <path class="dark-arrow-bad" d="M 640 105 L 690 105" style="display:none" />
+  <path class="arrow-bad" d="M 640 135 L 690 165" />
+  <path class="dark-arrow-bad" d="M 640 135 L 690 165" style="display:none" />
+
+  <!-- Partitions showing wrong order -->
+  <rect class="box" x="690" y="80" width="120" height="100" rx="4" />
+  <rect class="dark-box" x="690" y="80" width="120" height="100" rx="4" style="display:none" />
+  <text class="label" x="750" y="105" text-anchor="middle">Partition 0</text>
+  <text class="dark-label" x="750" y="105" text-anchor="middle" style="display:none">Partition 0</text>
+  <text class="sublabel" x="750" y="125" text-anchor="middle">evt: OrderCreated</text>
+  <text class="dark-sublabel" x="750" y="125" text-anchor="middle" style="display:none">evt: OrderCreated</text>
+  <text class="sublabel" x="750" y="143" text-anchor="middle" font-size="10">(key: order_123)</text>
+  <text class="dark-sublabel" x="750" y="143" text-anchor="middle" font-size="10" style="display:none">(key: order_123)</text>
+
+  <rect class="box" x="690" y="190" width="120" height="100" rx="4" />
+  <rect class="dark-box" x="690" y="190" width="120" height="100" rx="4" style="display:none" />
+  <text class="label" x="750" y="215" text-anchor="middle">Partition 1</text>
+  <text class="dark-label" x="750" y="215" text-anchor="middle" style="display:none">Partition 1</text>
+  <text class="sublabel" x="750" y="235" text-anchor="middle">evt: OrderShipped</text>
+  <text class="dark-sublabel" x="750" y="235" text-anchor="middle" style="display:none">evt: OrderShipped</text>
+  <text class="sublabel" x="750" y="253" text-anchor="middle" font-size="10">(key: customer_42)</text>
+  <text class="dark-sublabel" x="750" y="253" text-anchor="middle" font-size="10" style="display:none">(key: customer_42)</text>
+  <text class="sublabel" x="750" y="275" text-anchor="middle" font-weight="600" fill="#c62828">Order lost!</text>
+  <text class="dark-sublabel" x="750" y="275" text-anchor="middle" font-weight="600" fill="#ef5350" style="display:none">Order lost!</text>
+
+  <!-- BOTTOM SECTION: Consumer view -->
+  <text class="label" x="450" y="230" text-anchor="middle" font-size="15">Consumer Processing Order</text>
+  <text class="dark-label" x="450" y="230" text-anchor="middle" font-size="15" style="display:none">Consumer Processing Order</text>
+
+  <!-- Correct scenario -->
+  <rect class="box-good" x="30" y="250" width="400" height="120" rx="6" />
+  <rect class="dark-box-good" x="30" y="250" width="400" height="120" rx="6" style="display:none" />
+  <text class="label" x="230" y="275" text-anchor="middle">Correct: Single partition consumer</text>
+  <text class="dark-label" x="230" y="275" text-anchor="middle" style="display:none">Correct: Single partition consumer</text>
+
+  <!-- Events in order -->
+  <rect class="box" x="50" y="290" width="80" height="60" rx="4" />
+  <rect class="dark-box" x="50" y="290" width="80" height="60" rx="4" style="display:none" />
+  <text class="sublabel" x="90" y="310" text-anchor="middle">Event A</text>
+  <text class="dark-sublabel" x="90" y="310" text-anchor="middle" style="display:none">Event A</text>
+  <text class="sublabel" x="90" y="328" text-anchor="middle">offset 0</text>
+  <text class="dark-sublabel" x="90" y="328" text-anchor="middle" style="display:none">offset 0</text>
+  <text class="sublabel" x="90" y="344" text-anchor="middle" font-size="10">t=100</text>
+  <text class="dark-sublabel" x="90" y="344" text-anchor="middle" font-size="10" style="display:none">t=100</text>
+
+  <path class="arrow" d="M 130 320 L 170 320" />
+  <path class="dark-arrow" d="M 130 320 L 170 320" style="display:none" />
+
+  <rect class="box" x="170" y="290" width="80" height="60" rx="4" />
+  <rect class="dark-box" x="170" y="290" width="80" height="60" rx="4" style="display:none" />
+  <text class="sublabel" x="210" y="310" text-anchor="middle">Event B</text>
+  <text class="dark-sublabel" x="210" y="310" text-anchor="middle" style="display:none">Event B</text>
+  <text class="sublabel" x="210" y="328" text-anchor="middle">offset 1</text>
+  <text class="dark-sublabel" x="210" y="328" text-anchor="middle" style="display:none">offset 1</text>
+  <text class="sublabel" x="210" y="344" text-anchor="middle" font-size="10">t=105</text>
+  <text class="dark-sublabel" x="210" y="344" text-anchor="middle" font-size="10" style="display:none">t=105</text>
+
+  <path class="arrow" d="M 250 320 L 290 320" />
+  <path class="dark-arrow" d="M 250 320 L 290 320" style="display:none" />
+
+  <rect class="box" x="290" y="290" width="80" height="60" rx="4" />
+  <rect class="dark-box" x="290" y="290" width="80" height="60" rx="4" style="display:none" />
+  <text class="sublabel" x="330" y="310" text-anchor="middle">Event C</text>
+  <text class="dark-sublabel" x="330" y="310" text-anchor="middle" style="display:none">Event C</text>
+  <text class="sublabel" x="330" y="328" text-anchor="middle">offset 2</text>
+  <text class="dark-sublabel" x="330" y="328" text-anchor="middle" style="display:none">offset 2</text>
+  <text class="sublabel" x="330" y="344" text-anchor="middle" font-size="10">t=110</text>
+  <text class="dark-sublabel" x="330" y="344" text-anchor="middle" font-size="10" style="display:none">t=110</text>
+
+  <text class="sublabel" x="230" y="362" text-anchor="middle" font-weight="600" fill="#388e3c">Processed in order: A &#8594; B &#8594; C</text>
+  <text class="dark-sublabel" x="230" y="362" text-anchor="middle" font-weight="600" fill="#4caf50" style="display:none">Processed in order: A &#8594; B &#8594; C</text>
+
+  <!-- Incorrect scenario -->
+  <rect class="box-bad" x="470" y="250" width="400" height="120" rx="6" />
+  <rect class="dark-box-bad" x="470" y="250" width="400" height="120" rx="6" style="display:none" />
+  <text class="label" x="670" y="275" text-anchor="middle">Incorrect: Cross-partition consumer</text>
+  <text class="dark-label" x="670" y="275" text-anchor="middle" style="display:none">Incorrect: Cross-partition consumer</text>
+
+  <rect class="box" x="490" y="290" width="80" height="60" rx="4" />
+  <rect class="dark-box" x="490" y="290" width="80" height="60" rx="4" style="display:none" />
+  <text class="sublabel" x="530" y="310" text-anchor="middle">Event C</text>
+  <text class="dark-sublabel" x="530" y="310" text-anchor="middle" style="display:none">Event C</text>
+  <text class="sublabel" x="530" y="328" text-anchor="middle">partition 1</text>
+  <text class="dark-sublabel" x="530" y="328" text-anchor="middle" style="display:none">partition 1</text>
+  <text class="sublabel" x="530" y="344" text-anchor="middle" font-size="10">t=110</text>
+  <text class="dark-sublabel" x="530" y="344" text-anchor="middle" font-size="10" style="display:none">t=110</text>
+
+  <path class="arrow" d="M 570 320 L 610 320" />
+  <path class="dark-arrow" d="M 570 320 L 610 320" style="display:none" />
+
+  <rect class="box" x="610" y="290" width="80" height="60" rx="4" />
+  <rect class="dark-box" x="610" y="290" width="80" height="60" rx="4" style="display:none" />
+  <text class="sublabel" x="650" y="310" text-anchor="middle">Event A</text>
+  <text class="dark-sublabel" x="650" y="310" text-anchor="middle" style="display:none">Event A</text>
+  <text class="sublabel" x="650" y="328" text-anchor="middle">partition 0</text>
+  <text class="dark-sublabel" x="650" y="328" text-anchor="middle" style="display:none">partition 0</text>
+  <text class="sublabel" x="650" y="344" text-anchor="middle" font-size="10">t=100</text>
+  <text class="dark-sublabel" x="650" y="344" text-anchor="middle" font-size="10" style="display:none">t=100</text>
+
+  <path class="arrow" d="M 690 320 L 730 320" />
+  <path class="dark-arrow" d="M 690 320 L 730 320" style="display:none" />
+
+  <rect class="box" x="730" y="290" width="80" height="60" rx="4" />
+  <rect class="dark-box" x="730" y="290" width="80" height="60" rx="4" style="display:none" />
+  <text class="sublabel" x="770" y="310" text-anchor="middle">Event B</text>
+  <text class="dark-sublabel" x="770" y="310" text-anchor="middle" style="display:none">Event B</text>
+  <text class="sublabel" x="770" y="328" text-anchor="middle">partition 0</text>
+  <text class="dark-sublabel" x="770" y="328" text-anchor="middle" style="display:none">partition 0</text>
+  <text class="sublabel" x="770" y="344" text-anchor="middle" font-size="10">t=105</text>
+  <text class="dark-sublabel" x="770" y="344" text-anchor="middle" font-size="10" style="display:none">t=105</text>
+
+  <text class="sublabel" x="670" y="362" text-anchor="middle" font-weight="600" fill="#c62828">Out of order: C &#8594; A &#8594; B</text>
+  <text class="dark-sublabel" x="670" y="362" text-anchor="middle" font-weight="600" fill="#ef5350" style="display:none">Out of order: C &#8594; A &#8594; B</text>
+
+  <!-- BOTTOM: Key takeaways -->
+  <rect class="box" x="30" y="400" width="840" height="100" rx="6" />
+  <rect class="dark-box" x="30" y="400" width="840" height="100" rx="6" style="display:none" />
+  <text class="label" x="450" y="425" text-anchor="middle">Key Takeaways</text>
+  <text class="dark-label" x="450" y="425" text-anchor="middle" style="display:none">Key Takeaways</text>
+  <text class="sublabel" x="450" y="448" text-anchor="middle">Total ordering is guaranteed only within a single partition. Events with the same key always go to the same partition.</text>
+  <text class="dark-sublabel" x="450" y="448" text-anchor="middle" style="display:none">Total ordering is guaranteed only within a single partition. Events with the same key always go to the same partition.</text>
+  <text class="sublabel" x="450" y="468" text-anchor="middle">Cross-partition ordering is not guaranteed. Changing partition keys breaks ordering guarantees for that entity.</text>
+  <text class="dark-sublabel" x="450" y="468" text-anchor="middle" style="display:none">Cross-partition ordering is not guaranteed. Changing partition keys breaks ordering guarantees for that entity.</text>
+  <text class="sublabel" x="450" y="488" text-anchor="middle">For cross-partition ordering, implement consumer-side buffering with grace period and timestamp-based reordering.</text>
+  <text class="dark-sublabel" x="450" y="488" text-anchor="middle" style="display:none">For cross-partition ordering, implement consumer-side buffering with grace period and timestamp-based reordering.</text>
+</svg>

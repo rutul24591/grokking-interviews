@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680" width="900" height="680">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="680" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Server-Sent Events (SSE) Architecture</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Server → EventStream → Client EventSource: Event Format, Auto-Reconnection, Unidirectional Flow</text>
+
+  <!-- SERVER SIDE -->
+  <rect x="20" y="85" width="400" height="560" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="220" y="110" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Server (Event Producer)</text>
+
+  <!-- Event Source Generator -->
+  <rect x="40" y="130" width="360" height="80" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="220" y="152" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Event Generator</text>
+  <text x="220" y="172" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Database changes, message queue, external webhooks</text>
+  <text x="220" y="190" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Stream processing pipeline, scheduled jobs</text>
+
+  <!-- Event Stream Formatter -->
+  <rect x="40" y="230" width="360" height="160" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="220" y="252" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">SSE Event Format (text/event-stream)</text>
+
+  <!-- Event fields -->
+  <rect x="55" y="268" width="330" height="28" rx="4" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="70" y="286" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">event: user_update</text>
+
+  <rect x="55" y="300" width="330" height="28" rx="4" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="70" y="318" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">id: 12345</text>
+
+  <rect x="55" y="332" width="330" height="28" rx="4" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="70" y="350" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">data: {"userId": 42, "action": "login"}</text>
+
+  <rect x="55" y="364" width="330" height="28" rx="4" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="70" y="382" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">retry: 3000</text>
+
+  <!-- HTTP Response Headers -->
+  <rect x="40" y="410" width="360" height="80" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="220" y="432" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">HTTP Response Headers</text>
+  <text x="220" y="452" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Content-Type: text/event-stream</text>
+  <text x="220" y="468" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Cache-Control: no-store</text>
+  <text x="220" y="484" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Connection: keep-alive</text>
+
+  <!-- Persistent Connection -->
+  <rect x="40" y="510" width="360" height="60" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="220" y="532" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Persistent HTTP Connection</text>
+  <text x="220" y="552" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Single TCP connection kept open for streaming</text>
+
+  <!-- CLIENT SIDE -->
+  <rect x="480" y="85" width="400" height="560" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="680" y="110" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Client (Browser / EventSource)</text>
+
+  <!-- EventSource API -->
+  <rect x="500" y="130" width="360" height="80" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="680" y="152" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">EventSource API (Browser Native)</text>
+  <text x="680" y="172" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">const es = new EventSource('/stream')</text>
+  <text x="680" y="190" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Auto-manages connection and reconnection</text>
+
+  <!-- Event Handlers -->
+  <rect x="500" y="230" width="360" height="120" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="680" y="252" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Event Handlers</text>
+  <text x="680" y="272" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">es.onmessage = (e) => handleData(e.data)</text>
+  <text x="680" y="292" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">es.addEventListener('user_update', cb)</text>
+  <text x="680" y="312" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">es.onerror = (e) => handleError(e)</text>
+  <text x="680" y="332" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">es.onopen = () => handleConnect()</text>
+
+  <!-- Auto-Reconnection Logic -->
+  <rect x="500" y="370" width="360" height="100" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="680" y="392" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#dc2626" text-anchor="middle">Auto-Reconnection Logic</text>
+  <text x="680" y="415" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">On disconnect: automatically reconnects</text>
+  <text x="680" y="435" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Sends Last-Event-ID header to resume</text>
+  <text x="680" y="455" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Server replays events after Last-Event-ID</text>
+
+  <!-- Connection states -->
+  <rect x="500" y="490" width="360" height="70" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="680" y="512" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Connection States</text>
+  <text x="680" y="532" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">CONNECTING (0) | OPEN (1) | CLOSED (2)</text>
+  <text x="680" y="548" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">es.close() — Manual disconnect</text>
+
+  <!-- Bidirectional arrow in center -->
+  <rect x="425" y="250" width="50" height="180" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="270" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">SSE</text>
+  <text x="450" y="288" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Stream</text>
+  <!-- Server to Client arrow (main flow) -->
+  <line x1="420" y1="340" x2="480" y2="340" stroke="#059669" stroke-width="3" marker-end="url(#arrow-green)"/>
+  <text x="450" y="330" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#059669" text-anchor="middle">Events</text>
+  <!-- Client to Server (only Last-Event-ID) -->
+  <line x1="480" y1="370" x2="420" y2="370" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" stroke-dasharray="4,2"/>
+  <text x="450" y="390" font-family="system-ui, sans-serif" font-size="8" font-weight="700" fill="#2563eb" text-anchor="middle">Last-ID</text>
+
+  <!-- Reconnection flow at bottom -->
+  <rect x="425" y="500" width="50" height="60" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="520" font-family="system-ui, sans-serif" font-size="8" font-weight="700" fill="#dc2626" text-anchor="middle">Recon-</text>
+  <text x="450" y="532" font-family="system-ui, sans-serif" font-size="8" font-weight="700" fill="#dc2626" text-anchor="middle">nect</text>
+
+  <path d="M 480 530 Q 500 530, 500 530" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <path d="M 420 530 Q 400 530, 400 530" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Footer -->
+  <rect x="20" y="640" width="860" height="30" rx="6" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="655" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">SSE is unidirectional (server → client only), uses standard HTTP, auto-reconnects, and is ideal for live feeds, notifications, and stock tickers.</text>
+</svg>

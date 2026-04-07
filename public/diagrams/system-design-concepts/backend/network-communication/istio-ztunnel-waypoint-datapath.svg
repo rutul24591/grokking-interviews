@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680" width="900" height="680">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="680" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Istio Ambient Mesh: Ztunnel + Waypoint Proxies</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">L4 Ztunnel Path vs L7 Waypoint Proxy Path with HTTP Policy Enforcement</text>
+
+  <!-- CLIENT SIDE -->
+  <rect x="20" y="90" width="240" height="200" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="115" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Client Workload</text>
+  <rect x="40" y="130" width="200" height="50" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="150" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Client App (HTTP)</text>
+  <text x="140" y="168" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Sends HTTP request</text>
+  <text x="140" y="180" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Unaware of mesh</text>
+  <rect x="40" y="190" width="200" height="40" rx="8" fill="#f0f9ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="208" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Local Ztunnel (L4)</text>
+  <text x="140" y="225" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Traffic redirected via tproxy</text>
+
+  <!-- PATH SPLIT: L4 only vs L4 + L7 -->
+  <rect x="20" y="310" width="860" height="50" rx="10" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="332" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Policy Decision: L4 Only (Ztunnel) vs L7 Required (Waypoint Proxy)</text>
+  <text x="450" y="350" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">If only L4 policies apply → ztunnel handles directly | If L7 policies (HTTP headers, paths) → forward to waypoint proxy</text>
+
+  <!-- PATH A: L4 ONLY (Ztunnel direct) -->
+  <rect x="20" y="380" width="420" height="180" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="230" y="405" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#ca8a04" text-anchor="middle">Path A: L4 Processing (Ztunnel Only)</text>
+
+  <!-- L4 flow -->
+  <rect x="40" y="420" width="160" height="45" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="120" y="438" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Client Ztunnel</text>
+  <text x="120" y="455" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">mTLS + L4 auth</text>
+
+  <line x1="200" y1="442" x2="260" y2="442" stroke="#ca8a04" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="260" y="420" width="160" height="45" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="340" y="438" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Server Ztunnel</text>
+  <text x="340" y="455" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">mTLS + L4 auth</text>
+
+  <line x1="340" y1="465" x2="340" y2="490" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <rect x="260" y="490" width="160" height="45" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="340" y="510" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Server Workload</text>
+  <text x="340" y="527" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Receives plain TCP</text>
+
+  <!-- PATH B: L7 via Waypoint Proxy -->
+  <rect x="460" y="380" width="420" height="280" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="670" y="405" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#7c3aed" text-anchor="middle">Path B: L7 Processing (Waypoint Proxy)</text>
+
+  <!-- L7 flow -->
+  <rect x="480" y="420" width="160" height="45" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="560" y="438" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Client Ztunnel</text>
+  <text x="560" y="455" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">mTLS to waypoint</text>
+
+  <line x1="640" y1="442" x2="700" y2="442" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+  <rect x="700" y="420" width="160" height="70" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="780" y="440" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#7c3aed" text-anchor="middle">Waypoint Proxy</text>
+  <text x="780" y="458" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">L7 HTTP processing</text>
+  <text x="780" y="472" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Header-based routing</text>
+  <text x="780" y="486" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">JWT validation</text>
+
+  <!-- Waypoint policy enforcement -->
+  <rect x="700" y="500" width="160" height="60" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="780" y="520" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">L7 Policy Engine</text>
+  <text x="780" y="538" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Path-based authz</text>
+  <text x="780" y="552" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#1f2937" text-anchor="middle">Rate limiting</text>
+
+  <!-- Waypoint to Server Ztunnel -->
+  <line x1="700" y1="530" x2="640" y2="530" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+  <rect x="480" y="505" width="140" height="45" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="550" y="523" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Server Ztunnel</text>
+  <text x="550" y="540" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">mTLS termination</text>
+
+  <!-- Server Ztunnel to Server Workload -->
+  <line x1="550" y1="550" x2="550" y2="590" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <rect x="480" y="590" width="140" height="45" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="550" y="610" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Server Workload</text>
+  <text x="550" y="627" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Receives HTTP request</text>
+
+  <!-- Comparison annotation -->
+  <rect x="20" y="620" width="420" height="45" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="230" y="638" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Path A: Lower latency, L4 only</text>
+  <text x="230" y="656" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">No L7 inspection, just mTLS + TCP auth</text>
+
+  <rect x="460" y="620" width="420" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="670" y="638" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Path B: Full L7 policy enforcement</text>
+  <text x="670" y="656" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">HTTP routing, rate limiting, JWT validation</text>
+
+  <!-- Footer annotation -->
+  <text x="450" y="680" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Ambient mesh separates L4 (ztunnel, shared per node) from L7 (waypoint, per-service). This reduces overhead compared to sidecar proxies while maintaining full policy control.</text>
+  <text x="450" y="700" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Waypoint proxies are deployed per service account (namespace) and handle L7 policies: HTTP routing, header manipulation, rate limiting, and JWT validation.</text>
+  <text x="450" y="720" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Migration path: Start with ztunnel only (L4 mTLS) → add waypoint proxies per service for L7 policies → full ambient mesh coverage.</text>
+  <text x="450" y="740" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Waypoint proxies are Envoy instances deployed as Kubernetes Deployments. Each waypoint handles traffic for one service account's workloads.</text>
+</svg>

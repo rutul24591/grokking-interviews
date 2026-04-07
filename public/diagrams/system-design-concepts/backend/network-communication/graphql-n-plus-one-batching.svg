@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 800" width="900" height="800">
+  <!-- Background -->
+  <rect width="900" height="800" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#111827">GraphQL N+1 Problem &amp; DataLoader Batching</text>
+  <text x="450" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#374151">How DataLoader collects individual requests and batches them into a single query</text>
+
+  <!-- N+1 Problem Section -->
+  <text x="40" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827">The N+1 Problem (Without Batching)</text>
+  <rect x="40" y="130" width="820" height="2" fill="#e5e7eb"/>
+
+  <!-- Initial query -->
+  <rect x="40" y="150" width="200" height="50" rx="8" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <text x="140" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#111827">Query: Get 5 Posts</text>
+  <text x="140" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#374151">1 DB call</text>
+
+  <!-- Arrow -->
+  <line x1="240" y1="175" x2="300" y2="175" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="270" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">Returns</text>
+  <text x="270" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">5 posts</text>
+
+  <!-- For each post, resolve author -->
+  <rect x="300" y="130" width="560" height="90" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="580" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#991b1b">Resolve author for each post</text>
+
+  <!-- Individual resolver calls -->
+  <rect x="310" y="165" width="90" height="42" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="355" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#991b1b">DB Call 1</text>
+  <text x="355" y="198" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">getUser(1)</text>
+
+  <rect x="410" y="165" width="90" height="42" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="455" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#991b1b">DB Call 2</text>
+  <text x="455" y="198" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">getUser(2)</text>
+
+  <rect x="510" y="165" width="90" height="42" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="555" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#991b1b">DB Call 3</text>
+  <text x="555" y="198" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">getUser(3)</text>
+
+  <rect x="610" y="165" width="90" height="42" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="655" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#991b1b">DB Call 4</text>
+  <text x="655" y="198" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">getUser(4)</text>
+
+  <rect x="710" y="165" width="90" height="42" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="755" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#991b1b">DB Call 5</text>
+  <text x="755" y="198" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">getUser(5)</text>
+
+  <!-- N+1 timing visualization -->
+  <text x="40" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#111827">Timing: Sequential N+1 Queries</text>
+
+  <rect x="40" y="275" width="820" height="2" fill="#e5e7eb"/>
+
+  <!-- Timeline bars - sequential -->
+  <rect x="40" y="290" width="140" height="30" rx="4" fill="#1f2937"/>
+  <text x="110" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">Posts Query (1 call)</text>
+
+  <rect x="180" y="290" width="100" height="30" rx="4" fill="#ef4444"/>
+  <text x="230" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">Author 1</text>
+
+  <rect x="280" y="290" width="100" height="30" rx="4" fill="#ef4444"/>
+  <text x="330" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">Author 2</text>
+
+  <rect x="380" y="290" width="100" height="30" rx="4" fill="#ef4444"/>
+  <text x="430" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">Author 3</text>
+
+  <rect x="480" y="290" width="100" height="30" rx="4" fill="#ef4444"/>
+  <text x="530" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">Author 4</text>
+
+  <rect x="580" y="290" width="100" height="30" rx="4" fill="#ef4444"/>
+  <text x="630" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">Author 5</text>
+
+  <text x="720" y="310" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#991b1b">Total: 1 + N = 6 sequential calls</text>
+
+  <!-- Batching Section -->
+  <rect x="40" y="350" width="820" height="2" fill="#e5e7eb"/>
+  <text x="40" y="385" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827">DataLoader Batching Solution</text>
+
+  <!-- DataLoader collection -->
+  <rect x="40" y="410" width="820" height="120" rx="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+  <rect x="40" y="410" width="820" height="30" rx="10" fill="#1f2937"/>
+  <rect x="40" y="430" width="820" height="10" fill="#1f2937"/>
+  <text x="450" y="431" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff">DataLoader: Collect Phase (Event Loop Tick)</text>
+
+  <!-- Individual requests being collected -->
+  <rect x="60" y="455" width="120" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="120" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#92400e">Promise 1</text>
+  <text x="120" y="493" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#92400e">load(1)</text>
+  <text x="120" y="508" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">queued</text>
+
+  <rect x="195" y="455" width="120" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="255" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#92400e">Promise 2</text>
+  <text x="255" y="493" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#92400e">load(2)</text>
+  <text x="255" y="508" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">queued</text>
+
+  <rect x="330" y="455" width="120" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="390" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#92400e">Promise 3</text>
+  <text x="390" y="493" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#92400e">load(3)</text>
+  <text x="390" y="508" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">queued</text>
+
+  <rect x="465" y="455" width="120" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="525" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#92400e">Promise 4</text>
+  <text x="525" y="493" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#92400e">load(4)</text>
+  <text x="525" y="508" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">queued</text>
+
+  <rect x="600" y="455" width="120" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#92400e">Promise 5</text>
+  <text x="660" y="493" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#92400e">load(5)</text>
+  <text x="660" y="508" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#374151">queued</text>
+
+  <!-- Arrow to batch -->
+  <line x1="720" y1="480" x2="780" y2="480" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Arrow from collect to dispatch -->
+  <line x1="450" y1="530" x2="450" y2="580" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead-down)"/>
+  <text x="465" y="560" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827">Batch function fires</text>
+
+  <!-- Batch query -->
+  <rect x="200" y="580" width="500" height="55" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="605" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#065f46">Single Batched Query</text>
+  <text x="450" y="624" text-anchor="middle" font-family="monospace" font-size="11" font-weight="400" fill="#065f46">SELECT * FROM users WHERE id IN (1, 2, 3, 4, 5)</text>
+
+  <!-- Arrow to distribute -->
+  <line x1="450" y1="635" x2="450" y2="680" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead-down)"/>
+  <text x="465" y="662" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#111827">Distribute results</text>
+
+  <!-- Resolved promises -->
+  <rect x="60" y="690" width="120" height="45" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="120" y="710" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#065f46">Resolved 1</text>
+  <text x="120" y="726" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#065f46">User{1}</text>
+
+  <rect x="195" y="690" width="120" height="45" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="255" y="710" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#065f46">Resolved 2</text>
+  <text x="255" y="726" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#065f46">User{2}</text>
+
+  <rect x="330" y="690" width="120" height="45" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="390" y="710" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#065f46">Resolved 3</text>
+  <text x="390" y="726" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#065f46">User{3}</text>
+
+  <rect x="465" y="690" width="120" height="45" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="525" y="710" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#065f46">Resolved 4</text>
+  <text x="525" y="726" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#065f46">User{4}</text>
+
+  <rect x="600" y="690" width="120" height="45" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="660" y="710" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#065f46">Resolved 5</text>
+  <text x="660" y="726" text-anchor="middle" font-family="monospace" font-size="10" font-weight="400" fill="#065f46">User{5}</text>
+
+  <!-- Timing comparison -->
+  <rect x="40" y="755" width="820" height="35" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="450" y="778" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#065f46">With DataLoader: 2 calls total (1 for posts + 1 batched for authors) vs 6 sequential calls without batching</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1f2937"/>
+    </marker>
+    <marker id="arrowhead-down" viewBox="0 0 10 7" refX="5" refY="6" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#1f2937"/>
+    </marker>
+  </defs>
+</svg>

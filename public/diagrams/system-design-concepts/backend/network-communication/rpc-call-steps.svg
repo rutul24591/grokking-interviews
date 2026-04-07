@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" width="900" height="650">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="650" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">RPC Call Lifecycle</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Client Stub → Serialization → Network Transport → Server Stub → Deserialization → Execution → Response</text>
+
+  <!-- CLIENT SIDE -->
+  <rect x="20" y="85" width="420" height="530" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="230" y="110" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Client Side</text>
+
+  <!-- Step 1: Application Call -->
+  <rect x="40" y="130" width="380" height="55" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="230" y="152" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 1: Application Call</text>
+  <text x="230" y="172" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">App calls local stub: result = remoteService.getUser(userId)</text>
+
+  <!-- Arrow down -->
+  <line x1="230" y1="185" x2="230" y2="210" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: Client Stub (Proxy) -->
+  <rect x="40" y="215" width="380" height="65" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="230" y="237" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 2: Client Stub (Proxy)</text>
+  <text x="230" y="255" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Marshals parameters: converts method call + args</text>
+  <text x="230" y="272" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">into a request message (method ID, params, metadata)</text>
+
+  <!-- Arrow down -->
+  <line x1="230" y1="280" x2="230" y2="305" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: Serialization -->
+  <rect x="40" y="310" width="380" height="65" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="230" y="332" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 3: Serialization (Marshalling)</text>
+  <text x="230" y="350" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Protocol Buffers / gRPC / JSON-RPC / Thrift / Apache Avro</text>
+  <text x="230" y="367" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Converts structured data → binary/text wire format</text>
+
+  <!-- Arrow down -->
+  <line x1="230" y1="375" x2="230" y2="400" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 4: Network Transport -->
+  <rect x="40" y="405" width="380" height="65" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="230" y="427" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 4: Network Transport</text>
+  <text x="230" y="445" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">HTTP/2 (gRPC), TCP (raw RPC), or HTTP/1.1 (JSON-RPC)</text>
+  <text x="230" y="462" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">TLS encryption, compression, retry logic, timeout handling</text>
+
+  <!-- Arrow to server side -->
+  <line x1="420" y1="435" x2="480" y2="435" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- SERVER SIDE -->
+  <rect x="460" y="85" width="420" height="530" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="670" y="110" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Server Side</text>
+
+  <!-- Step 5: Deserialization -->
+  <rect x="480" y="130" width="380" height="65" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="670" y="152" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 5: Deserialization (Unmarshalling)</text>
+  <text x="670" y="172" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Parses wire format → reconstructs method ID + parameters</text>
+  <text x="670" y="189" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Validates schema, handles version compatibility</text>
+
+  <!-- Arrow down -->
+  <line x1="670" y1="195" x2="670" y2="220" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 6: Server Stub (Skeleton) -->
+  <rect x="480" y="225" width="380" height="65" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="670" y="247" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 6: Server Stub (Skeleton)</text>
+  <text x="670" y="265" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Routes to correct service method by method ID</text>
+  <text x="670" y="282" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Extracts parameters, prepares call context</text>
+
+  <!-- Arrow down -->
+  <line x1="670" y1="290" x2="670" y2="315" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 7: Actual Execution -->
+  <rect x="480" y="320" width="380" height="65" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="670" y="342" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 7: Actual Execution</text>
+  <text x="670" y="360" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Invokes real implementation: getUser(userId)</text>
+  <text x="670" y="377" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">DB query, business logic, cache lookup, etc.</text>
+
+  <!-- Arrow down -->
+  <line x1="670" y1="385" x2="670" y2="410" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 8: Server Response Serialization -->
+  <rect x="480" y="415" width="380" height="65" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="670" y="437" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 8: Response Serialization</text>
+  <text x="670" y="455" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Result → wire format (protobuf/JSON)</text>
+  <text x="670" y="472" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Includes status code, metadata, error details</text>
+
+  <!-- Arrow down -->
+  <line x1="670" y1="480" x2="670" y2="505" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 9: Network Transport (Response) -->
+  <rect x="480" y="510" width="380" height="55" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="670" y="532" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 9: Network Transport (Response)</text>
+  <text x="670" y="552" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">HTTP response / TCP packet sent back to client</text>
+
+  <!-- Arrow back to client -->
+  <line x1="480" y1="535" x2="420" y2="535" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Step 10: Client Deserialization + Return -->
+  <rect x="40" y="505" width="380" height="65" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="230" y="527" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Step 10: Client Response Handling</text>
+  <text x="230" y="545" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Deserialize response → return to application code</text>
+  <text x="230" y="562" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Error handling, retry logic, timeout exceptions</text>
+
+  <!-- Annotation box -->
+  <rect x="20" y="590" width="860" height="60" rx="8" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="610" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Key RPC Frameworks: gRPC (Google), Apache Thrift (Facebook), JSON-RPC, XML-RPC, D-Bus</text>
+  <text x="450" y="628" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">RPC abstracts network calls as local function invocations but introduce network latency, partial failure, and serialization overhead.</text>
+  <text x="450" y="645" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Fallacies of distributed computing apply: network is NOT reliable, latency is NOT zero, bandwidth is NOT infinite.</text>
+  <text x="450" y="662" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Protocol Buffers (gRPC): Binary, schema-driven, 3-10x smaller than JSON. Thrift: Cross-language, supports multiple protocols.</text>
+</svg>

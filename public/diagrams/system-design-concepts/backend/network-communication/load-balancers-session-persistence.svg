@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500">
+  <defs>
+    <style>
+      .bg-light { fill: #f8fafc; }
+      .title-light { fill: #0f172a; font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; }
+      .label-light { fill: #0f172a; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .subtext-light { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; }
+      .box-cookie-light { fill: #dbeafe; stroke: #3b82f6; stroke-width: 2; rx: 8; }
+      .box-ip-light { fill: #d1fae5; stroke: #10b981; stroke-width: 2; rx: 8; }
+      .box-store-light { fill: #ede9fe; stroke: #8b5cf6; stroke-width: 2; rx: 8; }
+      .box-token-light { fill: #fef3c7; stroke: #f59e0b; stroke-width: 2; rx: 8; }
+      .arrow-light { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#ahl3); }
+      .marker-light { fill: #64748b; }
+    </style>
+    <marker id="ahl3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="marker-light"/>
+    </marker>
+  </defs>
+
+  <g id="light-mode">
+    <rect class="bg-light" width="960" height="500"/>
+    <text class="title-light" x="40" y="40">Session Persistence Patterns at Scale</text>
+
+    <!-- Pattern 1: Cookie-based -->
+    <rect class="box-cookie-light" x="40" y="80" width="210" height="180"/>
+    <text class="label-light" x="60" y="110">Cookie-Based Affinity</text>
+    <text class="subtext-light" x="55" y="140">LB sets sticky cookie</text>
+    <text class="subtext-light" x="55" y="160">(e.g., AWSELB=server1)</text>
+    <text class="subtext-light" x="55" y="185">All future requests</text>
+    <text class="subtext-light" x="55" y="205">from same browser go</text>
+    <text class="subtext-light" x="55" y="225">to same backend</text>
+    <text class="subtext-light" x="55" y="250">Risk: cookie loss on</text>
+    <text class="subtext-light" x="55" y="270">deploy = session break</text>
+
+    <!-- Pattern 2: IP-based -->
+    <rect class="box-ip-light" x="280" y="80" width="210" height="180"/>
+    <text class="label-light" x="310" y="110">IP-Based Affinity</text>
+    <text class="subtext-light" x="295" y="140">hash(client_ip) maps</text>
+    <text class="subtext-light" x="295" y="160">to fixed backend</text>
+    <text class="subtext-light" x="295" y="185">No client-side state</text>
+    <text class="subtext-light" x="295" y="205">needed</text>
+    <text class="subtext-light" x="295" y="230">Risk: corporate NAT</text>
+    <text class="subtext-light" x="295" y="250">makes thousands share</text>
+    <text class="subtext-light" x="295" y="270">one IP -> hot server</text>
+
+    <!-- Pattern 3: External Store -->
+    <rect class="box-store-light" x="520" y="80" width="210" height="180"/>
+    <text class="label-light" x="540" y="110">External Session Store</text>
+    <text class="subtext-light" x="535" y="140">Session data in Redis/</text>
+    <text class="subtext-light" x="535" y="160">Memcached, not local</text>
+    <text class="subtext-light" x="535" y="185">Any instance can serve</text>
+    <text class="subtext-light" x="535" y="205">any request</text>
+    <text class="subtext-light" x="535" y="230">Risk: added network hop</text>
+    <text class="subtext-light" x="535" y="250">(+1-3ms latency),</text>
+    <text class="subtext-light" x="535" y="270">store must be HA</text>
+
+    <!-- Pattern 4: Token-based -->
+    <rect class="box-token-light" x="760" y="80" width="170" height="180"/>
+    <text class="label-light" x="775" y="110">Stateless JWT</text>
+    <text class="subtext-light" x="770" y="140">Session encoded in</text>
+    <text class="subtext-light" x="770" y="160">signed JWT token</text>
+    <text class="subtext-light" x="770" y="185">No server-side state</text>
+    <text class="subtext-light" x="770" y="205">at all</text>
+    <text class="subtext-light" x="770" y="230">Risk: token size grows</text>
+    <text class="subtext-light" x="770" y="250">with session data,</text>
+    <text class="subtext-light" x="770" y="270">revocation is hard</text>
+
+    <!-- Scaling comparison -->
+    <rect x="40" y="300" width="880" height="180" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    <text class="label-light" x="60" y="330">Scaling Implications</text>
+    <text class="subtext-light" x="60" y="355">Cookie/IP affinity: uneven load during scaling events. When instances are added or removed, hash remapping</text>
+    <text class="subtext-light" x="60" y="375">causes session breaks for a fraction of users. Consistent hashing reduces but does not eliminate this.</text>
+
+    <text class="subtext-light" x="60" y="405">External store: any instance handles any request, enabling true horizontal scaling. The bottleneck shifts</text>
+    <text class="subtext-light" x="60" y="425">to the session store, which must be sharded and replicated. Redis Cluster or Memcached auto-discovery</text>
+    <text class="subtext-light" x="60" y="445">handles this, but adds operational complexity and cost.</text>
+
+    <text class="subtext-light" x="60" y="470">Production recommendation: external store for user-facing sessions, consistent hashing for cache affinity, JWT for stateless API services.</text>
+  </g>
+</svg>

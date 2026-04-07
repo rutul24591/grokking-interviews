@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520">
+  <defs>
+    <style>
+      .bg-light { fill: #f8fafc; }
+      .bg-dark { fill: #1e293b; }
+      .title-light { fill: #0f172a; font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; }
+      .title-dark { fill: #f1f5f9; font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; }
+      .label-light { fill: #0f172a; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .label-dark { fill: #e2e8f0; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .subtext-light { fill: #475569; font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; }
+      .subtext-dark { fill: #94a3b8; font-family: Arial, sans-serif; font-size: 11px; font-weight: normal; }
+      .arrow { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrowhead-light); }
+      .arrow-dark { stroke: #94a3b8; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
+      .box-l4-light { fill: #dbeafe; stroke: #3b82f6; stroke-width: 2; rx: 8; }
+      .box-l4-dark { fill: #1e3a5f; stroke: #60a5fa; stroke-width: 2; rx: 8; }
+      .box-l7-light { fill: #fce7f3; stroke: #ec4899; stroke-width: 2; rx: 8; }
+      .box-l7-dark { fill: #4a1942; stroke: #f472b6; stroke-width: 2; rx: 8; }
+      .box-client-light { fill: #e0e7ff; stroke: #6366f1; stroke-width: 2; rx: 8; }
+      .box-client-dark { fill: #312e81; stroke: #818cf8; stroke-width: 2; rx: 8; }
+      .box-server-light { fill: #d1fae5; stroke: #10b981; stroke-width: 2; rx: 8; }
+      .box-server-dark { fill: #064e3b; stroke: #34d399; stroke-width: 2; rx: 8; }
+    </style>
+    <marker id="arrowhead-light" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- Light Mode -->
+  <g id="light-mode">
+    <rect class="bg-light" width="960" height="520"/>
+    <text class="title-light" x="40" y="40">Layer 4 vs Layer 7 Load Balancing Architecture</text>
+
+    <!-- Client -->
+    <rect class="box-client-light" x="40" y="120" width="140" height="60"/>
+    <text class="label-light" x="65" y="155">Client</text>
+    <text class="subtext-light" x="55" y="172">TCP Connection</text>
+
+    <!-- L4 Load Balancer -->
+    <rect class="box-l4-light" x="280" y="100" width="180" height="100"/>
+    <text class="label-light" x="305" y="135">Layer 4 LB</text>
+    <text class="subtext-light" x="295" y="155">Transport Layer</text>
+    <text class="subtext-light" x="295" y="170">(IP + Port only)</text>
+    <text class="subtext-light" x="295" y="185">No HTTP inspection</text>
+
+    <!-- L7 Load Balancer -->
+    <rect class="box-l7-light" x="560" y="100" width="180" height="100"/>
+    <text class="label-light" x="585" y="135">Layer 7 LB</text>
+    <text class="subtext-light" x="575" y="155">Application Layer</text>
+    <text class="subtext-light" x="575" y="170">(HTTP headers, path,</text>
+    <text class="subtext-light" x="575" y="185">cookies, body)</text>
+
+    <!-- Backend Servers -->
+    <rect class="box-server-light" x="820" y="70" width="110" height="50"/>
+    <text class="label-light" x="835" y="100">API Server</text>
+
+    <rect class="box-server-light" x="820" y="150" width="110" height="50"/>
+    <text class="label-light" x="830" y="180">Web Server</text>
+
+    <rect class="box-server-light" x="820" y="230" width="110" height="50"/>
+    <text class="label-light" x="835" y="260">Static CDN</text>
+
+    <rect class="box-server-light" x="820" y="310" width="110" height="50"/>
+    <text class="label-light" x="830" y="340">Auth Service</text>
+
+    <!-- Arrows: Client to L4 -->
+    <line class="arrow" x1="180" y1="150" x2="275" y2="150"/>
+    <text class="subtext-light" x="190" y="140">TCP:80/443</text>
+
+    <!-- Arrows: L4 to L7 -->
+    <line class="arrow" x1="460" y1="150" x2="555" y2="150"/>
+    <text class="subtext-light" x="470" y="140">Forwarded packets</text>
+
+    <!-- Arrows: L7 to backends -->
+    <line class="arrow" x1="740" y1="130" x2="815" y2="95"/>
+    <text class="subtext-light" x="745" y="120">/api/*</text>
+
+    <line class="arrow" x1="740" y1="145" x2="815" y2="175"/>
+    <text class="subtext-light" x="745" y="155">/page/*</text>
+
+    <line class="arrow" x1="740" y1="160" x2="815" y2="255"/>
+    <text class="subtext-light" x="745" y="185">/static/*</text>
+
+    <line class="arrow" x1="740" y1="175" x2="815" y2="335"/>
+    <text class="subtext-light" x="745" y="210">/auth/*</text>
+
+    <!-- Key differences box -->
+    <rect x="40" y="280" width="420" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    <text class="label-light" x="60" y="310">Layer 4 Characteristics</text>
+    <text class="subtext-light" x="60" y="335">- Routes on IP address and port only</text>
+    <text class="subtext-light" x="60" y="355">- Lower latency, higher throughput</text>
+    <text class="subtext-light" x="60" y="375">- Cannot inspect HTTP content</text>
+    <text class="subtext-light" x="60" y="395">- Ideal for TCP-level balancing</text>
+    <text class="subtext-light" x="60" y="415">- Used for database clusters, Redis</text>
+    <text class="subtext-light" x="60" y="435">- TLS pass-through or termination</text>
+    <text class="subtext-light" x="60" y="455">- Examples: LVS, HAProxy (mode tcp)</text>
+
+    <rect x="500" y="280" width="420" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    <text class="label-light" x="520" y="310">Layer 7 Characteristics</text>
+    <text class="subtext-light" x="520" y="335">- Routes on HTTP path, headers, cookies</text>
+    <text class="subtext-light" x="520" y="355">- Higher latency due to HTTP parsing</text>
+    <text class="subtext-light" x="520" y="375">- Content-aware routing decisions</text>
+    <text class="subtext-light" x="520" y="395">- TLS termination at the balancer</text>
+    <text class="subtext-light" x="520" y="415">- Can rewrite URLs, add headers</text>
+    <text class="subtext-light" x="520" y="435">- Examples: Nginx, Envoy, ALB</text>
+    <text class="subtext-light" x="520" y="455">- Supports WebSocket, gRPC, SSE</text>
+  </g>
+</svg>

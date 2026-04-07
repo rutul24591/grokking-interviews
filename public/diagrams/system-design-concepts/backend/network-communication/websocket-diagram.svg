@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680" width="900" height="680">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="680" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">WebSocket Full-Duplex Architecture</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Bidirectional Message Flow Over Single TCP Connection vs HTTP Request-Response</text>
+
+  <!-- WEBSOCKET SECTION (Top) -->
+  <rect x="20" y="85" width="860" height="280" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="110" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#059669" text-anchor="middle">WebSocket: Full-Duplex Over Single TCP</text>
+  <text x="450" y="130" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">One TCP connection allows simultaneous bidirectional communication</text>
+
+  <!-- Client -->
+  <rect x="40" y="150" width="200" height="180" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="175" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Client (Browser)</text>
+
+  <rect x="60" y="190" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="212" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">WebSocket API</text>
+
+  <rect x="60" y="235" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="257" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">ws.send(message)</text>
+  <text x="140" y="270" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">ws.onmessage = handler</text>
+
+  <rect x="60" y="280" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="302" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">ws.onclose = cleanup</text>
+  <text x="140" y="315" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">ws.onerror = handler</text>
+
+  <!-- TCP Connection -->
+  <rect x="280" y="150" width="340" height="180" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="175" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Single TCP Connection</text>
+  <text x="450" y="195" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Persistent, full-duplex channel</text>
+
+  <!-- Bidirectional arrows -->
+  <line x1="310" y1="220" x2="590" y2="220" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="450" y="212" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#2563eb" text-anchor="middle">Client → Server (frames)</text>
+
+  <line x1="590" y1="260" x2="310" y2="260" stroke="#059669" stroke-width="3" marker-end="url(#arrow-green)"/>
+  <text x="450" y="252" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">Server → Client (frames)</text>
+
+  <!-- Frame types in middle -->
+  <rect x="340" y="280" width="220" height="40" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="450" y="298" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">WebSocket Frames</text>
+  <text x="450" y="314" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Text | Binary | Ping/Pong | Close</text>
+
+  <!-- Server -->
+  <rect x="660" y="150" width="200" height="180" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="760" y="175" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Server (Backend)</text>
+
+  <rect x="680" y="190" width="160" height="35" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="760" y="212" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">WebSocket Server</text>
+
+  <rect x="680" y="235" width="160" height="35" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="760" y="257" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">ws.send(message)</text>
+  <text x="760" y="270" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">ws.on('message', handler)</text>
+
+  <rect x="680" y="280" width="160" height="35" rx="6" fill="#ffffff" stroke="#05969" stroke-width="2"/>
+  <text x="760" y="302" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Broadcast to all clients</text>
+  <text x="760" y="315" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Connection management</text>
+
+  <!-- HTTP SECTION (Bottom) -->
+  <rect x="20" y="385" width="860" height="280" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="410" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#2563eb" text-anchor="middle">HTTP: Half-Duplex Request-Response</text>
+  <text x="450" y="430" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">Client must initiate every exchange; server cannot push unsolicited data</text>
+
+  <!-- HTTP Client -->
+  <rect x="40" y="450" width="200" height="100" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="475" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Client</text>
+  <rect x="60" y="485" width="160" height="25" rx="4" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+  <text x="140" y="502" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Request 1 → Wait</text>
+  <rect x="60" y="515" width="160" height="25" rx="4" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+  <text x="140" y="533" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Request 2 → Wait</text>
+
+  <!-- HTTP arrows -->
+  <line x1="240" y1="487" x2="340" y2="487" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="290" y="480" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#2563eb" text-anchor="middle">REQ</text>
+
+  <line x1="560" y1="487" x2="660" y2="487" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="610" y="480" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#059669" text-anchor="middle">RESP</text>
+
+  <line x1="240" y1="527" x2="340" y2="527" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="290" y="520" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#2563eb" text-anchor="middle">REQ</text>
+
+  <line x1="560" y1="527" x2="660" y2="527" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="610" y="520" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#059669" text-anchor="middle">RESP</text>
+
+  <!-- HTTP Server -->
+  <rect x="660" y="450" width="200" height="100" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="760" y="475" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Server</text>
+  <rect x="680" y="485" width="160" height="25" rx="4" fill="#ffffff" stroke="#059669" stroke-width="1"/>
+  <text x="760" y="502" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Process → Respond</text>
+  <rect x="680" y="515" width="160" height="25" rx="4" fill="#ffffff" stroke="#059669" stroke-width="1"/>
+  <text x="760" y="533" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Process → Respond</text>
+
+  <!-- HTTP Connection box -->
+  <rect x="340" y="450" width="220" height="100" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="475" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">HTTP Connection</text>
+  <text x="450" y="495" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">HTTP/1.1: One req at a time</text>
+  <text x="450" y="515" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">HTTP/2: Multiplexed streams</text>
+  <text x="450" y="535" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Still client-initiated only</text>
+
+  <!-- COMPARISON TABLE -->
+  <rect x="20" y="570" width="860" height="90" rx="10" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="595" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">WebSocket vs HTTP Comparison</text>
+
+  <rect x="40" y="605" width="400" height="40" rx="4" fill="#f0fdf4" stroke="#059669" stroke-width="1"/>
+  <text x="240" y="622" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">WebSocket: Full-duplex, server-push, single TCP, low overhead</text>
+  <text x="240" y="640" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Best for: Chat, live feeds, gaming, collaborative editing</text>
+
+  <rect x="460" y="605" width="400" height="40" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="660" y="622" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">HTTP: Request-response, caching, CDN-friendly, stateless</text>
+  <text x="660" y="640" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Best for: CRUD APIs, static content, serverless functions</text>
+</svg>

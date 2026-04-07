@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" width="900" height="650">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="650" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Azure Service Bus: Pub-Sub Pattern</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Topic/Subscription with Filters, Rules, and Dead Letter Queue (DLQ)</text>
+
+  <!-- PUBLISHERS -->
+  <rect x="20" y="90" width="200" height="180" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="115" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Publishers</text>
+
+  <rect x="40" y="130" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="152" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Order Service</text>
+
+  <rect x="40" y="175" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="197" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Payment Service</text>
+
+  <rect x="40" y="220" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="242" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">User Service</text>
+
+  <!-- AZURE SERVICE BUS TOPIC -->
+  <rect x="300" y="90" width="300" height="450" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="115" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Azure Service Bus Topic</text>
+
+  <!-- Message Routing -->
+  <rect x="320" y="130" width="260" height="50" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="152" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">Message Routing with SQL Filters</text>
+  <text x="450" y="170" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">CorrelationId, Label, Custom Properties</text>
+
+  <!-- Subscription 1 -->
+  <rect x="320" y="200" width="260" height="100" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="220" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Subscription: OrderProcessing</text>
+  <text x="450" y="240" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Filter: sys.Label = 'OrderCreated'</text>
+  <text x="450" y="258" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Action: SET priority = 'high'</text>
+  <text x="450" y="276" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Messages in queue: 15 pending</text>
+  <text x="450" y="292" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Lock duration: 30s | Max delivery: 10</text>
+
+  <!-- Subscription 2 -->
+  <rect x="320" y="315" width="260" height="100" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="335" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Subscription: AuditTrail</text>
+  <text x="450" y="355" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Filter: 1=1 (ALL messages)</text>
+  <text x="450" y="373" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Action: SET audited = true</text>
+  <text x="450" y="391" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Messages in queue: 42 pending</text>
+  <text x="450" y="407" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Lock duration: 60s | Max delivery: 5</text>
+
+  <!-- Subscription 3 -->
+  <rect x="320" y="430" width="260" height="90" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="450" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Subscription: Notifications</text>
+  <text x="450" y="470" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Filter: sys.CorrelationId LIKE 'notify-%'</text>
+  <text x="450" y="488" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Action: SET channel = 'email'</text>
+  <text x="450" y="506" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Messages: 8 pending | DLQ: 3</text>
+
+  <!-- DEAD LETTER QUEUE -->
+  <rect x="320" y="535" width="260" height="0" rx="8" fill="none" stroke="none"/>
+
+  <!-- SUBSCRIBERS -->
+  <rect x="680" y="90" width="200" height="450" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="115" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Subscribers</text>
+
+  <rect x="700" y="130" width="160" height="45" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="148" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Order Processor</text>
+  <text x="780" y="165" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">PeekLock mode</text>
+
+  <rect x="700" y="190" width="160" height="45" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="208" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Audit Logger</text>
+  <text x="780" y="225" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">ReceiveAndDelete mode</text>
+
+  <rect x="700" y="250" width="160" height="45" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="268" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Email Service</text>
+  <text x="780" y="285" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">PeekLock mode</text>
+
+  <!-- Dead Letter Queue Box -->
+  <rect x="700" y="320" width="160" height="120" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="780" y="340" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#dc2626" text-anchor="middle">Dead Letter Queue</text>
+  <text x="780" y="360" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Reasons for DLQ:</text>
+  <text x="780" y="378" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Max delivery exceeded</text>
+  <text x="780" y="395" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Message TTL expired</text>
+  <text x="780" y="412" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Filter evaluation error</text>
+  <text x="780" y="429" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">- Lock expired (no Complete)</text>
+
+  <!-- DLQ Messages -->
+  <rect x="700" y="455" width="160" height="60" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="780" y="475" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1f2937" text-anchor="middle">DLQ Messages: 8</text>
+  <text x="780" y="493" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Action: Inspect, fix, resubmit</text>
+  <text x="780" y="508" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">or discard permanently</text>
+
+  <!-- Connection arrows: Publishers to Topic -->
+  <line x1="220" y1="148" x2="320" y2="155" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="220" y1="193" x2="320" y2="155" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="220" y1="238" x2="320" y2="155" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Subscription to Subscribers -->
+  <line x1="580" y1="250" x2="700" y2="152" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="365" x2="700" y2="212" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="475" x2="700" y2="272" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- DLQ Arrow -->
+  <line x1="580" y1="475" x2="700" y2="380" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)" stroke-dasharray="6,3"/>
+  <text x="640" y="420" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#dc2626">Failed msgs</text>
+
+  <!-- Footer -->
+  <text x="450" y="590" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Features: Sessions | Deduplication | Scheduled Delivery | Geo-Disaster Recovery</text>
+  <text x="450" y="610" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Azure Service Bus provides enterprise-grade messaging with at-least-once delivery, partitioning, and premium tier for dedicated resources.</text>
+  <text x="450" y="630" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Tiers: Basic (queues only) | Standard (topics, 80MB msg store) | Premium (dedicated, 100MB msg store, geo-DR)</text>
+</svg>

@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" width="900" height="650">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="650" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">OPC-UA Publish-Subscribe Architecture</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Publisher Nodes, Subscriber Nodes, Broker/Network, and Data Model Mapping</text>
+
+  <!-- OPC-UA INFORMATION MODEL -->
+  <rect x="20" y="90" width="260" height="240" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="115" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">OPC-UA Information Model</text>
+
+  <!-- Node hierarchy -->
+  <rect x="40" y="130" width="220" height="40" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="155" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Objects Folder</text>
+
+  <rect x="60" y="180" width="180" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="202" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1f2937" text-anchor="middle">Device Set</text>
+
+  <rect x="80" y="225" width="140" height="30" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="244" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Sensor Node (ns=2, i=100)</text>
+
+  <rect x="80" y="260" width="140" height="30" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="279" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Actuator Node (ns=2, i=200)</text>
+
+  <rect x="80" y="295" width="140" height="30" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="314" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Controller Node (ns=2, i=300)</text>
+
+  <!-- PUBLISHER NODES -->
+  <rect x="20" y="360" width="260" height="260" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="150" y="385" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Publisher Nodes (OPC-UA Servers)</text>
+
+  <rect x="40" y="405" width="220" height="60" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="150" y="425" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">PLC Publisher</text>
+  <text x="150" y="445" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">DataSet: Temperature, Pressure</text>
+  <text x="150" y="460" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Publishing Interval: 100ms</text>
+
+  <rect x="40" y="475" width="220" height="60" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="150" y="495" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">SCADA Publisher</text>
+  <text x="150" y="515" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">DataSet: Valve Status, Flow Rate</text>
+  <text x="150" y="530" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Publishing Interval: 500ms</text>
+
+  <rect x="40" y="545" width="220" height="60" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="150" y="565" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">HMI Publisher</text>
+  <text x="150" y="585" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">DataSet: Operator Events</text>
+  <text x="150" y="600" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Publishing Interval: 1000ms</text>
+
+  <!-- BROKER / NETWORK -->
+  <rect x="320" y="140" width="260" height="350" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="165" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">OPC-UA Pub-Sub Broker</text>
+
+  <!-- Transport protocols -->
+  <rect x="340" y="185" width="220" height="60" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="205" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">UDP Multicast</text>
+  <text x="450" y="225" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">UADP Protocol — Low latency</text>
+  <text x="450" y="240" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Best-effort delivery, no broker</text>
+
+  <rect x="340" y="255" width="220" height="60" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="275" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">MQTT Broker</text>
+  <text x="450" y="295" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">JSON/UADP encoding over MQTT</text>
+  <text x="450" y="310" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">QoS 0/1/2, Topic mapping</text>
+
+  <rect x="340" y="325" width="220" height="60" rx="8" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="345" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">AMQP Broker</text>
+  <text x="450" y="365" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">UADP encoding over AMQP 1.0</text>
+  <text x="450" y="380" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Guaranteed delivery, queues</text>
+
+  <!-- Network mapping annotation -->
+  <rect x="340" y="400" width="220" height="70" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="420" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Data Model Mapping</text>
+  <text x="450" y="440" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">PublishedDataSet → DataSetWriter</text>
+  <text x="450" y="456" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">WriterGroup → NetworkMessage</text>
+  <text x="450" y="472" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Security: Sign/Encrypt per group</text>
+
+  <!-- SUBSCRIBER NODES -->
+  <rect x="620" y="140" width="260" height="480" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="750" y="165" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Subscriber Nodes (OPC-UA Clients)</text>
+
+  <!-- Subscriber 1 -->
+  <rect x="640" y="185" width="220" height="70" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="750" y="205" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Edge Analytics</text>
+  <text x="750" y="225" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Subscribes: Temperature, Pressure</text>
+  <text x="750" y="241" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Filter: DataSetField selection</text>
+
+  <!-- Subscriber 2 -->
+  <rect x="640" y="270" width="220" height="70" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="750" y="290" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Cloud Historian</text>
+  <text x="750" y="310" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Subscribes: All data (time-series DB)</text>
+  <text x="750" y="326" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Filter: None (full dataset)</text>
+
+  <!-- Subscriber 3 -->
+  <rect x="640" y="355" width="220" height="70" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="750" y="375" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Alarm Manager</text>
+  <text x="750" y="395" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Subscribes: Valve Status, Events</text>
+  <text x="750" y="411" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Filter: alarmCondition == true</text>
+
+  <!-- Subscriber 4 -->
+  <rect x="640" y="440" width="220" height="70" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="750" y="460" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1f2937" text-anchor="middle">Dashboard / HMI</text>
+  <text x="750" y="480" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Subscribes: Aggregated data</text>
+  <text x="750" y="496" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Filter: Computed fields only</text>
+
+  <!-- Security -->
+  <rect x="640" y="530" width="220" height="70" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="750" y="550" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Security Configuration</text>
+  <text x="750" y="570" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">Mode: None | Sign | Sign &amp; Encrypt</text>
+  <text x="750" y="586" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">SecurityPolicy: Basic256Sha256</text>
+
+  <!-- Arrows: Publishers to Broker -->
+  <line x1="280" y1="435" x2="340" y2="215" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="280" y1="505" x2="340" y2="285" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="280" y1="575" x2="340" y2="355" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Arrows: Broker to Subscribers -->
+  <line x1="580" y1="215" x2="640" y2="220" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="285" x2="640" y2="305" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="355" x2="640" y2="390" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="355" x2="640" y2="475" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Footer -->
+  <text x="450" y="630" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">OPC-UA Pub-Sub enables one-to-many communication for Industrial IoT with deterministic timing and standardized data modeling.</text>
+</svg>

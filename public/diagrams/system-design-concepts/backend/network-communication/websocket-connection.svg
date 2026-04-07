@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680" width="900" height="680">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="680" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">WebSocket Connection Lifecycle</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">HTTP Handshake → 101 Upgrade → Full-Duplex Communication → Close Handshake</text>
+
+  <!-- CLIENT -->
+  <rect x="20" y="85" width="200" height="560" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="110" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Client</text>
+
+  <!-- SERVER -->
+  <rect x="680" y="85" width="200" height="560" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="110" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Server</text>
+
+  <!-- PHASE 1: HTTP Handshake -->
+  <rect x="240" y="100" width="420" height="100" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="450" y="125" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Phase 1: HTTP Upgrade Handshake</text>
+
+  <!-- Client sends HTTP upgrade request -->
+  <rect x="40" y="140" width="160" height="45" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="158" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">HTTP GET /ws</text>
+  <text x="120" y="176" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Upgrade: websocket</text>
+
+  <line x1="200" y1="162" x2="240" y2="162" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- HTTP Request details -->
+  <rect x="260" y="140" width="380" height="50" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="450" y="158" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Upgrade: websocket</text>
+  <text x="450" y="175" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Connection: Upgrade</text>
+  <text x="450" y="188" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==</text>
+  <text x="450" y="188" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Sec-WebSocket-Version: 13</text>
+  <text x="450" y="200" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Sec-WebSocket-Protocol: chat, json</text>
+
+  <!-- Server responds 101 -->
+  <line x1="680" y1="162" x2="680" y2="162" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <rect x="680" y="140" width="160" height="45" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="158" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">HTTP 101 Switching</text>
+  <text x="780" y="176" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Protocols</text>
+
+  <!-- 101 Response details -->
+  <rect x="260" y="200" width="380" height="50" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="1"/>
+  <text x="450" y="218" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">HTTP/1.1 101 Switching Protocols</text>
+  <text x="450" y="235" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Upgrade: websocket | Connection: Upgrade</text>
+  <text x="450" y="252" font-family="monospace" font-size="10" font-weight="700" fill="#1f2937" text-anchor="middle">Sec-WebSocket-Accept: s3pPLMBiT...=</text>
+
+  <!-- PHASE 2: Full-Duplex Communication -->
+  <rect x="240" y="260" width="420" height="200" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="285" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">Phase 2: Full-Duplex Communication</text>
+
+  <!-- Message examples -->
+  <!-- Client to Server -->
+  <rect x="40" y="300" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="320" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Client → Server</text>
+
+  <line x1="200" y1="317" x2="240" y2="317" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="450" y="310" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Text frame: {"type": "message", "text": "Hello"}</text>
+  <line x1="660" y1="317" x2="680" y2="317" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <rect x="680" y="300" width="160" height="35" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="320" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Receive + process</text>
+
+  <!-- Server to Client -->
+  <rect x="40" y="355" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="375" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Server → Client</text>
+
+  <line x1="200" y1="372" x2="240" y2="372" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="450" y="365" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Text frame: {"type": "broadcast", "msg": "Hi all!"}</text>
+  <line x1="660" y1="372" x2="680" y2="372" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="680" y="355" width="160" height="35" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="375" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Receive + render</text>
+
+  <!-- Ping/Pong -->
+  <rect x="40" y="410" width="160" height="35" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="430" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Server → Client</text>
+
+  <line x1="200" y1="427" x2="240" y2="427" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="450" y="420" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Ping frame (keep-alive)</text>
+  <line x1="660" y1="427" x2="680" y2="427" stroke="#d97706" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <rect x="680" y="410" width="160" height="35" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="430" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Pong response</text>
+
+  <!-- Frame types annotation -->
+  <rect x="260" y="460" width="380" height="0" rx="6" fill="none" stroke="none"/>
+  <text x="450" y="470" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Frame types: Text (0x1) | Binary (0x2) | Close (0x8) | Ping (0x9) | Pong (0xA)</text>
+
+  <!-- PHASE 3: Close Handshake -->
+  <rect x="240" y="510" width="420" height="120" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="450" y="535" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#dc2626" text-anchor="middle">Phase 3: Close Handshake</text>
+
+  <!-- Close frame from client -->
+  <rect x="40" y="550" width="160" height="35" rx="6" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="120" y="570" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">Close Frame</text>
+
+  <line x1="200" y1="567" x2="240" y2="567" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="450" y="560" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Close frame: StatusCode=1000, Reason="Normal closure"</text>
+
+  <line x1="660" y1="567" x2="680" y2="567" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <rect x="680" y="550" width="160" height="35" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="570" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">Close Frame (echo)</text>
+
+  <!-- TCP teardown -->
+  <rect x="260" y="590" width="380" height="35" rx="6" fill="#ffffff" stroke="#dc2626" stroke-width="1"/>
+  <text x="450" y="610" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">TCP FIN handshake → connection fully closed</text>
+
+  <!-- Status codes annotation -->
+  <rect x="20" y="645" width="860" height="25" rx="6" fill="#f9fafb" stroke="#6b7280" stroke-width="1"/>
+  <text x="450" y="663" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Close codes: 1000 (normal) | 1001 (going away) | 1006 (abnormal) | 1008 (policy violation) | 1009 (message too big) | 1011 (server error)</text>
+</svg>

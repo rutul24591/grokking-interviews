@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
+  <title id="title">API Gateway Request Flow Pipeline</title>
+  <desc id="desc">Complete request processing pipeline through API Gateway showing each stage: Parse, Route, Auth, Rate Limit, Transform, Forward, Aggregate, Return with observability and failure handling at each stage</desc>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <!-- Gradient for observability band -->
+    <linearGradient id="obsGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#fef3c7" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- White background -->
+  <rect width="1200" height="850" fill="#ffffff"/>
+
+  <!-- Title section -->
+  <text x="600" y="36" text-anchor="middle" font-size="22" font-weight="700" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">API Gateway Request Flow Pipeline</text>
+  <text x="600" y="60" text-anchor="middle" font-size="15" font-weight="600" fill="#374151" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Request Processing Stages with Observability and Failure Handling</text>
+
+  <!-- ==================== OBSERVABILITY BAND (Right Side) ==================== -->
+  <rect x="820" y="85" width="360" height="740" rx="10" fill="url(#obsGradient)" stroke="#d97706" stroke-width="2"/>
+  <text x="1000" y="118" text-anchor="middle" font-size="16" font-weight="700" fill="#92400e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Observability Layer</text>
+
+  <!-- Observability items -->
+  <rect x="840" y="135" width="320" height="80" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="1000" y="158" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Metrics (Prometheus)</text>
+  <text x="855" y="178" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Request count, latency percentiles (p50/p95/p99)</text>
+  <text x="855" y="196" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Error rates by status code class (4xx, 5xx)</text>
+  <text x="855" y="214" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Active connections, rate limit counters</text>
+
+  <rect x="840" y="230" width="320" height="80" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="1000" y="253" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Structured Logging</text>
+  <text x="855" y="273" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; JSON log entries at each pipeline stage</text>
+  <text x="855" y="291" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Correlation ID propagation (X-Correlation-ID)</text>
+  <text x="855" y="309" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Request/response headers captured (filtered)</text>
+
+  <rect x="840" y="325" width="320" height="80" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="1000" y="348" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Distributed Tracing</text>
+  <text x="855" y="368" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; OpenTelemetry span per pipeline stage</text>
+  <text x="855" y="386" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Trace context propagation (W3C Trace Context)</text>
+  <text x="855" y="404" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Sampling strategy: head (1%) + tail-based (errors)</text>
+
+  <rect x="840" y="420" width="320" height="80" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="1000" y="443" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Alerting &amp; SLO Monitoring</text>
+  <text x="855" y="463" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Error budget burn rate alerts (14d window)</text>
+  <text x="855" y="481" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Circuit breaker state change notifications</text>
+  <text x="855" y="499" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Rate limit threshold breach alerts</text>
+
+  <!-- ==================== REQUEST ENTRY ==================== -->
+  <rect x="20" y="100" width="200" height="70" rx="10" fill="#1e3a8a" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="120" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Incoming Request</text>
+  <text x="120" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#bfdbfe" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">POST /api/orders</text>
+
+  <!-- Arrow to Stage 1 -->
+  <line x1="220" y1="135" x2="268" y2="135" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== STAGE 1: PARSE ==================== -->
+  <rect x="270" y="95" width="180" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="360" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">1. Parse</text>
+  <text x="285" y="142" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; HTTP method + path</text>
+  <text x="285" y="158" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Headers + body decode</text>
+
+  <!-- Failure handler for Parse -->
+  <rect x="270" y="180" width="180" height="38" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="360" y="204" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">FAIL: 400 Bad Request</text>
+
+  <!-- Arrow to Stage 2 -->
+  <line x1="450" y1="135" x2="498" y2="135" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== STAGE 2: ROUTE ==================== -->
+  <rect x="500" y="95" width="180" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="590" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">2. Route</text>
+  <text x="515" y="142" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Path matching rules</text>
+  <text x="515" y="158" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Resolve upstream target</text>
+
+  <!-- Failure handler for Route -->
+  <rect x="500" y="180" width="180" height="38" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="590" y="204" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">FAIL: 404 Not Found</text>
+
+  <!-- Arrow to Stage 3 -->
+  <line x1="680" y1="135" x2="728" y2="135" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== STAGE 3: AUTH ==================== -->
+  <rect x="730" y="95" width="180" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="820" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">3. Authenticate</text>
+  <text x="745" y="142" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; JWT validation / API key</text>
+  <text x="745" y="158" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Permission check (RBAC)</text>
+
+  <!-- Failure handler for Auth -->
+  <rect x="730" y="180" width="180" height="38" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="820" y="204" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">FAIL: 401 / 403</text>
+
+  <!-- Arrow to Stage 4 -->
+  <line x1="450" y1="270" x2="450" y2="298" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== STAGE 4: RATE LIMIT ==================== -->
+  <rect x="360" y="300" width="180" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="450" y="325" text-anchor="middle" font-size="14" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">4. Rate Limit</text>
+  <text x="375" y="347" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Token bucket check</text>
+  <text x="375" y="363" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Per-client + per-endpoint</text>
+
+  <!-- Failure handler for Rate Limit -->
+  <rect x="360" y="385" width="180" height="38" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="450" y="409" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">FAIL: 429 Too Many Requests</text>
+
+  <!-- Arrow to Stage 5 -->
+  <line x1="360" y1="340" x2="258" y2="340" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== STAGE 5: TRANSFORM ==================== -->
+  <rect x="70" y="300" width="180" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="160" y="325" text-anchor="middle" font-size="14" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">5. Transform</text>
+  <text x="85" y="347" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Request body reshape</text>
+  <text x="85" y="363" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Protocol translation</text>
+
+  <!-- Failure handler for Transform -->
+  <rect x="70" y="385" width="180" height="38" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="160" y="409" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">FAIL: 422 Unprocessable</text>
+
+  <!-- Arrow to Stage 6 -->
+  <line x1="160" y1="380" x2="160" y2="468" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== STAGE 6: FORWARD ==================== -->
+  <rect x="70" y="470" width="180" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="160" y="495" text-anchor="middle" font-size="14" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">6. Forward</text>
+  <text x="85" y="517" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Upstream HTTP call</text>
+  <text x="85" y="533" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Timeout + retry + hedging</text>
+
+  <!-- Failure handler for Forward -->
+  <rect x="70" y="555" width="180" height="50" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="160" y="574" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">FAIL: Timeout / Retry /</text>
+  <text x="160" y="592" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Circuit Breaker / Fallback</text>
+
+  <!-- Arrow to Stage 7 -->
+  <line x1="250" y1="510" x2="348" y2="510" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== STAGE 7: AGGREGATE ==================== -->
+  <rect x="350" y="470" width="180" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="440" y="495" text-anchor="middle" font-size="14" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">7. Aggregate</text>
+  <text x="365" y="517" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Merge multi-service responses</text>
+  <text x="365" y="533" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Filter fields, compress payload</text>
+
+  <!-- Failure handler for Aggregate -->
+  <rect x="350" y="555" width="180" height="38" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="440" y="579" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">FAIL: Partial / Degraded</text>
+
+  <!-- Arrow to Stage 8 -->
+  <line x1="530" y1="510" x2="628" y2="510" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== STAGE 8: RETURN ==================== -->
+  <rect x="630" y="470" width="180" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="720" y="495" text-anchor="middle" font-size="14" font-weight="700" fill="#075985" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">8. Return</text>
+  <text x="645" y="517" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Set response headers</text>
+  <text x="645" y="533" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Cache headers + CORS</text>
+
+  <!-- Arrow to Response -->
+  <line x1="810" y1="510" x2="928" y2="510" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- ==================== RESPONSE ==================== -->
+  <rect x="930" y="470" width="200" height="70" rx="10" fill="#065f46" stroke="#065f46" stroke-width="2"/>
+  <text x="1030" y="500" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Response to Client</text>
+  <text x="1030" y="522" text-anchor="middle" font-size="11" font-weight="600" fill="#6ee7b7" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">200 OK + JSON body</text>
+
+  <!-- ==================== DOWNSTREAM SERVICES ==================== -->
+  <rect x="70" y="620" width="740" height="100" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+  <text x="440" y="648" text-anchor="middle" font-size="14" font-weight="700" fill="#065f46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Downstream Microservices (Forwarded To)</text>
+
+  <rect x="100" y="660" width="140" height="45" rx="6" fill="#16a34a" stroke="#065f46" stroke-width="1"/>
+  <text x="170" y="688" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Order Service</text>
+
+  <rect x="270" y="660" width="140" height="45" rx="6" fill="#16a34a" stroke="#065f46" stroke-width="1"/>
+  <text x="340" y="688" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Payment Service</text>
+
+  <rect x="440" y="660" width="140" height="45" rx="6" fill="#16a34a" stroke="#065f46" stroke-width="1"/>
+  <text x="510" y="688" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Inventory Service</text>
+
+  <rect x="610" y="660" width="140" height="45" rx="6" fill="#16a34a" stroke="#065f46" stroke-width="1"/>
+  <text x="680" y="688" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Notification Svc</text>
+
+  <!-- Arrows from Forward stage to services -->
+  <line x1="160" y1="550" x2="170" y2="618" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="6 3"/>
+  <line x1="160" y1="550" x2="340" y2="618" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="6 3"/>
+  <line x1="160" y1="550" x2="510" y2="618" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="6 3"/>
+  <line x1="160" y1="550" x2="680" y2="618" stroke="#374151" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="6 3"/>
+
+  <!-- ==================== FAILURE MODES SUMMARY ==================== -->
+  <rect x="70" y="740" width="740" height="90" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="440" y="765" text-anchor="middle" font-size="14" font-weight="700" fill="#991b1b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">Failure Handling at Each Stage</text>
+  <text x="85" y="790" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Timeouts: Per-stage deadline (e.g., 2s auth, 5s upstream) prevents cascading delays |</text>
+  <text x="85" y="810" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Retries: Exponential backoff with jitter for transient failures, max 3 attempts, idempotent only |</text>
+  <text x="85" y="830" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Circuit Breakers: Open at 50% error rate over 10s window, half-open after 30s to test recovery |</text>
+  <text x="85" y="850" font-size="11" font-weight="600" fill="#1f2937" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">&#8226; Fallbacks: Cached responses, default values, or graceful degradation when upstream is unavailable</text>
+</svg>

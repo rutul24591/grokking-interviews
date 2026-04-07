@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" width="900" height="620">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="620" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Istio Ambient Mesh: Ztunnel Datapath</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">L4 Processing: Client App → Ztunnel (mTLS, Policy) → Ztunnel (mTLS, Policy) → Server App</text>
+
+  <!-- CLIENT NODE -->
+  <rect x="20" y="90" width="300" height="440" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="170" y="115" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Client Node</text>
+
+  <!-- Client Application -->
+  <rect x="40" y="135" width="240" height="60" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="160" y="155" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Client Application</text>
+  <text x="160" y="175" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Sends request to server-svc:8080</text>
+  <text x="160" y="190" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Unaware of mesh (no sidecar)</text>
+
+  <!-- Local network stack -->
+  <rect x="40" y="210" width="240" height="50" rx="8" fill="#f0f9ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="160" y="232" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Local Network Stack</text>
+  <text x="160" y="250" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">iptables/tproxy redirects traffic to ztunnel</text>
+
+  <!-- Ztunnel (Client side) -->
+  <rect x="40" y="280" width="240" height="230" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="160" y="305" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Ztunnel (Node Agent)</text>
+
+  <rect x="55" y="320" width="210" height="40" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="160" y="338" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">L4 Processing (TCP/UDP)</text>
+  <text x="160" y="354" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">No HTTP parsing — raw bytes only</text>
+
+  <rect x="55" y="368" width="210" height="40" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="160" y="386" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">mTLS Origination</text>
+  <text x="160" y="402" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">SPIFFE identity → x509 cert</text>
+
+  <rect x="55" y="416" width="210" height="40" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="160" y="434" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">L4 Authorization Policy</text>
+  <text x="160" y="450" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Allow/deny based on identity</text>
+
+  <rect x="55" y="464" width="210" height="30" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="160" y="483" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">HBONE tunnel encapsulation</text>
+
+  <!-- SERVER NODE -->
+  <rect x="580" y="90" width="300" height="440" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="730" y="115" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Server Node</text>
+
+  <!-- Ztunnel (Server side) -->
+  <rect x="600" y="135" width="240" height="230" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
+  <text x="720" y="160" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Ztunnel (Node Agent)</text>
+
+  <rect x="615" y="175" width="210" height="30" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="720" y="194" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#1f2937" text-anchor="middle">HBONE tunnel decapsulation</text>
+
+  <rect x="615" y="213" width="210" height="40" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="720" y="231" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">mTLS Termination</text>
+  <text x="720" y="247" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Verify client SPIFFE identity</text>
+
+  <rect x="615" y="261" width="210" height="40" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="720" y="279" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">L4 Authorization Policy</text>
+  <text x="720" y="295" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Allow/deny based on identity</text>
+
+  <rect x="615" y="309" width="210" height="40" rx="6" fill="#ffffff" stroke="#ca8a04" stroke-width="2"/>
+  <text x="720" y="327" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827" text-anchor="middle">L4 Processing (TCP/UDP)</text>
+  <text x="720" y="343" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#374151" text-anchor="middle">Forward to local workload</text>
+
+  <rect x="615" y="357" width="210" height="0" rx="6" fill="none" stroke="none"/>
+
+  <!-- Server Application -->
+  <rect x="600" y="380" width="240" height="60" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="720" y="400" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Server Application</text>
+  <text x="720" y="420" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Reives plain TCP — unaware of mesh</text>
+  <text x="720" y="435" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">No sidecar proxy injected</text>
+
+  <!-- Local network stack server -->
+  <rect x="600" y="455" width="240" height="50" rx="8" fill="#f0f9ff" stroke="#059669" stroke-width="2"/>
+  <text x="720" y="477" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827" text-anchor="middle">Local Network Stack</text>
+  <text x="720" y="495" font-family="system-ui, sans-serif" font-size="10" font-weight="400" fill="#374151" text-anchor="middle">Ztunnel receives via tproxy redirect</text>
+
+  <!-- NETWORK between nodes -->
+  <rect x="340" y="250" width="220" height="120" rx="10" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="275" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Underlay Network</text>
+  <text x="450" y="295" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">HBONE: HTTP-based overlay</text>
+  <text x="450" y="312" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">network encryption</text>
+  <text x="450" y="329" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Carries mTLS-wrapped payload</text>
+  <text x="450" y="346" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Standard IP routing between nodes</text>
+
+  <!-- Traffic flow arrows -->
+  <!-- Client App → Network Stack -->
+  <line x1="160" y1="195" x2="160" y2="210" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <!-- Network Stack → Ztunnel -->
+  <line x1="160" y1="260" x2="160" y2="280" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <!-- Client Ztunnel → Network -->
+  <line x1="280" y1="340" x2="340" y2="310" stroke="#ca8a04" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Network → Server Ztunnel -->
+  <line x1="560" y1="310" x2="600" y2="260" stroke="#ca8a04" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Server Ztunnel → Server App -->
+  <line x1="720" y1="365" x2="720" y2="380" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Key benefits annotation -->
+  <rect x="20" y="550" width="860" height="60" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="570" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Ambient Mesh Benefits over Sidecar</text>
+  <text x="450" y="590" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">No per-pod sidecar overhead | Shared ztunnel per node | Zero code changes | Incremental adoption | L4 processing is faster than L7</text>
+  <text x="450" y="608" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Ztunnel is a shared daemon per node (not per pod), reducing CPU/memory overhead while maintaining mTLS for all traffic.</text>
+
+  <!-- Footer -->
+  <text x="450" y="635" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Ztunnel handles L4 (TCP/UDP) mTLS and authorization. For L7 (HTTP) policies, traffic is forwarded to Waypoint proxies.</text>
+</svg>

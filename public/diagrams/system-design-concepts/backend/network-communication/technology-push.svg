@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" width="900" height="650">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="650" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827" text-anchor="middle">Push vs Pull Communication Models</text>
+  <text x="450" y="58" font-family="system-ui, sans-serif" font-size="13" font-weight="400" fill="#374151" text-anchor="middle">Server Push (SSE, WebSocket) vs Client Pull (Polling, Long-Polling): Latency, Overhead, Complexity</text>
+
+  <!-- SERVER PUSH SECTION (Left) -->
+  <rect x="20" y="85" width="420" height="530" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="230" y="112" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#059669" text-anchor="middle">Server Push</text>
+  <text x="230" y="132" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">Server initiates data transfer to client</text>
+
+  <!-- Server Push: SSE -->
+  <rect x="40" y="150" width="380" height="100" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="230" y="172" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Server-Sent Events (SSE)</text>
+  <text x="230" y="192" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Unidirectional: Server → Client only</text>
+  <text x="230" y="210" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Uses standard HTTP with text/event-stream</text>
+  <text x="230" y="228" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Auto-reconnection, Last-Event-ID resumption</text>
+
+  <!-- Server Push: WebSocket -->
+  <rect x="40" y="265" width="380" height="100" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="230" y="287" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">WebSocket</text>
+  <text x="230" y="307" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Bidirectional: Full-duplex over single TCP</text>
+  <text x="230" y="325" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">HTTP upgrade handshake → persistent connection</text>
+  <text x="230" y="343" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Low latency, binary + text frame support</text>
+
+  <!-- Server Push: Web Push API -->
+  <rect x="40" y="380" width="380" height="80" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="230" y="402" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Web Push API / HTTP/2 Server Push</text>
+  <text x="230" y="422" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Push notifications even when browser is closed</text>
+  <text x="230" y="440" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Service Worker receives and handles payload</text>
+
+  <!-- Push metrics -->
+  <rect x="40" y="475" width="380" height="120" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="230" y="497" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Push Characteristics</text>
+  <text x="230" y="518" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: Very Low (near real-time, milliseconds)</text>
+  <text x="230" y="538" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Overhead: Low (1 connection, no polling requests)</text>
+  <text x="230" y="558" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Complexity: Medium (connection management, scaling)</text>
+  <text x="230" y="578" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Scalability: Requires sticky sessions or pub-sub</text>
+
+  <!-- CLIENT PULL SECTION (Right) -->
+  <rect x="460" y="85" width="420" height="530" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="670" y="112" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#2563eb" text-anchor="middle">Client Pull</text>
+  <text x="670" y="132" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#374151" text-anchor="middle">Client initiates data transfer from server</text>
+
+  <!-- Client Pull: Short Polling -->
+  <rect x="480" y="150" width="380" height="100" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="670" y="172" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Short Polling</text>
+  <text x="670" y="192" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Fixed interval requests (every 1-5 seconds)</text>
+  <text x="670" y="210" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Simple implementation, high network overhead</text>
+  <text x="670" y="228" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Many empty responses waste bandwidth</text>
+
+  <!-- Client Pull: Long Polling -->
+  <rect x="480" y="265" width="380" height="100" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="670" y="287" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Long Polling</text>
+  <text x="670" y="307" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Server holds request open until data available</text>
+  <text x="670" y="325" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Response triggers immediate re-request</text>
+  <text x="670" y="343" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Reduces empty responses, server holds connections</text>
+
+  <!-- Client Pull: Conditional GET / ETag -->
+  <rect x="480" y="380" width="380" height="80" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="670" y="402" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">Conditional GET (ETag / If-Modified-Since)</text>
+  <text x="670" y="422" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">304 Not Modified reduces payload transfer</text>
+  <text x="670" y="440" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Still requires request overhead, saves bandwidth</text>
+
+  <!-- Pull metrics -->
+  <rect x="480" y="475" width="380" height="120" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="670" y="497" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Pull Characteristics</text>
+  <text x="670" y="518" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Latency: High (poll interval delay, 1s to 30s+)</text>
+  <text x="670" y="538" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Overhead: High (repeated HTTP requests, empty responses)</text>
+  <text x="670" y="558" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Complexity: Low (simple HTTP GET, no state)</text>
+  <text x="670" y="578" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#1f2937" text-anchor="middle">Scalability: Easy (stateless, no connection tracking)</text>
+
+  <!-- Comparison table at bottom -->
+  <rect x="20" y="615" width="860" height="55" rx="6" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="450" y="632" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Trade-off: Push gives low latency at the cost of server complexity; Pull is simple but wastes bandwidth and has higher latency.</text>
+  <text x="450" y="650" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">For real-time apps (chat, trading): Push. For periodic updates (weather, dashboards): Pull with caching is often sufficient.</text>
+  <text x="450" y="668" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Hybrid approach: Use push for critical real-time data + pull with ETag for non-critical, cacheable resources.</text>
+  <text x="450" y="686" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">HTTP/2 Server Push (deprecated in Chrome) attempted to push resources proactively but was removed due to cache conflicts and complexity.</text>
+  <text x="450" y="706" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#374151" text-anchor="middle">Modern alternative: HTTP/3 with QUIC provides multiplexed streams over UDP, reducing head-of-line blocking and improving connection migration.</text>
+</svg>
