@@ -1,10 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Security Headers Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Security Headers</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>HTTP security headers showing how each header protects against specific attacks</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">HTTP Security Headers: Defense Layers in HTTP Responses</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each header instructs the browser to enforce a specific security control</text>
+
+  <!-- Header 1: HSTS -->
+  <rect x="30" y="80" width="270" height="120" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="165" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Strict-Transport-Security</text>
+  <text x="165" y="125" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">max-age=31536000; includeSubDomains</text>
+  <text x="165" y="145" text-anchor="middle" font-size="9" fill="#1a1822">Forces HTTPS for all future requests</text>
+  <text x="165" y="163" text-anchor="middle" font-size="9" fill="#1a1822">Prevents: SSL stripping, protocol downgrade</text>
+  <rect x="50" y="175" width="230" height="20" rx="4" fill="#4caf50" opacity="0.15"/>
+  <text x="165" y="190" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Critical for HTTPS enforcement</text>
+
+  <!-- Header 2: CSP -->
+  <rect x="320" y="80" width="270" height="120" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="455" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Content-Security-Policy</text>
+  <text x="455" y="125" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">default-src 'self'; script-src 'self'</text>
+  <text x="455" y="145" text-anchor="middle" font-size="9" fill="#1a1822">Blocks inline scripts, external resources</text>
+  <text x="455" y="163" text-anchor="middle" font-size="9" fill="#1a1822">Prevents: XSS, data injection, clickjacking</text>
+  <rect x="340" y="175" width="230" height="20" rx="4" fill="#4caf50" opacity="0.15"/>
+  <text x="455" y="190" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Most powerful security header</text>
+
+  <!-- Header 3: X-Content-Type -->
+  <rect x="610" y="80" width="270" height="120" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="745" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">X-Content-Type-Options</text>
+  <text x="745" y="125" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">nosniff</text>
+  <text x="745" y="145" text-anchor="middle" font-size="9" fill="#1a1822">Prevents MIME type sniffing</text>
+  <text x="745" y="163" text-anchor="middle" font-size="9" fill="#1a1822">Prevents: Drive-by downloads, XSS via sniffing</text>
+  <rect x="630" y="175" width="230" height="20" rx="4" fill="#f0ad4e" opacity="0.15"/>
+  <text x="745" y="190" text-anchor="middle" font-size="9" font-weight="600" fill="#f0ad4e">Simple but essential</text>
+
+  <!-- Header 4: X-Frame-Options -->
+  <rect x="30" y="220" width="270" height="120" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <text x="165" y="245" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">X-Frame-Options</text>
+  <text x="165" y="265" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">DENY or SAMEORIGIN</text>
+  <text x="165" y="285" text-anchor="middle" font-size="9" fill="#1a1822">Prevents embedding in iframes</text>
+  <text x="165" y="303" text-anchor="middle" font-size="9" fill="#1a1822">Prevents: Clickjacking, UI redressing</text>
+  <rect x="50" y="315" width="230" height="20" rx="4" fill="#cc4444" opacity="0.15"/>
+  <text x="165" y="330" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">Legacy, replaced by CSP frame-ancestors</text>
+
+  <!-- Header 5: Referrer-Policy -->
+  <rect x="320" y="220" width="270" height="120" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="455" y="245" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Referrer-Policy</text>
+  <text x="455" y="265" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">strict-origin-when-cross-origin</text>
+  <text x="455" y="285" text-anchor="middle" font-size="9" fill="#1a1822">Controls Referrer header sent</text>
+  <text x="455" y="303" text-anchor="middle" font-size="9" fill="#1a1822">Prevents: URL leakage, tracking via referrer</text>
+  <rect x="340" y="315" width="230" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="455" y="330" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Privacy and security protection</text>
+
+  <!-- Header 6: Permissions-Policy -->
+  <rect x="610" y="220" width="270" height="120" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="745" y="245" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Permissions-Policy</text>
+  <text x="745" y="265" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">camera=(), microphone=(), geolocation=()</text>
+  <text x="745" y="285" text-anchor="middle" font-size="9" fill="#1a1822">Restricts browser API access</text>
+  <text x="745" y="303" text-anchor="middle" font-size="9" fill="#1a1822">Prevents: Unauthorized camera/mic access</text>
+  <rect x="630" y="315" width="230" height="20" rx="4" fill="#4caf50" opacity="0.15"/>
+  <text x="745" y="330" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Replaces deprecated Feature-Policy</text>
+
+  <!-- Bottom summary -->
+  <rect x="30" y="360" width="840" height="120" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="388" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Recommended Minimum Security Headers</text>
+
+  <rect x="50" y="405" width="250" height="60" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="175" y="425" text-anchor="middle" font-size="9" fill="#1a1822">✓ Strict-Transport-Security: max-age=31536000</text>
+  <text x="175" y="442" text-anchor="middle" font-size="9" fill="#1a1822">✓ Content-Security-Policy: default-src 'self'</text>
+  <text x="175" y="459" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">Force HTTPS, block XSS</text>
+
+  <rect x="320" y="405" width="250" height="60" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="445" y="425" text-anchor="middle" font-size="9" fill="#1a1822">✓ X-Content-Type-Options: nosniff</text>
+  <text x="445" y="442" text-anchor="middle" font-size="9" fill="#1a1822">✓ X-Frame-Options: DENY</text>
+  <text x="445" y="459" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">Block sniffing, prevent clickjacking</text>
+
+  <rect x="590" y="405" width="260" height="60" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="720" y="425" text-anchor="middle" font-size="9" fill="#1a1822">✓ Referrer-Policy: strict-origin-when-cross-origin</text>
+  <text x="720" y="442" text-anchor="middle" font-size="9" fill="#1a1822">✓ Permissions-Policy: restrict APIs</text>
+  <text x="720" y="459" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">Protect privacy, restrict APIs</text>
 </svg>

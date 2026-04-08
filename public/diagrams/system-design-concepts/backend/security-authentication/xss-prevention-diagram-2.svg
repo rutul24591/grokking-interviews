@@ -1,10 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">XSS Prevention Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Template</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="395" y="165" font-family="Arial" font-size="14" fill="#0f172a">CSP</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#dcfce7" stroke="#22c55e" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Browser</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>XSS defense in depth showing output encoding, input validation, CSP, and safe DOM APIs working together</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">XSS Defense in Depth: Layered Protection</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">No single defense is sufficient — combine output encoding, input validation, CSP, and safe APIs</text>
+
+  <!-- Layer 1: Input Validation -->
+  <rect x="30" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Layer 1: Input Validation</text>
+
+  <rect x="50" y="125" width="230" height="50" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Reject obviously malicious input</text>
+  <text x="165" y="163" text-anchor="middle" font-size="9" fill="#64748b">Strip &lt;script&gt;, event handlers, javascript:</text>
+
+  <rect x="50" y="185" width="230" height="60" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="205" text-anchor="middle" font-size="9" fill="#1a1822">Use whitelist approach — allow only expected</text>
+  <text x="165" y="222" text-anchor="middle" font-size="9" fill="#1a1822">patterns (alphanumeric, specific chars)</text>
+  <text x="165" y="239" text-anchor="middle" font-size="9" fill="#64748b">Blacklists are easily bypassed</text>
+
+  <!-- Layer 2: Output Encoding -->
+  <rect x="320" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="320" y="80" width="270" height="35" rx="10" fill="#4caf50"/>
+  <rect x="320" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="455" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Layer 2: Output Encoding</text>
+
+  <rect x="340" y="125" width="230" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="455" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Encode data before rendering</text>
+  <text x="455" y="163" text-anchor="middle" font-size="9" fill="#64748b">&lt; → &amp;lt;, &gt; → &amp;gt;, &quot; → &amp;quot;</text>
+
+  <rect x="340" y="185" width="230" height="60" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="455" y="205" text-anchor="middle" font-size="9" fill="#1a1822">Context-aware encoding:</text>
+  <text x="455" y="222" text-anchor="middle" font-size="9" fill="#1a1822">HTML body, attributes, JavaScript,</text>
+  <text x="455" y="239" text-anchor="middle" font-size="9" fill="#64748b">CSS, URL — each needs different encoding</text>
+
+  <!-- Layer 3: CSP -->
+  <rect x="610" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="610" y="80" width="270" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="610" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="745" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Layer 3: Content Security Policy</text>
+
+  <rect x="630" y="125" width="230" height="50" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="745" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Browser blocks inline scripts</text>
+  <text x="745" y="163" text-anchor="middle" font-size="9" fill="#64748b">Only allow scripts from trusted sources</text>
+
+  <rect x="630" y="185" width="230" height="60" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="745" y="205" text-anchor="middle" font-size="9" fill="#1a1822">Content-Security-Policy header:</text>
+  <text x="745" y="222" text-anchor="middle" font-size="9" fill="#1a1822">script-src 'self'; object-src 'none';</text>
+  <text x="745" y="239" text-anchor="middle" font-size="9" fill="#64748b">Last line of defense if XSS slips through</text>
+
+  <!-- Layer 4: Safe DOM APIs -->
+  <rect x="30" y="280" width="410" height="200" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="280" width="410" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="305" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="303" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Layer 4: Safe DOM APIs (Client-Side)</text>
+
+  <rect x="50" y="325" width="370" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="345" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">SAFE: textContent, createElement, setAttribute</text>
+  <text x="235" y="362" text-anchor="middle" font-size="9" fill="#64748b">Browser automatically escapes content</text>
+
+  <rect x="50" y="380" width="370" height="45" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="400" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">UNSAFE: innerHTML, outerHTML, document.write</text>
+  <text x="235" y="417" text-anchor="middle" font-size="9" fill="#64748b">Interprets content as HTML — executes scripts</text>
+
+  <rect x="50" y="435" width="370" height="35" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="457" text-anchor="middle" font-size="9" fill="#1a1822">Use frameworks with auto-escaping (React, Angular, Vue)</text>
+
+  <!-- CSP directives -->
+  <rect x="460" y="280" width="410" height="200" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="460" y="280" width="410" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="460" y="305" width="410" height="10" fill="#f0ad4e"/>
+  <text x="665" y="303" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Recommended CSP Directives</text>
+
+  <rect x="480" y="325" width="370" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="665" y="345" text-anchor="middle" font-size="9" fill="#1a1822">script-src 'self' — Only allow scripts from same origin</text>
+
+  <rect x="480" y="360" width="370" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="665" y="380" text-anchor="middle" font-size="9" fill="#1a1822">style-src 'self' 'unsafe-inline' — Allow inline styles if needed</text>
+
+  <rect x="480" y="395" width="370" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="665" y="415" text-anchor="middle" font-size="9" fill="#1a1822">img-src 'self' data: https: — Allow images from trusted sources</text>
+
+  <rect x="480" y="430" width="370" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="665" y="450" text-anchor="middle" font-size="9" fill="#1a1822">frame-ancestors 'none' — Prevent clickjacking via iframes</text>
 </svg>

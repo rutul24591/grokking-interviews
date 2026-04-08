@@ -1,10 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">XSS Prevention Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Unsafe HTML</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#fef9c3" stroke="#facc15" />
-  <text x="395" y="170" font-family="Arial" font-size="14" fill="#0f172a">Violation</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#dcfce7" stroke="#22c55e" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Report</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Context-aware output encoding showing how different contexts require different encoding strategies</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Context-Aware Output Encoding</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">The same user input must be encoded differently depending on where it is placed in the HTML</text>
+
+  <!-- HTML Body Context -->
+  <rect x="30" y="80" width="270" height="190" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">HTML Body Context</text>
+
+  <rect x="50" y="125" width="230" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="165" y="147" text-anchor="middle" font-size="9" fill="#1a1822">&lt;p&gt;USER_INPUT&lt;/p&gt;</text>
+
+  <rect x="50" y="170" width="230" height="45" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Encode: &amp;lt; &amp;gt; &amp;amp; &amp;quot; &amp;#x27;</text>
+  <text x="165" y="205" text-anchor="middle" font-size="9" fill="#64748b">HTML entity encoding</text>
+
+  <rect x="50" y="225" width="230" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="245" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">Safest: textContent</text>
+
+  <!-- HTML Attribute Context -->
+  <rect x="320" y="80" width="270" height="190" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="320" y="80" width="270" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="320" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="455" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">HTML Attribute Context</text>
+
+  <rect x="340" y="125" width="230" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="455" y="147" text-anchor="middle" font-size="9" fill="#1a1822">&lt;input value="USER_INPUT"&gt;</text>
+
+  <rect x="340" y="170" width="230" height="45" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="455" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Encode: &amp;quot; &amp;#x27; &amp;lt; &amp;gt; &amp;amp;</text>
+  <text x="455" y="205" text-anchor="middle" font-size="9" fill="#64748b">Attribute entity encoding</text>
+
+  <rect x="340" y="225" width="230" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="455" y="245" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">Never in event handlers</text>
+
+  <!-- JavaScript Context -->
+  <rect x="610" y="80" width="270" height="190" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="610" y="80" width="270" height="35" rx="10" fill="#cc4444"/>
+  <rect x="610" y="105" width="270" height="10" fill="#cc4444"/>
+  <text x="745" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">JavaScript Context</text>
+
+  <rect x="630" y="125" width="230" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="745" y="147" text-anchor="middle" font-size="9" fill="#1a1822">&lt;script&gt;var x = 'USER_INPUT';&lt;/script&gt;</text>
+
+  <rect x="630" y="170" width="230" height="45" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="745" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Encode: \xHH hex encoding</text>
+  <text x="745" y="205" text-anchor="middle" font-size="9" fill="#64748b">Escape quotes, backslash, newlines</text>
+
+  <rect x="630" y="225" width="230" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="745" y="245" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">AVOID: Never insert into &lt;script&gt;</text>
+
+  <!-- URL Context -->
+  <rect x="30" y="290" width="410" height="190" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="290" width="410" height="35" rx="10" fill="#4caf50"/>
+  <rect x="30" y="315" width="410" height="10" fill="#4caf50"/>
+  <text x="235" y="313" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">URL Context</text>
+
+  <rect x="50" y="335" width="370" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="235" y="357" text-anchor="middle" font-size="9" fill="#1a1822">&lt;a href="USER_INPUT"&gt;link&lt;/a&gt;</text>
+
+  <rect x="50" y="380" width="370" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="398" text-anchor="middle" font-size="9" fill="#1a1822">Encode: URL percent-encoding (%XX)</text>
+  <text x="235" y="415" text-anchor="middle" font-size="9" fill="#64748b">Validate: Must start with http:// or https://</text>
+
+  <rect x="50" y="435" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="457" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">Block javascript:, data:, vbscript: URLs</text>
+
+  <!-- CSS Context -->
+  <rect x="460" y="290" width="410" height="190" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="460" y="290" width="410" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="460" y="315" width="410" height="10" fill="#f0ad4e"/>
+  <text x="665" y="313" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">CSS Context</text>
+
+  <rect x="480" y="335" width="370" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="665" y="357" text-anchor="middle" font-size="9" fill="#1a1822">&lt;div style="background: url(USER_INPUT)"&gt;</text>
+
+  <rect x="480" y="380" width="370" height="45" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="665" y="398" text-anchor="middle" font-size="9" fill="#1a1822">Encode: \HH hex escaping</text>
+  <text x="665" y="415" text-anchor="middle" font-size="9" fill="#64748b">Escape all non-alphanumeric characters</text>
+
+  <rect x="480" y="435" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="457" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">AVOID: Never allow user-controlled CSS</text>
 </svg>

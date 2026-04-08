@@ -1,10 +1,80 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">JWT (JSON Web Tokens) Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">JWT (JSON Web Tokens)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>JWT security considerations showing token theft, replay attacks, algorithm confusion, and best practices</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">JWT Security Considerations &amp; Best Practices</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Common attack vectors and how to defend against them</text>
+
+  <!-- Attack vectors -->
+  <rect x="30" y="80" width="410" height="200" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="10" fill="#cc4444"/>
+  <rect x="30" y="105" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Common JWT Attack Vectors</text>
+
+  <rect x="50" y="130" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">1. Token Theft (XSS, insecure storage)</text>
+
+  <rect x="50" y="175" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="197" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">2. Algorithm Confusion (alg: none, RS256→HS256)</text>
+
+  <rect x="50" y="220" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="242" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">3. Replay Attacks (no binding, no expiration)</text>
+
+  <rect x="50" y="265" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="287" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">4. Data Leakage (claims visible in base64url)</text>
+
+  <!-- Defense measures -->
+  <rect x="460" y="80" width="410" height="200" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="10" fill="#4caf50"/>
+  <rect x="460" y="105" width="410" height="10" fill="#4caf50"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Defense Measures</text>
+
+  <rect x="480" y="130" width="370" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">httpOnly, Secure, SameSite cookies</text>
+
+  <rect x="480" y="175" width="370" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="197" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Whitelist allowed algorithms, never trust alg header</text>
+
+  <rect x="480" y="220" width="370" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="242" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Short expiry + refresh rotation + denylist</text>
+
+  <rect x="480" y="265" width="370" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="287" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Never store sensitive data in JWT claims</text>
+
+  <!-- Algorithm comparison -->
+  <rect x="30" y="310" width="840" height="160" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="338" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Signing Algorithm Comparison</text>
+
+  <rect x="50" y="350" width="170" height="30" rx="4" fill="#f0f0f5"/>
+  <text x="135" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Algorithm</text>
+  <rect x="230" y="350" width="170" height="30" rx="4" fill="#f0f0f5"/>
+  <text x="315" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Type</text>
+  <rect x="410" y="350" width="210" height="30" rx="4" fill="#f0f0f5"/>
+  <text x="515" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Use Case</text>
+  <rect x="630" y="350" width="220" height="30" rx="4" fill="#f0f0f5"/>
+  <text x="740" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Recommendation</text>
+
+  <!-- Rows -->
+  <text x="135" y="395" text-anchor="middle" font-size="9" fill="#1a1822">HS256</text>
+  <text x="315" y="395" text-anchor="middle" font-size="9" fill="#1a1822">Symmetric</text>
+  <text x="515" y="395" text-anchor="middle" font-size="9" fill="#1a1822">Single service, shared secret</text>
+  <text x="740" y="395" text-anchor="middle" font-size="9" fill="#f0ad4e" font-weight="600">OK for simple systems</text>
+
+  <text x="135" y="415" text-anchor="middle" font-size="9" fill="#1a1822">RS256</text>
+  <text x="315" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Asymmetric (RSA)</text>
+  <text x="515" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Multi-service, public key validation</text>
+  <text x="740" y="415" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">Recommended</text>
+
+  <text x="135" y="435" text-anchor="middle" font-size="9" fill="#1a1822">ES256</text>
+  <text x="315" y="435" text-anchor="middle" font-size="9" fill="#1a1822">Asymmetric (ECDSA)</text>
+  <text x="515" y="435" text-anchor="middle" font-size="9" fill="#1a1822">Smaller signatures, faster</text>
+  <text x="740" y="435" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">Recommended</text>
+
+  <text x="135" y="455" text-anchor="middle" font-size="9" fill="#1a1822">none</text>
+  <text x="315" y="455" text-anchor="middle" font-size="9" fill="#1a1822">No signature</text>
+  <text x="515" y="455" text-anchor="middle" font-size="9" fill="#1a1822">Testing only</text>
+  <text x="740" y="455" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">NEVER use in production</text>
+
+  <!-- Bottom warning -->
+  <rect x="30" y="475" width="840" height="20" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="450" y="489" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">Critical: Always verify the signature. Never trust an unsigned JWT. Never accept alg: none.</text>
 </svg>

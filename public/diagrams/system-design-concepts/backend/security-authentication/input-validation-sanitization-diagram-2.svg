@@ -1,10 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Input Validation &amp; Sanitization Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Input Validation &amp; Sanitization</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Context-aware sanitization showing how input is sanitized differently for HTML, SQL, URL, and file system contexts</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Context-Aware Sanitization</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">The same malicious input must be sanitized differently depending on the output context</text>
+
+  <!-- Malicious Input -->
+  <rect x="30" y="80" width="840" height="60" rx="10" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Malicious Input:</text>
+  <text x="450" y="128" text-anchor="middle" font-size="11" font-family="monospace" fill="#cc4444">&lt;script&gt;document.cookie&lt;/script&gt; &apos; OR 1=1 -- ; rm -rf /</text>
+
+  <!-- HTML Context -->
+  <rect x="30" y="170" width="410" height="140" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="235" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">HTML Output Context</text>
+
+  <rect x="50" y="215" width="370" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="235" y="237" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">Output: &amp;lt;script&amp;gt;document.cookie&amp;lt;/script&amp;gt; ...</text>
+
+  <rect x="50" y="260" width="370" height="40" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="235" y="278" text-anchor="middle" font-size="9" fill="#1a1822">HTML entity encoding: &lt; → &amp;lt;, &gt; → &amp;gt;, &amp; → &amp;amp;, &quot; → &amp;quot;</text>
+  <text x="235" y="293" text-anchor="middle" font-size="9" fill="#64748b">Prevents XSS — browser displays as text, not HTML</text>
+
+  <!-- SQL Context -->
+  <rect x="460" y="170" width="410" height="140" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="665" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">SQL Query Context</text>
+
+  <rect x="480" y="215" width="370" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="665" y="237" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">Output: Parameterized query (not string concat)</text>
+
+  <rect x="480" y="260" width="370" height="40" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="278" text-anchor="middle" font-size="9" fill="#1a1822">Parameterized queries: input bound as parameter, not SQL</text>
+  <text x="665" y="293" text-anchor="middle" font-size="9" fill="#64748b">Prevents SQL injection — input treated as data, not code</text>
+
+  <!-- URL Context -->
+  <rect x="30" y="330" width="410" height="140" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="235" y="358" text-anchor="middle" font-size="13" font-weight="700" fill="#f0ad4e">URL Context</text>
+
+  <rect x="50" y="375" width="370" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="235" y="397" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">Output: %3Cscript%3Edocument.cookie%3C%2Fscript%3E</text>
+
+  <rect x="50" y="420" width="370" height="40" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="235" y="438" text-anchor="middle" font-size="9" fill="#1a1822">URL percent-encoding: special chars → %XX hex codes</text>
+  <text x="235" y="453" text-anchor="middle" font-size="9" fill="#64748b">Prevents URL injection — input safe in URL parameters</text>
+
+  <!-- File System Context -->
+  <rect x="460" y="330" width="410" height="140" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <text x="665" y="358" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">File System Context</text>
+
+  <rect x="480" y="375" width="370" height="35" rx="4" fill="#f0f0f5"/>
+  <text x="665" y="397" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">Output: sanitized_filename.txt (stripped dangerous chars)</text>
+
+  <rect x="480" y="420" width="370" height="40" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="438" text-anchor="middle" font-size="9" fill="#1a1822">Strip path traversal (../), null bytes, special chars</text>
+  <text x="665" y="453" text-anchor="middle" font-size="9" fill="#64748b">Prevents path traversal — input safe as filename</text>
 </svg>

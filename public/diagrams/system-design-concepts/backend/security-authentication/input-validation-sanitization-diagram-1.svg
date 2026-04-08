@@ -1,10 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Input Validation &amp; Sanitization Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Input Validation &amp; Sanitization</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Input validation pipeline showing whitelist validation, type checking, length limits, and sanitization</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Input Validation Pipeline: From Raw Input to Safe Data</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Multiple validation stages transform raw input into safe, validated data</text>
+
+  <!-- Raw Input -->
+  <rect x="30" y="80" width="140" height="100" rx="10" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="100" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">Raw Input</text>
+  <text x="100" y="128" text-anchor="middle" font-size="9" fill="#1a1822">User-submitted data</text>
+  <text x="100" y="143" text-anchor="middle" font-size="9" fill="#1a1822">URL params, body, headers</text>
+  <text x="100" y="163" text-anchor="middle" font-size="9" fill="#64748b">Untrusted, potentially malicious</text>
+
+  <!-- Arrow -->
+  <line x1="170" y1="130" x2="220" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrowInput)"/>
+
+  <!-- Stage 1: Type Validation -->
+  <rect x="220" y="80" width="160" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="300" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">1. Type Validation</text>
+  <text x="300" y="128" text-anchor="middle" font-size="9" fill="#1a1822">Is it the right type?</text>
+  <text x="300" y="143" text-anchor="middle" font-size="9" fill="#64748b">string, number, boolean, array</text>
+  <text x="300" y="163" text-anchor="middle" font-size="9" fill="#64748b">Reject wrong types immediately</text>
+
+  <!-- Arrow -->
+  <line x1="380" y1="130" x2="430" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrowInput)"/>
+
+  <!-- Stage 2: Format Validation -->
+  <rect x="430" y="80" width="160" height="100" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="510" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">2. Format Validation</text>
+  <text x="510" y="128" text-anchor="middle" font-size="9" fill="#1a1822">Does it match the pattern?</text>
+  <text x="510" y="143" text-anchor="middle" font-size="9" fill="#64748b">email regex, URL format, date</text>
+  <text x="510" y="163" text-anchor="middle" font-size="9" fill="#64748b">Reject invalid formats</text>
+
+  <!-- Arrow -->
+  <line x1="590" y1="130" x2="640" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrowInput)"/>
+
+  <!-- Stage 3: Length/Range -->
+  <rect x="640" y="80" width="160" height="100" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="720" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">3. Length/Range Check</text>
+  <text x="720" y="128" text-anchor="middle" font-size="9" fill="#1a1822">Is it within bounds?</text>
+  <text x="720" y="143" text-anchor="middle" font-size="9" fill="#64748b">min/max length, min/max value</text>
+  <text x="720" y="163" text-anchor="middle" font-size="9" fill="#64748b">Reject out-of-bounds values</text>
+
+  <!-- Arrow down -->
+  <line x1="720" y1="180" x2="720" y2="230" stroke="#64748b" stroke-width="2" marker-end="url(#arrowInput)"/>
+
+  <!-- Stage 4: Sanitization -->
+  <rect x="640" y="230" width="160" height="100" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="720" y="258" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">4. Sanitization</text>
+  <text x="720" y="278" text-anchor="middle" font-size="9" fill="#1a1822">Strip/encode dangerous content</text>
+  <text x="720" y="293" text-anchor="middle" font-size="9" fill="#64748b">HTML encode, SQL escape, trim</text>
+  <text x="720" y="313" text-anchor="middle" font-size="9" fill="#64748b">Remove null bytes, control chars</text>
+
+  <!-- Arrow left -->
+  <line x1="640" y1="280" x2="590" y2="280" stroke="#64748b" stroke-width="2" marker-end="url(#arrowInput)"/>
+
+  <!-- Stage 5: Business Rules -->
+  <rect x="430" y="230" width="160" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="510" y="258" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">5. Business Rules</text>
+  <text x="510" y="278" text-anchor="middle" font-size="9" fill="#1a1822">Is it valid in context?</text>
+  <text x="510" y="293" text-anchor="middle" font-size="9" fill="#64748b">User exists, inventory available</text>
+  <text x="510" y="313" text-anchor="middle" font-size="9" fill="#64748b">Date in future, valid state</text>
+
+  <!-- Arrow left -->
+  <line x1="430" y1="280" x2="380" y2="280" stroke="#64748b" stroke-width="2" marker-end="url(#arrowInput)"/>
+
+  <!-- Safe Data -->
+  <rect x="220" y="230" width="160" height="100" rx="10" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <text x="300" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">Safe Data</text>
+  <text x="300" y="278" text-anchor="middle" font-size="9" fill="#1a1822">Validated, sanitized, typed</text>
+  <text x="300" y="293" text-anchor="middle" font-size="9" fill="#1a1822">Ready for processing</text>
+  <text x="300" y="313" text-anchor="middle" font-size="9" fill="#64748b">Safe to use in queries, rendering</text>
+
+  <!-- Bottom examples -->
+  <rect x="30" y="360" width="840" height="120" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="388" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Whitelist vs Blacklist Validation</text>
+
+  <rect x="50" y="405" width="390" height="60" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="245" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">WHITELIST (Recommended): Allow only known-good patterns</text>
+  <text x="245" y="443" text-anchor="middle" font-size="9" fill="#1a1822">Email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/</text>
+  <text x="245" y="458" text-anchor="middle" font-size="9" fill="#64748b">Reject anything that doesn&apos;t match</text>
+
+  <rect x="460" y="405" width="390" height="60" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="655" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">BLACKLIST (Not Recommended): Block known-bad patterns</text>
+  <text x="655" y="443" text-anchor="middle" font-size="9" fill="#1a1822">Block: &lt;script&gt;, SELECT, DROP, etc.</text>
+  <text x="655" y="458" text-anchor="middle" font-size="9" fill="#64748b">Easily bypassed with encoding tricks</text>
+
+  <defs>
+    <marker id="arrowInput" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,96 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">XSS Prevention Diagram 1</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">User Input</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="395" y="170" font-family="Arial" font-size="14" fill="#0f172a">Validation</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#dcfce7" stroke="#22c55e" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Encoding</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>XSS attack types showing reflected, stored, and DOM-based XSS with their injection points</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">XSS Attack Types: Reflected, Stored, and DOM-Based</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">All XSS attacks inject malicious scripts, but the injection and execution paths differ</text>
+
+  <!-- Reflected XSS -->
+  <rect x="30" y="80" width="270" height="380" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="40" rx="10" fill="#cc4444"/>
+  <rect x="30" y="110" width="270" height="10" fill="#cc4444"/>
+  <text x="165" y="107" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Reflected XSS</text>
+
+  <rect x="50" y="130" width="230" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Injection Point</text>
+  <text x="165" y="168" text-anchor="middle" font-size="9" fill="#1a1822">URL parameter or search query</text>
+  <text x="165" y="182" text-anchor="middle" font-size="9" fill="#64748b">Reflected in response immediately</text>
+
+  <rect x="50" y="195" width="230" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="215" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Attack Vector</text>
+  <text x="165" y="233" text-anchor="middle" font-size="9" fill="#1a1822">Malicious link sent to victim</text>
+  <text x="165" y="247" text-anchor="middle" font-size="9" fill="#64748b">Phishing email, social media</text>
+
+  <rect x="50" y="260" width="230" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="280" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Persistence</text>
+  <text x="165" y="298" text-anchor="middle" font-size="9" fill="#1a1822">Not stored on server</text>
+  <text x="165" y="312" text-anchor="middle" font-size="9" fill="#64748b">Executes once per click</text>
+
+  <rect x="50" y="325" width="230" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="345" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Example</text>
+  <text x="165" y="363" text-anchor="middle" font-size="9" fill="#1a1822">site.com/search?q=&lt;script&gt;...&lt;/script&gt;</text>
+  <text x="165" y="377" text-anchor="middle" font-size="9" fill="#64748b">Server reflects input in response</text>
+
+  <rect x="50" y="390" width="230" height="55" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Defense: Output encoding,</text>
+  <text x="165" y="428" text-anchor="middle" font-size="9" fill="#1a1822">input validation, CSP</text>
+
+  <!-- Stored XSS -->
+  <rect x="320" y="80" width="270" height="380" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="320" y="80" width="270" height="40" rx="10" fill="#f0ad4e"/>
+  <rect x="320" y="110" width="270" height="10" fill="#f0ad4e"/>
+  <text x="455" y="107" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Stored (Persistent) XSS</text>
+
+  <rect x="340" y="130" width="230" height="55" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="455" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Injection Point</text>
+  <text x="455" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Database via user input</text>
+  <text x="455" y="182" text-anchor="middle" font-size="9" fill="#64748b">Comments, profiles, posts</text>
+
+  <rect x="340" y="195" width="230" height="55" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="455" y="215" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Attack Vector</text>
+  <text x="455" y="233" text-anchor="middle" font-size="9" fill="#1a1822">Malicious content stored</text>
+  <text x="455" y="247" text-anchor="middle" font-size="9" fill="#64748b">Executes when page viewed</text>
+
+  <rect x="340" y="260" width="230" height="55" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="455" y="280" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Persistence</text>
+  <text x="455" y="298" text-anchor="middle" font-size="9" fill="#1a1822">Stored permanently on server</text>
+  <text x="455" y="312" text-anchor="middle" font-size="9" fill="#64748b">Affects all viewers</text>
+
+  <rect x="340" y="325" width="230" height="55" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="455" y="345" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Example</text>
+  <text x="455" y="363" text-anchor="middle" font-size="9" fill="#1a1822">Comment: &lt;script&gt;...&lt;/script&gt;</text>
+  <text x="455" y="377" text-anchor="middle" font-size="9" fill="#64748b">Script stored, runs for all viewers</text>
+
+  <rect x="340" y="390" width="230" height="55" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="455" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Defense: Output encoding,</text>
+  <text x="455" y="428" text-anchor="middle" font-size="9" fill="#1a1822">input sanitization, CSP</text>
+
+  <!-- DOM-based XSS -->
+  <rect x="610" y="80" width="270" height="380" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="610" y="80" width="270" height="40" rx="10" fill="#6d5bd0"/>
+  <rect x="610" y="110" width="270" height="10" fill="#6d5bd0"/>
+  <text x="745" y="107" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">DOM-Based XSS</text>
+
+  <rect x="630" y="130" width="230" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="745" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Injection Point</text>
+  <text x="745" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Client-side JavaScript</text>
+  <text x="745" y="182" text-anchor="middle" font-size="9" fill="#64748b">document.write, innerHTML</text>
+
+  <rect x="630" y="195" width="230" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="745" y="215" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Attack Vector</text>
+  <text x="745" y="233" text-anchor="middle" font-size="9" fill="#1a1822">Malicious URL or input</text>
+  <text x="745" y="247" text-anchor="middle" font-size="9" fill="#64748b">Processed by client JS</text>
+
+  <rect x="630" y="260" width="230" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="745" y="280" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Persistence</text>
+  <text x="745" y="298" text-anchor="middle" font-size="9" fill="#1a1822">Not stored on server</text>
+  <text x="745" y="312" text-anchor="middle" font-size="9" fill="#64748b">Executes client-side only</text>
+
+  <rect x="630" y="325" width="230" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="745" y="345" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Example</text>
+  <text x="745" y="363" text-anchor="middle" font-size="9" fill="#1a1822">document.location.hash</text>
+  <text x="745" y="377" text-anchor="middle" font-size="9" fill="#64748b">written to innerHTML unsafely</text>
+
+  <rect x="630" y="390" width="230" height="55" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="745" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Defense: Safe DOM APIs,</text>
+  <text x="745" y="428" text-anchor="middle" font-size="9" fill="#1a1822">avoid innerHTML, CSP</text>
 </svg>

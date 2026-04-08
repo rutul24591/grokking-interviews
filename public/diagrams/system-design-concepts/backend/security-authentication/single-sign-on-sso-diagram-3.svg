@@ -1,10 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Single Sign-On (SSO) Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Single Sign-On (SSO)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>OIDC vs SAML comparison and SSO security considerations</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">OIDC Flow &amp; SSO Security Considerations</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">OpenID Connect authorization code flow with PKCE and security best practices</text>
+
+  <!-- OIDC Flow -->
+  <rect x="30" y="80" width="410" height="200" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="10" fill="#4caf50"/>
+  <rect x="30" y="105" width="410" height="10" fill="#4caf50"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">OIDC Authorization Code Flow</text>
+
+  <rect x="50" y="130" width="370" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1. Client redirects to IdP with code_challenge + scopes</text>
+
+  <rect x="50" y="175" width="370" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="197" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">2. User authenticates at IdP (password, MFA)</text>
+
+  <rect x="50" y="220" width="370" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="242" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">3. IdP redirects back with authorization code</text>
+
+  <rect x="50" y="265" width="370" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="287" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">4. Client exchanges code + verifier for tokens</text>
+
+  <!-- SSO Security -->
+  <rect x="460" y="80" width="410" height="200" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="10" fill="#cc4444"/>
+  <rect x="460" y="105" width="410" height="10" fill="#cc4444"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">SSO Security Risks</text>
+
+  <rect x="480" y="130" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">IdP compromise = access to all connected apps</text>
+
+  <rect x="480" y="175" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="197" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Misconfigured trust relationships allow unauthorized access</text>
+
+  <rect x="480" y="220" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="242" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Token interception during redirect (use PKCE)</text>
+
+  <rect x="480" y="265" width="370" height="35" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="287" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Excessive permissions granted to connected apps</text>
+
+  <!-- Best practices -->
+  <rect x="30" y="310" width="840" height="170" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="340" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">SSO Best Practices</text>
+
+  <rect x="50" y="360" width="390" height="40" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="245" y="380" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Use PKCE for all OIDC flows, even confidential clients</text>
+
+  <rect x="460" y="360" width="390" height="40" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="380" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Validate IdP signatures on all SAML assertions and ID tokens</text>
+
+  <rect x="50" y="410" width="390" height="40" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="245" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Enforce MFA at the IdP level for all users</text>
+
+  <rect x="460" y="410" width="390" height="40" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Use short-lived tokens with refresh rotation</text>
+
+  <rect x="50" y="460" width="390" height="30" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="245" y="480" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Audit connected apps and revoke unused connections</text>
+
+  <rect x="460" y="460" width="390" height="30" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="655" y="480" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Implement conditional access policies (IP, device, location)</text>
 </svg>

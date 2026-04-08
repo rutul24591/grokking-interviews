@@ -1,10 +1,80 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Encryption Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Encryption</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Envelope encryption flow showing data encryption key, key encryption key, and KMS interaction</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Envelope Encryption: How Cloud Providers Encrypt Your Data</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Data encrypted with DEK, DEK encrypted with KEK, KEK stored in KMS</text>
+
+  <!-- Encryption flow -->
+  <rect x="30" y="80" width="840" height="200" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Encryption Flow (Writing Data)</text>
+
+  <!-- Step 1 -->
+  <rect x="50" y="120" width="160" height="70" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="143" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1. Generate DEK</text>
+  <text x="130" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Random 256-bit key</text>
+  <text x="130" y="176" text-anchor="middle" font-size="9" fill="#1a1822">For this data only</text>
+
+  <line x1="210" y1="155" x2="260" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEnc)"/>
+
+  <!-- Step 2 -->
+  <rect x="260" y="120" width="160" height="70" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="340" y="143" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">2. Encrypt Data</text>
+  <text x="340" y="160" text-anchor="middle" font-size="9" fill="#1a1822">AES-256-GCM(data, DEK)</text>
+  <text x="340" y="176" text-anchor="middle" font-size="9" fill="#1a1822">Produces ciphertext + auth tag</text>
+
+  <line x1="420" y1="155" x2="470" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEnc)"/>
+
+  <!-- Step 3 -->
+  <rect x="470" y="120" width="160" height="70" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="550" y="143" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">3. Encrypt DEK</text>
+  <text x="550" y="160" text-anchor="middle" font-size="9" fill="#1a1822">KMS.encrypt(DEK, KEK)</text>
+  <text x="550" y="176" text-anchor="middle" font-size="9" fill="#1a1822">Returns encrypted DEK</text>
+
+  <line x1="630" y1="155" x2="680" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEnc)"/>
+
+  <!-- Step 4 -->
+  <rect x="680" y="120" width="180" height="70" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="770" y="143" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">4. Store Both</text>
+  <text x="770" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Ciphertext + encrypted DEK</text>
+  <text x="770" y="176" text-anchor="middle" font-size="9" fill="#1a1822">KEK stays in KMS</text>
+
+  <!-- Decryption flow -->
+  <rect x="30" y="300" width="840" height="180" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="328" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Decryption Flow (Reading Data)</text>
+
+  <rect x="50" y="340" width="160" height="70" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="130" y="363" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1. Retrieve encrypted DEK</text>
+  <text x="130" y="380" text-anchor="middle" font-size="9" fill="#1a1822">From storage alongside</text>
+  <text x="130" y="396" text-anchor="middle" font-size="9" fill="#1a1822">ciphertext</text>
+
+  <line x1="210" y1="375" x2="260" y2="375" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowEnc)"/>
+
+  <rect x="260" y="340" width="160" height="70" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="340" y="363" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">2. Decrypt DEK via KMS</text>
+  <text x="340" y="380" text-anchor="middle" font-size="9" fill="#1a1822">KMS.decrypt(encrypted_DEK)</text>
+  <text x="340" y="396" text-anchor="middle" font-size="9" fill="#1a1822">Returns plaintext DEK</text>
+
+  <line x1="420" y1="375" x2="470" y2="375" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowEnc)"/>
+
+  <rect x="470" y="340" width="160" height="70" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="550" y="363" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">3. Decrypt Data</text>
+  <text x="550" y="380" text-anchor="middle" font-size="9" fill="#1a1822">AES-256-GCM.decrypt</text>
+  <text x="550" y="396" text-anchor="middle" font-size="9" fill="#1a1822">(ciphertext, DEK)</text>
+
+  <line x1="630" y1="375" x2="680" y2="375" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowEnc)"/>
+
+  <rect x="680" y="340" width="180" height="70" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="770" y="363" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">4. Return Plaintext</text>
+  <text x="770" y="380" text-anchor="middle" font-size="9" fill="#1a1822">DEK discarded after use</text>
+  <text x="770" y="396" text-anchor="middle" font-size="9" fill="#1a1822">Never persisted in memory</text>
+
+  <!-- Key hierarchy -->
+  <rect x="30" y="460" width="840" height="30" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="480" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Key Hierarchy: KEK (KMS) → DEK (per-object) → Data. Each object gets unique DEK. KEK rotates independently.</text>
+
+  <defs>
+    <marker id="arrowEnc" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

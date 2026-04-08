@@ -1,10 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Security Headers Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Security Headers</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Security header evaluation showing security ratings and impact of missing headers</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Security Header Implementation Guide</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Configure headers at the web server or CDN level for consistent enforcement</text>
+
+  <!-- Implementation layers -->
+  <rect x="30" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Application Level</text>
+
+  <text x="50" y="130" text-anchor="start" font-size="9" fill="#1a1822">Express: helmet middleware</text>
+  <text x="50" y="148" text-anchor="start" font-size="9" fill="#1a1822">Django: SecurityMiddleware</text>
+  <text x="50" y="166" text-anchor="start" font-size="9" fill="#1a1822">Rails: default security headers</text>
+  <text x="50" y="184" text-anchor="start" font-size="9" fill="#1a1822">Spring: Security headers filter</text>
+  <text x="50" y="202" text-anchor="start" font-size="9" fill="#1a1822">FastAPI: middleware</text>
+  <text x="50" y="225" text-anchor="start" font-size="9" fill="#64748b">Framework-native, easy to configure</text>
+  <text x="50" y="243" text-anchor="start" font-size="9" fill="#64748b">but only covers application responses</text>
+
+  <rect x="320" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="320" y="80" width="270" height="35" rx="10" fill="#4caf50"/>
+  <rect x="320" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="455" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Web Server Level</text>
+
+  <text x="340" y="130" text-anchor="start" font-size="9" fill="#1a1822">Nginx: add_header directives</text>
+  <text x="340" y="148" text-anchor="start" font-size="9" fill="#1a1822">Apache: Header set directives</text>
+  <text x="340" y="166" text-anchor="start" font-size="9" fill="#1a1822">Caddy: header directive</text>
+  <text x="340" y="184" text-anchor="start" font-size="9" fill="#1a1822">HAProxy: http-response set-header</text>
+  <text x="340" y="202" text-anchor="start" font-size="9" fill="#1a1822">Covers: static files, error pages</text>
+  <text x="340" y="225" text-anchor="start" font-size="9" fill="#64748b">Recommended: set at server level</text>
+  <text x="340" y="243" text-anchor="start" font-size="9" fill="#64748b">for comprehensive coverage</text>
+
+  <rect x="610" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="610" y="80" width="270" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="610" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="745" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">CDN / Edge Level</text>
+
+  <text x="630" y="130" text-anchor="start" font-size="9" fill="#1a1822">Cloudflare: Transform Rules</text>
+  <text x="630" y="148" text-anchor="start" font-size="9" fill="#1a1822">Fastly: add_header directive</text>
+  <text x="630" y="166" text-anchor="start" font-size="9" fill="#1a1822">AWS CloudFront: Response headers</text>
+  <text x="630" y="184" text-anchor="start" font-size="9" fill="#1a1822">Vercel: headers in vercel.json</text>
+  <text x="630" y="202" text-anchor="start" font-size="9" fill="#1a1822">Netlify: _headers file</text>
+  <text x="630" y="225" text-anchor="start" font-size="9" fill="#64748b">Best for: static sites, Jamstack</text>
+  <text x="630" y="243" text-anchor="start" font-size="9" fill="#64748b">Applied before reaching origin</text>
+
+  <!-- Security rating impact -->
+  <rect x="30" y="280" width="840" height="200" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="308" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Security Header Impact on Security Ratings</text>
+
+  <rect x="50" y="325" width="390" height="30" rx="4" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="245" y="345" text-anchor="middle" font-size="9" fill="#1a1822">Strict-Transport-Security: +15% (Mozilla Observatory)</text>
+
+  <rect x="460" y="325" width="390" height="30" rx="4" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="345" text-anchor="middle" font-size="9" fill="#1a1822">Content-Security-Policy: +20% (most impactful)</text>
+
+  <rect x="50" y="360" width="390" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="245" y="380" text-anchor="middle" font-size="9" fill="#1a1822">X-Content-Type-Options: +5% (basic hygiene)</text>
+
+  <rect x="460" y="360" width="390" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="655" y="380" text-anchor="middle" font-size="9" fill="#1a1822">X-Frame-Options: +5% (clickjacking prevention)</text>
+
+  <rect x="50" y="395" width="390" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="245" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Referrer-Policy: +5% (privacy protection)</text>
+
+  <rect x="460" y="395" width="390" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="655" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Permissions-Policy: +5% (API restriction)</text>
+
+  <rect x="50" y="430" width="800" height="40" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="448" text-anchor="middle" font-size="9" fill="#1a1822">All headers present: A+ rating (Mozilla Observatory, Security Headers). Missing CSP: maximum B rating.</text>
+  <text x="450" y="465" text-anchor="middle" font-size="9" fill="#64748b">Test: https://securityheaders.com/ | https://observatory.mozilla.org/</text>
 </svg>

@@ -1,10 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Session Management Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Session Management</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Session lifecycle showing creation, active use, renewal, and termination phases</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Session Lifecycle: Creation, Active, Renewal, Termination</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Sessions maintain authentication state across requests through the session lifecycle</text>
+
+  <!-- Phase 1: Creation -->
+  <rect x="30" y="80" width="200" height="180" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="200" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="200" height="10" fill="#6d5bd0"/>
+  <text x="130" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">1. Session Creation</text>
+
+  <rect x="50" y="125" width="160" height="50" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">User authenticates</text>
+  <text x="130" y="162" text-anchor="middle" font-size="9" fill="#1a1822">Password, MFA, or SSO</text>
+
+  <rect x="50" y="185" width="160" height="50" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="205" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Server creates session</text>
+  <text x="130" y="222" text-anchor="middle" font-size="9" fill="#1a1822">Session ID = random token</text>
+
+  <!-- Arrow -->
+  <line x1="230" y1="170" x2="280" y2="170" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSession)"/>
+
+  <!-- Phase 2: Active -->
+  <rect x="280" y="80" width="200" height="180" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="280" y="80" width="200" height="35" rx="10" fill="#4caf50"/>
+  <rect x="280" y="105" width="200" height="10" fill="#4caf50"/>
+  <text x="380" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">2. Active Session</text>
+
+  <rect x="300" y="125" width="160" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="380" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Session ID sent with requests</text>
+  <text x="380" y="162" text-anchor="middle" font-size="9" fill="#1a1822">Cookie or Authorization header</text>
+
+  <rect x="300" y="185" width="160" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="380" y="205" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Server validates session</text>
+  <text x="380" y="222" text-anchor="middle" font-size="9" fill="#1a1822">Lookup in session store</text>
+
+  <!-- Arrow -->
+  <line x1="480" y1="170" x2="530" y2="170" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSession)"/>
+
+  <!-- Phase 3: Renewal -->
+  <rect x="530" y="80" width="200" height="180" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="530" y="80" width="200" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="530" y="105" width="200" height="10" fill="#f0ad4e"/>
+  <text x="630" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">3. Session Renewal</text>
+
+  <rect x="550" y="125" width="160" height="50" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="630" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Session nears expiration</text>
+  <text x="630" y="162" text-anchor="middle" font-size="9" fill="#1a1822">Idle timeout or absolute expiry</text>
+
+  <rect x="550" y="185" width="160" height="50" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="630" y="205" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Issue new session ID</text>
+  <text x="630" y="222" text-anchor="middle" font-size="9" fill="#1a1822">Invalidate old session ID</text>
+
+  <!-- Arrow -->
+  <line x1="730" y1="170" x2="780" y2="170" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSession)"/>
+
+  <!-- Phase 4: Termination -->
+  <rect x="780" y="80" width="100" height="180" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="780" y="80" width="100" height="35" rx="10" fill="#cc4444"/>
+  <rect x="780" y="105" width="100" height="10" fill="#cc4444"/>
+  <text x="830" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">4. End</text>
+
+  <rect x="790" y="125" width="80" height="50" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="830" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">User logout</text>
+  <text x="830" y="162" text-anchor="middle" font-size="9" fill="#1a1822">Delete session</text>
+
+  <rect x="790" y="185" width="80" height="50" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="830" y="205" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Force logout</text>
+  <text x="830" y="222" text-anchor="middle" font-size="9" fill="#1a1822">Admin or security</text>
+
+  <!-- Bottom details -->
+  <rect x="30" y="290" width="840" height="190" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="318" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Session Security Controls</text>
+
+  <rect x="50" y="335" width="390" height="50" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="245" y="355" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Secure Session ID: 128+ bits of entropy, generated by CSPRNG</text>
+  <text x="245" y="373" text-anchor="middle" font-size="9" fill="#1a1822">Prevents session ID prediction and brute force attacks</text>
+
+  <rect x="460" y="335" width="390" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="355" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Session Fixation Prevention: Issue new session ID after login</text>
+  <text x="655" y="373" text-anchor="middle" font-size="9" fill="#1a1822">Prevents attacker from setting known session ID before user logs in</text>
+
+  <rect x="50" y="395" width="390" height="50" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="245" y="415" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Secure Cookie Flags: httpOnly, Secure, SameSite=Strict/Lax</text>
+  <text x="245" y="433" text-anchor="middle" font-size="9" fill="#1a1822">Prevents XSS theft, ensures HTTPS-only, prevents CSRF</text>
+
+  <rect x="460" y="395" width="390" height="50" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="655" y="415" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Idle Timeout: Invalidate after period of inactivity (15-30 min)</text>
+  <text x="655" y="433" text-anchor="middle" font-size="9" fill="#1a1822">Limits window of opportunity for session hijacking</text>
+
+  <defs>
+    <marker id="arrowSession" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

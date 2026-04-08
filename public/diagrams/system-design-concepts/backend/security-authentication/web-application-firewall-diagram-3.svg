@@ -1,10 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">WAF Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">False Positive</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#fef9c3" stroke="#facc15" />
-  <text x="395" y="170" font-family="Arial" font-size="14" fill="#0f172a">Tune Rules</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#dcfce7" stroke="#22c55e" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stable</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Defense in depth showing WAF as one layer among many security controls from network to application to data</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Defense-in-Depth: WAF as One Layer Among Many</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">WAF is one layer — effective security requires multiple overlapping controls</text>
+
+  <!-- Layer 1: Network -->
+  <rect x="30" y="80" width="840" height="60" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="140" height="60" rx="8" fill="#6d5bd0" opacity="0.15"/>
+  <text x="100" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Network Layer</text>
+  <text x="300" y="105" text-anchor="middle" font-size="10" fill="#1a1822">DDoS Protection (Cloudflare, AWS Shield) • Network ACLs • VPC Security Groups • IP Whitelisting</text>
+  <text x="300" y="125" text-anchor="middle" font-size="9" fill="#64748b">Blocks: Volumetric attacks, unauthorized network access, port scanning</text>
+
+  <!-- Layer 2: WAF -->
+  <rect x="30" y="155" width="840" height="60" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="155" width="140" height="60" rx="8" fill="#4caf50" opacity="0.15"/>
+  <text x="100" y="180" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">WAF Layer</text>
+  <text x="300" y="180" text-anchor="middle" font-size="10" fill="#1a1822">OWASP CRS • Custom Rules • Rate Limiting • Bot Management • Geo-blocking</text>
+  <text x="300" y="200" text-anchor="middle" font-size="9" fill="#64748b">Blocks: SQLi, XSS, file inclusion, path traversal, malicious bots</text>
+
+  <!-- Layer 3: Application -->
+  <rect x="30" y="230" width="840" height="60" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="30" y="230" width="140" height="60" rx="8" fill="#f0ad4e" opacity="0.15"/>
+  <text x="100" y="255" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Application Layer</text>
+  <text x="300" y="255" text-anchor="middle" font-size="10" fill="#1a1822">Input Validation • Output Encoding • AuthN/AuthZ • CSRF Tokens • Session Management</text>
+  <text x="300" y="275" text-anchor="middle" font-size="9" fill="#64748b">Blocks: Business logic abuse, auth bypass, injection that bypasses WAF</text>
+
+  <!-- Layer 4: Data -->
+  <rect x="30" y="305" width="840" height="60" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="305" width="140" height="60" rx="8" fill="#cc4444" opacity="0.15"/>
+  <text x="100" y="330" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Data Layer</text>
+  <text x="300" y="330" text-anchor="middle" font-size="10" fill="#1a1822">Encryption at Rest • Parameterized Queries • Row-Level Security • Data Masking</text>
+  <text x="300" y="350" text-anchor="middle" font-size="9" fill="#64748b">Blocks: Data exfiltration, SQL injection impact, unauthorized data access</text>
+
+  <!-- Monitoring layer -->
+  <rect x="30" y="380" width="840" height="60" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="380" width="140" height="60" rx="8" fill="#6d5bd0" opacity="0.15"/>
+  <text x="100" y="405" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Monitoring Layer</text>
+  <text x="300" y="405" text-anchor="middle" font-size="10" fill="#1a1822">SIEM • Log Aggregation • Anomaly Detection • Incident Response • Audit Logging</text>
+  <text x="300" y="425" text-anchor="middle" font-size="9" fill="#64748b">Detects: Attacks that bypass other layers, insider threats, data breaches</text>
+
+  <!-- Key insight -->
+  <rect x="30" y="455" width="840" height="30" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="475" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">WAF is not a replacement for secure code — it is a supplementary control. Fix vulnerabilities at the source.</text>
 </svg>

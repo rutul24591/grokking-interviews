@@ -1,10 +1,115 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">RBAC (Role-Based Access Control) Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">RBAC (Role-Based Access Control)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>RBAC architecture showing users assigned to roles, roles assigned to permissions, and permissions controlling resource access</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">RBAC Architecture: Users → Roles → Permissions → Resources</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Users are assigned roles, roles are granted permissions, permissions control access to resources</text>
+
+  <!-- Users Column -->
+  <rect x="30" y="80" width="200" height="400" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="130" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Users</text>
+
+  <rect x="50" y="125" width="160" height="40" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="150" text-anchor="middle" font-size="11" fill="#1a1822">Alice (User)</text>
+
+  <rect x="50" y="180" width="160" height="40" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="205" text-anchor="middle" font-size="11" fill="#1a1822">Bob (Manager)</text>
+
+  <rect x="50" y="235" width="160" height="40" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="260" text-anchor="middle" font-size="11" fill="#1a1822">Charlie (Admin)</text>
+
+  <rect x="50" y="290" width="160" height="40" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="315" text-anchor="middle" font-size="11" fill="#1a1822">Diana (Viewer)</text>
+
+  <rect x="50" y="345" width="160" height="40" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="370" text-anchor="middle" font-size="11" fill="#1a1822">Eve (Editor)</text>
+
+  <!-- Roles Column -->
+  <rect x="270" y="80" width="200" height="400" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="370" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#f0ad4e">Roles</text>
+
+  <rect x="290" y="125" width="160" height="40" rx="6" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="370" y="150" text-anchor="middle" font-size="11" fill="#1a1822">Viewer</text>
+
+  <rect x="290" y="180" width="160" height="40" rx="6" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="370" y="205" text-anchor="middle" font-size="11" fill="#1a1822">Editor</text>
+
+  <rect x="290" y="235" width="160" height="40" rx="6" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="370" y="260" text-anchor="middle" font-size="11" fill="#1a1822">Manager</text>
+
+  <rect x="290" y="290" width="160" height="40" rx="6" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="370" y="315" text-anchor="middle" font-size="11" fill="#1a1822">Admin</text>
+
+  <!-- Permissions Column -->
+  <rect x="510" y="80" width="200" height="400" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="610" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Permissions</text>
+
+  <rect x="530" y="125" width="160" height="40" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="610" y="150" text-anchor="middle" font-size="11" fill="#1a1822">read:documents</text>
+
+  <rect x="530" y="180" width="160" height="40" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="610" y="205" text-anchor="middle" font-size="11" fill="#1a1822">write:documents</text>
+
+  <rect x="530" y="235" width="160" height="40" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="610" y="260" text-anchor="middle" font-size="11" fill="#1a1822">delete:documents</text>
+
+  <rect x="530" y="290" width="160" height="40" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="610" y="315" text-anchor="middle" font-size="11" fill="#1a1822">manage:users</text>
+
+  <rect x="530" y="345" width="160" height="40" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="610" y="370" text-anchor="middle" font-size="11" fill="#1a1822">manage:settings</text>
+
+  <!-- Resources Column -->
+  <rect x="750" y="80" width="140" height="400" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <text x="820" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">Resources</text>
+
+  <rect x="765" y="125" width="110" height="50" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="820" y="148" text-anchor="middle" font-size="10" fill="#1a1822">Documents</text>
+  <text x="820" y="163" text-anchor="middle" font-size="9" fill="#64748b">/api/documents</text>
+
+  <rect x="765" y="190" width="110" height="50" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="820" y="213" text-anchor="middle" font-size="10" fill="#1a1822">Users</text>
+  <text x="820" y="228" text-anchor="middle" font-size="9" fill="#64748b">/api/users</text>
+
+  <rect x="765" y="255" width="110" height="50" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="820" y="278" text-anchor="middle" font-size="10" fill="#1a1822">Settings</text>
+  <text x="820" y="293" text-anchor="middle" font-size="9" fill="#64748b">/api/settings</text>
+
+  <!-- Assignment arrows -->
+  <!-- User to Role -->
+  <line x1="230" y1="145" x2="270" y2="145" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="230" y1="200" x2="270" y2="255" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="230" y1="255" x2="270" y2="310" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="230" y1="310" x2="270" y2="145" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="230" y1="365" x2="270" y2="200" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+
+  <!-- Role to Permissions -->
+  <line x1="470" y1="145" x2="510" y2="145" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="200" x2="510" y2="145" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="200" x2="510" y2="200" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="255" x2="510" y2="145" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="255" x2="510" y2="200" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="255" x2="510" y2="255" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="255" x2="510" y2="290" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="310" x2="510" y2="145" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="310" x2="510" y2="200" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="310" x2="510" y2="255" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="310" x2="510" y2="290" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="470" y1="310" x2="510" y2="345" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+
+  <!-- Permission to Resources -->
+  <line x1="690" y1="145" x2="750" y2="140" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="690" y1="200" x2="750" y2="150" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="690" y1="255" x2="750" y2="160" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="690" y1="290" x2="750" y2="205" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+  <line x1="690" y1="345" x2="750" y2="270" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowRBAC)"/>
+
+  <!-- Bottom legend -->
+  <rect x="30" y="485" width="840" height="15" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="496" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">User-Role assignment: many-to-many | Role-Permission assignment: many-to-many | Permission-Resource: controls access</text>
+
+  <defs>
+    <marker id="arrowRBAC" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

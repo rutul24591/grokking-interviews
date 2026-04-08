@@ -1,10 +1,82 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">JWT (JSON Web Tokens) Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">JWT (JSON Web Tokens)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>JWT Structure showing Header, Payload, and Signature sections with their claims and encoding</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">JWT Structure: Header, Payload, Signature</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Three base64url-encoded sections separated by dots</text>
+
+  <!-- JWT Token Representation -->
+  <rect x="30" y="80" width="840" height="60" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="170" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">eyJhbGciOiJSUzI1NiJ9</text>
+  <text x="170" y="133" text-anchor="middle" font-size="9" fill="#cc4444">HEADER</text>
+  <text x="450" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4iLCJpYXQiOjE1MTYyMzkwMjJ9</text>
+  <text x="450" y="133" text-anchor="middle" font-size="9" fill="#6d5bd0">PAYLOAD</text>
+  <text x="730" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</text>
+  <text x="730" y="133" text-anchor="middle" font-size="9" fill="#4caf50">SIGNATURE</text>
+
+  <!-- Dots -->
+  <text x="340" y="115" text-anchor="middle" font-size="24" font-weight="700" fill="#1a1822">.</text>
+  <text x="610" y="115" text-anchor="middle" font-size="24" font-weight="700" fill="#1a1822">.</text>
+
+  <!-- Header Section -->
+  <rect x="30" y="170" width="260" height="280" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="170" width="260" height="35" rx="10" fill="#cc4444"/>
+  <rect x="30" y="195" width="260" height="10" fill="#cc4444"/>
+  <text x="160" y="194" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Header</text>
+
+  <text x="50" y="225" text-anchor="start" font-size="11" font-weight="600" fill="#1a1822">Metadata about the token:</text>
+
+  <rect x="50" y="240" width="220" height="45" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="160" y="260" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">alg</text>
+  <text x="160" y="276" text-anchor="middle" font-size="9" fill="#1a1822">Signing algorithm (RS256, HS256)</text>
+
+  <rect x="50" y="295" width="220" height="45" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="160" y="315" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">typ</text>
+  <text x="160" y="331" text-anchor="middle" font-size="9" fill="#1a1822">Token type: &quot;JWT&quot;</text>
+
+  <rect x="50" y="350" width="220" height="45" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="160" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">kid (optional)</text>
+  <text x="160" y="386" text-anchor="middle" font-size="9" fill="#1a1822">Key ID for key selection</text>
+
+  <!-- Payload Section -->
+  <rect x="310" y="170" width="260" height="280" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="310" y="170" width="260" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="310" y="195" width="260" height="10" fill="#6d5bd0"/>
+  <text x="440" y="194" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Payload (Claims)</text>
+
+  <text x="330" y="225" text-anchor="start" font-size="11" font-weight="600" fill="#1a1822">Registered claims:</text>
+
+  <rect x="330" y="235" width="220" height="35" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="440" y="257" text-anchor="middle" font-size="10" fill="#1a1822">sub, iss, aud, exp, iat, nbf, jti</text>
+
+  <text x="330" y="285" text-anchor="start" font-size="11" font-weight="600" fill="#1a1822">Public claims:</text>
+
+  <rect x="330" y="295" width="220" height="35" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="440" y="317" text-anchor="middle" font-size="10" fill="#1a1822">name, email, roles, permissions</text>
+
+  <text x="330" y="345" text-anchor="start" font-size="11" font-weight="600" fill="#1a1822">Private claims:</text>
+
+  <rect x="330" y="355" width="220" height="35" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="440" y="377" text-anchor="middle" font-size="10" fill="#1a1822">organization_id, tenant_id</text>
+
+  <!-- Signature Section -->
+  <rect x="590" y="170" width="280" height="280" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="590" y="170" width="280" height="35" rx="10" fill="#4caf50"/>
+  <rect x="590" y="195" width="280" height="10" fill="#4caf50"/>
+  <text x="730" y="194" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Signature</text>
+
+  <text x="610" y="225" text-anchor="start" font-size="11" font-weight="600" fill="#1a1822">Ensures token integrity:</text>
+
+  <rect x="610" y="240" width="240" height="80" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="730" y="265" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">HMAC / RSA / ECDSA</text>
+  <text x="730" y="285" text-anchor="middle" font-size="9" fill="#1a1822">Sign(Header + Payload, secret/key)</text>
+  <text x="730" y="305" text-anchor="middle" font-size="9" fill="#1a1822">Verifies: token not tampered</text>
+
+  <rect x="610" y="335" width="240" height="60" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="730" y="358" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">IMPORTANT:</text>
+  <text x="730" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Signature does NOT encrypt</text>
+  <text x="730" y="391" text-anchor="middle" font-size="9" fill="#1a1822">Header and payload are readable</text>
+
+  <!-- Bottom note -->
+  <rect x="30" y="470" width="840" height="20" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="484" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">JWT is base64url encoded, not encrypted. Anyone can read the claims. Use JWE for encryption.</text>
 </svg>

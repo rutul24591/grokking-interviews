@@ -1,10 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">RBAC (Role-Based Access Control) Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">RBAC (Role-Based Access Control)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>RBAC role hierarchy showing Admin inherits Manager, Manager inherits Editor, Editor inherits Viewer permissions</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">RBAC Role Hierarchy: Permission Inheritance</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Higher-level roles inherit all permissions from lower-level roles, reducing duplication</text>
+
+  <!-- Role hierarchy pyramid -->
+  <!-- Admin (top) -->
+  <rect x="350" y="80" width="200" height="70" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Admin</text>
+  <text x="450" y="125" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">All permissions + user management</text>
+  <text x="450" y="140" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">+ settings, billing, audit logs</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="150" x2="450" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowHierarchy)"/>
+  <text x="470" y="170" text-anchor="start" font-size="9" fill="#6d5bd0">inherits all</text>
+
+  <!-- Manager -->
+  <rect x="300" y="180" width="300" height="70" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="450" y="205" text-anchor="middle" font-size="14" font-weight="700" fill="#f0ad4e">Manager</text>
+  <text x="450" y="225" text-anchor="middle" font-size="9" fill="#1a1822">read + write + delete documents</text>
+  <text x="450" y="240" text-anchor="middle" font-size="9" fill="#1a1822">+ manage team members</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="250" x2="450" y2="280" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowHierarchy)"/>
+  <text x="470" y="270" text-anchor="start" font-size="9" fill="#f0ad4e">inherits all</text>
+
+  <!-- Editor -->
+  <rect x="250" y="280" width="400" height="70" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="305" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Editor</text>
+  <text x="450" y="325" text-anchor="middle" font-size="9" fill="#1a1822">read + write documents</text>
+  <text x="450" y="340" text-anchor="middle" font-size="9" fill="#1a1822">+ create, update, own documents</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="350" x2="450" y2="380" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowHierarchy)"/>
+  <text x="470" y="370" text-anchor="start" font-size="9" fill="#4caf50">inherits all</text>
+
+  <!-- Viewer (bottom) -->
+  <rect x="200" y="380" width="500" height="70" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">Viewer</text>
+  <text x="450" y="425" text-anchor="middle" font-size="9" fill="#1a1822">read:documents only — view and download documents, no modifications</text>
+
+  <!-- Permission breakdown -->
+  <rect x="30" y="460" width="840" height="30" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="480" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Admin = Viewer + Editor + Manager + admin permissions. Each level inherits all permissions from levels below.</text>
+
+  <defs>
+    <marker id="arrowHierarchy" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

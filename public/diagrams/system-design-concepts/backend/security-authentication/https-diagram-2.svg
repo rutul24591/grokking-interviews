@@ -1,10 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">HTTPS Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">HTTPS</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>HTTPS request flow showing DNS resolution, TCP handshake, TLS handshake, HTTP request/response over encrypted connection</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">HTTPS Request Lifecycle</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">From URL to encrypted response — every step in an HTTPS request</text>
+
+  <!-- Timeline -->
+  <text x="80" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Connection Establishment</text>
+  <line x1="40" y1="115" x2="860" y2="115" stroke="#64748b" stroke-width="2"/>
+  <text x="860" y="110" text-anchor="end" font-size="9" fill="#64748b">Time →</text>
+
+  <!-- Step 1: DNS -->
+  <rect x="50" y="130" width="140" height="50" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="120" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1. DNS Resolution</text>
+  <text x="120" y="168" text-anchor="middle" font-size="9" fill="#64748b">example.com → IP</text>
+
+  <!-- Step 2: TCP -->
+  <rect x="210" y="130" width="140" height="50" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="280" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">2. TCP Handshake</text>
+  <text x="280" y="168" text-anchor="middle" font-size="9" fill="#64748b">SYN, SYN-ACK, ACK</text>
+
+  <!-- Step 3: TLS -->
+  <rect x="370" y="130" width="140" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="440" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">3. TLS Handshake</text>
+  <text x="440" y="168" text-anchor="middle" font-size="9" fill="#64748b">Key exchange, cert verify</text>
+
+  <!-- Step 4: HTTP -->
+  <rect x="530" y="130" width="140" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="600" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">4. HTTP Request</text>
+  <text x="600" y="168" text-anchor="middle" font-size="9" fill="#64748b">GET /api/data</text>
+
+  <!-- Step 5: Response -->
+  <rect x="690" y="130" width="140" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="760" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">5. HTTP Response</text>
+  <text x="760" y="168" text-anchor="middle" font-size="9" fill="#64748b">200 OK + encrypted body</text>
+
+  <!-- Performance metrics -->
+  <rect x="30" y="210" width="840" height="120" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="238" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">HTTPS Performance Impact</text>
+
+  <rect x="50" y="255" width="390" height="30" rx="4" fill="#f0f0f5"/>
+  <text x="245" y="275" text-anchor="middle" font-size="10" fill="#1a1822">DNS Resolution: ~20-120ms (cached: 0ms)</text>
+
+  <rect x="460" y="255" width="390" height="30" rx="4" fill="#f0f0f5"/>
+  <text x="655" y="275" text-anchor="middle" font-size="10" fill="#1a1822">TCP Handshake: 1 RTT (~50-200ms)</text>
+
+  <rect x="50" y="290" width="390" height="30" rx="4" fill="#f0f0f5"/>
+  <text x="245" y="310" text-anchor="middle" font-size="10" fill="#1a1822">TLS 1.3 Handshake: 1 RTT (~50-200ms)</text>
+
+  <rect x="460" y="290" width="390" height="30" rx="4" fill="#f0f0f5"/>
+  <text x="655" y="310" text-anchor="middle" font-size="10" fill="#1a1822">Total first connection: 2-3 RTTs</text>
+
+  <rect x="50" y="325" width="800" height="30" rx="4" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="345" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Subsequent requests: 0 RTTs (session resumption, HTTP/2 multiplexing, connection pooling)</text>
+
+  <!-- HTTP/2 and HTTP/3 -->
+  <rect x="30" y="350" width="410" height="130" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="350" width="410" height="30" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="370" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="370" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">HTTP/2 over HTTPS</text>
+
+  <text x="50" y="395" text-anchor="start" font-size="9" fill="#1a1822">• Multiplexing: multiple requests over one connection</text>
+  <text x="50" y="413" text-anchor="start" font-size="9" fill="#1a1822">• Header compression (HPACK)</text>
+  <text x="50" y="431" text-anchor="start" font-size="9" fill="#1a1822">• Server push (deprecated in HTTP/3)</text>
+  <text x="50" y="449" text-anchor="start" font-size="9" fill="#1a1822">• Requires TLS (most browsers enforce)</text>
+  <text x="50" y="467" text-anchor="start" font-size="9" fill="#64748b">Recommended: Enable HTTP/2 for all HTTPS</text>
+
+  <rect x="460" y="350" width="410" height="130" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="460" y="350" width="410" height="30" rx="10" fill="#4caf50"/>
+  <rect x="460" y="370" width="410" height="10" fill="#4caf50"/>
+  <text x="665" y="370" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">HTTP/3 over QUIC</text>
+
+  <text x="480" y="395" text-anchor="start" font-size="9" fill="#1a1822">• UDP-based (avoids TCP head-of-line blocking)</text>
+  <text x="480" y="413" text-anchor="start" font-size="9" fill="#1a1822">• Built-in TLS 1.3 (no separate handshake)</text>
+  <text x="480" y="431" text-anchor="start" font-size="9" fill="#1a1822">• Faster connection establishment (0-RTT)</text>
+  <text x="480" y="449" text-anchor="start" font-size="9" fill="#1a1822">• Better performance on lossy networks</text>
+  <text x="480" y="467" text-anchor="start" font-size="9" fill="#64748b">Emerging: Enable HTTP/3 for mobile/CDN</text>
 </svg>

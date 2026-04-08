@@ -1,10 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">SQL Injection Prevention Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">SQL Injection Prevention</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Parameterized query vs string concatenation showing how prepared statements prevent SQL injection</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Parameterized Queries: The Primary Defense Against SQL Injection</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Prepared statements separate SQL structure from data, preventing injection</text>
+
+  <!-- String concatenation (vulnerable) -->
+  <rect x="30" y="80" width="410" height="200" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="10" fill="#cc4444"/>
+  <rect x="30" y="105" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">VULNERABLE: String Concatenation</text>
+
+  <rect x="50" y="125" width="370" height="55" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="145" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">query = "SELECT * FROM users WHERE</text>
+  <text x="235" y="162" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">username = '" + username + "'"</text>
+
+  <rect x="50" y="190" width="370" height="75" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="210" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Problem: User input becomes part of SQL structure</text>
+  <text x="235" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Input: ' OR '1'='1' --</text>
+  <text x="235" y="248" text-anchor="middle" font-size="9" fill="#1a1822">Query: SELECT * FROM users WHERE username = '' OR '1'='1' --'</text>
+  <text x="235" y="263" text-anchor="middle" font-size="9" fill="#64748b">Attacker controls the SQL logic</text>
+
+  <!-- Parameterized query (safe) -->
+  <rect x="460" y="80" width="410" height="200" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="10" fill="#4caf50"/>
+  <rect x="460" y="105" width="410" height="10" fill="#4caf50"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">SAFE: Parameterized Query</text>
+
+  <rect x="480" y="125" width="370" height="55" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="665" y="145" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">query = "SELECT * FROM users WHERE</text>
+  <text x="665" y="162" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">username = ?"</text>
+  <text x="665" y="177" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">params = [username]</text>
+
+  <rect x="480" y="190" width="370" height="75" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="210" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Solution: SQL structure and data are separate</text>
+  <text x="665" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Input: ' OR '1'='1' --</text>
+  <text x="665" y="248" text-anchor="middle" font-size="9" fill="#1a1822">Query: SELECT * FROM users WHERE username = ?</text>
+  <text x="665" y="263" text-anchor="middle" font-size="9" fill="#64748b">Database treats input as data, not SQL</text>
+
+  <!-- How prepared statements work -->
+  <rect x="30" y="300" width="840" height="180" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="328" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">How Prepared Statements Work</text>
+
+  <rect x="50" y="345" width="250" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="175" y="365" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1. PREPARE: Send SQL template</text>
+  <text x="175" y="385" text-anchor="middle" font-size="9" fill="#64748b">Database parses and compiles the query</text>
+  <text x="175" y="400" text-anchor="middle" font-size="9" fill="#64748b">structure without any user data</text>
+
+  <rect x="320" y="345" width="250" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="445" y="365" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">2. BIND: Send parameters separately</text>
+  <text x="445" y="385" text-anchor="middle" font-size="9" fill="#64748b">User data is bound as parameters,</text>
+  <text x="445" y="400" text-anchor="middle" font-size="9" fill="#64748b">not part of the SQL structure</text>
+
+  <rect x="590" y="345" width="260" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="720" y="365" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">3. EXECUTE: Database runs compiled query</text>
+  <text x="720" y="385" text-anchor="middle" font-size="9" fill="#64748b">Parameters are treated as literal values,</text>
+  <text x="720" y="400" text-anchor="middle" font-size="9" fill="#64748b">never as SQL commands</text>
+
+  <!-- Benefits -->
+  <rect x="50" y="420" width="800" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="440" text-anchor="middle" font-size="10" fill="#1a1822">Benefits: Complete SQL injection prevention, query plan caching (performance), type safety, automatic escaping</text>
 </svg>

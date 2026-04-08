@@ -1,10 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Authentication vs Authorization Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Authentication vs Authorization</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Authorization enforcement points showing API gateway, service layer, and data layer checks</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Authorization Enforcement at Multiple Layers</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Defense-in-depth: AuthZ at gateway, service, and data access layers</text>
+
+  <!-- Request flow -->
+  <rect x="30" y="80" width="140" height="60" rx="10" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="100" y="103" text-anchor="middle" font-size="12" font-weight="600" fill="#cc4444">Client Request</text>
+  <text x="100" y="123" text-anchor="middle" font-size="9" fill="#1a1822">Bearer token + action</text>
+
+  <line x1="170" y1="110" x2="230" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowAuth)"/>
+
+  <!-- Layer 1: API Gateway -->
+  <rect x="230" y="80" width="200" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="330" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Layer 1: API Gateway</text>
+  <rect x="250" y="115" width="160" height="50" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="330" y="135" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Token Validation</text>
+  <text x="330" y="153" text-anchor="middle" font-size="9" fill="#1a1822">Signature, expiry, issuer</text>
+
+  <line x1="430" y1="130" x2="480" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowAuth)"/>
+
+  <!-- Layer 2: Service -->
+  <rect x="480" y="80" width="200" height="100" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="580" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#f0ad4e">Layer 2: Service Layer</text>
+  <rect x="500" y="115" width="160" height="50" rx="6" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="580" y="135" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Permission Check</text>
+  <text x="580" y="153" text-anchor="middle" font-size="9" fill="#1a1822">RBAC/ABAC policy eval</text>
+
+  <line x1="680" y1="130" x2="730" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowAuth)"/>
+
+  <!-- Layer 3: Data Access -->
+  <rect x="730" y="80" width="140" height="100" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="800" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">Layer 3: Data Layer</text>
+  <rect x="745" y="115" width="110" height="50" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="800" y="135" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Row-Level Security</text>
+  <text x="800" y="153" text-anchor="middle" font-size="9" fill="#1a1822">Tenant isolation</text>
+
+  <!-- Decision points -->
+  <rect x="30" y="210" width="840" height="260" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="240" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">What Each Layer Protects Against</text>
+
+  <!-- Gateway protection -->
+  <rect x="50" y="260" width="260" height="100" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="180" y="283" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">API Gateway Catches:</text>
+  <text x="70" y="305" text-anchor="start" font-size="9" fill="#1a1822">• Expired / forged tokens</text>
+  <text x="70" y="322" text-anchor="start" font-size="9" fill="#1a1822">• Invalid scope (read vs write)</text>
+  <text x="70" y="339" text-anchor="start" font-size="9" fill="#1a1822">• Rate limiting per user</text>
+  <text x="70" y="356" text-anchor="start" font-size="9" fill="#1a1822">• Bot detection</text>
+
+  <!-- Service protection -->
+  <rect x="330" y="260" width="260" height="100" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="460" y="283" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Service Layer Catches:</text>
+  <text x="350" y="305" text-anchor="start" font-size="9" fill="#1a1822">• Role-based permissions</text>
+  <text x="350" y="322" text-anchor="start" font-size="9" fill="#1a1822">• Resource ownership checks</text>
+  <text x="350" y="339" text-anchor="start" font-size="9" fill="#1a1822">• Business rule enforcement</text>
+  <text x="350" y="356" text-anchor="start" font-size="9" fill="#1a1822">• Audit logging</text>
+
+  <!-- Data protection -->
+  <rect x="610" y="260" width="240" height="100" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="730" y="283" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Data Layer Catches:</text>
+  <text x="630" y="305" text-anchor="start" font-size="9" fill="#1a1822">• Tenant data leakage</text>
+  <text x="630" y="322" text-anchor="start" font-size="9" fill="#1a1822">• SQL injection bypass</text>
+  <text x="630" y="339" text-anchor="start" font-size="9" fill="#1a1822">• Row-level access control</text>
+  <text x="630" y="356" text-anchor="start" font-size="9" fill="#1a1822">• Encryption at rest</text>
+
+  <!-- Bottom summary -->
+  <rect x="50" y="380" width="800" height="70" rx="8" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="403" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Defense-in-Depth: Each Layer is a Safety Net</text>
+  <text x="450" y="423" text-anchor="middle" font-size="10" fill="#1a1822">If the gateway fails, the service layer catches it. If the service layer fails, the data layer prevents leakage.</text>
+  <text x="450" y="440" text-anchor="middle" font-size="10" fill="#1a1822">Never trust a single enforcement point. AuthZ must be enforced at every layer.</text>
+
+  <defs>
+    <marker id="arrowAuth" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

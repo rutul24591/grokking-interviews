@@ -1,10 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">CSRF Protection Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">CSRF Protection</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>CSRF token validation flow showing token generation, embedding, submission, and server-side validation</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">CSRF Token Validation: The Synchronizer Token Pattern</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Unpredictable token generated server-side, embedded in forms, and validated on submission</text>
+
+  <!-- Phase 1: Token Generation -->
+  <rect x="30" y="80" width="410" height="180" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Phase 1: Token Generation (Page Load)</text>
+
+  <rect x="50" y="125" width="370" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="235" y="147" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Server generates CSRF token (CSPRNG, 128+ bits)</text>
+  <text x="235" y="167" text-anchor="middle" font-size="9" fill="#64748b">Token tied to user session, stored server-side</text>
+
+  <rect x="50" y="190" width="370" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="235" y="212" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Token embedded in form as hidden input</text>
+  <text x="235" y="232" text-anchor="middle" font-size="9" fill="#64748b">&lt;input type="hidden" name="csrf_token" value="abc123..."&gt;</text>
+
+  <!-- Phase 2: Token Submission -->
+  <rect x="460" y="80" width="410" height="180" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="460" y="105" width="410" height="10" fill="#f0ad4e"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Phase 2: Token Submission (Form Submit)</text>
+
+  <rect x="480" y="125" width="370" height="55" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="665" y="147" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Browser submits form with CSRF token</text>
+  <text x="665" y="167" text-anchor="middle" font-size="9" fill="#64748b">POST /transfer with csrf_token=abc123...</text>
+
+  <rect x="480" y="190" width="370" height="55" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="665" y="212" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Attacker cannot include valid token</text>
+  <text x="665" y="232" text-anchor="middle" font-size="9" fill="#64748b">Same-origin policy prevents reading the token</text>
+
+  <!-- Phase 3: Server Validation -->
+  <rect x="30" y="280" width="840" height="100" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="308" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Phase 3: Server-Side Validation</text>
+
+  <rect x="50" y="320" width="390" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="245" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Server compares submitted token to session token</text>
+  <text x="245" y="358" text-anchor="middle" font-size="9" fill="#64748b">Constant-time comparison to prevent timing attacks</text>
+
+  <rect x="460" y="320" width="390" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Match → process request. Mismatch → 403 Forbidden</text>
+  <text x="655" y="358" text-anchor="middle" font-size="9" fill="#64748b">Token is one-time use (regenerated after validation)</text>
+
+  <!-- Why CSRF works -->
+  <rect x="30" y="400" width="840" height="80" rx="10" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="425" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Why This Prevents CSRF</text>
+  <text x="450" y="448" text-anchor="middle" font-size="10" fill="#1a1822">The attacker&apos;s malicious site cannot read the CSRF token from the legitimate site (same-origin policy).</text>
+  <text x="450" y="468" text-anchor="middle" font-size="10" fill="#1a1822">Without the valid token, the forged request is rejected by the server.</text>
 </svg>

@@ -1,10 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">HTTPS Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">HTTPS</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>HTTPS architecture showing HTTP vs HTTPS comparison, TLS layer, and certificate validation</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">HTTPS Architecture: HTTP + TLS = Secure Communication</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">HTTPS is HTTP layered on top of TLS — encryption, authentication, and integrity</text>
+
+  <!-- HTTP vs HTTPS comparison -->
+  <!-- HTTP (insecure) -->
+  <rect x="30" y="80" width="410" height="180" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="10" fill="#cc4444"/>
+  <rect x="30" y="105" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">HTTP (Insecure)</text>
+
+  <rect x="50" y="125" width="370" height="50" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="147" text-anchor="middle" font-size="10" fill="#1a1822">Application Layer: HTTP (plaintext)</text>
+  <text x="235" y="165" text-anchor="middle" font-size="9" fill="#64748b">Headers, cookies, body all visible to network</text>
+
+  <rect x="50" y="185" width="370" height="50" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="207" text-anchor="middle" font-size="10" fill="#1a1822">Transport Layer: TCP (unencrypted)</text>
+  <text x="235" y="225" text-anchor="middle" font-size="9" fill="#64748b">Anyone on the network can read/modify traffic</text>
+
+  <rect x="50" y="245" width="370" height="50" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="267" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Port 80 — Marked "Not Secure" by browsers</text>
+
+  <!-- HTTPS (secure) -->
+  <rect x="460" y="80" width="410" height="180" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="10" fill="#4caf50"/>
+  <rect x="460" y="105" width="410" height="10" fill="#4caf50"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">HTTPS (Secure)</text>
+
+  <rect x="480" y="125" width="370" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="147" text-anchor="middle" font-size="10" fill="#1a1822">Application Layer: HTTP (encrypted inside TLS)</text>
+  <text x="665" y="165" text-anchor="middle" font-size="9" fill="#64748b">Headers, cookies, body encrypted end-to-end</text>
+
+  <rect x="480" y="185" width="370" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="207" text-anchor="middle" font-size="10" fill="#1a1822">TLS Layer: Encrypted tunnel over TCP</text>
+  <text x="665" y="225" text-anchor="middle" font-size="9" fill="#64748b">AES-256-GCM, forward secrecy, certificate auth</text>
+
+  <rect x="480" y="245" width="370" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="267" text-anchor="middle" font-size="10" fill="#1a1822">Transport Layer: TCP (encrypted payload)</text>
+  <text x="665" y="285" text-anchor="middle" font-size="9" fill="#64748b">Network sees only encrypted bytes</text>
+
+  <!-- HTTP to HTTPS migration -->
+  <rect x="30" y="290" width="840" height="190" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="318" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">HTTP to HTTPS Migration Strategy</text>
+
+  <rect x="50" y="340" width="390" height="35" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="245" y="362" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1. Obtain TLS certificate (Let's Encrypt, ACM)</text>
+
+  <rect x="460" y="340" width="390" height="35" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="655" y="362" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">2. Configure server for HTTPS (port 443)</text>
+
+  <rect x="50" y="385" width="390" height="35" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="245" y="407" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">3. Redirect HTTP → HTTPS (301 permanent)</text>
+
+  <rect x="460" y="385" width="390" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="407" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">4. Enable HSTS (Strict-Transport-Security)</text>
+
+  <rect x="50" y="430" width="390" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="245" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">5. Submit to HSTS preload list</text>
+
+  <rect x="460" y="430" width="390" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">6. Disable HTTP entirely (optional)</text>
+
+  <defs>
+    <marker id="arrowHTTPS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

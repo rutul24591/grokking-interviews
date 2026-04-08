@@ -1,10 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">SQL Injection Prevention Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">SQL Injection Prevention</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>SQL injection defense layers showing parameterized queries, stored procedures, ORM, input validation, and WAF</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Defense-in-Depth: Multiple Layers Against SQL Injection</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">No single defense is sufficient — combine parameterized queries, ORM, input validation, least privilege, and monitoring</text>
+
+  <!-- Layer 1: Parameterized Queries -->
+  <rect x="30" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="10" fill="#4caf50"/>
+  <rect x="30" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">1. Parameterized Queries</text>
+
+  <rect x="50" y="125" width="230" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Primary defense</text>
+  <text x="165" y="163" text-anchor="middle" font-size="9" fill="#1a1822">Separates SQL from data</text>
+
+  <rect x="50" y="185" width="230" height="60" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="205" text-anchor="middle" font-size="9" fill="#1a1822">Use: PreparedStatement (Java),</text>
+  <text x="165" y="220" text-anchor="middle" font-size="9" fill="#1a1822">parameterized queries (Python),</text>
+  <text x="165" y="235" text-anchor="middle" font-size="9" fill="#1a1822">$1, $2 placeholders (Node.js)</text>
+
+  <!-- Layer 2: ORM -->
+  <rect x="320" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="320" y="80" width="270" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="320" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="455" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">2. ORM / Query Builders</text>
+
+  <rect x="340" y="125" width="230" height="50" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="455" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Abstracts SQL generation</text>
+  <text x="455" y="163" text-anchor="middle" font-size="9" fill="#1a1822">Automatic parameterization</text>
+
+  <rect x="340" y="185" width="230" height="60" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="455" y="205" text-anchor="middle" font-size="9" fill="#1a1822">Hibernate, SQLAlchemy, Prisma,</text>
+  <text x="455" y="220" text-anchor="middle" font-size="9" fill="#1a1822">Sequelize, ActiveRecord</text>
+  <text x="455" y="235" text-anchor="middle" font-size="9" fill="#64748b">Still vulnerable if raw SQL used</text>
+
+  <!-- Layer 3: Least Privilege -->
+  <rect x="610" y="80" width="270" height="180" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="610" y="80" width="270" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="610" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="745" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">3. Least Privilege DB Accounts</text>
+
+  <rect x="630" y="125" width="230" height="50" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="745" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Limit blast radius</text>
+  <text x="745" y="163" text-anchor="middle" font-size="9" fill="#1a1822">App account ≠ admin account</text>
+
+  <rect x="630" y="185" width="230" height="60" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="745" y="205" text-anchor="middle" font-size="9" fill="#1a1822">App account: SELECT, INSERT only</text>
+  <text x="745" y="220" text-anchor="middle" font-size="9" fill="#1a1822">No DROP, ALTER, GRANT</text>
+  <text x="745" y="235" text-anchor="middle" font-size="9" fill="#64748b">Read-only replica for read queries</text>
+
+  <!-- Layer 4: Input Validation -->
+  <rect x="30" y="280" width="410" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="280" width="410" height="30" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="300" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="300" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4. Input Validation &amp; Whitelisting</text>
+
+  <rect x="50" y="320" width="370" height="50" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="235" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Validate input type, length, format before database query</text>
+  <text x="235" y="358" text-anchor="middle" font-size="9" fill="#1a1822">Numeric IDs: parseInt, validate range. Emails: regex validate</text>
+
+  <!-- Layer 5: WAF & Monitoring -->
+  <rect x="460" y="280" width="410" height="100" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="460" y="280" width="410" height="30" rx="10" fill="#f0ad4e"/>
+  <rect x="460" y="300" width="410" height="10" fill="#f0ad4e"/>
+  <text x="665" y="300" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">5. WAF &amp; Query Monitoring</text>
+
+  <rect x="480" y="320" width="370" height="50" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="665" y="340" text-anchor="middle" font-size="9" fill="#1a1822">WAF blocks known SQLi patterns. Monitor query logs for anomalies.</text>
+  <text x="665" y="358" text-anchor="middle" font-size="9" fill="#1a1822">Alert on: UNION SELECT, DROP TABLE, information_schema access</text>
+
+  <!-- Bottom summary -->
+  <rect x="30" y="400" width="840" height="80" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="428" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Defense-in-Depth Strategy</text>
+  <text x="450" y="450" text-anchor="middle" font-size="10" fill="#1a1822">Parameterized queries prevent SQLi at the source. ORM adds abstraction. Least privilege limits damage. Input validation catches malformed input early. WAF and monitoring detect attempted attacks.</text>
+  <text x="450" y="470" text-anchor="middle" font-size="10" fill="#1a1822">No single layer is sufficient — combine all five for comprehensive protection.</text>
 </svg>

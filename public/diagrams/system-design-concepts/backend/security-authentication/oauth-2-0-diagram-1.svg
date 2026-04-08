@@ -1,10 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">OAuth 2.0 Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">OAuth 2.0</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>OAuth 2.0 Authorization Code Flow with PKCE showing the complete flow from client to authorization server to resource server</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">OAuth 2.0 Authorization Code Flow with PKCE</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">The standard flow for web and mobile applications - prevents authorization code interception attacks</text>
+
+  <!-- Actors -->
+  <rect x="30" y="100" width="160" height="60" rx="10" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="110" y="125" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">Client App</text>
+  <text x="110" y="145" text-anchor="middle" font-size="9" fill="#1a1822">Web/Mobile SPA</text>
+
+  <rect x="370" y="100" width="160" height="60" rx="10" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="125" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Authorization Server</text>
+  <text x="450" y="145" text-anchor="middle" font-size="9" fill="#1a1822">AuthN + Token Issuance</text>
+
+  <rect x="710" y="100" width="160" height="60" rx="10" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="790" y="125" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">Resource Server</text>
+  <text x="790" y="145" text-anchor="middle" font-size="9" fill="#1a1822">API / Protected Data</text>
+
+  <!-- Step 1: Generate PKCE -->
+  <rect x="30" y="190" width="160" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="110" y="213" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1. Generate PKCE</text>
+  <text x="110" y="232" text-anchor="middle" font-size="9" fill="#1a1822">code_verifier = random</text>
+  <text x="110" y="248" text-anchor="middle" font-size="9" fill="#1a1822">code_challenge = SHA256(verifier)</text>
+
+  <line x1="190" y1="225" x2="370" y2="225" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPKCE)"/>
+
+  <!-- Step 2: Authorization Request -->
+  <rect x="370" y="190" width="160" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="213" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">2. Auth Request</text>
+  <text x="450" y="232" text-anchor="middle" font-size="9" fill="#1a1822">redirect_uri, client_id</text>
+  <text x="450" y="248" text-anchor="middle" font-size="9" fill="#1a1822">+ code_challenge</text>
+
+  <!-- User authenticates -->
+  <rect x="370" y="280" width="160" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="300" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">3. User Authenticates</text>
+  <text x="450" y="318" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Consent + MFA if required</text>
+
+  <line x1="450" y1="260" x2="450" y2="280" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPKCE)"/>
+
+  <!-- Step 4: Auth Code -->
+  <rect x="370" y="350" width="160" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">4. Authorization Code</text>
+  <text x="450" y="388" text-anchor="middle" font-size="9" fill="#1a1822">Short-lived, single-use code</text>
+
+  <line x1="370" y1="375" x2="190" y2="375" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPKCE)"/>
+
+  <!-- Step 5: Token Exchange -->
+  <rect x="30" y="350" width="160" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="110" y="373" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">5. Token Exchange</text>
+  <text x="110" y="392" text-anchor="middle" font-size="9" fill="#1a1822">code + code_verifier</text>
+  <text x="110" y="408" text-anchor="middle" font-size="9" fill="#1a1822">client_id, redirect_uri</text>
+
+  <line x1="190" y1="385" x2="370" y2="385" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPKCE)"/>
+
+  <!-- Step 6: Tokens -->
+  <rect x="370" y="420" width="160" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="442" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">6. Access + Refresh Token</text>
+  <text x="450" y="460" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Access: short-lived, Refresh: rotated</text>
+
+  <line x1="370" y1="450" x2="190" y2="450" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPKCE)"/>
+
+  <!-- Step 7: API Access -->
+  <rect x="30" y="440" width="160" height="40" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="110" y="465" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">7. API Call with Access Token</text>
+
+  <line x1="190" y1="460" x2="710" y2="460" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowPKCE)"/>
+
+  <!-- API Response -->
+  <rect x="710" y="420" width="160" height="60" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="790" y="442" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">8. API Response</text>
+  <text x="790" y="460" text-anchor="middle" font-size="9" fill="#1a1822">Validate token, serve data</text>
+
+  <defs>
+    <marker id="arrowPKCE" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

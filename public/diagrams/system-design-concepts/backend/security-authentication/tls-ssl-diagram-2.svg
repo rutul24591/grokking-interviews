@@ -1,10 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">TLS/SSL Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Edge TLS</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="395" y="165" font-family="Arial" font-size="14" fill="#0f172a">Service Mesh</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Backends</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Certificate chain validation showing root CA, intermediate CA, and server certificate</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">TLS Certificate Chain and Validation</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Trust flows from root CA through intermediate CAs to the server certificate</text>
+
+  <!-- Certificate hierarchy -->
+  <!-- Root CA -->
+  <rect x="330" y="80" width="240" height="80" rx="10" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Root Certificate Authority</text>
+  <text x="450" y="128" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Self-signed, trusted by OS/browser</text>
+  <text x="450" y="145" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">DigiCert, Let's Encrypt, GlobalSign</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="160" x2="450" y2="190" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowTLS)"/>
+  <text x="470" y="180" text-anchor="start" font-size="9" fill="#6d5bd0">Signs</text>
+
+  <!-- Intermediate CA -->
+  <rect x="330" y="190" width="240" height="80" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="450" y="218" text-anchor="middle" font-size="14" font-weight="700" fill="#f0ad4e">Intermediate CA</text>
+  <text x="450" y="238" text-anchor="middle" font-size="10" fill="#1a1822">Signed by Root CA</text>
+  <text x="450" y="255" text-anchor="middle" font-size="10" fill="#1a1822">Issues server certificates</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="270" x2="450" y2="300" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowTLS)"/>
+  <text x="470" y="290" text-anchor="start" font-size="9" fill="#f0ad4e">Signs</text>
+
+  <!-- Server Certificate -->
+  <rect x="330" y="300" width="240" height="80" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="328" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Server Certificate</text>
+  <text x="450" y="348" text-anchor="middle" font-size="10" fill="#1a1822">Signed by Intermediate CA</text>
+  <text x="450" y="365" text-anchor="middle" font-size="10" fill="#1a1822">example.com, valid dates, public key</text>
+
+  <!-- Validation steps -->
+  <rect x="30" y="400" width="840" height="80" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="428" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Certificate Validation Steps</text>
+
+  <rect x="50" y="440" width="250" height="30" rx="4" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="175" y="460" text-anchor="middle" font-size="9" fill="#1a1822">1. Chain of trust: verify signatures</text>
+
+  <rect x="320" y="440" width="250" height="30" rx="4" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="445" y="460" text-anchor="middle" font-size="9" fill="#1a1822">2. Validity period: not expired</text>
+
+  <rect x="590" y="440" width="260" height="30" rx="4" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="720" y="460" text-anchor="middle" font-size="9" fill="#1a1822">3. Domain match: SAN includes hostname</text>
+
+  <rect x="50" y="475" width="250" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="175" y="495" text-anchor="middle" font-size="9" fill="#1a1822">4. Not revoked: check CRL/OCSP</text>
+
+  <rect x="320" y="475" width="250" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="445" y="495" text-anchor="middle" font-size="9" fill="#1a1822">5. Signature algorithm: strong (SHA-256+)</text>
+
+  <rect x="590" y="475" width="260" height="30" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="720" y="495" text-anchor="middle" font-size="9" fill="#1a1822">6. Key size: RSA ≥2048, EC ≥256</text>
+
+  <defs>
+    <marker id="arrowTLS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

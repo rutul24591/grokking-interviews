@@ -1,10 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Input Validation &amp; Sanitization Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Input Validation &amp; Sanitization</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Schema validation showing JSON Schema definition and validation results for API request bodies</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">JSON Schema Validation: Contract-First Input Validation</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Define expected input structure once, validate all requests automatically</text>
+
+  <!-- Schema Definition -->
+  <rect x="30" y="80" width="410" height="260" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">JSON Schema Definition</text>
+
+  <rect x="50" y="125" width="370" height="200" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="70" y="145" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">{</text>
+  <text x="70" y="162" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">  "type": "object",</text>
+  <text x="70" y="179" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">  "required": ["email", "password"],</text>
+  <text x="70" y="196" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">  "properties": {</text>
+  <text x="90" y="213" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">"email": { "type": "string", "format": "email" },</text>
+  <text x="90" y="230" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">"password": { "type": "string", "minLength": 8 },</text>
+  <text x="90" y="247" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">"age": { "type": "integer", "minimum": 0, "maximum": 150 }</text>
+  <text x="70" y="264" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">  },</text>
+  <text x="70" y="281" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">  "additionalProperties": false</text>
+  <text x="70" y="298" text-anchor="start" font-size="9" font-family="monospace" fill="#1a1822">}</text>
+  <text x="70" y="318" text-anchor="start" font-size="9" fill="#64748b">additionalProperties: false rejects unknown fields</text>
+
+  <!-- Validation Results -->
+  <rect x="460" y="80" width="410" height="260" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="665" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Validation Results</text>
+
+  <rect x="480" y="120" width="370" height="55" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="140" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">✓ Valid Input</text>
+  <text x="665" y="158" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">{"email": "user@example.com", "password": "secure123"}</text>
+  <text x="665" y="173" text-anchor="middle" font-size="9" fill="#64748b">Matches schema — request proceeds</text>
+
+  <rect x="480" y="185" width="370" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="205" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">✗ Invalid: Missing required field</text>
+  <text x="665" y="223" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">{"email": "user@example.com"}</text>
+  <text x="665" y="238" text-anchor="middle" font-size="9" fill="#64748b">Missing "password" — 400 Bad Request</text>
+
+  <rect x="480" y="250" width="370" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="270" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">✗ Invalid: Wrong type / format</text>
+  <text x="665" y="288" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">{"email": "not-an-email", "password": "short"}</text>
+  <text x="665" y="303" text-anchor="middle" font-size="9" fill="#64748b">Invalid email format, password too short</text>
+
+  <rect x="480" y="315" width="370" height="25" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="333" text-anchor="middle" font-size="9" fill="#cc4444">✗ Invalid: Unknown field (additionalProperties: false)</text>
+
+  <!-- Benefits -->
+  <rect x="30" y="360" width="840" height="120" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="388" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Benefits of Schema Validation</text>
+
+  <rect x="50" y="405" width="250" height="60" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="175" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Early rejection: Invalid input caught</text>
+  <text x="175" y="440" text-anchor="middle" font-size="9" fill="#1a1822">before reaching business logic</text>
+  <text x="175" y="458" text-anchor="middle" font-size="9" fill="#64748b">Reduces attack surface</text>
+
+  <rect x="320" y="405" width="250" height="60" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="445" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Self-documenting: Schema serves</text>
+  <text x="445" y="440" text-anchor="middle" font-size="9" fill="#1a1822">as API documentation</text>
+  <text x="445" y="458" text-anchor="middle" font-size="9" fill="#64748b">OpenAPI/Swagger integration</text>
+
+  <rect x="590" y="405" width="260" height="60" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="720" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Consistent errors: Validation errors</text>
+  <text x="720" y="440" text-anchor="middle" font-size="9" fill="#1a1822">follow standard format (RFC 7807)</text>
+  <text x="720" y="458" text-anchor="middle" font-size="9" fill="#64748b">Clear feedback for API consumers</text>
 </svg>

@@ -1,10 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">RBAC (Role-Based Access Control) Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">RBAC (Role-Based Access Control)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>RBAC vs ABAC comparison showing role-based access control versus attribute-based access control approaches</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">RBAC vs ABAC: Role-Based vs Attribute-Based Access Control</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">RBAC uses static roles; ABAC uses dynamic attributes for fine-grained, context-aware access decisions</text>
+
+  <!-- RBAC Side -->
+  <rect x="30" y="80" width="410" height="400" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="40" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="110" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="107" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">RBAC: Role-Based Access Control</text>
+
+  <rect x="50" y="135" width="370" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="235" y="155" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Access decision based on user's role</text>
+  <text x="235" y="173" text-anchor="middle" font-size="9" fill="#64748b">IF user.role == "manager" THEN allow delete</text>
+
+  <rect x="50" y="200" width="370" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="235" y="220" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Simple, easy to understand and audit</text>
+  <text x="235" y="238" text-anchor="middle" font-size="9" fill="#64748b">Good for organizations with clear role structures</text>
+
+  <rect x="50" y="265" width="370" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="285" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Cannot express context-aware rules</text>
+  <text x="235" y="303" text-anchor="middle" font-size="9" fill="#64748b">e.g., "allow only during business hours"</text>
+
+  <rect x="50" y="330" width="370" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="350" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Role explosion for fine-grained access</text>
+  <text x="235" y="368" text-anchor="middle" font-size="9" fill="#64748b">e.g., "manager-europe-readonly" role</text>
+
+  <rect x="50" y="395" width="370" height="55" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Best for: Traditional enterprises, simple</text>
+  <text x="235" y="433" text-anchor="middle" font-size="9" fill="#1a1822">permission models, compliance (SOX, HIPAA)</text>
+
+  <!-- ABAC Side -->
+  <rect x="460" y="80" width="410" height="400" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="40" rx="10" fill="#4caf50"/>
+  <rect x="460" y="110" width="410" height="10" fill="#4caf50"/>
+  <text x="665" y="107" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">ABAC: Attribute-Based Access Control</text>
+
+  <rect x="480" y="135" width="370" height="55" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="155" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Access decision based on attributes</text>
+  <text x="665" y="173" text-anchor="middle" font-size="9" fill="#64748b">IF user.dept == "finance" AND time &lt; 18:00 THEN allow</text>
+
+  <rect x="480" y="200" width="370" height="55" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="220" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Fine-grained, context-aware decisions</text>
+  <text x="665" y="238" text-anchor="middle" font-size="9" fill="#64748b">User, resource, action, environment attributes</text>
+
+  <rect x="480" y="265" width="370" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="285" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Complex to design and maintain</text>
+  <text x="665" y="303" text-anchor="middle" font-size="9" fill="#64748b">Requires policy language (OPA, Cedar, XACML)</text>
+
+  <rect x="480" y="330" width="370" height="55" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="350" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Policy evaluation is slower than RBAC</text>
+  <text x="665" y="368" text-anchor="middle" font-size="9" fill="#64748b">Multiple attribute lookups per request</text>
+
+  <rect x="480" y="395" width="370" height="55" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="665" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Best for: Cloud-native, multi-tenant,</text>
+  <text x="665" y="433" text-anchor="middle" font-size="9" fill="#1a1822">fine-grained access, zero-trust architectures</text>
 </svg>

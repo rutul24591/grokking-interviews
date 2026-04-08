@@ -1,10 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Multi-Factor Authentication Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Multi-Factor Authentication</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>MFA methods comparison showing TOTP, SMS, push notifications, security keys, and biometrics with their security levels</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Multi-Factor Authentication Methods &amp; Security Levels</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">From weakest (SMS) to strongest (passkeys / security keys)</text>
+
+  <!-- Row 1: SMS -->
+  <rect x="30" y="80" width="840" height="70" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="30" y="80" width="8" height="70" rx="4" fill="#f0ad4e"/>
+  <text x="80" y="108" text-anchor="start" font-size="13" font-weight="600" fill="#f0ad4e">1. SMS OTP</text>
+  <text x="80" y="128" text-anchor="start" font-size="10" fill="#1a1822">One-time code via SMS. Vulnerable to SIM swapping, SS7 attacks, interception.</text>
+  <rect x="80" y="138" width="80" height="16" rx="8" fill="#f0ad4e" opacity="0.15"/>
+  <text x="120" y="150" text-anchor="middle" font-size="8" font-weight="600" fill="#f0ad4e">WEAKEST</text>
+  <text x="350" y="118" text-anchor="start" font-size="10" fill="#1a1822">Best Practice:</text>
+  <text x="450" y="118" text-anchor="start" font-size="10" fill="#1a1822">Use only as fallback. Avoid for high-security applications. NIST recommends against SMS.</text>
+
+  <!-- Row 2: Email OTP -->
+  <rect x="30" y="160" width="840" height="70" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="30" y="160" width="8" height="70" rx="4" fill="#f0ad4e"/>
+  <text x="80" y="188" text-anchor="start" font-size="13" font-weight="600" fill="#f0ad4e">2. Email OTP</text>
+  <text x="80" y="208" text-anchor="start" font-size="10" fill="#1a1822">One-time code via email. Vulnerable to email account compromise, phishing.</text>
+  <rect x="80" y="218" width="80" height="16" rx="8" fill="#f0ad4e" opacity="0.15"/>
+  <text x="120" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#f0ad4e">WEAK</text>
+  <text x="350" y="198" text-anchor="start" font-size="10" fill="#1a1822">Best Practice:</text>
+  <text x="450" y="198" text-anchor="start" font-size="10" fill="#1a1822">Use for account recovery, not primary MFA. Ensure email account is also protected.</text>
+
+  <!-- Row 3: TOTP -->
+  <rect x="30" y="240" width="840" height="70" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="240" width="8" height="70" rx="4" fill="#6d5bd0"/>
+  <text x="80" y="268" text-anchor="start" font-size="13" font-weight="600" fill="#6d5bd0">3. TOTP (Authenticator App)</text>
+  <text x="80" y="288" text-anchor="start" font-size="10" fill="#1a1822">Time-based one-time password. Generated locally, no network required.</text>
+  <rect x="80" y="298" width="80" height="16" rx="8" fill="#6d5bd0" opacity="0.15"/>
+  <text x="120" y="310" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">STRONG</text>
+  <text x="350" y="278" text-anchor="start" font-size="10" fill="#1a1822">Best Practice:</text>
+  <text x="450" y="278" text-anchor="start" font-size="10" fill="#1a1822">Use Google Authenticator, Authy, or 1Password. Backup recovery codes securely. Recommended.</text>
+
+  <!-- Row 4: Push Notifications -->
+  <rect x="30" y="320" width="840" height="70" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="320" width="8" height="70" rx="4" fill="#4caf50"/>
+  <text x="80" y="348" text-anchor="start" font-size="13" font-weight="600" fill="#4caf50">4. Push Notifications</text>
+  <text x="80" y="368" text-anchor="start" font-size="10" fill="#1a1822">Push notification to registered device. User approves/denies. Convenient but vulnerable to MFA fatigue.</text>
+  <rect x="80" y="378" width="80" height="16" rx="8" fill="#4caf50" opacity="0.15"/>
+  <text x="120" y="390" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">STRONGER</text>
+  <text x="350" y="358" text-anchor="start" font-size="10" fill="#1a1822">Best Practice:</text>
+  <text x="450" y="358" text-anchor="start" font-size="10" fill="#1a1822">Use number matching (Duo, Okta Verify) to prevent MFA fatigue attacks. User-friendly and secure.</text>
+
+  <!-- Row 5: Security Keys / Passkeys -->
+  <rect x="30" y="400" width="840" height="70" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="400" width="8" height="70" rx="4" fill="#4caf50"/>
+  <text x="80" y="428" text-anchor="start" font-size="13" font-weight="600" fill="#4caf50">5. Security Keys / Passkeys (WebAuthn)</text>
+  <text x="80" y="448" text-anchor="start" font-size="10" fill="#1a1822">Phishing-resistant. Private key on device, public key on server. FIDO2 standard. Strongest MFA.</text>
+  <rect x="80" y="458" width="80" height="16" rx="8" fill="#4caf50" opacity="0.15"/>
+  <text x="120" y="470" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">STRONGEST</text>
+  <text x="350" y="438" text-anchor="start" font-size="10" fill="#1a1822">Best Practice:</text>
+  <text x="450" y="438" text-anchor="start" font-size="10" fill="#1a1822">Use as primary MFA. Fallback to TOTP. Supports biometric enrollment. NIST recommended.</text>
+
+  <!-- Bottom summary -->
+  <rect x="30" y="480" width="840" height="16" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="492" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Recommendation: Use security keys or passkeys as primary MFA. TOTP as fallback. Avoid SMS for high-security applications.</text>
 </svg>

@@ -1,10 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Single Sign-On (SSO) Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Single Sign-On (SSO)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>SAML authentication flow showing SP-initiated and IdP-initiated SSO flows</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">SAML 2.0 Authentication Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">SP-initiated flow: user attempts to access app, redirected to IdP, authenticated, redirected back with SAML assertion</text>
+
+  <!-- Actors -->
+  <rect x="50" y="80" width="120" height="60" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="110" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">User</text>
+  <text x="110" y="123" text-anchor="middle" font-size="9" fill="#1a1822">Browser</text>
+
+  <rect x="390" y="80" width="140" height="60" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="460" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">Service Provider</text>
+  <text x="460" y="123" text-anchor="middle" font-size="9" fill="#1a1822">App (Salesforce)</text>
+
+  <rect x="710" y="80" width="140" height="60" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="780" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Identity Provider</text>
+  <text x="780" y="123" text-anchor="middle" font-size="9" fill="#1a1822">Okta, Azure AD</text>
+
+  <!-- Step 1 -->
+  <line x1="110" y1="140" x2="110" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <rect x="30" y="180" width="160" height="45" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="110" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1. User accesses App</text>
+  <text x="110" y="216" text-anchor="middle" font-size="9" fill="#1a1822">GET /app/dashboard</text>
+
+  <!-- Step 2 -->
+  <line x1="390" y1="110" x2="340" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <rect x="230" y="140" width="130" height="45" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="295" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">2. SP redirects to IdP</text>
+  <text x="295" y="176" text-anchor="middle" font-size="9" fill="#1a1822">SAML AuthnRequest</text>
+
+  <!-- Step 3 -->
+  <line x1="710" y1="110" x2="660" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <rect x="580" y="140" width="130" height="45" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="645" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">3. User authenticates</text>
+  <text x="645" y="176" text-anchor="middle" font-size="9" fill="#1a1822">Password, MFA at IdP</text>
+
+  <!-- Step 4 -->
+  <line x1="780" y1="140" x2="780" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <rect x="700" y="200" width="160" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="780" y="223" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">4. IdP generates</text>
+  <text x="780" y="240" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">SAML Assertion</text>
+  <text x="780" y="255" text-anchor="middle" font-size="9" fill="#1a1822">Signed XML with user attrs</text>
+
+  <!-- Step 5 -->
+  <line x1="700" y1="228" x2="530" y2="228" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <rect x="390" y="200" width="310" height="55" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="545" y="223" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">5. IdP redirects to SP with SAML Response (POST)</text>
+  <text x="545" y="240" text-anchor="middle" font-size="9" fill="#1a1822">HTML form auto-submits SAML Assertion to SP's ACS endpoint</text>
+
+  <!-- Step 6 -->
+  <line x1="460" y1="255" x2="460" y2="290" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <rect x="390" y="290" width="140" height="55" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="460" y="313" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">6. SP validates</text>
+  <text x="460" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">assertion signature</text>
+  <text x="460" y="345" text-anchor="middle" font-size="9" fill="#1a1822">Creates session for user</text>
+
+  <!-- Step 7 -->
+  <line x1="390" y1="318" x2="190" y2="318" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <rect x="30" y="290" width="160" height="55" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="110" y="313" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">7. User accesses App</text>
+  <text x="110" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Authenticated session</text>
+  <text x="110" y="345" text-anchor="middle" font-size="9" fill="#1a1822">No password needed again</text>
+
+  <!-- Bottom notes -->
+  <rect x="30" y="380" width="840" height="100" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="408" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Key SAML Concepts</text>
+  <text x="180" y="430" text-anchor="start" font-size="10" fill="#1a1822">• SAML Assertion: XML containing user identity and attributes</text>
+  <text x="180" y="448" text-anchor="start" font-size="10" fill="#1a1822">• ACS: Assertion Consumer Service - SP endpoint that receives assertions</text>
+  <text x="500" y="430" text-anchor="start" font-size="10" fill="#1a1822">• IdP Metadata: XML document describing IdP configuration</text>
+  <text x="500" y="448" text-anchor="start" font-size="10" fill="#1a1822">• SP Metadata: XML document describing SP configuration</text>
+  <text x="500" y="466" text-anchor="start" font-size="10" fill="#1a1822">• Trust: Pre-established trust between IdP and SP via metadata exchange</text>
+
+  <defs>
+    <marker id="arrowSSO" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

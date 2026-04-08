@@ -1,10 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Hashing &amp; Salting Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Hashing &amp; Salting</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Hash function properties showing one-way, deterministic, collision-resistant, and avalanche effect</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Cryptographic Hash Function Properties</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">What makes a hash function suitable for password storage vs general-purpose use</text>
+
+  <!-- Four properties -->
+  <rect x="30" y="80" width="200" height="200" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="200" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="200" height="10" fill="#6d5bd0"/>
+  <text x="130" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">One-Way Function</text>
+
+  <text x="130" y="135" text-anchor="middle" font-size="9" fill="#1a1822">Easy to compute hash(x)</text>
+  <text x="130" y="153" text-anchor="middle" font-size="9" fill="#1a1822">Impossible to find x from hash(x)</text>
+
+  <rect x="50" y="170" width="160" height="40" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="187" text-anchor="middle" font-size="8" fill="#1a1822">"password" → $2b$12$abc...</text>
+  <text x="130" y="202" text-anchor="middle" font-size="8" fill="#64748b">Cannot reverse to "password"</text>
+
+  <rect x="50" y="220" width="160" height="50" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="240" text-anchor="middle" font-size="8" fill="#1a1822">For password storage, the only way</text>
+  <text x="130" y="255" text-anchor="middle" font-size="8" fill="#1a1822">to verify is to hash the candidate</text>
+  <text x="130" y="270" text-anchor="middle" font-size="8" fill="#1a1822">and compare outputs</text>
+
+  <rect x="250" y="80" width="200" height="200" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="250" y="80" width="200" height="35" rx="10" fill="#4caf50"/>
+  <rect x="250" y="105" width="200" height="10" fill="#4caf50"/>
+  <text x="350" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Deterministic</text>
+
+  <text x="350" y="135" text-anchor="middle" font-size="9" fill="#1a1822">Same input → same output</text>
+  <text x="350" y="153" text-anchor="middle" font-size="9" fill="#1a1822">Every time, everywhere</text>
+
+  <rect x="270" y="170" width="160" height="40" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="350" y="187" text-anchor="middle" font-size="8" fill="#1a1822">hash("password") = same</text>
+  <text x="350" y="202" text-anchor="middle" font-size="8" fill="#64748b">on any system, any time</text>
+
+  <rect x="270" y="220" width="160" height="50" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="350" y="240" text-anchor="middle" font-size="8" fill="#1a1822">Enables verification: hash the</text>
+  <text x="350" y="255" text-anchor="middle" font-size="8" fill="#1a1822">input and compare to stored</text>
+  <text x="350" y="270" text-anchor="middle" font-size="8" fill="#1a1822">hash to verify correctness</text>
+
+  <rect x="470" y="80" width="200" height="200" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="470" y="80" width="200" height="35" rx="10" fill="#f0ad4e"/>
+  <rect x="470" y="105" width="200" height="10" fill="#f0ad4e"/>
+  <text x="570" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Collision Resistant</text>
+
+  <text x="570" y="135" text-anchor="middle" font-size="9" fill="#1a1822">Hard to find x, y where</text>
+  <text x="570" y="153" text-anchor="middle" font-size="9" fill="#1a1822">hash(x) = hash(y) and x ≠ y</text>
+
+  <rect x="490" y="170" width="160" height="40" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="570" y="187" text-anchor="middle" font-size="8" fill="#1a1822">Birthday attack: √(2^n)</text>
+  <text x="570" y="202" text-anchor="middle" font-size="8" fill="#64748b">256-bit hash → 2^128 attempts</text>
+
+  <rect x="490" y="220" width="160" height="50" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="570" y="240" text-anchor="middle" font-size="8" fill="#1a1822">Collisions mean two different</text>
+  <text x="570" y="255" text-anchor="middle" font-size="8" fill="#1a1822">passwords authenticate as the</text>
+  <text x="570" y="270" text-anchor="middle" font-size="8" fill="#1a1822">same user — must be infeasible</text>
+
+  <rect x="690" y="80" width="200" height="200" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="690" y="80" width="200" height="35" rx="10" fill="#cc4444"/>
+  <rect x="690" y="105" width="200" height="10" fill="#cc4444"/>
+  <text x="790" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Avalanche Effect</text>
+
+  <text x="790" y="135" text-anchor="middle" font-size="9" fill="#1a1822">1-bit input change → 50%</text>
+  <text x="790" y="153" text-anchor="middle" font-size="9" fill="#1a1822">of output bits change</text>
+
+  <rect x="710" y="170" width="160" height="40" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="790" y="187" text-anchor="middle" font-size="8" fill="#1a1822">"password" → a1b2c3d4...</text>
+  <text x="790" y="202" text-anchor="middle" font-size="8" fill="#64748b">"passwore" → f9e8d7c6...</text>
+
+  <rect x="710" y="220" width="160" height="50" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="790" y="240" text-anchor="middle" font-size="8" fill="#1a1822">Prevents incremental attacks —</text>
+  <text x="790" y="255" text-anchor="middle" font-size="8" fill="#1a1822">similar passwords produce</text>
+  <text x="790" y="270" text-anchor="middle" font-size="8" fill="#1a1822">completely different hashes</text>
+
+  <!-- Password hashing vs general hashing -->
+  <rect x="30" y="300" width="410" height="180" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="300" width="410" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="325" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="323" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Password Hashing (bcrypt, Argon2)</text>
+
+  <text x="50" y="355" text-anchor="start" font-size="9" fill="#1a1822">• Slow by design (100ms-1s per hash)</text>
+  <text x="50" y="373" text-anchor="start" font-size="9" fill="#1a1822">• Memory-hard (resists GPU/ASIC)</text>
+  <text x="50" y="391" text-anchor="start" font-size="9" fill="#1a1822">• Built-in salt management</text>
+  <text x="50" y="409" text-anchor="start" font-size="9" fill="#1a1822">• Configurable work factor</text>
+  <text x="50" y="427" text-anchor="start" font-size="9" fill="#1a1822">• Output includes salt + hash + params</text>
+  <text x="50" y="445" text-anchor="start" font-size="9" fill="#1a1822">• Purpose: defend against brute force</text>
+  <text x="50" y="463" text-anchor="start" font-size="9" fill="#64748b">Use: Password storage, sensitive data</text>
+
+  <rect x="460" y="300" width="410" height="180" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="460" y="300" width="410" height="35" rx="10" fill="#cc4444"/>
+  <rect x="460" y="325" width="410" height="10" fill="#cc4444"/>
+  <text x="665" y="323" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">General-Purpose Hashing (SHA-256)</text>
+
+  <text x="480" y="355" text-anchor="start" font-size="9" fill="#1a1822">• Fast by design (millions/sec)</text>
+  <text x="480" y="373" text-anchor="start" font-size="9" fill="#1a1822">• Not memory-hard (GPU-friendly)</text>
+  <text x="480" y="391" text-anchor="start" font-size="9" fill="#1a1822">• No built-in salt management</text>
+  <text x="480" y="409" text-anchor="start" font-size="9" fill="#1a1822">• Fixed computation cost</text>
+  <text x="480" y="427" text-anchor="start" font-size="9" fill="#1a1822">• Output is just the hash digest</text>
+  <text x="480" y="445" text-anchor="start" font-size="9" fill="#1a1822">• Purpose: data integrity, deduplication</text>
+  <text x="480" y="463" text-anchor="start" font-size="9" fill="#cc4444" font-weight="600">NEVER use for password storage</text>
 </svg>

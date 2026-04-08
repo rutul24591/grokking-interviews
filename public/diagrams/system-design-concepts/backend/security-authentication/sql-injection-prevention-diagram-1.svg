@@ -1,10 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">SQL Injection Prevention Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">SQL Injection Prevention</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>SQL injection attack flow showing how user input is concatenated into SQL query and executed</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">SQL Injection: How Unsanitized Input Compromises Databases</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">User input concatenated directly into SQL query allows attacker to execute arbitrary SQL</text>
+
+  <!-- Attack flow -->
+  <rect x="30" y="80" width="840" height="100" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <text x="450" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">The Vulnerable Query</text>
+
+  <rect x="50" y="120" width="800" height="50" rx="6" fill="#f0f0f5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="142" text-anchor="middle" font-size="10" font-family="monospace" fill="#1a1822">query = "SELECT * FROM users WHERE username = '" + USER_INPUT + "' AND password = '" + PASSWORD + "'"</text>
+  <text x="450" y="160" text-anchor="middle" font-size="9" fill="#64748b">User input is concatenated directly into SQL — no validation, no parameterization</text>
+
+  <!-- Attack example -->
+  <rect x="30" y="200" width="410" height="140" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="200" width="410" height="30" rx="10" fill="#cc4444"/>
+  <rect x="30" y="220" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Authentication Bypass Attack</text>
+
+  <rect x="50" y="240" width="370" height="40" rx="4" fill="#f0f0f5"/>
+  <text x="235" y="257" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">Input: ' OR '1'='1' --</text>
+
+  <rect x="50" y="290" width="370" height="40" rx="4" fill="#cc4444" opacity="0.08"/>
+  <text x="235" y="307" text-anchor="middle" font-size="9" font-family="monospace" fill="#cc4444">Result: SELECT * FROM users WHERE username = '' OR '1'='1' -- ' ...</text>
+
+  <!-- Data exfiltration -->
+  <rect x="460" y="200" width="410" height="140" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="460" y="200" width="410" height="30" rx="10" fill="#f0ad4e"/>
+  <rect x="460" y="220" width="410" height="10" fill="#f0ad4e"/>
+  <text x="665" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Data Exfiltration Attack</text>
+
+  <rect x="480" y="240" width="370" height="40" rx="4" fill="#f0f0f5"/>
+  <text x="665" y="257" text-anchor="middle" font-size="9" font-family="monospace" fill="#1a1822">Input: ' UNION SELECT username, password FROM users --</text>
+
+  <rect x="480" y="290" width="370" height="40" rx="4" fill="#f0ad4e" opacity="0.08"/>
+  <text x="665" y="307" text-anchor="middle" font-size="9" font-family="monospace" fill="#f0ad4e">Result: Returns all usernames and passwords from users table</text>
+
+  <!-- Blind SQLi -->
+  <rect x="30" y="360" width="840" height="120" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="388" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Blind SQL Injection (No Direct Output)</text>
+
+  <rect x="50" y="405" width="390" height="60" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="245" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Boolean-based: ' AND 1=1 -- (true) vs ' AND 1=2 -- (false)</text>
+  <text x="245" y="445" text-anchor="middle" font-size="9" fill="#64748b">Infer data from true/false responses</text>
+  <text x="245" y="460" text-anchor="middle" font-size="9" fill="#64748b">Character-by-character extraction</text>
+
+  <rect x="460" y="405" width="390" height="60" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="655" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Time-based: ' AND SLEEP(5) -- (delayed response)</text>
+  <text x="655" y="445" text-anchor="middle" font-size="9" fill="#64748b">Infer data from response timing</text>
+  <text x="655" y="460" text-anchor="middle" font-size="9" fill="#64748b">Works even when output is suppressed</text>
 </svg>

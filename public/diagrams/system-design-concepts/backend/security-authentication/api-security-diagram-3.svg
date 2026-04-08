@@ -1,10 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">API Security Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">API Security</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>API security best practices showing security checklist from authentication to monitoring</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">API Security Best Practices Checklist</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Essential security controls every API must implement before going to production</text>
+
+  <!-- Authentication -->
+  <rect x="30" y="80" width="410" height="70" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="45" y="105" text-anchor="start" font-size="10" font-weight="700" fill="#4caf50">✓ Authentication</text>
+  <text x="45" y="125" text-anchor="start" font-size="9" fill="#1a1822">Use OAuth 2.0 / OIDC. Require MFA for sensitive operations. Never use basic auth over HTTP.</text>
+
+  <rect x="460" y="80" width="410" height="70" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="475" y="105" text-anchor="start" font-size="10" font-weight="700" fill="#4caf50">✓ Authorization</text>
+  <text x="475" y="125" text-anchor="start" font-size="9" fill="#1a1822">Check permissions on every request. Use RBAC/ABAC. Never trust client-side authorization.</text>
+
+  <!-- Input Validation -->
+  <rect x="30" y="165" width="410" height="70" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="45" y="190" text-anchor="start" font-size="10" font-weight="700" fill="#4caf50">✓ Input Validation</text>
+  <text x="45" y="210" text-anchor="start" font-size="9" fill="#1a1822">Validate all input against schema. Use parameterized queries. Encode output for context.</text>
+
+  <rect x="460" y="165" width="410" height="70" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="475" y="190" text-anchor="start" font-size="10" font-weight="700" fill="#4caf50">✓ Rate Limiting</text>
+  <text x="475" y="210" text-anchor="start" font-size="9" fill="#1a1822">Per-user, per-IP, per-endpoint limits. Return 429 with Retry-After. Use sliding window.</text>
+
+  <!-- Encryption -->
+  <rect x="30" y="250" width="410" height="70" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="45" y="275" text-anchor="start" font-size="10" font-weight="700" fill="#4caf50">✓ Encryption</text>
+  <text x="45" y="295" text-anchor="start" font-size="9" fill="#1a1822">TLS 1.3 required. Encrypt sensitive data at rest. Use envelope encryption for PII.</text>
+
+  <rect x="460" y="250" width="410" height="70" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="475" y="275" text-anchor="start" font-size="10" font-weight="700" fill="#4caf50">✓ Security Headers</text>
+  <text x="475" y="295" text-anchor="start" font-size="9" fill="#1a1822">HSTS, CORS, CSP, X-Content-Type-Options. Remove Server and X-Powered-By headers.</text>
+
+  <!-- Error Handling -->
+  <rect x="30" y="335" width="410" height="70" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="45" y="360" text-anchor="start" font-size="10" font-weight="700" fill="#f0ad4e">✓ Error Handling</text>
+  <text x="45" y="380" text-anchor="start" font-size="9" fill="#1a1822">Generic error messages. No stack traces. Consistent error format (RFC 7807).</text>
+
+  <rect x="460" y="335" width="410" height="70" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="475" y="360" text-anchor="start" font-size="10" font-weight="700" fill="#f0ad4e">✓ Logging &amp; Monitoring</text>
+  <text x="475" y="380" text-anchor="start" font-size="9" fill="#1a1822">Log auth events, rate limits, errors. Alert on anomalies. Never log sensitive data.</text>
+
+  <!-- Versioning -->
+  <rect x="30" y="420" width="410" height="70" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="45" y="445" text-anchor="start" font-size="10" font-weight="700" fill="#f0ad4e">✓ API Versioning</text>
+  <text x="45" y="465" text-anchor="start" font-size="9" fill="#1a1822">Version in URL or header. Deprecate old versions with notice. Never break backward compat.</text>
+
+  <rect x="460" y="420" width="410" height="70" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="475" y="445" text-anchor="start" font-size="10" font-weight="700" fill="#f0ad4e">✓ Penetration Testing</text>
+  <text x="475" y="465" text-anchor="start" font-size="9" fill="#1a1822">Regular pen testing. Bug bounty program. Automated scanning (DAST, SAST, dependency checks).</text>
 </svg>

@@ -1,10 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">CSRF Protection Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">CSRF Protection</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>CSRF attack flow showing malicious site tricking authenticated user into making unwanted request</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">CSRF Attack: How Cross-Site Request Forgery Works</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Attacker tricks authenticated user&apos;s browser into making unwanted requests with automatic cookies</text>
+
+  <!-- Actors -->
+  <rect x="30" y="80" width="140" height="80" rx="10" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="100" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">Attacker Site</text>
+  <text x="100" y="128" text-anchor="middle" font-size="9" fill="#1a1822">evil.com</text>
+  <text x="100" y="145" text-anchor="middle" font-size="9" fill="#64748b">Contains malicious form</text>
+
+  <rect x="380" y="80" width="140" height="80" rx="10" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">User Browser</text>
+  <text x="450" y="128" text-anchor="middle" font-size="9" fill="#1a1822">Authenticated to bank.com</text>
+  <text x="450" y="145" text-anchor="middle" font-size="9" fill="#64748b">Has valid session cookie</text>
+
+  <rect x="730" y="80" width="140" height="80" rx="10" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="800" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">Target Site</text>
+  <text x="800" y="128" text-anchor="middle" font-size="9" fill="#1a1822">bank.com</text>
+  <text x="800" y="145" text-anchor="middle" font-size="9" fill="#64748b">Processes the request</text>
+
+  <!-- Attack steps -->
+  <!-- Step 1: User visits attacker site -->
+  <rect x="30" y="200" width="260" height="80" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="160" y="223" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Step 1: User visits evil.com</text>
+  <text x="160" y="243" text-anchor="middle" font-size="9" fill="#1a1822">User clicks malicious link or visits</text>
+  <text x="160" y="258" text-anchor="middle" font-size="9" fill="#1a1822">compromised site with hidden form</text>
+
+  <line x1="290" y1="240" x2="380" y2="240" stroke="#64748b" stroke-width="2" marker-end="url(#arrowCSRF)"/>
+
+  <!-- Step 2: Browser sends request with cookie -->
+  <rect x="380" y="200" width="260" height="80" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="1.5"/>
+  <text x="510" y="223" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Step 2: Form auto-submits to bank.com</text>
+  <text x="510" y="243" text-anchor="middle" font-size="9" fill="#1a1822">Browser includes session cookie</text>
+  <text x="510" y="258" text-anchor="middle" font-size="9" fill="#1a1822">automatically (same-site cookie)</text>
+
+  <line x1="640" y1="240" x2="730" y2="240" stroke="#64748b" stroke-width="2" marker-end="url(#arrowCSRF)"/>
+
+  <!-- Step 3: Server processes -->
+  <rect x="730" y="200" width="140" height="80" rx="8" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="800" y="223" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Step 3: Server accepts</text>
+  <text x="800" y="243" text-anchor="middle" font-size="9" fill="#1a1822">Valid cookie = valid request</text>
+  <text x="800" y="258" text-anchor="middle" font-size="9" fill="#1a1822">Transfer: $5000 to attacker</text>
+
+  <!-- Defense section -->
+  <rect x="30" y="310" width="840" height="170" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="338" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">CSRF Defenses: What Prevents This Attack</text>
+
+  <rect x="50" y="355" width="250" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="175" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">1. CSRF Tokens</text>
+  <text x="175" y="393" text-anchor="middle" font-size="9" fill="#1a1822">Unpredictable token in forms</text>
+
+  <rect x="320" y="355" width="250" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="445" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">2. SameSite Cookies</text>
+  <text x="445" y="393" text-anchor="middle" font-size="9" fill="#1a1822">Cookie not sent cross-site</text>
+
+  <rect x="590" y="355" width="260" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="720" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">3. Custom Headers (fetch)</text>
+  <text x="720" y="393" text-anchor="middle" font-size="9" fill="#1a1822">Pre-flight blocks simple POST</text>
+
+  <rect x="50" y="410" width="250" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="175" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">4. Double-Submit Cookie</text>
+  <text x="175" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Token in cookie + request body</text>
+
+  <rect x="320" y="410" width="250" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="445" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">5. Referer/Origin Validation</text>
+  <text x="445" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Verify request source origin</text>
+
+  <rect x="590" y="410" width="260" height="45" rx="6" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="720" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Defense-in-Depth: Use 2+ methods</text>
+  <text x="720" y="448" text-anchor="middle" font-size="9" fill="#1a1822">SameSite + CSRF tokens is recommended</text>
+
+  <defs>
+    <marker id="arrowCSRF" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

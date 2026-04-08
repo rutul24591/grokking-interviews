@@ -1,10 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">CORS (Cross-Origin Resource Sharing) Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">CORS (Cross-Origin Resource Sharing)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>CORS architecture showing same-origin policy, cross-origin requests, and preflight flow</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">CORS: Cross-Origin Resource Sharing Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Same-origin policy blocks cross-origin requests; CORS headers selectively allow them</text>
+
+  <!-- Same-origin vs Cross-origin -->
+  <rect x="30" y="80" width="410" height="180" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="10" fill="#4caf50"/>
+  <rect x="30" y="105" width="410" height="10" fill="#4caf50"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Same-Origin Request (Allowed)</text>
+
+  <rect x="50" y="125" width="370" height="50" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="147" text-anchor="middle" font-size="10" fill="#1a1822">Page: https://example.com/app</text>
+  <text x="235" y="165" text-anchor="middle" font-size="9" fill="#64748b">API: https://example.com/api/data</text>
+
+  <rect x="50" y="185" width="370" height="60" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="207" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">✓ Same protocol (https), same domain (example.com), same port</text>
+  <text x="235" y="225" text-anchor="middle" font-size="9" fill="#1a1822">Browser allows request — no CORS headers needed</text>
+  <text x="235" y="240" text-anchor="middle" font-size="9" fill="#1a1822">Response fully accessible to JavaScript</text>
+
+  <rect x="460" y="80" width="410" height="180" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="10" fill="#cc4444"/>
+  <rect x="460" y="105" width="410" height="10" fill="#cc4444"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Cross-Origin Request (Blocked by Default)</text>
+
+  <rect x="480" y="125" width="370" height="50" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="147" text-anchor="middle" font-size="10" fill="#1a1822">Page: https://app.example.com</text>
+  <text x="665" y="165" text-anchor="middle" font-size="9" fill="#64748b">API: https://api.example.com/data</text>
+
+  <rect x="480" y="185" width="370" height="60" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="207" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">✗ Different subdomain (app vs api) = different origin</text>
+  <text x="665" y="225" text-anchor="middle" font-size="9" fill="#1a1822">Browser blocks response — unless CORS headers present</text>
+  <text x="665" y="240" text-anchor="middle" font-size="9" fill="#1a1822">Request may reach server, but JS cannot read response</text>
+
+  <!-- What defines origin -->
+  <rect x="30" y="280" width="840" height="100" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="308" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">What Defines an Origin? (protocol://domain:port)</text>
+
+  <rect x="50" y="325" width="250" height="45" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="175" y="345" text-anchor="middle" font-size="10" fill="#1a1822">https://example.com:443</text>
+  <text x="175" y="363" text-anchor="middle" font-size="9" fill="#4caf50">✓ Same origin</text>
+
+  <rect x="320" y="325" width="250" height="45" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="445" y="345" text-anchor="middle" font-size="10" fill="#1a1822">http://example.com:80</text>
+  <text x="445" y="363" text-anchor="middle" font-size="9" fill="#cc4444">✗ Different protocol</text>
+
+  <rect x="590" y="325" width="260" height="45" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="720" y="345" text-anchor="middle" font-size="10" fill="#1a1822">https://api.example.com:443</text>
+  <text x="720" y="363" text-anchor="middle" font-size="9" fill="#cc4444">✗ Different domain</text>
+
+  <!-- Simple vs Preflight -->
+  <rect x="30" y="400" width="410" height="80" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="235" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Simple Request (no preflight)</text>
+  <text x="235" y="445" text-anchor="middle" font-size="9" fill="#1a1822">GET, POST, HEAD with safe content-types</text>
+  <text x="235" y="460" text-anchor="middle" font-size="9" fill="#1a1822">Browser sends request, checks Access-Control-Allow-Origin</text>
+
+  <rect x="460" y="400" width="410" height="80" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="665" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">Preflight Request (OPTIONS first)</text>
+  <text x="665" y="445" text-anchor="middle" font-size="9" fill="#1a1822">PUT, DELETE, custom headers, non-standard content-types</text>
+  <text x="665" y="460" text-anchor="middle" font-size="9" fill="#1a1822">Browser sends OPTIONS, waits for approval, then sends real request</text>
 </svg>

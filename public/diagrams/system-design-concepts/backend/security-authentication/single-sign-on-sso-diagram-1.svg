@@ -1,10 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Single Sign-On (SSO) Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Single Sign-On (SSO)</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>SSO flow showing user authentication through identity provider to access multiple applications</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Single Sign-On (SSO) with SAML and OpenID Connect</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Authenticate once, access multiple applications without re-authentication</text>
+
+  <!-- User -->
+  <rect x="30" y="100" width="120" height="80" rx="10" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="90" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">User</text>
+  <text x="90" y="150" text-anchor="middle" font-size="10" fill="#1a1822">Browser / App</text>
+  <text x="90" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Wants to access App</text>
+
+  <!-- Arrow to IdP -->
+  <line x1="150" y1="140" x2="320" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <text x="235" y="130" text-anchor="middle" font-size="9" fill="#6d5bd0">1. Redirect to IdP</text>
+
+  <!-- Identity Provider -->
+  <rect x="320" y="100" width="180" height="80" rx="10" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="410" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Identity Provider</text>
+  <text x="410" y="150" text-anchor="middle" font-size="10" fill="#1a1822">Okta, Azure AD, Google</text>
+  <text x="410" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Authenticates user</text>
+
+  <!-- Arrow to User -->
+  <line x1="320" y1="180" x2="150" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <text x="235" y="198" text-anchor="middle" font-size="9" fill="#6d5bd0">2. Auth + Consent</text>
+
+  <!-- Arrow to App -->
+  <line x1="500" y1="140" x2="670" y2="140" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowSSO)"/>
+  <text x="585" y="130" text-anchor="middle" font-size="9" fill="#4caf50">3. Token / Assertion</text>
+
+  <!-- Applications -->
+  <rect x="670" y="80" width="200" height="60" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="770" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">App 1: CRM</text>
+  <text x="770" y="123" text-anchor="middle" font-size="9" fill="#1a1822">Salesforce, HubSpot</text>
+
+  <rect x="670" y="160" width="200" height="60" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="770" y="183" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">App 2: Email</text>
+  <text x="770" y="203" text-anchor="middle" font-size="9" fill="#1a1822">Gmail, Outlook</text>
+
+  <rect x="670" y="240" width="200" height="60" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="770" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">App 3: HR System</text>
+  <text x="770" y="283" text-anchor="middle" font-size="9" fill="#1a1822">Workday, BambooHR</text>
+
+  <!-- SAML vs OIDC comparison -->
+  <rect x="30" y="320" width="840" height="160" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="350" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">SAML vs OpenID Connect (OIDC)</text>
+
+  <rect x="50" y="370" width="390" height="90" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="245" y="393" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">SAML 2.0</text>
+  <text x="245" y="413" text-anchor="middle" font-size="10" fill="#1a1822">XML-based. Enterprise SSO. Older, established.</text>
+  <text x="245" y="433" text-anchor="middle" font-size="10" fill="#1a1822">SAML Assertion contains user attributes.</text>
+  <text x="245" y="450" text-anchor="middle" font-size="9" fill="#1a1822">Use: Enterprise apps, legacy systems, government</text>
+
+  <rect x="460" y="370" width="390" height="90" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="393" text-anchor="middle" font-size="12" font-weight="600" fill="#4caf50">OpenID Connect (OIDC)</text>
+  <text x="655" y="413" text-anchor="middle" font-size="10" fill="#1a1822">JSON/REST-based. Built on OAuth 2.0. Modern.</text>
+  <text x="655" y="433" text-anchor="middle" font-size="10" fill="#1a1822">ID Token (JWT) contains user claims.</text>
+  <text x="655" y="450" text-anchor="middle" font-size="9" fill="#1a1822">Use: Web/mobile apps, APIs, modern applications</text>
+
+  <defs>
+    <marker id="arrowSSO" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>
