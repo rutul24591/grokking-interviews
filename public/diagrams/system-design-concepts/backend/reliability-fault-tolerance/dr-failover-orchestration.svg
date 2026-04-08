@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Disaster recovery failover orchestration flow from detection to operations</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">DR Failover Orchestration</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Step-by-step automated failover from primary region to disaster recovery site</text>
+
+  <!-- Step 1: Health Check Failure -->
+  <rect x="30" y="100" width="140" height="90" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="2"/>
+  <text x="100" y="130" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Health Check</text>
+  <text x="100" y="145" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Failure</text>
+  <text x="100" y="168" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Primary region</text>
+  <text x="100" y="180" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">unresponsive</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="170" y1="145" x2="220" y2="145" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDR)"/>
+
+  <!-- Step 2: DR Trigger -->
+  <rect x="220" y="100" width="140" height="90" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="290" y="130" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">DR Trigger</text>
+  <text x="290" y="150" text-anchor="middle" font-size="9" fill="#1a1822">Automated or manual</text>
+  <text x="290" y="163" text-anchor="middle" font-size="9" fill="#1a1822">failover decision</text>
+  <text x="290" y="178" text-anchor="middle" font-size="9" fill="#1a1822">based on policies</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="360" y1="145" x2="410" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDR)"/>
+
+  <!-- Step 3: DNS Update -->
+  <rect x="410" y="100" width="140" height="90" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="480" y="130" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">DNS Update</text>
+  <text x="480" y="150" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Route53 / CloudFlare</text>
+  <text x="480" y="163" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">record switched to</text>
+  <text x="480" y="178" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">DR endpoint</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="550" y1="145" x2="600" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDR)"/>
+
+  <!-- Step 4: Pilot Light Scale-Up -->
+  <rect x="600" y="100" width="140" height="90" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="670" y="125" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Pilot Light</text>
+  <text x="670" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Scale-Up</text>
+  <text x="670" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Auto-scaling groups</text>
+  <text x="670" y="173" text-anchor="middle" font-size="9" fill="#1a1822">provision capacity,</text>
+  <text x="670" y="186" text-anchor="middle" font-size="9" fill="#1a1822">DB promoted to primary</text>
+
+  <!-- Arrow 4->5 -->
+  <line x1="740" y1="145" x2="790" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDR)"/>
+
+  <!-- Step 5: Data Sync Verification -->
+  <rect x="790" y="100" width="80" height="90" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="830" y="125" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Data</text>
+  <text x="830" y="138" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Sync</text>
+  <text x="830" y="153" text-anchor="middle" font-size="9" fill="#1a1822">Verify</text>
+  <text x="830" y="170" text-anchor="middle" font-size="8" fill="#1a1822">Check</text>
+  <text x="830" y="181" text-anchor="middle" font-size="8" fill="#1a1822">replication</text>
+
+  <!-- Arrow: down to row 2 -->
+  <path d="M 830 190 L 830 240 L 740 240 L 740 260" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDR)"/>
+
+  <!-- Step 6: Traffic Shift -->
+  <rect x="600" y="260" width="140" height="90" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="670" y="285" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Traffic Shift</text>
+  <text x="670" y="305" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Gradual rollout:</text>
+  <text x="670" y="318" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">10% -> 50% -> 100%</text>
+  <text x="670" y="335" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Monitor error rates</text>
+
+  <!-- Arrow 6->7 -->
+  <line x1="600" y1="305" x2="550" y2="305" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDR)"/>
+
+  <!-- Step 7: Verification -->
+  <rect x="410" y="260" width="140" height="90" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="2"/>
+  <text x="480" y="285" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Verification</text>
+  <text x="480" y="305" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Health checks pass,</text>
+  <text x="480" y="318" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">smoke tests succeed,</text>
+  <text x="480" y="335" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">data integrity confirmed</text>
+
+  <!-- Arrow 7->8 -->
+  <line x1="410" y1="305" x2="360" y2="305" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowDR)"/>
+
+  <!-- Step 8: Operations in DR -->
+  <rect x="220" y="260" width="140" height="90" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <text x="290" y="285" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Operations</text>
+  <text x="290" y="300" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">in DR Region</text>
+  <text x="290" y="320" text-anchor="middle" font-size="9" fill="#1a1822">Full service restored</text>
+  <text x="290" y="333" text-anchor="middle" font-size="9" fill="#1a1822">in secondary region</text>
+  <text x="290" y="346" text-anchor="middle" font-size="9" fill="#1a1822">Monitor closely</text>
+
+  <!-- Arrow 8->9 -->
+  <line x1="220" y1="305" x2="170" y2="305" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowDR)"/>
+
+  <!-- Step 9: Ongoing -->
+  <rect x="30" y="260" width="140" height="90" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="2"/>
+  <text x="100" y="285" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Ongoing Monitoring</text>
+  <text x="100" y="305" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Enhanced alerting,</text>
+  <text x="100" y="318" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">capacity watch,</text>
+  <text x="100" y="335" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">incident war room</text>
+
+  <!-- Recovery path -->
+  <rect x="30" y="390" width="840" height="90" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="415" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Failback to Primary (When Restored)</text>
+  <text x="450" y="435" text-anchor="middle" font-size="10" fill="#1a1822">1. Repair primary region infrastructure</text>
+  <text x="450" y="450" text-anchor="middle" font-size="10" fill="#1a1822">2. Sync data back from DR to primary (reverse replication)</text>
+  <text x="450" y="465" text-anchor="middle" font-size="10" fill="#1a1822">3. Verify data consistency, run validation checks</text>
+  <text x="450" y="480" text-anchor="middle" font-size="10" fill="#1a1822">4. Gradually shift traffic back -> verify -> resume normal operations</text>
+
+  <defs>
+    <marker id="arrowDR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

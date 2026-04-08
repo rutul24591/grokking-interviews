@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Backup strategy comparison: full, incremental, differential, continuous</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Backup Strategy Comparison</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">RPO, RTO, storage cost, and restore time across four backup approaches</text>
+
+  <!-- Column 1: Full Backup -->
+  <rect x="30" y="80" width="200" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="200" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="200" height="10" fill="#6d5bd0"/>
+  <text x="130" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Full Backup</text>
+
+  <rect x="45" y="130" width="170" height="45" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="150" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">RPO: Hours</text>
+  <text x="130" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Between full backup runs</text>
+
+  <rect x="45" y="195" width="170" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="130" y="215" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">RTO: Fast (minutes)</text>
+  <text x="130" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Single restore, no replay</text>
+
+  <rect x="45" y="260" width="170" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="130" y="280" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">Storage: High</text>
+  <text x="130" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Full copy every time</text>
+
+  <rect x="45" y="325" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="130" y="345" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Restore: Simple</text>
+  <text x="130" y="360" text-anchor="middle" font-size="9" fill="#1a1822">One file, no chain</text>
+
+  <rect x="45" y="390" width="170" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For:</text>
+  <text x="130" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Weekly baseline, small DBs</text>
+
+  <!-- Column 2: Incremental -->
+  <rect x="245" y="80" width="200" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="245" y="80" width="200" height="35" rx="12" fill="#4caf50"/>
+  <rect x="245" y="105" width="200" height="10" fill="#4caf50"/>
+  <text x="345" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Incremental</text>
+
+  <rect x="260" y="130" width="170" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="345" y="150" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">RPO: Minutes</text>
+  <text x="345" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Frequent delta snapshots</text>
+
+  <rect x="260" y="195" width="170" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="345" y="215" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">RTO: Slow (chain)</text>
+  <text x="345" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Full + all deltas replay</text>
+
+  <rect x="260" y="260" width="170" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="345" y="280" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Storage: Low</text>
+  <text x="345" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Only changes stored</text>
+
+  <rect x="260" y="325" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="345" y="345" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Restore: Complex</text>
+  <text x="345" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Must replay full chain</text>
+
+  <rect x="260" y="390" width="170" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="345" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For:</text>
+  <text x="345" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Daily backups, large DBs</text>
+
+  <!-- Column 3: Differential -->
+  <rect x="460" y="80" width="200" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="80" width="200" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="460" y="105" width="200" height="10" fill="#f0ad4e"/>
+  <text x="560" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Differential</text>
+
+  <rect x="475" y="130" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="560" y="150" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">RPO: Hours</text>
+  <text x="560" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Changes since last full</text>
+
+  <rect x="475" y="195" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="560" y="215" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">RTO: Medium</text>
+  <text x="560" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Full + latest delta only</text>
+
+  <rect x="475" y="260" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="560" y="280" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Storage: Medium</text>
+  <text x="560" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Grows between full backups</text>
+
+  <rect x="475" y="325" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="560" y="345" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Restore: Moderate</text>
+  <text x="560" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Two files to restore</text>
+
+  <rect x="475" y="390" width="170" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="560" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For:</text>
+  <text x="560" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Balance of speed &amp; storage</text>
+
+  <!-- Column 4: Continuous (Log Shipping) -->
+  <rect x="675" y="80" width="200" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="675" y="80" width="200" height="35" rx="12" fill="#cc4444"/>
+  <rect x="675" y="105" width="200" height="10" fill="#cc4444"/>
+  <text x="775" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Continuous (Log Ship)</text>
+
+  <rect x="690" y="130" width="170" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="775" y="150" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">RPO: Seconds</text>
+  <text x="775" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Near-real-time WAL ship</text>
+
+  <rect x="690" y="195" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="775" y="215" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">RTO: Medium-Slow</text>
+  <text x="775" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Base + WAL replay to PITR</text>
+
+  <rect x="690" y="260" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="775" y="280" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Storage: Medium-High</text>
+  <text x="775" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Base + continuous WAL logs</text>
+
+  <rect x="690" y="325" width="170" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="775" y="345" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">Restore: Complex</text>
+  <text x="775" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Point-in-time replay</text>
+
+  <rect x="690" y="390" width="170" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="775" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For:</text>
+  <text x="775" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Tight RPO, PITR needs</text>
+</svg>

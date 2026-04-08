@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4caf50"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#cc4444"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1a2e">Circuit Breaker Degradation</text>
+  <text x="450" y="68" text-anchor="middle" font-size="14" fill="#555">State transitions as a service degrades and recovers through circuit breaker pattern</text>
+
+  <!-- Phase 1: Normal Operation -->
+  <rect x="30" y="110" width="210" height="170" rx="12" fill="#fff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="110" width="210" height="36" rx="12" fill="#4caf50"/>
+  <rect x="30" y="132" width="210" height="14" fill="#4caf50"/>
+  <text x="135" y="134" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Phase 1: Normal</text>
+
+  <!-- Services -->
+  <rect x="50" y="160" width="80" height="40" rx="6" fill="#4caf50"/>
+  <text x="90" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Service A</text>
+  <line x1="130" y1="180" x2="160" y2="180" stroke="#4caf50" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="160" y="160" width="80" height="40" rx="6" fill="#4caf50"/>
+  <text x="200" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Service B</text>
+
+  <!-- Status -->
+  <rect x="50" y="215" width="160" height="50" rx="8" fill="#f0f9f0"/>
+  <text x="135" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Circuit: CLOSED</text>
+  <text x="135" y="253" text-anchor="middle" font-size="10" fill="#444">All services healthy</text>
+
+  <!-- Arrow -->
+  <line x1="240" y1="195" x2="275" y2="195" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="258" y="188" text-anchor="middle" font-size="9" fill="#f0ad4e">degrades</text>
+
+  <!-- Phase 2: Service Degrades -->
+  <rect x="275" y="110" width="210" height="170" rx="12" fill="#fff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="275" y="110" width="210" height="36" rx="12" fill="#f0ad4e"/>
+  <rect x="275" y="132" width="210" height="14" fill="#f0ad4e"/>
+  <text x="380" y="134" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Phase 2: Degraded</text>
+
+  <!-- Services -->
+  <rect x="295" y="160" width="80" height="40" rx="6" fill="#4caf50"/>
+  <text x="335" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Service A</text>
+  <line x1="375" y1="180" x2="405" y2="180" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-orange)"/>
+  <rect x="405" y="160" width="80" height="40" rx="6" fill="#f0ad4e"/>
+  <text x="445" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Service B</text>
+
+  <!-- Status -->
+  <rect x="295" y="215" width="160" height="50" rx="8" fill="#fef8ef"/>
+  <text x="375" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#f0ad4e">Circuit: HALF-OPEN</text>
+  <text x="375" y="253" text-anchor="middle" font-size="10" fill="#444">Return cached data</text>
+
+  <!-- Arrow -->
+  <line x1="485" y1="195" x2="520" y2="195" stroke="#cc4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="503" y="188" text-anchor="middle" font-size="9" fill="#cc4444">fails</text>
+
+  <!-- Phase 3: Service Fails -->
+  <rect x="520" y="110" width="210" height="170" rx="12" fill="#fff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="520" y="110" width="210" height="36" rx="12" fill="#cc4444"/>
+  <rect x="520" y="132" width="210" height="14" fill="#cc4444"/>
+  <text x="625" y="134" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Phase 3: Failed</text>
+
+  <!-- Services -->
+  <rect x="540" y="160" width="80" height="40" rx="6" fill="#4caf50"/>
+  <text x="580" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Service A</text>
+  <line x1="620" y1="180" x2="650" y2="180" stroke="#cc4444" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+  <rect x="650" y="160" width="80" height="40" rx="6" fill="#cc4444"/>
+  <text x="690" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Service B</text>
+
+  <!-- Status -->
+  <rect x="540" y="215" width="160" height="50" rx="8" fill="#fef0f0"/>
+  <text x="620" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc4444">Circuit: OPEN</text>
+  <text x="620" y="253" text-anchor="middle" font-size="10" fill="#444">Return error immediately</text>
+
+  <!-- Arrow down -->
+  <line x1="625" y1="280" x2="625" y2="320" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="640" y="305" font-size="9" fill="#6d5bd0">timeout expires</text>
+
+  <!-- Phase 4: Service Recovers -->
+  <rect x="520" y="320" width="210" height="150" rx="12" fill="#fff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="520" y="320" width="210" height="36" rx="12" fill="#4caf50"/>
+  <rect x="520" y="342" width="210" height="14" fill="#4caf50"/>
+  <text x="625" y="344" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Phase 4: Recovered</text>
+
+  <!-- Services -->
+  <rect x="540" y="370" width="80" height="40" rx="6" fill="#4caf50"/>
+  <text x="580" y="395" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Service A</text>
+  <line x1="620" y1="390" x2="650" y2="390" stroke="#4caf50" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="650" y="370" width="80" height="40" rx="6" fill="#4caf50"/>
+  <text x="690" y="395" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Service B</text>
+
+  <!-- Status -->
+  <rect x="540" y="425" width="160" height="35" rx="8" fill="#f0f9f0"/>
+  <text x="620" y="447" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Circuit: CLOSED - Resume normal</text>
+
+  <!-- Recovery arrow back -->
+  <path d="M 520 395 Q 380 450 240 300 Q 240 250 275 200" fill="none" stroke="#4caf50" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-green)"/>
+  <text x="350" y="430" text-anchor="middle" font-size="10" font-weight="bold" fill="#4caf50">Recovery path</text>
+</svg>

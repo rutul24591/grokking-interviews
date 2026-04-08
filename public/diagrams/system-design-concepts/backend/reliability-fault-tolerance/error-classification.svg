@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Error classification types with examples and recommended handling strategies</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Error Classification &amp; Handling</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Three error categories: Transient, Permanent, and Expected with recommended handling</text>
+
+  <!-- Column 1: Transient Errors -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="30" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Transient Errors (Retry)</text>
+
+  <rect x="50" y="130" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="165" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Definition</text>
+  <text x="165" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Temporary failures that resolve</text>
+  <text x="165" y="183" text-anchor="middle" font-size="9" fill="#1a1822">on their own after a short delay</text>
+
+  <rect x="50" y="200" width="230" height="75" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Examples</text>
+  <text x="165" y="238" text-anchor="middle" font-size="9" fill="#1a1822">- Network timeout</text>
+  <text x="165" y="251" text-anchor="middle" font-size="9" fill="#1a1822">- HTTP 503 Service Unavailable</text>
+  <text x="165" y="264" text-anchor="middle" font-size="9" fill="#1a1822">- Connection pool exhausted</text>
+
+  <rect x="50" y="290" width="230" height="75" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="165" y="310" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Handling Strategy</text>
+  <text x="165" y="328" text-anchor="middle" font-size="9" fill="#1a1822">- Exponential backoff retry</text>
+  <text x="165" y="341" text-anchor="middle" font-size="9" fill="#1a1822">- Jitter to prevent thundering herd</text>
+  <text x="165" y="354" text-anchor="middle" font-size="9" fill="#1a1822">- Max 3-5 attempts, then escalate</text>
+
+  <rect x="50" y="380" width="230" height="50" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="398" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Watch Out</text>
+  <text x="165" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Don't retry idempotent-unsafe</text>
+  <text x="165" y="428" text-anchor="middle" font-size="9" fill="#1a1822">operations blindly</text>
+
+  <!-- Column 2: Permanent Errors -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#cc4444"/>
+  <rect x="315" y="105" width="270" height="10" fill="#cc4444"/>
+  <text x="450" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Permanent Errors (Fail Fast)</text>
+
+  <rect x="335" y="130" width="230" height="55" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="450" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Definition</text>
+  <text x="450" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Fundamental failures that will not</text>
+  <text x="450" y="183" text-anchor="middle" font-size="9" fill="#1a1822">resolve without code/config change</text>
+
+  <rect x="335" y="200" width="230" height="75" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Examples</text>
+  <text x="450" y="238" text-anchor="middle" font-size="9" fill="#1a1822">- Invalid authentication token</text>
+  <text x="450" y="251" text-anchor="middle" font-size="9" fill="#1a1822">- HTTP 400 Bad Request</text>
+  <text x="450" y="264" text-anchor="middle" font-size="9" fill="#1a1822">- Schema validation failure</text>
+
+  <rect x="335" y="290" width="230" height="75" rx="8" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="450" y="310" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Handling Strategy</text>
+  <text x="450" y="328" text-anchor="middle" font-size="9" fill="#1a1822">- Fail immediately, no retry</text>
+  <text x="450" y="341" text-anchor="middle" font-size="9" fill="#1a1822">- Log with full context/stack</text>
+  <text x="450" y="354" text-anchor="middle" font-size="9" fill="#1a1822">- Return error to caller</text>
+
+  <rect x="335" y="380" width="230" height="50" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="450" y="398" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Watch Out</text>
+  <text x="450" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Never retry 4xx errors - they</text>
+  <text x="450" y="428" text-anchor="middle" font-size="9" fill="#1a1822">waste resources and time</text>
+
+  <!-- Column 3: Expected Errors -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="600" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="735" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Expected Errors (Handle Gracefully)</text>
+
+  <rect x="620" y="130" width="230" height="55" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="735" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Definition</text>
+  <text x="735" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Known failure modes the system</text>
+  <text x="735" y="183" text-anchor="middle" font-size="9" fill="#1a1822">anticipates and handles explicitly</text>
+
+  <rect x="620" y="200" width="230" height="75" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Examples</text>
+  <text x="735" y="238" text-anchor="middle" font-size="9" fill="#1a1822">- Record not found (404)</text>
+  <text x="735" y="251" text-anchor="middle" font-size="9" fill="#1a1822">- Duplicate key on upsert</text>
+  <text x="735" y="264" text-anchor="middle" font-size="9" fill="#1a1822">- Rate limit exceeded (429)</text>
+
+  <rect x="620" y="290" width="230" height="75" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="735" y="310" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Handling Strategy</text>
+  <text x="735" y="328" text-anchor="middle" font-size="9" fill="#1a1822">- Catch and handle gracefully</text>
+  <text x="735" y="341" text-anchor="middle" font-size="9" fill="#1a1822">- Return meaningful response</text>
+  <text x="735" y="354" text-anchor="middle" font-size="9" fill="#1a1822">- Degrade, don't crash</text>
+
+  <rect x="620" y="380" width="230" height="50" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="735" y="398" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Watch Out</text>
+  <text x="735" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Don't expose internal details</text>
+  <text x="735" y="428" text-anchor="middle" font-size="9" fill="#1a1822">to end users via errors</text>
+
+  <defs>
+    <marker id="arrowEC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

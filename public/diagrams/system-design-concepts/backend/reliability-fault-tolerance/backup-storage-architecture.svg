@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Backup storage architecture: multi-tier backup storage</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Backup Storage Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Multi-tier storage for fast restore, disaster recovery, and long-term archival</text>
+
+  <defs>
+    <marker id="arrowPbs" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGbs" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="arrowObs" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f0ad4e"/>
+    </marker>
+  </defs>
+
+  <!-- Primary DB -->
+  <rect x="30" y="150" width="160" height="120" rx="12" fill="#6d5bd0"/>
+  <text x="110" y="185" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Primary Database</text>
+  <text x="110" y="205" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.85">PostgreSQL / MySQL</text>
+  <text x="110" y="220" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.85">Live production data</text>
+  <text x="110" y="240" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.7">WAL / binary log</text>
+  <text x="110" y="255" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.7">streaming enabled</text>
+
+  <!-- Arrow to Backup Agent -->
+  <line x1="190" y1="210" x2="260" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPbs)"/>
+  <text x="225" y="200" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">WAL stream</text>
+  <text x="225" y="225" text-anchor="middle" font-size="9" fill="#6d5bd0">&amp; snapshots</text>
+
+  <!-- Backup Agent -->
+  <rect x="265" y="150" width="160" height="120" rx="12" fill="#f0ad4e"/>
+  <text x="345" y="185" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Backup Agent</text>
+  <text x="345" y="205" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.85">pg_basebackup /</text>
+  <text x="345" y="220" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.85">custom tooling</text>
+  <text x="345" y="240" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.7">Compression, chunking,</text>
+  <text x="345" y="255" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.7">checksum validation</text>
+
+  <!-- Arrow to Encryption -->
+  <line x1="425" y1="210" x2="495" y2="210" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowObs)"/>
+  <text x="460" y="200" text-anchor="middle" font-size="9" font-weight="600" fill="#f0ad4e">Encrypt</text>
+
+  <!-- Encrypted Backup -->
+  <rect x="500" y="150" width="160" height="120" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="500" y="150" width="160" height="28" rx="12" fill="#cc4444"/>
+  <rect x="500" y="170" width="160" height="8" fill="#cc4444"/>
+  <text x="580" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Encrypted Backup</text>
+  <text x="580" y="198" text-anchor="middle" font-size="10" fill="#1a1822">AES-256 encrypted</text>
+  <text x="580" y="213" text-anchor="middle" font-size="10" fill="#1a1822">Checksum verified</text>
+  <text x="580" y="228" text-anchor="middle" font-size="10" fill="#1a1822">Metadata indexed</text>
+  <text x="580" y="250" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">Ready for distribution</text>
+
+  <!-- Distribution arrows -->
+  <!-- Arrow to Local -->
+  <line x1="580" y1="270" x2="580" y2="320" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowGbs)"/>
+  <text x="595" y="300" font-size="8" fill="#4caf50" font-weight="600">Fast path</text>
+
+  <!-- Arrow to Cloud -->
+  <line x1="660" y1="210" x2="730" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPbs)"/>
+  <text x="695" y="200" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">DR path</text>
+
+  <!-- Arrow to Tape -->
+  <line x1="580" y1="270" x2="380" y2="270" stroke="#f0ad4e" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="380" y1="270" x2="380" y2="320" stroke="#f0ad4e" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrowObs)"/>
+  <text x="480" y="290" text-anchor="middle" font-size="8" fill="#f0ad4e" font-weight="600">Archive path</text>
+
+  <!-- Three storage tiers -->
+  <!-- Local Storage (fast restore) -->
+  <rect x="490" y="325" width="180" height="110" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="490" y="325" width="180" height="28" rx="12" fill="#4caf50"/>
+  <rect x="490" y="345" width="180" height="8" fill="#4caf50"/>
+  <text x="580" y="345" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Local Storage</text>
+  <text x="580" y="372" text-anchor="middle" font-size="10" fill="#1a1822">SSD / NVMe array</text>
+  <text x="580" y="387" text-anchor="middle" font-size="9" fill="#1a1822">Retention: 7-30 days</text>
+  <text x="580" y="405" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">Restore: seconds</text>
+  <text x="580" y="420" text-anchor="middle" font-size="9" fill="#1a1822">Cost: High per GB</text>
+
+  <!-- Cloud Storage (DR) -->
+  <rect x="735" y="150" width="140" height="120" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="735" y="150" width="140" height="28" rx="12" fill="#6d5bd0"/>
+  <rect x="735" y="170" width="140" height="8" fill="#6d5bd0"/>
+  <text x="805" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Cloud (DR)</text>
+  <text x="805" y="198" text-anchor="middle" font-size="9" fill="#1a1822">S3 / GCS / Azure</text>
+  <text x="805" y="213" text-anchor="middle" font-size="9" fill="#1a1822">Cross-region replica</text>
+  <text x="805" y="233" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">Restore: minutes</text>
+  <text x="805" y="248" text-anchor="middle" font-size="9" fill="#1a1822">Cost: Medium per GB</text>
+
+  <!-- Tape Archive (long-term) -->
+  <rect x="240" y="325" width="180" height="110" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="240" y="325" width="180" height="28" rx="12" fill="#f0ad4e"/>
+  <rect x="240" y="345" width="180" height="8" fill="#f0ad4e"/>
+  <text x="330" y="345" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Tape Archive</text>
+  <text x="330" y="372" text-anchor="middle" font-size="9" fill="#1a1822">Glacier / LTO tape</text>
+  <text x="330" y="387" text-anchor="middle" font-size="9" fill="#1a1822">Retention: 1-7+ years</text>
+  <text x="330" y="405" text-anchor="middle" font-size="9" fill="#f0ad4e" font-weight="600">Restore: hours-days</text>
+  <text x="330" y="420" text-anchor="middle" font-size="9" fill="#1a1822">Cost: Lowest per GB</text>
+</svg>

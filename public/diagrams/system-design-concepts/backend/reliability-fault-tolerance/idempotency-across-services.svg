@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Distributed Idempotency Across Services</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#6d5bd0">Idempotency key propagates through service call chain, each layer deduplicates independently</text>
+
+  <defs>
+    <marker id="is-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="is-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="is-arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- Client -->
+  <rect x="30" y="100" width="140" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="100" width="140" height="32" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="123" width="140" height="8" fill="#6d5bd0"/>
+  <text x="100" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Client</text>
+  <text x="100" y="152" text-anchor="middle" font-size="10" fill="#1a1822">Generate key:</text>
+  <rect x="45" y="158" width="110" height="20" rx="4" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="100" y="172" text-anchor="middle" font-size="8" fill="#6d5bd0" font-weight="600">ik-uuid-abc-123</text>
+  <text x="100" y="192" text-anchor="middle" font-size="9" fill="#1a1822">Retry = same key</text>
+
+  <!-- Arrow Client to API Gateway -->
+  <line x1="170" y1="150" x2="270" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#is-arrow)"/>
+  <text x="220" y="142" text-anchor="middle" font-size="9" fill="#6d5bd0">Request + key</text>
+
+  <!-- API Gateway -->
+  <rect x="270" y="100" width="160" height="100" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="270" y="100" width="160" height="32" rx="10" fill="#f0ad4e"/>
+  <rect x="270" y="123" width="160" height="8" fill="#f0ad4e"/>
+  <text x="350" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">API Gateway</text>
+  <text x="350" y="152" text-anchor="middle" font-size="10" fill="#1a1822">Extract key from header</text>
+  <rect x="285" y="158" width="130" height="20" rx="4" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="350" y="172" text-anchor="middle" font-size="8" fill="#f0ad4e" font-weight="600">Forward key downstream</text>
+  <text x="350" y="192" text-anchor="middle" font-size="9" fill="#1a1822">Rate limit + auth</text>
+
+  <!-- Arrow Gateway to Service A -->
+  <line x1="430" y1="150" x2="520" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#is-arrow)"/>
+  <text x="475" y="142" text-anchor="middle" font-size="9" fill="#6d5bd0">key: ik-uuid-abc-123</text>
+
+  <!-- Service A: Order Service -->
+  <rect x="520" y="100" width="160" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="520" y="100" width="160" height="32" rx="10" fill="#6d5bd0"/>
+  <rect x="520" y="123" width="160" height="8" fill="#6d5bd0"/>
+  <text x="600" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Service A</text>
+  <text x="600" y="139" text-anchor="middle" font-size="10" fill="#1a1822">(Order Service)</text>
+  <text x="600" y="158" text-anchor="middle" font-size="10" fill="#1a1822">Check dedup store</text>
+  <rect x="535" y="164" width="130" height="20" rx="4" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="600" y="178" text-anchor="middle" font-size="8" fill="#4caf50" font-weight="600">Key not found - proceed</text>
+  <text x="600" y="192" text-anchor="middle" font-size="9" fill="#1a1822">Create order record</text>
+
+  <!-- Arrow Service A to Service B -->
+  <line x1="680" y1="150" x2="760" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#is-arrow)"/>
+  <text x="720" y="142" text-anchor="middle" font-size="9" fill="#6d5bd0">key: order:ik-uuid-abc</text>
+
+  <!-- Service B: Payment Service -->
+  <rect x="520" y="250" width="160" height="100" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="520" y="250" width="160" height="32" rx="10" fill="#cc4444"/>
+  <rect x="520" y="273" width="160" height="8" fill="#cc4444"/>
+  <text x="600" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Service B</text>
+  <text x="600" y="289" text-anchor="middle" font-size="10" fill="#1a1822">(Payment Service)</text>
+  <text x="600" y="308" text-anchor="middle" font-size="10" fill="#1a1822">Check dedup store</text>
+  <rect x="535" y="314" width="130" height="20" rx="4" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="600" y="328" text-anchor="middle" font-size="8" fill="#4caf50" font-weight="600">Key not found - proceed</text>
+  <text x="600" y="342" text-anchor="middle" font-size="9" fill="#1a1822">Process charge</text>
+
+  <!-- Arrow Service A down to Service B -->
+  <line x1="600" y1="200" x2="600" y2="250" stroke="#6d5bd0" stroke-width="2" marker-end="url(#is-arrow)"/>
+  <text x="640" y="230" font-size="9" fill="#6d5bd0">Call + propagate key</text>
+
+  <!-- Service A dedup store -->
+  <rect x="520" y="210" width="0" height="0" rx="0" fill="none"/>
+  <rect x="720" y="100" width="150" height="80" rx="8" fill="#6d5bd0" opacity="0.06" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="795" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Service A Dedup Store</text>
+  <text x="795" y="145" text-anchor="middle" font-size="9" fill="#1a1822">Redis / DynamoDB</text>
+  <text x="795" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Scoped: order:*</text>
+  <text x="795" y="175" text-anchor="middle" font-size="9" fill="#6d5bd0">TTL: 72h</text>
+
+  <!-- Service B dedup store -->
+  <rect x="720" y="270" width="150" height="80" rx="8" fill="#cc4444" opacity="0.06" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="795" y="295" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Service B Dedup Store</text>
+  <text x="795" y="315" text-anchor="middle" font-size="9" fill="#1a1822">Redis / DynamoDB</text>
+  <text x="795" y="330" text-anchor="middle" font-size="9" fill="#1a1822">Scoped: payment:*</text>
+  <text x="795" y="345" text-anchor="middle" font-size="9" fill="#cc4444">TTL: 72h</text>
+
+  <!-- Arrow from Service B to its store -->
+  <line x1="680" y1="310" x2="720" y2="310" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#is-arrow-red)"/>
+
+  <!-- Arrow from Service A to its store -->
+  <line x1="680" y1="140" x2="720" y2="140" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#is-arrow)"/>
+
+  <!-- Response flow back -->
+  <line x1="520" y1="300" x2="440" y2="300" stroke="#4caf50" stroke-width="1.5" marker-end="url(#is-arrow-green)"/>
+  <line x1="440" y1="300" x2="440" y2="200" stroke="#4caf50" stroke-width="1.5" marker-end="url(#is-arrow-green)"/>
+  <line x1="440" y1="200" x2="350" y2="200" stroke="#4caf50" stroke-width="1.5" marker-end="url(#is-arrow-green)"/>
+  <text x="395" y="192" font-size="9" fill="#4caf50">Response chain</text>
+
+  <!-- Duplicate request scenario -->
+  <rect x="30" y="380" width="840" height="90" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="30" y="380" width="840" height="32" rx="10" fill="#f0ad4e" opacity="0.9"/>
+  <rect x="30" y="403" width="840" height="8" fill="#f0ad4e" opacity="0.9"/>
+  <text x="450" y="402" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Duplicate Request (Retry) Behavior</text>
+
+  <text x="150" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Client retries with same key</text>
+  <text x="150" y="452" text-anchor="middle" font-size="9" fill="#6d5bd0">&#x2192; API Gateway extracts key</text>
+
+  <line x1="290" y1="444" x2="310" y2="444" stroke="#cc4444" stroke-width="2" marker-end="url(#is-arrow-red)"/>
+  <text x="450" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Service A finds key &#x2192; returns cached order</text>
+  <text x="450" y="452" text-anchor="middle" font-size="9" fill="#cc4444">No re-processing, no duplicate charge</text>
+
+  <line x1="610" y1="444" x2="630" y2="444" stroke="#4caf50" stroke-width="2" marker-end="url(#is-arrow-green)"/>
+  <text x="750" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Service B finds key &#x2192; returns cached charge</text>
+  <text x="750" y="452" text-anchor="middle" font-size="9" fill="#4caf50">Idempotent at every hop</text>
+
+  <!-- Key takeaway -->
+  <rect x="30" y="468" width="840" height="25" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="485" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Each service independently deduplicates with its own store, preventing duplicate side effects at any layer</text>
+</svg>

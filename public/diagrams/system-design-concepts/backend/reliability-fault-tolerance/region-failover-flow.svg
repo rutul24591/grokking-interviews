@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Region Failover Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#6d5bd0">Health check detects region failure, traffic routed to healthy region with data sync verification</text>
+
+  <defs>
+    <marker id="rf-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="rf-arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+    <marker id="rf-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Detect -->
+  <rect x="40" y="90" width="150" height="100" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="40" y="90" width="150" height="34" rx="10" fill="#cc4444"/>
+  <rect x="40" y="114" width="150" height="8" fill="#cc4444"/>
+  <text x="115" y="113" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">1. Detect</text>
+  <text x="115" y="145" text-anchor="middle" font-size="10" fill="#1a1822">Multi-signal confirmation:</text>
+  <text x="115" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Error rate spike</text>
+  <text x="115" y="174" text-anchor="middle" font-size="9" fill="#1a1822">Tail latency degradation</text>
+  <text x="115" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Health check failures</text>
+
+  <!-- Arrow -->
+  <line x1="190" y1="140" x2="270" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#rf-arrow)"/>
+  <text x="230" y="132" text-anchor="middle" font-size="8" fill="#6d5bd0">5 min sustained</text>
+
+  <!-- Step 2: Decision -->
+  <rect x="270" y="90" width="150" height="100" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="270" y="90" width="150" height="34" rx="10" fill="#f0ad4e"/>
+  <rect x="270" y="114" width="150" height="8" fill="#f0ad4e"/>
+  <text x="345" y="113" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">2. Decision</text>
+  <text x="345" y="145" text-anchor="middle" font-size="10" fill="#1a1822">Automated or manual:</text>
+  <text x="345" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Check guardrails</text>
+  <text x="345" y="174" text-anchor="middle" font-size="9" fill="#1a1822">Verify region is truly down</text>
+  <text x="345" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Alert on-call team</text>
+
+  <!-- Arrow -->
+  <line x1="420" y1="140" x2="500" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#rf-arrow)"/>
+  <text x="460" y="132" text-anchor="middle" font-size="8" fill="#6d5bd0">Approved</text>
+
+  <!-- Step 3: Data Sync Check -->
+  <rect x="500" y="90" width="160" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="500" y="90" width="160" height="34" rx="10" fill="#6d5bd0"/>
+  <rect x="500" y="114" width="160" height="8" fill="#6d5bd0"/>
+  <text x="580" y="113" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">3. Data Sync</text>
+  <text x="580" y="145" text-anchor="middle" font-size="10" fill="#1a1822">Check replication lag:</text>
+  <text x="580" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Flush pending writes</text>
+  <text x="580" y="174" text-anchor="middle" font-size="9" fill="#1a1822">Verify data consistency</text>
+  <text x="580" y="188" text-anchor="middle" font-size="9" fill="#4caf50">RPO within acceptable</text>
+
+  <!-- Arrow -->
+  <line x1="660" y1="140" x2="740" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#rf-arrow)"/>
+  <text x="700" y="132" text-anchor="middle" font-size="8" fill="#6d5bd0">Data verified</text>
+
+  <!-- Step 4: Promote -->
+  <rect x="740" y="90" width="130" height="100" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="740" y="90" width="130" height="34" rx="10" fill="#4caf50"/>
+  <rect x="740" y="114" width="130" height="8" fill="#4caf50"/>
+  <text x="805" y="113" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">4. Promote</text>
+  <text x="805" y="145" text-anchor="middle" font-size="10" fill="#1a1822">Activate standby:</text>
+  <text x="805" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Scale up if warm</text>
+  <text x="805" y="174" text-anchor="middle" font-size="9" fill="#1a1822">Promote DB replica</text>
+  <text x="805" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Enable write path</text>
+
+  <!-- Down arrow to step 5 -->
+  <line x1="805" y1="190" x2="805" y2="260" stroke="#4caf50" stroke-width="2" marker-end="url(#rf-arrow-green)"/>
+
+  <!-- Step 5: Traffic Redirect -->
+  <rect x="740" y="260" width="130" height="90" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="740" y="260" width="130" height="34" rx="10" fill="#4caf50"/>
+  <rect x="740" y="284" width="130" height="8" fill="#4caf50"/>
+  <text x="805" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">5. Redirect</text>
+  <text x="805" y="310" text-anchor="middle" font-size="10" fill="#1a1822">Update DNS/LB:</text>
+  <text x="805" y="325" text-anchor="middle" font-size="9" fill="#1a1822">DNS TTL expires</text>
+  <text x="805" y="339" text-anchor="middle" font-size="9" fill="#1a1822">LB health check</text>
+
+  <!-- Arrow left -->
+  <line x1="740" y1="305" x2="590" y2="305" stroke="#4caf50" stroke-width="2" marker-end="url(#rf-arrow-green)"/>
+
+  <!-- Step 6: Validate -->
+  <rect x="500" y="260" width="160" height="90" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="500" y="260" width="160" height="34" rx="10" fill="#4caf50"/>
+  <rect x="500" y="284" width="160" height="8" fill="#4caf50"/>
+  <text x="580" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">6. Validate</text>
+  <text x="580" y="310" text-anchor="middle" font-size="10" fill="#1a1822">Confirm healthy:</text>
+  <text x="580" y="325" text-anchor="middle" font-size="9" fill="#1a1822">Smoke tests pass</text>
+  <text x="580" y="339" text-anchor="middle" font-size="9" fill="#1a1822">Metrics within SLO</text>
+
+  <!-- Arrow left -->
+  <line x1="500" y1="305" x2="360" y2="305" stroke="#4caf50" stroke-width="2" marker-end="url(#rf-arrow-green)"/>
+
+  <!-- Step 7: Operations Normal -->
+  <rect x="270" y="260" width="160" height="90" rx="10" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <rect x="270" y="260" width="160" height="34" rx="10" fill="#4caf50"/>
+  <rect x="270" y="284" width="160" height="8" fill="#4caf50"/>
+  <text x="350" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">7. Operations</text>
+  <text x="350" y="310" text-anchor="middle" font-size="10" fill="#1a1822">Region B now primary:</text>
+  <text x="350" y="325" text-anchor="middle" font-size="9" fill="#1a1822">Serving all traffic</text>
+  <text x="350" y="339" text-anchor="middle" font-size="9" fill="#1a1822">Monitoring active</text>
+
+  <!-- Arrow left -->
+  <line x1="270" y1="305" x2="130" y2="305" stroke="#6d5bd0" stroke-width="2" marker-end="url(#rf-arrow)"/>
+
+  <!-- Post-failover -->
+  <rect x="40" y="260" width="150" height="90" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="40" y="260" width="150" height="34" rx="10" fill="#6d5bd0" opacity="0.8"/>
+  <rect x="40" y="284" width="150" height="8" fill="#6d5bd0" opacity="0.8"/>
+  <text x="115" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Post-Failover</text>
+  <text x="115" y="310" text-anchor="middle" font-size="10" fill="#1a1822">Investigate root cause</text>
+  <text x="115" y="325" text-anchor="middle" font-size="10" fill="#1a1822">Plan failback when ready</text>
+
+  <!-- Rollback path annotation -->
+  <rect x="40" y="380" width="830" height="85" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="1.5"/>
+  <rect x="40" y="380" width="830" height="34" rx="10" fill="#cc4444" opacity="0.9"/>
+  <rect x="40" y="404" width="830" height="8" fill="#cc4444" opacity="0.9"/>
+  <text x="455" y="403" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Rollback Path at Each Step</text>
+
+  <text x="150" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Step 1-2: Abort if false alarm</text>
+  <text x="360" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Step 3-4: Wait for data sync</text>
+  <text x="560" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Step 5: Partial traffic shift</text>
+  <text x="760" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Step 6-7: Full failback</text>
+</svg>

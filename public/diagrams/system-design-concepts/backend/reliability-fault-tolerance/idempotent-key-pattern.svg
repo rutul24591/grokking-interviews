@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Idempotent Key Pattern Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#6d5bd0">Client generates unique key, server deduplicates, returns cached result on replay</text>
+
+  <defs>
+    <marker id="ik-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="ik-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="ik-arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Client generates key -->
+  <rect x="50" y="85" width="220" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="50" y="85" width="220" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="50" y="108" width="220" height="8" fill="#6d5bd0"/>
+  <text x="160" y="107" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Step 1: Client</text>
+  <text x="160" y="140" text-anchor="middle" font-size="11" fill="#1a1822">Generate UUID idempotency key</text>
+  <rect x="80" y="148" width="160" height="20" rx="4" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="160" y="162" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">Idempotency-Key: uuid-abc-123</text>
+
+  <!-- Arrow to Step 2 -->
+  <line x1="270" y1="130" x2="340" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#ik-arrow)"/>
+  <text x="305" y="122" text-anchor="middle" font-size="9" fill="#6d5bd0">POST /charge + key</text>
+
+  <!-- Step 2: Server checks store -->
+  <rect x="340" y="85" width="220" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="340" y="85" width="220" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="340" y="108" width="220" height="8" fill="#6d5bd0"/>
+  <text x="450" y="107" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Step 2: Server Check</text>
+  <text x="450" y="135" text-anchor="middle" font-size="11" fill="#1a1822">Lookup key in idempotency store</text>
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">Key found?</text>
+
+  <!-- Branch: New key (NO) -->
+  <line x1="450" y1="175" x2="450" y2="210" stroke="#4caf50" stroke-width="2" marker-end="url(#ik-arrow-green)"/>
+  <text x="490" y="195" font-size="10" font-weight="700" fill="#4caf50">NO</text>
+
+  <!-- Step 3a: Process (new key) -->
+  <rect x="340" y="215" width="220" height="80" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="340" y="215" width="220" height="32" rx="8" fill="#4caf50"/>
+  <rect x="340" y="238" width="220" height="8" fill="#4caf50"/>
+  <text x="450" y="237" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Step 3a: Process</text>
+  <text x="450" y="265" text-anchor="middle" font-size="11" fill="#1a1822">Execute request, store result</text>
+  <text x="450" y="280" text-anchor="middle" font-size="10" fill="#4caf50">Atomic: write + side effect</text>
+
+  <!-- Branch: Seen key (YES) -->
+  <line x1="560" y1="130" x2="700" y2="130" stroke="#cc4444" stroke-width="2" marker-end="url(#ik-arrow-red)"/>
+  <text x="630" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">YES</text>
+
+  <!-- Step 3b: Return cached (duplicate) -->
+  <rect x="700" y="85" width="170" height="90" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="700" y="85" width="170" height="32" rx="8" fill="#cc4444"/>
+  <rect x="700" y="108" width="170" height="8" fill="#cc4444"/>
+  <text x="785" y="107" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Cached Result</text>
+  <text x="785" y="135" text-anchor="middle" font-size="11" fill="#1a1822">Return stored response</text>
+  <text x="785" y="150" text-anchor="middle" font-size="10" fill="#cc4444">No side effects repeated</text>
+
+  <!-- Arrow from Process to cached -->
+  <line x1="560" y1="255" x2="785" y2="255" stroke="#4caf50" stroke-width="1.5" marker-end="url(#ik-arrow-green)"/>
+  <line x1="785" y1="255" x2="785" y2="175" stroke="#4caf50" stroke-width="1.5" marker-end="url(#ik-arrow-green)"/>
+  <text x="700" y="248" font-size="9" fill="#4caf50">Store + return</text>
+
+  <!-- Response back to client -->
+  <line x1="450" y1="295" x2="450" y2="340" stroke="#4caf50" stroke-width="2" marker-end="url(#ik-arrow-green)"/>
+  <text x="490" y="320" font-size="10" fill="#4caf50">200 OK + charge_id</text>
+  <line x1="450" y1="340" x2="160" y2="340" stroke="#4caf50" stroke-width="1.5" marker-end="url(#ik-arrow-green)"/>
+  <line x1="160" y1="340" x2="160" y2="175" stroke="#4caf50" stroke-width="1.5" marker-end="url(#ik-arrow-green)"/>
+
+  <!-- Idempotency Store -->
+  <rect x="340" y="360" width="220" height="100" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="340" y="360" width="220" height="32" rx="8" fill="#f0ad4e"/>
+  <rect x="340" y="383" width="220" height="8" fill="#f0ad4e"/>
+  <text x="450" y="382" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Idempotency Store</text>
+  <text x="450" y="412" text-anchor="middle" font-size="10" fill="#1a1822">Key: uuid-abc-123</text>
+  <text x="450" y="428" text-anchor="middle" font-size="10" fill="#1a1822">Status: completed</text>
+  <text x="450" y="444" text-anchor="middle" font-size="10" fill="#1a1822">Result: {charge_id: ch_456}</text>
+
+  <line x1="450" y1="295" x2="450" y2="360" stroke="#f0ad4e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#ik-arrow)"/>
+
+  <!-- Duplicate request flow -->
+  <rect x="50" y="380" width="220" height="80" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="2"/>
+  <rect x="50" y="380" width="220" height="32" rx="8" fill="#cc4444" opacity="0.9"/>
+  <rect x="50" y="403" width="220" height="8" fill="#cc4444" opacity="0.9"/>
+  <text x="160" y="402" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Duplicate Request</text>
+  <text x="160" y="430" text-anchor="middle" font-size="10" fill="#1a1822">Retry with same key</text>
+  <text x="160" y="446" text-anchor="middle" font-size="10" fill="#cc4444">Key: uuid-abc-123 (same)</text>
+
+  <line x1="270" y1="420" x2="340" y2="420" stroke="#cc4444" stroke-width="2" marker-end="url(#ik-arrow-red)"/>
+  <text x="305" y="412" text-anchor="middle" font-size="9" fill="#cc4444">Retry POST</text>
+  <line x1="340" y1="420" x2="340" y2="130" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#ik-arrow-red)"/>
+
+  <!-- Legend -->
+  <rect x="640" y="380" width="230" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="755" y="402" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Flow Legend</text>
+  <line x1="660" y1="420" x2="690" y2="420" stroke="#4caf50" stroke-width="2"/>
+  <text x="700" y="424" font-size="9" fill="#1a1822">New request path</text>
+  <line x1="660" y1="440" x2="690" y2="440" stroke="#cc4444" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="700" y="444" font-size="9" fill="#1a1822">Duplicate request path</text>
+</svg>

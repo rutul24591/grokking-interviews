@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1a2e">Health Check Anti-Patterns</text>
+  <text x="450" y="68" text-anchor="middle" font-size="14" fill="#555">Common misconfigurations that cause cascading failures and false positives</text>
+
+  <!-- Anti-pattern 1: Checking Process Only -->
+  <rect x="30" y="100" width="210" height="180" rx="12" fill="#fff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="100" width="210" height="40" rx="12" fill="#cc4444"/>
+  <rect x="30" y="125" width="210" height="15" fill="#cc4444"/>
+  <text x="135" y="126" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Process != App Health</text>
+
+  <!-- Diagram -->
+  <rect x="50" y="155" width="170" height="50" rx="8" fill="#fef0f0"/>
+  <text x="135" y="175" text-anchor="middle" font-size="11" fill="#cc4444" font-weight="bold">PID running = healthy?</text>
+  <text x="135" y="193" text-anchor="middle" font-size="10" fill="#444">Process alive but DB</text>
+
+  <!-- Problem -->
+  <rect x="50" y="215" width="170" height="50" rx="8" fill="#f8f8f8"/>
+  <text x="135" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Problem</text>
+  <text x="135" y="253" text-anchor="middle" font-size="10" fill="#444">Process running but app</text>
+  <text x="135" y="268" text-anchor="middle" font-size="10" fill="#444">is broken (deadlock, OOM)</text>
+
+  <!-- Fix -->
+  <rect x="50" y="275" width="170" rx="8" fill="#f0f9f0"/>
+  <text x="135" y="295" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Fix: Check dependencies</text>
+  <text x="135" y="313" text-anchor="middle" font-size="10" fill="#444">DB conn, cache, queue</text>
+
+  <!-- Anti-pattern 2: Too Frequent -->
+  <rect x="260" y="100" width="210" height="180" rx="12" fill="#fff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="260" y="100" width="210" height="40" rx="12" fill="#f0ad4e"/>
+  <rect x="260" y="125" width="210" height="15" fill="#f0ad4e"/>
+  <text x="365" y="126" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Too Frequent Checks</text>
+
+  <!-- Diagram -->
+  <rect x="280" y="155" width="170" height="50" rx="8" fill="#fef8ef"/>
+  <text x="365" y="175" text-anchor="middle" font-size="11" fill="#f0ad4e" font-weight="bold">Every 1 second?</text>
+  <text x="365" y="193" text-anchor="middle" font-size="10" fill="#444">Probe overhead exceeds</text>
+
+  <!-- Problem -->
+  <rect x="280" y="215" width="170" height="50" rx="8" fill="#f8f8f8"/>
+  <text x="365" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Problem</text>
+  <text x="365" y="253" text-anchor="middle" font-size="10" fill="#444">Probe consumes resources,</text>
+  <text x="365" y="268" text-anchor="middle" font-size="10" fill="#444">causes self-DoS</text>
+
+  <!-- Fix -->
+  <rect x="280" y="275" width="170" rx="8" fill="#f0f9f0"/>
+  <text x="365" y="295" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Fix: 5-10s interval</text>
+  <text x="365" y="313" text-anchor="middle" font-size="10" fill="#444">Balance detection speed</text>
+
+  <!-- Anti-pattern 3: No Timeout -->
+  <rect x="490" y="100" width="210" height="180" rx="12" fill="#fff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="490" y="100" width="210" height="40" rx="12" fill="#cc4444"/>
+  <rect x="490" y="125" width="210" height="15" fill="#cc4444"/>
+  <text x="595" y="126" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">No Timeout Set</text>
+
+  <!-- Diagram -->
+  <rect x="510" y="155" width="170" height="50" rx="8" fill="#fef0f0"/>
+  <text x="595" y="175" text-anchor="middle" font-size="11" fill="#cc4444" font-weight="bold">Waiting forever...</text>
+  <text x="595" y="193" text-anchor="middle" font-size="10" fill="#444">Probe hangs on slow</text>
+
+  <!-- Problem -->
+  <rect x="510" y="215" width="170" height="50" rx="8" fill="#f8f8f8"/>
+  <text x="595" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Problem</text>
+  <text x="595" y="253" text-anchor="middle" font-size="10" fill="#444">Hung probe blocks resources,</text>
+  <text x="595" y="268" text-anchor="middle" font-size="10" fill="#444">never reports failure</text>
+
+  <!-- Fix -->
+  <rect x="510" y="275" width="170" rx="8" fill="#f0f9f0"/>
+  <text x="595" y="295" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Fix: 2-5s timeout</text>
+  <text x="595" y="313" text-anchor="middle" font-size="10" fill="#444">Fail fast on hangs</text>
+
+  <!-- Anti-pattern 4: Same Endpoint -->
+  <rect x="720" y="100" width="150" height="180" rx="12" fill="#fff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="720" y="100" width="150" height="40" rx="12" fill="#cc4444"/>
+  <rect x="720" y="125" width="150" height="15" fill="#cc4444"/>
+  <text x="795" y="126" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Same Endpoint</text>
+
+  <!-- Diagram -->
+  <rect x="735" y="155" width="120" height="50" rx="8" fill="#fef0f0"/>
+  <text x="795" y="175" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="bold">/healthz for both?</text>
+  <text x="795" y="193" text-anchor="middle" font-size="10" fill="#444">Liveness + Readiness</text>
+
+  <!-- Problem -->
+  <rect x="735" y="215" width="120" height="50" rx="8" fill="#f8f8f8"/>
+  <text x="795" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Problem</text>
+  <text x="795" y="253" text-anchor="middle" font-size="10" fill="#444">Cascading restarts:</text>
+  <text x="795" y="268" text-anchor="middle" font-size="10" fill="#444">fail liveness = restart</text>
+
+  <!-- Fix -->
+  <rect x="735" y="275" width="120" rx="8" fill="#f0f9f0"/>
+  <text x="795" y="295" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Fix: Separate endpoints</text>
+  <text x="795" y="313" text-anchor="middle" font-size="10" fill="#444">/live and /ready</text>
+</svg>

@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Health check failover flow from detection through primary decommission</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Health Check Failover Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Automated sequence from failure detection to new primary verification and traffic shift</text>
+
+  <!-- Step 1: Health Checks Detect Failure -->
+  <rect x="30" y="90" width="150" height="100" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="2"/>
+  <text x="105" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Health Checks</text>
+  <text x="105" y="133" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Detect Failure</text>
+  <text x="105" y="158" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">TCP/HTTP probes fail</text>
+  <text x="105" y="172" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">3 consecutive failures</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="180" y1="140" x2="230" y2="140" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowHC)"/>
+  <text x="205" y="132" font-size="9" fill="#cc4444" font-weight="600">Alert</text>
+
+  <!-- Step 2: Leader Election -->
+  <rect x="230" y="90" width="150" height="100" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="305" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Leader Election</text>
+  <text x="305" y="138" text-anchor="middle" font-size="9" fill="#1a1822">Consensus algorithm</text>
+  <text x="305" y="152" text-anchor="middle" font-size="9" fill="#1a1822">(Raft, Paxos) selects</text>
+  <text x="305" y="166" text-anchor="middle" font-size="9" fill="#1a1822">new leader candidate</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="380" y1="140" x2="430" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowHC)"/>
+
+  <!-- Step 3: Promote Replica -->
+  <rect x="430" y="90" width="150" height="100" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="505" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Promote Replica</text>
+  <text x="505" y="138" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Apply pending WAL/redo</text>
+  <text x="505" y="152" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">logs, switch to read-</text>
+  <text x="505" y="166" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">write mode as primary</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="580" y1="140" x2="630" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowHC)"/>
+
+  <!-- Step 4: Update DNS -->
+  <rect x="630" y="90" width="150" height="100" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="705" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Update DNS</text>
+  <text x="705" y="138" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Route53/GSLB record</text>
+  <text x="705" y="152" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">points to new primary</text>
+  <text x="705" y="166" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">TTL: 30-60 seconds</text>
+
+  <!-- Arrow: down to row 2 -->
+  <path d="M 705 190 L 705 240 L 630 240 L 630 260" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowHC)"/>
+
+  <!-- Step 5: Verify New Primary -->
+  <rect x="630" y="260" width="150" height="100" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="705" y="288" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Verify New Primary</text>
+  <text x="705" y="308" text-anchor="middle" font-size="9" fill="#1a1822">Health checks pass on</text>
+  <text x="705" y="322" text-anchor="middle" font-size="9" fill="#1a1822">new primary, run smoke</text>
+  <text x="705" y="336" text-anchor="middle" font-size="9" fill="#1a1822">tests, verify writes</text>
+
+  <!-- Arrow 5->6 -->
+  <line x1="630" y1="310" x2="580" y2="310" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowHC)"/>
+
+  <!-- Step 6: Shift Traffic -->
+  <rect x="430" y="260" width="150" height="100" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="2"/>
+  <text x="505" y="288" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Shift Traffic</text>
+  <text x="505" y="308" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Canary: 10% -> 50% -></text>
+  <text x="505" y="322" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">100%, monitor error</text>
+  <text x="505" y="336" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">rates, latency, SLOs</text>
+
+  <!-- Arrow 6->7 -->
+  <line x1="430" y1="310" x2="380" y2="310" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowHC)"/>
+
+  <!-- Step 7: Decommission Old Primary -->
+  <rect x="230" y="260" width="150" height="100" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="305" y="288" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Decommission</text>
+  <text x="305" y="303" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Old Primary</text>
+  <text x="305" y="323" text-anchor="middle" font-size="9" fill="#1a1822">Investigate root cause,</text>
+  <text x="305" y="337" text-anchor="middle" font-size="9" fill="#1a1822">rebuild as new replica,</text>
+  <text x="305" y="351" text-anchor="middle" font-size="9" fill="#1a1822">rejoin cluster as standby</text>
+
+  <!-- Arrow 7->8 -->
+  <line x1="230" y1="310" x2="180" y2="310" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowHC)"/>
+
+  <!-- Step 8: Monitoring -->
+  <rect x="30" y="260" width="150" height="100" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="2"/>
+  <text x="105" y="288" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Enhanced</text>
+  <text x="105" y="303" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Monitoring</text>
+  <text x="105" y="323" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">War room, heightened</text>
+  <text x="105" y="337" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">alerting, capacity watch</text>
+  <text x="105" y="351" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">for 24-48 hours</text>
+
+  <!-- Visual flow indicators on the side -->
+  <rect x="820" y="90" width="60" height="270" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="850" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Flow</text>
+  
+  <rect x="830" y="130" width="40" height="15" rx="4" fill="#cc4444"/>
+  <text x="850" y="142" text-anchor="middle" font-size="7" fill="#ffffff">Fail</text>
+  
+  <rect x="830" y="155" width="40" height="15" rx="4" fill="#f0ad4e"/>
+  <text x="850" y="167" text-anchor="middle" font-size="7" fill="#ffffff">Elect</text>
+  
+  <rect x="830" y="180" width="40" height="15" rx="4" fill="#6d5bd0"/>
+  <text x="850" y="192" text-anchor="middle" font-size="7" fill="#ffffff">Promote</text>
+  
+  <rect x="830" y="205" width="40" height="15" rx="4" fill="#6d5bd0"/>
+  <text x="850" y="217" text-anchor="middle" font-size="7" fill="#ffffff">DNS</text>
+  
+  <rect x="830" y="230" width="40" height="15" rx="4" fill="#4caf50"/>
+  <text x="850" y="242" text-anchor="middle" font-size="7" fill="#ffffff">Verify</text>
+  
+  <rect x="830" y="255" width="40" height="15" rx="4" fill="#4caf50"/>
+  <text x="850" y="267" text-anchor="middle" font-size="7" fill="#ffffff">Traffic</text>
+  
+  <rect x="830" y="280" width="40" height="15" rx="4" fill="#d7d1e6"/>
+  <text x="850" y="292" text-anchor="middle" font-size="7" fill="#1a1822">Clean</text>
+  
+  <rect x="830" y="305" width="40" height="15" rx="4" fill="#4caf50"/>
+  <text x="850" y="317" text-anchor="middle" font-size="7" fill="#ffffff">Watch</text>
+
+  <!-- Summary -->
+  <rect x="30" y="400" width="840" height="80" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Key Considerations</text>
+  <text x="200" y="448" text-anchor="middle" font-size="10" fill="#1a1822">- Total failover time: 1-15 min depending on strategy</text>
+  <text x="200" y="465" text-anchor="middle" font-size="10" fill="#1a1822">- DNS TTL is critical: lower TTL = faster failover but higher DNS load</text>
+  <text x="650" y="448" text-anchor="middle" font-size="10" fill="#1a1822">- Data consistency: async replication risks data loss</text>
+  <text x="650" y="465" text-anchor="middle" font-size="10" fill="#1a1822">- Automatic vs manual: balance speed with safety</text>
+
+  <defs>
+    <marker id="arrowHC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

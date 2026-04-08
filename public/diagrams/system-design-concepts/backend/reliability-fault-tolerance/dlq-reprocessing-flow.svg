@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>DLQ reprocessing flow from monitoring through message replay</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">DLQ Reprocessing Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">From monitoring alert to successful message replay and cleanup</text>
+
+  <!-- Phase 1: Detection -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#cc4444"/>
+  <rect x="30" y="105" width="270" height="10" fill="#cc4444"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Phase 1: Detection &amp; Alert</text>
+
+  <rect x="50" y="130" width="230" height="55" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">DLQ Monitoring</text>
+  <text x="165" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Track queue depth, age of oldest</text>
+  <text x="165" y="182" text-anchor="middle" font-size="9" fill="#1a1822">message, ingestion rate</text>
+
+  <line x1="165" y1="185" x2="165" y2="210" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="50" y="210" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1.5"/>
+  <text x="165" y="232" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Alert Triggers</text>
+  <text x="165" y="250" text-anchor="middle" font-size="9" fill="#1a1822">Threshold breach: depth &gt; 100,</text>
+  <text x="165" y="262" text-anchor="middle" font-size="9" fill="#1a1822">or message age &gt; 1 hour</text>
+
+  <line x1="165" y1="265" x2="165" y2="290" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="50" y="290" width="230" height="55" rx="8" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="312" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Investigation Begins</text>
+  <text x="165" y="330" text-anchor="middle" font-size="9" fill="#1a1822">Examine DLQ messages, check</text>
+  <text x="165" y="342" text-anchor="middle" font-size="9" fill="#1a1822">consumer logs, trace errors</text>
+
+  <line x1="165" y1="345" x2="165" y2="370" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="50" y="370" width="230" height="55" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="392" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Root Cause Identified</text>
+  <text x="165" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Schema mismatch, downstream</text>
+  <text x="165" y="422" text-anchor="middle" font-size="9" fill="#1a1822">API timeout, or bug</text>
+
+  <!-- Phase 2: Remediation -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="315" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="450" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Phase 2: Fix &amp; Replay</text>
+
+  <rect x="335" y="130" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Root Cause Fix Deployed</text>
+  <text x="450" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Patch consumer code, update</text>
+  <text x="450" y="182" text-anchor="middle" font-size="9" fill="#1a1822">config, or restore service</text>
+
+  <line x1="450" y1="185" x2="450" y2="210" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="335" y="210" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="232" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Replay Messages from DLQ</text>
+  <text x="450" y="250" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Batch reprocess with rate limiting,</text>
+  <text x="450" y="262" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">preserve ordering if required</text>
+
+  <line x1="450" y1="265" x2="450" y2="290" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="335" y="290" width="230" height="55" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="312" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Processing Success</text>
+  <text x="450" y="330" text-anchor="middle" font-size="9" fill="#1a1822">Messages successfully consumed</text>
+  <text x="450" y="342" text-anchor="middle" font-size="9" fill="#1a1822">and acknowledged</text>
+
+  <line x1="450" y1="345" x2="450" y2="370" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="335" y="370" width="230" height="55" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="450" y="392" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Remove from DLQ</text>
+  <text x="450" y="410" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Acknowledge and delete processed</text>
+  <text x="450" y="422" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">messages, verify DLQ empty</text>
+
+  <!-- Phase 3: Post-Mortem -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="600" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="735" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Phase 3: Prevention</text>
+
+  <rect x="620" y="130" width="230" height="55" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Post-Incident Review</text>
+  <text x="735" y="170" text-anchor="middle" font-size="9" fill="#1a1822">What caused it, how was it</text>
+  <text x="735" y="182" text-anchor="middle" font-size="9" fill="#1a1822">detected, response time</text>
+
+  <line x1="735" y1="185" x2="735" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="620" y="210" width="230" height="55" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="735" y="232" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Add Safeguards</text>
+  <text x="735" y="250" text-anchor="middle" font-size="9" fill="#1a1822">Better validation, circuit</text>
+  <text x="735" y="262" text-anchor="middle" font-size="9" fill="#1a1822">breakers, schema checks</text>
+
+  <line x1="735" y1="265" x2="735" y2="290" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="620" y="290" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="312" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Tune Alert Thresholds</text>
+  <text x="735" y="330" text-anchor="middle" font-size="9" fill="#1a1822">Adjust depth limits, add</text>
+  <text x="735" y="342" text-anchor="middle" font-size="9" fill="#1a1822">dead-letter rate alerts</text>
+
+  <line x1="735" y1="345" x2="735" y2="370" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDLQ3)"/>
+
+  <rect x="620" y="370" width="230" height="55" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="735" y="392" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Runbook Documentation</text>
+  <text x="735" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Step-by-step playbook for</text>
+  <text x="735" y="422" text-anchor="middle" font-size="9" fill="#1a1822">future DLQ incidents</text>
+
+  <defs>
+    <marker id="arrowDLQ3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

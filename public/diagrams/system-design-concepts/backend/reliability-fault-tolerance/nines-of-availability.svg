@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1a2e">Nines of Availability</text>
+  <text x="450" y="68" text-anchor="middle" font-size="14" fill="#555">Availability percentages, allowed downtime, and what it takes to achieve each level</text>
+
+  <!-- Table Header -->
+  <rect x="40" y="100" width="160" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="120" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Availability</text>
+  <rect x="200" y="100" width="180" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="290" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Downtime / Year</text>
+  <rect x="380" y="100" width="180" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="470" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Downtime / Month</text>
+  <rect x="560" y="100" width="300" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="710" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">What It Takes</text>
+
+  <!-- Row 1: 99% -->
+  <rect x="40" y="140" width="160" height="60" rx="6" fill="#fff" stroke="#cc4444" stroke-width="1"/>
+  <text x="120" y="165" text-anchor="middle" font-size="18" font-weight="bold" fill="#cc4444">99%</text>
+  <text x="120" y="185" text-anchor="middle" font-size="11" fill="#666">Two nines</text>
+  <rect x="200" y="140" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="290" y="165" text-anchor="middle" font-size="16" font-weight="bold" fill="#cc4444">3.65 days</text>
+  <text x="290" y="185" text-anchor="middle" font-size="11" fill="#666">87.6 hours/year</text>
+  <rect x="380" y="140" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="470" y="165" text-anchor="middle" font-size="14" font-weight="bold" fill="#cc4444">7.31 hours</text>
+  <text x="470" y="185" text-anchor="middle" font-size="11" fill="#666">438 minutes/month</text>
+  <rect x="560" y="140" width="300" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="710" y="163" text-anchor="middle" font-size="12" fill="#444">Single server, manual recovery.</text>
+  <text x="710" y="181" text-anchor="middle" font-size="12" fill="#444">No redundancy. Acceptable for dev/test.</text>
+
+  <!-- Row 2: 99.9% -->
+  <rect x="40" y="200" width="160" height="60" rx="6" fill="#fff" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="120" y="225" text-anchor="middle" font-size="18" font-weight="bold" fill="#f0ad4e">99.9%</text>
+  <text x="120" y="245" text-anchor="middle" font-size="11" fill="#666">Three nines</text>
+  <rect x="200" y="200" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="290" y="225" text-anchor="middle" font-size="16" font-weight="bold" fill="#f0ad4e">8.76 hours</text>
+  <text x="290" y="245" text-anchor="middle" font-size="11" fill="#666">525.6 minutes/year</text>
+  <rect x="380" y="200" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="470" y="225" text-anchor="middle" font-size="14" font-weight="bold" fill="#f0ad4e">43.8 minutes</text>
+  <text x="470" y="245" text-anchor="middle" font-size="11" fill="#666">2,628 seconds/month</text>
+  <rect x="560" y="200" width="300" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="710" y="223" text-anchor="middle" font-size="12" fill="#444">Active-passive failover, automated recovery.</text>
+  <text x="710" y="241" text-anchor="middle" font-size="12" fill="#444">Load balancer, health checks, basic monitoring.</text>
+
+  <!-- Row 3: 99.95% -->
+  <rect x="40" y="260" width="160" height="60" rx="6" fill="#fff" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="120" y="285" text-anchor="middle" font-size="18" font-weight="bold" fill="#f0ad4e">99.95%</text>
+  <text x="120" y="305" text-anchor="middle" font-size="11" fill="#666">Three nines+</text>
+  <rect x="200" y="260" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="290" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#f0ad4e">4.38 hours</text>
+  <text x="290" y="305" text-anchor="middle" font-size="11" fill="#666">262.8 minutes/year</text>
+  <rect x="380" y="260" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="470" y="285" text-anchor="middle" font-size="14" font-weight="bold" fill="#f0ad4e">21.9 minutes</text>
+  <text x="470" y="305" text-anchor="middle" font-size="11" fill="#666">1,314 seconds/month</text>
+  <rect x="560" y="260" width="300" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="710" y="283" text-anchor="middle" font-size="12" fill="#444">Active-active cluster, multi-node redundancy.</text>
+  <text x="710" y="301" text-anchor="middle" font-size="12" fill="#444">Auto-scaling, rolling deployments, alerting.</text>
+
+  <!-- Row 4: 99.99% -->
+  <rect x="40" y="320" width="160" height="60" rx="6" fill="#fff" stroke="#4caf50" stroke-width="2"/>
+  <text x="120" y="345" text-anchor="middle" font-size="18" font-weight="bold" fill="#4caf50">99.99%</text>
+  <text x="120" y="365" text-anchor="middle" font-size="11" fill="#666">Four nines</text>
+  <rect x="200" y="320" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="290" y="345" text-anchor="middle" font-size="16" font-weight="bold" fill="#4caf50">52.6 minutes</text>
+  <text x="290" y="365" text-anchor="middle" font-size="11" fill="#666">3,153.6 seconds/year</text>
+  <rect x="380" y="320" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="470" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#4caf50">4.38 minutes</text>
+  <text x="470" y="365" text-anchor="middle" font-size="11" fill="#666">262.8 seconds/month</text>
+  <rect x="560" y="320" width="300" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="710" y="343" text-anchor="middle" font-size="12" fill="#444">Multi-AZ deployment, automated failover.</text>
+  <text x="710" y="361" text-anchor="middle" font-size="12" fill="#444">Zero-downtime deploys, chaos engineering.</text>
+
+  <!-- Row 5: 99.999% -->
+  <rect x="40" y="380" width="160" height="60" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="120" y="405" text-anchor="middle" font-size="18" font-weight="bold" fill="#6d5bd0">99.999%</text>
+  <text x="120" y="425" text-anchor="middle" font-size="11" fill="#666">Five nines</text>
+  <rect x="200" y="380" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="290" y="405" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">5.26 minutes</text>
+  <text x="290" y="425" text-anchor="middle" font-size="11" fill="#666">315.36 seconds/year</text>
+  <rect x="380" y="380" width="180" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="470" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">26.3 seconds</text>
+  <text x="470" y="425" text-anchor="middle" font-size="11" fill="#666">Per month</text>
+  <rect x="560" y="380" width="300" height="60" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="710" y="403" text-anchor="middle" font-size="12" fill="#444">Multi-region active-active, geographic redundancy.</text>
+  <text x="710" y="421" text-anchor="middle" font-size="12" fill="#444">Synchronous replication, no single point of failure.</text>
+
+  <!-- Key takeaway -->
+  <rect x="40" y="450" width="820" height="35" rx="8" fill="#f8f7fc"/>
+  <text x="450" y="472" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Key Insight: Each additional nine requires ~10x investment in redundancy, automation, and operational maturity.</text>
+</svg>

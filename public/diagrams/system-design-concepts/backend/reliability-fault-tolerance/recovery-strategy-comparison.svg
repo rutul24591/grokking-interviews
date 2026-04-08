@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Recovery strategy comparison: restart, replace, rollback, self-healing</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Recovery Strategy Comparison</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Speed, complexity, and risk across four recovery approaches</text>
+
+  <!-- Column 1: Restart -->
+  <rect x="30" y="80" width="200" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="200" height="35" rx="12" fill="#4caf50"/>
+  <rect x="30" y="105" width="200" height="10" fill="#4caf50"/>
+  <text x="130" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Restart</text>
+
+  <rect x="45" y="130" width="170" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="130" y="150" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Speed: Fast (seconds)</text>
+  <text x="130" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Process-level, minimal overhead</text>
+
+  <rect x="45" y="195" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="130" y="215" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Complexity: Low</text>
+  <text x="130" y="230" text-anchor="middle" font-size="9" fill="#1a1822">No state migration needed</text>
+
+  <rect x="45" y="260" width="170" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="130" y="280" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">Risk: Medium</text>
+  <text x="130" y="295" text-anchor="middle" font-size="9" fill="#1a1822">May not fix root cause (e.g. leak)</text>
+
+  <rect x="45" y="325" width="170" height="45" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="345" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">Best For: Stateless</text>
+  <text x="130" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Transient glitches, OOM recovery</text>
+
+  <rect x="45" y="390" width="170" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Limitation:</text>
+  <text x="130" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Fails if issue is code-level</text>
+
+  <!-- Column 2: Replace -->
+  <rect x="245" y="80" width="200" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="245" y="80" width="200" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="245" y="105" width="200" height="10" fill="#f0ad4e"/>
+  <text x="345" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Replace</text>
+
+  <rect x="260" y="130" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="345" y="150" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Speed: Medium (minutes)</text>
+  <text x="345" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Provision new instance</text>
+
+  <rect x="260" y="195" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="345" y="215" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Complexity: Medium</text>
+  <text x="345" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Needs orchestration, draining</text>
+
+  <rect x="260" y="260" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="345" y="280" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Risk: Low-Medium</text>
+  <text x="345" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Clean slate, but state transfer</text>
+
+  <rect x="260" y="325" width="170" height="45" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="345" y="345" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">Best For: Stateful</text>
+  <text x="345" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Corrupted instances, bad AMI</text>
+
+  <rect x="260" y="390" width="170" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="345" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Limitation:</text>
+  <text x="345" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Slow for stateful services</text>
+
+  <!-- Column 3: Rollback -->
+  <rect x="460" y="80" width="200" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="80" width="200" height="35" rx="12" fill="#cc4444"/>
+  <rect x="460" y="105" width="200" height="10" fill="#cc4444"/>
+  <text x="560" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Rollback</text>
+
+  <rect x="475" y="130" width="170" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="560" y="150" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">Speed: Slow (minutes+)</text>
+  <text x="560" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Redeploy previous version</text>
+
+  <rect x="475" y="195" width="170" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="560" y="215" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">Complexity: High</text>
+  <text x="560" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Schema, config, data compat</text>
+
+  <rect x="475" y="260" width="170" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="560" y="280" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Risk: Medium</text>
+  <text x="560" y="295" text-anchor="middle" font-size="9" fill="#1a1822">May lose recent data changes</text>
+
+  <rect x="475" y="325" width="170" height="45" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="560" y="345" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">Best For: Bad Release</text>
+  <text x="560" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Regression bugs, bad config</text>
+
+  <rect x="475" y="390" width="170" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="560" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Limitation:</text>
+  <text x="560" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Data migration incompatibility</text>
+
+  <!-- Column 4: Self-Healing -->
+  <rect x="675" y="80" width="200" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="675" y="80" width="200" height="35" rx="12" fill="#4caf50"/>
+  <rect x="675" y="105" width="200" height="10" fill="#4caf50"/>
+  <text x="775" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Self-Healing</text>
+
+  <rect x="690" y="130" width="170" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="775" y="150" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Speed: Variable</text>
+  <text x="775" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Policy-driven escalation</text>
+
+  <rect x="690" y="195" width="170" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="775" y="215" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">Complexity: Very High</text>
+  <text x="775" y="230" text-anchor="middle" font-size="9" fill="#1a1822">Detection + policy + execution</text>
+
+  <rect x="690" y="260" width="170" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="775" y="280" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Risk: Low (with guardrails)</text>
+  <text x="775" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Progressive, bounded actions</text>
+
+  <rect x="690" y="325" width="170" height="45" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="775" y="345" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">Best For: All Scenarios</text>
+  <text x="775" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Automated escalation ladder</text>
+
+  <rect x="690" y="390" width="170" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="775" y="410" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Limitation:</text>
+  <text x="775" y="425" text-anchor="middle" font-size="9" fill="#1a1822">False positives, thrash risk</text>
+</svg>

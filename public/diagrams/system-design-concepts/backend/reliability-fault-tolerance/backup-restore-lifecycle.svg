@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Backup and restore lifecycle pipeline</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Backup and Restore Lifecycle</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">From creation through retention to archival deletion</text>
+
+  <defs>
+    <marker id="arrowPb" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGb" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="arrowOb" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arrowRb" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Backup Creation -->
+  <rect x="30" y="130" width="140" height="90" rx="12" fill="#6d5bd0"/>
+  <text x="100" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1. Backup</text>
+  <text x="100" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Creation</text>
+  <text x="100" y="200" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Full, incremental,</text>
+  <text x="100" y="212" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">or log shipping</text>
+
+  <!-- Arrow -->
+  <line x1="170" y1="175" x2="200" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPb)"/>
+
+  <!-- Step 2: Encryption -->
+  <rect x="205" y="130" width="140" height="90" rx="12" fill="#f0ad4e"/>
+  <text x="275" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2. Encryption</text>
+  <text x="275" y="185" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">AES-256 at rest</text>
+  <text x="275" y="200" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">KMS key management</text>
+  <text x="275" y="215" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Checksum verification</text>
+
+  <!-- Arrow -->
+  <line x1="345" y1="175" x2="375" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPb)"/>
+
+  <!-- Step 3: Offsite Storage -->
+  <rect x="380" y="130" width="140" height="90" rx="12" fill="#4caf50"/>
+  <text x="450" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3. Offsite</text>
+  <text x="450" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Storage</text>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">S3 / Glacier /</text>
+  <text x="450" y="212" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">cross-region replica</text>
+
+  <!-- Arrow -->
+  <line x1="520" y1="175" x2="550" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPb)"/>
+
+  <!-- Step 4: Retention Management -->
+  <rect x="555" y="130" width="140" height="90" rx="12" fill="#6d5bd0"/>
+  <text x="625" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4. Retention</text>
+  <text x="625" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Management</text>
+  <text x="625" y="200" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Lifecycle policies</text>
+  <text x="625" y="212" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Tier by age: hot -&gt; warm</text>
+
+  <!-- Arrow -->
+  <line x1="695" y1="175" x2="725" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPb)"/>
+
+  <!-- Step 5: Periodic Restore Testing -->
+  <rect x="730" y="130" width="140" height="90" rx="12" fill="#f0ad4e"/>
+  <text x="800" y="155" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">5. Restore</text>
+  <text x="800" y="173" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Testing</text>
+  <text x="800" y="195" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Scheduled drills</text>
+  <text x="800" y="210" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Validate RTO / RPO</text>
+  <text x="800" y="225" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Integrity checks</text>
+
+  <!-- Arrow down to Step 6 -->
+  <line x1="800" y1="220" x2="800" y2="310" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowRb)"/>
+  <text x="815" y="270" font-size="9" font-weight="600" fill="#cc4444">Expire</text>
+
+  <!-- Step 6: Archive Deletion -->
+  <rect x="730" y="320" width="140" height="90" rx="12" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <rect x="730" y="320" width="140" height="28" rx="12" fill="#cc4444"/>
+  <rect x="730" y="340" width="140" height="8" fill="#cc4444"/>
+  <text x="800" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">6. Archive Delete</text>
+  <text x="800" y="370" text-anchor="middle" font-size="9" fill="#1a1822">Retention expired</text>
+  <text x="800" y="385" text-anchor="middle" font-size="9" fill="#1a1822">Secure wipe / crypto-</text>
+  <text x="800" y="398" text-anchor="middle" font-size="9" fill="#1a1822">shred, audit log</text>
+
+  <!-- Horizontal arrow: retention back to restore testing (cycle) -->
+  <path d="M 555 220 L 555 370 Q 555 380 565 380 L 720 380" fill="none" stroke="#f0ad4e" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrowOb)"/>
+  <text x="655" y="395" text-anchor="middle" font-size="8" fill="#f0ad4e" font-weight="600">Periodic test from each tier</text>
+
+  <!-- Bottom annotation -->
+  <rect x="30" y="320" width="480" height="90" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="270" y="345" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Key Principles</text>
+  <text x="270" y="365" text-anchor="middle" font-size="9" fill="#1a1822">Backups must be encrypted, stored offsite from the primary system, and periodically tested.</text>
+  <text x="270" y="380" text-anchor="middle" font-size="9" fill="#1a1822">Retention policies balance compliance needs against cost. Most systems use tiered storage:</text>
+  <text x="270" y="395" text-anchor="middle" font-size="9" fill="#1a1822">hot (7-30 days, fast restore), warm (1-12 months), and cold archive (years, cheap but slow).</text>
+</svg>

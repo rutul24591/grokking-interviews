@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>RPO versus RTO tradeoff matrix showing where each DR strategy falls</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">RPO vs RTO Trade-off Matrix</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Positioning of each DR strategy on the data-loss versus downtime spectrum</text>
+
+  <!-- Y-axis label -->
+  <text x="30" y="250" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822" transform="rotate(-90, 30, 250)">RPO (Data Loss) -- Low is Better</text>
+
+  <!-- X-axis label -->
+  <text x="450" y="490" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">RTO (Downtime) -- Low is Better --></text>
+
+  <!-- Axes -->
+  <line x1="100" y1="80" x2="100" y2="440" stroke="#1a1822" stroke-width="2"/>
+  <line x1="100" y1="440" x2="850" y2="440" stroke="#1a1822" stroke-width="2"/>
+
+  <!-- Y-axis ticks -->
+  <line x1="95" y1="100" x2="105" y2="100" stroke="#1a1822" stroke-width="1"/>
+  <text x="85" y="104" text-anchor="end" font-size="9" fill="#1a1822">Zero</text>
+
+  <line x1="95" y1="190" x2="105" y2="190" stroke="#1a1822" stroke-width="1"/>
+  <text x="85" y="194" text-anchor="end" font-size="9" fill="#1a1822">Seconds</text>
+
+  <line x1="95" y1="280" x2="105" y2="280" stroke="#1a1822" stroke-width="1"/>
+  <text x="85" y="284" text-anchor="end" font-size="9" fill="#1a1822">Minutes</text>
+
+  <line x1="95" y1="370" x2="105" y2="370" stroke="#1a1822" stroke-width="1"/>
+  <text x="85" y="374" text-anchor="end" font-size="9" fill="#1a1822">Hours</text>
+
+  <!-- X-axis ticks -->
+  <line x1="120" y1="435" x2="120" y2="445" stroke="#1a1822" stroke-width="1"/>
+  <text x="120" y="460" text-anchor="middle" font-size="9" fill="#1a1822">Near-zero</text>
+
+  <line x1="300" y1="435" x2="300" y2="445" stroke="#1a1822" stroke-width="1"/>
+  <text x="300" y="460" text-anchor="middle" font-size="9" fill="#1a1822">Minutes</text>
+
+  <line x1="520" y1="435" x2="520" y2="445" stroke="#1a1822" stroke-width="1"/>
+  <text x="520" y="460" text-anchor="middle" font-size="9" fill="#1a1822">30+ min</text>
+
+  <line x1="740" y1="435" x2="740" y2="445" stroke="#1a1822" stroke-width="1"/>
+  <text x="740" y="460" text-anchor="middle" font-size="9" fill="#1a1822">Hours</text>
+
+  <!-- Quadrant shading -->
+  <rect x="100" y="80" width="180" height="90" fill="#4caf50" opacity="0.06"/>
+  <text x="190" y="125" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600" opacity="0.7">Best SLA Zone</text>
+
+  <rect x="460" y="280" width="390" height="160" fill="#cc4444" opacity="0.04"/>
+  <text x="655" y="365" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600" opacity="0.7">Lowest SLA Zone</text>
+
+  <!-- Point 1: Active-Active (near origin: zero RPO, near-zero RTO) -->
+  <circle cx="140" cy="110" r="35" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <text x="140" y="106" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">Active-</text>
+  <text x="140" y="120" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">Active</text>
+  <text x="140" y="135" text-anchor="middle" font-size="8" fill="#1a1822">RPO~0, RTO~0</text>
+  <text x="140" y="155" text-anchor="middle" font-size="8" fill="#1a1822" font-weight="600">$4,000/mo</text>
+
+  <!-- Point 2: Warm Standby (low RPO, low-mid RTO) -->
+  <circle cx="340" cy="200" r="32" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="340" y="196" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">Warm</text>
+  <text x="340" y="210" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">Standby</text>
+  <text x="340" y="225" text-anchor="middle" font-size="8" fill="#1a1822">RPO:sec, RTO:1-5m</text>
+  <text x="340" y="245" text-anchor="middle" font-size="8" fill="#1a1822" font-weight="600">$2,000/mo</text>
+
+  <!-- Point 3: Pilot Light (mid RPO, mid RTO) -->
+  <circle cx="560" cy="300" r="30" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="560" y="296" text-anchor="middle" font-size="10" font-weight="700" fill="#f0ad4e">Pilot Light</text>
+  <text x="560" y="313" text-anchor="middle" font-size="8" fill="#1a1822">RPO:min, RTO:10-30m</text>
+  <text x="560" y="333" text-anchor="middle" font-size="8" fill="#1a1822" font-weight="600">$800/mo</text>
+
+  <!-- Point 4: Backup & Restore (high RPO, high RTO) -->
+  <circle cx="760" cy="390" r="28" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="2"/>
+  <text x="760" y="386" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Backup &amp;</text>
+  <text x="760" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Restore</text>
+  <text x="760" y="415" text-anchor="middle" font-size="8" fill="#1a1822">RPO:hrs, RTO:hrs</text>
+  <text x="760" y="435" text-anchor="middle" font-size="8" fill="#1a1822" font-weight="600">$200/mo</text>
+
+  <!-- Cost curve arrow -->
+  <path d="M 170 110 Q 400 200 600 300 Q 730 380 780 400" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,4" fill="none"/>
+  <text x="500" y="240" font-size="10" fill="#6d5bd0" font-weight="600">Cost increases</text>
+  <text x="500" y="253" font-size="10" fill="#6d5bd0" font-weight="600">toward origin</text>
+
+  <!-- Legend -->
+  <rect x="600" y="80" width="270" height="120" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Key Takeaways</text>
+  <text x="620" y="125" font-size="9" fill="#1a1822">- RPO = max acceptable data loss</text>
+  <text x="620" y="142" font-size="9" fill="#1a1822">- RTO = max acceptable downtime</text>
+  <text x="620" y="159" font-size="9" fill="#1a1822">- Lower RPO+RTO = exponentially</text>
+  <text x="635" y="172" font-size="9" fill="#1a1822">higher cost and complexity</text>
+  <text x="620" y="189" font-size="9" fill="#1a1822">- Choose based on business SLA,</text>
+  <text x="635" y="202" font-size="9" fill="#1a1822">not engineering preference</text>
+
+  <defs>
+    <marker id="arrowDR2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

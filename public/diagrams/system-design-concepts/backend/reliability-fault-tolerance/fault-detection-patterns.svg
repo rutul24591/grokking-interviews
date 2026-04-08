@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1a2e">Fault Detection Patterns</text>
+  <text x="450" y="68" text-anchor="middle" font-size="14" fill="#555">Three core approaches to detecting system failures in production</text>
+
+  <!-- Column 1: Heartbeat Monitoring -->
+  <rect x="40" y="100" width="260" height="370" rx="12" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="100" width="260" height="48" rx="12" fill="#6d5bd0"/>
+  <rect x="40" y="130" width="260" height="18" fill="#6d5bd0"/>
+  <text x="170" y="130" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">Heartbeat Monitoring</text>
+
+  <!-- Diagram -->
+  <rect x="60" y="165" width="220" height="120" rx="8" fill="#f8f7fc" stroke="#6d5bd0" stroke-width="1"/>
+  <!-- Service box -->
+  <rect x="80" y="180" width="90" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="125" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Service</text>
+  <!-- Heartbeat arrow -->
+  <line x1="170" y1="200" x2="230" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="195" text-anchor="middle" font-size="10" fill="#6d5bd0">beat</text>
+  <!-- Monitor box -->
+  <rect x="230" y="180" width="40" height="40" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="250" y="205" text-anchor="middle" font-size="16" fill="#6d5bd0">&#9829;</text>
+  <!-- Missed heartbeat -->
+  <line x1="170" y1="240" x2="230" y2="240" stroke="#cc4444" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="200" y="235" text-anchor="middle" font-size="9" fill="#cc4444">missed</text>
+  <rect x="230" y="225" width="40" height="40" rx="6" fill="#cc4444"/>
+  <text x="250" y="250" text-anchor="middle" font-size="16" fill="#fff">!</text>
+
+  <!-- Description -->
+  <text x="170" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">Periodic signals</text>
+  <text x="170" y="335" text-anchor="middle" font-size="12" fill="#444">Service sends regular</text>
+  <text x="170" y="352" text-anchor="middle" font-size="12" fill="#444">"I'm alive" signals</text>
+  <text x="170" y="378" text-anchor="middle" font-size="11" fill="#666">Interval: 5-30 seconds</text>
+  <text x="170" y="396" text-anchor="middle" font-size="11" fill="#666">Missed N = failure</text>
+  <text x="170" y="420" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc4444">&#8594; Alert triggered</text>
+
+  <!-- Column 2: Threshold Monitoring -->
+  <rect x="320" y="100" width="260" height="370" rx="12" fill="#fff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="320" y="100" width="260" height="48" rx="12" fill="#f0ad4e"/>
+  <rect x="320" y="130" width="260" height="18" fill="#f0ad4e"/>
+  <text x="450" y="130" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">Threshold Monitoring</text>
+
+  <!-- Diagram -->
+  <rect x="340" y="165" width="220" height="120" rx="8" fill="#fef8ef" stroke="#f0ad4e" stroke-width="1"/>
+  <!-- Metric line -->
+  <polyline points="360,260 380,250 400,245 420,230 440,220 460,200 480,195 500,185 520,175 540,170" fill="none" stroke="#f0ad4e" stroke-width="2.5"/>
+  <!-- Threshold line -->
+  <line x1="360" y1="210" x2="540" y2="210" stroke="#cc4444" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="450" y="205" text-anchor="middle" font-size="10" font-weight="bold" fill="#cc4444">Threshold</text>
+  <!-- Alert marker -->
+  <circle cx="520" cy="175" r="8" fill="#cc4444"/>
+  <text x="520" y="179" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">!</text>
+
+  <!-- Description -->
+  <text x="450" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">Metric boundaries</text>
+  <text x="450" y="335" text-anchor="middle" font-size="12" fill="#444">Monitor CPU, memory,</text>
+  <text x="450" y="352" text-anchor="middle" font-size="12" fill="#444">latency, error rate</text>
+  <text x="450" y="378" text-anchor="middle" font-size="11" fill="#666">Static or dynamic</text>
+  <text x="450" y="396" text-anchor="middle" font-size="11" fill="#666">threshold limits</text>
+  <text x="450" y="420" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc4444">&#8594; Alert triggered</text>
+
+  <!-- Column 3: Anomaly Detection -->
+  <rect x="600" y="100" width="260" height="370" rx="12" fill="#fff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="600" y="100" width="260" height="48" rx="12" fill="#4caf50"/>
+  <rect x="600" y="130" width="260" height="18" fill="#4caf50"/>
+  <text x="730" y="130" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">Anomaly Detection</text>
+
+  <!-- Diagram -->
+  <rect x="620" y="165" width="220" height="120" rx="8" fill="#f0f9f0" stroke="#4caf50" stroke-width="1"/>
+  <!-- Normal pattern dots -->
+  <circle cx="650" cy="200" r="4" fill="#4caf50"/>
+  <circle cx="670" cy="205" r="4" fill="#4caf50"/>
+  <circle cx="690" cy="198" r="4" fill="#4caf50"/>
+  <circle cx="710" cy="203" r="4" fill="#4caf50"/>
+  <circle cx="730" cy="200" r="4" fill="#4caf50"/>
+  <circle cx="750" cy="205" r="4" fill="#4caf50"/>
+  <circle cx="770" cy="198" r="4" fill="#4caf50"/>
+  <!-- ML box -->
+  <rect x="660" y="225" width="60" height="30" rx="6" fill="#4caf50"/>
+  <text x="690" y="245" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">ML</text>
+  <line x1="690" y1="225" x2="690" y2="210" stroke="#4caf50" stroke-width="1.5"/>
+  <!-- Anomaly dot -->
+  <circle cx="800" cy="185" r="6" fill="#cc4444"/>
+  <text x="800" y="189" text-anchor="middle" font-size="8" font-weight="bold" fill="#fff">!</text>
+  <line x1="770" y1="198" x2="794" y2="185" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- Description -->
+  <text x="730" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">ML-based detection</text>
+  <text x="730" y="335" text-anchor="middle" font-size="12" fill="#444">Learns normal patterns,</text>
+  <text x="730" y="352" text-anchor="middle" font-size="12" fill="#444">flags deviations</text>
+  <text x="730" y="378" text-anchor="middle" font-size="11" fill="#666">Detects unknown issues</text>
+  <text x="730" y="396" text-anchor="middle" font-size="11" fill="#666">Adapts over time</text>
+  <text x="730" y="420" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc4444">&#8594; Alert triggered</text>
+</svg>

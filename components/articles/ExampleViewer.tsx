@@ -34,12 +34,12 @@ export function ExampleViewer({ example }: ExampleViewerProps) {
     ];
     for (const name of priority) {
       const match = visibleFiles.find(
-        (file) => file.name.toLowerCase() === name
+        (file) => file.name.toLowerCase() === name,
       );
       if (match) return match;
     }
     const nonReadme = visibleFiles.find(
-      (file) => file.name.toLowerCase() !== "readme.md"
+      (file) => file.name.toLowerCase() !== "readme.md",
     );
     if (nonReadme) return nonReadme;
     return visibleFiles[0];
@@ -75,14 +75,14 @@ export function ExampleViewer({ example }: ExampleViewerProps) {
               "rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] transition",
               file.name === active?.name
                 ? "bg-accent text-white"
-                : "bg-panel text-muted hover:text-body"
+                : "bg-panel text-muted hover:text-body",
             )}
           >
             {file.name}
           </button>
         ))}
       </div>
-      <div className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+      <div className="mt-4 text-xs font-bold uppercase tracking-[0.2em]">
         {active?.name ?? "Example"}
       </div>
       <pre className="mt-3 max-h-[70vh] overflow-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100">
@@ -90,7 +90,7 @@ export function ExampleViewer({ example }: ExampleViewerProps) {
       </pre>
       {explanation ? (
         <div className="mt-4 rounded-lg border border-theme bg-panel p-4 text-sm text-body">
-          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+          <div className="text-xs font-bold uppercase tracking-[0.2em]">
             Explanation
           </div>
           <p className="mt-2 whitespace-pre-wrap leading-relaxed text-body">

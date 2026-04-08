@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Failover strategy comparison for Active-Passive, Active-Active, Warm Standby, and Pilot Light</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Failover Strategy Comparison</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Active-Passive, Active-Active, Warm Standby, and Pilot Light across key dimensions</text>
+
+  <!-- Header Row -->
+  <rect x="30" y="80" width="160" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="110" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Strategy</text>
+  <text x="110" y="115" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Architecture</text>
+
+  <rect x="190" y="80" width="170" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="275" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Failover Time</text>
+  <text x="275" y="115" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Time to recovery</text>
+
+  <rect x="360" y="80" width="170" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="445" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Data Loss</text>
+  <text x="445" y="115" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">On failover</text>
+
+  <rect x="530" y="80" width="170" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="615" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Cost</text>
+  <text x="615" y="115" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Infrastructure</text>
+
+  <rect x="700" y="80" width="170" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="785" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Complexity</text>
+  <text x="785" y="115" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Operational</text>
+
+  <!-- Row 1: Active-Passive -->
+  <rect x="30" y="135" width="160" height="85" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="110" y="163" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Active-Passive</text>
+  <text x="110" y="181" text-anchor="middle" font-size="9" fill="#1a1822">Primary handles traffic,</text>
+  <text x="110" y="195" text-anchor="middle" font-size="9" fill="#1a1822">passive standby idle,</text>
+  <text x="110" y="209" text-anchor="middle" font-size="9" fill="#1a1822">takes over on failure</text>
+
+  <rect x="190" y="135" width="170" height="85" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="275" y="168" text-anchor="middle" font-size="18" font-weight="700" fill="#f0ad4e">1-5 min</text>
+  <text x="275" y="188" text-anchor="middle" font-size="9" fill="#1a1822">DNS propagation +</text>
+  <text x="275" y="201" text-anchor="middle" font-size="9" fill="#1a1822">health check detection</text>
+
+  <rect x="360" y="135" width="170" height="85" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="445" y="168" text-anchor="middle" font-size="18" font-weight="700" fill="#f0ad4e">Near-zero</text>
+  <text x="445" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Sync replication ensures</text>
+  <text x="445" y="201" text-anchor="middle" font-size="9" fill="#1a1822">passive is up-to-date</text>
+
+  <rect x="530" y="135" width="170" height="85" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="615" y="168" text-anchor="middle" font-size="18" font-weight="700" fill="#f0ad4e">$$</text>
+  <text x="615" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Moderate - full standby</text>
+  <text x="615" y="201" text-anchor="middle" font-size="9" fill="#1a1822">idle but provisioned</text>
+
+  <rect x="700" y="135" width="170" height="85" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="785" y="168" text-anchor="middle" font-size="18" font-weight="700" fill="#f0ad4e">Medium</text>
+  <text x="785" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Sync replication, health</text>
+  <text x="785" y="201" text-anchor="middle" font-size="9" fill="#1a1822">checks, DNS failover</text>
+
+  <!-- Row 2: Active-Active -->
+  <rect x="30" y="230" width="160" height="85" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="110" y="258" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Active-Active</text>
+  <text x="110" y="276" text-anchor="middle" font-size="9" fill="#1a1822">All regions serve traffic</text>
+  <text x="110" y="290" text-anchor="middle" font-size="9" fill="#1a1822">simultaneously with</text>
+  <text x="110" y="304" text-anchor="middle" font-size="9" fill="#1a1822">multi-region data sync</text>
+
+  <rect x="190" y="230" width="170" height="85" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="275" y="263" text-anchor="middle" font-size="18" font-weight="700" fill="#4caf50">Seconds</text>
+  <text x="275" y="283" text-anchor="middle" font-size="9" fill="#1a1822">Instant via DNS/GSLB,</text>
+  <text x="275" y="296" text-anchor="middle" font-size="9" fill="#1a1822">load balancer detects</text>
+
+  <rect x="360" y="230" width="170" height="85" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="445" y="263" text-anchor="middle" font-size="18" font-weight="700" fill="#4caf50">Zero</text>
+  <text x="445" y="283" text-anchor="middle" font-size="9" fill="#1a1822">Continuous multi-region</text>
+  <text x="445" y="296" text-anchor="middle" font-size="9" fill="#1a1822">replication, no gap</text>
+
+  <rect x="530" y="230" width="170" height="85" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="615" y="263" text-anchor="middle" font-size="18" font-weight="700" fill="#cc4444">$$$$</text>
+  <text x="615" y="283" text-anchor="middle" font-size="9" fill="#1a1822">Highest - full infra in</text>
+  <text x="615" y="296" text-anchor="middle" font-size="9" fill="#1a1822">every active region</text>
+
+  <rect x="700" y="230" width="170" height="85" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="785" y="263" text-anchor="middle" font-size="18" font-weight="700" fill="#cc4444">Very High</text>
+  <text x="785" y="283" text-anchor="middle" font-size="9" fill="#1a1822">Conflict resolution,</text>
+  <text x="785" y="296" text-anchor="middle" font-size="9" fill="#1a1822">distributed consistency,</text>
+
+  <!-- Row 3: Warm Standby -->
+  <rect x="30" y="325" width="160" height="85" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="110" y="353" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Warm Standby</text>
+  <text x="110" y="371" text-anchor="middle" font-size="9" fill="#1a1822">Reduced-capacity replica</text>
+  <text x="110" y="385" text-anchor="middle" font-size="9" fill="#1a1822">running, scales up on</text>
+  <text x="110" y="399" text-anchor="middle" font-size="9" fill="#1a1822">failover event</text>
+
+  <rect x="190" y="325" width="170" height="85" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="275" y="358" text-anchor="middle" font-size="18" font-weight="700" fill="#f0ad4e">5-15 min</text>
+  <text x="275" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Auto-scale provisioning</text>
+  <text x="275" y="391" text-anchor="middle" font-size="9" fill="#1a1822">+ data catch-up time</text>
+
+  <rect x="360" y="325" width="170" height="85" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="445" y="358" text-anchor="middle" font-size="18" font-weight="700" fill="#f0ad4e">Seconds</text>
+  <text x="445" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Near-real-time async</text>
+  <text x="445" y="391" text-anchor="middle" font-size="9" fill="#1a1822">replication with small</text>
+
+  <rect x="530" y="325" width="170" height="85" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="615" y="358" text-anchor="middle" font-size="18" font-weight="700" fill="#f0ad4e">$$$</text>
+  <text x="615" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Higher than passive -</text>
+  <text x="615" y="391" text-anchor="middle" font-size="9" fill="#1a1822">standby is partially active</text>
+
+  <rect x="700" y="325" width="170" height="85" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="785" y="358" text-anchor="middle" font-size="18" font-weight="700" fill="#6d5bd0">High</text>
+  <text x="785" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Scaling policies, sync</text>
+  <text x="785" y="391" text-anchor="middle" font-size="9" fill="#1a1822">pipelines, traffic routing</text>
+
+  <!-- Row 4: Pilot Light -->
+  <rect x="30" y="420" width="160" height="70" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="110" y="448" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">Pilot Light</text>
+  <text x="110" y="466" text-anchor="middle" font-size="9" fill="#1a1822">Minimal core services</text>
+  <text x="110" y="480" text-anchor="middle" font-size="9" fill="#1a1822">running, rest provisioned on demand</text>
+
+  <rect x="190" y="420" width="170" height="70" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="275" y="448" text-anchor="middle" font-size="18" font-weight="700" fill="#cc4444">15-60 min</text>
+  <text x="275" y="468" text-anchor="middle" font-size="9" fill="#1a1822">Full provisioning + data</text>
+  <text x="275" y="481" text-anchor="middle" font-size="9" fill="#1a1822">sync from backups</text>
+
+  <rect x="360" y="420" width="170" height="70" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="445" y="448" text-anchor="middle" font-size="18" font-weight="700" fill="#cc4444">Minutes</text>
+  <text x="445" y="468" text-anchor="middle" font-size="9" fill="#1a1822">Data lag between primary</text>
+  <text x="445" y="481" text-anchor="middle" font-size="9" fill="#1a1822">and pilot light database</text>
+
+  <rect x="530" y="420" width="170" height="70" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="615" y="448" text-anchor="middle" font-size="18" font-weight="700" fill="#4caf50">$$</text>
+  <text x="615" y="468" text-anchor="middle" font-size="9" fill="#1a1822">Lower - only core services</text>
+  <text x="615" y="481" text-anchor="middle" font-size="9" fill="#1a1822">running, rest on-demand</text>
+
+  <rect x="700" y="420" width="170" height="70" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="785" y="448" text-anchor="middle" font-size="18" font-weight="700" fill="#4caf50">Medium</text>
+  <text x="785" y="468" text-anchor="middle" font-size="9" fill="#1a1822">Auto-scale configs, DB</text>
+  <text x="785" y="481" text-anchor="middle" font-size="9" fill="#1a1822">replication, monitoring</text>
+
+  <defs>
+    <marker id="arrowFS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

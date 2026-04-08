@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Multi-Region Deployment Patterns</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#6d5bd0">Compare single region, active-passive, and active-active architectures</text>
+
+  <defs>
+    <marker id="mr-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="mr-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="mr-arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- Single Region Card -->
+  <rect x="30" y="80" width="270" height="385" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="30" y="80" width="270" height="38" rx="10" fill="#d7d1e6"/>
+  <rect x="30" y="105" width="270" height="8" fill="#d7d1e6"/>
+  <text x="165" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Single Region</text>
+
+  <!-- Single Region Diagram -->
+  <rect x="60" y="130" width="210" height="55" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="165" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Region: us-east-1</text>
+  <text x="165" y="168" text-anchor="middle" font-size="10" fill="#1a1822">3 AZs, app servers + DB</text>
+
+  <rect x="80" y="195" width="170" height="30" rx="6" fill="#6d5bd0"/>
+  <text x="165" y="215" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">App Servers (x3)</text>
+
+  <line x1="165" y1="225" x2="165" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#mr-arrow)"/>
+
+  <rect x="80" y="255" width="170" height="30" rx="6" fill="#f0ad4e"/>
+  <text x="165" y="275" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Primary Database</text>
+
+  <line x1="165" y1="285" x2="165" y2="310" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <rect x="80" y="315" width="170" height="30" rx="6" fill="#4caf50"/>
+  <text x="165" y="335" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">All Traffic Here</text>
+
+  <!-- Single Region Metrics -->
+  <rect x="50" y="365" width="230" height="85" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="385" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Characteristics</text>
+  <text x="65" y="405" font-size="9" fill="#1a1822">Latency: Low (local only)</text>
+  <text x="65" y="420" font-size="9" fill="#1a1822">Cost: Lowest (1x infra)</text>
+  <text x="65" y="435" font-size="9" fill="#cc4444">Consistency: N/A (single DB)</text>
+  <text x="65" y="450" font-size="9" fill="#cc4444">Availability: ~99.9% (single region)</text>
+
+  <!-- Active-Passive Card -->
+  <rect x="315" y="80" width="270" height="385" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="38" rx="10" fill="#f0ad4e"/>
+  <rect x="315" y="105" width="270" height="8" fill="#f0ad4e"/>
+  <text x="450" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Active-Passive Multi-Region</text>
+
+  <!-- Active-Passive Diagram -->
+  <rect x="340" y="130" width="220" height="55" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="450" y="148" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">PRIMARY (Active)</text>
+  <text x="450" y="165" text-anchor="middle" font-size="10" fill="#1a1822">us-east-1: serving all traffic</text>
+
+  <rect x="355" y="195" width="190" height="25" rx="6" fill="#4caf50"/>
+  <text x="450" y="212" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">App + DB (primary)</text>
+
+  <line x1="450" y1="220" x2="450" y2="248" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#mr-arrow)"/>
+  <text x="500" y="240" font-size="9" fill="#f0ad4e">Async replication</text>
+
+  <rect x="340" y="255" width="220" height="55" rx="8" fill="#cc4444" opacity="0.06" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="450" y="273" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">STANDBY (Passive)</text>
+  <text x="450" y="290" text-anchor="middle" font-size="10" fill="#1a1822">eu-west-1: warm standby</text>
+
+  <rect x="355" y="320" width="190" height="25" rx="6" fill="#cc4444" opacity="0.8"/>
+  <text x="450" y="337" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">App + DB (standby)</text>
+
+  <!-- Failover arrow -->
+  <line x1="340" y1="282" x2="315" y2="282" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="300" y="286" text-anchor="end" font-size="8" fill="#cc4444">Failover</text>
+  <line x1="315" y1="282" x2="315" y2="157" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="315" y1="157" x2="340" y2="157" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Active-Passive Metrics -->
+  <rect x="335" y="365" width="230" height="85" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="385" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Characteristics</text>
+  <text x="350" y="405" font-size="9" fill="#1a1822">Latency: Low (single write region)</text>
+  <text x="350" y="420" font-size="9" fill="#f0ad4e">Cost: 1.5-2x (idle standby)</text>
+  <text x="350" y="435" font-size="9" fill="#1a1822">Consistency: Strong (single writer)</text>
+  <text x="350" y="450" font-size="9" fill="#4caf50">Availability: ~99.99% (with failover)</text>
+
+  <!-- Active-Active Card -->
+  <rect x="600" y="80" width="270" height="385" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="38" rx="10" fill="#6d5bd0"/>
+  <rect x="600" y="105" width="270" height="8" fill="#6d5bd0"/>
+  <text x="735" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Active-Active Multi-Region</text>
+
+  <!-- Active-Active Diagram -->
+  <rect x="625" y="130" width="220" height="55" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="735" y="148" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">REGION A (Active)</text>
+  <text x="735" y="165" text-anchor="middle" font-size="10" fill="#1a1822">us-east-1: serving traffic</text>
+
+  <rect x="640" y="195" width="190" height="25" rx="6" fill="#4caf50"/>
+  <text x="735" y="212" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">App + DB replica</text>
+
+  <!-- Bidirectional replication -->
+  <line x1="735" y1="220" x2="735" y2="250" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#mr-arrow)"/>
+  <line x1="745" y1="250" x2="745" y2="220" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#mr-arrow)"/>
+  <text x="760" y="240" font-size="8" fill="#6d5bd0">Bi-dir sync</text>
+
+  <rect x="625" y="255" width="220" height="55" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="735" y="273" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">REGION B (Active)</text>
+  <text x="735" y="290" text-anchor="middle" font-size="10" fill="#1a1822">eu-west-1: serving traffic</text>
+
+  <rect x="640" y="320" width="190" height="25" rx="6" fill="#4caf50"/>
+  <text x="735" y="337" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">App + DB replica</text>
+
+  <!-- Traffic arrows to both -->
+  <text x="735" y="365" text-anchor="middle" font-size="9" fill="#6d5bd0">Global LB routes to nearest</text>
+
+  <!-- Active-Active Metrics -->
+  <rect x="620" y="375" width="230" height="75" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="395" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Characteristics</text>
+  <text x="635" y="415" font-size="9" fill="#4caf50">Latency: Lowest (nearest region)</text>
+  <text x="635" y="430" font-size="9" fill="#cc4444">Cost: 2-3x (full dup)</text>
+  <text x="635" y="445" font-size="9" fill="#f0ad4e">Consistency: Eventual (conflict resolution)</text>
+
+  <!-- Bottom summary -->
+  <rect x="30" y="470" width="840" height="22" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="140" y="485" text-anchor="middle" font-size="9" fill="#1a1822" font-weight="600">Single Region: Simple, cheapest</text>
+  <text x="450" y="485" text-anchor="middle" font-size="9" fill="#1a1822" font-weight="600">Active-Passive: DR protection, moderate cost</text>
+  <text x="740" y="485" text-anchor="middle" font-size="9" fill="#1a1822" font-weight="600">Active-Active: Best performance, highest cost</text>
+</svg>

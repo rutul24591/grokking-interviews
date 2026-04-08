@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Redundancy at Different Levels</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#6d5bd0">Component, system, and geographic redundancy layers each add independent protection</text>
+
+  <defs>
+    <marker id="rl-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Level 1: Component -->
+  <rect x="40" y="85" width="270" height="280" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="40" y="85" width="270" height="38" rx="10" fill="#6d5bd0"/>
+  <rect x="40" y="110" width="270" height="8" fill="#6d5bd0"/>
+  <text x="175" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Component Level</text>
+  <text x="175" y="138" text-anchor="middle" font-size="10" fill="#6d5bd0">Within a single server</text>
+
+  <!-- Component items -->
+  <rect x="60" y="150" width="230" height="45" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="175" y="168" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Dual Power Supplies</text>
+  <text x="175" y="184" text-anchor="middle" font-size="9" fill="#6d5bd0">Two PSUs on separate circuits</text>
+
+  <rect x="60" y="202" width="230" height="45" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="175" y="220" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">RAID Disk Array</text>
+  <text x="175" y="236" text-anchor="middle" font-size="9" fill="#6d5bd0">RAID 1/5/10 - survives disk failure</text>
+
+  <rect x="60" y="254" width="230" height="45" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="175" y="272" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Bonded NICs</text>
+  <text x="175" y="288" text-anchor="middle" font-size="9" fill="#6d5bd0">Two network interfaces, bonded</text>
+
+  <!-- Metrics -->
+  <rect x="50" y="310" width="250" height="40" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="175" y="327" text-anchor="middle" font-size="9" fill="#1a1822">Blast radius: Single server</text>
+  <text x="175" y="342" text-anchor="middle" font-size="9" fill="#4caf50">Managed by infra/cloud provider</text>
+
+  <!-- Arrow to Level 2 -->
+  <line x1="310" y1="225" x2="370" y2="225" stroke="#6d5bd0" stroke-width="2" marker-end="url(#rl-arrow)"/>
+  <text x="340" y="218" text-anchor="middle" font-size="9" fill="#6d5bd0">Expands</text>
+
+  <!-- Level 2: System -->
+  <rect x="370" y="85" width="270" height="280" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="370" y="85" width="270" height="38" rx="10" fill="#f0ad4e"/>
+  <rect x="370" y="110" width="270" height="8" fill="#f0ad4e"/>
+  <text x="505" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">System Level</text>
+  <text x="505" y="138" text-anchor="middle" font-size="10" fill="#f0ad4e">Multiple servers in a zone</text>
+
+  <!-- Server instances -->
+  <rect x="390" y="150" width="230" height="45" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="505" y="168" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Server Instance 1</text>
+  <text x="505" y="184" text-anchor="middle" font-size="9" fill="#4caf50">App + local cache</text>
+
+  <rect x="390" y="202" width="230" height="45" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="505" y="220" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Server Instance 2</text>
+  <text x="505" y="236" text-anchor="middle" font-size="9" fill="#4caf50">App + local cache</text>
+
+  <rect x="390" y="254" width="230" height="45" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="505" y="272" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Server Instance 3 (spare)</text>
+  <text x="505" y="288" text-anchor="middle" font-size="9" fill="#f0ad4e">N+1 redundancy</text>
+
+  <!-- Metrics -->
+  <rect x="380" y="310" width="250" height="40" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="505" y="327" text-anchor="middle" font-size="9" fill="#1a1822">Blast radius: Single instance</text>
+  <text x="505" y="342" text-anchor="middle" font-size="9" fill="#4caf50">Your responsibility to design</text>
+
+  <!-- Arrow to Level 3 -->
+  <line x1="640" y1="225" x2="700" y2="225" stroke="#6d5bd0" stroke-width="2" marker-end="url(#rl-arrow)"/>
+  <text x="670" y="218" text-anchor="middle" font-size="9" fill="#6d5bd0">Expands</text>
+
+  <!-- Level 3: Geographic -->
+  <rect x="700" y="85" width="170" height="280" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="700" y="85" width="170" height="38" rx="10" fill="#cc4444"/>
+  <rect x="700" y="110" width="170" height="8" fill="#cc4444"/>
+  <text x="785" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Geographic</text>
+
+  <!-- Data centers -->
+  <rect x="715" y="140" width="140" height="40" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="785" y="158" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">DC: us-east-1</text>
+  <text x="785" y="172" text-anchor="middle" font-size="8" fill="#4caf50">Virginia, USA</text>
+
+  <rect x="715" y="188" width="140" height="40" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="785" y="206" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">DC: eu-west-1</text>
+  <text x="785" y="220" text-anchor="middle" font-size="8" fill="#6d5bd0">Ireland</text>
+
+  <rect x="715" y="236" width="140" height="40" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="785" y="254" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">DC: ap-southeast-1</text>
+  <text x="785" y="268" text-anchor="middle" font-size="8" fill="#f0ad4e">Singapore</text>
+
+  <!-- Metrics -->
+  <rect x="710" y="290" width="150" height="60" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="785" y="310" text-anchor="middle" font-size="9" fill="#1a1822">Blast radius: Region</text>
+  <text x="785" y="325" text-anchor="middle" font-size="9" fill="#4caf50">Protects against disasters</text>
+  <text x="785" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Highest cost</text>
+
+  <!-- Bottom: Combined protection view -->
+  <rect x="40" y="390" width="830" height="85" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="390" width="830" height="38" rx="10" fill="#6d5bd0" opacity="0.9"/>
+  <rect x="40" y="414" width="830" height="8" fill="#6d5bd0" opacity="0.9"/>
+  <text x="455" y="414" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Combined: Each Layer Protects Against Different Failure Domain</text>
+
+  <rect x="60" y="440" width="250" height="25" rx="4" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="185" y="457" text-anchor="middle" font-size="10" fill="#1a1822">Component: PSU, disk, NIC failure</text>
+
+  <rect x="320" y="440" width="250" height="25" rx="4" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="445" y="457" text-anchor="middle" font-size="10" fill="#1a1822">System: Server crash, OOM, bug</text>
+
+  <rect x="580" y="440" width="270" height="25" rx="4" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="715" y="457" text-anchor="middle" font-size="10" fill="#1a1822">Geographic: Data center fire, regional outage</text>
+</svg>

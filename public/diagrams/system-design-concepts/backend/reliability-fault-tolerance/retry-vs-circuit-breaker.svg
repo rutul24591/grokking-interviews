@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Retry pattern versus circuit breaker pattern side by side comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Retry Pattern vs Circuit Breaker</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Two complementary resilience patterns for handling transient failures</text>
+
+  <!-- LEFT: Retry Pattern -->
+  <rect x="30" y="80" width="400" height="400" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="30" y="80" width="400" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="30" y="105" width="400" height="10" fill="#f0ad4e"/>
+  <text x="230" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Retry Pattern</text>
+
+  <!-- Retry Flow -->
+  <rect x="60" y="135" width="100" height="50" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="110" y="157" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Attempt 1</text>
+  <text x="110" y="174" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">FAIL</text>
+
+  <line x1="160" y1="160" x2="210" y2="160" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowRCB)"/>
+  <text x="185" y="152" font-size="8" fill="#cc4444">Error</text>
+
+  <rect x="210" y="135" width="100" height="50" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="260" y="157" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Wait</text>
+  <text x="260" y="174" text-anchor="middle" font-size="9" fill="#1a1822">Backoff: 2^n + jitter</text>
+
+  <line x1="260" y1="185" x2="260" y2="220" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRCB)"/>
+
+  <rect x="210" y="220" width="100" height="50" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="260" y="242" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Attempt 2</text>
+  <text x="260" y="259" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">FAIL</text>
+
+  <line x1="260" y1="270" x2="260" y2="300" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowRCB)"/>
+
+  <rect x="210" y="300" width="100" height="50" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="260" y="322" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Wait</text>
+  <text x="260" y="339" text-anchor="middle" font-size="9" fill="#1a1822">Backoff: 2^n + jitter</text>
+
+  <line x1="260" y1="350" x2="260" y2="380" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRCB)"/>
+
+  <rect x="210" y="380" width="100" height="50" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="260" y="402" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Attempt 3</text>
+  <text x="260" y="419" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">SUCCESS</text>
+
+  <!-- Key points retry -->
+  <rect x="60" y="240" width="130" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="125" y="260" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For</text>
+  <text x="125" y="276" text-anchor="middle" font-size="9" fill="#1a1822">- Transient failures</text>
+  <text x="125" y="290" text-anchor="middle" font-size="9" fill="#1a1822">- Brief outages</text>
+  <text x="125" y="304" text-anchor="middle" font-size="9" fill="#1a1822">- Network blips</text>
+
+  <rect x="60" y="335" width="130" height="80" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="125" y="355" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Risk</text>
+  <text x="125" y="371" text-anchor="middle" font-size="9" fill="#1a1822">- Thundering herd</text>
+  <text x="125" y="385" text-anchor="middle" font-size="9" fill="#1a1822">- Cascading load</text>
+  <text x="125" y="399" text-anchor="middle" font-size="9" fill="#1a1822">- Amplified failures</text>
+
+  <!-- RIGHT: Circuit Breaker -->
+  <rect x="470" y="80" width="400" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="470" y="80" width="400" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="470" y="105" width="400" height="10" fill="#6d5bd0"/>
+  <text x="670" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Circuit Breaker Pattern</text>
+
+  <!-- State 1: Closed (Normal) -->
+  <rect x="500" y="135" width="110" height="50" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="555" y="157" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">CLOSED</text>
+  <text x="555" y="174" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Normal operation</text>
+
+  <line x1="610" y1="160" x2="650" y2="160" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowRCB)"/>
+  <text x="630" y="152" font-size="8" fill="#4caf50">OK</text>
+
+  <!-- Multiple failures feeding into Open -->
+  <rect x="650" y="135" width="100" height="50" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="700" y="157" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">FAIL x3</text>
+  <text x="700" y="174" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Threshold hit</text>
+
+  <line x1="700" y1="185" x2="700" y2="220" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowRCB)"/>
+  <text x="725" y="208" font-size="9" fill="#cc4444" font-weight="600">Circuit Opens</text>
+
+  <!-- State 2: Open (Failing Fast) -->
+  <rect x="640" y="220" width="120" height="60" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="2"/>
+  <text x="700" y="245" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">OPEN</text>
+  <text x="700" y="263" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Stop all requests</text>
+
+  <line x1="700" y1="280" x2="700" y2="310" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowRCB)"/>
+  <text x="725" y="300" font-size="8" fill="#cc4444">Timeout</text>
+
+  <!-- State 3: Half-Open (Testing) -->
+  <rect x="640" y="310" width="120" height="60" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="700" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">HALF-OPEN</text>
+  <text x="700" y="353" text-anchor="middle" font-size="9" fill="#1a1822">Test probe request</text>
+
+  <line x1="700" y1="370" x2="700" y2="400" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowRCB)"/>
+  <text x="725" y="390" font-size="8" fill="#4caf50">Probe OK</text>
+
+  <!-- State 4: Closed Again -->
+  <rect x="640" y="400" width="120" height="50" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="700" y="422" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">CLOSED</text>
+  <text x="700" y="439" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Recovery complete</text>
+
+  <!-- Key points circuit breaker -->
+  <rect x="500" y="240" width="120" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="560" y="260" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For</text>
+  <text x="560" y="276" text-anchor="middle" font-size="9" fill="#1a1822">- Persistent failures</text>
+  <text x="560" y="290" text-anchor="middle" font-size="9" fill="#1a1822">- Cascading protection</text>
+  <text x="560" y="304" text-anchor="middle" font-size="9" fill="#1a1822">- Resource conservation</text>
+
+  <rect x="500" y="340" width="120" height="80" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="560" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Benefit</text>
+  <text x="560" y="376" text-anchor="middle" font-size="9" fill="#1a1822">- Fail fast, save resources</text>
+  <text x="560" y="390" text-anchor="middle" font-size="9" fill="#1a1822">- Prevent cascading failure</text>
+  <text x="560" y="404" text-anchor="middle" font-size="9" fill="#1a1822">- Auto-recovery possible</text>
+
+  <!-- Summary at bottom -->
+  <rect x="30" y="455" width="840" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="475" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="600">Use Retry for transient failures. Use Circuit Breaker to protect against cascading failures. Combine both for production resilience.</text>
+
+  <defs>
+    <marker id="arrowRCB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

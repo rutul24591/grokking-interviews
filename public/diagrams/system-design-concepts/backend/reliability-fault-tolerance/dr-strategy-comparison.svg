@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Disaster recovery strategy comparison across RPO, RTO, cost and complexity</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">DR Strategy Comparison</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Backup &amp; Restore, Pilot Light, Warm Standby, Active-Active across key dimensions</text>
+
+  <!-- Table Header -->
+  <rect x="30" y="80" width="170" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Strategy</text>
+  <text x="115" y="118" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Description</text>
+
+  <rect x="200" y="80" width="170" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="285" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">RPO / RTO</text>
+  <text x="285" y="118" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Recovery objectives</text>
+
+  <rect x="370" y="80" width="170" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="455" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Cost</text>
+  <text x="455" y="118" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Infrastructure spend</text>
+
+  <rect x="540" y="80" width="170" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="625" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Complexity</text>
+  <text x="625" y="118" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Operational effort</text>
+
+  <rect x="710" y="80" width="160" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="790" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Best For</text>
+  <text x="790" y="118" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Use case</text>
+
+  <!-- Row 1: Backup & Restore -->
+  <rect x="30" y="140" width="170" height="80" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <text x="115" y="168" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Backup &amp; Restore</text>
+  <text x="115" y="186" text-anchor="middle" font-size="9" fill="#1a1822">Periodic backups,</text>
+  <text x="115" y="199" text-anchor="middle" font-size="9" fill="#1a1822">restore on disaster</text>
+  <text x="115" y="212" text-anchor="middle" font-size="9" fill="#1a1822">Simple but slow</text>
+
+  <rect x="200" y="140" width="170" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="285" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">RPO: Hours</text>
+  <text x="285" y="183" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">RTO: Hours</text>
+  <text x="285" y="205" text-anchor="middle" font-size="9" fill="#1a1822">Significant data loss</text>
+  <text x="285" y="218" text-anchor="middle" font-size="9" fill="#1a1822">and long downtime</text>
+
+  <rect x="370" y="140" width="170" height="80" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="455" y="175" text-anchor="middle" font-size="22" font-weight="700" fill="#4caf50">$</text>
+  <text x="455" y="198" text-anchor="middle" font-size="10" fill="#1a1822">Lowest cost</text>
+  <text x="455" y="212" text-anchor="middle" font-size="9" fill="#1a1822">Storage for backups only</text>
+
+  <rect x="540" y="140" width="170" height="80" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="625" y="175" text-anchor="middle" font-size="22" font-weight="700" fill="#4caf50">Low</text>
+  <text x="625" y="198" text-anchor="middle" font-size="10" fill="#1a1822">Minimal setup,</text>
+  <text x="625" y="212" text-anchor="middle" font-size="9" fill="#1a1822">manual restore process</text>
+
+  <rect x="710" y="140" width="160" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="790" y="175" text-anchor="middle" font-size="10" fill="#1a1822">Non-critical systems,</text>
+  <text x="790" y="190" text-anchor="middle" font-size="10" fill="#1a1822">dev/test environments,</text>
+  <text x="790" y="205" text-anchor="middle" font-size="10" fill="#1a1822">archives, compliance</text>
+
+  <!-- Row 2: Pilot Light -->
+  <rect x="30" y="230" width="170" height="80" rx="8" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="115" y="258" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">Pilot Light</text>
+  <text x="115" y="276" text-anchor="middle" font-size="9" fill="#1a1822">Minimal core running,</text>
+  <text x="115" y="289" text-anchor="middle" font-size="9" fill="#1a1822">scale up on disaster</text>
+  <text x="115" y="302" text-anchor="middle" font-size="9" fill="#1a1822">Warm database</text>
+
+  <rect x="200" y="230" width="170" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="285" y="255" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">RPO: Minutes</text>
+  <text x="285" y="273" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">RTO: 10-30 min</text>
+  <text x="285" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Moderate data loss,</text>
+  <text x="285" y="308" text-anchor="middle" font-size="9" fill="#1a1822">faster recovery</text>
+
+  <rect x="370" y="230" width="170" height="80" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="455" y="265" text-anchor="middle" font-size="22" font-weight="700" fill="#f0ad4e">$$</text>
+  <text x="455" y="288" text-anchor="middle" font-size="10" fill="#1a1822">Moderate cost</text>
+  <text x="455" y="302" text-anchor="middle" font-size="9" fill="#1a1822">Core services always on</text>
+
+  <rect x="540" y="230" width="170" height="80" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="625" y="265" text-anchor="middle" font-size="22" font-weight="700" fill="#f0ad4e">Med</text>
+  <text x="625" y="288" text-anchor="middle" font-size="10" fill="#1a1822">Auto-scaling configs,</text>
+  <text x="625" y="302" text-anchor="middle" font-size="9" fill="#1a1822">data replication setup</text>
+
+  <rect x="710" y="230" width="160" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="790" y="265" text-anchor="middle" font-size="10" fill="#1a1822">Business-critical apps,</text>
+  <text x="790" y="280" text-anchor="middle" font-size="10" fill="#1a1822">moderate SLA needs,</text>
+  <text x="790" y="295" text-anchor="middle" font-size="10" fill="#1a1822">cost-conscious teams</text>
+
+  <!-- Row 3: Warm Standby -->
+  <rect x="30" y="320" width="170" height="80" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="115" y="348" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Warm Standby</text>
+  <text x="115" y="366" text-anchor="middle" font-size="9" fill="#1a1822">Scaled-down replica,</text>
+  <text x="115" y="379" text-anchor="middle" font-size="9" fill="#1a1822">ready to serve traffic</text>
+  <text x="115" y="392" text-anchor="middle" font-size="9" fill="#1a1822">Near-real-time sync</text>
+
+  <rect x="200" y="320" width="170" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="285" y="345" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">RPO: Seconds</text>
+  <text x="285" y="363" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">RTO: 1-5 min</text>
+  <text x="285" y="385" text-anchor="middle" font-size="9" fill="#1a1822">Near-zero data loss,</text>
+  <text x="285" y="398" text-anchor="middle" font-size="9" fill="#1a1822">fast failover</text>
+
+  <rect x="370" y="320" width="170" height="80" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="455" y="355" text-anchor="middle" font-size="22" font-weight="700" fill="#6d5bd0">$$$</text>
+  <text x="455" y="378" text-anchor="middle" font-size="10" fill="#1a1822">Higher cost</text>
+  <text x="455" y="392" text-anchor="middle" font-size="9" fill="#1a1822">Full replica at reduced</text>
+
+  <rect x="540" y="320" width="170" height="80" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="625" y="355" text-anchor="middle" font-size="22" font-weight="700" fill="#6d5bd0">High</text>
+  <text x="625" y="378" text-anchor="middle" font-size="10" fill="#1a1822">Sync pipelines, DNS</text>
+  <text x="625" y="392" text-anchor="middle" font-size="9" fill="#1a1822">failover, health checks</text>
+
+  <rect x="710" y="320" width="160" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="790" y="355" text-anchor="middle" font-size="10" fill="#1a1822">E-commerce, SaaS</text>
+  <text x="790" y="370" text-anchor="middle" font-size="10" fill="#1a1822">platforms, financial</text>
+  <text x="790" y="385" text-anchor="middle" font-size="10" fill="#1a1822">services, healthcare</text>
+
+  <!-- Row 4: Active-Active -->
+  <rect x="30" y="410" width="170" height="80" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="115" y="438" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Active-Active</text>
+  <text x="115" y="456" text-anchor="middle" font-size="9" fill="#1a1822">All regions serving</text>
+  <text x="115" y="469" text-anchor="middle" font-size="9" fill="#1a1822">traffic simultaneously</text>
+  <text x="115" y="482" text-anchor="middle" font-size="9" fill="#1a1822">Full redundancy</text>
+
+  <rect x="200" y="410" width="170" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="285" y="435" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">RPO: ~Zero</text>
+  <text x="285" y="453" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">RTO: Near-zero</text>
+  <text x="285" y="475" text-anchor="middle" font-size="9" fill="#1a1822">No data loss, instant</text>
+  <text x="285" y="488" text-anchor="middle" font-size="9" fill="#1a1822">failover via DNS</text>
+
+  <rect x="370" y="410" width="170" height="80" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="455" y="445" text-anchor="middle" font-size="22" font-weight="700" fill="#cc4444">$$$$</text>
+  <text x="455" y="468" text-anchor="middle" font-size="10" fill="#1a1822">Highest cost</text>
+  <text x="455" y="482" text-anchor="middle" font-size="9" fill="#1a1822">Full infra in all regions</text>
+
+  <rect x="540" y="410" width="170" height="80" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="625" y="445" text-anchor="middle" font-size="22" font-weight="700" fill="#cc4444">V.High</text>
+  <text x="625" y="468" text-anchor="middle" font-size="10" fill="#1a1822">Multi-region data sync,</text>
+  <text x="625" y="482" text-anchor="middle" font-size="9" fill="#1a1822">conflict resolution</text>
+
+  <rect x="710" y="410" width="160" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="790" y="445" text-anchor="middle" font-size="10" fill="#1a1822">Global platforms,</text>
+  <text x="790" y="460" text-anchor="middle" font-size="10" fill="#1a1822">payment systems, critical</text>
+  <text x="790" y="475" text-anchor="middle" font-size="10" fill="#1a1822">infrastructure, banking</text>
+
+  <defs>
+    <marker id="arrowDLQ3b" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

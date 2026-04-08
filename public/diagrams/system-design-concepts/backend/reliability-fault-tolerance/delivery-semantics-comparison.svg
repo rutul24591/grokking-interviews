@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Delivery semantics comparison: at-most-once, at-least-once, and exactly-once</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Delivery Semantics: At-Most-Once vs At-Least-Once vs Exactly-Once</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Three levels of message delivery guarantee with different trade-offs</text>
+
+  <!-- Column 1: At-Most-Once -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#cc4444"/>
+  <rect x="30" y="105" width="270" height="10" fill="#cc4444"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">At-Most-Once</text>
+
+  <rect x="50" y="130" width="230" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Producer → Broker → Consumer</text>
+  <text x="165" y="168" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Message sent, delivered, done</text>
+
+  <rect x="50" y="195" width="230" height="55" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="215" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">Failure Scenario:</text>
+  <text x="165" y="233" text-anchor="middle" font-size="9" fill="#1a1822">Consumer crashes after delivery</text>
+  <text x="165" y="246" text-anchor="middle" font-size="9" fill="#1a1822">Message is LOST — no retry</text>
+
+  <rect x="50" y="270" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Guarantee:</text>
+  <text x="165" y="308" text-anchor="middle" font-size="9" fill="#1a1822">0 or 1 delivery (never duplicates)</text>
+
+  <rect x="50" y="340" width="230" height="50" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="360" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Best For:</text>
+  <text x="165" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Metrics, logging, monitoring</text>
+
+  <rect x="50" y="410" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="165" y="430" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Trade-off:</text>
+  <text x="165" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Fastest, but messages can be lost</text>
+  <text x="165" y="461" text-anchor="middle" font-size="9" fill="#1a1822">Acceptable for non-critical data</text>
+
+  <!-- Column 2: At-Least-Once -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="315" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="450" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">At-Least-Once</text>
+
+  <rect x="335" y="130" width="230" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Producer → Broker → Consumer</text>
+  <text x="450" y="168" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">ACK after processing completes</text>
+
+  <rect x="335" y="195" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="215" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Failure Scenario:</text>
+  <text x="450" y="233" text-anchor="middle" font-size="9" fill="#1a1822">Consumer crashes before ACK</text>
+  <text x="450" y="246" text-anchor="middle" font-size="9" fill="#1a1822">Message RETRIED → duplicate!</text>
+
+  <rect x="335" y="270" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Guarantee:</text>
+  <text x="450" y="308" text-anchor="middle" font-size="9" fill="#1a1822">1 or more deliveries (no loss)</text>
+
+  <rect x="335" y="340" width="230" height="50" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="360" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Best For:</text>
+  <text x="450" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Order processing, payments</text>
+
+  <rect x="335" y="410" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="430" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Trade-off:</text>
+  <text x="450" y="448" text-anchor="middle" font-size="9" fill="#1a1822">No message loss, but duplicates</text>
+  <text x="450" y="461" text-anchor="middle" font-size="9" fill="#1a1822">Consumer must be idempotent</text>
+
+  <!-- Column 3: Exactly-Once -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="600" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="735" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Exactly-Once</text>
+
+  <rect x="620" y="130" width="230" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="735" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Producer → Broker → Consumer</text>
+  <text x="735" y="168" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Transactional read-process-write</text>
+
+  <rect x="620" y="195" width="230" height="55" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="215" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Failure Scenario:</text>
+  <text x="735" y="233" text-anchor="middle" font-size="9" fill="#1a1822">Any step fails → entire tx rolls back</text>
+  <text x="735" y="246" text-anchor="middle" font-size="9" fill="#1a1822">Message retried, deduped by ID</text>
+
+  <rect x="620" y="270" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Guarantee:</text>
+  <text x="735" y="308" text-anchor="middle" font-size="9" fill="#1a1822">Exactly 1 delivery (no loss, no dupes)</text>
+
+  <rect x="620" y="340" width="230" height="50" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="360" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">Best For:</text>
+  <text x="735" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Financial txns, inventory</text>
+
+  <rect x="620" y="410" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="430" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Trade-off:</text>
+  <text x="735" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Strongest guarantee, but slowest</text>
+  <text x="735" y="461" text-anchor="middle" font-size="9" fill="#1a1822">Requires transactional support</text>
+
+  <defs>
+    <marker id="arrowEOS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

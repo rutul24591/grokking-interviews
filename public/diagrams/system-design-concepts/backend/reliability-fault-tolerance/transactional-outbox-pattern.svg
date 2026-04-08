@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#4caf50"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#2d2d2d">Transactional Outbox Pattern</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#666">Atomic write of business data + outbox record guarantees exactly-once event publication</text>
+
+  <!-- Application Service -->
+  <rect x="30" y="100" width="200" height="160" rx="12" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="130" y="130" text-anchor="middle" font-size="15" font-weight="bold" fill="#6d5bd0">Application Service</text>
+  <rect x="50" y="145" width="160" height="40" rx="8" fill="#6d5bd0" opacity="0.08"/>
+  <text x="130" y="163" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d2d2d">1. Begin Transaction</text>
+  <text x="130" y="180" text-anchor="middle" font-size="11" fill="#555">Start DB transaction</text>
+  <rect x="50" y="192" width="160" height="50" rx="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="130" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d2d2d">2. Write Business Data</text>
+  <text x="130" y="228" text-anchor="middle" font-size="11" fill="#555">Insert order, update inventory</text>
+  <text x="130" y="242" text-anchor="middle" font-size="11" fill="#555">in same transaction</text>
+
+  <!-- Atomic Transaction Boundary -->
+  <rect x="250" y="95" width="400" height="340" rx="12" fill="none" stroke="#f0ad4e" stroke-width="2.5" stroke-dasharray="8,4"/>
+  <text x="450" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#f0ad4e">ATOMIC TRANSACTION BOUNDARY</text>
+  <text x="450" y="136" text-anchor="middle" font-size="11" fill="#666">Single ACID transaction - both succeed or both fail</text>
+
+  <!-- Database -->
+  <rect x="280" y="150" width="340" height="155" rx="12" fill="#fff" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="178" text-anchor="middle" font-size="15" font-weight="bold" fill="#4caf50">Database</text>
+
+  <!-- Business Data table -->
+  <rect x="295" y="190" width="145" height="100" rx="8" fill="#4caf50" opacity="0.06" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="367" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#4caf50">Business Table</text>
+  <text x="367" y="232" text-anchor="middle" font-size="11" fill="#555">orders, inventory</text>
+  <text x="367" y="248" text-anchor="middle" font-size="11" fill="#555">user_profiles</text>
+  <text x="367" y="264" text-anchor="middle" font-size="11" fill="#555">payment_records</text>
+  <text x="367" y="280" text-anchor="middle" font-size="11" fill="#555">+ domain data</text>
+
+  <!-- Outbox Table -->
+  <rect x="460" y="190" width="145" height="100" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1.5"/>
+  <text x="532" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#f0ad4e">Outbox Table</text>
+  <text x="532" y="232" text-anchor="middle" font-size="11" fill="#555">id, event_type</text>
+  <text x="532" y="248" text-anchor="middle" font-size="11" fill="#555">payload (JSON)</text>
+  <text x="532" y="264" text-anchor="middle" font-size="11" fill="#555">status: PENDING</text>
+  <text x="532" y="280" text-anchor="middle" font-size="11" fill="#555">created_at, retry_count</text>
+
+  <!-- Transaction arrow between tables -->
+  <line x1="440" y1="240" x2="460" y2="240" stroke="#cc4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="450" y="235" text-anchor="middle" font-size="10" font-weight="bold" fill="#cc4444">Same TX</text>
+
+  <!-- Arrow: Application to Database -->
+  <line x1="230" y1="240" x2="280" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="255" y="232" text-anchor="middle" font-size="10" fill="#555">Write</text>
+
+  <!-- Commit step -->
+  <rect x="295" y="310" width="310" height="40" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="450" y="335" text-anchor="middle" font-size="12" font-weight="bold" fill="#4caf50">3. COMMIT - Both writes atomically persisted</text>
+
+  <!-- Arrow: Outbox to Processor -->
+  <line x1="620" y1="260" x2="675" y2="260" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="648" y="250" text-anchor="middle" font-size="10" fill="#555">Poll</text>
+
+  <!-- Outbox Processor -->
+  <rect x="675" y="210" width="195" height="100" rx="12" fill="#fff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="772" y="238" text-anchor="middle" font-size="14" font-weight="bold" fill="#f0ad4e">Outbox Processor</text>
+  <text x="772" y="260" text-anchor="middle" font-size="11" fill="#555">Debezium CDC / Polling Worker</text>
+  <text x="772" y="276" text-anchor="middle" font-size="11" fill="#555">Reads PENDING records</text>
+  <text x="772" y="292" text-anchor="middle" font-size="11" fill="#555">Marks PROCESSED after publish</text>
+
+  <!-- Arrow: Processor to Message Broker -->
+  <line x1="772" y1="310" x2="772" y2="365" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- Message Broker -->
+  <rect x="620" y="365" width="305" height="80" rx="12" fill="#fff" stroke="#cc4444" stroke-width="2"/>
+  <text x="772" y="393" text-anchor="middle" font-size="15" font-weight="bold" fill="#cc4444">Message Broker</text>
+  <text x="772" y="415" text-anchor="middle" font-size="12" fill="#555">Kafka / RabbitMQ / SQS - Topics: order-created, inventory-updated</text>
+  <text x="772" y="433" text-anchor="middle" font-size="12" fill="#555">Guaranteed delivery with retries and dead-letter queues</text>
+
+  <!-- Arrow: Broker to Consumers -->
+  <line x1="772" y1="445" x2="772" y2="470" stroke="#cc4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Downstream Consumers -->
+  <rect x="620" y="470" width="90" height="25" rx="6" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="665" y="487" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Email Svc</text>
+
+  <rect x="727" y="470" width="90" height="25" rx="6" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="772" y="487" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Analytics</text>
+
+  <rect x="834" y="470" width="90" height="25" rx="6" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="879" y="487" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Search Index</text>
+
+  <!-- Retry loop -->
+  <path d="M 870 240 C 900 240, 900 330, 870 330" fill="none" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+  <text x="898" y="290" text-anchor="middle" font-size="10" font-weight="bold" fill="#cc4444">Retry on</text>
+  <text x="898" y="304" text-anchor="middle" font-size="10" font-weight="bold" fill="#cc4444">failure</text>
+</svg>

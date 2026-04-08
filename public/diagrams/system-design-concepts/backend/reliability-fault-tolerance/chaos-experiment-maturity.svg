@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Chaos experiment maturity model</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Chaos Experiment Maturity Model</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Four stages from manual game days to resilient-by-default, with increasing complexity and confidence</text>
+
+  <!-- Axes -->
+  <line x1="80" y1="420" x2="870" y2="420" stroke="#1a1822" stroke-width="1.5" opacity="0.3"/>
+  <line x1="80" y1="80" x2="80" y2="420" stroke="#1a1822" stroke-width="1.5" opacity="0.3"/>
+  <text x="470" y="445" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Time and Organizational Investment</text>
+  <text x="35" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822" transform="rotate(-90, 35, 250)">Maturity Level</text>
+
+  <!-- Arrow on Y axis -->
+  <polygon points="80,75 75,90 85,90" fill="#1a1822" opacity="0.5"/>
+  <!-- Arrow on X axis -->
+  <polygon points="875,420 860,415 860,425" fill="#1a1822" opacity="0.5"/>
+
+  <!-- Maturity curve - step function -->
+  <!-- Stage 1 -->
+  <rect x="100" y="340" width="180" height="75" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="100" y="340" width="180" height="28" rx="12" fill="#cc4444"/>
+  <rect x="100" y="360" width="180" height="8" fill="#cc4444"/>
+  <text x="190" y="360" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Stage 1: Manual Game Days</text>
+  <text x="190" y="385" text-anchor="middle" font-size="9" fill="#1a1822">Scheduled war games</text>
+  <text x="190" y="398" text-anchor="middle" font-size="9" fill="#1a1822">Manual fault injection</text>
+  <text x="190" y="411" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">Complexity: Low</text>
+
+  <!-- Stage 2 -->
+  <rect x="300" y="260" width="180" height="75" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="300" y="260" width="180" height="28" rx="12" fill="#f0ad4e"/>
+  <rect x="300" y="280" width="180" height="8" fill="#f0ad4e"/>
+  <text x="390" y="280" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Stage 2: Automated Experiments</text>
+  <text x="390" y="305" text-anchor="middle" font-size="9" fill="#1a1822">CI/CD integrated chaos</text>
+  <text x="390" y="318" text-anchor="middle" font-size="9" fill="#1a1822">Parameterized experiments</text>
+  <text x="390" y="331" text-anchor="middle" font-size="9" fill="#f0ad4e" font-weight="600">Complexity: Medium</text>
+
+  <!-- Stage 3 -->
+  <rect x="500" y="180" width="180" height="75" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="500" y="180" width="180" height="28" rx="12" fill="#6d5bd0"/>
+  <rect x="500" y="200" width="180" height="8" fill="#6d5bd0"/>
+  <text x="590" y="200" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Stage 3: Continuous Chaos</text>
+  <text x="590" y="225" text-anchor="middle" font-size="9" fill="#1a1822">Always-running experiments</text>
+  <text x="590" y="238" text-anchor="middle" font-size="9" fill="#1a1822">Production fault injection</text>
+  <text x="590" y="251" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">Complexity: High</text>
+
+  <!-- Stage 4 -->
+  <rect x="700" y="100" width="180" height="75" rx="12" fill="#4caf50"/>
+  <text x="790" y="128" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Stage 4: Resilient by Default</text>
+  <text x="790" y="150" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Self-healing, chaos-proof</text>
+  <text x="790" y="163" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">Automated resilience</text>
+  <text x="790" y="173" text-anchor="middle" font-size="9" fill="#ffffff" font-weight="600">Confidence: Very High</text>
+
+  <!-- Connecting arrows between stages -->
+  <line x1="280" y1="340" x2="300" y2="310" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowP)"/>
+  <line x1="480" y1="260" x2="500" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowP)"/>
+  <line x1="680" y1="180" x2="700" y2="150" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowG)"/>
+
+  <defs>
+    <marker id="arrowP" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="arrowR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- Confidence curve overlay -->
+  <path d="M 190 340 Q 390 270 590 190 Q 790 115 880 105" fill="none" stroke="#4caf50" stroke-width="2.5" stroke-dasharray="6 3" opacity="0.5"/>
+  <text x="750" y="100" font-size="9" fill="#4caf50" font-weight="600">Confidence</text>
+
+  <!-- Complexity curve -->
+  <path d="M 190 370 Q 390 310 590 250 Q 790 170 880 140" fill="none" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="6 3" opacity="0.5"/>
+  <text x="750" y="135" font-size="9" fill="#cc4444" font-weight="600">Complexity</text>
+
+  <!-- Stage transition markers -->
+  <rect x="100" y="80" width="220" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="210" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Key Transition: Stage 1 -&gt; 2</text>
+  <text x="210" y="118" text-anchor="middle" font-size="9" fill="#1a1822">Invest in tooling, automate experiments</text>
+
+  <rect x="340" y="80" width="220" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Key Transition: Stage 2 -&gt; 3</text>
+  <text x="450" y="118" text-anchor="middle" font-size="9" fill="#1a1822">Run in production, add guardrails</text>
+
+  <rect x="580" y="80" width="220" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="690" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Key Transition: Stage 3 -&gt; 4</text>
+  <text x="690" y="118" text-anchor="middle" font-size="9" fill="#1a1822">Build self-healing, reduce experiment need</text>
+</svg>

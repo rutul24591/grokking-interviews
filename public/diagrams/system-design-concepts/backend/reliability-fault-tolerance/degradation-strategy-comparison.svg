@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1a2e">Degradation Strategy Comparison</text>
+  <text x="450" y="68" text-anchor="middle" font-size="14" fill="#555">Four approaches to handling partial system failures with trade-offs</text>
+
+  <!-- Column 1: Return Cached Data -->
+  <rect x="30" y="100" width="210" height="370" rx="12" fill="#fff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="100" width="210" height="40" rx="12" fill="#4caf50"/>
+  <rect x="30" y="125" width="210" height="15" fill="#4caf50"/>
+  <text x="135" y="126" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Return Cached Data</text>
+
+  <!-- Diagram -->
+  <rect x="50" y="155" width="170" height="70" rx="8" fill="#f0f9f0" stroke="#4caf50" stroke-width="1"/>
+  <text x="135" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Request arrives</text>
+  <text x="135" y="200" text-anchor="middle" font-size="10" fill="#444">Primary service down</text>
+  <text x="135" y="215" text-anchor="middle" font-size="10" fill="#444">Return cached response</text>
+
+  <!-- Trade-offs -->
+  <rect x="50" y="245" width="170" height="110" rx="8" fill="#f8f8f8"/>
+  <text x="135" y="268" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">User Experience</text>
+  <text x="135" y="288" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold">Fast response</text>
+  <text x="135" y="308" text-anchor="middle" font-size="10" fill="#444">Slightly stale data</text>
+
+  <text x="135" y="335" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Data Freshness</text>
+  <text x="135" y="355" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="bold">Stale (TTL-based)</text>
+
+  <!-- Column 2: Return Partial Response -->
+  <rect x="260" y="100" width="210" height="370" rx="12" fill="#fff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="260" y="100" width="210" height="40" rx="12" fill="#f0ad4e"/>
+  <rect x="260" y="125" width="210" height="15" fill="#f0ad4e"/>
+  <text x="365" y="126" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Return Partial Response</text>
+
+  <!-- Diagram -->
+  <rect x="280" y="155" width="170" height="70" rx="8" fill="#fef8ef" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="365" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#f0ad4e">Request arrives</text>
+  <text x="365" y="200" text-anchor="middle" font-size="10" fill="#444">Service B degraded</text>
+  <text x="365" y="215" text-anchor="middle" font-size="10" fill="#444">Return A + placeholder</text>
+
+  <!-- Trade-offs -->
+  <rect x="280" y="245" width="170" height="110" rx="8" fill="#f8f8f8"/>
+  <text x="365" y="268" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">User Experience</text>
+  <text x="365" y="288" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold">Partial functionality</text>
+  <text x="365" y="308" text-anchor="middle" font-size="10" fill="#444">Missing sections shown</text>
+
+  <text x="365" y="335" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Data Freshness</text>
+  <text x="365" y="355" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold">Fresh for available</text>
+
+  <!-- Column 3: Return Error with Retry -->
+  <rect x="490" y="100" width="210" height="370" rx="12" fill="#fff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="490" y="100" width="210" height="40" rx="12" fill="#cc4444"/>
+  <rect x="490" y="125" width="210" height="15" fill="#cc4444"/>
+  <text x="595" y="126" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Error + Retry</text>
+
+  <!-- Diagram -->
+  <rect x="510" y="155" width="170" height="70" rx="8" fill="#fef0f0" stroke="#cc4444" stroke-width="1"/>
+  <text x="595" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc4444">Request arrives</text>
+  <text x="595" y="200" text-anchor="middle" font-size="10" fill="#444">Service unavailable</text>
+  <text x="595" y="215" text-anchor="middle" font-size="10" fill="#444">503 + Retry-After header</text>
+
+  <!-- Trade-offs -->
+  <rect x="510" y="245" width="170" height="110" rx="8" fill="#f8f8f8"/>
+  <text x="595" y="268" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">User Experience</text>
+  <text x="595" y="288" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="bold">Explicit failure</text>
+  <text x="595" y="308" text-anchor="middle" font-size="10" fill="#444">User can retry later</text>
+
+  <text x="595" y="335" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Data Freshness</text>
+  <text x="595" y="355" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="bold">No data returned</text>
+
+  <!-- Column 4: Queue for Later -->
+  <rect x="720" y="100" width="150" height="370" rx="12" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="720" y="100" width="150" height="40" rx="12" fill="#6d5bd0"/>
+  <rect x="720" y="125" width="150" height="15" fill="#6d5bd0"/>
+  <text x="795" y="126" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Queue for Later</text>
+
+  <!-- Diagram -->
+  <rect x="735" y="155" width="120" height="70" rx="8" fill="#f8f7fc" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="795" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Request arrives</text>
+  <text x="795" y="200" text-anchor="middle" font-size="10" fill="#444">Enqueue request</text>
+  <text x="795" y="215" text-anchor="middle" font-size="10" fill="#444">Process when ready</text>
+
+  <!-- Trade-offs -->
+  <rect x="735" y="245" width="120" height="110" rx="8" fill="#f8f8f8"/>
+  <text x="795" y="268" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">User Experience</text>
+  <text x="795" y="288" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="bold">Async, delayed</text>
+  <text x="795" y="308" text-anchor="middle" font-size="10" fill="#444">Eventual processing</text>
+
+  <text x="795" y="335" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Data Freshness</text>
+  <text x="795" y="355" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold">Eventually fresh</text>
+</svg>

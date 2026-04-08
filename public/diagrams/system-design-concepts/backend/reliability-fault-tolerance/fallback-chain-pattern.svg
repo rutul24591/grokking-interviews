@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4caf50"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#cc4444"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1a2e">Fallback Chain Pattern</text>
+  <text x="450" y="68" text-anchor="middle" font-size="14" fill="#555">Cascading fallback strategy: try primary, then secondary, then stale data, then graceful error</text>
+
+  <!-- Level 1: Primary Service -->
+  <rect x="350" y="110" width="200" height="80" rx="12" fill="#fff" stroke="#4caf50" stroke-width="2.5"/>
+  <text x="450" y="140" text-anchor="middle" font-size="15" font-weight="bold" fill="#4caf50">Primary Service</text>
+  <text x="450" y="160" text-anchor="middle" font-size="12" fill="#444">Live data, full response</text>
+  <text x="450" y="178" text-anchor="middle" font-size="11" fill="#666">Latency: ~50ms</text>
+
+  <!-- Arrow down - success -->
+  <line x1="450" y1="190" x2="450" y2="225" stroke="#4caf50" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="470" y="212" font-size="10" fill="#4caf50" font-weight="bold">Success</text>
+
+  <!-- Arrow down - fail -->
+  <line x1="550" y1="150" x2="650" y2="150" stroke="#cc4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="600" y="143" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="bold">If fails</text>
+
+  <!-- Level 2: Secondary Cache -->
+  <rect x="650" y="110" width="200" height="80" rx="12" fill="#fff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="750" y="140" text-anchor="middle" font-size="15" font-weight="bold" fill="#f0ad4e">Secondary Cache</text>
+  <text x="750" y="160" text-anchor="middle" font-size="12" fill="#444">Recently cached data</text>
+  <text x="750" y="178" text-anchor="middle" font-size="11" fill="#666">Latency: ~5ms</text>
+
+  <!-- Arrow down from cache - fail -->
+  <line x1="750" y1="190" x2="750" y2="230" stroke="#cc4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="770" y="215" font-size="10" fill="#cc4444" font-weight="bold">If cache miss</text>
+
+  <!-- Level 3: Stale Data -->
+  <rect x="650" y="230" width="200" height="80" rx="12" fill="#fff" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="750" y="260" text-anchor="middle" font-size="15" font-weight="bold" fill="#f0ad4e">Stale Data Fallback</text>
+  <text x="750" y="280" text-anchor="middle" font-size="12" fill="#444">Old cached response (TTL expired)</text>
+  <text x="750" y="298" text-anchor="middle" font-size="11" fill="#666">Marked as possibly stale</text>
+
+  <!-- Arrow down - fail -->
+  <line x1="750" y1="310" x2="750" y2="350" stroke="#cc4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="770" y="335" font-size="10" fill="#cc4444" font-weight="bold">If no stale data</text>
+
+  <!-- Level 4: Friendly Error -->
+  <rect x="650" y="350" width="200" height="80" rx="12" fill="#fff" stroke="#cc4444" stroke-width="2"/>
+  <text x="750" y="380" text-anchor="middle" font-size="15" font-weight="bold" fill="#cc4444">Graceful Error</text>
+  <text x="750" y="400" text-anchor="middle" font-size="12" fill="#444">Friendly error message</text>
+  <text x="750" y="418" text-anchor="middle" font-size="11" fill="#666">Retry suggestion + ETA</text>
+
+  <!-- Success path arrows -->
+  <line x1="350" y1="150" x2="200" y2="150" stroke="#4caf50" stroke-width="2"/>
+  <line x1="200" y1="150" x2="200" y2="350" stroke="#4caf50" stroke-width="2"/>
+  <line x1="200" y1="350" x2="350" y2="350" stroke="#4caf50" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Response boxes -->
+  <rect x="50" y="120" width="150" height="60" rx="8" fill="#f0f9f0" stroke="#4caf50" stroke-width="1"/>
+  <text x="125" y="145" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Response: 200 OK</text>
+  <text x="125" y="165" text-anchor="middle" font-size="10" fill="#444">Fresh data returned</text>
+
+  <rect x="50" y="200" width="150" height="60" rx="8" fill="#fef8ef" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="125" y="225" text-anchor="middle" font-size="11" font-weight="bold" fill="#f0ad4e">Response: 200 OK</text>
+  <text x="125" y="245" text-anchor="middle" font-size="10" fill="#444">Cached data returned</text>
+
+  <rect x="50" y="280" width="150" height="60" rx="8" fill="#fef8ef" stroke="#f0ad4e" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="125" y="305" text-anchor="middle" font-size="11" font-weight="bold" fill="#f0ad4e">Response: 200 OK</text>
+  <text x="125" y="325" text-anchor="middle" font-size="10" fill="#444">Stale data, marked</text>
+
+  <rect x="50" y="360" width="150" height="60" rx="8" fill="#fef0f0" stroke="#cc4444" stroke-width="1"/>
+  <text x="125" y="385" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc4444">Response: 503</text>
+  <text x="125" y="405" text-anchor="middle" font-size="10" fill="#444">Retry after 30s</text>
+</svg>

@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Dead Letter Queue architecture patterns comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">DLQ Architecture Patterns</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Three common approaches to dead letter queue design and their trade-offs</text>
+
+  <!-- Pattern 1: Separate DLQ per Queue -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Pattern 1: Separate DLQ per Queue</text>
+
+  <!-- Diagram -->
+  <rect x="60" y="130" width="90" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="105" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Queue A</text>
+  <text x="105" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Orders</text>
+
+  <rect x="60" y="190" width="90" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="105" y="210" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Queue B</text>
+  <text x="105" y="225" text-anchor="middle" font-size="9" fill="#1a1822">Payments</text>
+
+  <rect x="60" y="250" width="90" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="105" y="270" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Queue C</text>
+  <text x="105" y="285" text-anchor="middle" font-size="9" fill="#1a1822">Notifications</text>
+
+  <line x1="150" y1="152" x2="190" y2="152" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+  <line x1="150" y1="212" x2="190" y2="212" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+  <line x1="150" y1="272" x2="190" y2="272" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+
+  <rect x="190" y="130" width="90" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="150" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">DLQ-A</text>
+  <rect x="190" y="190" width="90" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="210" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">DLQ-B</text>
+  <rect x="190" y="250" width="90" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="270" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">DLQ-C</text>
+
+  <!-- Pros/Cons -->
+  <rect x="50" y="320" width="230" height="60" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Pros</text>
+  <text x="165" y="357" text-anchor="middle" font-size="9" fill="#1a1822">Isolation, easy debugging,</text>
+  <text x="165" y="371" text-anchor="middle" font-size="9" fill="#1a1822">per-queue retention policies</text>
+
+  <rect x="50" y="395" width="230" height="60" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="415" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Cons</text>
+  <text x="165" y="432" text-anchor="middle" font-size="9" fill="#1a1822">Resource overhead, complex</text>
+  <text x="165" y="446" text-anchor="middle" font-size="9" fill="#1a1822">operational management</text>
+
+  <!-- Pattern 2: Single Shared DLQ -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="315" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="450" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Pattern 2: Single Shared DLQ</text>
+
+  <!-- Diagram -->
+  <rect x="345" y="130" width="80" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="385" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Queue A</text>
+  <text x="385" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Orders</text>
+
+  <rect x="345" y="190" width="80" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="385" y="210" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Queue B</text>
+  <text x="385" y="225" text-anchor="middle" font-size="9" fill="#1a1822">Payments</text>
+
+  <rect x="345" y="250" width="80" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="385" y="270" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Queue C</text>
+  <text x="385" y="285" text-anchor="middle" font-size="9" fill="#1a1822">Notifications</text>
+
+  <line x1="425" y1="152" x2="490" y2="190" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+  <line x1="425" y1="212" x2="490" y2="200" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+  <line x1="425" y1="272" x2="490" y2="240" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+
+  <rect x="490" y="175" width="75" height="90" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="2"/>
+  <text x="527" y="210" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Shared</text>
+  <text x="527" y="225" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">DLQ</text>
+  <text x="527" y="245" text-anchor="middle" font-size="8" fill="#ffffff" opacity="0.8">All failed msgs</text>
+  <text x="527" y="257" text-anchor="middle" font-size="8" fill="#ffffff" opacity="0.8">converge here</text>
+
+  <!-- Pros/Cons -->
+  <rect x="335" y="320" width="230" height="60" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Pros</text>
+  <text x="450" y="357" text-anchor="middle" font-size="9" fill="#1a1822">Simple, minimal resources,</text>
+  <text x="450" y="371" text-anchor="middle" font-size="9" fill="#1a1822">single monitoring point</text>
+
+  <rect x="335" y="395" width="230" height="60" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="450" y="415" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Cons</text>
+  <text x="450" y="432" text-anchor="middle" font-size="9" fill="#1a1822">Hard to debug source,</text>
+  <text x="450" y="446" text-anchor="middle" font-size="9" fill="#1a1822">no isolation, noisy neighbor</text>
+
+  <!-- Pattern 3: DLQ with Auto-Reprocessing -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="600" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="735" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Pattern 3: DLQ with Auto-Reprocess</text>
+
+  <!-- Diagram -->
+  <rect x="630" y="130" width="100" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="680" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Main Queue</text>
+  <text x="680" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Messages in</text>
+
+  <line x1="730" y1="175" x2="730" y2="200" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+
+  <rect x="670" y="200" width="120" height="45" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="730" y="220" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Dead Letter Queue</text>
+  <text x="730" y="235" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Failed messages</text>
+
+  <line x1="730" y1="245" x2="730" y2="270" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+  <text x="755" y="262" font-size="9" fill="#f0ad4e" font-weight="600">Auto-retry</text>
+
+  <rect x="670" y="270" width="120" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1.5"/>
+  <text x="730" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Reprocessing Engine</text>
+  <text x="730" y="305" text-anchor="middle" font-size="9" fill="#1a1822">Scheduled retry</text>
+
+  <line x1="730" y1="315" x2="730" y2="340" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowDLQ2)"/>
+  <text x="755" y="332" font-size="9" fill="#4caf50" font-weight="600">Success</text>
+
+  <rect x="670" y="340" width="120" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="730" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Back to Main Queue</text>
+  <text x="730" y="375" text-anchor="middle" font-size="9" fill="#1a1822">Or archive if fatal</text>
+
+  <!-- Pros/Cons -->
+  <rect x="620" y="320" width="230" height="60" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Pros</text>
+  <text x="735" y="357" text-anchor="middle" font-size="9" fill="#1a1822">Self-healing, reduces manual</text>
+  <text x="735" y="371" text-anchor="middle" font-size="9" fill="#1a1822">ops, handles transient faults</text>
+
+  <rect x="620" y="395" width="230" height="60" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="735" y="415" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Cons</text>
+  <text x="735" y="432" text-anchor="middle" font-size="9" fill="#1a1822">Complex setup, risk of</text>
+  <text x="735" y="446" text-anchor="middle" font-size="9" fill="#1a1822">infinite retry loops</text>
+
+  <defs>
+    <marker id="arrowDLQ2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

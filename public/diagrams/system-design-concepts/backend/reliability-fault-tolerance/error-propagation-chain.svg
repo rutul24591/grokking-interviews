@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Error propagation chain through microservices to API gateway</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Error Propagation Chain</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">How errors flow through a microservice architecture, gaining context at each hop</text>
+
+  <!-- Service A: Origin of Error -->
+  <rect x="30" y="100" width="200" height="120" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="100" width="200" height="35" rx="12" fill="#cc4444"/>
+  <rect x="30" y="125" width="200" height="10" fill="#cc4444"/>
+  <text x="130" y="123" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Service A: Origin</text>
+
+  <rect x="50" y="150" width="160" height="55" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="130" y="170" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Database Timeout</text>
+  <text x="130" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Query exceeds 30s limit,</text>
+  <text x="130" y="201" text-anchor="middle" font-size="9" fill="#1a1822">connection pool saturated</text>
+
+  <!-- Arrow A->B -->
+  <line x1="230" y1="160" x2="300" y2="160" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowEP)"/>
+  <text x="265" y="150" font-size="9" fill="#cc4444" font-weight="600">Throws</text>
+
+  <!-- Service B: Catches and Wraps -->
+  <rect x="300" y="100" width="200" height="120" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="300" y="100" width="200" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="300" y="125" width="200" height="10" fill="#f0ad4e"/>
+  <text x="400" y="123" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Service B: Wraps</text>
+
+  <rect x="320" y="150" width="160" height="55" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="400" y="170" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Catches &amp; Re-wraps</text>
+  <text x="400" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Wraps in DomainException,</text>
+  <text x="400" y="201" text-anchor="middle" font-size="9" fill="#1a1822">adds service context</text>
+
+  <!-- Arrow B->C -->
+  <line x1="500" y1="160" x2="570" y2="160" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowEP)"/>
+  <text x="535" y="150" font-size="9" fill="#f0ad4e" font-weight="600">Propagates</text>
+
+  <!-- Service C: Adds Context -->
+  <rect x="570" y="100" width="200" height="120" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="570" y="100" width="200" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="570" y="125" width="200" height="10" fill="#6d5bd0"/>
+  <text x="670" y="123" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Service C: Enriches</text>
+
+  <rect x="590" y="150" width="160" height="55" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="670" y="170" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Adds Request Context</text>
+  <text x="670" y="188" text-anchor="middle" font-size="9" fill="#1a1822">Adds trace ID, user ID,</text>
+  <text x="670" y="201" text-anchor="middle" font-size="9" fill="#1a1822">request metadata</text>
+
+  <!-- Arrow C->Gateway -->
+  <line x1="770" y1="160" x2="810" y2="160" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEP)"/>
+
+  <!-- API Gateway -->
+  <rect x="810" y="100" width="70" height="120" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="845" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">API</text>
+  <text x="845" y="160" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">GW</text>
+  <text x="845" y="180" text-anchor="middle" font-size="8" fill="#ffffff" opacity="0.8">Formats</text>
+  <text x="845" y="192" text-anchor="middle" font-size="8" fill="#ffffff" opacity="0.8">response</text>
+
+  <!-- Down arrow to Client -->
+  <line x1="845" y1="220" x2="845" y2="270" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowEP)"/>
+  <text x="870" y="250" font-size="9" fill="#cc4444" font-weight="600">JSON Response</text>
+
+  <!-- Structured Error Response -->
+  <rect x="680" y="270" width="200" height="200" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="680" y="270" width="200" height="30" rx="12" fill="#cc4444"/>
+  <rect x="680" y="295" width="200" height="5" fill="#cc4444"/>
+  <text x="780" y="290" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Structured Error Response</text>
+
+  <text x="700" y="320" font-size="9" fill="#1a1822" font-weight="600">{</text>
+  <text x="710" y="338" font-size="9" fill="#cc4444">  "error": "SERVICE_UNAVAILABLE",</text>
+  <text x="710" y="353" font-size="9" fill="#1a1822">  "message": "Database timeout",</text>
+  <text x="710" y="368" font-size="9" fill="#1a1822">  "trace_id": "abc-123-def",</text>
+  <text x="710" y="383" font-size="9" fill="#1a1822">  "service": "ServiceA",</text>
+  <text x="710" y="398" font-size="9" fill="#1a1822">  "user_id": "user-456",</text>
+  <text x="710" y="413" font-size="9" fill="#1a1822">  "timestamp": "2024-01-15T...",</text>
+  <text x="710" y="428" font-size="9" fill="#1a1822">  "retry_after": 30</text>
+  <text x="700" y="448" font-size="9" fill="#1a1822" font-weight="600">}</text>
+
+  <!-- Client -->
+  <rect x="30" y="300" width="200" height="170" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="300" width="200" height="35" rx="12" fill="#4caf50"/>
+  <rect x="30" y="325" width="200" height="10" fill="#4caf50"/>
+  <text x="130" y="323" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Client</text>
+
+  <rect x="50" y="350" width="160" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="130" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Receives Structured</text>
+  <text x="130" y="385" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Error JSON</text>
+
+  <rect x="50" y="410" width="160" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Client Actions</text>
+  <text x="130" y="447" text-anchor="middle" font-size="9" fill="#1a1822">Show friendly error,</text>
+  <text x="130" y="460" text-anchor="middle" font-size="9" fill="#1a1822">log trace_id for support</text>
+
+  <!-- Context Enrichment Flow -->
+  <text x="450" y="475" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Each service layer adds context, making debugging and correlation possible in distributed systems</text>
+
+  <defs>
+    <marker id="arrowEP" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

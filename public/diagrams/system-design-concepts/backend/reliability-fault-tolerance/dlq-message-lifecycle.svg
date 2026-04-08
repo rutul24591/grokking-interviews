@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Dead Letter Queue message lifecycle from production through reprocessing</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Dead Letter Queue: Message Lifecycle</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">How messages flow through production, failure, retries, DLQ, and reprocessing</text>
+
+  <!-- Step 1: Producer -->
+  <rect x="30" y="90" width="120" height="80" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="90" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Producer</text>
+  <text x="90" y="140" text-anchor="middle" font-size="10" fill="#1a1822">Publishes message</text>
+  <text x="90" y="155" text-anchor="middle" font-size="10" fill="#1a1822">to main queue</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="150" y1="130" x2="195" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDLQ)"/>
+
+  <!-- Step 2: Main Queue -->
+  <rect x="195" y="90" width="120" height="80" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="255" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Main Queue</text>
+  <text x="255" y="140" text-anchor="middle" font-size="10" fill="#1a1822">Holds messages</text>
+  <text x="255" y="155" text-anchor="middle" font-size="10" fill="#1a1822">awaiting consumption</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="315" y1="130" x2="360" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDLQ)"/>
+
+  <!-- Step 3: Consumer Fails -->
+  <rect x="360" y="90" width="120" height="80" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="420" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Consumer Fails</text>
+  <text x="420" y="140" text-anchor="middle" font-size="10" fill="#1a1822">Processing error,</text>
+  <text x="420" y="155" text-anchor="middle" font-size="10" fill="#1a1822">timeout, or crash</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="420" y1="170" x2="420" y2="210" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDLQ)"/>
+  <text x="445" y="195" font-size="9" fill="#cc4444" font-weight="600">NACK</text>
+
+  <!-- Step 4: Retry Loop -->
+  <rect x="360" y="210" width="120" height="80" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="420" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">Retry N Times</text>
+  <text x="420" y="260" text-anchor="middle" font-size="10" fill="#1a1822">Exponential backoff,</text>
+  <text x="420" y="275" text-anchor="middle" font-size="10" fill="#1a1822">max 3-5 attempts</text>
+
+  <!-- Arrow 4->5 -->
+  <line x1="420" y1="290" x2="420" y2="330" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDLQ)"/>
+  <text x="445" y="315" font-size="9" fill="#cc4444" font-weight="600">All retries</text>
+  <text x="445" y="326" font-size="9" fill="#cc4444" font-weight="600">exhausted</text>
+
+  <!-- Step 5: DLQ -->
+  <rect x="360" y="330" width="120" height="80" rx="8" fill="#cc4444" stroke="#cc4444" stroke-width="2"/>
+  <text x="420" y="360" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Dead Letter</text>
+  <text x="420" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Queue (DLQ)</text>
+  <text x="420" y="395" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Message parked here</text>
+
+  <!-- Arrow 5->6 -->
+  <line x1="480" y1="370" x2="540" y2="370" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDLQ)"/>
+
+  <!-- Step 6: Reprocessing Pipeline -->
+  <rect x="540" y="300" width="150" height="140" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="615" y="325" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Reprocessing Pipeline</text>
+  
+  <rect x="555" y="340" width="120" height="35" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="615" y="355" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Alert &amp; Investigate</text>
+  <text x="615" y="368" text-anchor="middle" font-size="8" fill="#1a1822">Monitor DLQ depth</text>
+
+  <rect x="555" y="385" width="120" height="35" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="615" y="400" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Fix Root Cause</text>
+  <text x="615" y="413" text-anchor="middle" font-size="8" fill="#1a1822">Patch bug/config</text>
+
+  <!-- Arrow 6->7a (Success path) -->
+  <line x1="690" y1="370" x2="740" y2="370" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowDLQ)"/>
+  <text x="715" y="362" font-size="9" fill="#4caf50" font-weight="600">Fixed</text>
+
+  <!-- Step 7a: Back to Main Queue -->
+  <rect x="740" y="330" width="130" height="80" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="805" y="360" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Back to Main</text>
+  <text x="805" y="375" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Queue</text>
+  <text x="805" y="395" text-anchor="middle" font-size="10" fill="#1a1822">Replay message</text>
+
+  <!-- Arrow 7a->2 (loop back) -->
+  <path d="M 805 330 L 805 280 L 255 280 L 255 170" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="5,4" fill="none" marker-end="url(#arrowDLQgreen)"/>
+  <text x="540" y="273" font-size="9" fill="#4caf50" font-weight="600">Re-enqueue</text>
+
+  <!-- Arrow 6->7b (Archive path) -->
+  <line x1="615" y1="300" x2="615" y2="260" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowDLQ)"/>
+
+  <!-- Step 7b: Archive -->
+  <rect x="540" y="180" width="150" height="70" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="615" y="205" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Archive / Discard</text>
+  <text x="615" y="225" text-anchor="middle" font-size="10" fill="#1a1822">Unrecoverable messages</text>
+  <text x="615" y="240" text-anchor="middle" font-size="10" fill="#1a1822">stored or purged</text>
+
+  <!-- Legend -->
+  <rect x="30" y="440" width="12" height="12" rx="3" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="50" y="450" font-size="9" fill="#1a1822">Success path</text>
+  <rect x="140" y="440" width="12" height="12" rx="3" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="160" y="450" font-size="9" fill="#1a1822">Failure path</text>
+  <rect x="250" y="440" width="12" height="12" rx="3" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="270" y="450" font-size="9" fill="#1a1822">Retry phase</text>
+  <rect x="360" y="440" width="40" height="12" rx="3" fill="#4caf50" stroke-dasharray="4,3"/>
+  <text x="408" y="450" font-size="9" fill="#1a1822">Loop-back replay</text>
+
+  <defs>
+    <marker id="arrowDLQ" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowDLQgreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
+</svg>

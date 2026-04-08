@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">HTTP Method Idempotency</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#6d5bd0">HTTP specification defines which methods are idempotent and which are not</text>
+
+  <defs>
+    <marker id="hm-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- IDEMPOTENT Methods Card -->
+  <rect x="40" y="85" width="400" height="380" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="40" y="85" width="400" height="40" rx="10" fill="#4caf50"/>
+  <rect x="40" y="110" width="400" height="8" fill="#4caf50"/>
+  <text x="240" y="112" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Idempotent Methods</text>
+  <text x="240" y="142" text-anchor="middle" font-size="11" fill="#4caf50" font-weight="600">Same result on repeated calls</text>
+
+  <!-- GET -->
+  <rect x="60" y="155" width="360" height="55" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1.5"/>
+  <rect x="72" y="165" width="50" height="28" rx="4" fill="#4caf50"/>
+  <text x="97" y="184" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">GET</text>
+  <text x="135" y="177" font-size="10" fill="#1a1822" font-weight="600">Read resource</text>
+  <text x="135" y="195" font-size="9" fill="#6d5bd0">GET /users/42 -- always returns same data, no state change</text>
+  <text x="380" y="182" text-anchor="end" font-size="10" font-weight="600" fill="#4caf50">Idempotent</text>
+
+  <!-- PUT -->
+  <rect x="60" y="220" width="360" height="55" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1.5"/>
+  <rect x="72" y="230" width="50" height="28" rx="4" fill="#4caf50"/>
+  <text x="97" y="249" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PUT</text>
+  <text x="135" y="242" font-size="10" fill="#1a1822" font-weight="600">Replace resource</text>
+  <text x="135" y="260" font-size="9" fill="#6d5bd0">PUT /users/42 {name:"A"} -- same state each time</text>
+  <text x="380" y="247" text-anchor="end" font-size="10" font-weight="600" fill="#4caf50">Idempotent</text>
+
+  <!-- DELETE -->
+  <rect x="60" y="285" width="360" height="55" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1.5"/>
+  <rect x="72" y="295" width="65" height="28" rx="4" fill="#4caf50"/>
+  <text x="104" y="314" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">DELETE</text>
+  <text x="145" y="307" font-size="10" fill="#1a1822" font-weight="600">Remove resource</text>
+  <text x="145" y="325" font-size="9" fill="#6d5bd0">DELETE /users/42 -- first deletes, subsequent are no-ops</text>
+  <text x="380" y="312" text-anchor="end" font-size="10" font-weight="600" fill="#4caf50">Idempotent</text>
+
+  <!-- HEAD, OPTIONS -->
+  <rect x="60" y="350" width="360" height="55" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1.5"/>
+  <rect x="72" y="360" width="55" height="28" rx="4" fill="#4caf50"/>
+  <text x="99" y="379" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">HEAD</text>
+  <rect x="132" y="360" width="70" height="28" rx="4" fill="#4caf50"/>
+  <text x="167" y="379" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">OPTIONS</text>
+  <text x="215" y="372" font-size="10" fill="#1a1822" font-weight="600">Safe introspection</text>
+  <text x="215" y="390" font-size="9" fill="#6d5bd0">Headers/capabilities only -- no state change</text>
+  <text x="380" y="377" text-anchor="end" font-size="10" font-weight="600" fill="#4caf50">Idempotent</text>
+
+  <!-- NOT IDEMPOTENT Methods Card -->
+  <rect x="460" y="85" width="400" height="380" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="460" y="85" width="400" height="40" rx="10" fill="#cc4444"/>
+  <rect x="460" y="110" width="400" height="8" fill="#cc4444"/>
+  <text x="660" y="112" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Non-Idempotent Methods</text>
+  <text x="660" y="142" text-anchor="middle" font-size="11" fill="#cc4444" font-weight="600">Different results on repeated calls</text>
+
+  <!-- POST -->
+  <rect x="480" y="155" width="360" height="70" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1.5"/>
+  <rect x="492" y="165" width="55" height="28" rx="4" fill="#cc4444"/>
+  <text x="519" y="184" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">POST</text>
+  <text x="560" y="177" font-size="10" fill="#1a1822" font-weight="600">Create / trigger action</text>
+  <text x="560" y="195" font-size="9" fill="#6d5bd0">POST /orders {item:"X"} -- creates new order each time</text>
+  <text x="560" y="210" font-size="9" fill="#cc4444">Retry = duplicate order, duplicate charge</text>
+  <text x="800" y="190" text-anchor="end" font-size="10" font-weight="600" fill="#cc4444">NOT idempotent</text>
+
+  <!-- PATCH -->
+  <rect x="480" y="240" width="360" height="70" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1.5"/>
+  <rect x="492" y="250" width="65" height="28" rx="4" fill="#f0ad4e"/>
+  <text x="524" y="269" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PATCH</text>
+  <text x="570" y="262" font-size="10" fill="#1a1822" font-weight="600">Partial update</text>
+  <text x="570" y="280" font-size="9" fill="#6d5bd0">PATCH /users/42 {age: +1} -- increments each call</text>
+  <text x="570" y="295" font-size="9" fill="#f0ad4e">Conditional: may be idempotent if absolute values</text>
+  <text x="800" y="280" text-anchor="end" font-size="10" font-weight="600" fill="#f0ad4e">Conditional</text>
+
+  <!-- Key Insight Box -->
+  <rect x="480" y="325" width="360" height="120" rx="8" fill="#6d5bd0" opacity="0.06" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="660" y="350" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Staff-Level Insight</text>
+  <text x="660" y="372" text-anchor="middle" font-size="10" fill="#1a1822">HTTP semantics are a hint, not a guarantee</text>
+  <text x="660" y="392" text-anchor="middle" font-size="10" fill="#1a1822">PUT may trigger non-idempotent side effects</text>
+  <text x="660" y="408" text-anchor="middle" font-size="10" fill="#1a1822">POST can be made idempotent with idempotency keys</text>
+  <text x="660" y="428" text-anchor="middle" font-size="10" fill="#6d5bd0">Implement server-side dedup for all side-effecting ops</text>
+
+  <!-- Bottom comparison -->
+  <rect x="40" y="478" width="820" height="18" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="491" font-size="9" fill="#1a1822" font-weight="600">Key takeaway:</text>
+  <text x="170" y="491" font-size="9" fill="#1a1822">GET/PUT/DELETE are safe to retry. POST requires idempotency keys for safe retry. PATCH depends on the patch semantics.</text>
+</svg>
