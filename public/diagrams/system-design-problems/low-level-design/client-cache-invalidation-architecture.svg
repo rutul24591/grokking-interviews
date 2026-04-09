@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Client-Side Cache Invalidation Architecture</text>
+  
+  <!-- Cache Store (center) -->
+  <rect x="250" y="60" width="300" height="100" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2.5"/>
+  <text x="400" y="90" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Cache Store</text>
+  <text x="400" y="110" font-size="11" text-anchor="middle" fill="#666666">Map&lt;queryKey, CacheEntry&gt;</text>
+  <text x="400" y="128" font-size="10" text-anchor="middle" fill="#666666">Data, Timestamp, TTL, Tags, Status</text>
+  <text x="400" y="145" font-size="10" text-anchor="middle" fill="#666666">O(1) Lookup, O(1) Insert</text>
+  
+  <!-- Tag Index (left) -->
+  <rect x="40" y="200" width="180" height="100" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="130" y="230" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tag Index</text>
+  <text x="130" y="252" font-size="10" text-anchor="middle" fill="#666666">Map&lt;tag, Set&lt;key&gt;&gt;</text>
+  <text x="130" y="270" font-size="10" text-anchor="middle" fill="#666666">O(k) Tag Invalidation</text>
+  <text x="130" y="288" font-size="10" text-anchor="middle" fill="#666666">user → q1, q2, q3</text>
+  
+  <!-- TTL Manager (right) -->
+  <rect x="580" y="200" width="180" height="100" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="670" y="230" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">TTL Manager</text>
+  <text x="670" y="252" font-size="10" text-anchor="middle" fill="#666666">Per-Query TTL</text>
+  <text x="670" y="270" font-size="10" text-anchor="middle" fill="#666666">Age Check, Freshness</text>
+  <text x="670" y="288" font-size="10" text-anchor="middle" fill="#666666">Stale Transitions</text>
+  
+  <!-- Dependency Graph (bottom left) -->
+  <rect x="40" y="340" width="180" height="100" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="130" y="370" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Dependency Graph</text>
+  <text x="130" y="392" font-size="10" text-anchor="middle" fill="#666666">Query Dependencies</text>
+  <text x="130" y="410" font-size="10" text-anchor="middle" fill="#666666">Post → User</text>
+  <text x="130" y="428" font-size="10" text-anchor="middle" fill="#666666">Cascade Invalidation</text>
+  
+  <!-- Refetch Coalescer (bottom center) -->
+  <rect x="260" y="340" width="280" height="100" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="400" y="370" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Refetch Coalescer</text>
+  <text x="400" y="392" font-size="10" text-anchor="middle" fill="#666666">Prevents Duplicate Refetches</text>
+  <text x="400" y="410" font-size="10" text-anchor="middle" fill="#666666">Coalesces Multiple Invalidations</text>
+  <text x="400" y="428" font-size="10" text-anchor="middle" fill="#666666">Single Refetch Per Unique Query</text>
+  
+  <!-- LRU Evictor (bottom right) -->
+  <rect x="580" y="340" width="180" height="100" rx="8" fill="#e0f2f1" stroke="#80cbc4" stroke-width="2"/>
+  <text x="670" y="370" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">LRU Evictor</text>
+  <text x="670" y="392" font-size="10" text-anchor="middle" fill="#666666">Max 1000 Entries</text>
+  <text x="670" y="410" font-size="10" text-anchor="middle" fill="#666666">Doubly-Linked List</text>
+  <text x="670" y="428" font-size="10" text-anchor="middle" fill="#666666">O(1) Eviction</text>
+  
+  <!-- Arrows -->
+  <line x1="250" y1="110" x2="220" y2="250" stroke="#666666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="550" y1="110" x2="580" y2="250" stroke="#666666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="130" y1="300" x2="130" y2="340" stroke="#666666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="400" y1="160" x2="400" y2="340" stroke="#666666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="670" y1="300" x2="670" y2="340" stroke="#666666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  
+  <!-- Lifecycle Flow (bottom) -->
+  <rect x="40" y="480" width="720" height="100" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="505" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Cache Lifecycle Flow</text>
+  <text x="400" y="530" font-size="11" text-anchor="middle" fill="#666666">1. Query → Check Cache (Fresh? Return | Stale? SWR | Missing? Fetch)</text>
+  <text x="400" y="550" font-size="11" text-anchor="middle" fill="#666666">2. API Response → Cache with TTL + Tags → Status: Fresh</text>
+  <text x="400" y="570" font-size="11" text-anchor="middle" fill="#666666">3. TTL Expires → Status: Stale → Next Access: Serve Stale + Background Refetch</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+  </defs>
+</svg>

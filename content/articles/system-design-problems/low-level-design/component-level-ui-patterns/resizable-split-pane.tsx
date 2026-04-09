@@ -11,7 +11,7 @@ export const metadata: ArticleMetadata = {
     "Production-grade resizable split pane with drag-to-resize, min/max constraints, nested layouts, persistence, keyboard support, and accessibility.",
   category: "low-level-design",
   subcategory: "component-level-ui-patterns",
-  slug: "resizeable-split-pane",
+  slug: "resizable-split-pane",
   wordCount: 3200,
   readingTime: 20,
   lastUpdated: "2026-04-03",

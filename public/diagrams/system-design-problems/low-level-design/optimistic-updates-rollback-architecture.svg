@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Optimistic Updates & Rollback Architecture</text>
+  
+  <!-- Three Phase Flow -->
+  <rect x="40" y="70" width="220" height="160" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Phase 1: Optimistic</text>
+  <text x="150" y="125" font-size="11" text-anchor="middle" fill="#666666">Capture rollback snapshot</text>
+  <text x="150" y="145" font-size="11" text-anchor="middle" fill="#666666">Apply expected result</text>
+  <text x="150" y="165" font-size="11" text-anchor="middle" fill="#666666">UI updates instantly</text>
+  <text x="150" y="185" font-size="11" text-anchor="middle" fill="#666666">Synchronous, O(1)</text>
+  
+  <rect x="290" y="70" width="220" height="160" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="400" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Phase 2: Server</text>
+  <text x="400" y="125" font-size="11" text-anchor="middle" fill="#666666">Async API call</text>
+  <text x="400" y="145" font-size="11" text-anchor="middle" fill="#666666">Non-blocking</text>
+  <text x="400" y="165" font-size="11" text-anchor="middle" fill="#666666">AbortController timeout</text>
+  <text x="400" y="185" font-size="11" text-anchor="middle" fill="#666666">200ms - 2s latency</text>
+  
+  <rect x="540" y="70" width="220" height="160" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="650" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Phase 3: Reconcile</text>
+  <text x="650" y="125" font-size="11" text-anchor="middle" fill="#666666">Success: Confirm state</text>
+  <text x="650" y="145" font-size="11" text-anchor="middle" fill="#666666">Failure: Rollback snapshot</text>
+  <text x="650" y="165" font-size="11" text-anchor="middle" fill="#666666">Toast notification</text>
+  <text x="650" y="185" font-size="11" text-anchor="middle" fill="#666666">Retry option</text>
+  
+  <!-- Arrows between phases -->
+  <line x1="260" y1="150" x2="290" y2="150" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="510" y1="150" x2="540" y2="150" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Pending Queue (center) -->
+  <rect x="40" y="270" width="340" height="140" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="210" y="300" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Pending Update Queue</text>
+  
+  <rect x="55" y="315" width="310" height="30" rx="4" fill="#bbdefb"/>
+  <text x="210" y="335" font-size="10" text-anchor="middle" fill="#666666">Update 1: { id, snapshot, optimisticData, mutationFn, status } </text>
+  
+  <rect x="55" y="350" width="310" height="30" rx="4" fill="#bbdefb"/>
+  <text x="210" y="370" font-size="10" text-anchor="middle" fill="#666666">Update 2: { id, snapshot, optimisticData, mutationFn, status } </text>
+  
+  <rect x="55" y="385" width="310" height="20" rx="4" fill="#e3f2fd"/>
+  <text x="210" y="400" font-size="9" text-anchor="middle" fill="#666666">FIFO order, max 10 pending, dependency tracking</text>
+  
+  <!-- Dependency Tracker (right) -->
+  <rect x="420" y="270" width="340" height="140" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="590" y="300" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Dependency Tracker</text>
+  
+  <text x="440" y="330" font-size="11" fill="#666666">Action B depends on Action A</text>
+  <text x="440" y="355" font-size="11" fill="#666666">If A fails → rollback B</text>
+  <text x="440" y="380" font-size="11" fill="#666666">DAG of update dependencies</text>
+  <text x="440" y="405" font-size="11" fill="#666666">Recursive rollback on failure</text>
+  
+  <!-- Success/Failure Paths (bottom) -->
+  <rect x="40" y="450" width="340" height="130" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="480" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Success Path</text>
+  <text x="210" y="505" font-size="11" text-anchor="middle" fill="#666666">Server confirms → Replace optimistic</text>
+  <text x="210" y="525" font-size="11" text-anchor="middle" fill="#666666">Mark confirmed, clear pending</text>
+  <text x="210" y="545" font-size="11" text-anchor="middle" fill="#666666">User sees confirmed state</text>
+  <text x="210" y="565" font-size="11" text-anchor="middle" fill="#666666">No user action needed</text>
+  
+  <rect x="420" y="450" width="340" height="130" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="590" y="480" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Failure Path</text>
+  <text x="590" y="505" font-size="11" text-anchor="middle" fill="#666666">Server error → Restore snapshot</text>
+  <text x="590" y="525" font-size="11" text-anchor="middle" fill="#666666">Rollback dependents</text>
+  <text x="590" y="545" font-size="11" text-anchor="middle" fill="#666666">Toast: "Action failed, retry?"</text>
+  <text x="590" y="565" font-size="11" text-anchor="middle" fill="#666666">Retry button re-runs mutation</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+  </defs>
+</svg>

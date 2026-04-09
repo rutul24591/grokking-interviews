@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Normalized State Architecture</text>
+  
+  <!-- LEFT: Nested API Response (Before) -->
+  <text x="200" y="75" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Before: Nested API Response</text>
+  
+  <rect x="50" y="90" width="300" height="220" rx="6" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="200" y="110" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Post Object</text>
+  
+  <rect x="65" y="120" width="120" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="125" y="140" font-size="10" text-anchor="middle" fill="#1a1a1a">id, title, content</text>
+  
+  <rect x="65" y="155" width="120" height="30" rx="4" fill="#ffcc80"/>
+  <text x="125" y="175" font-size="10" text-anchor="middle" fill="#1a1a1a">author: { User }</text>
+  
+  <rect x="200" y="155" width="120" height="30" rx="4" fill="#ffcc80"/>
+  <text x="260" y="175" font-size="10" text-anchor="middle" fill="#1a1a1a">comments: [...]</text>
+  
+  <rect x="200" y="190" width="120" height="25" rx="4" fill="#ffe0b2"/>
+  <text x="260" y="207" font-size="9" text-anchor="middle" fill="#1a1a1a">Comment 1</text>
+  
+  <rect x="200" y="220" width="120" height="25" rx="4" fill="#ffe0b2"/>
+  <text x="260" y="237" font-size="9" text-anchor="middle" fill="#1a1a1a">Comment 2</text>
+  
+  <rect x="200" y="250" width="120" height="25" rx="4" fill="#ffe0b2"/>
+  <text x="260" y="267" font-size="9" text-anchor="middle" fill="#1a1a1a">Comment N</text>
+  
+  <text x="200" y="295" font-size="10" text-anchor="middle" fill="#d84315">❌ Duplication, Inconsistent Updates</text>
+  
+  <!-- RIGHT: Normalized Tables (After) -->
+  <text x="600" y="75" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">After: Normalized Tables</text>
+  
+  <!-- Posts Table -->
+  <rect x="450" y="90" width="280" height="75" rx="6" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="590" y="112" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Posts Table</text>
+  <text x="590" y="132" font-size="10" text-anchor="middle" fill="#666666">{ p1: { id, title, authorId, commentIds } }</text>
+  <text x="590" y="150" font-size="10" text-anchor="middle" fill="#666666">{ p2: { ... } }</text>
+  
+  <!-- Comments Table -->
+  <rect x="450" y="175" width="280" height="75" rx="6" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="590" y="197" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Comments Table</text>
+  <text x="590" y="217" font-size="10" text-anchor="middle" fill="#666666">{ c1: { id, text, postId, authorId } }</text>
+  <text x="590" y="235" font-size="10" text-anchor="middle" fill="#666666">{ c2: { ... } }</text>
+  
+  <!-- Users Table -->
+  <rect x="450" y="260" width="280" height="75" rx="6" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="590" y="282" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Users Table</text>
+  <text x="590" y="302" font-size="10" text-anchor="middle" fill="#666666">{ u1: { id, name, email } }</text>
+  <text x="590" y="320" font-size="10" text-anchor="middle" fill="#666666">{ u2: { ... } }</text>
+  
+  <!-- Arrow from Nested to Normalized -->
+  <line x1="350" y1="200" x2="450" y2="200" stroke="#4caf50" stroke-width="3" marker-end="url(#arrow-green)"/>
+  <text x="400" y="190" font-size="11" font-weight="bold" text-anchor="middle" fill="#4caf50">Normalize</text>
+  
+  <!-- Center: Normalizer -->
+  <rect x="360" y="350" width="80" height="50" rx="25" fill="#4caf50"/>
+  <text x="400" y="380" font-size="12" font-weight="bold" text-anchor="middle" fill="#ffffff">Normalize</text>
+  
+  <!-- Bottom: Operations -->
+  <text x="400" y="440" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Entity Operations</text>
+  
+  <rect x="50" y="460" width="180" height="120" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="140" y="485" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Entity Adapter</text>
+  <text x="140" y="510" font-size="10" text-anchor="middle" fill="#666666">• addOne(entity)</text>
+  <text x="140" y="528" font-size="10" text-anchor="middle" fill="#666666">• updateOne({id, changes})</text>
+  <text x="140" y="546" font-size="10" text-anchor="middle" fill="#666666">• removeOne(id)</text>
+  <text x="140" y="564" font-size="10" text-anchor="middle" fill="#666666">• O(1) per operation</text>
+  
+  <rect x="260" y="460" width="180" height="120" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="350" y="485" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Denormalizer</text>
+  <text x="350" y="510" font-size="10" text-anchor="middle" fill="#666666">• Follow ID references</text>
+  <text x="350" y="528" font-size="10" text-anchor="middle" fill="#666666">• Reconstruct nested shape</text>
+  <text x="350" y="546" font-size="10" text-anchor="middle" fill="#666666">• Memoized selectors</text>
+  <text x="350" y="564" font-size="10" text-anchor="middle" fill="#666666">• Lazy query-time join</text>
+  
+  <rect x="470" y="460" width="180" height="120" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="560" y="485" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Relationship Manager</text>
+  <text x="560" y="510" font-size="10" text-anchor="middle" fill="#666666">• Cascade deletes</text>
+  <text x="560" y="528" font-size="10" text-anchor="middle" fill="#666666">• Clean orphaned refs</text>
+  <text x="560" y="546" font-size="10" text-anchor="middle" fill="#666666">• Referential integrity</text>
+  <text x="560" y="564" font-size="10" text-anchor="middle" fill="#666666">• LRU entity eviction</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="350" width="280" height="80" rx="6" fill="#f9f9f9" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="190" y="372" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Benefits of Normalization</text>
+  <text x="65" y="392" font-size="10" fill="#4caf50">✓ Each entity stored once</text>
+  <text x="65" y="410" font-size="10" fill="#4caf50">✓ O(1) entity updates</text>
+  <text x="190" y="392" font-size="10" fill="#4caf50">✓ Consistent data</text>
+  <text x="190" y="410" font-size="10" fill="#4caf50">✓ Referential stability</text>
+</svg>

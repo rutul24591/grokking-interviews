@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">State Boundary Decision Architecture</text>
+  
+  <!-- LEFT SIDE: Component Tree -->
+  <text x="280" y="75" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Component Tree</text>
+  
+  <!-- App Shell -->
+  <rect x="120" y="90" width="320" height="440" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="280" y="115" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">App Shell</text>
+  
+  <!-- Header -->
+  <rect x="140" y="130" width="130" height="50" rx="6" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="205" y="150" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Header</text>
+  <text x="205" y="167" font-size="10" text-anchor="middle" fill="#666666">Context: Theme</text>
+  
+  <!-- Sidebar -->
+  <rect x="290" y="130" width="130" height="50" rx="6" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="355" y="150" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Sidebar</text>
+  <text x="355" y="167" font-size="10" text-anchor="middle" fill="#666666">Context: Navigation</text>
+  
+  <!-- Main Content -->
+  <rect x="140" y="200" width="280" height="310" rx="6" fill="#f5f5f5" stroke="#cccccc" stroke-width="2"/>
+  <text x="280" y="225" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Main Content Area</text>
+  
+  <!-- Dashboard Component -->
+  <rect x="160" y="245" width="110" height="60" rx="6" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="215" y="268" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Dashboard</text>
+  <text x="215" y="285" font-size="9" text-anchor="middle" fill="#666666">Store: Dashboard</text>
+  
+  <!-- User Profile -->
+  <rect x="290" y="245" width="110" height="60" rx="6" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="345" y="268" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">User Profile</text>
+  <text x="345" y="285" font-size="9" text-anchor="middle" fill="#666666">Store: User</text>
+  
+  <!-- Form Component -->
+  <rect x="160" y="325" width="110" height="60" rx="6" fill="#bbdefb" stroke="#90caf9" stroke-width="2"/>
+  <text x="215" y="348" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Form</text>
+  <text x="215" y="365" font-size="9" text-anchor="middle" fill="#666666">Local: useState</text>
+  
+  <!-- Modal Component -->
+  <rect x="290" y="325" width="110" height="60" rx="6" fill="#bbdefb" stroke="#90caf9" stroke-width="2"/>
+  <text x="345" y="348" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Modal</text>
+  <text x="345" y="365" font-size="9" text-anchor="middle" fill="#666666">Local: useState</text>
+  
+  <!-- Data Table -->
+  <rect x="160" y="405" width="240" height="60" rx="6" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="280" y="428" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Data Table</text>
+  <text x="280" y="445" font-size="9" text-anchor="middle" fill="#666666">Store: Dashboard (pagination, filters)</text>
+  
+  <!-- Arrows between components -->
+  <line x1="215" y1="305" x2="215" y2="325" stroke="#666666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="345" y1="305" x2="345" y2="325" stroke="#666666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="215" y1="385" x2="215" y2="405" stroke="#666666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="345" y1="385" x2="345" y2="435" stroke="#666666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- RIGHT SIDE: Decision Framework -->
+  <text x="620" y="75" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Decision Framework</text>
+  
+  <!-- Local State Box -->
+  <rect x="500" y="95" width="260" height="130" rx="8" fill="#bbdefb" stroke="#90caf9" stroke-width="2"/>
+  <text x="630" y="118" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Local State</text>
+  <text x="510" y="140" font-size="11" fill="#1a1a1a">✓ Single component consumer</text>
+  <text x="510" y="158" font-size="11" fill="#1a1a1a">✓ High-frequency updates</text>
+  <text x="510" y="176" font-size="11" fill="#1a1a1a">✓ No persistence needed</text>
+  <text x="510" y="194" font-size="11" fill="#1a1a1a">✓ Scoped to component lifecycle</text>
+  <text x="510" y="212" font-size="10" font-weight="bold" fill="#666666">Tools: useState, useReducer</text>
+  
+  <!-- Context API Box -->
+  <rect x="500" y="245" width="260" height="130" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="630" y="268" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Context API</text>
+  <text x="510" y="290" font-size="11" fill="#1a1a1a">✓ Multiple consumers in subtree</text>
+  <text x="510" y="308" font-size="11" fill="#1a1a1a">✓ Low-frequency updates</text>
+  <text x="510" y="326" font-size="11" fill="#1a1a1a">✓ Shared across component tree</text>
+  <text x="510" y="344" font-size="11" fill="#1a1a1a">✓ No cross-route access needed</text>
+  <text x="510" y="362" font-size="10" font-weight="bold" fill="#666666">Tools: createContext, useContext</text>
+  
+  <!-- Global Store Box -->
+  <rect x="500" y="395" width="260" height="130" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="630" y="418" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Global Store</text>
+  <text x="510" y="440" font-size="11" fill="#1a1a1a">✓ Cross-route or app-wide access</text>
+  <text x="510" y="458" font-size="11" fill="#1a1a1a">✓ Complex state relationships</text>
+  <text x="510" y="476" font-size="11" fill="#1a1a1a">✓ Needs persistence &amp; DevTools</text>
+  <text x="510" y="494" font-size="11" fill="#1a1a1a">✓ Multi-team feature access</text>
+  <text x="510" y="512" font-size="10" font-weight="bold" fill="#666666">Tools: Zustand, Redux, Jotai</text>
+  
+  <!-- Legend -->
+  <rect x="500" y="545" width="260" height="45" rx="6" fill="#f9f9f9" stroke="#e0e0e0" stroke-width="1"/>
+  <rect x="515" y="555" width="16" height="12" rx="2" fill="#bbdefb"/>
+  <text x="537" y="565" font-size="10" fill="#1a1a1a">Local</text>
+  <rect x="585" y="555" width="16" height="12" rx="2" fill="#c8e6c9"/>
+  <text x="607" y="565" font-size="10" fill="#1a1a1a">Context</text>
+  <rect x="660" y="555" width="16" height="12" rx="2" fill="#e1bee7"/>
+  <text x="682" y="565" font-size="10" fill="#1a1a1a">Global</text>
+</svg>
