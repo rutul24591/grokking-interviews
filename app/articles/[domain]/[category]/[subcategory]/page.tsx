@@ -1,6 +1,5 @@
 import { ConceptCard, ConceptGrid } from "@/components/ConceptCard";
-import * as fs from "fs";
-import * as path from "path";
+import { subcategoryArticles } from "@/lib/subcategory-articles";
 
 type SubcategoryPageProps = {
   params: Promise<{
@@ -12,8 +11,8 @@ type SubcategoryPageProps = {
 
 // Map category slugs to filesystem directories
 const CATEGORY_DIR_MAP: Record<string, string> = {
-  "frontend-concepts": "frontend",
-  "backend-concepts": "backend",
+  "frontend-concepts": "frontend-concepts",
+  "backend-concepts": "backend-concepts",
   "functional-requirements": "functional-requirements",
   "non-functional-requirements": "non-functional-requirements",
   "high-level-design": "high-level-design",
@@ -22,7 +21,7 @@ const CATEGORY_DIR_MAP: Record<string, string> = {
 
 // Map domain slugs to content directory names
 const DOMAIN_DIR_MAP: Record<string, string> = {
-  "system-design-concepts": "system-design",
+  "system-design-concepts": "system-design-concepts",
   "requirements": "requirements",
   "system-design-problems": "system-design-problems",
 };
@@ -34,37 +33,9 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   const fsCategory = CATEGORY_DIR_MAP[category] || category;
   const fsDomain = DOMAIN_DIR_MAP[domain] || domain;
 
-  // Build the path to articles
-  const articlesDir = path.join(
-    process.cwd(),
-    "content",
-    "articles",
-    fsDomain,
-    fsCategory,
-    subcategory
-  );
-
-  // Find all article files in this subcategory
-  const articles: Array<{ slug: string; title: string; description: string }> = [];
-
-  if (fs.existsSync(articlesDir)) {
-    const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.tsx') || f.endsWith('.mdx'));
-    
-    for (const file of files) {
-      const slug = file.replace(/\.tsx$/, '').replace(/\.mdx$/, '');
-      const content = fs.readFileSync(path.join(articlesDir, file), 'utf-8');
-      
-      // Extract title and description from metadata
-      const titleMatch = content.match(/title:\s*"([^"]*)"/);
-      const descMatch = content.match(/description:\s*"([^"]*)"/);
-      
-      articles.push({
-        slug,
-        title: titleMatch ? titleMatch[1] : slug,
-        description: descMatch ? descMatch[1] : '',
-      });
-    }
-  }
+  // Build subcategory key to lookup in manifest
+  const subcategoryKey = `${fsDomain}/${fsCategory}/${subcategory}`;
+  const articles = subcategoryArticles[subcategoryKey] || [];
 
   // Format display names
   const subcategoryName = formatName(subcategory);

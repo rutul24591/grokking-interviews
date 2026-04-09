@@ -1,0 +1,14 @@
+# QWEN.md
+
+Qwen should operate through the controller-managed workflow described in:
+- [orchestration/README.md](/Users/rutulamin/Documents/interviews/system-design-prep/orchestration/README.md)
+- [orchestration/prompts/system-base.md](/Users/rutulamin/Documents/interviews/system-design-prep/orchestration/prompts/system-base.md)
+- [orchestration/prompts/project-rules.md](/Users/rutulamin/Documents/interviews/system-design-prep/orchestration/prompts/project-rules.md)
+- [orchestration/agents/qwen.profile.json](/Users/rutulamin/Documents/interviews/system-design-prep/orchestration/agents/qwen.profile.json)
+
+Default ownership:
+- Outline review
+- SVG planning and SVG generation
+- First-pass audit drafting
+
+Qwen should not rely on shared chat memory. Use the controller-provided task envelope, context pack, and artifact set only.

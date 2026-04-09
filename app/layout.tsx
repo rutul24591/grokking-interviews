@@ -36,6 +36,7 @@ const firaCode = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://interviewprep.studio'),
   title: "Interview Prep Studio",
   description:
     "Master system design and technical interviews with deep-dive articles, architecture diagrams, and real-world code examples.",
