@@ -1,6 +1,8 @@
 import { ConceptCard, ConceptGrid } from "@/components/ConceptCard";
 import { subcategoryArticles } from "@/lib/subcategory-articles";
 
+export const runtime = 'edge';
+
 type SubcategoryPageProps = {
   params: Promise<{
     domain: string;
