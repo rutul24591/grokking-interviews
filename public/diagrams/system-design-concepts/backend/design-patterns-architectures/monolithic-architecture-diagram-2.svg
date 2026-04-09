@@ -1,10 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Monolithic Architecture Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Monolithic Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Modular monolith vs tangled monolith showing how enforced module boundaries prevent ball-of-mud degeneration</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Modular Monolith vs Tangled Monolith</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Enforced module boundaries keep a monolith clean; without them it becomes a ball of mud</text>
+
+  <!-- LEFT: Modular Monolith -->
+  <rect x="30" y="80" width="410" height="400" rx="12" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="12" fill="#4caf50"/>
+  <rect x="30" y="105" width="410" height="10" fill="#4caf50"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Modular Monolith (Clean)</text>
+
+  <!-- Clean modules with explicit boundaries -->
+  <rect x="50" y="130" width="170" height="100" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="135" y="155" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Order Module</text>
+  <text x="135" y="175" text-anchor="middle" font-size="9" fill="#1a1822">Owns: orders, line_items</text>
+  <text x="135" y="193" text-anchor="middle" font-size="9" fill="#64748b">Public API: createOrder()</text>
+  <text x="135" y="210" text-anchor="middle" font-size="9" fill="#64748b">Team: Checkout Team</text>
+
+  <rect x="250" y="130" width="170" height="100" rx="8" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="2"/>
+  <text x="335" y="155" text-anchor="middle" font-size="12" font-weight="700" fill="#2563eb">User Module</text>
+  <text x="335" y="175" text-anchor="middle" font-size="9" fill="#1a1822">Owns: users, profiles</text>
+  <text x="335" y="193" text-anchor="middle" font-size="9" fill="#64748b">Public API: getUser()</text>
+  <text x="335" y="210" text-anchor="middle" font-size="9" fill="#64748b">Team: Identity Team</text>
+
+  <rect x="50" y="260" width="170" height="100" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="135" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Payment Module</text>
+  <text x="135" y="305" text-anchor="middle" font-size="9" fill="#1a1822">Owns: payments, refunds</text>
+  <text x="135" y="323" text-anchor="middle" font-size="9" fill="#64748b">Public API: processPayment()</text>
+  <text x="135" y="340" text-anchor="middle" font-size="9" fill="#64748b">Team: Billing Team</text>
+
+  <rect x="250" y="260" width="170" height="100" rx="8" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="2"/>
+  <text x="335" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">Inventory Module</text>
+  <text x="335" y="305" text-anchor="middle" font-size="9" fill="#1a1822">Owns: stock, warehouses</text>
+  <text x="335" y="323" text-anchor="middle" font-size="9" fill="#64748b">Public API: checkStock()</text>
+  <text x="335" y="340" text-anchor="middle" font-size="9" fill="#64748b">Team: Fulfillment Team</text>
+
+  <!-- Clean dependency arrows -->
+  <line x1="135" y1="230" x2="135" y2="255" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrMod)"/>
+  <text x="170" y="245" font-size="8" fill="#64748b">calls API</text>
+  <line x1="220" y1="180" x2="245" y2="180" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrMod)"/>
+  <text x="233" y="172" font-size="8" fill="#64748b">calls API</text>
+
+  <rect x="50" y="390" width="370" height="75" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="410" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">✓ Enforced boundaries via architecture tests</text>
+  <text x="70" y="430" font-size="9" fill="#1a1822">• Modules interact only through public APIs</text>
+  <text x="70" y="448" font-size="9" fill="#1a1822">• No cross-module database access</text>
+  <text x="70" y="464" font-size="9" fill="#1a1822">• Clear ownership, team autonomy</text>
+
+  <!-- RIGHT: Tangled Monolith -->
+  <rect x="460" y="80" width="410" height="400" rx="12" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="12" fill="#dc2626"/>
+  <rect x="460" y="105" width="410" height="10" fill="#dc2626"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Tangled Monolith (Ball of Mud)</text>
+
+  <!-- Messy web of dependencies -->
+  <rect x="480" y="140" width="140" height="80" rx="6" fill="#dc2626" opacity="0.1" stroke="#dc2626" stroke-width="1"/>
+  <text x="550" y="170" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">Orders</text>
+  <text x="550" y="188" text-anchor="middle" font-size="8" fill="#64748b">queries users table</text>
+  <text x="550" y="203" text-anchor="middle" font-size="8" fill="#64748b">updates inventory directly</text>
+
+  <rect x="680" y="130" width="140" height="80" rx="6" fill="#dc2626" opacity="0.1" stroke="#dc2626" stroke-width="1"/>
+  <text x="750" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">Users</text>
+  <text x="750" y="178" text-anchor="middle" font-size="8" fill="#64748b">creates orders directly</text>
+  <text x="750" y="193" text-anchor="middle" font-size="8" fill="#64748b">calls payment service</text>
+
+  <rect x="480" y="260" width="140" height="80" rx="6" fill="#dc2626" opacity="0.1" stroke="#dc2626" stroke-width="1"/>
+  <text x="550" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">Payments</text>
+  <text x="550" y="308" text-anchor="middle" font-size="8" fill="#64748b">reads user profiles</text>
+  <text x="550" y="323" text-anchor="middle" font-size="8" fill="#64748b">updates order status</text>
+
+  <rect x="680" y="250" width="140" height="80" rx="6" fill="#dc2626" opacity="0.1" stroke="#dc2626" stroke-width="1"/>
+  <text x="750" y="280" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">Inventory</text>
+  <text x="750" y="298" text-anchor="middle" font-size="8" fill="#64748b">queries payments table</text>
+  <text x="750" y="313" text-anchor="middle" font-size="8" fill="#64748b">creates user records</text>
+
+  <!-- Messy cross-dependency arrows -->
+  <line x1="620" y1="180" x2="675" y2="170" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrTangle)"/>
+  <line x1="550" y1="220" x2="550" y2="255" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrTangle)"/>
+  <line x1="620" y1="300" x2="675" y2="290" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrTangle)"/>
+  <line x1="680" y1="170" x2="620" y2="175" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrTangle)"/>
+  <line x1="750" y1="210" x2="750" y2="245" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrTangle)"/>
+  <line x1="620" y1="300" x2="675" y2="200" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrTangle)"/>
+
+  <rect x="480" y="380" width="370" height="85" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="665" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#dc2626">✗ No boundaries — everything depends on everything</text>
+  <text x="500" y="422" font-size="9" fill="#1a1822">• Direct table access across modules</text>
+  <text x="500" y="440" font-size="9" fill="#1a1822">• No clear ownership, team conflicts</text>
+  <text x="500" y="458" font-size="9" fill="#1a1822">• Changes ripple everywhere, slow development</text>
+
+  <defs>
+    <marker id="arrMod" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrTangle" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Strangler Fig Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Strangler Fig Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <title>Strangler Fig Pattern - Facade/Proxy Gradually Routing Traffic to New Microservices</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Strangler Fig Pattern</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Facade/Proxy Gradually Routes Traffic from Monolith to Microservices</text>
+
+  <!-- Client -->
+  <rect x="350" y="80" width="200" height="50" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="102" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Client / Frontend</text>
+  <text x="450" y="118" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">HTTP / API Calls</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="130" x2="450" y2="155" stroke="#1a1822" stroke-width="2"/>
+  <polygon points="446,150 454,150 450,160" fill="#1a1822"/>
+
+  <!-- Facade / Proxy -->
+  <rect x="250" y="165" width="400" height="80" rx="10" fill="#1a1822"/>
+  <text x="450" y="190" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">Strangler Facade / Proxy</text>
+  <text x="450" y="210" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.8" font-family="system-ui, sans-serif">API Gateway, Reverse Proxy, or Custom Router</text>
+  <text x="450" y="230" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.8" font-family="system-ui, sans-serif">Routes requests to monolith or new services</text>
+
+  <!-- Routing arrows -->
+  <line x1="320" y1="245" x2="180" y2="310" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,3"/>
+  <line x1="450" y1="245" x2="450" y2="310" stroke="#059669" stroke-width="2"/>
+  <line x1="580" y1="245" x2="720" y2="310" stroke="#059669" stroke-width="2"/>
+
+  <!-- Labels on routing arrows -->
+  <rect x="210" y="265" width="70" height="22" rx="4" fill="#fee2e2"/>
+  <text x="245" y="280" text-anchor="middle" font-size="9" font-weight="600" fill="#991b1b" font-family="system-ui, sans-serif">Fallback</text>
+
+  <rect x="415" y="265" width="70" height="22" rx="4" fill="#dcfce7"/>
+  <text x="450" y="280" text-anchor="middle" font-size="9" font-weight="600" fill="#166534" font-family="system-ui, sans-serif">Routed</text>
+
+  <rect x="615" y="265" width="70" height="22" rx="4" fill="#dcfce7"/>
+  <text x="650" y="280" text-anchor="middle" font-size="9" font-weight="600" fill="#166534" font-family="system-ui, sans-serif">Routed</text>
+
+  <!-- Monolith (being strangled) -->
+  <rect x="60" y="310" width="240" height="110" rx="10" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <text x="180" y="340" text-anchor="middle" font-size="14" font-weight="700" fill="#991b1b" font-family="system-ui, sans-serif">Legacy Monolith</text>
+  <rect x="80" y="355" width="90" height="30" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="125" y="374" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">User Module</text>
+  <rect x="180" y="355" width="90" height="30" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="225" y="374" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">Order Module</text>
+  <rect x="80" y="390" width="90" height="25" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="125" y="407" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">Payment</text>
+  <rect x="180" y="390" width="90" height="25" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="225" y="407" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">Inventory</text>
+
+  <!-- New Service 1 -->
+  <rect x="370" y="310" width="160" height="110" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#166534" font-family="system-ui, sans-serif">User Service</text>
+  <rect x="385" y="355" width="130" height="25" rx="5" fill="#dcfce7" stroke="#059669" stroke-width="1"/>
+  <text x="450" y="372" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">Own Database</text>
+  <rect x="385" y="385" width="130" height="25" rx="5" fill="#dcfce7" stroke="#059669" stroke-width="1"/>
+  <text x="450" y="402" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">Independent Deploy</text>
+
+  <!-- New Service 2 -->
+  <rect x="640" y="310" width="160" height="110" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="720" y="340" text-anchor="middle" font-size="13" font-weight="700" fill="#166534" font-family="system-ui, sans-serif">Order Service</text>
+  <rect x="655" y="355" width="130" height="25" rx="5" fill="#dcfce7" stroke="#059669" stroke-width="1"/>
+  <text x="720" y="372" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">Own Database</text>
+  <rect x="655" y="385" width="130" height="25" rx="5" fill="#dcfce7" stroke="#059669" stroke-width="1"/>
+  <text x="720" y="402" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">Independent Deploy</text>
+
+  <!-- Strangle metaphor note -->
+  <rect x="30" y="445" width="840" height="40" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="450" y="463" text-anchor="middle" font-size="10" fill="#1a1822" font-family="system-ui, sans-serif">Named after the strangler fig tree: it grows around a host tree, gradually taking over its role,</text>
+  <text x="450" y="478" text-anchor="middle" font-size="10" fill="#1a1822" font-family="system-ui, sans-serif">until the original host is no longer needed. The facade routes traffic progressively to new services.</text>
 </svg>

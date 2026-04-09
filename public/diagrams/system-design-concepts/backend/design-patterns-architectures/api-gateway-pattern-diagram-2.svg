@@ -1,10 +1,141 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">API Gateway Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">API Gateway Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>API Gateway request routing strategies: path-based, host-based, header-based, and content-based routing</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Gateway Routing Strategies</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Four routing strategies with different use cases and trade-offs</text>
+
+  <!-- Path-based routing -->
+  <rect x="30" y="80" width="410" height="180" rx="12" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="100" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Path-Based Routing</text>
+
+  <rect x="50" y="120" width="100" height="40" rx="6" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="100" y="138" text-anchor="middle" font-size="9" font-weight="700" fill="#6d5bd0">GET</text>
+  <text x="100" y="152" text-anchor="middle" font-size="8" fill="#64748b">/api/users/42</text>
+
+  <line x1="150" y1="140" x2="220" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrRT)"/>
+
+  <rect x="220" y="120" width="60" height="40" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="250" y="145" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">GW</text>
+
+  <line x1="280" y1="130" x2="340" y2="125" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrRT2)"/>
+  <line x1="280" y1="145" x2="340" y2="150" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrRT2)"/>
+  <line x1="280" y1="155" x2="340" y2="165" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrRT2)"/>
+
+  <rect x="340" y="110" width="85" height="35" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="383" y="132" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">User Svc</text>
+
+  <text x="300" y="180" text-anchor="middle" font-size="8" fill="#64748b">Match: /api/users/* → User Service</text>
+  <text x="300" y="195" text-anchor="middle" font-size="8" fill="#64748b">Match: /api/orders/* → Order Service</text>
+  <text x="300" y="210" text-anchor="middle" font-size="8" fill="#64748b">Match: /api/payments/* → Payment Svc</text>
+
+  <text x="235" y="245" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Most common — simple, cacheable</text>
+
+  <!-- Host-based routing -->
+  <rect x="460" y="80" width="410" height="180" rx="12" fill="none" stroke="#d97706" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="30" rx="12" fill="#d97706"/>
+  <rect x="460" y="100" width="410" height="10" fill="#d97706"/>
+  <text x="665" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Host-Based Routing</text>
+
+  <rect x="480" y="120" width="120" height="40" rx="6" fill="#d97706" opacity="0.12" stroke="#d97706" stroke-width="1"/>
+  <text x="540" y="138" text-anchor="middle" font-size="9" font-weight="700" fill="#d97706">Host: users.api.com</text>
+  <text x="540" y="152" text-anchor="middle" font-size="8" fill="#64748b">any path</text>
+
+  <line x1="600" y1="140" x2="660" y2="140" stroke="#d97706" stroke-width="2" marker-end="url(#arrRT3)"/>
+
+  <rect x="660" y="120" width="60" height="40" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="690" y="145" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">GW</text>
+
+  <line x1="720" y1="140" x2="790" y2="140" stroke="#4caf50" stroke-width="2" marker-end="url(#arrRT2)"/>
+
+  <rect x="790" y="110" width="65" height="35" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="823" y="132" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">User Svc</text>
+
+  <text x="665" y="180" text-anchor="middle" font-size="8" fill="#64748b">users.api.com → User Service</text>
+  <text x="665" y="195" text-anchor="middle" font-size="8" fill="#64748b">orders.api.com → Order Service</text>
+  <text x="665" y="210" text-anchor="middle" font-size="8" fill="#64748b">payments.api.com → Payment Svc</text>
+
+  <text x="665" y="245" text-anchor="middle" font-size="9" font-weight="600" fill="#d97706">Multi-tenant, API versioning</text>
+
+  <!-- Header-based routing -->
+  <rect x="30" y="280" width="410" height="180" rx="12" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="280" width="410" height="30" rx="12" fill="#4caf50"/>
+  <rect x="30" y="300" width="410" height="10" fill="#4caf50"/>
+  <text x="235" y="300" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Header-Based Routing</text>
+
+  <rect x="50" y="320" width="140" height="40" rx="6" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1"/>
+  <text x="120" y="338" text-anchor="middle" font-size="9" font-weight="700" fill="#4caf50">X-API-Version: v2</text>
+  <text x="120" y="352" text-anchor="middle" font-size="8" fill="#64748b">mobile client</text>
+
+  <line x1="190" y1="340" x2="250" y2="340" stroke="#4caf50" stroke-width="2" marker-end="url(#arrRT4)"/>
+
+  <rect x="250" y="320" width="60" height="40" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="280" y="345" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">GW</text>
+
+  <line x1="310" y1="330" x2="360" y2="330" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrRT2)"/>
+  <text x="350" y="322" font-size="7" fill="#4caf50">v2</text>
+  <line x1="310" y1="350" x2="360" y2="355" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrRT2)"/>
+  <text x="350" y="360" font-size="7" fill="#d97706">v1</text>
+
+  <rect x="360" y="310" width="65" height="30" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="393" y="330" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">User v2</text>
+
+  <rect x="360" y="350" width="65" height="30" rx="6" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="1"/>
+  <text x="393" y="370" text-anchor="middle" font-size="8" font-weight="700" fill="#d97706">User v1</text>
+
+  <text x="235" y="400" text-anchor="middle" font-size="8" fill="#64748b">Route based on API version, client type,</text>
+  <text x="235" y="415" text-anchor="middle" font-size="8" fill="#64748b">tenant ID, or feature flag headers</text>
+  <text x="235" y="445" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">A/B testing, canary, versioning</text>
+
+  <!-- Content-based routing -->
+  <rect x="460" y="280" width="410" height="180" rx="12" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <rect x="460" y="280" width="410" height="30" rx="12" fill="#dc2626"/>
+  <rect x="460" y="300" width="410" height="10" fill="#dc2626"/>
+  <text x="665" y="300" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Content-Based Routing</text>
+
+  <rect x="480" y="320" width="120" height="55" rx="6" fill="#dc2626" opacity="0.1" stroke="#dc2626" stroke-width="1"/>
+  <text x="540" y="338" text-anchor="middle" font-size="8" font-weight="700" fill="#dc2626">POST /orders</text>
+  <text x="540" y="352" text-anchor="middle" font-size="8" fill="#64748b">{"type": "express"}</text>
+  <text x="540" y="366" text-anchor="middle" font-size="7" fill="#64748b">body inspected</text>
+
+  <line x1="600" y1="347" x2="660" y2="347" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRT5)"/>
+
+  <rect x="660" y="320" width="60" height="55" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="690" y="342" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">GW</text>
+  <text x="690" y="360" text-anchor="middle" font-size="7" fill="#64748b">inspects</text>
+  <text x="690" y="370" text-anchor="middle" font-size="7" fill="#64748b">body</text>
+
+  <line x1="720" y1="335" x2="780" y2="335" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrRT2)"/>
+  <text x="750" y="327" font-size="7" fill="#4caf50">express</text>
+  <line x1="720" y1="360" x2="780" y2="360" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrRT2)"/>
+  <text x="750" y="372" font-size="7" fill="#d97706">standard</text>
+
+  <rect x="780" y="315" width="75" height="30" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="818" y="335" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">Express Svc</text>
+
+  <rect x="780" y="350" width="75" height="30" rx="6" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="1"/>
+  <text x="818" y="370" text-anchor="middle" font-size="8" font-weight="700" fill="#d97706">Standard Svc</text>
+
+  <text x="665" y="400" text-anchor="middle" font-size="8" fill="#64748b">Route based on request body content:</text>
+  <text x="665" y="415" text-anchor="middle" font-size="8" fill="#64748b">order type, priority, region, amount</text>
+  <text x="665" y="445" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">Priority routing, data-dependent paths</text>
+
+  <defs>
+    <marker id="arrRT" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrRT2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="arrRT3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+    <marker id="arrRT4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="arrRT5" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Monolithic Architecture Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Monolithic Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Monolithic architecture showing all layers (UI, Business Logic, Data Access) running within a single process and sharing one database</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Monolithic Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">All components run within a single process boundary sharing one database</text>
+
+  <!-- Single Deployable Unit -->
+  <rect x="100" y="80" width="700" height="340" rx="12" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="2.5" stroke-dasharray="8,4"/>
+  <rect x="100" y="80" width="700" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="100" y="105" width="700" height="10" fill="#6d5bd0"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Single Deployable Unit — All Modules Run in One Process</text>
+
+  <!-- Presentation Layer -->
+  <rect x="130" y="130" width="640" height="65" rx="8" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="150" y="152" font-size="11" font-weight="700" fill="#2563eb">Presentation Layer</text>
+  <text x="150" y="172" font-size="9" fill="#64748b">Controllers, Views, API Endpoints, Route Handlers</text>
+  <text x="350" y="152" font-size="9" fill="#1a1822">• HTTP request parsing</text>
+  <text x="550" y="152" font-size="9" fill="#1a1822">• Input validation</text>
+  <text x="350" y="172" font-size="9" fill="#1a1822">• Authentication at edge</text>
+  <text x="550" y="172" font-size="9" fill="#1a1822">• Response formatting</text>
+
+  <!-- Business Logic Layer -->
+  <rect x="130" y="210" width="640" height="75" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="150" y="232" font-size="11" font-weight="700" fill="#4caf50">Business Logic Layer</text>
+  <text x="150" y="252" font-size="9" fill="#64748b">Domain Services, Business Rules, Workflow Orchestration</text>
+  <text x="350" y="232" font-size="9" fill="#1a1822">• Domain invariants</text>
+  <text x="550" y="232" font-size="9" fill="#1a1822">• Transaction management</text>
+  <text x="350" y="252" font-size="9" fill="#1a1822">• Business rule enforcement</text>
+  <text x="550" y="252" font-size="9" fill="#1a1822">• Workflow coordination</text>
+  <text x="350" y="272" font-size="9" fill="#1a1822">• Aggregates &amp; entities</text>
+  <text x="550" y="272" font-size="9" fill="#1a1822">• Domain events</text>
+
+  <!-- Data Access Layer -->
+  <rect x="130" y="300" width="640" height="55" rx="8" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="1.5"/>
+  <text x="150" y="322" font-size="11" font-weight="700" fill="#d97706">Data Access Layer</text>
+  <text x="150" y="342" font-size="9" fill="#64748b">Repositories, Query Builders, ORM, Data Mappers</text>
+  <text x="380" y="322" font-size="9" fill="#1a1822">• SQL queries</text>
+  <text x="550" y="322" font-size="9" fill="#1a1822">• Connection pooling</text>
+  <text x="380" y="342" font-size="9" fill="#1a1822">• Data mapping</text>
+  <text x="550" y="342" font-size="9" fill="#1a1822">• Cache management</text>
+
+  <!-- Single Database -->
+  <rect x="300" y="375" width="300" height="55" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="398" text-anchor="middle" font-size="12" font-weight="700" fill="#2563eb">Single Shared Database</text>
+  <text x="450" y="418" text-anchor="middle" font-size="9" fill="#64748b">All tables: Users, Orders, Products, Payments</text>
+
+  <!-- Arrow from Data Access to DB -->
+  <line x1="450" y1="355" x2="450" y2="370" stroke="#d97706" stroke-width="2" marker-end="url(#arrMono)"/>
+
+  <!-- Key properties -->
+  <rect x="30" y="450" width="840" height="40" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="468" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Key properties: shared memory, in-process function calls, single deployment, single database, strong consistency via ACID transactions.</text>
+  <text x="450" y="485" text-anchor="middle" font-size="10" fill="#64748b">All modules can call each other directly. No network latency between layers. Single stack trace for debugging.</text>
+
+  <defs>
+    <marker id="arrMono" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
 </svg>

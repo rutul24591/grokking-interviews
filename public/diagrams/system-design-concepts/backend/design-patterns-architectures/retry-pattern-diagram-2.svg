@@ -1,10 +1,109 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Retry Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Retry Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Retry with Jitter - Thundering Herd Prevention</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Retry with Jitter</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Randomized delays prevent thundering herd when multiple clients retry simultaneously</text>
+  
+  <!-- Without Jitter Section -->
+  <rect x="40" y="80" width="820" height="36" rx="8" fill="#dc2626"/>
+  <rect x="40" y="108" width="820" height="8" fill="#dc2626"/>
+  <text x="450" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Without Jitter - Thundering Herd Problem</text>
+  
+  <!-- Client boxes without jitter -->
+  <rect x="60" y="130" width="100" height="35" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="110" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Client A</text>
+  
+  <rect x="60" y="175" width="100" height="35" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="110" y="197" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Client B</text>
+  
+  <rect x="60" y="220" width="100" height="35" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="110" y="242" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Client C</text>
+  
+  <rect x="60" y="265" width="100" height="35" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="110" y="287" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Client D</text>
+  
+  <!-- Aligned retry arrows without jitter - all hitting at same time -->
+  <path d="M 160 147 L 300 147" stroke="#dc2626" stroke-width="2"/>
+  <path d="M 160 192 L 300 192" stroke="#dc2626" stroke-width="2"/>
+  <path d="M 160 237 L 300 237" stroke="#dc2626" stroke-width="2"/>
+  <path d="M 160 282 L 300 282" stroke="#dc2626" stroke-width="2"/>
+  
+  <!-- Wait boxes - aligned -->
+  <rect x="300" y="130" width="60" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="330" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">4s</text>
+  
+  <rect x="300" y="175" width="60" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="330" y="197" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">4s</text>
+  
+  <rect x="300" y="220" width="60" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="330" y="242" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">4s</text>
+  
+  <rect x="300" y="265" width="60" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="330" y="287" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">4s</text>
+  
+  <!-- All hitting server at same time -->
+  <path d="M 360 147 L 450 147" stroke="#dc2626" stroke-width="2"/>
+  <path d="M 360 192 L 450 192" stroke="#dc2626" stroke-width="2"/>
+  <path d="M 360 237 L 450 237" stroke="#dc2626" stroke-width="2"/>
+  <path d="M 360 282 L 450 282" stroke="#dc2626" stroke-width="2"/>
+  
+  <!-- Server under load -->
+  <rect x="450" y="140" width="140" height="150" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="520" y="200" text-anchor="middle" font-size="13" font-weight="600" fill="#dc2626">Server</text>
+  <text x="520" y="220" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Simultaneous retry</text>
+  <text x="520" y="236" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">spikes cause overload</text>
+  <text x="520" y="252" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">and cascading failure</text>
+  <text x="520" y="272" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">THUNDERING HERD</text>
+  
+  <!-- With Jitter Section -->
+  <rect x="40" y="310" width="820" height="36" rx="8" fill="#059669"/>
+  <rect x="40" y="338" width="820" height="8" fill="#059669"/>
+  <text x="450" y="332" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">With Jitter - Spread Out Retries</text>
+  
+  <!-- Client boxes with jitter -->
+  <rect x="60" y="360" width="100" height="35" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="110" y="382" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Client A</text>
+  
+  <rect x="60" y="405" width="100" height="35" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="110" y="427" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Client B</text>
+  
+  <rect x="60" y="450" width="100" height="35" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="110" y="472" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Client C</text>
+  
+  <!-- Staggered jitter delays -->
+  <path d="M 160 377 L 280 377" stroke="#059669" stroke-width="2"/>
+  <path d="M 160 422 L 280 422" stroke="#059669" stroke-width="2"/>
+  <path d="M 160 467 L 280 467" stroke="#059669" stroke-width="2"/>
+  
+  <rect x="280" y="360" width="60" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="310" y="382" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">3.2s</text>
+  
+  <rect x="280" y="405" width="60" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="310" y="427" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">4.8s</text>
+  
+  <rect x="280" y="450" width="60" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="310" y="472" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">2.1s</text>
+  
+  <!-- Staggered arrival at server -->
+  <path d="M 340 467 L 420 467" stroke="#059669" stroke-width="2"/>
+  <path d="M 340 377 L 420 377" stroke="#059669" stroke-width="2"/>
+  <path d="M 340 422 L 420 422" stroke="#059669" stroke-width="2"/>
+  
+  <!-- Server handling well -->
+  <rect x="420" y="360" width="140" height="130" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="490" y="410" text-anchor="middle" font-size="13" font-weight="600" fill="#059669">Server</text>
+  <text x="490" y="430" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Staggered requests</text>
+  <text x="490" y="446" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">prevent spike overload</text>
+  <text x="490" y="462" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">and allow recovery</text>
+  <text x="490" y="480" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">STABLE RECOVERY</text>
+  
+  <!-- Formula callout -->
+  <rect x="620" y="370" width="230" height="90" rx="6" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="735" y="392" text-anchor="middle" font-size="12" font-weight="600" fill="#7c3aed">Jitter Formula</text>
+  <text x="635" y="414" font-size="11" fill="#1a1822">delay = random(0, base_delay)</text>
+  <text x="635" y="432" font-size="11" fill="#1a1822">delay = random(0, 2^attempt)</text>
+  <text x="635" y="450" font-size="10" fill="#1a1822" opacity="0.8">Full jitter adds randomness</text>
+  <text x="635" y="465" font-size="10" fill="#1a1822" opacity="0.8">to exponential backoff</text>
 </svg>

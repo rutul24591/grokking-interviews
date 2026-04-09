@@ -1,10 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">API Gateway Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">API Gateway Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>API Gateway pattern showing client requests routed through gateway with authentication, rate limiting, and routing to backend services</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">API Gateway Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Single entry point handles auth, rate limiting, routing, and response aggregation</text>
+
+  <!-- Clients -->
+  <rect x="30" y="100" width="130" height="60" rx="10" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="95" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Web App</text>
+  <text x="95" y="145" text-anchor="middle" font-size="9" fill="#64748b">React / Next.js</text>
+
+  <rect x="30" y="180" width="130" height="60" rx="10" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="95" y="205" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Mobile App</text>
+  <text x="95" y="225" text-anchor="middle" font-size="9" fill="#64748b">iOS / Android</text>
+
+  <rect x="30" y="260" width="130" height="60" rx="10" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="95" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Third Party</text>
+  <text x="95" y="305" text-anchor="middle" font-size="9" fill="#64748b">External APIs</text>
+
+  <!-- Arrows to Gateway -->
+  <line x1="160" y1="130" x2="250" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrGW)"/>
+  <line x1="160" y1="210" x2="250" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrGW)"/>
+  <line x1="160" y1="290" x2="250" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrGW)"/>
+
+  <!-- API Gateway -->
+  <rect x="250" y="120" width="180" height="260" rx="12" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <rect x="250" y="120" width="180" height="35" rx="12" fill="#cc4444"/>
+  <rect x="250" y="145" width="180" height="10" fill="#cc4444"/>
+  <text x="340" y="143" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">API Gateway</text>
+
+  <!-- Gateway responsibilities -->
+  <rect x="265" y="165" width="150" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="185" text-anchor="middle" font-size="9" fill="#1a1822">Authentication / JWT</text>
+
+  <rect x="265" y="200" width="150" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="220" text-anchor="middle" font-size="9" fill="#1a1822">Rate Limiting</text>
+
+  <rect x="265" y="235" width="150" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="255" text-anchor="middle" font-size="9" fill="#1a1822">Request Routing</text>
+
+  <rect x="265" y="270" width="150" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="290" text-anchor="middle" font-size="9" fill="#1a1822">Response Aggregation</text>
+
+  <rect x="265" y="305" width="150" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="325" text-anchor="middle" font-size="9" fill="#1a1822">SSL Termination</text>
+
+  <rect x="265" y="340" width="150" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Load Balancing</text>
+
+  <!-- Backend Services -->
+  <rect x="500" y="100" width="160" height="70" rx="10" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="580" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">User Service</text>
+  <text x="580" y="150" text-anchor="middle" font-size="9" fill="#64748b">/api/users/*</text>
+  <text x="580" y="165" text-anchor="middle" font-size="9" fill="#64748b">gRPC / REST</text>
+
+  <rect x="500" y="190" width="160" height="70" rx="10" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="580" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Order Service</text>
+  <text x="580" y="240" text-anchor="middle" font-size="9" fill="#64748b">/api/orders/*</text>
+  <text x="580" y="255" text-anchor="middle" font-size="9" fill="#64748b">REST</text>
+
+  <rect x="500" y="280" width="160" height="70" rx="10" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="580" y="310" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Payment Service</text>
+  <text x="580" y="330" text-anchor="middle" font-size="9" fill="#64748b">/api/payments/*</text>
+  <text x="580" y="345" text-anchor="middle" font-size="9" fill="#64748b">gRPC</text>
+
+  <!-- Arrows from Gateway to Services -->
+  <line x1="430" y1="180" x2="495" y2="135" stroke="#cc4444" stroke-width="2" marker-end="url(#arrGW2)"/>
+  <text x="460" y="150" font-size="8" font-weight="600" fill="#cc4444">route</text>
+
+  <line x1="430" y1="240" x2="495" y2="225" stroke="#cc4444" stroke-width="2" marker-end="url(#arrGW2)"/>
+  <text x="460" y="225" font-size="8" font-weight="600" fill="#cc4444">route</text>
+
+  <line x1="430" y1="300" x2="495" y2="315" stroke="#cc4444" stroke-width="2" marker-end="url(#arrGW2)"/>
+  <text x="460" y="315" font-size="8" font-weight="600" fill="#cc4444">route</text>
+
+  <!-- Key insight -->
+  <rect x="30" y="400" width="840" height="80" rx="10" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Gateway responsibilities: single authentication point, rate limiting per client, routing to correct backend,</text>
+  <text x="450" y="445" text-anchor="middle" font-size="11" fill="#1a1822">response aggregation (combining user + order data), SSL termination, request/response transformation.</text>
+  <text x="450" y="465" text-anchor="middle" font-size="11" fill="#64748b">Without a gateway: each client must know every service endpoint, handle auth separately, and aggregate responses.</text>
+
+  <defs>
+    <marker id="arrGW" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrGW2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
 </svg>

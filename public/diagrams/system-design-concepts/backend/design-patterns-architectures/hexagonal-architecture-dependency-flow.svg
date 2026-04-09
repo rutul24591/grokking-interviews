@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520">
+  <!-- Background -->
+  <rect width="960" height="520" fill="#f8fafc" rx="8"/>
+
+  <!-- Title -->
+  <text x="480" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a" text-anchor="middle">Dependency Inversion Flow</text>
+  <text x="480" y="65" font-family="Arial, sans-serif" font-size="14" fill="#64748b" text-anchor="middle">How hexagonal architecture reverses traditional dependency direction</text>
+
+  <!-- LEFT SIDE: Traditional Layered -->
+  <text x="240" y="105" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0f172a" text-anchor="middle">Traditional Layered</text>
+
+  <!-- Presentation layer -->
+  <rect x="120" y="130" width="240" height="55" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="240" y="162" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#3730a3" text-anchor="middle">Presentation Layer</text>
+
+  <!-- Business layer -->
+  <rect x="120" y="200" width="240" height="55" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="240" y="232" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af" text-anchor="middle">Business Logic Layer</text>
+
+  <!-- Data layer -->
+  <rect x="120" y="270" width="240" height="55" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="240" y="302" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#166534" text-anchor="middle">Data Access Layer</text>
+
+  <!-- Infrastructure layer -->
+  <rect x="120" y="340" width="240" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="240" y="372" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#92400e" text-anchor="middle">Infrastructure (DB, APIs)</text>
+
+  <!-- Dependency arrows (downward) -->
+  <line x1="240" y1="185" x2="240" y2="200" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow-trad)"/>
+  <line x1="240" y1="255" x2="240" y2="270" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow-trad)"/>
+  <line x1="240" y1="325" x2="240" y2="340" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow-trad)"/>
+
+  <!-- Problem label -->
+  <rect x="120" y="415" width="240" height="36" rx="6" fill="#fee2e2" stroke="#f87171" stroke-width="1"/>
+  <text x="240" y="438" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#991b1b" text-anchor="middle">Business logic depends on DB</text>
+
+  <!-- RIGHT SIDE: Hexagonal -->
+  <text x="720" y="105" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0f172a" text-anchor="middle">Hexagonal Architecture</text>
+
+  <!-- Domain core (center) -->
+  <rect x="600" y="170" width="240" height="120" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="720" y="210" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af" text-anchor="middle">Domain Core</text>
+  <text x="720" y="235" font-family="Arial, sans-serif" font-size="12" fill="#1e40af" text-anchor="middle">Defines Port Interfaces</text>
+  <text x="720" y="255" font-family="Arial, sans-serif" font-size="12" fill="#1e40af" text-anchor="middle">ZERO external dependencies</text>
+  <text x="720" y="275" font-family="Arial, sans-serif" font-size="12" fill="#1e40af" text-anchor="middle">Use cases + business rules</text>
+
+  <!-- Inbound adapters (above core) -->
+  <rect x="600" y="130" width="110" height="32" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="655" y="151" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534" text-anchor="middle">REST Adapter</text>
+
+  <rect x="730" y="130" width="110" height="32" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="785" y="151" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#166534" text-anchor="middle">Event Adapter</text>
+
+  <!-- Outbound adapters (below core) -->
+  <rect x="600" y="310" width="110" height="32" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="655" y="331" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e" text-anchor="middle">DB Adapter</text>
+
+  <rect x="730" y="310" width="110" height="32" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="785" y="331" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#92400e" text-anchor="middle">Cache Adapter</text>
+
+  <!-- Arrows: Inbound depends ON core (downward to core) -->
+  <line x1="655" y1="162" x2="655" y2="170" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-hex)"/>
+  <line x1="785" y1="162" x2="785" y2="170" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-hex)"/>
+
+  <!-- Arrows: Core depends on ports (outward to outbound) -->
+  <line x1="655" y1="290" x2="655" y2="310" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-hex)"/>
+  <line x1="785" y1="290" x2="785" y2="310" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-hex)"/>
+
+  <!-- Benefit label -->
+  <rect x="600" y="365" width="240" height="36" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="720" y="388" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534" text-anchor="middle">Adapters depend on ports, not vice versa</text>
+
+  <!-- Divider line -->
+  <line x1="480" y1="95" x2="480" y2="420" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-trad" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-hex" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- Key insight box -->
+  <rect x="120" y="465" width="720" height="40" rx="6" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="480" y="490" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0c4a6e" text-anchor="middle">Key Insight: In hexagonal architecture, dependency arrows point INWARD. Adapters depend on the core, the core depends on nothing external.</text>
+</svg>

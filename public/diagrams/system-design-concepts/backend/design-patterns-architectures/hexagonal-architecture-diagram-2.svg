@@ -1,10 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Hexagonal Architecture Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Hexagonal Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Hexagonal Architecture - Dependency Inversion</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="38" font-size="18" font-weight="700" fill="#1a1822" text-anchor="middle">Dependency Inversion in Hexagonal Architecture</text>
+  <text x="450" y="56" font-size="12" fill="#1a1822" opacity="0.7" text-anchor="middle">Domain defines port interfaces; infrastructure implements them</text>
+
+  <!-- Domain Layer -->
+  <rect x="100" y="90" width="700" height="160" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="100" y="90" width="700" height="32" rx="12" fill="#7c3aed"/>
+  <rect x="100" y="110" width="700" height="12" fill="#7c3aed"/>
+  <text x="450" y="111" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Domain Layer (Owns the Interfaces)</text>
+
+  <!-- Domain Entities -->
+  <rect x="140" y="140" width="170" height="80" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="225" y="170" font-size="12" font-weight="700" fill="#1a1822" text-anchor="middle">Domain Entities</text>
+  <text x="225" y="188" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Aggregate Roots</text>
+  <text x="225" y="204" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Value Objects</text>
+
+  <!-- Port Interfaces -->
+  <rect x="350" y="140" width="200" height="80" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="450" y="170" font-size="12" font-weight="700" fill="#1a1822" text-anchor="middle">Port Interfaces</text>
+  <text x="450" y="188" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Input Ports (Use Cases)</text>
+  <text x="450" y="204" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Output Ports (Repositories)</text>
+
+  <!-- Application Services -->
+  <rect x="590" y="140" width="170" height="80" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="675" y="170" font-size="12" font-weight="700" fill="#1a1822" text-anchor="middle">Application Services</text>
+  <text x="675" y="188" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Orchestrate Use Cases</text>
+  <text x="675" y="204" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Depend on Ports Only</text>
+
+  <!-- Dependency arrow within domain -->
+  <line x1="315" y1="180" x2="345" y2="180" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="555" y1="180" x2="585" y2="180" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+  <!-- Infrastructure Layer -->
+  <rect x="100" y="290" width="700" height="170" rx="12" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <rect x="100" y="290" width="700" height="32" rx="12" fill="#059669"/>
+  <rect x="100" y="310" width="700" height="12" fill="#059669"/>
+  <text x="450" y="311" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Infrastructure Layer (Implements the Interfaces)</text>
+
+  <!-- DB Repository Implementation -->
+  <rect x="140" y="340" width="170" height="80" rx="8" fill="#dcfce7" stroke="#059669" stroke-width="1.5"/>
+  <text x="225" y="368" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Repository Impl</text>
+  <text x="225" y="386" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">JPA / MongoDB / DynamoDB</text>
+  <text x="225" y="402" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Implements Output Port</text>
+
+  <!-- Email Implementation -->
+  <rect x="350" y="340" width="200" height="80" rx="8" fill="#dcfce7" stroke="#059669" stroke-width="1.5"/>
+  <text x="450" y="368" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Notification Impl</text>
+  <text x="450" y="386" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">SES / SendGrid / SMTP</text>
+  <text x="450" y="402" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Implements Output Port</text>
+
+  <!-- REST Controller Implementation -->
+  <rect x="590" y="340" width="170" height="80" rx="8" fill="#dcfce7" stroke="#059669" stroke-width="1.5"/>
+  <text x="675" y="368" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Controller Impl</text>
+  <text x="675" y="386" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Spring MVC / Express</text>
+  <text x="675" y="402" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Calls Input Port</text>
+
+  <!-- Dependency Inversion Arrows -->
+  <!-- Domain depends on nothing below; Infrastructure depends UP on Domain ports -->
+  <line x1="225" y1="340" x2="225" y2="225" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowPurpleUp)"/>
+  <text x="200" y="285" font-size="10" font-weight="700" fill="#7c3aed" text-anchor="middle" transform="rotate(-90,200,285)">DEPENDS ON</text>
+
+  <line x1="450" y1="340" x2="450" y2="225" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowPurpleUp)"/>
+  <text x="425" y="285" font-size="10" font-weight="700" fill="#7c3aed" text-anchor="middle" transform="rotate(-90,425,285)">DEPENDS ON</text>
+
+  <line x1="675" y1="340" x2="675" y2="225" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowPurpleUp)"/>
+  <text x="650" y="285" font-size="10" font-weight="700" fill="#7c3aed" text-anchor="middle" transform="rotate(-90,650,285)">CALLS</text>
+
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrowPurpleUp" viewBox="0 0 10 10" refX="5" refY="1" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 10 L 5 0 L 10 10 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <!-- Key Insight Box -->
+  <rect x="250" y="470" width="400" height="24" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="487" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">Key: Infrastructure depends ON domain; domain knows nothing about infrastructure</text>
 </svg>

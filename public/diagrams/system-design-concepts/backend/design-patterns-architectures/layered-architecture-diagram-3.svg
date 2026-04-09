@@ -1,10 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Layered Architecture Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Layered Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Layered Architecture - Common Pitfalls</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="38" font-size="18" font-weight="700" fill="#1a1822" text-anchor="middle">Common Layered Architecture Pitfalls</text>
+  <text x="450" y="56" font-size="12" fill="#1a1822" opacity="0.7" text-anchor="middle">Anemic domain model, leaky persistence, and god services</text>
+
+  <!-- Pitfall 1: Anemic Domain Model -->
+  <rect x="40" y="80" width="260" height="385" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <rect x="40" y="80" width="260" height="30" rx="10" fill="#dc2626"/>
+  <rect x="40" y="100" width="260" height="10" fill="#dc2626"/>
+  <text x="170" y="101" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Anemic Domain Model</text>
+  <rect x="65" y="125" width="210" height="120" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="170" y="148" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">User (Entity)</text>
+  <line x1="65" y1="156" x2="275" y2="156" stroke="#dc2626" stroke-width="1"/>
+  <text x="80" y="174" font-size="9" font-weight="400" fill="#1a1822">+ id: String</text>
+  <text x="80" y="188" font-size="9" font-weight="400" fill="#1a1822">+ name: String</text>
+  <text x="80" y="202" font-size="9" font-weight="400" fill="#1a1822">+ email: String</text>
+  <line x1="65" y1="210" x2="275" y2="210" stroke="#dc2626" stroke-width="1"/>
+  <text x="80" y="228" font-size="9" font-weight="400" fill="#dc2626">+ getId()</text>
+  <text x="80" y="242" font-size="9" font-weight="400" fill="#dc2626">+ getName() / setName()</text>
+  <text x="170" y="265" font-size="9" font-weight="700" fill="#dc2626" text-anchor="middle">No business behavior!</text>
+  <rect x="65" y="285" width="210" height="160" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="170" y="305" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Problem</text>
+  <text x="170" y="325" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Entities contain only</text>
+  <text x="170" y="340" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">properties and accessors.</text>
+  <text x="170" y="355" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Business logic leaks into</text>
+  <text x="170" y="370" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">service layers, violating</text>
+  <text x="170" y="385" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">encapsulation.</text>
+  <text x="170" y="405" font-size="9" font-weight="700" fill="#065f46" text-anchor="middle">Fix</text>
+  <text x="170" y="420" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Use rich domain models</text>
+  <text x="170" y="435" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">with behavior and rules.</text>
+
+  <!-- Pitfall 2: Leaky Persistence -->
+  <rect x="320" y="80" width="260" height="385" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <rect x="320" y="80" width="260" height="30" rx="10" fill="#dc2626"/>
+  <rect x="320" y="100" width="260" height="10" fill="#dc2626"/>
+  <text x="450" y="101" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Leaky Persistence</text>
+  <rect x="345" y="125" width="210" height="65" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="450" y="150" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">UserService</text>
+  <text x="450" y="168" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">findUserByEmail(email)</text>
+  <text x="450" y="182" font-size="9" font-weight="400" fill="#dc2626" text-anchor="middle">builds SQL directly</text>
+  <line x1="450" y1="193" x2="450" y2="215" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowRed)"/>
+  <text x="485" y="208" font-size="9" font-weight="700" fill="#dc2626">SQL LEAK</text>
+  <rect x="345" y="220" width="210" height="55" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="450" y="242" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">Database</text>
+  <text x="450" y="260" font-size="9" font-weight="400" fill="#dc2626" font-family="monospace" text-anchor="middle">SELECT * FROM users...</text>
+  <rect x="345" y="295" width="210" height="150" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="450" y="315" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Problem</text>
+  <text x="450" y="335" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">SQL/ORM details leak into</text>
+  <text x="450" y="350" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">business layer. Service</text>
+  <text x="450" y="365" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">constructs raw queries,</text>
+  <text x="450" y="380" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">coupling business logic</text>
+  <text x="450" y="395" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">to schema.</text>
+  <text x="450" y="415" font-size="9" font-weight="700" fill="#065f46" text-anchor="middle">Fix</text>
+  <text x="450" y="430" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Use repository abstraction</text>
+  <text x="450" y="445" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">hiding data access details.</text>
+
+  <!-- Pitfall 3: God Services -->
+  <rect x="600" y="80" width="260" height="385" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <rect x="600" y="80" width="260" height="30" rx="10" fill="#dc2626"/>
+  <rect x="600" y="100" width="260" height="10" fill="#dc2626"/>
+  <text x="730" y="101" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">God Services</text>
+
+  <!-- Visual: One huge service doing everything -->
+  <rect x="625" y="125" width="210" height="155" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="730" y="148" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">OrderService</text>
+  <text x="730" y="168" font-size="9" font-weight="400" fill="#1a1822">+ createOrder()</text>
+  <text x="730" y="182" font-size="9" font-weight="400" fill="#1a1822">+ validateOrder()</text>
+  <text x="730" y="196" font-size="9" font-weight="400" fill="#1a1822">+ calculateTax()</text>
+  <text x="730" y="210" font-size="9" font-weight="400" fill="#1a1822">+ processPayment()</text>
+  <text x="730" y="224" font-size="9" font-weight="400" fill="#1a1822">+ sendConfirmation()</text>
+  <text x="730" y="238" font-size="9" font-weight="400" fill="#1a1822">+ updateInventory()</text>
+  <text x="730" y="252" font-size="9" font-weight="400" fill="#1a1822">+ generateInvoice()</text>
+  <text x="730" y="266" font-size="9" font-weight="400" fill="#1a1822">+ applyDiscounts()</text>
+  <text x="730" y="280" font-size="9" font-weight="400" fill="#dc2626">+ ... (2000 lines)</text>
+
+  <!-- Explosion lines -->
+  <line x1="630" y1="290" x2="620" y2="300" stroke="#dc2626" stroke-width="2"/>
+  <line x1="640" y1="290" x2="625" y2="305" stroke="#dc2626" stroke-width="2"/>
+  <line x1="820" y1="290" x2="840" y2="300" stroke="#dc2626" stroke-width="2"/>
+  <line x1="830" y1="290" x2="850" y2="305" stroke="#dc2626" stroke-width="2"/>
+
+  <rect x="625" y="305" width="210" height="140" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="730" y="325" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Problem</text>
+  <text x="730" y="345" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">A single service handles</text>
+  <text x="730" y="360" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">too many responsibilities.</text>
+  <text x="730" y="375" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Hard to test, maintain,</text>
+  <text x="730" y="390" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">and reason about.</text>
+  <text x="730" y="405" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Violates Single Responsibility</text>
+  <text x="730" y="420" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Principle.</text>
+  <text x="730" y="440" font-size="9" font-weight="700" fill="#065f46" text-anchor="middle">Fix</text>
+  <text x="730" y="455" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Split into focused services:</text>
+  <text x="730" y="470" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Validation, Payment, Notification</text>
+
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
 </svg>

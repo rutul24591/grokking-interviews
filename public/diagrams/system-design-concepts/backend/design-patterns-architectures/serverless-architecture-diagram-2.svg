@@ -1,10 +1,135 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Serverless Architecture Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Serverless Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Serverless Cold Start Lifecycle</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Lambda Cold Start Lifecycle</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Initialization, execution, and reuse phases impact latency and performance</text>
+  
+  <!-- Phase 1: Cold Start Initialization -->
+  <rect x="40" y="80" width="260" height="380" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <rect x="40" y="80" width="260" height="36" rx="8" fill="#dc2626"/>
+  <rect x="40" y="108" width="260" height="8" fill="#dc2626"/>
+  <text x="170" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Phase 1: Cold Start</text>
+  
+  <!-- Initialization steps -->
+  <rect x="55" y="130" width="230" height="55" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="170" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">1. Provision Container</text>
+  <text x="170" y="172" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">AWS allocates runtime env</text>
+  
+  <!-- Arrow -->
+  <path d="M 170 185 L 170 200" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrowhead-red)"/>
+  
+  <rect x="55" y="200" width="230" height="55" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="170" y="222" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">2. Load Code &amp; Dependencies</text>
+  <text x="170" y="242" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Import libraries, init SDK</text>
+  
+  <!-- Arrow -->
+  <path d="M 170 255 L 170 270" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+  
+  <rect x="55" y="270" width="230" height="55" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="170" y="292" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">3. Run Init Handler</text>
+  <text x="170" y="312" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Global scope execution</text>
+  
+  <!-- Arrow -->
+  <path d="M 170 325 L 170 340" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+  
+  <rect x="55" y="340" width="230" height="55" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="170" y="362" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">4. Ready to Handle Requests</text>
+  <text x="170" y="382" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Handler invoked</text>
+  
+  <!-- Cold start latency callout -->
+  <rect x="55" y="410" width="230" height="40" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="170" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">Cold start latency: 100ms - 10s</text>
+  <text x="170" y="444" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">Depends on runtime, package size</text>
+  
+  <!-- Phase 2: Warm Execution -->
+  <rect x="320" y="80" width="260" height="380" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <rect x="320" y="80" width="260" height="36" rx="8" fill="#059669"/>
+  <rect x="320" y="108" width="260" height="8" fill="#059669"/>
+  <text x="450" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Phase 2: Warm Execution</text>
+  
+  <!-- Warm execution flow -->
+  <rect x="335" y="130" width="230" height="55" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="450" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Container Already Running</text>
+  <text x="450" y="172" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Reuse from previous invocation</text>
+  
+  <!-- Arrow -->
+  <path d="M 450 185 L 450 200" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowhead-green)"/>
+  
+  <rect x="335" y="200" width="230" height="55" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="450" y="222" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Skip Init - Run Handler Only</text>
+  <text x="450" y="242" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Directly invoke handler fn</text>
+  
+  <!-- Arrow -->
+  <path d="M 450 255 L 450 270" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowhead-green)"/>
+  
+  <rect x="335" y="270" width="230" height="55" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="450" y="292" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Fast Response</text>
+  <text x="450" y="312" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">~1-10ms latency</text>
+  
+  <!-- Arrow -->
+  <path d="M 450 325 L 450 340" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowhead-green)"/>
+  
+  <rect x="335" y="340" width="230" height="55" rx="4" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="450" y="362" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Container Stays Warm</text>
+  <text x="450" y="382" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Kept alive for ~5-15 minutes</text>
+  
+  <!-- Warm execution benefits -->
+  <rect x="335" y="410" width="230" height="40" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="450" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">Warm latency: 1-10ms</text>
+  <text x="450" y="444" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">No init overhead</text>
+  
+  <!-- Phase 3: Idle &amp; Recycle -->
+  <rect x="600" y="80" width="260" height="380" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="600" y="80" width="260" height="36" rx="8" fill="#7c3aed"/>
+  <rect x="600" y="108" width="260" height="8" fill="#7c3aed"/>
+  <text x="730" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Phase 3: Idle &amp; Recycle</text>
+  
+  <!-- Idle phase -->
+  <rect x="615" y="130" width="230" height="55" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="730" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">No Invocations Received</text>
+  <text x="730" y="172" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Container sits idle</text>
+  
+  <!-- Arrow -->
+  <path d="M 730 185 L 730 200" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrowhead-purple)"/>
+  
+  <rect x="615" y="200" width="230" height="55" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="730" y="222" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">AWS Recycles Container</text>
+  <text x="730" y="242" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">After idle timeout (~minutes)</text>
+  
+  <!-- Arrow -->
+  <path d="M 730 255 L 730 270" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrowhead-red)"/>
+  
+  <rect x="615" y="270" width="230" height="55" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="730" y="292" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Next Request = Cold Start</text>
+  <text x="730" y="312" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Full init cycle repeats</text>
+  
+  <!-- Mitigation strategies -->
+  <rect x="615" y="340" width="230" height="120" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="730" y="362" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Mitigation Strategies</text>
+  <text x="625" y="382" font-size="10" fill="#1a1822">- Provisioned Concurrency</text>
+  <text x="625" y="398" font-size="10" fill="#1a1822">- Scheduled keep-warm pings</text>
+  <text x="625" y="414" font-size="10" fill="#1a1822">- Minimize package size</text>
+  <text x="625" y="430" font-size="10" fill="#1a1822">- Use lightweight runtimes</text>
+  <text x="625" y="446" font-size="10" fill="#1a1822">- Lazy load non-critical deps</text>
+  
+  <!-- Timeline at bottom -->
+  <rect x="40" y="470" width="820" height="25" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="450" y="487" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">Cold Start -&gt; Warm Execution (repeated invocations) -&gt; Idle -&gt; Container Recycled -&gt; Next request triggers Cold Start again</text>
+  
+  <defs>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
 </svg>

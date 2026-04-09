@@ -1,10 +1,104 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Retry Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Retry Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Retry with Exponential Backoff Flow Diagram</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Retry with Exponential Backoff</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Increasing delays between retry attempts to prevent resource overload</text>
+  
+  <!-- Main flow boxes -->
+  <!-- Initial Request -->
+  <rect x="60" y="100" width="140" height="50" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="130" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Initial Request</text>
+  <text x="130" y="138" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Attempt #1</text>
+  
+  <!-- Arrow to service -->
+  <path d="M 200 125 L 280 125" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- External Service -->
+  <rect x="280" y="90" width="160" height="70" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="360" y="115" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">External Service</text>
+  <text x="360" y="133" text-anchor="middle" font-size="11" fill="#1a1822" opacity="0.8">API / Database</text>
+  <text x="360" y="148" text-anchor="middle" font-size="11" fill="#1a1822" opacity="0.8">(Transient Failure)</text>
+  
+  <!-- Failure arrow going down -->
+  <path d="M 360 160 L 360 210" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+  
+  <!-- Failure check -->
+  <rect x="290" y="210" width="140" height="45" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="360" y="230" text-anchor="middle" font-size="11" font-weight="600" fill="#dc2626">Request Failed</text>
+  <text x="360" y="246" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Retryable error?</text>
+  
+  <!-- Decision diamond -->
+  <polygon points="360,270 430,310 360,350 290,310" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="360" y="306" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Yes</text>
+  <text x="360" y="322" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Retry?</text>
+  
+  <!-- Max retries check -->
+  <path d="M 430 310 L 520 310" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrowhead-red)"/>
+  <text x="475" y="302" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">Max reached</text>
+  
+  <rect x="520" y="285" width="140" height="50" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="590" y="305" text-anchor="middle" font-size="11" font-weight="600" fill="#dc2626">Fail / Alert</text>
+  <text x="590" y="322" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Escalate to caller</text>
+  
+  <!-- Backoff delays - timeline -->
+  <text x="130" y="400" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Exponential Backoff Timeline</text>
+  
+  <!-- Attempt boxes with increasing delays -->
+  <rect x="40" y="420" width="100" height="40" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="90" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Attempt 1</text>
+  <text x="90" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">t = 0ms</text>
+  
+  <!-- Delay 1 -->
+  <rect x="145" y="420" width="70" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="180" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">Wait</text>
+  <text x="180" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">2^1 = 2s</text>
+  
+  <rect x="220" y="420" width="100" height="40" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="270" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Attempt 2</text>
+  <text x="270" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">t = 2s</text>
+  
+  <!-- Delay 2 -->
+  <rect x="325" y="420" width="70" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="360" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">Wait</text>
+  <text x="360" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">2^2 = 4s</text>
+  
+  <rect x="400" y="420" width="100" height="40" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="450" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Attempt 3</text>
+  <text x="450" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">t = 6s</text>
+  
+  <!-- Delay 3 -->
+  <rect x="505" y="420" width="70" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="540" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">Wait</text>
+  <text x="540" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">2^3 = 8s</text>
+  
+  <rect x="580" y="420" width="100" height="40" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="630" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Attempt 4</text>
+  <text x="630" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">t = 14s</text>
+  
+  <!-- Delay 4 -->
+  <rect x="685" y="420" width="70" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="720" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">Wait</text>
+  <text x="720" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">2^4 = 16s</text>
+  
+  <rect x="760" y="420" width="100" height="40" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="810" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">Success</text>
+  <text x="810" y="452" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">t = 30s</text>
+  
+  <!-- Arrow from decision back to attempt -->
+  <path d="M 360 350 L 360 380 L 130 380 L 130 150" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrowhead-purple)"/>
+  <text x="245" y="375" text-anchor="middle" font-size="10" fill="#7c3aed">Retry after delay</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Domain-Driven Design Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Domain-Driven Design</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Tactical DDD building blocks: Entities, Value Objects, Aggregates, Repositories, Domain Services, and Domain Events</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Tactical DDD: Building Blocks</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Entities, Value Objects, Aggregates, Repositories, Domain Services, and Domain Events</text>
+
+  <!-- Aggregate boundary -->
+  <rect x="30" y="80" width="420" height="290" rx="14" fill="none" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="50" y="108" text-anchor="start" font-size="14" font-weight="700" fill="#6d5bd0">Aggregate: Order</text>
+  <text x="50" y="125" text-anchor="start" font-size="10" fill="#1a1822" opacity="0.7">Consistency boundary &#8594; invariants enforced here</text>
+
+  <!-- Entity: Order (Aggregate Root) -->
+  <rect x="60" y="145" width="170" height="70" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="145" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Order (Root Entity)</text>
+  <text x="145" y="188" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">identity: orderId</text>
+  <text x="145" y="203" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">status, items, total</text>
+
+  <!-- Entity: OrderLine -->
+  <rect x="280" y="145" width="150" height="70" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="355" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">OrderLine</text>
+  <text x="355" y="188" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">productId, qty</text>
+  <text x="355" y="203" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">unitPrice</text>
+
+  <!-- Connection within aggregate -->
+  <line x1="230" y1="180" x2="275" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowTA)"/>
+
+  <!-- Value Objects -->
+  <rect x="60" y="240" width="150" height="55" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="135" y="263" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Money (Value Object)</text>
+  <text x="135" y="281" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">amount, currency &#8594; immutable</text>
+
+  <rect x="240" y="240" width="150" height="55" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="315" y="263" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Address (Value Object)</text>
+  <text x="315" y="281" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">street, city, zip &#8594; immutable</text>
+
+  <rect x="60" y="310" width="330" height="45" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="225" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Value Objects: no identity, equality by value, no shared references</text>
+  <text x="225" y="346" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Replace rather than mutate &#8594; thread-safe by design</text>
+
+  <!-- Repository -->
+  <rect x="30" y="395" width="190" height="55" rx="8" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="2"/>
+  <text x="125" y="418" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">OrderRepository</text>
+  <text x="125" y="436" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Persistence abstraction</text>
+
+  <!-- Arrow from aggregate to repository -->
+  <line x1="125" y1="370" x2="125" y2="395" stroke="#2a9d8f" stroke-width="2" marker-end="url(#arrowTA)"/>
+  <text x="140" y="385" text-anchor="start" font-size="8" fill="#2a9d8f" font-weight="600">persist/load</text>
+
+  <!-- Domain Service -->
+  <rect x="490" y="145" width="200" height="80" rx="8" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="2"/>
+  <text x="590" y="172" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">PricingService</text>
+  <text x="590" y="192" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">Cross-entity calculation</text>
+  <text x="590" y="210" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">tax, discount, shipping cost</text>
+
+  <line x1="450" y1="180" x2="485" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowTA)"/>
+  <text x="468" y="170" text-anchor="middle" font-size="8" fill="#6d5bd0" font-weight="600">uses</text>
+
+  <!-- Domain Event -->
+  <rect x="490" y="270" width="200" height="70" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="590" y="295" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Domain Events</text>
+  <text x="590" y="315" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">OrderPlaced, OrderCancelled</text>
+  <text x="590" y="331" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Integration signal to other BCs</text>
+
+  <!-- Arrow from Order to Domain Event -->
+  <line x1="390" y1="280" x2="430" y2="280" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="430" y1="280" x2="430" y2="305" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="430" y1="305" x2="485" y2="305" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowTA)"/>
+
+  <!-- Legend -->
+  <rect x="720" y="80" width="160" height="300" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="800" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Legend</text>
+
+  <rect x="735" y="125" width="20" height="14" rx="4" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="765" y="137" text-anchor="start" font-size="10" fill="#1a1822">Entity (has identity)</text>
+
+  <rect x="735" y="155" width="20" height="14" rx="4" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="765" y="167" text-anchor="start" font-size="10" fill="#1a1822">Value Object</text>
+
+  <rect x="735" y="185" width="20" height="14" rx="4" fill="none" stroke="#6d5bd0" stroke-dasharray="4,2" stroke-width="2"/>
+  <text x="765" y="197" text-anchor="start" font-size="10" fill="#1a1822">Aggregate boundary</text>
+
+  <rect x="735" y="215" width="20" height="14" rx="4" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="2"/>
+  <text x="765" y="227" text-anchor="start" font-size="10" fill="#1a1822">Repository</text>
+
+  <rect x="735" y="245" width="20" height="14" rx="4" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="1"/>
+  <text x="765" y="257" text-anchor="start" font-size="10" fill="#1a1822">Domain Service</text>
+
+  <rect x="735" y="275" width="20" height="14" rx="4" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="765" y="287" text-anchor="start" font-size="10" fill="#1a1822">Domain Event</text>
+
+  <!-- Bottom design rule -->
+  <rect x="490" y="410" width="390" height="60" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="685" y="435" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Design Rule</text>
+  <text x="685" y="455" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">Aggregates should be small. Changes within one</text>
+  <text x="685" y="470" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">aggregate are atomic; across aggregates use events.</text>
+
+  <defs>
+    <marker id="arrowTA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

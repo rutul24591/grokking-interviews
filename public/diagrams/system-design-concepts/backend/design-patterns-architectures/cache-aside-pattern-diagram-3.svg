@@ -1,10 +1,124 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Cache-Aside Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Cache-Aside Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Cache-aside vs Read-Through vs Write-Through caching patterns comparison showing data flow and trade-offs</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Cache-Aside vs Read-Through vs Write-Through</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Three caching patterns with different responsibilities and trade-offs</text>
+
+  <!-- Column 1: Cache-Aside -->
+  <rect x="30" y="80" width="270" height="390" rx="12" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Cache-Aside (Lazy Loading)</text>
+
+  <!-- Flow -->
+  <rect x="50" y="130" width="100" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="100" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">App</text>
+
+  <line x1="150" y1="150" x2="210" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrCA2)"/>
+  <text x="180" y="140" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">read</text>
+
+  <rect x="210" y="130" width="80" height="40" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="250" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Cache</text>
+
+  <line x1="250" y1="170" x2="250" y2="210" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrCA2)"/>
+  <text x="280" y="195" font-size="8" fill="#dc2626">MISS</text>
+
+  <rect x="210" y="220" width="80" height="40" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="250" y="245" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">DB</text>
+
+  <line x1="250" y1="220" x2="250" y2="175" stroke="#4caf50" stroke-width="2" marker-end="url(#arrCA2)"/>
+  <text x="280" y="205" font-size="8" fill="#4caf50">populate</text>
+
+  <text x="165" y="290" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Application manages cache</text>
+  <text x="165" y="310" text-anchor="middle" font-size="9" fill="#64748b">App checks cache first</text>
+  <text x="165" y="328" text-anchor="middle" font-size="9" fill="#64748b">On miss: reads from DB</text>
+  <text x="165" y="346" text-anchor="middle" font-size="9" fill="#64748b">Then populates cache itself</text>
+
+  <rect x="45" y="365" width="240" height="40" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="165" y="380" text-anchor="middle" font-size="9" font-weight="600" fill="#16a34a">✓ App control, no stale writes</text>
+  <text x="165" y="398" text-anchor="middle" font-size="9" fill="#64748b">Write: update DB, delete cache</text>
+
+  <rect x="45" y="415" width="240" height="40" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="165" y="430" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">✗ Cache miss penalty on every miss</text>
+  <text x="165" y="448" text-anchor="middle" font-size="9" fill="#64748b">App code handles cache logic</text>
+
+  <!-- Column 2: Read-Through -->
+  <rect x="315" y="80" width="270" height="390" rx="12" fill="none" stroke="#d97706" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#d97706"/>
+  <rect x="315" y="105" width="270" height="10" fill="#d97706"/>
+  <text x="450" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Read-Through Cache</text>
+
+  <rect x="335" y="130" width="100" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="385" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">App</text>
+
+  <line x1="435" y1="150" x2="490" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrRT2)"/>
+  <text x="463" y="140" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">read</text>
+
+  <rect x="490" y="130" width="80" height="40" rx="8" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="2"/>
+  <text x="530" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#d97706">Cache</text>
+
+  <line x1="530" y1="170" x2="530" y2="210" stroke="#d97706" stroke-width="2" marker-end="url(#arrRT2)"/>
+  <text x="560" y="195" font-size="8" fill="#d97706">auto-load</text>
+
+  <rect x="490" y="220" width="80" height="40" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="530" y="245" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">DB</text>
+
+  <text x="450" y="290" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Cache manages loading from DB</text>
+  <text x="450" y="310" text-anchor="middle" font-size="9" fill="#64748b">App reads from cache only</text>
+  <text x="450" y="328" text-anchor="middle" font-size="9" fill="#64748b">Cache loads from DB on miss</text>
+  <text x="450" y="346" text-anchor="middle" font-size="9" fill="#64748b">(cache has data loader)</text>
+
+  <rect x="330" y="365" width="240" height="40" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="380" text-anchor="middle" font-size="9" font-weight="600" fill="#16a34a">✓ Simple app code, auto-loading</text>
+  <text x="450" y="398" text-anchor="middle" font-size="9" fill="#64748b">App unaware of cache misses</text>
+
+  <rect x="330" y="415" width="240" height="40" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="450" y="430" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">✗ Cache must know data source</text>
+  <text x="450" y="448" text-anchor="middle" font-size="9" fill="#64748b">Tight coupling to data model</text>
+
+  <!-- Column 3: Write-Through -->
+  <rect x="600" y="80" width="270" height="390" rx="12" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="600" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="735" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Write-Through Cache</text>
+
+  <rect x="620" y="130" width="100" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="670" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">App</text>
+
+  <line x1="720" y1="150" x2="770" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrWT)"/>
+  <text x="745" y="140" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">write</text>
+
+  <rect x="770" y="130" width="80" height="40" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="810" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Cache</text>
+
+  <line x1="810" y1="170" x2="810" y2="210" stroke="#4caf50" stroke-width="2" marker-end="url(#arrWT)"/>
+  <text x="840" y="195" font-size="8" fill="#4caf50">sync write</text>
+
+  <rect x="770" y="220" width="80" height="40" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="810" y="245" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">DB</text>
+
+  <text x="735" y="290" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Write goes through cache to DB</text>
+  <text x="735" y="310" text-anchor="middle" font-size="9" fill="#64748b">App writes to cache</text>
+  <text x="735" y="328" text-anchor="middle" font-size="9" fill="#64748b">Cache synchronously writes to DB</text>
+  <text x="735" y="346" text-anchor="middle" font-size="9" fill="#64748b">Both updated before return</text>
+
+  <rect x="615" y="365" width="240" height="40" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="735" y="380" text-anchor="middle" font-size="9" font-weight="600" fill="#16a34a">✓ Data never stale, strong consistency</text>
+  <text x="735" y="398" text-anchor="middle" font-size="9" fill="#64748b">Cache always reflects DB state</text>
+
+  <rect x="615" y="415" width="240" height="40" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="735" y="430" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">✗ Write latency = cache + DB write</text>
+  <text x="735" y="448" text-anchor="middle" font-size="9" fill="#64748b">Slower writes, more DB load</text>
+
+  <defs>
+    <marker id="arrCA2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrRT2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+    <marker id="arrWT" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
 </svg>

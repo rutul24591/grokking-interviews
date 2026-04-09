@@ -1,10 +1,94 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Bulkhead Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Bulkhead Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Bulkhead vs Circuit Breaker comparison showing how bulkhead isolates resources while circuit breaker stops requests to failing services</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Bulkhead vs Circuit Breaker</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Two complementary resilience patterns: resource isolation vs failure detection</text>
+
+  <!-- LEFT: Bulkhead -->
+  <rect x="30" y="80" width="410" height="400" rx="12" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Bulkhead Pattern</text>
+
+  <!-- Bulkhead visual -->
+  <rect x="80" y="140" width="100" height="120" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <text x="130" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Pool A</text>
+  <text x="130" y="210" text-anchor="middle" font-size="9" fill="#64748b">10 threads</text>
+  <text x="130" y="230" text-anchor="middle" font-size="9" fill="#4caf50">100% available</text>
+  <text x="130" y="248" text-anchor="middle" font-size="9" fill="#64748b">(Service A)</text>
+
+  <rect x="190" y="140" width="100" height="120" rx="8" fill="#dc2626" opacity="0.2" stroke="#dc2626" stroke-width="2"/>
+  <text x="240" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">Pool B</text>
+  <text x="240" y="210" text-anchor="middle" font-size="9" fill="#64748b">15 threads</text>
+  <text x="240" y="230" text-anchor="middle" font-size="9" fill="#dc2626">0% available</text>
+  <text x="240" y="248" text-anchor="middle" font-size="9" fill="#64748b">(Service B)</text>
+
+  <rect x="300" y="140" width="100" height="120" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <text x="350" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Pool C</text>
+  <text x="350" y="210" text-anchor="middle" font-size="9" fill="#64748b">8 threads</text>
+  <text x="350" y="230" text-anchor="middle" font-size="9" fill="#4caf50">100% available</text>
+  <text x="350" y="248" text-anchor="middle" font-size="9" fill="#64748b">(Service C)</text>
+
+  <!-- Isolation walls -->
+  <line x1="185" y1="140" x2="185" y2="260" stroke="#d97706" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="295" y1="140" x2="295" y2="260" stroke="#d97706" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <!-- Bulkhead description -->
+  <rect x="50" y="290" width="370" height="80" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="235" y="312" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Mechanism: Resource Isolation</text>
+  <text x="70" y="335" font-size="10" fill="#1a1822">• Partitions resources (threads, connections)</text>
+  <text x="70" y="353" font-size="10" fill="#1a1822">• Prevents one service from starving others</text>
+
+  <rect x="50" y="385" width="370" height="80" rx="8" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="235" y="407" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a">Use when:</text>
+  <text x="70" y="430" font-size="10" fill="#1a1822">Multiple services share a resource pool</text>
+  <text x="70" y="448" font-size="10" fill="#1a1822">and you want to contain blast radius of failures</text>
+
+  <!-- RIGHT: Circuit Breaker -->
+  <rect x="460" y="80" width="410" height="400" rx="12" fill="none" stroke="#d97706" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="12" fill="#d97706"/>
+  <rect x="460" y="105" width="410" height="10" fill="#d97706"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Circuit Breaker Pattern</text>
+
+  <!-- Circuit Breaker state machine -->
+  <circle cx="560" cy="180" r="45" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <text x="560" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">CLOSED</text>
+  <text x="560" y="195" text-anchor="middle" font-size="8" fill="#64748b">requests flow</text>
+
+  <circle cx="770" cy="180" r="45" fill="#dc2626" opacity="0.15" stroke="#dc2626" stroke-width="2"/>
+  <text x="770" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">OPEN</text>
+  <text x="770" y="195" text-anchor="middle" font-size="8" fill="#64748b">fail fast</text>
+
+  <circle cx="665" cy="290" r="45" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="2"/>
+  <text x="665" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">HALF-OPEN</text>
+  <text x="665" y="305" text-anchor="middle" font-size="8" fill="#64748b">probe request</text>
+
+  <!-- State transitions -->
+  <path d="M 605 180 Q 690 140 725 180" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrCB)"/>
+  <text x="665" y="155" text-anchor="middle" font-size="8" font-weight="600" fill="#dc2626">error rate &gt; threshold</text>
+
+  <path d="M 745 220 Q 710 270 695 280" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#arrCB)"/>
+  <text x="760" y="250" font-size="8" font-weight="600" fill="#d97706">timeout</text>
+
+  <path d="M 635 280 Q 590 230 585 215" fill="none" stroke="#4caf50" stroke-width="2" marker-end="url(#arrCB)"/>
+  <text x="580" y="250" font-size="8" font-weight="600" fill="#4caf50">success</text>
+
+  <path d="M 620 280 Q 560 260 540 215" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrCB)"/>
+  <text x="560" y="275" font-size="8" font-weight="600" fill="#dc2626">probe fails</text>
+
+  <!-- Circuit Breaker description -->
+  <rect x="480" y="350" width="370" height="80" rx="8" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1"/>
+  <text x="665" y="372" text-anchor="middle" font-size="11" font-weight="700" fill="#d97706">Mechanism: Failure Detection + Fast-Fail</text>
+  <text x="500" y="395" font-size="10" fill="#1a1822">• Monitors error rates and response times</text>
+  <text x="500" y="413" font-size="10" fill="#1a1822">• Stops requests to failing services, allows recovery</text>
+
+  <rect x="480" y="445" width="370" height="35" rx="8" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="665" y="462" text-anchor="middle" font-size="9" font-weight="600" fill="#16a34a">Use with Bulkhead for defense in depth</text>
+  <text x="665" y="478" text-anchor="middle" font-size="9" fill="#64748b">Bulkhead contains resource exhaustion; CB stops requests to failing services</text>
+
+  <defs>
+    <marker id="arrCB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,143 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Backend for Frontend Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Backend for Frontend</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Comparison of single API vs BFF pattern showing over-fetching vs tailored responses</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Single API vs Backend-for-Frontend</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">BFF eliminates over-fetching by tailoring responses per client</text>
+
+  <!-- LEFT SIDE: Single API Pattern -->
+  <rect x="30" y="80" width="410" height="400" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="12" fill="#cc4444"/>
+  <rect x="30" y="105" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Single API Pattern (Over-fetching)</text>
+
+  <!-- Clients on left side -->
+  <rect x="50" y="125" width="100" height="40" rx="8" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="100" y="149" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Web App</text>
+
+  <rect x="185" y="125" width="100" height="40" rx="8" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="235" y="149" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Mobile App</text>
+
+  <rect x="320" y="125" width="100" height="40" rx="8" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="370" y="149" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">IoT Device</text>
+
+  <!-- Arrows to single API -->
+  <line x1="100" y1="165" x2="235" y2="200" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowSingle)"/>
+  <line x1="235" y1="165" x2="235" y2="200" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowSingle)"/>
+  <line x1="370" y1="165" x2="235" y2="200" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowSingle)"/>
+
+  <!-- Single API Box -->
+  <rect x="135" y="200" width="200" height="60" rx="8" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="2"/>
+  <text x="235" y="225" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Single API / Gateway</text>
+  <text x="235" y="245" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">One-size-fits-all response</text>
+
+  <!-- Arrow to services -->
+  <line x1="235" y1="260" x2="235" y2="290" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowSingle)"/>
+
+  <!-- Backend Services -->
+  <rect x="80" y="290" width="310" height="60" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="235" y="312" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Backend Services</text>
+  <text x="235" y="330" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">User | Content | Notifications | Analytics | Settings | Preferences</text>
+
+  <!-- Arrow back up showing over-fetching -->
+  <line x1="235" y1="290" x2="235" y2="370" stroke="#cc4444" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowSingle)"/>
+
+  <!-- Over-fetching visualization -->
+  <rect x="50" y="370" width="370" height="95" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="235" y="390" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Response Payload (Same for all clients)</text>
+  
+  <!-- Show fields - used vs unused -->
+  <rect x="60" y="400" width="50" height="20" rx="4" fill="#4caf50" opacity="0.3" stroke="#4caf50" stroke-width="1"/>
+  <text x="85" y="414" text-anchor="middle" font-size="8" fill="#4caf50" font-weight="600">used</text>
+  
+  <rect x="115" y="400" width="50" height="20" rx="4" fill="#cc4444" opacity="0.3" stroke="#cc4444" stroke-width="1"/>
+  <text x="140" y="414" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">unused</text>
+
+  <rect x="170" y="400" width="50" height="20" rx="4" fill="#4caf50" opacity="0.3" stroke="#4caf50" stroke-width="1"/>
+  <text x="195" y="414" text-anchor="middle" font-size="8" fill="#4caf50" font-weight="600">used</text>
+
+  <rect x="225" y="400" width="50" height="20" rx="4" fill="#cc4444" opacity="0.3" stroke="#cc4444" stroke-width="1"/>
+  <text x="250" y="414" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">unused</text>
+
+  <rect x="280" y="400" width="50" height="20" rx="4" fill="#cc4444" opacity="0.3" stroke="#cc4444" stroke-width="1"/>
+  <text x="305" y="414" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">unused</text>
+
+  <rect x="335" y="400" width="50" height="20" rx="4" fill="#cc4444" opacity="0.3" stroke="#cc4444" stroke-width="1"/>
+  <text x="360" y="414" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">unused</text>
+
+  <rect x="390" y="400" width="20" height="20" rx="4" fill="#cc4444" opacity="0.3" stroke="#cc4444" stroke-width="1"/>
+  <text x="400" y="414" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">...</text>
+
+  <text x="235" y="440" text-anchor="middle" font-size="9" fill="#1a1822">Mobile receives 60% unused data. IoT receives 85% unused data.</text>
+  <text x="235" y="455" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">Wasted bandwidth, slower responses, poor UX</text>
+
+  <!-- RIGHT SIDE: BFF Pattern -->
+  <rect x="460" y="80" width="410" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="460" y="105" width="410" height="10" fill="#6d5bd0"/>
+  <text x="665" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">BFF Pattern (Tailored Responses)</text>
+
+  <!-- Web BFF path -->
+  <rect x="480" y="125" width="100" height="35" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="530" y="146" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Web App</text>
+
+  <rect x="570" y="200" width="95" height="45" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="617" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Web BFF</text>
+  <text x="617" y="235" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">Full data, SSR-ready</text>
+
+  <line x1="530" y1="160" x2="617" y2="200" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowBFF)"/>
+
+  <!-- Mobile BFF path -->
+  <rect x="610" y="125" width="100" height="35" rx="8" fill="#f0ad4e" opacity="0.12" stroke="#f0ad4e" stroke-width="1.5"/>
+  <text x="660" y="146" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Mobile App</text>
+
+  <rect x="660" y="260" width="95" height="45" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1.5"/>
+  <text x="707" y="280" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Mobile BFF</text>
+  <text x="707" y="295" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">Compressed, sync-ready</text>
+
+  <line x1="660" y1="160" x2="707" y2="260" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowBFF2)"/>
+
+  <!-- IoT BFF path -->
+  <rect x="740" y="125" width="100" height="35" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="790" y="146" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">IoT Device</text>
+
+  <rect x="755" y="320" width="95" height="45" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="802" y="340" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">IoT BFF</text>
+  <text x="802" y="355" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">Minimal, binary-ready</text>
+
+  <line x1="790" y1="160" x2="802" y2="320" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowBFF3)"/>
+
+  <!-- Shared backend services on right side -->
+  <rect x="500" y="400" width="340" height="60" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="670" y="422" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Shared Backend Services</text>
+  <text x="670" y="440" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">User | Content | Notifications | Analytics</text>
+
+  <!-- BFF to services connections -->
+  <line x1="617" y1="245" x2="670" y2="400" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="707" y1="305" x2="670" y2="400" stroke="#f0ad4e" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="802" y1="365" x2="670" y2="400" stroke="#4caf50" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+
+  <!-- Tailored response payloads -->
+  <rect x="480" y="250" width="80" height="30" rx="6" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="520" y="269" text-anchor="middle" font-size="8" fill="#6d5bd0" font-weight="600">100% used</text>
+
+  <rect x="765" y="310" width="80" height="30" rx="6" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="805" y="329" text-anchor="middle" font-size="8" fill="#f0ad4e" font-weight="600">95% used</text>
+
+  <rect x="765" y="375" width="80" height="30" rx="6" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="805" y="394" text-anchor="middle" font-size="8" fill="#4caf50" font-weight="600">90% used</text>
+
+  <defs>
+    <marker id="arrowSingle" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+    <marker id="arrowBFF" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowBFF2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arrowBFF3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
 </svg>

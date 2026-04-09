@@ -1,10 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Unit of Work Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Unit of Work Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Unit of Work - Transaction Coordination</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Unit of Work - Transaction Coordination</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">Unit of Work coordinates multiple repository operations within a single transaction boundary</text>
+  
+  <!-- Application layer -->
+  <rect x="40" y="100" width="820" height="70" rx="8" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <rect x="40" y="100" width="820" height="28" rx="8" fill="#7c6a96"/>
+  <rect x="40" y="116" width="820" height="12" fill="#7c6a96"/>
+  <text x="450" y="119" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Application / Service Layer</text>
+  <text x="450" y="155" font-size="11" fill="#1a1822" opacity="0.85" text-anchor="middle">Initiates business operation: &quot;Create Order with Payment and Inventory Update&quot;</text>
+  
+  <!-- Arrow down -->
+  <path d="M 450 175 L 450 200" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  
+  <!-- Unit of Work -->
+  <rect x="250" y="205" width="400" height="80" rx="10" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2.5"/>
+  <rect x="250" y="205" width="400" height="28" rx="10" fill="#4a9c5d"/>
+  <rect x="250" y="221" width="400" height="12" fill="#4a9c5d"/>
+  <text x="450" y="224" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Unit of Work</text>
+  
+  <text x="270" y="255" font-size="10" font-weight="600" fill="#4a9c5d">&#x2022; Begin Transaction</text>
+  <text x="420" y="255" font-size="10" font-weight="600" fill="#4a9c5d">&#x2022; Track Changes</text>
+  <text x="560" y="255" font-size="10" font-weight="600" fill="#4a9c5d">&#x2022; Commit / Rollback</text>
+  
+  <text x="270" y="275" font-size="9" fill="#1a1822" opacity="0.7">&#x2022; Identity Map</text>
+  <text x="420" y="275" font-size="9" fill="#1a1822" opacity="0.7">&#x2022; Change Tracking</text>
+  <text x="560" y="275" font-size="9" fill="#1a1822" opacity="0.7">&#x2022; Transaction Boundary</text>
+  
+  <!-- Arrows from UoW to repositories -->
+  <path d="M 320 290 L 200 330" stroke="#7c6a96" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <path d="M 450 290 L 450 330" stroke="#7c6a96" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <path d="M 580 290 L 700 330" stroke="#7c6a96" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Repositories -->
+  <rect x="60" y="335" width="260" height="60" rx="8" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1.5"/>
+  <rect x="60" y="335" width="260" height="24" rx="8" fill="#c45c5c"/>
+  <rect x="60" y="347" width="260" height="12" fill="#c45c5c"/>
+  <text x="190" y="352" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Order Repository</text>
+  <text x="190" y="378" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">INSERT order record</text>
+  
+  <rect x="320" y="335" width="260" height="60" rx="8" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1.5"/>
+  <rect x="320" y="335" width="260" height="24" rx="8" fill="#c45c5c"/>
+  <rect x="320" y="347" width="260" height="12" fill="#c45c5c"/>
+  <text x="450" y="352" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Payment Repository</text>
+  <text x="450" y="378" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">CREATE payment transaction</text>
+  
+  <rect x="580" y="335" width="260" height="60" rx="8" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1.5"/>
+  <rect x="580" y="335" width="260" height="24" rx="8" fill="#c45c5c"/>
+  <rect x="580" y="347" width="260" height="12" fill="#c45c5c"/>
+  <text x="710" y="352" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Inventory Repository</text>
+  <text x="710" y="378" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">UPDATE stock quantity</text>
+  
+  <!-- Arrows to database -->
+  <path d="M 190 400 L 190 430 L 450 430 L 450 440" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  <path d="M 450 400 L 450 440" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  <path d="M 710 400 L 710 430 L 450 430" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  
+  <!-- Database -->
+  <rect x="300" y="445" width="300" height="45" rx="8" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <text x="450" y="472" font-size="12" font-weight="700" fill="#1a1822" text-anchor="middle">Database (Single Transaction)</text>
+  
+  <!-- Transaction boundary annotation -->
+  <rect x="40" y="195" width="190" height="190" rx="8" fill="#fff8e1" stroke="#f0a030" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="135" y="220" font-size="11" font-weight="700" fill="#f0a030" text-anchor="middle">Transaction</text>
+  <text x="135" y="238" font-size="11" font-weight="700" fill="#f0a030" text-anchor="middle">Boundary</text>
+  <text x="60" y="270" font-size="9" fill="#1a1822" opacity="0.7">All operations succeed</text>
+  <text x="60" y="285" font-size="9" fill="#1a1822" opacity="0.7">or ALL are rolled back</text>
+  <text x="60" y="300" font-size="9" fill="#1a1822" opacity="0.7">Atomicity guaranteed</text>
+  <text x="60" y="315" font-size="9" fill="#1a1822" opacity="0.7">by UoW coordinator</text>
+  <text x="60" y="340" font-size="9" fill="#1a1822" opacity="0.7">Isolation: changes not</text>
+  <text x="60" y="355" font-size="9" fill="#1a1822" opacity="0.7">visible until commit</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowBlack" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1822"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c6a96"/>
+    </marker>
+  </defs>
 </svg>

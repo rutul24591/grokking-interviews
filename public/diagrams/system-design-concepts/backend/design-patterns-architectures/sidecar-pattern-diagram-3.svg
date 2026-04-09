@@ -1,10 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Sidecar Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Sidecar Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <title>Sidecar vs Embedded Library - Isolation Trade-offs Comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Sidecar vs Embedded Library</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Isolation Trade-offs: Choosing the Right Approach</text>
+
+  <!-- Sidecar Architecture -->
+  <rect x="30" y="85" width="410" height="195" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <rect x="30" y="85" width="410" height="35" rx="10" fill="#059669"/>
+  <text x="235" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">Sidecar Pattern (Out-of-Process)</text>
+
+  <!-- App and Sidecar boxes -->
+  <rect x="55" y="140" width="160" height="70" rx="8" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="135" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Main Application</text>
+  <text x="135" y="185" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Own process, own runtime</text>
+  <text x="135" y="200" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Language agnostic</text>
+
+  <line x1="215" y1="175" x2="270" y2="175" stroke="#059669" stroke-width="2"/>
+  <text x="242" y="165" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">localhost</text>
+
+  <rect x="275" y="140" width="150" height="70" rx="8" fill="#dcfce7" stroke="#059669" stroke-width="1"/>
+  <text x="350" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#166534" font-family="system-ui, sans-serif">Sidecar</text>
+  <text x="350" y="185" text-anchor="middle" font-size="10" fill="#166534" opacity="0.7" font-family="system-ui, sans-serif">Separate process</text>
+  <text x="350" y="200" text-anchor="middle" font-size="10" fill="#166534" opacity="0.7" font-family="system-ui, sans-serif">Independent lifecycle</text>
+
+  <!-- Sidecar pros/cons -->
+  <rect x="55" y="230" width="170" height="40" rx="6" fill="#dcfce7"/>
+  <text x="140" y="245" text-anchor="middle" font-size="9" font-weight="600" fill="#166534" font-family="system-ui, sans-serif">+ Language agnostic</text>
+  <text x="140" y="260" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">+ Isolated failures</text>
+  <text x="140" y="275" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">+ Independent upgrades</text>
+
+  <rect x="255" y="230" width="170" height="40" rx="6" fill="#fee2e2"/>
+  <text x="340" y="245" text-anchor="middle" font-size="9" font-weight="600" fill="#991b1b" font-family="system-ui, sans-serif">- Network overhead</text>
+  <text x="340" y="260" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">- More resources</text>
+  <text x="340" y="275" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">- Serialization cost</text>
+
+  <!-- Embedded Library Architecture -->
+  <rect x="460" y="85" width="410" height="195" rx="10" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="460" y="85" width="410" height="35" rx="10" fill="#f59e0b"/>
+  <text x="665" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">Embedded Library (In-Process)</text>
+
+  <!-- App with embedded lib -->
+  <rect x="485" y="140" width="360" height="70" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="665" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f" font-family="system-ui, sans-serif">Application Process</text>
+
+  <rect x="500" y="178" width="100" height="25" rx="5" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+  <text x="550" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#78350f" font-family="system-ui, sans-serif">Business Logic</text>
+
+  <rect x="615" y="178" width="110" height="25" rx="5" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+  <text x="670" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#78350f" font-family="system-ui, sans-serif">SDK / Library</text>
+
+  <rect x="740" y="178" width="90" height="25" rx="5" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+  <text x="785" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#78350f" font-family="system-ui, sans-serif">Telemetry</text>
+
+  <!-- Embedded pros/cons -->
+  <rect x="485" y="230" width="170" height="40" rx="6" fill="#dcfce7"/>
+  <text x="570" y="245" text-anchor="middle" font-size="9" font-weight="600" fill="#166534" font-family="system-ui, sans-serif">+ No network overhead</text>
+  <text x="570" y="260" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">+ Lower latency</text>
+  <text x="570" y="275" text-anchor="middle" font-size="9" fill="#166534" font-family="system-ui, sans-serif">+ Simpler deployment</text>
+
+  <rect x="685" y="230" width="170" height="40" rx="6" fill="#fee2e2"/>
+  <text x="770" y="245" text-anchor="middle" font-size="9" font-weight="600" fill="#991b1b" font-family="system-ui, sans-serif">- Language coupling</text>
+  <text x="770" y="260" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">- Shared failure domain</text>
+  <text x="770" y="275" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">- Version conflicts</text>
+
+  <!-- Comparison Matrix -->
+  <rect x="30" y="305" width="840" height="170" rx="10" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="450" y="330" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Trade-off Comparison Matrix</text>
+
+  <!-- Table header -->
+  <rect x="50" y="345" width="180" height="28" rx="4" fill="#f3f1f8"/>
+  <text x="140" y="363" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Criterion</text>
+  <rect x="230" y="345" width="320" height="28" rx="4" fill="#f3f1f8"/>
+  <text x="390" y="363" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Sidecar (Out-of-Process)</text>
+  <rect x="550" y="345" width="300" height="28" rx="4" fill="#f3f1f8"/>
+  <text x="700" y="363" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Embedded Library (In-Process)</text>
+
+  <!-- Row 1 -->
+  <rect x="50" y="373" width="180" height="25" rx="4" fill="#ffffff"/>
+  <text x="140" y="389" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822" font-family="system-ui, sans-serif">Language Support</text>
+  <rect x="230" y="373" width="320" height="25" rx="4" fill="#ffffff"/>
+  <text x="390" y="389" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Any language (HTTP/gRPC)</text>
+  <rect x="550" y="373" width="300" height="25" rx="4" fill="#ffffff"/>
+  <text x="700" y="389" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Must match app language</text>
+
+  <!-- Row 2 -->
+  <rect x="50" y="398" width="180" height="25" rx="4" fill="#ffffff"/>
+  <text x="140" y="414" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822" font-family="system-ui, sans-serif">Latency Impact</text>
+  <rect x="230" y="398" width="320" height="25" rx="4" fill="#ffffff"/>
+  <text x="390" y="414" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Adds ~1-5ms per hop</text>
+  <rect x="550" y="398" width="300" height="25" rx="4" fill="#ffffff"/>
+  <text x="700" y="414" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Negligible (&lt; 0.1ms)</text>
+
+  <!-- Row 3 -->
+  <rect x="50" y="423" width="180" height="25" rx="4" fill="#ffffff"/>
+  <text x="140" y="439" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822" font-family="system-ui, sans-serif">Failure Isolation</text>
+  <rect x="230" y="423" width="320" height="25" rx="4" fill="#ffffff"/>
+  <text x="390" y="439" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Separate process = isolated</text>
+  <rect x="550" y="423" width="300" height="25" rx="4" fill="#ffffff"/>
+  <text x="700" y="439" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Crashes take down app too</text>
+
+  <!-- Row 4 -->
+  <rect x="50" y="448" width="180" height="25" rx="4" fill="#ffffff"/>
+  <text x="140" y="464" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822" font-family="system-ui, sans-serif">Resource Usage</text>
+  <rect x="230" y="448" width="320" height="25" rx="4" fill="#ffffff"/>
+  <text x="390" y="464" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Higher (separate memory space)</text>
+  <rect x="550" y="448" width="300" height="25" rx="4" fill="#ffffff"/>
+  <text x="700" y="464" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Lower (shared process)</text>
+
+  <!-- Decision note -->
+  <rect x="30" y="483" width="840" height="15" rx="5" fill="#1a1822"/>
+  <text x="450" y="493" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff" font-family="system-ui, sans-serif">Rule of Thumb: Use sidecars for heterogeneous environments; use embedded libs for performance-critical, single-language stacks</text>
 </svg>

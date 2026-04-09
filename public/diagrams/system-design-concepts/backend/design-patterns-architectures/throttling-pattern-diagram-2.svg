@@ -1,10 +1,106 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Throttling Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Throttling Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Throttling vs Rate Limiting Comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Throttling vs Rate Limiting</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">Different mechanisms for controlling request flow with distinct behaviors and use cases</text>
+  
+  <!-- Throttling side -->
+  <rect x="30" y="100" width="410" height="380" rx="10" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <rect x="30" y="100" width="410" height="36" rx="10" fill="#7c6a96"/>
+  <rect x="30" y="122" width="410" height="14" fill="#7c6a96"/>
+  <text x="235" y="123" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">THROTTLING</text>
+  
+  <!-- Throttling diagram -->
+  <!-- Client requests -->
+  <rect x="50" y="165" width="120" height="45" rx="6" fill="#f0e8e8" stroke="#c45c5c" stroke-width="2"/>
+  <text x="110" y="183" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">Client</text>
+  <text x="110" y="198" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">Requests: 100/s</text>
+  
+  <!-- Throttle gate -->
+  <polygon points="240,155 300,155 320,187 300,220 240,220 220,187" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <text x="270" y="184" font-size="11" font-weight="700" fill="#7c6a96" text-anchor="middle">Throttle</text>
+  <text x="270" y="198" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Gate</text>
+  
+  <!-- Arrow from client to throttle -->
+  <path d="M 175 187 L 215 187" stroke="#c45c5c" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Server -->
+  <rect x="350" y="165" width="70" height="45" rx="6" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <text x="385" y="191" font-size="11" font-weight="700" fill="#4a9c5d" text-anchor="middle">Server</text>
+  
+  <!-- Arrow from throttle to server -->
+  <path d="M 325 187 L 345 187" stroke="#4a9c5d" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  
+  <!-- Throttled output -->
+  <text x="385" y="235" font-size="11" fill="#1a1822" opacity="0.85" text-anchor="middle">Output: 50/s (smoothed)</text>
+  
+  <!-- Throttling characteristics -->
+  <rect x="50" y="260" width="370" height="200" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="65" y="285" font-size="12" font-weight="700" fill="#1a1822">Characteristics:</text>
+  <text x="65" y="310" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Delays or spreads out requests over time</text>
+  <text x="65" y="332" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Requests are queued and processed at controlled rate</text>
+  <text x="65" y="354" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Smoothes burst traffic into steady stream</text>
+  <text x="65" y="376" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Often client-side with visual feedback (progress)</text>
+  <text x="65" y="398" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Preserves all requests (no data loss)</text>
+  <text x="65" y="420" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Adds latency but prevents overload</text>
+  <text x="65" y="442" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Example: API response pagination, scroll throttling</text>
+  
+  <!-- Rate Limiting side -->
+  <rect x="460" y="100" width="410" height="380" rx="10" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="460" y="100" width="410" height="36" rx="10" fill="#4a9c5d"/>
+  <rect x="460" y="122" width="410" height="14" fill="#4a9c5d"/>
+  <text x="665" y="123" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RATE LIMITING</text>
+  
+  <!-- Rate limiting diagram -->
+  <rect x="480" y="165" width="120" height="45" rx="6" fill="#f0e8e8" stroke="#c45c5c" stroke-width="2"/>
+  <text x="540" y="183" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">Client</text>
+  <text x="540" y="198" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">Requests: 100/s</text>
+  
+  <!-- Rate limiter -->
+  <rect x="630" y="155" width="80" height="65" rx="6" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <text x="670" y="180" font-size="10" font-weight="700" fill="#7c6a96" text-anchor="middle">Rate</text>
+  <text x="670" y="195" font-size="10" font-weight="700" fill="#7c6a96" text-anchor="middle">Limiter</text>
+  <text x="670" y="210" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Max: 50/s</text>
+  
+  <!-- Arrow from client to limiter -->
+  <path d="M 605 187 L 625 187" stroke="#c45c5c" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Server -->
+  <rect x="750" y="165" width="70" height="45" rx="6" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <text x="785" y="191" font-size="11" font-weight="700" fill="#4a9c5d" text-anchor="middle">Server</text>
+  
+  <!-- Arrows from limiter to server -->
+  <path d="M 715 187 L 745 187" stroke="#4a9c5d" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  
+  <!-- Rejected requests -->
+  <path d="M 670 225 L 670 250 L 785 250" stroke="#c45c5c" stroke-width="2" fill="none" marker-end="url(#arrowRed)"/>
+  <rect x="720" y="235" width="110" height="28" rx="4" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1"/>
+  <text x="775" y="253" font-size="9" font-weight="600" fill="#c45c5c" text-anchor="middle">REJECTED: 50 requests (429)</text>
+  
+  <!-- Rate limiting characteristics -->
+  <rect x="480" y="260" width="370" height="200" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="495" y="285" font-size="12" font-weight="700" fill="#1a1822">Characteristics:</text>
+  <text x="495" y="310" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Enforces hard cap on request count</text>
+  <text x="495" y="332" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Excess requests are rejected immediately</text>
+  <text x="495" y="354" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Protects backend from resource exhaustion</text>
+  <text x="495" y="376" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Usually server-side enforcement</text>
+  <text x="495" y="398" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Returns HTTP 429 (Too Many Requests)</text>
+  <text x="495" y="420" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Example: API quotas, DDoS protection</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c6a96"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9c5d"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c45c5c"/>
+    </marker>
+  </defs>
 </svg>

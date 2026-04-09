@@ -1,10 +1,135 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Unit of Work Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Unit of Work Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Unit of Work Lifecycle</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Unit of Work Lifecycle</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">Begin &#x2192; Track Changes &#x2192; Commit or Rollback &#x2192; Dispose</text>
+  
+  <!-- Phase 1: Begin -->
+  <rect x="30" y="105" width="200" height="370" rx="10" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <rect x="30" y="105" width="200" height="36" rx="10" fill="#7c6a96"/>
+  <rect x="30" y="129" width="200" height="12" fill="#7c6a96"/>
+  <text x="130" y="130" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">1. BEGIN</text>
+  
+  <rect x="45" y="165" width="170" height="55" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="130" y="185" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Open Transaction</text>
+  <text x="130" y="205" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">BEGIN TRANSACTION</text>
+  
+  <rect x="45" y="235" width="170" height="55" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="130" y="255" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Initialize Identity Map</text>
+  <text x="130" y="275" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">Map&lt;ID, Entity&gt;</text>
+  
+  <rect x="45" y="305" width="170" height="55" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="130" y="325" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Clear Change Tracker</text>
+  <text x="130" y="345" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">Empty new/dirty/deleted lists</text>
+  
+  <rect x="45" y="375" width="170" height="55" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="130" y="395" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Acquire Connection</text>
+  <text x="130" y="415" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">From connection pool</text>
+  
+  <!-- Arrow 1->2 -->
+  <path d="M 235 290 L 275 290" stroke="#1a1822" stroke-width="2.5" fill="none" marker-end="url(#arrowBlack)"/>
+  <text x="255" y="280" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">ready</text>
+  
+  <!-- Phase 2: Track Changes -->
+  <rect x="280" y="105" width="200" height="370" rx="10" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="280" y="105" width="200" height="36" rx="10" fill="#4a9c5d"/>
+  <rect x="280" y="129" width="200" height="12" fill="#4a9c5d"/>
+  <text x="380" y="130" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">2. TRACK</text>
+  
+  <rect x="295" y="165" width="170" height="55" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="380" y="185" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Register New Entities</text>
+  <text x="380" y="205" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">uow.RegisterNew(order)</text>
+  
+  <rect x="295" y="235" width="170" height="55" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="380" y="255" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Track Dirty Objects</text>
+  <text x="380" y="275" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">uow.RegisterDirty(user)</text>
+  
+  <rect x="295" y="305" width="170" height="55" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="380" y="325" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Track Deleted Objects</text>
+  <text x="380" y="345" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">uow.RegisterDeleted(item)</text>
+  
+  <rect x="295" y="375" width="170" height="55" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="380" y="395" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Identity Map Check</text>
+  <text x="380" y="415" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">Return existing if cached</text>
+  
+  <!-- Arrow 2->3 -->
+  <path d="M 485 290 L 525 290" stroke="#1a1822" stroke-width="2.5" fill="none" marker-end="url(#arrowBlack)"/>
+  <text x="505" y="280" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">changes</text>
+  
+  <!-- Phase 3: Commit or Rollback -->
+  <rect x="530" y="105" width="200" height="370" rx="10" fill="#fff8e1" stroke="#f0a030" stroke-width="2"/>
+  <rect x="530" y="105" width="200" height="36" rx="10" fill="#f0a030"/>
+  <rect x="530" y="129" width="200" height="12" fill="#f0a030"/>
+  <text x="630" y="130" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">3. COMMIT / ROLLBACK</text>
+  
+  <!-- Decision diamond -->
+  <polygon points="630,175 710,200 630,225 550,200" fill="#f3f1f8" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="630" y="204" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">Valid?</text>
+  
+  <!-- Commit path -->
+  <path d="M 630 225 L 630 260" stroke="#4a9c5d" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <text x="645" y="245" font-size="10" font-weight="700" fill="#4a9c5d">Yes</text>
+  
+  <rect x="550" y="265" width="160" height="45" rx="6" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="1.5"/>
+  <text x="630" y="283" font-size="10" font-weight="700" fill="#4a9c5d" text-anchor="middle">COMMIT TRANSACTION</text>
+  <text x="630" y="298" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Flush all changes to DB</text>
+  
+  <!-- Rollback path -->
+  <path d="M 550 200 L 545 260" stroke="#c45c5c" stroke-width="2" fill="none" marker-end="url(#arrowRed)"/>
+  <text x="535" y="230" font-size="10" font-weight="700" fill="#c45c5c">No</text>
+  
+  <rect x="550" y="325" width="160" height="45" rx="6" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1.5"/>
+  <text x="630" y="343" font-size="10" font-weight="700" fill="#c45c5c" text-anchor="middle">ROLLBACK TRANSACTION</text>
+  <text x="630" y="358" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Discard all changes</text>
+  
+  <rect x="550" y="385" width="160" height="45" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="630" y="403" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">Raise Domain Events</text>
+  <text x="630" y="418" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">After successful commit</text>
+  
+  <!-- Arrow 3->4 -->
+  <path d="M 735 290 L 775 290" stroke="#1a1822" stroke-width="2.5" fill="none" marker-end="url(#arrowBlack)"/>
+  <text x="755" y="280" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">done</text>
+  
+  <!-- Phase 4: Dispose -->
+  <rect x="780" y="105" width="90" height="370" rx="10" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <rect x="780" y="105" width="90" height="36" rx="10" fill="#7c6a96"/>
+  <rect x="780" y="129" width="90" height="12" fill="#7c6a96"/>
+  <text x="825" y="130" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">4. DISPOSE</text>
+  
+  <rect x="790" y="165" width="70" height="45" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="825" y="183" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Close</text>
+  <text x="825" y="197" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Transaction</text>
+  
+  <rect x="790" y="225" width="70" height="45" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="825" y="243" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Release</text>
+  <text x="825" y="257" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Connection</text>
+  
+  <rect x="790" y="285" width="70" height="45" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="825" y="303" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Clear</text>
+  <text x="825" y="317" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Identity Map</text>
+  
+  <rect x="790" y="345" width="70" height="45" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="825" y="363" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Reset</text>
+  <text x="825" y="377" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Change Lists</text>
+  
+  <rect x="790" y="405" width="70" height="45" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="825" y="423" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Mark</text>
+  <text x="825" y="437" font-size="8" font-weight="600" fill="#1a1822" text-anchor="middle">Disposed</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowBlack" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1822"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9c5d"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c45c5c"/>
+    </marker>
+  </defs>
 </svg>

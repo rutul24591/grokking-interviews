@@ -1,10 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Clean Architecture Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Clean Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Request flow through Clean Architecture layers showing data transformation from HTTP request through controllers, use cases, entities, and back</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Clean Architecture: Request Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Data transforms at each layer boundary as it flows through the architecture</text>
+
+  <!-- Request flow: top to bottom -->
+  <!-- External Request -->
+  <rect x="350" y="80" width="200" height="50" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#2563eb">HTTP Request</text>
+  <text x="450" y="118" text-anchor="middle" font-size="9" fill="#64748b">POST /api/orders {items: [...]}</text>
+
+  <line x1="450" y1="130" x2="450" y2="165" stroke="#2563eb" stroke-width="2" marker-end="url(#arrFlow)"/>
+
+  <!-- Controller -->
+  <rect x="300" y="165" width="300" height="60" rx="8" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="2"/>
+  <text x="450" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">Controller (Interface Adapter)</text>
+  <text x="450" y="208" text-anchor="middle" font-size="9" fill="#1a1822">HTTP &#8594; Request Model, auth, validation</text>
+
+  <line x1="450" y1="225" x2="450" y2="260" stroke="#d97706" stroke-width="2" marker-end="url(#arrFlow)"/>
+
+  <!-- Use Case -->
+  <rect x="300" y="260" width="300" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="283" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Use Case: CreateOrder</text>
+  <text x="450" y="303" text-anchor="middle" font-size="9" fill="#1a1822">Request Model &#8594; Entities, business rules</text>
+
+  <line x1="450" y1="320" x2="450" y2="355" stroke="#4caf50" stroke-width="2" marker-end="url(#arrFlow)"/>
+
+  <!-- Entities -->
+  <rect x="330" y="355" width="240" height="55" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="378" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Entities (Domain)</text>
+  <text x="450" y="398" text-anchor="middle" font-size="9" fill="#1a1822">Order, OrderItem, Customer — invariants enforced</text>
+
+  <!-- Repository Gateway -->
+  <line x1="600" y1="380" x2="670" y2="380" stroke="#d97706" stroke-width="2" marker-end="url(#arrFlow)"/>
+  <rect x="670" y="355" width="180" height="55" rx="8" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="1.5"/>
+  <text x="760" y="378" text-anchor="middle" font-size="11" font-weight="700" fill="#d97706">Repository Gateway</text>
+  <text x="760" y="398" text-anchor="middle" font-size="9" fill="#1a1822">Entities &#8594; persistence</text>
+
+  <line x1="760" y1="410" x2="760" y2="445" stroke="#d97706" stroke-width="2" marker-end="url(#arrFlow)"/>
+  <rect x="670" y="445" width="180" height="40" rx="8" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="760" y="470" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">Database</text>
+
+  <!-- Response flow: right side going up -->
+  <text x="450" y="155" text-anchor="middle" font-size="8" fill="#64748b">Response flows back through layers</text>
+
+  <!-- Key insight -->
+  <rect x="30" y="80" width="250" height="120" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="155" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Data Transformation</text>
+  <text x="45" y="128" font-size="9" fill="#1a1822">• HTTP JSON &#8594; Request Model</text>
+  <text x="45" y="146" font-size="9" fill="#1a1822">• Request Model &#8594; Domain Entities</text>
+  <text x="45" y="164" font-size="9" fill="#1a1822">• Domain Entities &#8594; Persistence Model</text>
+  <text x="45" y="182" font-size="9" fill="#1a1822">• Response &#8594; HTTP JSON</text>
+
+  <rect x="30" y="220" width="250" height="100" rx="8" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="155" y="245" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a">Testability</text>
+  <text x="45" y="268" font-size="9" fill="#1a1822">• Entities: pure unit tests</text>
+  <text x="45" y="286" font-size="9" fill="#1a1822">• Use cases: mock gateways</text>
+  <text x="45" y="304" font-size="9" fill="#1a1822">• Controllers: integration tests</text>
+  <text x="45" y="322" font-size="9" fill="#1a1822">• No DB or HTTP needed for domain tests</text>
+
+  <defs>
+    <marker id="arrFlow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

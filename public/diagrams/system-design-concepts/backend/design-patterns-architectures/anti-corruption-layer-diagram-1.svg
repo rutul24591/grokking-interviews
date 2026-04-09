@@ -1,10 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Anti-Corruption Layer Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Anti-Corruption Layer</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Anti-Corruption Layer between downstream legacy system and clean domain model showing translation, validation, and防腐</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Anti-Corruption Layer Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">ACL protects the domain model from external system's data model and semantics</text>
+
+  <!-- Downstream / Legacy System (LEFT) -->
+  <rect x="30" y="80" width="250" height="340" rx="12" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="2"/>
+  <rect x="30" y="80" width="250" height="35" rx="12" fill="#dc2626"/>
+  <rect x="30" y="105" width="250" height="10" fill="#dc2626"/>
+  <text x="155" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Downstream System</text>
+
+  <rect x="50" y="130" width="210" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Legacy Data Model</text>
+  <text x="155" y="168" text-anchor="middle" font-size="9" fill="#64748b">flat tables, no invariants</text>
+
+  <rect x="50" y="195" width="210" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="215" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Inconsistent Semantics</text>
+  <text x="155" y="233" text-anchor="middle" font-size="9" fill="#64748b">mixed units, nullable fields</text>
+
+  <rect x="50" y="260" width="210" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="280" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">No Domain Rules</text>
+  <text x="155" y="298" text-anchor="middle" font-size="9" fill="#64748b">raw CRUD, no business logic</text>
+
+  <rect x="50" y="325" width="210" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="345" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Fragile API</text>
+  <text x="155" y="363" text-anchor="middle" font-size="9" fill="#64748b">breaking changes, no versioning</text>
+
+  <text x="155" y="405" text-anchor="middle" font-size="10" font-weight="700" fill="#dc2626">⚠ Corrupting influence</text>
+
+  <!-- ACL (CENTER) -->
+  <rect x="310" y="80" width="280" height="340" rx="12" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="310" y="80" width="280" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="310" y="105" width="280" height="10" fill="#6d5bd0"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Anti-Corruption Layer</text>
+
+  <rect x="330" y="130" width="240" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Translator / Adapter</text>
+  <text x="450" y="168" text-anchor="middle" font-size="9" fill="#64748b">maps legacy → domain model</text>
+
+  <rect x="330" y="195" width="240" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="215" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Validator</text>
+  <text x="450" y="233" text-anchor="middle" font-size="9" fill="#64748b">enforces invariants, rejects invalid</text>
+
+  <rect x="330" y="260" width="240" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="280" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">防腐 Filter</text>
+  <text x="450" y="298" text-anchor="middle" font-size="9" fill="#64748b">strips unsafe data before it enters</text>
+
+  <rect x="330" y="325" width="240" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="345" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Version Bridge</text>
+  <text x="450" y="363" text-anchor="middle" font-size="9" fill="#64748b">handles API version differences</text>
+
+  <text x="450" y="405" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">🛡 Protective boundary</text>
+
+  <!-- Domain Model (RIGHT) -->
+  <rect x="620" y="80" width="250" height="340" rx="12" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="2"/>
+  <rect x="620" y="80" width="250" height="35" rx="12" fill="#4caf50"/>
+  <rect x="620" y="105" width="250" height="10" fill="#4caf50"/>
+  <text x="745" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Clean Domain Model</text>
+
+  <rect x="640" y="130" width="210" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="745" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Rich Domain Entities</text>
+  <text x="745" y="168" text-anchor="middle" font-size="9" fill="#64748b">with invariants &amp; behavior</text>
+
+  <rect x="640" y="195" width="210" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="745" y="215" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Consistent Semantics</text>
+  <text x="745" y="233" text-anchor="middle" font-size="9" fill="#64748b">typed value objects, no nulls</text>
+
+  <rect x="640" y="260" width="210" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="745" y="280" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Domain Services</text>
+  <text x="745" y="298" text-anchor="middle" font-size="9" fill="#64748b">encapsulated business rules</text>
+
+  <rect x="640" y="325" width="210" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="745" y="345" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Stable API</text>
+  <text x="745" y="363" text-anchor="middle" font-size="9" fill="#64748b">versioned, well-documented</text>
+
+  <text x="745" y="405" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">✓ Protected &amp; clean</text>
+
+  <!-- Arrows -->
+  <line x1="280" y1="200" x2="305" y2="200" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrACL)"/>
+  <text x="292" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#dc2626">raw</text>
+  <text x="292" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#dc2626">data</text>
+
+  <line x1="590" y1="200" x2="615" y2="200" stroke="#4caf50" stroke-width="2.5" marker-end="url(#arrACL2)"/>
+  <text x="603" y="190" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">clean</text>
+  <text x="603" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">model</text>
+
+  <!-- Key insight -->
+  <rect x="30" y="440" width="840" height="45" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="460" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Without ACL: legacy data model leaks into domain → invariants break → system becomes unmaintainable</text>
+  <text x="450" y="478" text-anchor="middle" font-size="11" fill="#64748b">With ACL: domain stays clean, legacy changes are isolated, and migration can happen incrementally</text>
+
+  <defs>
+    <marker id="arrACL" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrACL2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
 </svg>

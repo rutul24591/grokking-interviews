@@ -1,10 +1,100 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Throttling Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Throttling Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Token Bucket Algorithm - Throttling Pattern</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Token Bucket Algorithm</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">Requests consume tokens; tokens are added at a fixed rate to control throughput</text>
+  
+  <!-- Token bucket -->
+  <rect x="320" y="110" width="260" height="200" rx="8" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2" stroke-dasharray="6,4"/>
+  <rect x="320" y="110" width="260" height="32" rx="8" fill="#7c6a96"/>
+  <rect x="320" y="126" width="260" height="16" fill="#7c6a96"/>
+  <text x="450" y="132" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Token Bucket (Capacity: N)</text>
+  
+  <!-- Tokens inside bucket -->
+  <circle cx="370" cy="200" r="14" fill="#6b5b95" opacity="0.8"/>
+  <text x="370" y="204" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T1</text>
+  
+  <circle cx="410" cy="200" r="14" fill="#6b5b95" opacity="0.8"/>
+  <text x="410" y="204" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T2</text>
+  
+  <circle cx="450" cy="200" r="14" fill="#6b5b95" opacity="0.8"/>
+  <text x="450" y="204" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T3</text>
+  
+  <circle cx="490" cy="200" r="14" fill="#6b5b95" opacity="0.8"/>
+  <text x="490" y="204" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T4</text>
+  
+  <circle cx="530" cy="200" r="14" fill="#6b5b95" opacity="0.8"/>
+  <text x="530" y="204" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T5</text>
+  
+  <circle cx="390" cy="250" r="14" fill="#6b5b95" opacity="0.8"/>
+  <text x="390" y="254" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T6</text>
+  
+  <circle cx="430" cy="250" r="14" fill="#6b5b95" opacity="0.8"/>
+  <text x="430" y="254" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T7</text>
+  
+  <circle cx="470" cy="250" r="14" fill="#6b5b95" opacity="0.8"/>
+  <text x="470" y="254" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T8</text>
+  
+  <circle cx="510" cy="250" r="14" fill="#6b5b95" opacity="0.5"/>
+  <text x="510" y="254" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">T9</text>
+  
+  <!-- Token refill arrow -->
+  <path d="M 130 160 L 280 160" stroke="#4a9c5d" stroke-width="2.5" fill="none" marker-end="url(#arrowGreen)"/>
+  <text x="205" y="148" font-size="12" font-weight="600" fill="#4a9c5d" text-anchor="middle">Add tokens</text>
+  <text x="205" y="175" font-size="11" fill="#1a1822" opacity="0.7" text-anchor="middle">Fixed rate: R tokens/sec</text>
+  
+  <!-- Refill source -->
+  <rect x="30" y="135" width="90" height="50" rx="6" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <text x="75" y="157" font-size="11" font-weight="700" fill="#4a9c5d" text-anchor="middle">Token</text>
+  <text x="75" y="172" font-size="11" font-weight="700" fill="#4a9c5d" text-anchor="middle">Refiller</text>
+  
+  <!-- Incoming requests -->
+  <rect x="30" y="240" width="110" height="50" rx="6" fill="#f0e8e8" stroke="#c45c5c" stroke-width="2"/>
+  <text x="85" y="262" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">Incoming</text>
+  <text x="85" y="277" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">Requests</text>
+  
+  <!-- Request arrows to bucket -->
+  <path d="M 145 265 L 310 265" stroke="#c45c5c" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>
+  <text x="230" y="252" font-size="11" font-weight="600" fill="#c45c5c" text-anchor="middle">Consume 1 token</text>
+  <text x="230" y="278" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">per request</text>
+  
+  <!-- Allowed requests -->
+  <path d="M 585 200 L 720 200" stroke="#4a9c5d" stroke-width="2.5" fill="none" marker-end="url(#arrowGreen)"/>
+  <rect x="610" y="180" width="80" height="22" rx="4" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="1"/>
+  <text x="650" y="195" font-size="10" font-weight="600" fill="#4a9c5d" text-anchor="middle">ALLOWED</text>
+  
+  <!-- Rejected requests -->
+  <path d="M 450 315 L 450 360 L 680 360" stroke="#c45c5c" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>
+  <rect x="530" y="340" width="100" height="22" rx="4" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1"/>
+  <text x="580" y="355" font-size="10" font-weight="600" fill="#c45c5c" text-anchor="middle">REJECTED (429)</text>
+  <text x="470" y="332" font-size="11" font-weight="600" fill="#c45c5c">No tokens available</text>
+  
+  <!-- Output destinations -->
+  <rect x="720" y="175" width="130" height="50" rx="6" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <text x="785" y="197" font-size="11" font-weight="700" fill="#4a9c5c" text-anchor="middle">Process</text>
+  <text x="785" y="212" font-size="11" font-weight="700" fill="#4a9c5c" text-anchor="middle">Request</text>
+  
+  <rect x="680" y="335" width="130" height="50" rx="6" fill="#f0e8e8" stroke="#c45c5c" stroke-width="2"/>
+  <text x="745" y="357" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">Throttle /</text>
+  <text x="745" y="372" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">Queue Request</text>
+  
+  <!-- Key properties box -->
+  <rect x="30" y="410" width="840" height="75" rx="8" fill="#e8e5f0" stroke="#7c6a96" stroke-width="1"/>
+  <text x="50" y="435" font-size="12" font-weight="700" fill="#1a1822">Key Properties:</text>
+  <text x="50" y="455" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Bucket capacity limits burst size &#x2022; Token refill rate controls sustained throughput &#x2022; Allows short bursts while maintaining long-term rate limits</text>
+  <text x="50" y="472" font-size="11" fill="#1a1822" opacity="0.85">&#x2022; Tokens can accumulate up to capacity (unused tokens stored) &#x2022; Simple to implement with O(1) complexity per request</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9c5d"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c45c5c"/>
+    </marker>
+  </defs>
 </svg>

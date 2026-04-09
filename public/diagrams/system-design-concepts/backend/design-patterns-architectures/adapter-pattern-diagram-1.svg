@@ -1,10 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Adapter Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Adapter Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Adapter pattern showing client, target interface, adapter, and adaptee components with request flow and interface translation</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Adapter Pattern Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Client uses Target interface, Adapter translates calls to Adaptee's incompatible interface</text>
+
+  <!-- Client -->
+  <rect x="50" y="100" width="160" height="70" rx="10" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="130" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Client</text>
+  <text x="130" y="152" text-anchor="middle" font-size="11" fill="#64748b">requests()</text>
+
+  <!-- Target Interface -->
+  <rect x="280" y="100" width="160" height="70" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="360" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Target Interface</text>
+  <text x="360" y="145" text-anchor="middle" font-size="10" fill="#64748b">request()</text>
+  <text x="360" y="160" text-anchor="middle" font-size="10" fill="#64748b">(abstract)</text>
+
+  <!-- Adapter -->
+  <rect x="280" y="240" width="160" height="90" rx="10" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <rect x="280" y="240" width="160" height="30" rx="10" fill="#cc4444"/>
+  <rect x="280" y="260" width="160" height="10" fill="#cc4444"/>
+  <text x="360" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Adapter</text>
+  <text x="360" y="290" text-anchor="middle" font-size="10" fill="#1a1822">request() →</text>
+  <text x="360" y="305" text-anchor="middle" font-size="10" fill="#1a1822">specificRequest()</text>
+  <text x="360" y="320" text-anchor="middle" font-size="9" fill="#64748b">(translates interface)</text>
+
+  <!-- Arrow from Target to Adapter (implements) -->
+  <line x1="360" y1="170" x2="360" y2="235" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowDA)"/>
+
+  <!-- Adaptee -->
+  <rect x="520" y="240" width="160" height="90" rx="10" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <rect x="520" y="240" width="160" height="30" rx="10" fill="#4caf50"/>
+  <rect x="520" y="260" width="160" height="10" fill="#4caf50"/>
+  <text x="600" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Adaptee</text>
+  <text x="600" y="290" text-anchor="middle" font-size="10" fill="#1a1822">specificRequest()</text>
+  <text x="600" y="305" text-anchor="middle" font-size="9" fill="#64748b">(incompatible interface)</text>
+
+  <!-- Arrow from Adapter to Adaptee -->
+  <line x1="440" y1="285" x2="515" y2="285" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDA)"/>
+  <text x="478" y="275" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">calls</text>
+
+  <!-- Arrow from Client to Target -->
+  <line x1="210" y1="135" x2="275" y2="135" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDA)"/>
+  <text x="243" y="125" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">uses</text>
+
+  <!-- Use Case Example Box -->
+  <rect x="50" y="380" width="800" height="100" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="405" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Real-World Example: Payment Gateway Integration</text>
+  <text x="450" y="428" text-anchor="middle" font-size="11" fill="#64748b">Client (checkout service) calls Target (PaymentProcessor interface). Adapter translates to Stripe's API (Adaptee).</text>
+  <text x="450" y="448" text-anchor="middle" font-size="11" fill="#64748b">Switching to PayPal requires only a new Adapter — the checkout service and PaymentProcessor interface remain unchanged.</text>
+
+  <!-- Legend -->
+  <rect x="700" y="100" width="170" height="110" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="785" y="120" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Legend</text>
+  <rect x="710" y="130" width="16" height="12" rx="3" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="732" y="140" font-size="9" fill="#1a1822">Client &amp; Target</text>
+  <rect x="710" y="150" width="16" height="12" rx="3" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="732" y="160" font-size="9" fill="#1a1822">Adapter</text>
+  <rect x="710" y="170" width="16" height="12" rx="3" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="732" y="180" font-size="9" fill="#1a1822">Adaptee (existing)</text>
+  <line x1="710" y1="195" x2="726" y2="195" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="732" y="199" font-size="9" fill="#1a1822">implements</text>
+
+  <defs>
+    <marker id="arrowDA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

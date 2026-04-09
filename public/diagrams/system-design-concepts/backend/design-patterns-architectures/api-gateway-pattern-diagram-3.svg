@@ -1,10 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">API Gateway Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">API Gateway Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>API Gateway vs Service Mesh vs Backend-for-Frontend comparison showing architectural boundaries and responsibility overlaps</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Gateway vs Service Mesh vs BFF</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Three patterns that handle traffic — each operates at a different layer with different responsibilities</text>
+
+  <!-- Column 1: API Gateway -->
+  <rect x="30" y="80" width="270" height="390" rx="12" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">API Gateway</text>
+
+  <rect x="50" y="130" width="230" height="35" rx="6" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">North-South Traffic (external → internal)</text>
+
+  <text x="50" y="185" font-size="10" font-weight="700" fill="#1a1822">Responsibilities:</text>
+  <text x="50" y="205" font-size="9" fill="#1a1822">• External authentication (OAuth, JWT)</text>
+  <text x="50" y="223" font-size="9" fill="#1a1822">• Rate limiting per client/API key</text>
+  <text x="50" y="241" font-size="9" fill="#1a1822">• Request routing to services</text>
+  <text x="50" y="259" font-size="9" fill="#1a1822">• Response aggregation</text>
+  <text x="50" y="277" font-size="9" fill="#1a1822">• SSL termination</text>
+  <text x="50" y="295" font-size="9" fill="#1a1822">• API versioning</text>
+
+  <rect x="50" y="310" width="230" height="35" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="165" y="325" text-anchor="middle" font-size="9" font-weight="600" fill="#16a34a">Best for: public API edge</text>
+  <text x="165" y="340" text-anchor="middle" font-size="9" fill="#64748b">Single entry for external clients</text>
+
+  <rect x="50" y="360" width="230" height="35" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="165" y="375" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">Not for: internal service comm</text>
+  <text x="165" y="390" text-anchor="middle" font-size="9" fill="#64748b">Does not handle mTLS, retries</text>
+
+  <rect x="50" y="410" width="230" height="45" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="430" text-anchor="middle" font-size="9" fill="#1a1822">Examples: Kong, NGINX,</text>
+  <text x="165" y="445" text-anchor="middle" font-size="9" fill="#1a1822">AWS API Gateway, Envoy Gateway</text>
+
+  <!-- Column 2: Service Mesh -->
+  <rect x="315" y="80" width="270" height="390" rx="12" fill="none" stroke="#d97706" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#d97706"/>
+  <rect x="315" y="105" width="270" height="10" fill="#d97706"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Service Mesh</text>
+
+  <rect x="335" y="130" width="230" height="35" rx="6" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">East-West Traffic (internal service → service)</text>
+
+  <text x="335" y="185" font-size="10" font-weight="700" fill="#1a1822">Responsibilities:</text>
+  <text x="335" y="205" font-size="9" fill="#1a1822">• mTLS between services</text>
+  <text x="335" y="223" font-size="9" fill="#1a1822">• Retries with backoff</text>
+  <text x="335" y="241" font-size="9" fill="#1a1822">• Circuit breaking</text>
+  <text x="335" y="259" font-size="9" fill="#1a1822">• Traffic splitting (canary)</text>
+  <text x="335" y="277" font-size="9" fill="#1a1822">• Distributed tracing</text>
+  <text x="335" y="295" font-size="9" fill="#1a1822">• Load balancing</text>
+
+  <rect x="335" y="310" width="230" height="35" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="325" text-anchor="middle" font-size="9" font-weight="600" fill="#16a34a">Best for: service-to-service reliability</text>
+  <text x="450" y="340" text-anchor="middle" font-size="9" fill="#64748b">Infrastructure concerns extracted</text>
+
+  <rect x="335" y="360" width="230" height="35" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="450" y="375" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">Not for: external client facing</text>
+  <text x="450" y="390" text-anchor="middle" font-size="9" fill="#64748b">No auth, no rate limiting</text>
+
+  <rect x="335" y="410" width="230" height="45" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="430" text-anchor="middle" font-size="9" fill="#1a1822">Examples: Istio, Linkerd,</text>
+  <text x="450" y="445" text-anchor="middle" font-size="9" fill="#1a1822">Consul Connect, Cilium</text>
+
+  <!-- Column 3: BFF -->
+  <rect x="600" y="80" width="270" height="390" rx="12" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="600" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="735" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Backend-for-Frontend</text>
+
+  <rect x="620" y="130" width="230" height="35" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Client-specific aggregation layer</text>
+
+  <text x="620" y="185" font-size="10" font-weight="700" fill="#1a1822">Responsibilities:</text>
+  <text x="620" y="205" font-size="9" fill="#1a1822">• Client-specific response shaping</text>
+  <text x="620" y="223" font-size="9" fill="#1a1822">• Response aggregation per client</text>
+  <text x="620" y="241" font-size="9" fill="#1a1822">• Client-specific auth/session</text>
+  <text x="620" y="259" font-size="9" fill="#1a1822">• UI-tailored data formatting</text>
+  <text x="620" y="277" font-size="9" fill="#1a1822">• Reduced over-fetching</text>
+  <text x="620" y="295" font-size="9" fill="#1a1822">• One BFF per client type</text>
+
+  <rect x="620" y="310" width="230" height="35" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="735" y="325" text-anchor="middle" font-size="9" font-weight="600" fill="#16a34a">Best for: multi-client optimization</text>
+  <text x="735" y="340" text-anchor="middle" font-size="9" fill="#64748b">Mobile, web, IoT each get tailored API</text>
+
+  <rect x="620" y="360" width="230" height="35" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="735" y="375" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">Not for: shared infrastructure</text>
+  <text x="735" y="390" text-anchor="middle" font-size="9" fill="#64748b">Duplication across BFF instances</text>
+
+  <rect x="620" y="410" width="230" height="45" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="430" text-anchor="middle" font-size="9" fill="#1a1822">Examples: GraphQL BFF,</text>
+  <text x="735" y="445" text-anchor="middle" font-size="9" fill="#1a1822">Node.js BFF, Spring Cloud Gateway BFF</text>
+
+  <defs>
+    <marker id="arrComp" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

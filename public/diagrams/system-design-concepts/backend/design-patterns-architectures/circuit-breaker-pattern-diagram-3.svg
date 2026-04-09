@@ -1,10 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Circuit Breaker Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Circuit Breaker Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Resilience patterns comparison: Circuit Breaker, Retry, and Timeout each address different failure modes</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Circuit Breaker vs Retry vs Timeout</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Three complementary resilience patterns — each addresses a different failure mode</text>
+
+  <!-- Circuit Breaker -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#dc2626"/>
+  <rect x="30" y="105" width="270" height="10" fill="#dc2626"/>
+  <text x="165" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Circuit Breaker</text>
+
+  <!-- CB diagram -->
+  <rect x="50" y="130" width="100" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="100" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Caller</text>
+
+  <line x1="150" y1="150" x2="200" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrCB3)"/>
+
+  <rect x="200" y="130" width="80" height="40" rx="8" fill="#dc2626" opacity="0.15" stroke="#dc2626" stroke-width="2"/>
+  <text x="240" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">CB</text>
+
+  <line x1="240" y1="170" x2="240" y2="210" stroke="#dc2626" stroke-width="2" marker-end="url(#arrCB3)"/>
+
+  <rect x="200" y="210" width="80" height="40" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1"/>
+  <text x="240" y="235" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Service</text>
+
+  <rect x="45" y="280" width="240" height="80" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="165" y="300" text-anchor="middle" font-size="10" font-weight="700" fill="#dc2626">Problem: Service is down</text>
+  <text x="60" y="322" font-size="9" fill="#1a1822">Continued requests overwhelm the</text>
+  <text x="60" y="340" font-size="9" fill="#1a1822">failing service, preventing recovery</text>
+
+  <rect x="45" y="375" width="240" height="40" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="165" y="392" text-anchor="middle" font-size="10" font-weight="600" fill="#16a34a">Solution: Stop requests, allow recovery</text>
+  <text x="165" y="410" text-anchor="middle" font-size="9" fill="#64748b">Open circuit → fast-fail → probe</text>
+
+  <rect x="45" y="430" width="240" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Config: error threshold, timeout, half-open probes</text>
+
+  <!-- Retry -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="none" stroke="#d97706" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#d97706"/>
+  <rect x="315" y="105" width="270" height="10" fill="#d97706"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Retry</text>
+
+  <rect x="335" y="130" width="100" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="385" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Caller</text>
+
+  <!-- Retry loop -->
+  <path d="M 435 150 Q 500 130 530 150" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#arrCB3)"/>
+  <text x="485" y="125" text-anchor="middle" font-size="8" font-weight="600" fill="#d97706">retry 1</text>
+  <path d="M 435 155 Q 500 140 530 155" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#arrCB3)"/>
+  <text x="485" y="138" text-anchor="middle" font-size="8" font-weight="600" fill="#d97706">retry 2</text>
+
+  <rect x="530" y="130" width="40" height="40" rx="8" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="2"/>
+  <text x="550" y="155" text-anchor="middle" font-size="10" font-weight="700" fill="#d97706">R</text>
+
+  <line x1="570" y1="150" x2="610" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrCB3)"/>
+
+  <rect x="410" y="210" width="80" height="40" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="235" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Service</text>
+
+  <rect x="330" y="280" width="240" height="80" rx="6" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="300" text-anchor="middle" font-size="10" font-weight="700" fill="#d97706">Problem: Transient failures</text>
+  <text x="345" y="322" font-size="9" fill="#1a1822">Network blips, temporary overload,</text>
+  <text x="345" y="340" font-size="9" fill="#1a1822">or brief unavailability</text>
+
+  <rect x="330" y="375" width="240" height="40" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="450" y="392" text-anchor="middle" font-size="10" font-weight="600" fill="#16a34a">Solution: Retry with backoff</text>
+  <text x="450" y="410" text-anchor="middle" font-size="9" fill="#64748b">Exponential backoff + jitter</text>
+
+  <rect x="330" y="430" width="240" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Config: max retries, backoff, idempotency</text>
+
+  <!-- Timeout -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="none" stroke="#2563eb" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#2563eb"/>
+  <rect x="600" y="105" width="270" height="10" fill="#2563eb"/>
+  <text x="735" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Timeout</text>
+
+  <rect x="620" y="130" width="100" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="670" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Caller</text>
+
+  <!-- Timeout line -->
+  <line x1="720" y1="150" x2="760" y2="150" stroke="#2563eb" stroke-width="2" marker-end="url(#arrCB3)"/>
+  <line x1="720" y1="170" x2="760" y2="170" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="740" y="165" text-anchor="middle" font-size="8" font-weight="600" fill="#dc2626">timeout</text>
+
+  <rect x="760" y="130" width="80" height="40" rx="8" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="2"/>
+  <text x="800" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">T/O</text>
+
+  <line x1="800" y1="170" x2="800" y2="210" stroke="#2563eb" stroke-width="2" marker-end="url(#arrCB3)"/>
+
+  <rect x="760" y="210" width="80" height="40" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1"/>
+  <text x="800" y="235" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Service</text>
+
+  <rect x="615" y="280" width="240" height="80" rx="6" fill="#2563eb" opacity="0.08" stroke="#2563eb" stroke-width="1"/>
+  <text x="735" y="300" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">Problem: Unbounded wait</text>
+  <text x="630" y="322" font-size="9" fill="#1a1822">Caller waits forever for a response</text>
+  <text x="630" y="340" font-size="9" fill="#1a1822">that may never arrive</text>
+
+  <rect x="615" y="375" width="240" height="40" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="735" y="392" text-anchor="middle" font-size="10" font-weight="600" fill="#16a34a">Solution: Fail after deadline</text>
+  <text x="735" y="410" text-anchor="middle" font-size="9" fill="#64748b">Releases thread, prevents hang</text>
+
+  <rect x="615" y="430" width="240" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Config: per-call timeout, overall deadline</text>
+
+  <defs>
+    <marker id="arrCB3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

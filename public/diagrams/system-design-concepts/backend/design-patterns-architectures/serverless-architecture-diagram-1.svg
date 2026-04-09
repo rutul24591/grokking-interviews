@@ -1,10 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Serverless Architecture Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Serverless Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Serverless Architecture - Client to Managed Services</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Serverless Architecture</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Client requests flow through API Gateway to Lambda functions to managed AWS services</text>
+  
+  <!-- Client -->
+  <rect x="40" y="180" width="120" height="100" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="100" y="215" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Client</text>
+  <text x="100" y="235" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Web / Mobile</text>
+  <text x="100" y="251" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">IoT / CLI</text>
+  <text x="100" y="267" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">HTTP / WebSocket</text>
+  
+  <!-- Arrow to API Gateway -->
+  <path d="M 160 230 L 240 230" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+  <text x="200" y="222" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="600">HTTPS</text>
+  
+  <!-- API Gateway -->
+  <rect x="240" y="180" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="320" y="210" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">API Gateway</text>
+  <text x="320" y="230" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Request routing</text>
+  <text x="320" y="246" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Auth &amp; throttling</text>
+  <text x="320" y="262" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Request validation</text>
+  
+  <!-- Arrows to Lambda functions -->
+  <path d="M 400 200 L 500 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+  <text x="440" y="155" text-anchor="middle" font-size="9" fill="#f59e0b" font-weight="600">GET /users</text>
+  
+  <path d="M 400 230 L 500 230" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+  <text x="450" y="222" text-anchor="middle" font-size="9" fill="#f59e0b" font-weight="600">POST /orders</text>
+  
+  <path d="M 400 260 L 500 330" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+  <text x="440" y="305" text-anchor="middle" font-size="9" fill="#f59e0b" font-weight="600">GET /files</text>
+  
+  <!-- Lambda Function 1: GetUser -->
+  <rect x="500" y="100" width="150" height="60" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="575" y="125" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Lambda</text>
+  <text x="575" y="145" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">GetUser Function</text>
+  
+  <!-- Lambda Function 2: CreateOrder -->
+  <rect x="500" y="200" width="150" height="60" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="575" y="225" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Lambda</text>
+  <text x="575" y="245" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">CreateOrder Function</text>
+  
+  <!-- Lambda Function 3: GetFiles -->
+  <rect x="500" y="300" width="150" height="60" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="575" y="325" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Lambda</text>
+  <text x="575" y="345" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">GetFiles Function</text>
+  
+  <!-- Arrow from GetUser to DynamoDB -->
+  <path d="M 650 130 L 750 130" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  
+  <!-- DynamoDB -->
+  <rect x="750" y="100" width="120" height="60" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="810" y="125" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">DynamoDB</text>
+  <text x="810" y="145" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">NoSQL Database</text>
+  
+  <!-- Arrow from CreateOrder to DynamoDB and SNS -->
+  <path d="M 650 230 L 750 230" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  <path d="M 650 250 L 720 320" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrowhead-purple)"/>
+  
+  <!-- DynamoDB for orders -->
+  <rect x="750" y="200" width="120" height="60" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="810" y="225" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">DynamoDB</text>
+  <text x="810" y="245" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Orders Table</text>
+  
+  <!-- SNS -->
+  <rect x="720" y="320" width="150" height="60" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="795" y="345" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">SNS / SQS</text>
+  <text x="795" y="365" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Event notification</text>
+  
+  <!-- Arrow from GetFiles to S3 -->
+  <path d="M 650 330 L 750 430" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  
+  <!-- S3 -->
+  <rect x="750" y="400" width="120" height="60" rx="6" fill="#cffafe" stroke="#0891b2" stroke-width="2"/>
+  <text x="810" y="425" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">S3</text>
+  <text x="810" y="445" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Object Storage</text>
+  
+  <!-- Characteristics callout -->
+  <rect x="40" y="340" width="240" height="130" rx="6" fill="#ffffff" stroke="#d4d0d8" stroke-width="1.5"/>
+  <text x="160" y="362" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Serverless Benefits</text>
+  <text x="55" y="382" font-size="10" fill="#1a1822">No server provisioning</text>
+  <text x="55" y="398" font-size="10" fill="#1a1822">Auto-scales to zero</text>
+  <text x="55" y="414" font-size="10" fill="#1a1822">Pay per invocation</text>
+  <text x="55" y="430" font-size="10" fill="#1a1822">Managed services reduce ops</text>
+  <text x="55" y="446" font-size="10" fill="#1a1822">Built-in high availability</text>
+  
+  <defs>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
 </svg>

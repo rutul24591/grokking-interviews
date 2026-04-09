@@ -1,10 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Event Sourcing Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Event Sourcing Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Snapshot optimization showing how snapshots reduce replay time for long event streams</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Snapshot Optimization for Long Event Streams</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Snapshots capture aggregate state at a point in time, reducing replay from 1000s of events</text>
+
+  <!-- LEFT: Without Snapshot (slow replay) -->
+  <rect x="30" y="85" width="410" height="395" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="85" width="410" height="35" rx="12" fill="#cc4444"/>
+  <rect x="30" y="110" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Without Snapshot: Full Replay (Slow)</text>
+
+  <!-- Long event stream -->
+  <rect x="50" y="135" width="370" height="250" rx="8" fill="#cc4444" opacity="0.05" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="155" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Event Stream: 10,000+ events for aggregate</text>
+
+  <!-- Individual events shown as stacked rows -->
+  <rect x="65" y="168" width="340" height="18" rx="4" fill="#cc4444" opacity="0.15"/>
+  <text x="80" y="181" font-size="8" fill="#1a1822">Event #1: Created</text>
+  <text x="350" y="181" text-anchor="end" font-size="7" fill="#1a1822" opacity="0.5">t=0</text>
+
+  <rect x="65" y="189" width="340" height="18" rx="4" fill="#cc4444" opacity="0.12"/>
+  <text x="80" y="202" font-size="8" fill="#1a1822">Event #2: Updated</text>
+
+  <rect x="65" y="210" width="340" height="18" rx="4" fill="#cc4444" opacity="0.15"/>
+  <text x="80" y="223" font-size="8" fill="#1a1822">Event #3: Updated</text>
+
+  <!-- Dots indicating many more events -->
+  <text x="235" y="252" text-anchor="middle" font-size="18" fill="#cc4444" font-weight="700">. . .</text>
+  <text x="235" y="268" text-anchor="middle" font-size="9" fill="#cc4444">9,997 more events</text>
+
+  <rect x="65" y="280" width="340" height="18" rx="4" fill="#cc4444" opacity="0.15"/>
+  <text x="80" y="293" font-size="8" fill="#1a1822">Event #9999: Updated</text>
+  <text x="350" y="293" text-anchor="end" font-size="7" fill="#1a1822" opacity="0.5">t=90d</text>
+
+  <rect x="65" y="301" width="340" height="18" rx="4" fill="#cc4444" opacity="0.2" stroke="#cc4444" stroke-width="1"/>
+  <text x="80" y="314" font-size="8" font-weight="600" fill="#1a1822">Event #10000: StatusChanged</text>
+  <text x="350" y="314" text-anchor="end" font-size="7" fill="#1a1822" opacity="0.5">t=91d</text>
+
+  <!-- Performance impact -->
+  <rect x="50" y="400" width="370" height="35" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="415" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Replay Time: ~30 seconds (10K events)</text>
+  <text x="235" y="430" text-anchor="middle" font-size="9" fill="#1a1822">Must process every single event from the beginning</text>
+
+  <rect x="50" y="445" width="170" height="25" rx="6" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1"/>
+  <text x="135" y="462" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">Problem: O(n) replay cost</text>
+
+  <!-- RIGHT: With Snapshot (fast replay) -->
+  <rect x="460" y="85" width="410" height="395" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="85" width="410" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="460" y="110" width="410" height="10" fill="#6d5bd0"/>
+  <text x="665" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">With Snapshot: Optimized Replay (Fast)</text>
+
+  <!-- Snapshot box -->
+  <rect x="480" y="135" width="370" height="75" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="665" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Snapshot at Event #5000</text>
+  <text x="665" y="172" text-anchor="middle" font-size="9" fill="#1a1822">State: {status: &quot;active&quot;, items: 5, total: $499.99}</text>
+  <text x="665" y="188" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Captured every 500 events or every 24h</text>
+  <text x="665" y="204" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">Skip first 5000 events entirely!</text>
+
+  <!-- Arrow down -->
+  <line x1="665" y1="210" x2="665" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowES2)"/>
+
+  <!-- Remaining events after snapshot -->
+  <rect x="480" y="235" width="370" height="140" rx="8" fill="#6d5bd0" opacity="0.05" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="665" y="255" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Only replay events after snapshot (5000 &#8594; 10000)</text>
+
+  <rect x="495" y="268" width="340" height="18" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="510" y="281" font-size="8" fill="#1a1822">Event #5001: Updated</text>
+
+  <rect x="495" y="289" width="340" height="18" rx="4" fill="#6d5bd0" opacity="0.12"/>
+  <text x="510" y="302" font-size="8" fill="#1a1822">Event #5002: Updated</text>
+
+  <text x="665" y="328" text-anchor="middle" font-size="14" fill="#6d5bd0" font-weight="700">. . .</text>
+  <text x="665" y="344" text-anchor="middle" font-size="8" fill="#6d5bd0">4,998 more events</text>
+
+  <rect x="495" y="352" width="340" height="18" rx="4" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="510" y="365" font-size="8" font-weight="600" fill="#1a1822">Event #10000: StatusChanged</text>
+
+  <!-- Performance improvement -->
+  <rect x="480" y="400" width="370" height="35" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="415" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">Replay Time: ~1.5 seconds (5K events, 95% faster)</text>
+  <text x="665" y="430" text-anchor="middle" font-size="9" fill="#1a1822">Load snapshot + apply only delta events</text>
+
+  <rect x="480" y="445" width="180" height="25" rx="6" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="570" y="462" text-anchor="middle" font-size="8" fill="#4caf50" font-weight="600">Solution: O(n-k) with snapshot</text>
+
+  <!-- Snapshot strategy box -->
+  <rect x="680" y="445" width="170" height="25" rx="6" fill="#2196f3" opacity="0.1" stroke="#2196f3" stroke-width="1"/>
+  <text x="765" y="462" text-anchor="middle" font-size="8" fill="#2196f3" font-weight="600">Strategy: time or count based</text>
+
+  <defs>
+    <marker id="arrowES2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

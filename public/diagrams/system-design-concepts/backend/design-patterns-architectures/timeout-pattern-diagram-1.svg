@@ -1,10 +1,80 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Timeout Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Timeout Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Request Timeout Pattern</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Request Timeout Pattern</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">Caller sets a deadline; if service doesn&apos;t respond within the timeout, the request is aborted</text>
+  
+  <!-- Caller -->
+  <rect x="40" y="130" width="160" height="260" rx="8" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <rect x="40" y="130" width="160" height="32" rx="8" fill="#7c6a96"/>
+  <rect x="40" y="148" width="160" height="14" fill="#7c6a96"/>
+  <text x="120" y="151" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Caller Service</text>
+  
+  <!-- Timer in caller -->
+  <circle cx="120" cy="230" r="35" fill="#f3f1f8" stroke="#c45c5c" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="120" y="225" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">Deadline</text>
+  <text x="120" y="242" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">T + 3s</text>
+  
+  <!-- Request sent -->
+  <path d="M 205 200 L 420 200" stroke="#4a9c5d" stroke-width="2.5" fill="none" marker-end="url(#arrowGreen)"/>
+  <rect x="250" y="182" width="110" height="24" rx="4" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="1"/>
+  <text x="305" y="198" font-size="10" font-weight="600" fill="#4a9c5d" text-anchor="middle">Request (t=0)</text>
+  
+  <!-- Service processing -->
+  <rect x="430" y="130" width="200" height="260" rx="8" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="430" y="130" width="200" height="32" rx="8" fill="#4a9c5d"/>
+  <rect x="430" y="148" width="200" height="14" fill="#4a9c5d"/>
+  <text x="530" y="151" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">Downstream Service</text>
+  
+  <!-- Processing steps -->
+  <rect x="450" y="185" width="160" height="35" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="530" y="200" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">Parse request</text>
+  <text x="530" y="214" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">t = 0.1s</text>
+  
+  <rect x="450" y="230" width="160" height="35" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="530" y="245" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">Query database</text>
+  <text x="530" y="259" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">t = 0.5s - 2.0s</text>
+  
+  <rect x="450" y="275" width="160" height="35" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="530" y="290" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">Process response</text>
+  <text x="530" y="304" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">t = 2.0s - 2.5s</text>
+  
+  <!-- Timeout cutoff line -->
+  <line x1="430" y1="330" x2="630" y2="330" stroke="#c45c5c" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="640" y="334" font-size="11" font-weight="700" fill="#c45c5c">Timeout</text>
+  <text x="640" y="348" font-size="10" fill="#c45c5c">cutoff: T+3s</text>
+  
+  <!-- Two scenarios -->
+  <!-- Success scenario -->
+  <path d="M 635 240 L 750 240 L 750 380 L 700 380" stroke="#4a9c5d" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <rect x="680" y="360" width="180" height="40" rx="6" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <text x="770" y="376" font-size="11" font-weight="700" fill="#4a9c5c" text-anchor="middle">&#x2713; Response before timeout</text>
+  <text x="770" y="391" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">(t = 2.5s &lt; 3s deadline)</text>
+  
+  <!-- Timeout scenario -->
+  <path d="M 635 340 L 750 340 L 750 440 L 700 440" stroke="#c45c5c" stroke-width="2" fill="none" marker-end="url(#arrowRed)"/>
+  <rect x="680" y="420" width="180" height="50" rx="6" fill="#f0e8e8" stroke="#c45c5c" stroke-width="2"/>
+  <text x="770" y="440" font-size="11" font-weight="700" fill="#c45c5c" text-anchor="middle">&#x2717; Timeout triggered</text>
+  <text x="770" y="455" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">(Service still processing)</text>
+  <text x="770" y="468" font-size="10" fill="#1a1822" opacity="0.7" text-anchor="middle">Caller aborts, returns error)</text>
+  
+  <!-- Key insight -->
+  <rect x="40" y="410" width="620" height="65" rx="8" fill="#fff8e1" stroke="#f0a030" stroke-width="1"/>
+  <text x="60" y="435" font-size="12" font-weight="700" fill="#1a1822">Key Insight:</text>
+  <text x="60" y="455" font-size="11" fill="#1a1822" opacity="0.85">Timeouts prevent resource exhaustion and cascading failures. The caller controls the deadline,</text>
+  <text x="60" y="470" font-size="11" fill="#1a1822" opacity="0.85">not the callee. Always set timeouts slightly higher than p99 latency of the downstream service.</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a9c5d"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c45c5c"/>
+    </marker>
+  </defs>
 </svg>

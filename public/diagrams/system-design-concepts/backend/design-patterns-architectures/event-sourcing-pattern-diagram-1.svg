@@ -1,10 +1,94 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Event Sourcing Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Event Sourcing Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Event store as append-only log with events replayed to rebuild aggregate state</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Event Store: Append-Only Log &amp; State Reconstruction</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Events are never deleted; current state is rebuilt by replaying all events from the log</text>
+
+  <!-- Commands flowing in -->
+  <rect x="30" y="100" width="170" height="55" rx="10" fill="#6d5bd0"/>
+  <text x="115" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Commands</text>
+  <text x="115" y="140" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.85">CreateOrder, Update, Ship</text>
+
+  <line x1="200" y1="127" x2="300" y2="127" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowES1)"/>
+  <text x="250" y="120" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">validate &amp; append</text>
+
+  <!-- Event Store (Center) -->
+  <rect x="300" y="80" width="300" height="200" rx="12" fill="#6d5bd0"/>
+  <text x="450" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Event Store (Append-Only Log)</text>
+  <text x="450" y="125" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Stream: Order #1234</text>
+
+  <!-- Events in the log -->
+  <rect x="320" y="140" width="260" height="28" rx="6" fill="#ffffff" opacity="0.2"/>
+  <text x="335" y="158" font-size="10" fill="#ffffff" font-weight="600">Seq 1:</text>
+  <text x="380" y="158" font-size="10" fill="#ffffff">OrderCreated {id: 1234, item: &quot;Laptop&quot;}</text>
+
+  <rect x="320" y="172" width="260" height="28" rx="6" fill="#ffffff" opacity="0.15"/>
+  <text x="335" y="190" font-size="10" fill="#ffffff" font-weight="600">Seq 2:</text>
+  <text x="380" y="190" font-size="10" fill="#ffffff">ItemAdded {itemId: &quot;mouse&quot;}</text>
+
+  <rect x="320" y="204" width="260" height="28" rx="6" fill="#ffffff" opacity="0.2"/>
+  <text x="335" y="222" font-size="10" fill="#ffffff" font-weight="600">Seq 3:</text>
+  <text x="380" y="222" font-size="10" fill="#ffffff">AddressUpdated {city: &quot;NYC&quot;}</text>
+
+  <rect x="320" y="236" width="260" height="28" rx="6" fill="#ffffff" opacity="0.15"/>
+  <text x="335" y="254" font-size="10" fill="#ffffff" font-weight="600">Seq 4:</text>
+  <text x="380" y="254" font-size="10" fill="#ffffff">PaymentCompleted {amount: 1299.99}</text>
+
+  <rect x="320" y="268" width="260" height="28" rx="6" fill="#ffffff" opacity="0.2"/>
+  <text x="335" y="286" font-size="10" fill="#ffffff" font-weight="600">Seq 5:</text>
+  <text x="380" y="286" font-size="10" fill="#ffffff">OrderShipped {carrier: &quot;FedEx&quot;}</text>
+
+  <!-- Arrow from event store to replay -->
+  <line x1="600" y1="180" x2="680" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowES1)"/>
+  <text x="640" y="173" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">replay all</text>
+  <text x="640" y="195" text-anchor="middle" font-size="8" fill="#6d5bd0">events</text>
+
+  <!-- Rebuilt Aggregate State (Right) -->
+  <rect x="680" y="90" width="195" height="180" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="680" y="90" width="195" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="680" y="115" width="195" height="10" fill="#6d5bd0"/>
+  <text x="777" y="113" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Rebuilt Aggregate State</text>
+
+  <text x="695" y="145" font-size="10" font-weight="600" fill="#1a1822">Order #1234:</text>
+  <text x="695" y="163" font-size="9" fill="#1a1822">  Status: Shipped</text>
+  <text x="695" y="181" font-size="9" fill="#1a1822">  Items: Laptop, Mouse</text>
+  <text x="695" y="199" font-size="9" fill="#1a1822">  Ship Address: NYC</text>
+  <text x="695" y="217" font-size="9" fill="#1a1822">  Payment: $1299.99 (paid)</text>
+  <text x="695" y="235" font-size="9" fill="#1a1822">  Carrier: FedEx</text>
+  <text x="695" y="253" font-size="9" fill="#1a1822">  Version: 5</text>
+
+  <!-- Key properties box -->
+  <rect x="300" y="310" width="260" height="165" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="430" y="333" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Append-Only Properties</text>
+
+  <rect x="315" y="345" width="230" height="25" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="430" y="362" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">Events are immutable once written</text>
+
+  <rect x="315" y="378" width="230" height="25" rx="6" fill="#2196f3" opacity="0.1" stroke="#2196f3" stroke-width="1"/>
+  <text x="430" y="395" text-anchor="middle" font-size="9" fill="#2196f3" font-weight="600">Complete audit trail of all changes</text>
+
+  <rect x="315" y="411" width="230" height="25" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="430" y="428" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">Temporal queries: state at any point in time</text>
+
+  <rect x="315" y="444" width="230" height="25" rx="6" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="430" y="461" text-anchor="middle" font-size="9" fill="#f0ad4e" font-weight="600">Optimistic concurrency via version numbers</text>
+
+  <!-- Replay process box -->
+  <rect x="680" y="310" width="195" height="165" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="777" y="333" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Replay Process</text>
+
+  <text x="695" y="358" font-size="9" fill="#1a1822">1. Start with empty state</text>
+  <text x="695" y="378" font-size="9" fill="#1a1822">2. Read events sequentially</text>
+  <text x="695" y="398" font-size="9" fill="#1a1822">3. Apply each event handler</text>
+  <text x="695" y="418" font-size="9" fill="#1a1822">4. Mutate aggregate state</text>
+  <text x="695" y="438" font-size="9" fill="#1a1822">5. Final state = all events applied</text>
+
+  <rect x="695" y="448" width="165" height="22" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="777" y="463" text-anchor="middle" font-size="8" fill="#6d5bd0" font-weight="600">Deterministic: same events &#8594; same state</text>
+
+  <defs>
+    <marker id="arrowES1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Database per Service Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Database per Service</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Database per service architecture showing isolated data ownership</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Database-per-Service Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each microservice owns its private database — no shared tables across services</text>
+
+  <!-- Service 1: Order Service -->
+  <rect x="30" y="85" width="260" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="85" width="260" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="108" width="260" height="12" fill="#6d5bd0"/>
+  <text x="160" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Order Service</text>
+
+  <!-- Order tables -->
+  <rect x="50" y="140" width="220" height="48" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="160" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">orders</text>
+  <text x="160" y="178" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">orderId, customerId, status</text>
+
+  <rect x="50" y="200" width="220" height="48" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="160" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">order_items</text>
+  <text x="160" y="238" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">itemId, orderId, productId</text>
+
+  <rect x="50" y="260" width="220" height="48" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="160" y="282" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">order_events</text>
+  <text x="160" y="298" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">eventId, type, timestamp</text>
+
+  <!-- Order DB cylinder -->
+  <rect x="70" y="340" width="180" height="50" rx="6" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="2"/>
+  <ellipse cx="160" cy="340" rx="90" ry="10" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="160" y="370" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Order DB</text>
+  <text x="160" y="384" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">PostgreSQL</text>
+
+  <!-- Service 2: Inventory Service -->
+  <rect x="320" y="85" width="260" height="380" rx="12" fill="#ffffff" stroke="#2a9d8f" stroke-width="2"/>
+  <rect x="320" y="85" width="260" height="35" rx="12" fill="#2a9d8f"/>
+  <rect x="320" y="108" width="260" height="12" fill="#2a9d8f"/>
+  <text x="450" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Inventory Service</text>
+
+  <!-- Inventory tables -->
+  <rect x="340" y="140" width="220" height="48" rx="8" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="2"/>
+  <text x="450" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">products</text>
+  <text x="450" y="178" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">productId, name, sku</text>
+
+  <rect x="340" y="200" width="220" height="48" rx="8" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="2"/>
+  <text x="450" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">stock_levels</text>
+  <text x="450" y="238" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">warehouseId, productId, qty</text>
+
+  <rect x="340" y="260" width="220" height="48" rx="8" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="2"/>
+  <text x="450" y="282" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">reservations</text>
+  <text x="450" y="298" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">reservationId, orderId</text>
+
+  <!-- Inventory DB cylinder -->
+  <rect x="360" y="340" width="180" height="50" rx="6" fill="#2a9d8f" opacity="0.2" stroke="#2a9d8f" stroke-width="2"/>
+  <ellipse cx="450" cy="340" rx="90" ry="10" fill="#2a9d8f" opacity="0.3" stroke="#2a9d8f" stroke-width="2"/>
+  <text x="450" y="370" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Inventory DB</text>
+  <text x="450" y="384" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">MongoDB</text>
+
+  <!-- Service 3: Shipping Service -->
+  <rect x="610" y="85" width="260" height="380" rx="12" fill="#ffffff" stroke="#e76f51" stroke-width="2"/>
+  <rect x="610" y="85" width="260" height="35" rx="12" fill="#e76f51"/>
+  <rect x="610" y="108" width="260" height="12" fill="#e76f51"/>
+  <text x="740" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Shipping Service</text>
+
+  <!-- Shipping tables -->
+  <rect x="630" y="140" width="220" height="48" rx="8" fill="#e76f51" opacity="0.12" stroke="#e76f51" stroke-width="2"/>
+  <text x="740" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">shipments</text>
+  <text x="740" y="178" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">shipmentId, orderId, carrier</text>
+
+  <rect x="630" y="200" width="220" height="48" rx="8" fill="#e76f51" opacity="0.12" stroke="#e76f51" stroke-width="2"/>
+  <text x="740" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">tracking_events</text>
+  <text x="740" y="238" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">eventId, location, status</text>
+
+  <rect x="630" y="260" width="220" height="48" rx="8" fill="#e76f51" opacity="0.12" stroke="#e76f51" stroke-width="2"/>
+  <text x="740" y="282" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">carrier_rates</text>
+  <text x="740" y="298" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">carrierId, zone, baseRate</text>
+
+  <!-- Shipping DB cylinder -->
+  <rect x="650" y="340" width="180" height="50" rx="6" fill="#e76f51" opacity="0.2" stroke="#e76f51" stroke-width="2"/>
+  <ellipse cx="740" cy="340" rx="90" ry="10" fill="#e76f51" opacity="0.3" stroke="#e76f51" stroke-width="2"/>
+  <text x="740" y="370" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Shipping DB</text>
+  <text x="740" y="384" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">MySQL</text>
+
+  <!-- No direct DB access annotation -->
+  <rect x="295" y="195" width="20" height="40" rx="4" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="305" y="218" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">X</text>
+
+  <rect x="585" y="195" width="20" height="40" rx="4" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="595" y="218" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">X</text>
+
+  <!-- Bottom note -->
+  <rect x="120" y="455" width="660" height="30" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="475" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">Data ownership is exclusive &#8594; cross-service queries use APIs or events, never direct DB access</text>
 </svg>

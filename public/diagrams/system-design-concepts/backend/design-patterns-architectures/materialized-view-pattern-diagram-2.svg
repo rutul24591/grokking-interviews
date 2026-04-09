@@ -1,10 +1,104 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Materialized View Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Materialized View Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Materialized View - Incremental vs Full Refresh</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="38" font-size="18" font-weight="700" fill="#1a1822" text-anchor="middle">Materialized View: Refresh Strategies</text>
+  <text x="450" y="56" font-size="12" fill="#1a1822" opacity="0.7" text-anchor="middle">Incremental vs full refresh showing update propagation patterns</text>
+
+  <!-- LEFT: Incremental Refresh -->
+  <text x="225" y="95" font-size="15" font-weight="700" fill="#1a1822" text-anchor="middle">Incremental Refresh</text>
+
+  <!-- Source changes -->
+  <rect x="60" y="120" width="330" height="60" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="225" y="145" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Source DB Changes</text>
+  <text x="225" y="162" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">INSERT on orders (id=101)</text>
+
+  <!-- Only the delta flows -->
+  <line x1="225" y1="183" x2="225" y2="203" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+
+  <!-- Delta processor -->
+  <rect x="110" y="210" width="230" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="225" y="235" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Delta Processor</text>
+  <text x="225" y="250" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Only process changed rows</text>
+
+  <line x1="225" y1="263" x2="225" y2="283" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber)"/>
+
+  <!-- MV with selective update -->
+  <rect x="80" y="290" width="290" height="90" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="225" y="315" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Materialized View</text>
+  <text x="225" y="335" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Existing rows (1-100) unchanged</text>
+  <text x="225" y="350" font-size="9" font-weight="700" fill="#059669" text-anchor="middle">Only row 101 inserted/updated</text>
+  <text x="225" y="365" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Minimal I/O, low refresh cost</text>
+
+  <!-- Timeline for incremental -->
+  <rect x="60" y="400" width="330" height="55" rx="6" fill="#f0fdf4" stroke="#059669" stroke-width="1"/>
+  <text x="225" y="420" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Refresh Timeline</text>
+  <line x1="80" y1="440" x2="370" y2="440" stroke="#059669" stroke-width="1"/>
+  <!-- Small bumps showing small updates -->
+  <rect x="100" y="430" width="8" height="10" fill="#059669"/>
+  <rect x="130" y="428" width="10" height="12" fill="#059669"/>
+  <rect x="160" y="432" width="6" height="8" fill="#059669"/>
+  <rect x="190" y="429" width="12" height="11" fill="#059669"/>
+  <rect x="220" y="431" width="8" height="9" fill="#059669"/>
+  <rect x="250" y="427" width="10" height="13" fill="#059669"/>
+  <rect x="280" y="430" width="8" height="10" fill="#059669"/>
+  <rect x="310" y="429" width="14" height="11" fill="#059669"/>
+  <text x="340" y="436" font-size="7" font-weight="400" fill="#1a1822" opacity="0.7">time</text>
+  <text x="225" y="475" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Low &amp; consistent refresh cost per cycle</text>
+
+  <!-- Divider -->
+  <line x1="450" y1="80" x2="450" y2="480" stroke="#1a1822" stroke-width="1" opacity="0.2"/>
+
+  <!-- RIGHT: Full Refresh -->
+  <text x="675" y="95" font-size="15" font-weight="700" fill="#1a1822" text-anchor="middle">Full Refresh</text>
+
+  <!-- Source - entire tables -->
+  <rect x="510" y="120" width="330" height="60" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="675" y="145" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Source DB Full Tables</text>
+  <text x="675" y="162" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Entire orders, users, products tables</text>
+
+  <!-- All data flows -->
+  <line x1="675" y1="183" x2="675" y2="203" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="695" y="197" font-size="8" font-weight="700" fill="#3b82f6">ALL DATA</text>
+
+  <!-- Full rebuild -->
+  <rect x="560" y="210" width="230" height="50" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="675" y="235" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Full Rebuild</text>
+  <text x="675" y="250" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">DROP + CREATE + populate all</text>
+
+  <line x1="675" y1="263" x2="675" y2="283" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowRed)"/>
+
+  <!-- MV completely replaced -->
+  <rect x="530" y="290" width="290" height="90" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="675" y="315" font-size="11" font-weight="700" fill="#1a1822" text-anchor="middle">Materialized View (Rebuilt)</text>
+  <text x="675" y="335" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">All rows recomputed (even unchanged)</text>
+  <text x="675" y="350" font-size="9" font-weight="700" fill="#dc2626" text-anchor="middle">High I/O, expensive refresh</text>
+  <text x="675" y="365" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Guaranteed consistency</text>
+
+  <!-- Timeline for full refresh -->
+  <rect x="510" y="400" width="330" height="55" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+  <text x="675" y="420" font-size="10" font-weight="700" fill="#991b1b" text-anchor="middle">Refresh Timeline</text>
+  <line x1="530" y1="440" x2="820" y2="440" stroke="#dc2626" stroke-width="1"/>
+  <!-- Large spikes showing expensive refreshes -->
+  <rect x="550" y="420" width="14" height="20" fill="#dc2626"/>
+  <rect x="620" y="422" width="12" height="18" fill="#dc2626"/>
+  <rect x="690" y="418" width="16" height="22" fill="#dc2626"/>
+  <rect x="760" y="421" width="14" height="19" fill="#dc2626"/>
+  <text x="790" y="436" font-size="7" font-weight="400" fill="#1a1822" opacity="0.7">time</text>
+  <text x="675" y="475" font-size="9" font-weight="400" fill="#1a1822" text-anchor="middle">Periodic expensive full rebuilds</text>
+
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Comparison -->
+  <rect x="150" y="490" width="600" height="6" rx="3" fill="#fef3c7"/>
 </svg>

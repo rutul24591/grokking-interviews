@@ -1,10 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Saga Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Saga Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Saga Compensation Flow Diagram</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Saga Compensation Flow</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Reverse-order rollback when a step fails - undoing all previously completed steps</text>
+  
+  <!-- Forward Flow - Success Path -->
+  <text x="450" y="80" text-anchor="middle" font-size="14" font-weight="600" fill="#059669">Forward Flow - Each Step Succeeds Until Failure</text>
+  
+  <!-- Step 1: Create Order -->
+  <rect x="60" y="110" width="150" height="60" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="135" y="135" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">1. Create Order</text>
+  <text x="135" y="155" text-anchor="middle" font-size="10" fill="#059669">SUCCESS</text>
+  
+  <!-- Arrow -->
+  <path d="M 210 140 L 270 140" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  
+  <!-- Step 2: Process Payment -->
+  <rect x="270" y="110" width="150" height="60" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="345" y="135" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">2. Process Payment</text>
+  <text x="345" y="155" text-anchor="middle" font-size="10" fill="#059669">SUCCESS</text>
+  
+  <!-- Arrow -->
+  <path d="M 420 140 L 480 140" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  
+  <!-- Step 3: Reserve Inventory - FAILS -->
+  <rect x="480" y="110" width="150" height="60" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="555" y="135" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">3. Reserve Inventory</text>
+  <text x="555" y="155" text-anchor="middle" font-size="10" fill="#dc2626">FAILED - Out of stock</text>
+  
+  <!-- X mark on failed step -->
+  <text x="630" y="125" font-size="20" font-weight="700" fill="#dc2626">X</text>
+  
+  <!-- Compensation Flow - Reverse Order -->
+  <text x="450" y="220" text-anchor="middle" font-size="14" font-weight="600" fill="#dc2626">Compensation Flow - Reverse Order Rollback</text>
+  
+  <!-- Compensate Step 2: Refund Payment -->
+  <rect x="270" y="250" width="180" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="360" y="275" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">C2. Refund Payment</text>
+  <text x="360" y="295" text-anchor="middle" font-size="10" fill="#f59e0b">Compensating Step 2</text>
+  
+  <!-- Arrow from failed step to C2 -->
+  <path d="M 555 170 L 360 250" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+  <text x="470" y="200" font-size="10" font-weight="600" fill="#dc2626">Failure detected</text>
+  <text x="470" y="214" font-size="9" fill="#1a1822" opacity="0.8">Start compensation</text>
+  
+  <!-- Arrow from C2 to C1 -->
+  <path d="M 270 280 L 170 350" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+  <text x="210" y="305" font-size="10" font-weight="600" fill="#f59e0b">Next compensation</text>
+  
+  <!-- Compensate Step 1: Cancel Order -->
+  <rect x="60" y="350" width="180" height="60" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="150" y="375" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">C1. Cancel Order</text>
+  <text x="150" y="395" text-anchor="middle" font-size="10" fill="#dc2626">Compensating Step 1</text>
+  
+  <!-- Saga State Timeline -->
+  <rect x="300" y="340" width="560" height="140" rx="8" fill="#ffffff" stroke="#d4d0d8" stroke-width="1.5"/>
+  <text x="580" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Saga Execution Timeline</text>
+  
+  <!-- Timeline boxes -->
+  <rect x="320" y="385" width="90" height="35" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text x="365" y="407" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">S1: Order</text>
+  
+  <rect x="415" y="385" width="90" height="35" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text x="460" y="407" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">S2: Payment</text>
+  
+  <rect x="510" y="385" width="90" height="35" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="555" y="407" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">S3: FAIL</text>
+  
+  <!-- Compensation boxes below -->
+  <rect x="605" y="430" width="100" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="655" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">C2: Refund</text>
+  
+  <rect x="710" y="430" width="110" height="35" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="765" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">C1: Cancel</text>
+  
+  <!-- Timeline arrows -->
+  <path d="M 410 402 L 415 402" stroke="#059669" stroke-width="2"/>
+  <path d="M 505 402 L 510 402" stroke="#059669" stroke-width="2"/>
+  <path d="M 600 402 L 600 430" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <path d="M 655 430 L 655 448" stroke="#f59e0b" stroke-width="1.5"/>
+  <path d="M 705 448 L 710 448" stroke="#f59e0b" stroke-width="1.5"/>
+  
+  <!-- Key properties callout -->
+  <rect x="320" y="475" width="520" height="20" rx="4" fill="#f3f1f8" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="580" y="489" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.8">Key: Compensation runs in REVERSE order of forward execution. Each step must define its own compensating action.</text>
+  
+  <defs>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
 </svg>

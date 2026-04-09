@@ -1,10 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Shared Database Anti-Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Shared Database Anti-Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <title>Problems Caused by Shared Database - Cascade Failures, Deployment Coupling, Team Coordination</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Shared Database: Cascading Problems</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Cascade Failures, Deployment Coupling &amp; Team Coordination Overhead</text>
+
+  <!-- Problem 1: Cascade Failures -->
+  <rect x="30" y="90" width="270" height="370" rx="10" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <rect x="30" y="90" width="270" height="40" rx="10" fill="#ef4444"/>
+  <text x="165" y="116" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">Cascade Failures</text>
+
+  <!-- Cascade diagram -->
+  <rect x="60" y="160" width="120" height="45" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="120" y="186" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b" font-family="system-ui, sans-serif">Payment Service</text>
+  <text x="120" y="205" text-anchor="middle" font-size="9" fill="#991b1b" opacity="0.7" font-family="system-ui, sans-serif">Slow query on shared DB</text>
+
+  <line x1="120" y1="205" x2="120" y2="230" stroke="#ef4444" stroke-width="2"/>
+  <polygon points="116,225 124,225 120,235" fill="#ef4444"/>
+
+  <rect x="60" y="235" width="200" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="160" y="260" text-anchor="middle" font-size="11" font-weight="700" fill="#991b1b" font-family="system-ui, sans-serif">Connection Pool Exhausted</text>
+
+  <line x1="160" y1="275" x2="160" y2="295" stroke="#ef4444" stroke-width="2"/>
+  <polygon points="156,290 164,290 160,300" fill="#ef4444"/>
+
+  <rect x="50" y="300" width="230" height="35" rx="6" fill="#fecaca" stroke="#ef4444" stroke-width="1"/>
+  <text x="165" y="322" text-anchor="middle" font-size="10" fill="#991b1b" font-family="system-ui, sans-serif">ALL services sharing the DB degrade</text>
+
+  <rect x="60" y="355" width="100" height="35" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="110" y="376" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">User Svc</text>
+
+  <rect x="170" y="355" width="100" height="35" rx="5" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="220" y="376" text-anchor="middle" font-size="9" fill="#991b1b" font-family="system-ui, sans-serif">Order Svc</text>
+
+  <!-- Problem 2: Deployment Coupling -->
+  <rect x="315" y="90" width="270" height="370" rx="10" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="315" y="90" width="270" height="40" rx="10" fill="#f59e0b"/>
+  <text x="450" y="116" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">Deployment Coupling</text>
+
+  <!-- Deployment timeline -->
+  <rect x="340" y="150" width="220" height="55" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="#78350f" font-family="system-ui, sans-serif">Schema Migration Required</text>
+  <text x="450" y="190" text-anchor="middle" font-size="9" fill="#78350f" opacity="0.7" font-family="system-ui, sans-serif">Adding column to shared table</text>
+
+  <line x1="450" y1="205" x2="450" y2="225" stroke="#d97706" stroke-width="2"/>
+  <polygon points="446,220 454,220 450,230" fill="#d97706"/>
+
+  <rect x="340" y="230" width="220" height="50" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="#78350f" font-family="system-ui, sans-serif">All Teams Must Coordinate</text>
+  <text x="450" y="268" text-anchor="middle" font-size="9" fill="#78350f" opacity="0.7" font-family="system-ui, sans-serif">Deploy during maintenance window</text>
+
+  <line x1="450" y1="280" x2="450" y2="300" stroke="#d97706" stroke-width="2"/>
+  <polygon points="446,295 454,295 450,305" fill="#d97706"/>
+
+  <rect x="340" y="305" width="220" height="50" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="325" text-anchor="middle" font-size="11" font-weight="600" fill="#78350f" font-family="system-ui, sans-serif">Rollback Blocks Everyone</text>
+  <text x="450" y="343" text-anchor="middle" font-size="9" fill="#78350f" opacity="0.7" font-family="system-ui, sans-serif">One failure = all services affected</text>
+
+  <rect x="340" y="380" width="220" height="50" rx="6" fill="#f3f1f8"/>
+  <text x="450" y="400" text-anchor="middle" font-size="10" fill="#1a1822" font-family="system-ui, sans-serif">Deploy frequency drops</text>
+  <text x="450" y="418" text-anchor="middle" font-size="10" fill="#1a1822" font-family="system-ui, sans-serif">from daily to monthly</text>
+
+  <!-- Problem 3: Team Coordination -->
+  <rect x="600" y="90" width="270" height="370" rx="10" fill="#ffffff" stroke="#8b5cf6" stroke-width="2"/>
+  <rect x="600" y="90" width="270" height="40" rx="10" fill="#8b5cf6"/>
+  <text x="735" y="116" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">Team Coordination</text>
+
+  <!-- Team coordination issues -->
+  <rect x="620" y="150" width="230" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="735" y="172" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Cross-Team Reviews</text>
+  <text x="735" y="190" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Every schema change needs all team approvals</text>
+
+  <rect x="620" y="220" width="230" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="735" y="242" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Competing Priorities</text>
+  <text x="735" y="260" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Team A needs index, Team B blocks for perf</text>
+
+  <rect x="620" y="290" width="230" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="735" y="312" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Shared On-Call</text>
+  <text x="735" y="330" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">DB issues page all teams, not just affected</text>
+
+  <rect x="620" y="360" width="230" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="735" y="382" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Knowledge Silos</text>
+  <text x="735" y="400" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Only 1-2 people understand the schema</text>
+
+  <!-- Bottom summary -->
+  <rect x="30" y="475" width="840" height="20" rx="5" fill="#1a1822"/>
+  <text x="450" y="489" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff" font-family="system-ui, sans-serif">These problems compound as the number of services sharing the database increases</text>
 </svg>

@@ -1,10 +1,134 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Backend for Frontend Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Backend for Frontend</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>BFF with GraphQL showing client field selection, DataLoader pattern, and response shaping</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">BFF with GraphQL &amp; Response Shaping</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Clients specify exact fields; DataLoader resolves N+1 queries</text>
+
+  <!-- Client Requests Layer -->
+  <rect x="30" y="80" width="840" height="110" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="840" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="100" width="840" height="10" fill="#6d5bd0"/>
+  <text x="450" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Client Requests (Exact Field Selection)</text>
+
+  <!-- Web Query -->
+  <rect x="50" y="120" width="240" height="55" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="170" y="140" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Web Query:</text>
+  <text x="170" y="158" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">{ user { name, email }</text>
+  <text x="170" y="170" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">posts { title, body, comments } }</text>
+
+  <!-- Mobile Query -->
+  <rect x="330" y="120" width="240" height="55" rx="8" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="450" y="140" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Mobile Query:</text>
+  <text x="450" y="158" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">{ user { name, avatar }</text>
+  <text x="450" y="170" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">posts { title, excerpt } }</text>
+
+  <!-- IoT Query -->
+  <rect x="610" y="120" width="240" height="55" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="730" y="140" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">IoT Query:</text>
+  <text x="730" y="158" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">{ user { id }</text>
+  <text x="730" y="170" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">posts { id, status } }</text>
+
+  <!-- Arrows to GraphQL BFF -->
+  <line x1="170" y1="175" x2="300" y2="220" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowGraphQL)"/>
+  <line x1="450" y1="175" x2="450" y2="220" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowGraphQL2)"/>
+  <line x1="730" y1="175" x2="600" y2="220" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowGraphQL3)"/>
+
+  <!-- GraphQL BFF Layer -->
+  <rect x="30" y="220" width="840" height="140" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="220" width="840" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="240" width="840" height="10" fill="#6d5bd0"/>
+  <text x="450" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">GraphQL BFF Layer</text>
+
+  <!-- Schema Definition -->
+  <rect x="50" y="260" width="250" height="85" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="175" y="280" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">GraphQL Schema</text>
+  <text x="175" y="298" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">type User {</text>
+  <text x="175" y="312" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">id: ID, name: String</text>
+  <text x="175" y="326" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">email: String, avatar: String</text>
+  <text x="175" y="340" text-anchor="middle" font-size="8" fill="#1a1822" font-family="monospace">posts: [Post]}</text>
+
+  <!-- DataLoader Box -->
+  <rect x="330" y="260" width="240" height="85" rx="8" fill="#f0ad4e" opacity="0.12" stroke="#f0ad4e" stroke-width="1.5"/>
+  <rect x="330" y="260" width="240" height="22" rx="8" fill="#f0ad4e"/>
+  <rect x="330" y="274" width="240" height="8" fill="#f0ad4e"/>
+  <text x="450" y="276" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">DataLoader (N+1 Resolution)</text>
+  
+  <text x="450" y="300" text-anchor="middle" font-size="8" fill="#1a1822">&#8226; Batches multiple user requests</text>
+  <text x="450" y="315" text-anchor="middle" font-size="8" fill="#1a1822">&#8226; Caches results by ID</text>
+  <text x="450" y="330" text-anchor="middle" font-size="8" fill="#1a1822">&#8226; Single DB query per tick</text>
+
+  <!-- Response Shaper -->
+  <rect x="600" y="260" width="250" height="85" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <rect x="600" y="260" width="250" height="22" rx="8" fill="#4caf50"/>
+  <rect x="600" y="274" width="250" height="8" fill="#4caf50"/>
+  <text x="725" y="276" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Response Shaper</text>
+  
+  <text x="725" y="300" text-anchor="middle" font-size="8" fill="#1a1822">&#8226; Filters fields per query</text>
+  <text x="725" y="315" text-anchor="middle" font-size="8" fill="#1a1822">&#8226; Applies transforms per client</text>
+  <text x="725" y="330" text-anchor="middle" font-size="8" fill="#1a1822">&#8226; Handles data formatting</text>
+
+  <!-- DataLoader to services arrows -->
+  <line x1="450" y1="360" x2="450" y2="390" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowGraphQL2)"/>
+
+  <!-- Backend Services -->
+  <rect x="30" y="390" width="840" height="90" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="390" width="840" height="28" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="410" width="840" height="8" fill="#6d5bd0"/>
+  <text x="450" y="409" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Backend Services (REST/gRPC)</text>
+
+  <!-- User Service -->
+  <rect x="60" y="428" width="180" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="150" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">User Service</text>
+
+  <!-- Post Service -->
+  <rect x="280" y="428" width="180" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="370" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Post Service</text>
+
+  <!-- Comment Service -->
+  <rect x="500" y="428" width="180" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="590" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Comment Service</text>
+
+  <!-- Media Service -->
+  <rect x="720" y="428" width="120" height="40" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="780" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Media Service</text>
+
+  <!-- Batch query visualization -->
+  <path d="M 175 380 L 150 390" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <path d="M 175 380 L 370 390" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <path d="M 450 380 L 590 390" stroke="#f0ad4e" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <path d="M 725 380 L 780 390" stroke="#4caf50" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+
+  <!-- N+1 Problem vs Solution callout -->
+  <rect x="30" y="490" width="840" height="0" rx="0" fill="none" stroke="none"/>
+
+  <!-- N+1 Visualization Box -->
+  <rect x="30" y="485" width="410" height="0" rx="0" fill="none" stroke="none"/>
+
+  <!-- Bottom annotations -->
+  <rect x="50" y="260" width="0" height="0" fill="none" stroke="none"/>
+
+  <!-- N+1 Before/After comparison -->
+  <rect x="45" y="265" width="0" height="0" fill="none" stroke="none"/>
+
+  <!-- Key benefits annotation -->
+  <rect x="40" y="270" width="0" height="0" fill="none" stroke="none"/>
+
+  <!-- Performance comparison annotation -->
+  <rect x="30" y="488" width="840" height="0" rx="0" fill="#f3f1f8"/>
+
+  <!-- Add performance note at bottom -->
+  <text x="235" y="385" text-anchor="middle" font-size="9" fill="#cc4444" font-weight="600">Without DataLoader: N+1 queries</text>
+  <text x="665" y="385" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="600">With DataLoader: Batched queries</text>
+
+  <defs>
+    <marker id="arrowGraphQL" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGraphQL2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arrowGraphQL3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
 </svg>

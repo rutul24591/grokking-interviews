@@ -1,10 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Hexagonal Architecture Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Hexagonal Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Hexagonal vs Layered Architecture Comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="38" font-size="18" font-weight="700" fill="#1a1822" text-anchor="middle">Hexagonal vs Layered Architecture</text>
+  <text x="450" y="56" font-size="12" fill="#1a1822" opacity="0.7" text-anchor="middle">Dependency direction: inward-facing ports vs top-down layer coupling</text>
+
+  <!-- LEFT SIDE: Hexagonal -->
+  <text x="225" y="90" font-size="15" font-weight="700" fill="#1a1822" text-anchor="middle">Hexagonal Architecture</text>
+
+  <!-- Hexagon -->
+  <polygon points="225,130 330,190 330,330 225,390 120,330 120,190" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="225" y="250" font-size="13" font-weight="700" fill="#1a1822" text-anchor="middle">Domain</text>
+  <text x="225" y="268" font-size="10" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Core</text>
+
+  <!-- Inbound adapters left -->
+  <rect x="20" y="170" width="80" height="45" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="60" y="190" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">REST</text>
+  <text x="60" y="204" font-size="8" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Adapter</text>
+
+  <rect x="20" y="240" width="80" height="45" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="60" y="260" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">CLI</text>
+  <text x="60" y="274" font-size="8" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Adapter</text>
+
+  <rect x="20" y="310" width="80" height="45" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="60" y="330" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">MQ</text>
+  <text x="60" y="344" font-size="8" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Adapter</text>
+
+  <!-- Outbound adapters right -->
+  <rect x="350" y="170" width="80" height="45" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="390" y="190" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">DB</text>
+  <text x="390" y="204" font-size="8" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Adapter</text>
+
+  <rect x="350" y="240" width="80" height="45" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="390" y="260" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">Email</text>
+  <text x="390" y="274" font-size="8" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Adapter</text>
+
+  <rect x="350" y="310" width="80" height="45" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="390" y="330" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">API</text>
+  <text x="390" y="344" font-size="8" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Adapter</text>
+
+  <!-- Arrows pointing inward to hexagon -->
+  <line x1="105" y1="192" x2="122" y2="200" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <line x1="105" y1="262" x2="122" y2="262" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <line x1="105" y1="332" x2="122" y2="320" stroke="#059669" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <line x1="325" y1="200" x2="342" y2="192" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <line x1="325" y1="262" x2="342" y2="262" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <line x1="325" y1="320" x2="342" y2="332" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- Dependency direction label -->
+  <text x="225" y="430" font-size="11" font-weight="700" fill="#7c3aed" text-anchor="middle">Dependencies point INWARD</text>
+  <text x="225" y="446" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Domain is isolated &amp; independent</text>
+
+  <!-- Divider line -->
+  <line x1="450" y1="80" x2="450" y2="470" stroke="#1a1822" stroke-width="1" opacity="0.2"/>
+
+  <!-- RIGHT SIDE: Layered -->
+  <text x="675" y="90" font-size="15" font-weight="700" fill="#1a1822" text-anchor="middle">Layered Architecture</text>
+
+  <!-- Presentation Layer -->
+  <rect x="530" y="120" width="290" height="55" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="675" y="145" font-size="12" font-weight="700" fill="#1a1822" text-anchor="middle">Presentation Layer</text>
+  <text x="675" y="162" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Controllers, Views</text>
+
+  <!-- Business Layer -->
+  <rect x="530" y="185" width="290" height="55" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="675" y="210" font-size="12" font-weight="700" fill="#1a1822" text-anchor="middle">Business Logic Layer</text>
+  <text x="675" y="227" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Services, Domain Models</text>
+
+  <!-- Data Access Layer -->
+  <rect x="530" y="250" width="290" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="675" y="275" font-size="12" font-weight="700" fill="#1a1822" text-anchor="middle">Data Access Layer</text>
+  <text x="675" y="292" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Repositories, DAOs</text>
+
+  <!-- Infrastructure Layer -->
+  <rect x="530" y="315" width="290" height="55" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="675" y="340" font-size="12" font-weight="700" fill="#1a1822" text-anchor="middle">Infrastructure Layer</text>
+  <text x="675" y="357" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Database, External Services</text>
+
+  <!-- Dependency arrows downward -->
+  <line x1="675" y1="178" x2="675" y2="182" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <line x1="675" y1="243" x2="675" y2="247" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowIndigo)"/>
+  <line x1="675" y1="308" x2="675" y2="312" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber)"/>
+
+  <!-- Dependency direction label -->
+  <text x="675" y="430" font-size="11" font-weight="700" fill="#3b82f6" text-anchor="middle">Dependencies flow DOWNWARD</text>
+  <text x="675" y="446" font-size="9" font-weight="400" fill="#1a1822" opacity="0.7" text-anchor="middle">Each layer depends on the one below</text>
+
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <!-- Comparison Table at Bottom -->
+  <rect x="60" y="470" width="780" height="24" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="450" y="487" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">Hexagonal: domain is testable in isolation | Layered: simpler but tightly coupled to infrastructure</text>
 </svg>

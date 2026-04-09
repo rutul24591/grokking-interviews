@@ -1,10 +1,116 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Circuit Breaker Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Circuit Breaker Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Circuit breaker in action showing normal operation, failure detection, circuit opening, probe requests, and recovery</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Circuit Breaker in Action</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Timeline showing normal operation → failure → open circuit → probe → recovery</text>
+
+  <!-- Timeline -->
+  <line x1="80" y1="100" x2="820" y2="100" stroke="#94a3b8" stroke-width="3"/>
+
+  <!-- Phase markers -->
+  <rect x="80" y="70" width="160" height="25" rx="5" fill="#4caf50"/>
+  <text x="160" y="88" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Phase 1: CLOSED (normal)</text>
+
+  <rect x="260" y="70" width="160" height="25" rx="5" fill="#dc2626"/>
+  <text x="340" y="88" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Phase 2: Failures</text>
+
+  <rect x="440" y="70" width="160" height="25" rx="5" fill="#d97706"/>
+  <text x="520" y="88" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Phase 3: OPEN</text>
+
+  <rect x="620" y="70" width="180" height="25" rx="5" fill="#4caf50"/>
+  <text x="710" y="88" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Phase 4: Recovery</text>
+
+  <!-- Phase 1: Normal requests -->
+  <circle cx="120" cy="100" r="12" fill="#4caf50" opacity="0.3" stroke="#4caf50" stroke-width="2"/>
+  <text x="120" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#4caf50">✓</text>
+  <circle cx="160" cy="100" r="12" fill="#4caf50" opacity="0.3" stroke="#4caf50" stroke-width="2"/>
+  <text x="160" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#4caf50">✓</text>
+  <circle cx="200" cy="100" r="12" fill="#4caf50" opacity="0.3" stroke="#4caf50" stroke-width="2"/>
+  <text x="200" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#4caf50">✓</text>
+
+  <!-- Phase 2: Failures start -->
+  <circle cx="280" cy="100" r="12" fill="#dc2626" opacity="0.3" stroke="#dc2626" stroke-width="2"/>
+  <text x="280" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#dc2626">✗</text>
+  <circle cx="310" cy="100" r="12" fill="#dc2626" opacity="0.3" stroke="#dc2626" stroke-width="2"/>
+  <text x="310" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#dc2626">✗</text>
+  <circle cx="340" cy="100" r="12" fill="#dc2626" opacity="0.3" stroke="#dc2626" stroke-width="2"/>
+  <text x="340" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#dc2626">✗</text>
+  <circle cx="370" cy="100" r="12" fill="#dc2626" opacity="0.3" stroke="#dc2626" stroke-width="2"/>
+  <text x="370" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#dc2626">✗</text>
+
+  <!-- Circuit opens -->
+  <rect x="400" y="75" width="40" height="50" rx="6" fill="#d97706"/>
+  <text x="420" y="98" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">OPEN</text>
+  <text x="420" y="115" text-anchor="middle" font-size="8" fill="#64748b">threshold</text>
+  <text x="420" y="127" text-anchor="middle" font-size="8" fill="#64748b">exceeded</text>
+
+  <!-- Phase 3: Open circuit - fast fail -->
+  <circle cx="460" cy="100" r="12" fill="#d97706" opacity="0.3" stroke="#d97706" stroke-width="2"/>
+  <text x="460" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#d97706">⚡</text>
+  <circle cx="490" cy="100" r="12" fill="#d97706" opacity="0.3" stroke="#d97706" stroke-width="2"/>
+  <text x="490" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#d97706">⚡</text>
+  <circle cx="520" cy="100" r="12" fill="#d97706" opacity="0.3" stroke="#d97706" stroke-width="2"/>
+  <text x="520" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#d97706">⚡</text>
+  <text x="490" y="135" text-anchor="middle" font-size="9" fill="#64748b">Fast-fail: no request reaches service</text>
+
+  <!-- Timeout period -->
+  <rect x="550" y="85" width="60" height="30" rx="5" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1"/>
+  <text x="580" y="105" text-anchor="middle" font-size="9" fill="#d97706">30s wait</text>
+
+  <!-- Phase 4: Half-open probe -->
+  <rect x="620" y="80" width="80" height="40" rx="6" fill="#d97706" opacity="0.2" stroke="#d97706" stroke-width="2"/>
+  <text x="660" y="98" text-anchor="middle" font-size="9" font-weight="700" fill="#d97706">HALF-OPEN</text>
+  <text x="660" y="113" text-anchor="middle" font-size="8" fill="#64748b">probe request</text>
+
+  <!-- Probe succeeds -->
+  <circle cx="720" cy="100" r="12" fill="#4caf50" opacity="0.3" stroke="#4caf50" stroke-width="2"/>
+  <text x="720" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#4caf50">✓</text>
+
+  <!-- Circuit closes again -->
+  <rect x="750" y="75" width="50" height="50" rx="6" fill="#4caf50"/>
+  <text x="775" y="95" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">CLOSED</text>
+  <text x="775" y="112" text-anchor="middle" font-size="8" fill="#ffffff">recovered</text>
+
+  <!-- Normal resumes -->
+  <circle cx="810" cy="100" r="12" fill="#4caf50" opacity="0.3" stroke="#4caf50" stroke-width="2"/>
+  <text x="810" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#4caf50">✓</text>
+
+  <!-- Service health timeline -->
+  <text x="80" y="170" font-size="11" font-weight="700" fill="#1a1822">Service Health:</text>
+  <rect x="80" y="180" width="300" height="30" rx="5" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="230" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Healthy — responding normally</text>
+  <rect x="380" y="180" width="120" height="30" rx="5" fill="#dc2626" opacity="0.2" stroke="#dc2626" stroke-width="1"/>
+  <text x="440" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">Degrading → Down</text>
+  <rect x="500" y="180" width="180" height="30" rx="5" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1"/>
+  <text x="590" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">Recovering — probe succeeds</text>
+  <rect x="680" y="180" width="140" height="30" rx="5" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="750" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Healthy — fully recovered</text>
+
+  <!-- Metrics timeline -->
+  <text x="80" y="250" font-size="11" font-weight="700" fill="#1a1822">Circuit Breaker Metrics:</text>
+  <rect x="80" y="260" width="100" height="25" rx="5" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="277" text-anchor="middle" font-size="9" fill="#1a1822">Error rate: 0%</text>
+  <rect x="260" y="260" width="100" height="25" rx="5" fill="#dc2626" opacity="0.15" stroke="#dc2626" stroke-width="1"/>
+  <text x="310" y="277" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">Error rate: 80%</text>
+  <rect x="440" y="260" width="100" height="25" rx="5" fill="#d97706" opacity="0.15" stroke="#d97706" stroke-width="1"/>
+  <text x="490" y="277" text-anchor="middle" font-size="9" font-weight="600" fill="#d97706">State: OPEN</text>
+  <rect x="620" y="260" width="100" height="25" rx="5" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="670" y="277" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">State: CLOSED</text>
+
+  <!-- Request latency -->
+  <text x="80" y="320" font-size="11" font-weight="700" fill="#1a1822">Request Latency:</text>
+  <rect x="80" y="330" width="300" height="30" rx="5" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="230" y="350" text-anchor="middle" font-size="10" fill="#1a1822">50ms average (normal service response)</text>
+  <rect x="440" y="330" width="180" height="30" rx="5" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="1"/>
+  <text x="530" y="350" text-anchor="middle" font-size="10" fill="#1a1822">0ms (fast-fail, no network call)</text>
+  <rect x="680" y="330" width="140" height="30" rx="5" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="750" y="350" text-anchor="middle" font-size="10" fill="#1a1822">50ms (recovered)</text>
+
+  <!-- Protection benefit -->
+  <rect x="80" y="390" width="740" height="90" rx="10" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="415" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Protection Benefits</text>
+  <text x="100" y="440" font-size="10" fill="#1a1822">• Prevents cascading failures: failing service is not hammered by retries</text>
+  <text x="100" y="460" font-size="10" fill="#1a1822">• Fast-fail reduces latency: open circuit returns immediately instead of waiting for timeout</text>
+  <text x="450" y="440" font-size="10" fill="#1a1822">• Automatic recovery: half-open probes detect when service recovers</text>
+  <text x="450" y="460" font-size="10" fill="#1a1822">• Graceful degradation: callers can implement fallback behavior on circuit open</text>
 </svg>

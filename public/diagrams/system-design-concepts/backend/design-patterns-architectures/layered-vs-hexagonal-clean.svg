@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520">
+  <defs>
+    <style>
+      .bg-light { fill: #ffffff; }
+      .bg-dark { fill: #0f172a; }
+      .title-light { fill: #0f172a; }
+      .title-dark { fill: #f1f5f9; }
+      .subtitle-light { fill: #475569; }
+      .subtitle-dark { fill: #94a3b8; }
+      .layer-light { fill: #f8fafc; stroke: #cbd5e1; }
+      .layer-dark { fill: #1e293b; stroke: #475569; }
+      .biz-light { fill: #dcfce7; stroke: #22c55e; }
+      .biz-dark { fill: #14532d; stroke: #4ade80; }
+      .core-light { fill: #fef3c7; stroke: #f59e0b; }
+      .core-dark { fill: #451a03; stroke: #fbbf24; }
+      .hex-light { fill: #ede9fe; stroke: #8b5cf6; }
+      .hex-dark { fill: #2e1065; stroke: #a78bfa; }
+      .outer-light { fill: #f1f5f9; stroke: #94a3b8; }
+      .outer-dark { fill: #0f172a; stroke: #64748b; }
+      .dep-light { stroke: #3b82f6; }
+      .dep-dark { stroke: #60a5fa; }
+      .label-light { fill: #1e293b; }
+      .label-dark { fill: #e2e8f0; }
+      .sublabel-light { fill: #475569; }
+      .sublabel-dark { fill: #94a3b8; }
+    </style>
+  </defs>
+
+  <!-- Light mode background -->
+  <rect class="bg-light" width="960" height="520" />
+
+  <!-- Title -->
+  <text class="title-light" x="480" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold">Architectural Patterns Comparison</text>
+  <text class="subtitle-light" x="480" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Layered vs Hexagonal vs Clean Architecture</text>
+
+  <!-- ==================== LAYERED ==================== -->
+  <text x="160" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Layered Architecture</text>
+
+  <!-- Horizontal layers -->
+  <rect class="outer-light" x="60" y="100" width="200" height="50" rx="5" />
+  <text class="label-light" x="160" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Presentation</text>
+  <text class="sublabel-light" x="160" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="9">Controllers, Views</text>
+
+  <line x1="160" y1="150" x2="160" y2="165" stroke="#3b82f6" stroke-width="1.5" />
+  <polygon points="160,170 156,162 164,162" fill="#3b82f6" />
+
+  <rect class="biz-light" x="60" y="170" width="200" height="50" rx="5" />
+  <text class="label-light" x="160" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Business</text>
+  <text class="sublabel-light" x="160" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="9">Services, Domain</text>
+
+  <line x1="160" y1="220" x2="160" y2="235" stroke="#3b82f6" stroke-width="1.5" />
+  <polygon points="160,240 156,232 164,232" fill="#3b82f6" />
+
+  <rect x="60" y="240" width="200" height="50" rx="5" fill="#fefce8" stroke="#eab308" />
+  <text class="label-light" x="160" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Data Access</text>
+  <text class="sublabel-light" x="160" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="9">Repositories</text>
+
+  <line x1="160" y1="290" x2="160" y2="305" stroke="#3b82f6" stroke-width="1.5" />
+  <polygon points="160,310 156,302 164,302" fill="#3b82f6" />
+
+  <rect class="outer-light" x="60" y="310" width="200" height="50" rx="5" />
+  <text class="label-light" x="160" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Infrastructure</text>
+  <text class="sublabel-light" x="160" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="9">Logging, Config</text>
+
+  <!-- Annotation -->
+  <text x="160" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Horizontal tiers</text>
+  <text x="160" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Downward deps</text>
+  <text x="160" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Simple, clear</text>
+
+  <!-- ==================== HEXAGONAL ==================== -->
+  <text x="480" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Hexagonal (Ports &amp; Adapters)</text>
+
+  <!-- Hexagon shape for domain core -->
+  <polygon points="480,145 540,185 540,265 480,305 420,265 420,185" class="core-light" stroke-width="2" />
+  <text class="label-light" x="480" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Domain Core</text>
+  <text class="sublabel-light" x="480" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="9">Business Rules</text>
+
+  <!-- Ports on each side -->
+  <!-- Top port -->
+  <rect class="hex-light" x="440" y="110" width="80" height="30" rx="4" />
+  <text class="label-light" x="480" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold">Input Port</text>
+
+  <!-- Right port -->
+  <rect class="hex-light" x="550" y="195" width="70" height="50" rx="4" />
+  <text class="label-light" x="585" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold">Output</text>
+  <text class="sublabel-light" x="585" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">Port</text>
+
+  <!-- Bottom port -->
+  <rect class="hex-light" x="440" y="310" width="80" height="30" rx="4" />
+  <text class="label-light" x="480" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold">Output Port</text>
+
+  <!-- Left port -->
+  <rect class="hex-light" x="340" y="195" width="70" height="50" rx="4" />
+  <text class="label-light" x="375" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold">Input</text>
+  <text class="sublabel-light" x="375" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">Port</text>
+
+  <!-- Adapters (outer) -->
+  <rect class="outer-light" x="440" y="78" width="80" height="28" rx="4" />
+  <text class="sublabel-light" x="480" y="97" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">REST API</text>
+
+  <rect class="outer-light" x="630" y="195" width="70" height="50" rx="4" />
+  <text class="sublabel-light" x="665" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">Database</text>
+  <text class="sublabel-light" x="665" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">Adapter</text>
+
+  <rect class="outer-light" x="440" y="345" width="80" height="28" rx="4" />
+  <text class="sublabel-light" x="480" y="364" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">Message Queue</text>
+
+  <rect class="outer-light" x="260" y="195" width="70" height="50" rx="4" />
+  <text class="sublabel-light" x="295" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">CLI /</text>
+  <text class="sublabel-light" x="295" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">GraphQL</text>
+
+  <!-- Annotation -->
+  <text x="480" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Domain-centered</text>
+  <text x="480" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Interchangeable adapters</text>
+  <text x="480" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">High testability</text>
+
+  <!-- ==================== CLEAN ==================== -->
+  <text x="800" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Clean Architecture</text>
+
+  <!-- Concentric circles -->
+  <!-- Outer circle: Frameworks &amp; Drivers -->
+  <circle cx="800" cy="230" r="130" class="outer-light" stroke-width="2" />
+  <text class="sublabel-light" x="800" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="9">Frameworks &amp; Drivers</text>
+
+  <!-- Second circle: Interface Adapters -->
+  <circle cx="800" cy="230" r="95" fill="#f0f9ff" stroke="#38bdf8" stroke-width="1.5" />
+  <text class="sublabel-light" x="800" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9">Interface Adapters</text>
+
+  <!-- Third circle: Use Cases -->
+  <circle cx="800" cy="230" r="62" class="biz-light" stroke-width="1.5" />
+  <text class="label-light" x="800" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Use Cases</text>
+  <text class="sublabel-light" x="800" y="242" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">Interactors</text>
+
+  <!-- Inner circle: Entities -->
+  <circle cx="800" cy="230" r="35" class="core-light" stroke-width="2" />
+  <text class="label-light" x="800" y="227" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold">Entities</text>
+  <text class="sublabel-light" x="800" y="242" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">Enterprise Rules</text>
+
+  <!-- Dependency arrows pointing inward -->
+  <line x1="800" y1="100" x2="800" y2="130" stroke="#3b82f6" stroke-width="1.5" />
+  <polygon points="800,135 796,127 804,127" fill="#3b82f6" />
+
+  <line x1="800" y1="150" x2="800" y2="170" stroke="#3b82f6" stroke-width="1.5" />
+  <polygon points="800,175 796,167 804,167" fill="#3b82f6" />
+
+  <!-- Annotation -->
+  <text x="800" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Concentric circles</text>
+  <text x="800" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Deps point inward</text>
+  <text x="800" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Strongest isolation</text>
+
+  <!-- Legend -->
+  <rect x="320" y="470" width="320" height="40" rx="6" fill="#f8fafc" stroke="#e2e8f0" />
+  <text x="480" y="487" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Solid arrows = request flow | Dashed arrows = dependency inversion</text>
+  <text x="480" y="503" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#475569">Green = business logic | Yellow = domain core | Blue/Purple = infrastructure</text>
+</svg>

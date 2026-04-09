@@ -1,10 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Adapter Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Adapter Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Adapter vs Facade vs Bridge patterns comparison showing structural differences and when to use each pattern</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Adapter vs Facade vs Bridge</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Three structurally similar patterns with fundamentally different intents</text>
+
+  <!-- Column 1: Adapter -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Adapter</text>
+
+  <rect x="50" y="130" width="230" height="55" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Intent</text>
+  <text x="165" y="172" text-anchor="middle" font-size="9" fill="#1a1822">Make incompatible interfaces work together</text>
+
+  <rect x="50" y="200" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Structure</text>
+  <text x="165" y="242" text-anchor="middle" font-size="9" fill="#1a1822">One wrapper around ONE adaptee</text>
+
+  <rect x="50" y="270" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="292" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Timing</text>
+  <text x="165" y="312" text-anchor="middle" font-size="9" fill="#1a1822">Applied AFTER the fact — existing</text>
+  <text x="165" y="325" text-anchor="middle" font-size="9" fill="#1a1822">system has incompatible interface</text>
+
+  <rect x="50" y="345" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="367" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Example</text>
+  <text x="165" y="387" text-anchor="middle" font-size="9" fill="#1a1822">PaymentProcessor adapts Stripe API</text>
+
+  <rect x="50" y="415" width="230" height="55" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="435" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">When to use:</text>
+  <text x="165" y="455" text-anchor="middle" font-size="9" fill="#1a1822">You cannot change the existing system's interface</text>
+
+  <!-- Column 2: Facade -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="315" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Facade</text>
+
+  <rect x="335" y="130" width="230" height="55" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Intent</text>
+  <text x="450" y="172" text-anchor="middle" font-size="9" fill="#1a1822">Simplify a complex subsystem with a unified interface</text>
+
+  <rect x="335" y="200" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Structure</text>
+  <text x="450" y="242" text-anchor="middle" font-size="9" fill="#1a1822">One simplified interface over MANY subsystems</text>
+
+  <rect x="335" y="270" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="292" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Timing</text>
+  <text x="450" y="312" text-anchor="middle" font-size="9" fill="#1a1822">Designed UP FRONT — simplifies</text>
+  <text x="450" y="325" text-anchor="middle" font-size="9" fill="#1a1822">complexity from the start</text>
+
+  <rect x="335" y="345" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="367" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Example</text>
+  <text x="450" y="387" text-anchor="middle" font-size="9" fill="#1a1822">HomeTheaterFacade: one call to</text>
+  <text x="450" y="400" text-anchor="middle" font-size="9" fill="#1a1822">watchMovie() coordinates 5 subsystems</text>
+
+  <rect x="335" y="415" width="230" height="55" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="435" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">When to use:</text>
+  <text x="450" y="455" text-anchor="middle" font-size="9" fill="#1a1822">Subsystem is complex; clients need simplicity</text>
+
+  <!-- Column 3: Bridge -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#d97706"/>
+  <rect x="600" y="105" width="270" height="10" fill="#d97706"/>
+  <text x="735" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Bridge</text>
+
+  <rect x="620" y="130" width="230" height="55" rx="8" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="1"/>
+  <text x="735" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#d97706">Intent</text>
+  <text x="735" y="172" text-anchor="middle" font-size="9" fill="#1a1822">Decouple abstraction from implementation so both can vary</text>
+
+  <rect x="620" y="200" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Structure</text>
+  <text x="735" y="242" text-anchor="middle" font-size="9" fill="#1a1822">Two hierarchies connected via composition</text>
+
+  <rect x="620" y="270" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="292" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Timing</text>
+  <text x="735" y="312" text-anchor="middle" font-size="9" fill="#1a1822">Designed UP FRONT — both dimensions</text>
+  <text x="735" y="325" text-anchor="middle" font-size="9" fill="#1a1822">of variation are anticipated</text>
+
+  <rect x="620" y="345" width="230" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="367" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Example</text>
+  <text x="735" y="387" text-anchor="middle" font-size="9" fill="#1a1822">Shape abstraction (circle, square) bridged</text>
+  <text x="735" y="400" text-anchor="middle" font-size="9" fill="#1a1822">with Renderer API (vector, raster)</text>
+
+  <rect x="620" y="415" width="230" height="55" rx="8" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1"/>
+  <text x="735" y="435" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">When to use:</text>
+  <text x="735" y="455" text-anchor="middle" font-size="9" fill="#1a1822">Two independent dimensions of variation</text>
+
+  <defs>
+    <marker id="arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

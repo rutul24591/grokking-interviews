@@ -1,10 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Repository Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Repository Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Generic vs Specific Repository Trade-offs</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Repository Design Trade-offs</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Generic Repository vs Specific Repository with Composition</text>
+  
+  <!-- Generic Repository Side -->
+  <rect x="40" y="80" width="400" height="380" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="40" y="80" width="400" height="36" rx="8" fill="#7c3aed"/>
+  <rect x="40" y="108" width="400" height="8" fill="#7c3aed"/>
+  <text x="240" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Generic Repository</text>
+  
+  <!-- Generic Repository Interface -->
+  <rect x="60" y="130" width="360" height="80" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="240" y="155" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">IRepository&lt;T&gt; where T : Entity</text>
+  <text x="75" y="175" font-size="10" fill="#1a1822" opacity="0.8">+ GetById(id): T</text>
+  <text x="75" y="190" font-size="10" fill="#1a1822" opacity="0.8">+ GetAll(): IEnumerable&lt;T&gt;</text>
+  <text x="75" y="205" font-size="10" fill="#1a1822" opacity="0.8">+ Add(entity): void</text>
+  
+  <!-- Generic Repository Implementation -->
+  <rect x="60" y="225" width="360" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="240" y="248" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">SqlRepository&lt;T&gt;</text>
+  <text x="240" y="268" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Single implementation handles ALL entities</text>
+  
+  <!-- Generic Repository Usage -->
+  <rect x="60" y="300" width="360" height="80" rx="6" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="240" y="320" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Usage:</text>
+  <text x="75" y="338" font-size="10" fill="#1a1822" opacity="0.8">var userRepo = new SqlRepository&lt;User&gt;()</text>
+  <text x="75" y="354" font-size="10" fill="#1a1822" opacity="0.8">var orderRepo = new SqlRepository&lt;Order&gt;()</text>
+  <text x="75" y="370" font-size="10" fill="#1a1822" opacity="0.8">Same CRUD for every entity type</text>
+  
+  <!-- Generic Repository Pros/Cons -->
+  <rect x="60" y="395" width="170" height="55" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text x="70" y="413" font-size="10" font-weight="600" fill="#059669">Pros:</text>
+  <text x="70" y="428" font-size="9" fill="#1a1822" opacity="0.8">DRY, minimal boilerplate</text>
+  <text x="70" y="440" font-size="9" fill="#1a1822" opacity="0.8">Uniform CRUD operations</text>
+  
+  <rect x="245" y="395" width="175" height="55" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="255" y="413" font-size="10" font-weight="600" fill="#dc2626">Cons:</text>
+  <text x="255" y="428" font-size="9" fill="#1a1822" opacity="0.8">Leaky abstractions for complex queries</text>
+  <text x="255" y="440" font-size="9" fill="#1a1822" opacity="0.8">Hard to optimize per-entity needs</text>
+  
+  <!-- Specific Repository Side -->
+  <rect x="460" y="80" width="400" height="380" rx="8" fill="#ffffff" stroke="#0891b2" stroke-width="2"/>
+  <rect x="460" y="80" width="400" height="36" rx="8" fill="#0891b2"/>
+  <rect x="460" y="108" width="400" height="8" fill="#0891b2"/>
+  <text x="660" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Specific Repository (Composition)</text>
+  
+  <!-- Base Repository -->
+  <rect x="480" y="130" width="360" height="60" rx="6" fill="#f0fdfa" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="660" y="153" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">BaseRepository&lt;T&gt;</text>
+  <text x="660" y="173" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Common CRUD as protected helpers</text>
+  
+  <!-- Arrow to specific repos -->
+  <path d="M 660 190 L 660 210" stroke="#0891b2" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Specific Repositories -->
+  <rect x="480" y="215" width="170" height="70" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="565" y="240" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">IUserRepository</text>
+  <text x="495" y="258" font-size="9" fill="#1a1822" opacity="0.8">+ FindByEmail(email)</text>
+  <text x="495" y="272" font-size="9" fill="#1a1822" opacity="0.8">+ GetActiveUsers()</text>
+  
+  <rect x="665" y="215" width="175" height="70" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="752" y="240" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">IOrderRepository</text>
+  <text x="680" y="258" font-size="9" fill="#1a1822" opacity="0.8">+ GetByDateRange(start, end)</text>
+  <text x="680" y="272" font-size="9" fill="#1a1822" opacity="0.8">+ GetTotalByCustomer(id)</text>
+  
+  <!-- Implementation boxes -->
+  <rect x="480" y="300" width="360" height="60" rx="6" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="660" y="323" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">UserRepository : BaseRepository&lt;User&gt;, IUserRepository</text>
+  <text x="660" y="343" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Extends base with entity-specific queries</text>
+  
+  <!-- Specific Repository Usage -->
+  <rect x="480" y="375" width="360" height="40" rx="6" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="660" y="393" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Usage:</text>
+  <text x="660" y="408" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Interface per entity, tailored operations</text>
+  
+  <!-- Specific Repository Pros/Cons -->
+  <rect x="480" y="425" width="170" height="28" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text x="490" y="443" font-size="9" font-weight="600" fill="#059669">Pros: Rich queries, optimized per-entity</text>
+  
+  <rect x="665" y="425" width="175" height="28" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="675" y="443" font-size="9" font-weight="600" fill="#dc2626">Cons: More boilerplate code</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0891b2"/>
+    </marker>
+  </defs>
 </svg>

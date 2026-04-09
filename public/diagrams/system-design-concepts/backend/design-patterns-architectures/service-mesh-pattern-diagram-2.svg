@@ -1,10 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Service Mesh Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Service Mesh Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <title>Request Flow Through Service Mesh with mTLS, Traffic Routing, Retries, and Observability</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Request Flow Through Service Mesh</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">mTLS, Traffic Routing, Retries &amp; Observability</text>
+
+  <!-- Client -->
+  <rect x="30" y="180" width="120" height="70" rx="8" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <text x="90" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Client</text>
+  <text x="90" y="230" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">HTTP Request</text>
+
+  <!-- Gateway Proxy -->
+  <rect x="200" y="160" width="130" height="110" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="265" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#0c4a6e" font-family="system-ui, sans-serif">Ingress</text>
+  <text x="265" y="200" text-anchor="middle" font-size="12" font-weight="700" fill="#0c4a6e" font-family="system-ui, sans-serif">Gateway Proxy</text>
+  <text x="265" y="220" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Rate Limiting</text>
+  <text x="265" y="235" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Auth &amp; Routing</text>
+  <text x="265" y="250" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">TLS Termination</text>
+
+  <!-- Service A with sidecar -->
+  <rect x="380" y="100" width="150" height="130" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="455" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Service A</text>
+  <rect x="395" y="135" width="55" height="45" rx="5" fill="#f3f1f8" stroke="#7c3aed" stroke-width="1"/>
+  <text x="422" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822" font-family="system-ui, sans-serif">App A</text>
+  <rect x="460" y="135" width="55" height="45" rx="5" fill="#e0f2fe" stroke="#0284c7" stroke-width="1"/>
+  <text x="487" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#0c4a6e" font-family="system-ui, sans-serif">Envoy</text>
+  <rect x="395" y="190" width="120" height="30" rx="5" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="455" y="209" text-anchor="middle" font-size="9" fill="#78350f" font-family="system-ui, sans-serif">Metrics | Traces | Logs</text>
+
+  <!-- Service B with sidecar -->
+  <rect x="580" y="100" width="150" height="130" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="655" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Service B</text>
+  <rect x="595" y="135" width="55" height="45" rx="5" fill="#f3f1f8" stroke="#7c3aed" stroke-width="1"/>
+  <text x="622" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822" font-family="system-ui, sans-serif">App B</text>
+  <rect x="660" y="135" width="55" height="45" rx="5" fill="#e0f2fe" stroke="#0284c7" stroke-width="1"/>
+  <text x="687" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#0c4a6e" font-family="system-ui, sans-serif">Envoy</text>
+  <rect x="595" y="190" width="120" height="30" rx="5" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="655" y="209" text-anchor="middle" font-size="9" fill="#78350f" font-family="system-ui, sans-serif">Metrics | Traces | Logs</text>
+
+  <!-- Service C with sidecar -->
+  <rect x="730" y="280" width="150" height="130" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="805" y="300" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Service C</text>
+  <rect x="745" y="315" width="55" height="45" rx="5" fill="#f3f1f8" stroke="#7c3aed" stroke-width="1"/>
+  <text x="772" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822" font-family="system-ui, sans-serif">App C</text>
+  <rect x="810" y="315" width="55" height="45" rx="5" fill="#e0f2fe" stroke="#0284c7" stroke-width="1"/>
+  <text x="837" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#0c4a6e" font-family="system-ui, sans-serif">Envoy</text>
+  <rect x="745" y="370" width="120" height="30" rx="5" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="805" y="389" text-anchor="middle" font-size="9" fill="#78350f" font-family="system-ui, sans-serif">Metrics | Traces | Logs</text>
+
+  <!-- Flow arrows -->
+  <line x1="150" y1="215" x2="200" y2="215" stroke="#059669" stroke-width="2"/>
+  <polygon points="195,211 205,215 195,219" fill="#059669"/>
+
+  <path d="M 330 215 Q 355 160 380 160" stroke="#0284c7" stroke-width="2" fill="none"/>
+  <polygon points="375,155 385,160 375,165" fill="#0284c7"/>
+
+  <path d="M 535 160 Q 560 160 580 160" stroke="#0284c7" stroke-width="2" fill="none"/>
+  <polygon points="575,155 585,160 575,165" fill="#0284c7"/>
+
+  <path d="M 655 230 Q 700 280 745 315" stroke="#0284c7" stroke-width="2" fill="none"/>
+  <polygon points="740,310 750,315 742,320" fill="#0284c7"/>
+
+  <!-- mTLS Labels on connections -->
+  <rect x="340" y="170" width="50" height="20" rx="4" fill="#dcfce7"/>
+  <text x="365" y="184" text-anchor="middle" font-size="9" font-weight="600" fill="#166534" font-family="system-ui, sans-serif">mTLS</text>
+  <rect x="540" y="140" width="50" height="20" rx="4" fill="#dcfce7"/>
+  <text x="565" y="154" text-anchor="middle" font-size="9" font-weight="600" fill="#166534" font-family="system-ui, sans-serif">mTLS</text>
+  <rect x="680" y="250" width="50" height="20" rx="4" fill="#dcfce7"/>
+  <text x="705" y="264" text-anchor="middle" font-size="9" font-weight="600" fill="#166534" font-family="system-ui, sans-serif">mTLS</text>
+
+  <!-- Retry indicator -->
+  <rect x="530" y="280" width="120" height="50" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="590" y="298" text-anchor="middle" font-size="10" font-weight="700" fill="#991b1b" font-family="system-ui, sans-serif">Retry Policy</text>
+  <text x="590" y="315" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">3 attempts, 50ms backoff</text>
+  <path d="M 655 230 Q 650 260 640 278" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,2" fill="none"/>
+
+  <!-- Observability Pipeline -->
+  <rect x="380" y="350" width="300" height="100" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="530" y="372" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Observability Pipeline</text>
+  <rect x="395" y="385" width="80" height="50" rx="5" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="435" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#78350f" font-family="system-ui, sans-serif">Prometheus</text>
+  <text x="435" y="420" text-anchor="middle" font-size="9" fill="#78350f" opacity="0.7" font-family="system-ui, sans-serif">Metrics</text>
+  <rect x="490" y="385" width="80" height="50" rx="5" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="530" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#78350f" font-family="system-ui, sans-serif">Jaeger</text>
+  <text x="530" y="420" text-anchor="middle" font-size="9" fill="#78350f" opacity="0.7" font-family="system-ui, sans-serif">Distributed Tracing</text>
+  <rect x="585" y="385" width="80" height="50" rx="5" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="625" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#78350f" font-family="system-ui, sans-serif">Fluentd</text>
+  <text x="625" y="420" text-anchor="middle" font-size="9" fill="#78350f" opacity="0.7" font-family="system-ui, sans-serif">Log Aggregation</text>
+
+  <!-- Flow to observability -->
+  <line x1="455" y1="235" x2="455" y2="350" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="655" y1="235" x2="655" y2="350" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="805" y1="385" x2="805" y2="410" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <path d="M 805 410 Q 700 430 670 430" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,2" fill="none"/>
 </svg>

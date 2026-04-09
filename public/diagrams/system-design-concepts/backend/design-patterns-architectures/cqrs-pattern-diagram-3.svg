@@ -1,10 +1,83 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">CQRS Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">CQRS Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>CQRS vs CRUD trade-offs showing when CQRS adds value versus when it is overkill for the system</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">CQRS vs CRUD: When to Use Each</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Decision framework based on read/write asymmetry, collaboration needs, and audit requirements</text>
+
+  <!-- LEFT: CRUD (simple) -->
+  <rect x="30" y="80" width="410" height="400" rx="12" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="12" fill="#4caf50"/>
+  <rect x="30" y="105" width="410" height="10" fill="#4caf50"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">CRUD (Single Model)</text>
+
+  <!-- CRUD diagram -->
+  <rect x="100" y="140" width="270" height="50" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="235" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Application</text>
+  <text x="235" y="178" text-anchor="middle" font-size="9" fill="#64748b">reads and writes same model</text>
+
+  <line x1="235" y1="190" x2="235" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrCQRS3)"/>
+
+  <rect x="150" y="220" width="170" height="50" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="235" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#2563eb">Database</text>
+  <text x="235" y="258" text-anchor="middle" font-size="9" fill="#64748b">single table, normalized</text>
+
+  <!-- CRUD characteristics -->
+  <rect x="50" y="300" width="370" height="60" rx="6" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1"/>
+  <text x="235" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="#16a34a">Use CRUD when:</text>
+  <text x="70" y="342" font-size="9" fill="#1a1822">• Read and write patterns are symmetric</text>
+  <text x="70" y="358" font-size="9" fill="#1a1822">• Simple data access, low contention</text>
+
+  <rect x="50" y="375" width="370" height="40" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="235" y="395" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">Don't use CQRS — unnecessary complexity</text>
+  <text x="235" y="413" text-anchor="middle" font-size="9" fill="#64748b">Simple CRUD handles it with minimal code</text>
+
+  <rect x="50" y="430" width="370" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="452" text-anchor="middle" font-size="9" fill="#1a1822">Examples: Blog, CMS, simple admin dashboard</text>
+
+  <!-- RIGHT: CQRS (complex) -->
+  <rect x="460" y="80" width="410" height="400" rx="12" fill="none" stroke="#d97706" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="12" fill="#d97706"/>
+  <rect x="460" y="105" width="410" height="10" fill="#d97706"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">CQRS (Separate Models)</text>
+
+  <!-- CQRS diagram -->
+  <rect x="480" y="140" width="160" height="50" rx="8" fill="#dc2626" opacity="0.12" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="560" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">Write Model</text>
+  <text x="560" y="178" text-anchor="middle" font-size="8" fill="#64748b">commands, validation</text>
+
+  <rect x="670" y="140" width="160" height="50" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="750" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Read Model</text>
+  <text x="750" y="178" text-anchor="middle" font-size="8" fill="#64748b">queries, projections</text>
+
+  <line x1="560" y1="190" x2="560" y2="230" stroke="#dc2626" stroke-width="2" marker-end="url(#arrCQRS3)"/>
+  <line x1="750" y1="190" x2="750" y2="230" stroke="#4caf50" stroke-width="2" marker-end="url(#arrCQRS3)"/>
+
+  <rect x="480" y="230" width="160" height="40" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1"/>
+  <text x="560" y="255" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">Write DB</text>
+
+  <rect x="670" y="230" width="160" height="40" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1"/>
+  <text x="750" y="255" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">Read DB (denormalized)</text>
+
+  <!-- Sync -->
+  <line x1="560" y1="250" x2="665" y2="250" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrCQRS3)"/>
+  <text x="613" y="242" text-anchor="middle" font-size="8" fill="#d97706">event sync</text>
+
+  <!-- CQRS characteristics -->
+  <rect x="480" y="300" width="370" height="80" rx="6" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1"/>
+  <text x="665" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="#d97706">Use CQRS when:</text>
+  <text x="500" y="342" font-size="9" fill="#1a1822">• Read/write patterns are highly asymmetric (100:1 ratio)</text>
+  <text x="500" y="360" font-size="9" fill="#1a1822">• Multiple teams need independent read/write scaling</text>
+  <text x="500" y="378" font-size="9" fill="#1a1822">• Audit trail, temporal queries, or event sourcing needed</text>
+
+  <rect x="480" y="395" width="370" height="40" rx="6" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1"/>
+  <text x="665" y="415" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">Cost: Eventual consistency, dual-model complexity, sync lag</text>
+
+  <rect x="480" y="450" width="370" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="665" y="472" text-anchor="middle" font-size="9" fill="#1a1822">Examples: E-commerce, financial trading, collaborative editing</text>
+
+  <defs>
+    <marker id="arrCQRS3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Bulkhead Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Bulkhead Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Bulkhead pattern: without bulkhead (left) a single slow service exhausts all threads and cascades failure; with bulkhead (right) failure is contained to its own pool</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Without Bulkhead vs With Bulkhead</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Shared thread pool cascades failure; isolated pools contain the blast radius</text>
+
+  <!-- LEFT: Without Bulkhead -->
+  <rect x="30" y="80" width="410" height="400" rx="12" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="12" fill="#dc2626"/>
+  <rect x="30" y="105" width="410" height="10" fill="#dc2626"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Without Bulkhead (Shared Pool)</text>
+
+  <!-- Shared thread pool -->
+  <rect x="80" y="140" width="310" height="50" rx="8" fill="#dc2626" opacity="0.15" stroke="#dc2626" stroke-width="2"/>
+  <text x="235" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">Shared Thread Pool (30 threads)</text>
+  <text x="235" y="182" text-anchor="middle" font-size="9" fill="#64748b">All services share the same threads</text>
+
+  <!-- Services calling into pool -->
+  <rect x="80" y="220" width="140" height="50" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="150" y="240" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">User Service</text>
+  <text x="150" y="258" text-anchor="middle" font-size="8" fill="#64748b">5 threads, healthy ✓</text>
+
+  <rect x="230" y="220" width="160" height="50" rx="8" fill="#dc2626" opacity="0.2" stroke="#dc2626" stroke-width="2"/>
+  <text x="310" y="240" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">Payment Gateway</text>
+  <text x="310" y="258" text-anchor="middle" font-size="8" font-weight="600" fill="#dc2626">25 threads, TIMED OUT ✗</text>
+
+  <!-- Arrows from services to pool -->
+  <line x1="150" y1="220" x2="200" y2="195" stroke="#4caf50" stroke-width="2" marker-end="url(#arrBW)"/>
+  <line x1="310" y1="220" x2="280" y2="195" stroke="#dc2626" stroke-width="2" marker-end="url(#arrBW)"/>
+
+  <!-- Cascade effect -->
+  <rect x="80" y="300" width="310" height="80" rx="8" fill="#dc2626" opacity="0.08" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="235" y="325" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">Cascade Failure</text>
+  <text x="100" y="348" font-size="10" fill="#1a1822">• Payment threads hang, consuming 83% of pool</text>
+  <text x="100" y="368" font-size="10" fill="#1a1822">• User service requests queue behind payments</text>
+
+  <rect x="80" y="395" width="310" height="70" rx="8" fill="#dc2626" opacity="0.12" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="235" y="418" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">Result: ALL services degraded</text>
+  <text x="100" y="440" font-size="10" fill="#1a1822">• User requests timeout (no threads available)</text>
+  <text x="100" y="458" font-size="10" fill="#1a1822">• Entire application becomes unavailable</text>
+
+  <!-- RIGHT: With Bulkhead -->
+  <rect x="460" y="80" width="410" height="400" rx="12" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="12" fill="#4caf50"/>
+  <rect x="460" y="105" width="410" height="10" fill="#4caf50"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">With Bulkhead (Isolated Pools)</text>
+
+  <!-- Isolated pools -->
+  <rect x="480" y="140" width="170" height="70" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="2"/>
+  <text x="565" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">User Pool</text>
+  <text x="565" y="183" text-anchor="middle" font-size="9" fill="#1a1822">5 threads, all healthy ✓</text>
+  <text x="565" y="198" text-anchor="middle" font-size="9" fill="#64748b">100% capacity</text>
+
+  <rect x="680" y="140" width="170" height="70" rx="8" fill="#dc2626" opacity="0.15" stroke="#dc2626" stroke-width="2"/>
+  <text x="765" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">Payment Pool</text>
+  <text x="765" y="183" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">15 threads, all timed out ✗</text>
+  <text x="765" y="198" text-anchor="middle" font-size="9" fill="#64748b">0% capacity — contained</text>
+
+  <!-- Isolation barrier -->
+  <line x1="665" y1="140" x2="665" y2="210" stroke="#d97706" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="665" y="230" text-anchor="middle" font-size="9" font-weight="600" fill="#d97706">ISOLATION BOUNDARY</text>
+
+  <!-- Healthy service -->
+  <rect x="480" y="250" width="370" height="70" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="665" y="275" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">User Service Continues Normally</text>
+  <text x="500" y="298" font-size="10" fill="#1a1822">• All 5 threads processing user requests ✓</text>
+  <text x="500" y="315" font-size="10" fill="#1a1822">• Payment failure has zero impact on users</text>
+
+  <!-- Contained failure -->
+  <rect x="480" y="340" width="370" height="70" rx="8" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1.5"/>
+  <text x="665" y="365" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">Payment Failure Contained</text>
+  <text x="500" y="388" font-size="10" fill="#1a1822">• 15 payment threads exhausted within pool</text>
+  <text x="500" y="405" font-size="10" fill="#1a1822">• Fail-fast returns 503 for new payment requests</text>
+
+  <!-- Result -->
+  <rect x="480" y="430" width="370" height="40" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="665" y="455" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Result: Partial degradation, not total outage</text>
+
+  <defs>
+    <marker id="arrBW" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

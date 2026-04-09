@@ -1,10 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Repository Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Repository Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Repository vs Active Record vs Data Mapper Comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Data Access Patterns Comparison</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Repository vs Active Record vs Data Mapper responsibilities</text>
+  
+  <!-- Repository Pattern Column -->
+  <rect x="40" y="80" width="260" height="380" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="40" y="80" width="260" height="36" rx="8" fill="#7c3aed"/>
+  <rect x="40" y="108" width="260" height="8" fill="#7c3aed"/>
+  <text x="170" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Repository Pattern</text>
+  
+  <!-- Repository layers -->
+  <rect x="60" y="130" width="220" height="50" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="170" y="150" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Domain Object</text>
+  <text x="170" y="168" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Pure POJO/POCO</text>
+  
+  <rect x="60" y="195" width="220" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="170" y="215" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Repository Interface</text>
+  <text x="170" y="233" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Collection-like API</text>
+  
+  <rect x="60" y="260" width="220" height="50" rx="4" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="170" y="280" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Concrete Repository</text>
+  <text x="170" y="298" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">SQL/ORM implementation</text>
+  
+  <rect x="60" y="325" width="220" height="50" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="170" y="345" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Database</text>
+  <text x="170" y="363" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Data storage</text>
+  
+  <!-- Repository characteristics -->
+  <rect x="60" y="390" width="220" height="60" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="70" y="410" font-size="10" font-weight="600" fill="#1a1822">Responsibilities:</text>
+  <text x="70" y="426" font-size="10" fill="#1a1822" opacity="0.8">Domain: business rules</text>
+  <text x="70" y="440" font-size="10" fill="#1a1822" opacity="0.8">Repository: data access</text>
+  
+  <!-- Active Record Column -->
+  <rect x="320" y="80" width="260" height="380" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <rect x="320" y="80" width="260" height="36" rx="8" fill="#dc2626"/>
+  <rect x="320" y="108" width="260" height="8" fill="#dc2626"/>
+  <text x="450" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Active Record</text>
+  
+  <!-- Active Record layers -->
+  <rect x="340" y="130" width="220" height="130" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="450" y="165" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Domain Object + Data Access</text>
+  <text x="450" y="185" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">user.Save() - object knows</text>
+  <text x="450" y="200" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">how to persist itself</text>
+  <text x="450" y="220" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Properties + CRUD methods</text>
+  <text x="450" y="236" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">on same object</text>
+  
+  <rect x="340" y="275" width="220" height="50" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="450" y="295" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Database</text>
+  <text x="450" y="313" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Data storage</text>
+  
+  <!-- Active Record characteristics -->
+  <rect x="340" y="340" width="220" height="110" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="350" y="360" font-size="10" font-weight="600" fill="#1a1822">Responsibilities:</text>
+  <text x="350" y="376" font-size="10" fill="#1a1822" opacity="0.8">Object handles both</text>
+  <text x="350" y="390" font-size="10" fill="#1a1822" opacity="0.8">business logic AND persistence</text>
+  <text x="350" y="410" font-size="10" font-weight="600" fill="#dc2626">Coupled concerns</text>
+  <text x="350" y="426" font-size="10" fill="#1a1822" opacity="0.8">Simple but less testable</text>
+  
+  <!-- Data Mapper Column -->
+  <rect x="600" y="80" width="260" height="380" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <rect x="600" y="80" width="260" height="36" rx="8" fill="#2563eb"/>
+  <rect x="600" y="108" width="260" height="8" fill="#2563eb"/>
+  <text x="730" y="102" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Data Mapper</text>
+  
+  <!-- Data Mapper layers -->
+  <rect x="620" y="130" width="220" height="50" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="730" y="150" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Domain Object</text>
+  <text x="730" y="168" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Pure domain model</text>
+  
+  <rect x="620" y="195" width="220" height="50" rx="4" fill="#f3e8ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="730" y="215" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Mapper Layer</text>
+  <text x="730" y="233" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Translates object to/from DB</text>
+  
+  <rect x="620" y="260" width="220" height="50" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="730" y="280" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Database</text>
+  <text x="730" y="298" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Data storage</text>
+  
+  <!-- Data Mapper characteristics -->
+  <rect x="620" y="325" width="220" height="125" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="630" y="345" font-size="10" font-weight="600" fill="#1a1822">Responsibilities:</text>
+  <text x="630" y="361" font-size="10" fill="#1a1822" opacity="0.8">Mapper: bidirectional transfer</text>
+  <text x="630" y="375" font-size="10" fill="#1a1822" opacity="0.8">between objects and database</text>
+  <text x="630" y="395" font-size="10" font-weight="600" fill="#2563eb">Most decoupled</text>
+  <text x="630" y="411" font-size="10" fill="#1a1822" opacity="0.8">Complex but highly testable</text>
+  <text x="630" y="427" font-size="10" fill="#1a1822" opacity="0.8">Used by Entity Framework, Hibernate</text>
 </svg>

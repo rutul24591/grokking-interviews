@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f1f5f9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="stepGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#dbeafe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bfdbfe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="compGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fee2e2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fecaca;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="960" height="520" fill="url(#bgGrad)" />
+  <text x="480" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a" text-anchor="middle">Saga Pattern: Order Placement Workflow</text>
+  <text x="480" y="62" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="normal" fill="#475569" text-anchor="middle">Happy path with compensating transactions on failure</text>
+
+  <!-- Orchestrator -->
+  <rect x="340" y="90" width="280" height="44" rx="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+  <text x="480" y="118" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#0f172a" text-anchor="middle">Saga Orchestrator</text>
+
+  <!-- Happy Path Arrows (downward) -->
+  <line x1="480" y1="134" x2="480" y2="168" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowBlue)" />
+  <line x1="480" y1="214" x2="480" y2="248" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowBlue)" />
+  <line x1="480" y1="294" x2="480" y2="328" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowBlue)" />
+  <line x1="480" y1="374" x2="480" y2="408" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowBlue)" />
+
+  <!-- Step 1: Order Service -->
+  <rect x="300" y="170" width="360" height="44" rx="8" fill="url(#stepGrad)" stroke="#60a5fa" stroke-width="2" />
+  <text x="480" y="198" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle">1. Order Service: Create Order (pending)</text>
+
+  <!-- Step 2: Inventory Service -->
+  <rect x="300" y="250" width="360" height="44" rx="8" fill="url(#stepGrad)" stroke="#60a5fa" stroke-width="2" />
+  <text x="480" y="278" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle">2. Inventory Service: Reserve Stock</text>
+
+  <!-- Step 3: Payment Service -->
+  <rect x="300" y="330" width="360" height="44" rx="8" fill="url(#stepGrad)" stroke="#60a5fa" stroke-width="2" />
+  <text x="480" y="358" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle">3. Payment Service: Charge Card</text>
+
+  <!-- Step 4: Shipping Service -->
+  <rect x="300" y="410" width="360" height="44" rx="8" fill="url(#stepGrad)" stroke="#60a5fa" stroke-width="2" />
+  <text x="480" y="438" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle">4. Shipping Service: Create Shipment</text>
+
+  <!-- Compensating Transactions (right side) -->
+  <text x="760" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#991b1b" text-anchor="middle">Compensation Path</text>
+  <text x="760" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="normal" fill="#7f1d1d" text-anchor="middle">(reverse order)</text>
+
+  <line x1="680" y1="352" x2="710" y2="352" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" />
+  <line x1="710" y1="352" x2="710" y2="272" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" />
+  <line x1="710" y1="272" x2="680" y2="272" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" />
+
+  <!-- Compensation 1: Release Inventory -->
+  <rect x="720" y="250" width="200" height="44" rx="8" fill="url(#compGrad)" stroke="#f87171" stroke-width="2" />
+  <text x="820" y="278" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Release Reservation</text>
+
+  <!-- Compensation 2: Cancel Order -->
+  <rect x="720" y="170" width="200" height="44" rx="8" fill="url(#compGrad)" stroke="#f87171" stroke-width="2" />
+  <text x="820" y="198" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Cancel Order</text>
+
+  <!-- Failure indicator -->
+  <text x="680" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="normal" fill="#dc2626">Step 3 fails</text>
+  <text x="680" y="386" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="normal" fill="#dc2626">Payment declined</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb" />
+    </marker>
+  </defs>
+
+  <!-- Labels -->
+  <text x="260" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e40af" text-anchor="middle" transform="rotate(-90 260 290)">HAPPY PATH</text>
+  <text x="940" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#991b1b" text-anchor="middle" transform="rotate(90 940 220)">COMPENSATION</text>
+</svg>

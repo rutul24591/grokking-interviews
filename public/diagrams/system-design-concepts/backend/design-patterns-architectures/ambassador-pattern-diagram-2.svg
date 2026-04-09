@@ -1,10 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Ambassador Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Ambassador Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Request flow through ambassador showing validation, rate limiting, enrichment, forwarding, and retry/circuit-breaking paths</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Ambassador Request Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each stage is independently configurable and observable</text>
+
+  <!-- Application request -->
+  <rect x="30" y="100" width="130" height="60" rx="10" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="95" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Application</text>
+  <text x="95" y="145" text-anchor="middle" font-size="9" fill="#64748b">POST /order</text>
+
+  <!-- Arrow to Validate -->
+  <line x1="160" y1="130" x2="200" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrFlow)"/>
+
+  <!-- Stage 1: Validate -->
+  <rect x="200" y="100" width="110" height="60" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="255" y="120" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">1. Validate</text>
+  <text x="255" y="138" text-anchor="middle" font-size="8" fill="#64748b">schema, auth</text>
+
+  <!-- Arrow -->
+  <line x1="310" y1="130" x2="340" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrFlow)"/>
+
+  <!-- Stage 2: Rate Limit -->
+  <rect x="340" y="100" width="110" height="60" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="395" y="120" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">2. Rate Limit</text>
+  <text x="395" y="138" text-anchor="middle" font-size="8" fill="#64748b">check quota</text>
+
+  <!-- Arrow -->
+  <line x1="450" y1="130" x2="480" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrFlow)"/>
+
+  <!-- Stage 3: Enrich -->
+  <rect x="480" y="100" width="110" height="60" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="535" y="120" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">3. Enrich</text>
+  <text x="535" y="138" text-anchor="middle" font-size="8" fill="#64748b">add auth, headers</text>
+
+  <!-- Arrow -->
+  <line x1="590" y1="130" x2="620" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrFlow)"/>
+
+  <!-- Stage 4: Forward -->
+  <rect x="620" y="100" width="110" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="675" y="120" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">4. Forward</text>
+  <text x="675" y="138" text-anchor="middle" font-size="8" fill="#64748b">to external API</text>
+
+  <!-- External Service -->
+  <rect x="620" y="10" width="110" height="60" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="2"/>
+  <text x="675" y="32" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">External API</text>
+  <text x="675" y="50" text-anchor="middle" font-size="8" fill="#64748b">payment, CRM</text>
+
+  <!-- Arrow up to External -->
+  <line x1="675" y1="100" x2="675" y2="75" stroke="#4caf50" stroke-width="2" marker-end="url(#arrFlow)"/>
+
+  <!-- Response path -->
+  <line x1="620" y1="40" x2="590" y2="40" stroke="#4caf50" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrFlow2)"/>
+  <line x1="590" y1="40" x2="590" y2="100" stroke="#4caf50" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrFlow2)"/>
+
+  <!-- Telemetry -->
+  <rect x="200" y="200" width="530" height="50" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="465" y="222" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">Telemetry: latency percentiles, error codes, retry counts, circuit state, rate-limit hits</text>
+  <text x="465" y="240" text-anchor="middle" font-size="9" fill="#64748b">Emitted at every stage → monitoring dashboard → incident detection</text>
+
+  <!-- Failure paths -->
+  <text x="450" y="290" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Failure Handling Paths</text>
+
+  <!-- Failure path 1: Rate limited -->
+  <rect x="30" y="320" width="260" height="80" rx="8" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="1.5"/>
+  <text x="160" y="342" text-anchor="middle" font-size="11" font-weight="700" fill="#d97706">Rate Limit Exceeded</text>
+  <text x="160" y="362" text-anchor="middle" font-size="9" fill="#1a1822">Queue request or return 429</text>
+  <text x="160" y="378" text-anchor="middle" font-size="9" fill="#1a1822">No external call made</text>
+  <text x="160" y="394" text-anchor="middle" font-size="9" fill="#64748b">Protects external system from overload</text>
+
+  <!-- Failure path 2: Transient error -->
+  <rect x="320" y="320" width="260" height="80" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="450" y="342" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Transient Error (5xx)</text>
+  <text x="450" y="362" text-anchor="middle" font-size="9" fill="#1a1822">Retry with jittered backoff</text>
+  <text x="450" y="378" text-anchor="middle" font-size="9" fill="#1a1822">Max 2-3 retries, then fail fast</text>
+  <text x="450" y="394" text-anchor="middle" font-size="9" fill="#64748b">Circuit opens if retries exceed budget</text>
+
+  <!-- Failure path 3: Permanent error -->
+  <rect x="610" y="320" width="260" height="80" rx="8" fill="#dc2626" opacity="0.1" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="740" y="342" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">Permanent Error (4xx)</text>
+  <text x="740" y="362" text-anchor="middle" font-size="9" fill="#1a1822">Return error to application</text>
+  <text x="740" y="378" text-anchor="middle" font-size="9" fill="#1a1822">No retry — error is not transient</text>
+  <text x="740" y="394" text-anchor="middle" font-size="9" fill="#64748b">Structured error with provider code</text>
+
+  <!-- Telemetry arrow from failures -->
+  <line x1="160" y1="400" x2="465" y2="250" stroke="#64748b" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="450" y1="400" x2="465" y2="250" stroke="#64748b" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="740" y1="400" x2="465" y2="250" stroke="#64748b" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <defs>
+    <marker id="arrFlow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrFlow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
 </svg>

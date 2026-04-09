@@ -1,10 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Saga Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Saga Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Choreography-based Saga Pattern Diagram</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Choreography-based Saga</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Services communicate through events - each service triggers the next step</text>
+  
+  <!-- Event Bus in center -->
+  <rect x="200" y="220" width="500" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="245" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">Event Bus / Message Broker</text>
+  <text x="450" y="265" text-anchor="middle" font-size="11" fill="#1a1822" opacity="0.8">Kafka / RabbitMQ / SNS</text>
+  
+  <!-- Service 1: Order Service -->
+  <rect x="60" y="80" width="180" height="100" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="110" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Order Service</text>
+  <text x="150" y="130" text-anchor="middle" font-size="10" fill="#1a1822">1. Create order</text>
+  <text x="150" y="146" text-anchor="middle" font-size="10" fill="#1a1822">Status: PENDING</text>
+  <text x="150" y="162" text-anchor="middle" font-size="10" font-weight="600" fill="#2563eb">Publish: OrderCreated</text>
+  
+  <!-- Arrow from Order Service to Event Bus -->
+  <path d="M 150 180 L 150 220" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+  <text x="170" y="205" font-size="9" font-weight="600" fill="#2563eb">OrderCreated</text>
+  
+  <!-- Event Bus to Payment Service -->
+  <path d="M 350 220 L 420 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+  <text x="370" y="165" font-size="9" font-weight="600" fill="#f59e0b">OrderCreated</text>
+  
+  <!-- Service 2: Payment Service -->
+  <rect x="420" y="80" width="180" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="510" y="110" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Payment Service</text>
+  <text x="510" y="130" text-anchor="middle" font-size="10" fill="#1a1822">2. Process payment</text>
+  <text x="510" y="146" text-anchor="middle" font-size="10" fill="#1a1822">Charge customer</text>
+  <text x="510" y="162" text-anchor="middle" font-size="10" font-weight="600" fill="#f59e0b">Publish: PaymentCompleted</text>
+  
+  <!-- Payment Service to Event Bus -->
+  <path d="M 510 180 L 510 220" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+  <text x="530" y="205" font-size="9" font-weight="600" fill="#f59e0b">PaymentCompleted</text>
+  
+  <!-- Event Bus to Inventory Service -->
+  <path d="M 550 250 L 700 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+  <text x="610" y="180" font-size="9" font-weight="600" fill="#f59e0b">PaymentCompleted</text>
+  
+  <!-- Service 3: Inventory Service -->
+  <rect x="680" y="80" width="180" height="100" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="770" y="110" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Inventory Service</text>
+  <text x="770" y="130" text-anchor="middle" font-size="10" fill="#1a1822">3. Reserve items</text>
+  <text x="770" y="146" text-anchor="middle" font-size="10" fill="#1a1822">Update stock</text>
+  <text x="770" y="162" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">Publish: InventoryReserved</text>
+  
+  <!-- Inventory Service to Event Bus -->
+  <path d="M 770 180 L 700 250" stroke="#059669" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  
+  <!-- Event Bus to Shipping Service -->
+  <path d="M 600 250 L 700 370" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-amber)"/>
+  <text x="660" y="300" font-size="9" font-weight="600" fill="#f59e0b">InventoryReserved</text>
+  
+  <!-- Service 4: Shipping Service -->
+  <rect x="680" y="370" width="180" height="100" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="770" y="400" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Shipping Service</text>
+  <text x="770" y="420" text-anchor="middle" font-size="10" fill="#1a1822">4. Create shipment</text>
+  <text x="770" y="436" text-anchor="middle" font-size="10" fill="#1a1822">Schedule delivery</text>
+  <text x="770" y="452" text-anchor="middle" font-size="10" font-weight="600" fill="#7c3aed">Publish: OrderCompleted</text>
+  
+  <!-- Shipping to Event Bus -->
+  <path d="M 770 370 L 600 280" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  
+  <!-- Shipping back to Order Service (completion) -->
+  <path d="M 680 400 L 240 400 L 240 180" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrowhead-purple)"/>
+  <text x="460" y="415" text-anchor="middle" font-size="10" fill="#7c3aed">OrderCompleted event updates Order status to CONFIRMED</text>
+  
+  <!-- Characteristics callout -->
+  <rect x="40" y="340" width="240" height="130" rx="6" fill="#ffffff" stroke="#d4d0d8" stroke-width="1.5"/>
+  <text x="160" y="362" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Choreography Traits</text>
+  <text x="55" y="382" font-size="10" fill="#1a1822">Decentralized - no coordinator</text>
+  <text x="55" y="398" font-size="10" fill="#1a1822">Each service reacts to events</text>
+  <text x="55" y="414" font-size="10" fill="#1a1822">Simple for 3-4 services</text>
+  <text x="55" y="430" font-size="10" fill="#1a1822">Hard to trace full flow</text>
+  <text x="55" y="446" font-size="10" fill="#1a1822">Risk: cyclic dependencies</text>
+  
+  <defs>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
 </svg>

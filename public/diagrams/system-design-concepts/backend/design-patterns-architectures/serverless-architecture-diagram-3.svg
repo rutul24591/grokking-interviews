@@ -1,10 +1,156 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Serverless Architecture Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Serverless Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Serverless vs Containers vs VMs Comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Serverless vs Containers vs Virtual Machines</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Management overhead versus control trade-offs across compute abstractions</text>
+  
+  <!-- Management vs Control axis -->
+  <text x="40" y="80" font-size="11" font-weight="600" fill="#1a1822">More AWS Management</text>
+  <text x="40" y="96" font-size="10" fill="#1a1822" opacity="0.7">Less Customer Control</text>
+  
+  <!-- Arrow pointing down -->
+  <path d="M 30 110 L 30 440" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <text x="40" y="455" font-size="11" font-weight="600" fill="#1a1822">Less AWS Management</text>
+  <text x="40" y="471" font-size="10" fill="#1a1822" opacity="0.7">More Customer Control</text>
+  
+  <!-- VMs Section - Bottom (most control) -->
+  <rect x="100" y="370" width="250" height="100" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <rect x="100" y="370" width="250" height="30" rx="8" fill="#2563eb"/>
+  <rect x="100" y="392" width="250" height="8" fill="#2563eb"/>
+  <text x="225" y="390" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Virtual Machines (EC2)</text>
+  
+  <!-- VM layers -->
+  <rect x="115" y="410" width="220" height="18" rx="3" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="225" y="423" text-anchor="middle" font-size="9" fill="#1a1822">Your App + Runtime</text>
+  
+  <rect x="115" y="430" width="220" height="18" rx="3" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="225" y="443" text-anchor="middle" font-size="9" fill="#1a1822">Your OS (Linux/Windows)</text>
+  
+  <rect x="115" y="450" width="220" height="18" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="225" y="463" text-anchor="middle" font-size="9" fill="#1a1822">Hypervisor (AWS managed)</text>
+  
+  <!-- VM characteristics -->
+  <rect x="100" y="320" width="250" height="45" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="110" y="338" font-size="9" fill="#1a1822">Full OS control, longest startup</text>
+  <text x="110" y="352" font-size="9" fill="#1a1822">minutes, patch your own OS</text>
+  
+  <!-- Containers Section - Middle -->
+  <rect x="370" y="220" width="250" height="100" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="370" y="220" width="250" height="30" rx="8" fill="#f59e0b"/>
+  <rect x="370" y="242" width="250" height="8" fill="#f59e0b"/>
+  <text x="495" y="240" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Containers (ECS/EKS/Fargate)</text>
+  
+  <!-- Container layers -->
+  <rect x="385" y="260" width="220" height="18" rx="3" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="495" y="273" text-anchor="middle" font-size="9" fill="#1a1822">Your App + Dependencies</text>
+  
+  <rect x="385" y="280" width="220" height="18" rx="3" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="495" y="293" text-anchor="middle" font-size="9" fill="#1a1822">Container Runtime (containerd)</text>
+  
+  <rect x="385" y="300" width="220" height="18" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text x="495" y="313" text-anchor="middle" font-size="9" fill="#1a1822">Shared OS / Kernel</text>
+  
+  <!-- Container characteristics -->
+  <rect x="370" y="170" width="250" height="45" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="380" y="188" font-size="9" fill="#1a1822">Portable, seconds startup, you</text>
+  <text x="380" y="202" font-size="9" fill="#1a1822">manage image, orchestrator opts</text>
+  
+  <!-- Serverless Section - Top (most AWS management) -->
+  <rect x="640" y="80" width="220" height="100" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="640" y="80" width="220" height="30" rx="8" fill="#7c3aed"/>
+  <rect x="640" y="102" width="220" height="8" fill="#7c3aed"/>
+  <text x="750" y="98" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Serverless (Lambda)</text>
+  
+  <!-- Serverless layers -->
+  <rect x="655" y="120" width="190" height="18" rx="3" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="750" y="133" text-anchor="middle" font-size="9" fill="#1a1822">Your Code Only</text>
+  
+  <rect x="655" y="140" width="190" height="18" rx="3" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1"/>
+  <text x="750" y="153" text-anchor="middle" font-size="9" fill="#1a1822">Runtime (AWS managed)</text>
+  
+  <rect x="655" y="160" width="190" height="18" rx="3" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text x="750" y="173" text-anchor="middle" font-size="9" fill="#1a1822">Infrastructure (AWS managed)</text>
+  
+  <!-- Serverless characteristics -->
+  <rect x="640" y="190" width="220" height="45" rx="4" fill="#f9fafb" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="650" y="208" font-size="9" fill="#1a1822">No server mgmt, ms startup,</text>
+  <text x="650" y="222" font-size="9" fill="#1a1822">pay-per-use, limited runtime</text>
+  
+  <!-- Comparison table at bottom right -->
+  <rect x="370" y="340" width="490" height="130" rx="6" fill="#ffffff" stroke="#d4d0d8" stroke-width="1.5"/>
+  <text x="615" y="362" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Trade-off Summary</text>
+  
+  <!-- Header row -->
+  <rect x="380" y="370" width="120" height="22" rx="3" fill="#f3f1f8" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="440" y="385" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Aspect</text>
+  
+  <rect x="500" y="370" width="110" height="22" rx="3" fill="#f3f1f8" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="555" y="385" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Serverless</text>
+  
+  <rect x="610" y="370" width="110" height="22" rx="3" fill="#f3f1f8" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="665" y="385" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Containers</text>
+  
+  <rect x="720" y="370" width="130" height="22" rx="3" fill="#f3f1f8" stroke="#d4d0d8" stroke-width="1"/>
+  <text x="785" y="385" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Virtual Machines</text>
+  
+  <!-- Row 1: Startup -->
+  <rect x="380" y="392" width="120" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="440" y="406" text-anchor="middle" font-size="8" fill="#1a1822">Startup Time</text>
+  
+  <rect x="500" y="392" width="110" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="555" y="406" text-anchor="middle" font-size="8" fill="#059669">Milliseconds</text>
+  
+  <rect x="610" y="392" width="110" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="665" y="406" text-anchor="middle" font-size="8" fill="#f59e0b">Seconds</text>
+  
+  <rect x="720" y="392" width="130" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="785" y="406" text-anchor="middle" font-size="8" fill="#dc2626">Minutes</text>
+  
+  <!-- Row 2: Scaling -->
+  <rect x="380" y="412" width="120" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="440" y="426" text-anchor="middle" font-size="8" fill="#1a1822">Scaling</text>
+  
+  <rect x="500" y="412" width="110" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="555" y="426" text-anchor="middle" font-size="8" fill="#059669">Automatic</text>
+  
+  <rect x="610" y="412" width="110" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="665" y="426" text-anchor="middle" font-size="8" fill="#f59e0b">Configured</text>
+  
+  <rect x="720" y="412" width="130" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="785" y="426" text-anchor="middle" font-size="8" fill="#dc2626">Manual/Auto</text>
+  
+  <!-- Row 3: Control -->
+  <rect x="380" y="432" width="120" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="440" y="446" text-anchor="middle" font-size="8" fill="#1a1822">OS Control</text>
+  
+  <rect x="500" y="432" width="110" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="555" y="446" text-anchor="middle" font-size="8" fill="#dc2626">None</text>
+  
+  <rect x="610" y="432" width="110" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="665" y="446" text-anchor="middle" font-size="8" fill="#f59e0b">Limited</text>
+  
+  <rect x="720" y="432" width="130" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="785" y="446" text-anchor="middle" font-size="8" fill="#059669">Full</text>
+  
+  <!-- Row 4: Billing -->
+  <rect x="380" y="452" width="120" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="440" y="466" text-anchor="middle" font-size="8" fill="#1a1822">Billing Model</text>
+  
+  <rect x="500" y="452" width="110" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="555" y="466" text-anchor="middle" font-size="8" fill="#059669">Per-request</text>
+  
+  <rect x="610" y="452" width="110" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="665" y="466" text-anchor="middle" font-size="8" fill="#f59e0b">Per node-hour</text>
+  
+  <rect x="720" y="452" width="130" height="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+  <text x="785" y="466" text-anchor="middle" font-size="8" fill="#dc2626">Per VM-hour</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,121 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Backend for Frontend Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Backend for Frontend</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Backend-for-Frontend architecture showing separate BFF layers per client type</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Backend-for-Frontend (BFF) Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each client gets a dedicated BFF layer that shapes responses to its specific needs</text>
+
+  <!-- Client Layer -->
+  <rect x="30" y="80" width="840" height="95" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="840" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="100" width="840" height="10" fill="#6d5bd0"/>
+  <text x="450" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Client Layer</text>
+
+  <!-- Web App Client -->
+  <rect x="60" y="120" width="220" height="45" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="170" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Web App (React)</text>
+  <text x="170" y="155" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Needs rich UI data, SSR support</text>
+
+  <!-- Mobile App Client -->
+  <rect x="340" y="120" width="220" height="45" rx="8" fill="#cc4444" opacity="0.12" stroke="#cc4444" stroke-width="2"/>
+  <text x="450" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Mobile App (iOS/Android)</text>
+  <text x="450" y="155" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Needs lightweight, battery-friendly payloads</text>
+
+  <!-- IoT Client -->
+  <rect x="620" y="120" width="220" height="45" rx="8" fill="#4caf50" opacity="0.12" stroke="#4caf50" stroke-width="2"/>
+  <text x="730" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">IoT / Embedded Device</text>
+  <text x="730" y="155" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Needs minimal JSON, low bandwidth</text>
+
+  <!-- Arrows from clients to BFF -->
+  <line x1="170" y1="165" x2="170" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowBFF)"/>
+  <line x1="450" y1="165" x2="450" y2="200" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowBFF2)"/>
+  <line x1="730" y1="165" x2="730" y2="200" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowBFF3)"/>
+
+  <!-- BFF Layer -->
+  <rect x="30" y="200" width="840" height="150" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="200" width="840" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="220" width="840" height="10" fill="#6d5bd0"/>
+  <text x="450" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Backend-for-Frontend Layer</text>
+
+  <!-- Web BFF -->
+  <rect x="60" y="240" width="220" height="100" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="60" y="240" width="220" height="25" rx="8" fill="#6d5bd0"/>
+  <rect x="60" y="257" width="220" height="8" fill="#6d5bd0"/>
+  <text x="170" y="258" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Web BFF</text>
+  <text x="170" y="280" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Aggregates user profile + feed</text>
+  <text x="170" y="295" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Server-side rendering data</text>
+  <text x="170" y="310" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Rich metadata for SEO</text>
+  <text x="170" y="325" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Pagination + infinite scroll</text>
+  <text x="170" y="337" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">Response: Full page data</text>
+
+  <!-- Mobile BFF -->
+  <rect x="340" y="240" width="220" height="100" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1.5"/>
+  <rect x="340" y="240" width="220" height="25" rx="8" fill="#cc4444"/>
+  <rect x="340" y="257" width="220" height="8" fill="#cc4444"/>
+  <text x="450" y="258" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Mobile BFF</text>
+  <text x="450" y="280" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Compressed payloads</text>
+  <text x="450" y="295" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Push notification support</text>
+  <text x="450" y="310" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Offline-first sync data</text>
+  <text x="450" y="325" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Battery-aware polling</text>
+  <text x="450" y="337" text-anchor="middle" font-size="8" font-weight="600" fill="#cc4444">Response: Compact JSON</text>
+
+  <!-- IoT BFF -->
+  <rect x="620" y="240" width="220" height="100" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1.5"/>
+  <rect x="620" y="240" width="220" height="25" rx="8" fill="#4caf50"/>
+  <rect x="620" y="257" width="220" height="8" fill="#4caf50"/>
+  <text x="730" y="258" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">IoT BFF</text>
+  <text x="730" y="280" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Minimal field selection</text>
+  <text x="730" y="295" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Protocol translation (MQTT)</text>
+  <text x="730" y="310" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Rate limiting (device limits)</text>
+  <text x="730" y="325" text-anchor="middle" font-size="9" fill="#1a1822">&#8226; Binary payload support</text>
+  <text x="730" y="337" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">Response: Tiny payload</text>
+
+  <!-- Arrows from BFF to Backend Services -->
+  <line x1="170" y1="350" x2="170" y2="380" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowBFF)"/>
+  <line x1="450" y1="350" x2="450" y2="380" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowBFF2)"/>
+  <line x1="730" y1="350" x2="730" y2="380" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowBFF3)"/>
+
+  <!-- Shared Backend Services Layer -->
+  <rect x="30" y="380" width="840" height="100" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="380" width="840" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="400" width="840" height="10" fill="#6d5bd0"/>
+  <text x="450" y="400" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Shared Backend Services</text>
+
+  <!-- User Service -->
+  <rect x="60" y="418" width="160" height="50" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="140" y="442" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">User Service</text>
+  <text x="140" y="457" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">Profile, auth, preferences</text>
+
+  <!-- Content Service -->
+  <rect x="250" y="418" width="160" height="50" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="330" y="442" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Content Service</text>
+  <text x="330" y="457" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">Feed, articles, media</text>
+
+  <!-- Notification Service -->
+  <rect x="440" y="418" width="170" height="50" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="525" y="442" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Notification Service</text>
+  <text x="525" y="457" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">Alerts, pushes, emails</text>
+
+  <!-- Analytics Service -->
+  <rect x="640" y="418" width="170" height="50" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="725" y="442" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Analytics Service</text>
+  <text x="725" y="457" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">Events, tracking, metrics</text>
+
+  <!-- Cross-connections from BFF to services -->
+  <path d="M 170 350 L 140 380" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <path d="M 170 350 L 330 380" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <path d="M 450 350 L 525 380" stroke="#cc4444" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <path d="M 730 350 L 725 380" stroke="#4caf50" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <path d="M 730 350 L 140 380" stroke="#4caf50" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+
+  <defs>
+    <marker id="arrowBFF" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowBFF2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+    <marker id="arrowBFF3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
 </svg>

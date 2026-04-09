@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Timeout Configuration Best Practices</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Timeout Configuration Best Practices</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">Per-call timeout, overall deadline, and budget allocation across distributed service calls</text>
+  
+  <!-- Three-layer model -->
+  <!-- Layer 1: Overall Deadline -->
+  <rect x="40" y="105" width="820" height="100" rx="8" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <rect x="40" y="105" width="820" height="32" rx="8" fill="#7c6a96"/>
+  <rect x="40" y="123" width="820" height="14" fill="#7c6a96"/>
+  <text x="450" y="127" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">LAYER 1: Overall Deadline (User-Facing SLA)</text>
+  
+  <text x="60" y="165" font-size="12" font-weight="700" fill="#1a1822">Overall deadline:</text>
+  <text x="60" y="185" font-size="11" fill="#1a1822" opacity="0.85">The maximum time the end user waits. Typically 5-10 seconds for web APIs. This is the outer boundary</text>
+  <text x="60" y="202" font-size="11" fill="#1a1822" opacity="0.85">that no internal operation should exceed. Set at the entry point (API Gateway, Load Balancer).</text>
+  
+  <rect x="650" y="155" width="190" height="40" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="745" y="172" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">Example: 10s for</text>
+  <text x="745" y="187" font-size="10" font-weight="700" fill="#1a1822" text-anchor="middle">user-facing API</text>
+  
+  <!-- Layer 2: Per-Call Timeout -->
+  <rect x="40" y="220" width="820" height="100" rx="8" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="40" y="220" width="820" height="32" rx="8" fill="#4a9c5d"/>
+  <rect x="40" y="238" width="820" height="14" fill="#4a9c5d"/>
+  <text x="450" y="242" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">LAYER 2: Per-Call Timeouts (Service-to-Service)</text>
+  
+  <text x="60" y="280" font-size="12" font-weight="700" fill="#1a1822">Per-call timeout:</text>
+  <text x="60" y="300" font-size="11" fill="#1a1822" opacity="0.85">Each individual RPC or HTTP call gets its own timeout based on the operation&apos;s expected latency.</text>
+  <text x="60" y="317" font-size="11" fill="#1a1822" opacity="0.85">Set to p99 latency + 20-50% buffer. Critical path calls get tighter timeouts than background operations.</text>
+  
+  <!-- Per-call examples -->
+  <rect x="580" y="265" width="260" height="45" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="710" y="283" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">Cache: 100ms | DB: 500ms</text>
+  <text x="710" y="300" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">HTTP: 2s | gRPC: 1s</text>
+  
+  <!-- Layer 3: Budget Allocation -->
+  <rect x="40" y="335" width="820" height="100" rx="8" fill="#fff8e1" stroke="#f0a030" stroke-width="2"/>
+  <rect x="40" y="335" width="820" height="32" rx="8" fill="#f0a030"/>
+  <rect x="40" y="353" width="820" height="14" fill="#f0a030"/>
+  <text x="450" y="357" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">LAYER 3: Budget Allocation (Remaining Deadline)</text>
+  
+  <text x="60" y="395" font-size="12" font-weight="700" fill="#1a1822">Budget allocation:</text>
+  <text x="60" y="415" font-size="11" fill="#1a1822" opacity="0.85">After each hop, remaining deadline = overall deadline - elapsed time. Pass remaining budget to</text>
+  <text x="60" y="432" font-size="11" fill="#1a1822" opacity="0.85">downstream calls. If budget exhausted, fail fast instead of making the call.</text>
+  
+  <rect x="580" y="380" width="260" height="45" rx="6" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="710" y="398" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">remaining = deadline - elapsed</text>
+  <text x="710" y="415" font-size="10" font-weight="600" fill="#1a1822" text-anchor="middle">if remaining &lt; min_threshold: abort</text>
+  
+  <!-- Arrow between layers -->
+  <path d="M 450 205 L 450 215" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  <path d="M 450 320 L 450 330" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  
+  <!-- Key rules at bottom -->
+  <rect x="40" y="450" width="820" height="35" rx="6" fill="#e8e5f0" stroke="#7c6a96" stroke-width="1"/>
+  <text x="450" y="472" font-size="11" font-weight="600" fill="#1a1822" text-anchor="middle">Rule: Per-call timeout &lt; Overall deadline | Sum of per-call timeouts can exceed overall deadline (parallel calls) | Always propagate deadline context</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowBlack" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+</svg>

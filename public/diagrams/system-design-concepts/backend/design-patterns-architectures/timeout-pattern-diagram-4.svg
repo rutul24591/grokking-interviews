@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Cascading Timeout Failure</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Cascading Timeout Failure</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">How one slow service causes timeout propagation up the call chain, leading to system-wide degradation</text>
+  
+  <!-- Timeline axis -->
+  <line x1="60" y1="110" x2="860" y2="110" stroke="#1a1822" stroke-width="1" opacity="0.3"/>
+  <text x="60" y="100" font-size="10" font-weight="600" fill="#1a1822">t=0</text>
+  <text x="260" y="100" font-size="10" font-weight="600" fill="#1a1822">t=1s</text>
+  <text x="460" y="100" font-size="10" font-weight="600" fill="#1a1822">t=2s</text>
+  <text x="660" y="100" font-size="10" font-weight="600" fill="#1a1822">t=3s</text>
+  <text x="860" y="100" font-size="10" font-weight="600" fill="#1a1822">t=5s</text>
+  
+  <!-- Service A - API Gateway -->
+  <text x="30" y="150" font-size="12" font-weight="700" fill="#1a1822">API Gateway</text>
+  <rect x="120" y="135" width="500" height="30" rx="4" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="1.5"/>
+  <text x="370" y="154" font-size="10" font-weight="600" fill="#4a9c5d" text-anchor="middle">Processing request...</text>
+  <!-- Timeout bar -->
+  <rect x="620" y="135" width="240" height="30" rx="4" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="740" y="154" font-size="10" font-weight="700" fill="#c45c5c" text-anchor="middle">&#x2717; TIMEOUT at t=5s</text>
+  
+  <!-- Service B - App Service -->
+  <text x="30" y="210" font-size="12" font-weight="700" fill="#1a1822">App Service</text>
+  <rect x="120" y="195" width="450" height="30" rx="4" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="1.5"/>
+  <text x="345" y="214" font-size="10" font-weight="600" fill="#4a9c5d" text-anchor="middle">Processing...</text>
+  <rect x="570" y="195" width="290" height="30" rx="4" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="715" y="214" font-size="10" font-weight="700" fill="#c45c5c" text-anchor="middle">&#x2717; TIMEOUT at t=4s (no response from DB)</text>
+  
+  <!-- Service C - Database -->
+  <text x="30" y="270" font-size="12" font-weight="700" fill="#1a1822">Database</text>
+  <rect x="120" y="255" width="350" height="30" rx="4" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="1.5"/>
+  <text x="295" y="274" font-size="10" font-weight="600" fill="#4a9c5d" text-anchor="middle">Executing query...</text>
+  <rect x="470" y="255" width="390" height="30" rx="4" fill="#fff3e0" stroke="#f0a030" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="665" y="274" font-size="10" font-weight="700" fill="#f0a030" text-anchor="middle">&#x26a0; Still running (slow query - lock contention)</text>
+  
+  <!-- Connection pool exhaustion -->
+  <text x="30" y="330" font-size="12" font-weight="700" fill="#1a1822">Conn Pool</text>
+  <rect x="120" y="315" width="200" height="30" rx="4" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="1.5"/>
+  <text x="220" y="334" font-size="10" font-weight="600" fill="#4a9c5d" text-anchor="middle">10 active connections</text>
+  <rect x="320" y="315" width="540" height="30" rx="4" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1.5"/>
+  <text x="590" y="334" font-size="10" font-weight="700" fill="#c45c5c" text-anchor="middle">&#x2717; POOL EXHAUSTED - new requests queued, then rejected</text>
+  
+  <!-- Cascade arrows -->
+  <path d="M 570 210 L 570 240 L 470 240 L 470 250" stroke="#c45c5c" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+  <text x="520" y="235" font-size="9" font-weight="600" fill="#c45c5c">Timeout propagates up</text>
+  
+  <path d="M 620 150 L 620 180 L 570 180 L 570 190" stroke="#c45c5c" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+  
+  <!-- Impact analysis -->
+  <rect x="40" y="370" width="820" height="115" rx="8" fill="#f0e8e8" stroke="#c45c5c" stroke-width="2"/>
+  <rect x="40" y="370" width="820" height="28" rx="8" fill="#c45c5c"/>
+  <rect x="40" y="385" width="820" height="13" fill="#c45c5c"/>
+  <text x="450" y="389" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">CASCADING FAILURE IMPACT</text>
+  
+  <text x="60" y="415" font-size="11" font-weight="700" fill="#1a1822">Thread pool exhaustion:</text>
+  <text x="60" y="432" font-size="10" fill="#1a1822" opacity="0.85">Threads blocked waiting for downstream responses cannot serve new requests. With 200 threads and 3s avg timeout, throughput drops to 66 req/s.</text>
+  
+  <text x="450" y="415" font-size="11" font-weight="700" fill="#1a1822">Memory pressure:</text>
+  <text x="450" y="432" font-size="10" fill="#1a1822" opacity="0.85">Pending request buffers accumulate. Each blocked thread holds request context (~50KB), leading to 10MB+ of stuck memory.</text>
+  
+  <text x="60" y="460" font-size="11" font-weight="700" fill="#1a1822">Retry amplification:</text>
+  <text x="60" y="477" font-size="10" fill="#1a1822" opacity="0.85">Retrying clients multiply load by 3-5x. Combined with thread exhaustion, this creates a positive feedback loop that can take down the entire service mesh.</text>
+  
+  <text x="450" y="460" font-size="11" font-weight="700" fill="#1a1822">Solution:</text>
+  <text x="450" y="477" font-size="10" fill="#1a1822" opacity="0.85">Set per-hop timeouts, implement circuit breakers, and use bulkheads to isolate failure domains.</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c45c5c"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,10 +1,96 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Event Sourcing Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Event Sourcing Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Event sourcing vs state storage comparison showing history preservation vs overwrite behavior</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Event Sourcing vs State Storage: History vs Overwrite</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Event sourcing preserves every change; state storage only keeps the latest value</text>
+
+  <!-- LEFT: Traditional State Storage (CRUD) -->
+  <rect x="30" y="85" width="410" height="395" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="85" width="410" height="35" rx="12" fill="#cc4444"/>
+  <rect x="30" y="110" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Traditional State Storage (CRUD)</text>
+
+  <!-- T1: Initial state -->
+  <rect x="50" y="135" width="370" height="70" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="153" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">T1: INSERT Order #1234</text>
+  <rect x="65" y="162" width="340" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="80" y="178" font-size="9" fill="#1a1822">{id: 1234, status: &quot;pending&quot;, total: 100, addr: null}</text>
+  <text x="390" y="178" text-anchor="end" font-size="8" fill="#1a1822" opacity="0.5">Row 1</text>
+
+  <!-- Arrow T1 to T2 -->
+  <line x1="235" y1="205" x2="235" y2="225" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowES3)"/>
+
+  <!-- T2: UPDATE -->
+  <rect x="50" y="230" width="370" height="70" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="235" y="248" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">T2: UPDATE Order #1234</text>
+  <rect x="65" y="257" width="340" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="80" y="273" font-size="9" fill="#1a1822">{id: 1234, status: &quot;paid&quot;, total: 150, addr: null}</text>
+  <text x="390" y="273" text-anchor="end" font-size="8" fill="#1a1822" opacity="0.5">Row 1 (overwritten)</text>
+
+  <!-- Arrow T2 to T3 -->
+  <line x1="235" y1="300" x2="235" y2="320" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowES3)"/>
+
+  <!-- T3: UPDATE -->
+  <rect x="50" y="325" width="370" height="70" rx="8" fill="#2196f3" opacity="0.08" stroke="#2196f3" stroke-width="1"/>
+  <text x="235" y="343" text-anchor="middle" font-size="10" font-weight="600" fill="#2196f3">T3: UPDATE Order #1234</text>
+  <rect x="65" y="352" width="340" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="80" y="368" font-size="9" fill="#1a1822">{id: 1234, status: &quot;shipped&quot;, total: 150, addr: &quot;NYC&quot;}</text>
+  <text x="390" y="368" text-anchor="end" font-size="8" fill="#1a1822" opacity="0.5">Row 1 (overwritten again)</text>
+
+  <!-- CRUD Summary -->
+  <rect x="50" y="415" width="370" height="55" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="433" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">What&apos;s Lost:</text>
+  <text x="235" y="450" text-anchor="middle" font-size="9" fill="#1a1822">Original total ($100), who changed what &amp; when, why status changed</text>
+  <text x="235" y="464" text-anchor="middle" font-size="9" fill="#1a1822">No history. Only the final state survives. Cannot reconstruct the past.</text>
+
+  <!-- RIGHT: Event Sourcing -->
+  <rect x="460" y="85" width="410" height="395" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="85" width="410" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="460" y="110" width="410" height="10" fill="#6d5bd0"/>
+  <text x="665" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Event Sourcing (Append-Only)</text>
+
+  <!-- E1 -->
+  <rect x="480" y="135" width="370" height="60" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="665" y="153" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">E1: OrderCreated</text>
+  <rect x="495" y="160" width="340" height="28" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="510" y="178" font-size="9" fill="#1a1822">{orderId: 1234, status: &quot;pending&quot;, total: 100}</text>
+  <text x="820" y="178" text-anchor="end" font-size="8" fill="#1a1822" opacity="0.5">v1</text>
+
+  <!-- E2 -->
+  <rect x="480" y="200" width="370" height="60" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="665" y="218" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">E2: ItemAdded + TotalUpdated</text>
+  <rect x="495" y="225" width="340" height="28" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="510" y="243" font-size="9" fill="#1a1822">{orderId: 1234, itemId: &quot;mouse&quot;, newTotal: 150}</text>
+  <text x="820" y="243" text-anchor="end" font-size="8" fill="#1a1822" opacity="0.5">v2</text>
+
+  <!-- E3 -->
+  <rect x="480" y="265" width="370" height="60" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="665" y="283" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">E3: PaymentCompleted</text>
+  <rect x="495" y="290" width="340" height="28" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="510" y="308" font-size="9" fill="#1a1822">{orderId: 1234, method: &quot;credit_card&quot;, amount: 150}</text>
+  <text x="820" y="308" text-anchor="end" font-size="8" fill="#1a1822" opacity="0.5">v3</text>
+
+  <!-- E4 -->
+  <rect x="480" y="330" width="370" height="60" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="665" y="348" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">E4: AddressUpdated</text>
+  <rect x="495" y="355" width="340" height="28" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="510" y="373" font-size="9" fill="#1a1822">{orderId: 1234, city: &quot;NYC&quot;, zip: &quot;10001&quot;}</text>
+  <text x="820" y="373" text-anchor="end" font-size="8" fill="#1a1822" opacity="0.5">v4</text>
+
+  <!-- E5 -->
+  <rect x="480" y="395" width="370" height="60" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="665" y="413" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">E5: OrderShipped</text>
+  <rect x="495" y="420" width="340" height="28" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="510" y="438" font-size="9" fill="#1a1822">{orderId: 1234, carrier: &quot;FedEx&quot;, tracking: &quot;FX123&quot;}</text>
+  <text x="820" y="438" text-anchor="end" font-size="8" fill="#1a1822" opacity="0.5">v5</text>
+
+  <!-- Event Sourcing Summary -->
+  <rect x="480" y="455" width="370" height="20" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="469" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Every event preserved. Full history. Rebuildable state.</text>
+
+  <defs>
+    <marker id="arrowES3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,10 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Sidecar Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Sidecar Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <title>Sidecar Pattern Use Cases - Log Shipping, Metrics Collection, TLS Termination, Service Discovery</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Sidecar Pattern Use Cases</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Log Shipping, Metrics Collection, TLS Termination &amp; Service Discovery</text>
+
+  <!-- Use Case 1: Log Shipping -->
+  <rect x="30" y="90" width="410" height="180" rx="10" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+  <rect x="30" y="90" width="410" height="35" rx="10" fill="#0284c7"/>
+  <text x="235" y="113" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">1. Log Shipping Sidecar</text>
+
+  <!-- App container -->
+  <rect x="50" y="145" width="120" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="110" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">App</text>
+  <text x="110" y="182" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Writes to /var/log</text>
+
+  <line x1="170" y1="172" x2="220" y2="172" stroke="#0284c7" stroke-width="1.5"/>
+  <polygon points="215,168 225,168 220,176" fill="#0284c7"/>
+
+  <!-- Sidecar -->
+  <rect x="225" y="145" width="120" height="55" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="1"/>
+  <text x="285" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#0c4a6e" font-family="system-ui, sans-serif">Fluent Bit</text>
+  <text x="285" y="182" text-anchor="middle" font-size="9" fill="#0c4a6e" opacity="0.7" font-family="system-ui, sans-serif">Tails &amp; ships logs</text>
+
+  <line x1="345" y1="172" x2="390" y2="172" stroke="#0284c7" stroke-width="1.5"/>
+  <polygon points="385,168 395,168 390,176" fill="#0284c7"/>
+
+  <!-- External -->
+  <rect x="395" y="145" width="40" height="55" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="415" y="172" text-anchor="middle" font-size="9" fill="#78350f" font-family="system-ui, sans-serif">ELK</text>
+
+  <!-- Flow description -->
+  <text x="235" y="230" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">App writes logs to local file. Sidecar tails the file, enriches</text>
+  <text x="235" y="248" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">with metadata (pod ID, namespace), and ships to centralized logging.</text>
+
+  <!-- Use Case 2: Metrics Collection -->
+  <rect x="460" y="90" width="410" height="180" rx="10" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <rect x="460" y="90" width="410" height="35" rx="10" fill="#d97706"/>
+  <text x="665" y="113" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">2. Metrics Collection Sidecar</text>
+
+  <!-- App with metrics endpoint -->
+  <rect x="480" y="145" width="130" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="545" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">App</text>
+  <text x="545" y="182" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Exposes /metrics</text>
+
+  <line x1="610" y1="172" x2="660" y2="172" stroke="#d97706" stroke-width="1.5"/>
+  <polygon points="655,168 665,168 660,176" fill="#d97706"/>
+
+  <rect x="665" y="145" width="120" height="55" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="725" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#78350f" font-family="system-ui, sans-serif">Prom Exporter</text>
+  <text x="725" y="182" text-anchor="middle" font-size="9" fill="#78350f" opacity="0.7" font-family="system-ui, sans-serif">Converts format</text>
+
+  <line x1="785" y1="172" x2="830" y2="172" stroke="#d97706" stroke-width="1.5"/>
+  <polygon points="825,168 835,168 830,176" fill="#d97706"/>
+
+  <rect x="835" y="145" width="35" height="55" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="852" y="172" text-anchor="middle" font-size="9" fill="#78350f" font-family="system-ui, sans-serif">Prom</text>
+
+  <text x="665" y="230" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">App exposes metrics in custom format. Sidecar converts to Prometheus</text>
+  <text x="665" y="248" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">format, adds labels, and handles scraping configuration.</text>
+
+  <!-- Use Case 3: TLS Termination -->
+  <rect x="30" y="295" width="410" height="180" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="30" y="295" width="410" height="35" rx="10" fill="#7c3aed"/>
+  <text x="235" y="318" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">3. TLS Termination Sidecar</text>
+
+  <!-- External client -->
+  <rect x="50" y="350" width="100" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="100" y="370" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">Client</text>
+  <text x="100" y="388" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">HTTPS request</text>
+
+  <line x1="150" y1="377" x2="200" y2="377" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="175" y="368" text-anchor="middle" font-size="9" font-weight="600" fill="#7c3aed" font-family="system-ui, sans-serif">TLS</text>
+
+  <rect x="205" y="350" width="110" height="55" rx="6" fill="#f3f1f8" stroke="#7c3aed" stroke-width="1"/>
+  <text x="260" y="370" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">TLS Sidecar</text>
+  <text x="260" y="388" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Cert management</text>
+
+  <line x1="315" y1="377" x2="365" y2="377" stroke="#059669" stroke-width="1.5"/>
+  <text x="340" y="368" text-anchor="middle" font-size="9" font-weight="600" fill="#059669" font-family="system-ui, sans-serif">Plain</text>
+
+  <rect x="370" y="350" width="65" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="402" y="380" text-anchor="middle" font-size="10" fill="#1a1822" font-family="system-ui, sans-serif">App</text>
+
+  <text x="235" y="440" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Sidecar handles TLS handshake, certificate rotation, and mTLS.</text>
+  <text x="235" y="458" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">App receives plain HTTP and stays agnostic to encryption details.</text>
+
+  <!-- Use Case 4: Service Discovery -->
+  <rect x="460" y="295" width="410" height="180" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+  <rect x="460" y="295" width="410" height="35" rx="10" fill="#059669"/>
+  <text x="665" y="318" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff" font-family="system-ui, sans-serif">4. Service Discovery Sidecar</text>
+
+  <!-- App making requests -->
+  <rect x="480" y="350" width="130" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="545" y="370" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822" font-family="system-ui, sans-serif">App</text>
+  <text x="545" y="388" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Calls service.local</text>
+
+  <line x1="610" y1="377" x2="650" y2="377" stroke="#059669" stroke-width="1.5"/>
+  <polygon points="645,373 655,373 650,381" fill="#059669"/>
+
+  <rect x="655" y="350" width="130" height="55" rx="6" fill="#dcfce7" stroke="#059669" stroke-width="1"/>
+  <text x="720" y="370" text-anchor="middle" font-size="11" font-weight="700" fill="#166534" font-family="system-ui, sans-serif">Discovery Sidecar</text>
+  <text x="720" y="388" text-anchor="middle" font-size="9" fill="#166534" opacity="0.7" font-family="system-ui, sans-serif">DNS / Load balance</text>
+
+  <line x1="785" y1="377" x2="820" y2="377" stroke="#059669" stroke-width="1.5"/>
+  <polygon points="815,373 825,373 820,381" fill="#059669"/>
+
+  <rect x="825" y="350" width="45" height="55" rx="6" fill="#f3f1f8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="847" y="380" text-anchor="middle" font-size="9" fill="#1a1822" font-family="system-ui, sans-serif">Svc B</text>
+
+  <text x="665" y="440" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">Sidecar intercepts outgoing requests, resolves service names to</text>
+  <text x="665" y="458" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7" font-family="system-ui, sans-serif">actual IPs, handles load balancing and circuit breaking locally.</text>
 </svg>

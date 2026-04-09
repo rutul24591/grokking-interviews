@@ -1,10 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Unit of Work Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Unit of Work Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Unit of Work vs Manual Transaction Management</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Unit of Work vs Manual Transaction Management</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">Change tracking and identity map benefits over manual transaction handling</text>
+  
+  <!-- Left side: Manual -->
+  <rect x="20" y="95" width="420" height="390" rx="10" fill="#f0e8e8" stroke="#c45c5c" stroke-width="2"/>
+  <rect x="20" y="95" width="420" height="36" rx="10" fill="#c45c5c"/>
+  <rect x="20" y="119" width="420" height="12" fill="#c45c5c"/>
+  <text x="230" y="119" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Manual Transaction Management</text>
+  
+  <!-- Manual code flow -->
+  <rect x="35" y="145" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="50" y="163" font-size="10" font-weight="600" fill="#1a1822">tx1 = db.BeginTransaction()</text>
+  <text x="50" y="178" font-size="9" fill="#1a1822" opacity="0.6">// Manual: each repo manages its own transaction</text>
+  
+  <rect x="35" y="195" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="50" y="213" font-size="10" font-weight="600" fill="#1a1822">orderRepo.Save(order, tx1)</text>
+  <text x="50" y="228" font-size="9" fill="#1a1822" opacity="0.6">// Must pass transaction explicitly to each call</text>
+  
+  <rect x="35" y="245" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="50" y="263" font-size="10" font-weight="600" fill="#1a1822">paymentRepo.CreatePayment(payment, tx1)</text>
+  <text x="50" y="278" font-size="9" fill="#1a1822" opacity="0.6">// Tight coupling: repos aware of transaction</text>
+  
+  <rect x="35" y="295" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="50" y="313" font-size="10" font-weight="600" fill="#1a1822">inventoryRepo.UpdateStock(itemId, qty, tx1)</text>
+  <text x="50" y="328" font-size="9" fill="#1a1822" opacity="0.6">// Error-prone: easy to forget to pass tx context</text>
+  
+  <rect x="35" y="345" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="50" y="363" font-size="10" font-weight="600" fill="#1a1822">tx1.Commit() // or tx1.Rollback()</text>
+  <text x="50" y="378" font-size="9" fill="#1a1822" opacity="0.6">// Manual: must remember to commit/rollback</text>
+  
+  <!-- Manual problems -->
+  <rect x="35" y="400" width="390" height="70" rx="6" fill="#f0e8e8" stroke="#c45c5c" stroke-width="1"/>
+  <text x="50" y="420" font-size="10" font-weight="700" fill="#c45c5c">Problems:</text>
+  <text x="50" y="438" font-size="9" fill="#1a1822" opacity="0.85">&#x2022; No identity map: same object loaded twice = inconsistency</text>
+  <text x="50" y="455" font-size="9" fill="#1a1822" opacity="0.85">&#x2022; No change tracking: must manually track what changed</text>
+  <text x="50" y="472" font-size="9" fill="#1a1822" opacity="0.85">&#x2022; Leaky abstraction: repos coupled to transaction context</text>
+  
+  <!-- Right side: Unit of Work -->
+  <rect x="460" y="95" width="420" height="390" rx="10" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="460" y="95" width="420" height="36" rx="10" fill="#4a9c5d"/>
+  <rect x="460" y="119" width="420" height="12" fill="#4a9c5d"/>
+  <text x="670" y="119" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Unit of Work Pattern</text>
+  
+  <!-- UoW code flow -->
+  <rect x="475" y="145" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="490" y="163" font-size="10" font-weight="600" fill="#1a1822">using var uow = unitOfWorkFactory.Create()</text>
+  <text x="490" y="178" font-size="9" fill="#1a1822" opacity="0.6">// UoW manages transaction internally</text>
+  
+  <rect x="475" y="195" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="490" y="213" font-size="10" font-weight="600" fill="#1a1822">orderRepo.Save(order)  // No tx param needed</text>
+  <text x="490" y="228" font-size="9" fill="#1a1822" opacity="0.6">// UoW auto-registers new entity in change list</text>
+  
+  <rect x="475" y="245" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="490" y="263" font-size="10" font-weight="600" fill="#1a1822">paymentRepo.CreatePayment(payment)</text>
+  <text x="490" y="278" font-size="9" fill="#1a1822" opacity="0.6">// Repos are transaction-agnostic (clean separation)</text>
+  
+  <rect x="475" y="295" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="490" y="313" font-size="10" font-weight="600" fill="#1a1822">inventoryRepo.UpdateStock(itemId, qty)</text>
+  <text x="490" y="328" font-size="9" fill="#1a1822" opacity="0.6">// Same UoW context - all ops part of one transaction</text>
+  
+  <rect x="475" y="345" width="390" height="40" rx="4" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="490" y="363" font-size="10" font-weight="600" fill="#1a1822">uow.Commit()  // Flushes all changes at once</text>
+  <text x="490" y="378" font-size="9" fill="#1a1822" opacity="0.6">// Auto-rollback on exception (using/defer)</text>
+  
+  <!-- UoW benefits -->
+  <rect x="475" y="400" width="390" height="70" rx="6" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="1"/>
+  <text x="490" y="420" font-size="10" font-weight="700" fill="#4a9c5d">Benefits:</text>
+  <text x="490" y="438" font-size="9" fill="#1a1822" opacity="0.85">&#x2022; Identity map: same object returned once per UoW (consistency)</text>
+  <text x="490" y="455" font-size="9" fill="#1a1822" opacity="0.85">&#x2022; Auto change tracking: dirty checking on flush</text>
+  <text x="490" y="472" font-size="9" fill="#1a1822" opacity="0.85">&#x2022; Clean repos: no transaction coupling, single responsibility</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowBlack" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
 </svg>

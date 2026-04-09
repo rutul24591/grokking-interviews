@@ -1,10 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Cache-Aside Pattern Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Cache-Aside Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Cache-aside pattern showing application checking cache first, on miss reading from database and populating cache</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Cache-Aside Read Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Application controls cache loading — reads from DB on miss and populates cache</text>
+
+  <!-- Application -->
+  <rect x="50" y="200" width="180" height="80" rx="10" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="140" y="235" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Application</text>
+  <text x="140" y="258" text-anchor="middle" font-size="10" fill="#64748b">request handler</text>
+
+  <!-- Cache -->
+  <rect x="350" y="100" width="200" height="280" rx="12" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="2"/>
+  <rect x="350" y="100" width="200" height="35" rx="12" fill="#4caf50"/>
+  <rect x="350" y="125" width="200" height="10" fill="#4caf50"/>
+  <text x="450" y="123" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Cache (Redis)</text>
+
+  <!-- Cache entries -->
+  <rect x="365" y="150" width="170" height="28" rx="5" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="168" text-anchor="middle" font-size="9" fill="#1a1822">user:42 → {name: "Alice"}</text>
+  <rect x="365" y="185" width="170" height="28" rx="5" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="203" text-anchor="middle" font-size="9" fill="#1a1822">product:15 → {name: "Widget"}</text>
+  <rect x="365" y="220" width="170" height="28" rx="5" fill="#ffffff" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="450" y="238" text-anchor="middle" font-size="9" font-weight="600" fill="#d97706">order:99 → ??? (MISS)</text>
+  <rect x="365" y="255" width="170" height="28" rx="5" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="273" text-anchor="middle" font-size="9" fill="#1a1822">session:abc → {active: true}</text>
+  <rect x="365" y="290" width="170" height="28" rx="5" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="308" text-anchor="middle" font-size="9" fill="#1a1822">config:v3 → {max: 100}</text>
+  <rect x="365" y="325" width="170" height="28" rx="5" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="343" text-anchor="middle" font-size="9" fill="#64748b">TTL: 5 min per entry</text>
+  <rect x="365" y="355" width="170" height="28" rx="5" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="373" text-anchor="middle" font-size="9" fill="#64748b">Eviction: LRU</text>
+
+  <!-- Database -->
+  <rect x="670" y="170" width="180" height="140" rx="12" fill="#2563eb" opacity="0.08" stroke="#2563eb" stroke-width="2"/>
+  <text x="760" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#2563eb">Database</text>
+  <text x="760" y="220" text-anchor="middle" font-size="10" fill="#64748b">PostgreSQL</text>
+  <text x="760" y="240" text-anchor="middle" font-size="9" fill="#1a1822">SELECT * FROM orders</text>
+  <text x="760" y="255" text-anchor="middle" font-size="9" fill="#1a1822">WHERE id = 99</text>
+  <text x="760" y="280" text-anchor="middle" font-size="9" fill="#64748b">Latency: 5-50ms</text>
+  <text x="760" y="295" text-anchor="middle" font-size="9" fill="#64748b">Cache latency: 0.5ms</text>
+
+  <!-- Flow: Step 1 - Check cache -->
+  <line x1="230" y1="220" x2="345" y2="220" stroke="#6d5bd0" stroke-width="2.5" marker-end="url(#arrCA)"/>
+  <text x="287" y="210" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">1. GET order:99</text>
+
+  <!-- Flow: Step 2 - Cache miss -->
+  <text x="450" y="400" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">2. Cache MISS — key not found</text>
+
+  <!-- Flow: Step 3 - Read from DB -->
+  <line x1="550" y1="240" x2="665" y2="240" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrDB)"/>
+  <text x="607" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#2563eb">3. Read from DB</text>
+
+  <!-- Flow: Step 4 - Write to cache -->
+  <line x1="670" y1="280" x2="550" y2="280" stroke="#4caf50" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrCache)"/>
+  <text x="607" y="295" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">4. Populate cache</text>
+
+  <!-- Flow: Step 5 - Return to app -->
+  <line x1="345" y1="260" x2="230" y2="260" stroke="#4caf50" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrCache)"/>
+  <text x="287" y="278" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">5. Return data</text>
+
+  <!-- Write flow (below) -->
+  <rect x="50" y="410" width="800" height="70" rx="10" fill="#2563eb" opacity="0.06" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="450" y="435" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">Write Path: Application writes to DB first, then deletes cache entry (cache-aside invalidate)</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="#64748b">Next read will miss cache → load fresh data from DB → repopulate cache with updated value.</text>
+  <text x="450" y="473" text-anchor="middle" font-size="10" fill="#64748b">This prevents stale data: write-through would update cache immediately but risks inconsistency if write fails.</text>
+
+  <defs>
+    <marker id="arrCA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrDB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrCache" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
 </svg>

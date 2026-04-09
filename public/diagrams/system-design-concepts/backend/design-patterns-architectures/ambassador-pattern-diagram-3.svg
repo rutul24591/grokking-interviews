@@ -1,10 +1,105 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Ambassador Pattern Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Ambassador Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Per-workload vs shared ambassador deployment comparison showing isolation trade-offs and failure blast radius differences</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Per-Workload vs Shared Ambassador</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Deployment topology decision: maximum isolation vs operational efficiency</text>
+
+  <!-- LEFT: Per-Workload -->
+  <rect x="30" y="80" width="410" height="400" rx="12" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Per-Workload Ambassador</text>
+
+  <!-- Pod 1 -->
+  <rect x="50" y="130" width="370" height="110" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#64748b">Pod / Host 1</text>
+
+  <rect x="70" y="160" width="120" height="60" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="130" y="185" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">App A</text>
+  <text x="130" y="205" text-anchor="middle" font-size="9" fill="#64748b">checkout service</text>
+
+  <rect x="220" y="160" width="120" height="60" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="280" y="185" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Ambassador A</text>
+  <text x="280" y="205" text-anchor="middle" font-size="9" fill="#64748b">Stripe config</text>
+
+  <!-- Arrow between App A and Ambassador A -->
+  <line x1="190" y1="190" x2="215" y2="190" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrPW)"/>
+
+  <!-- External call -->
+  <line x1="340" y1="190" x2="380" y2="190" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrPW)"/>
+  <text x="395" y="190" font-size="8" fill="#cc4444">→ Stripe API</text>
+
+  <!-- Pod 2 -->
+  <rect x="50" y="260" width="370" height="110" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="280" text-anchor="middle" font-size="10" font-weight="700" fill="#64748b">Pod / Host 2</text>
+
+  <rect x="70" y="290" width="120" height="60" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="130" y="315" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">App B</text>
+  <text x="130" y="335" text-anchor="middle" font-size="9" fill="#64748b">user service</text>
+
+  <rect x="220" y="290" width="120" height="60" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="280" y="315" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Ambassador B</text>
+  <text x="280" y="335" text-anchor="middle" font-size="9" fill="#64748b">CRM config</text>
+
+  <line x1="190" y1="320" x2="215" y2="320" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrPW)"/>
+  <line x1="340" y1="320" x2="380" y2="320" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrPW)"/>
+  <text x="395" y="320" font-size="8" fill="#cc4444">→ CRM API</text>
+
+  <!-- Per-Workload pros -->
+  <rect x="50" y="390" width="350" height="75" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="225" y="410" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">Pros:</text>
+  <text x="65" y="430" font-size="9" fill="#1a1822">Maximum isolation — one failure cannot affect others</text>
+  <text x="65" y="447" font-size="9" fill="#1a1822">Workload-specific tuning per ambassador</text>
+  <text x="65" y="464" font-size="9" fill="#1a1822">Small blast radius — limited to one workload</text>
+
+  <!-- RIGHT: Shared -->
+  <rect x="460" y="80" width="410" height="400" rx="12" fill="none" stroke="#d97706" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="12" fill="#d97706"/>
+  <rect x="460" y="105" width="410" height="10" fill="#d97706"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Shared Ambassador Pool</text>
+
+  <!-- Apps -->
+  <rect x="480" y="130" width="120" height="60" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="540" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">App A</text>
+  <text x="540" y="175" text-anchor="middle" font-size="9" fill="#64748b">checkout</text>
+
+  <rect x="480" y="210" width="120" height="60" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="540" y="235" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">App B</text>
+  <text x="540" y="255" text-anchor="middle" font-size="9" fill="#64748b">user svc</text>
+
+  <rect x="480" y="290" width="120" height="60" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="540" y="315" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">App C</text>
+  <text x="540" y="335" text-anchor="middle" font-size="9" fill="#64748b">inventory</text>
+
+  <!-- Shared ambassadors -->
+  <rect x="680" y="160" width="170" height="80" rx="10" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="2"/>
+  <text x="765" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">Ambassador Pool</text>
+  <text x="765" y="205" text-anchor="middle" font-size="9" fill="#1a1822">Stripe config</text>
+  <text x="765" y="220" text-anchor="middle" font-size="9" fill="#1a1822">CRM config</text>
+  <text x="765" y="235" text-anchor="middle" font-size="9" fill="#1a1822">Auto-scales by request volume</text>
+
+  <!-- Arrows from apps to pool -->
+  <line x1="600" y1="160" x2="675" y2="185" stroke="#d97706" stroke-width="1.5" marker-end="url(#arrSH)"/>
+  <line x1="600" y1="240" x2="675" y2="210" stroke="#d97706" stroke-width="1.5" marker-end="url(#arrSH)"/>
+  <line x1="600" y1="320" x2="675" y2="230" stroke="#d97706" stroke-width="1.5" marker-end="url(#arrSH)"/>
+
+  <!-- Shared pros -->
+  <rect x="480" y="390" width="370" height="75" rx="8" fill="#d97706" opacity="0.08" stroke="#d97706" stroke-width="1"/>
+  <text x="665" y="410" text-anchor="middle" font-size="10" font-weight="700" fill="#d97706">Pros:</text>
+  <text x="495" y="430" font-size="9" fill="#1a1822">Lower operational overhead — centralized management</text>
+  <text x="495" y="447" font-size="9" fill="#1a1822">Aggregated request volume → better health assessment</text>
+  <text x="495" y="464" font-size="9" fill="#1a1822">Easier updates, monitoring, and auto-scaling</text>
+
+  <!-- Decision note at bottom -->
+  <rect x="30" y="475" width="840" height="0" rx="0" fill="none" stroke="none"/>
+  <text x="450" y="490" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">Decision: Start shared → migrate to per-workload only when isolation requirements demand it</text>
+
+  <defs>
+    <marker id="arrPW" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrSH" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+    </marker>
+  </defs>
 </svg>

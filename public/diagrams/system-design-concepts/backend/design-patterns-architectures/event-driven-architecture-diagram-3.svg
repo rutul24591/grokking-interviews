@@ -1,10 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Event-Driven Architecture Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Event-Driven Architecture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>EDA vs synchronous RPC comparison showing coupling, failure modes, and scalability</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">EDA vs Synchronous RPC: Key Trade-Offs</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Comparing coupling, failure modes, scalability, and consistency patterns</text>
+
+  <!-- LEFT: Synchronous RPC -->
+  <rect x="30" y="85" width="410" height="395" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="85" width="410" height="35" rx="12" fill="#cc4444"/>
+  <rect x="30" y="110" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Synchronous RPC (REST/gRPC)</text>
+
+  <!-- RPC Flow Diagram -->
+  <rect x="50" y="135" width="110" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="105" y="155" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Service A</text>
+  <text x="105" y="170" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">(Caller)</text>
+
+  <line x1="160" y1="157" x2="230" y2="157" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowRPC)"/>
+  <text x="195" y="150" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">HTTP call</text>
+
+  <rect x="230" y="135" width="110" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="285" y="155" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Service B</text>
+  <text x="285" y="170" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">(Callee)</text>
+
+  <line x1="285" y1="180" x2="285" y2="205" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowRPC)"/>
+
+  <rect x="230" y="205" width="110" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="285" y="225" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Service C</text>
+  <text x="285" y="240" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">(Downstream)</text>
+
+  <line x1="230" y1="227" x2="160" y2="227" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowRPC)"/>
+  <text x="195" y="220" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">response</text>
+
+  <line x1="105" y1="227" x2="105" y2="205" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowRPC)"/>
+  <text x="105" y="218" text-anchor="middle" font-size="8" fill="#cc4444" font-weight="600">response</text>
+
+  <!-- Failure cascade warning -->
+  <rect x="50" y="270" width="310" height="50" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="205" y="288" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Cascade Failure Risk</text>
+  <text x="205" y="306" text-anchor="middle" font-size="9" fill="#1a1822">If Service C is down &#8594; B fails &#8594; A fails &#8594; User sees error</text>
+
+  <!-- RPC Characteristics -->
+  <rect x="50" y="335" width="310" height="30" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="205" y="354" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">Tight coupling: caller knows callee&apos;s API &amp; availability</text>
+
+  <rect x="50" y="375" width="310" height="30" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="205" y="394" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">Strong consistency: immediate response or error</text>
+
+  <rect x="50" y="415" width="310" height="30" rx="6" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="205" y="434" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">Scaling: must scale entire call chain together</text>
+
+  <rect x="50" y="455" width="150" height="22" rx="6" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="125" y="470" text-anchor="middle" font-size="8" fill="#f0ad4e" font-weight="600">Best for: real-time reads</text>
+
+  <!-- RIGHT: Event-Driven -->
+  <rect x="460" y="85" width="410" height="395" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="85" width="410" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="460" y="110" width="410" height="10" fill="#6d5bd0"/>
+  <text x="665" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Event-Driven Architecture</text>
+
+  <!-- EDA Flow Diagram -->
+  <rect x="480" y="135" width="110" height="45" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="535" y="155" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Service A</text>
+  <text x="535" y="170" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.7">(Publisher)</text>
+
+  <line x1="590" y1="157" x2="640" y2="157" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEDA3)"/>
+  <text x="615" y="150" text-anchor="middle" font-size="8" fill="#6d5bd0" font-weight="600">publish</text>
+
+  <rect x="640" y="130" width="80" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="680" y="153" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Event</text>
+  <text x="680" y="168" text-anchor="middle" font-size="8" fill="#ffffff" opacity="0.8">Bus</text>
+
+  <line x1="720" y1="145" x2="770" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEDA3)"/>
+  <line x1="720" y1="157" x2="770" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEDA3)"/>
+  <line x1="720" y1="157" x2="770" y2="255" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowEDA3)"/>
+
+  <rect x="770" y="130" width="85" height="35" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="812" y="152" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Service B</text>
+
+  <rect x="770" y="185" width="85" height="35" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="812" y="207" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Service C</text>
+
+  <rect x="770" y="240" width="85" height="35" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="812" y="262" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Service D</text>
+
+  <!-- Failure isolation -->
+  <rect x="480" y="290" width="375" height="50" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="667" y="308" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">Failure Isolation</text>
+  <text x="667" y="326" text-anchor="middle" font-size="9" fill="#1a1822">If Service C is down &#8594; event stays in bus &#8594; B &amp; D unaffected &#8594; C retries later</text>
+
+  <!-- EDA Characteristics -->
+  <rect x="480" y="355" width="375" height="30" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="667" y="374" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Loose coupling: publishers don&apos;t know about subscribers</text>
+
+  <rect x="480" y="395" width="375" height="30" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="667" y="414" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Eventual consistency: consumers process at own pace</text>
+
+  <rect x="480" y="435" width="375" height="30" rx="6" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="667" y="454" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Independent scaling: each consumer scales independently</text>
+
+  <rect x="480" y="455" width="180" height="22" rx="6" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="570" y="470" text-anchor="middle" font-size="8" fill="#4caf50" font-weight="600">Best for: async workflows, fan-out</text>
+
+  <defs>
+    <marker id="arrowRPC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+    <marker id="arrowEDA3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

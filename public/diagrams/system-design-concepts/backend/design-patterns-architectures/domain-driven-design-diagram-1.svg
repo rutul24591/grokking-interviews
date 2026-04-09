@@ -1,10 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Domain-Driven Design Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Domain-Driven Design</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Strategic DDD showing bounded contexts with their own ubiquitous languages and context maps</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Strategic DDD: Bounded Contexts</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each bounded context owns its model, ubiquitous language, and data</text>
+
+  <!-- Order Context -->
+  <rect x="30" y="80" width="260" height="320" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="260" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="103" width="260" height="12" fill="#6d5bd0"/>
+  <text x="160" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Order Context</text>
+
+  <!-- Ubiquitous Language -->
+  <rect x="50" y="130" width="220" height="80" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="160" y="152" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Ubiquitous Language</text>
+  <text x="160" y="172" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Order&quot; = shopping cart</text>
+  <text x="160" y="188" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Customer&quot; = buyer profile</text>
+  <text x="160" y="204" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Product&quot; = catalog reference</text>
+
+  <!-- Key Entities -->
+  <rect x="50" y="225" width="220" height="55" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="160" y="247" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Key Entities</text>
+  <text x="160" y="267" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Order, OrderLine, Cart</text>
+
+  <!-- Owns Data -->
+  <rect x="50" y="295" width="220" height="45" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="160" y="315" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Owns</text>
+  <text x="160" y="332" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Order state, line items</text>
+
+  <!-- Billing Context -->
+  <rect x="320" y="80" width="260" height="320" rx="12" fill="#ffffff" stroke="#2a9d8f" stroke-width="2"/>
+  <rect x="320" y="80" width="260" height="35" rx="12" fill="#2a9d8f"/>
+  <rect x="320" y="103" width="260" height="12" fill="#2a9d8f"/>
+  <text x="450" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Billing Context</text>
+
+  <rect x="340" y="130" width="220" height="80" rx="8" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="1.5"/>
+  <text x="450" y="152" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Ubiquitous Language</text>
+  <text x="450" y="172" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Order&quot; = billable invoice</text>
+  <text x="450" y="188" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Customer&quot; = tax account</text>
+  <text x="450" y="204" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Product&quot; = charge entry</text>
+
+  <rect x="340" y="225" width="220" height="55" rx="8" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="1.5"/>
+  <text x="450" y="247" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Key Entities</text>
+  <text x="450" y="267" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Invoice, Payment, TaxRule</text>
+
+  <rect x="340" y="295" width="220" height="45" rx="8" fill="#2a9d8f" opacity="0.12" stroke="#2a9d8f" stroke-width="1.5"/>
+  <text x="450" y="315" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Owns</text>
+  <text x="450" y="332" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Invoices, tax calculations</text>
+
+  <!-- Shipping Context -->
+  <rect x="610" y="80" width="260" height="320" rx="12" fill="#ffffff" stroke="#e76f51" stroke-width="2"/>
+  <rect x="610" y="80" width="260" height="35" rx="12" fill="#e76f51"/>
+  <rect x="610" y="103" width="260" height="12" fill="#e76f51"/>
+  <text x="740" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Shipping Context</text>
+
+  <rect x="630" y="130" width="220" height="80" rx="8" fill="#e76f51" opacity="0.12" stroke="#e76f51" stroke-width="1.5"/>
+  <text x="740" y="152" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Ubiquitous Language</text>
+  <text x="740" y="172" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Order&quot; = delivery unit</text>
+  <text x="740" y="188" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Customer&quot; = delivery address</text>
+  <text x="740" y="204" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">&quot;Product&quot; = package item</text>
+
+  <rect x="630" y="225" width="220" height="55" rx="8" fill="#e76f51" opacity="0.12" stroke="#e76f51" stroke-width="1.5"/>
+  <text x="740" y="247" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Key Entities</text>
+  <text x="740" y="267" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Shipment, Carrier, Route</text>
+
+  <rect x="630" y="295" width="220" height="45" rx="8" fill="#e76f51" opacity="0.12" stroke="#e76f51" stroke-width="1.5"/>
+  <text x="740" y="315" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">Owns</text>
+  <text x="740" y="332" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Tracking, delivery status</text>
+
+  <!-- Integration arrows between contexts -->
+  <line x1="290" y1="240" x2="315" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDDD)"/>
+  <text x="303" y="228" text-anchor="middle" font-size="8" fill="#6d5bd0" font-weight="600">OrderPaid</text>
+
+  <line x1="580" y1="240" x2="605" y2="240" stroke="#2a9d8f" stroke-width="2" marker-end="url(#arrowDDD)"/>
+  <text x="593" y="228" text-anchor="middle" font-size="8" fill="#2a9d8f" font-weight="600">ShipRequest</text>
+
+  <!-- Bottom key insight -->
+  <rect x="120" y="430" width="660" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="452" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Key Insight: The same term has different meanings across contexts</text>
+  <text x="450" y="470" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">&quot;Order&quot; in Orders = cart &#8594; &quot;Order&quot; in Billing = invoice &#8594; &quot;Order&quot; in Shipping = delivery unit</text>
+
+  <defs>
+    <marker id="arrowDDD" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

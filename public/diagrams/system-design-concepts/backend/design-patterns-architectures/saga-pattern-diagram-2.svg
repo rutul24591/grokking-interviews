@@ -1,10 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Saga Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Saga Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Orchestration-based Saga Pattern Diagram</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Orchestration-based Saga</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Central saga coordinator directs each service through the transaction</text>
+  
+  <!-- Saga Orchestrator in center -->
+  <rect x="340" y="180" width="220" height="140" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
+  <text x="450" y="210" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Saga Orchestrator</text>
+  <text x="450" y="230" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Central coordinator</text>
+  <text x="450" y="248" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Tracks saga state</text>
+  <text x="450" y="266" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Manages forward flow</text>
+  <text x="450" y="284" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">&amp; compensation on failure</text>
+  <text x="450" y="304" text-anchor="middle" font-size="10" font-weight="600" fill="#7c3aed">Commands -&gt; Services</text>
+  
+  <!-- Command arrows from orchestrator to services -->
+  <!-- To Order Service -->
+  <path d="M 340 210 L 220 120" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  <text x="250" y="155" font-size="9" font-weight="600" fill="#7c3aed">CreateOrder</text>
+  
+  <!-- To Payment Service -->
+  <path d="M 450 180 L 450 120" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  <text x="470" y="155" font-size="9" font-weight="600" fill="#7c3aed">ProcessPayment</text>
+  
+  <!-- To Inventory Service -->
+  <path d="M 560 210 L 700 120" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  <text x="620" y="155" font-size="9" font-weight="600" fill="#7c3aed">ReserveInventory</text>
+  
+  <!-- To Shipping Service -->
+  <path d="M 560 280 L 700 370" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  <text x="640" y="315" font-size="9" font-weight="600" fill="#7c3aed">CreateShipment</text>
+  
+  <!-- Reply arrows back to orchestrator -->
+  <path d="M 200 140 L 320 200" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead-blue)"/>
+  <text x="230" y="185" font-size="9" fill="#2563eb">OrderCreated</text>
+  
+  <path d="M 470 140 L 470 180" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead-amber)"/>
+  <text x="490" y="165" font-size="9" fill="#f59e0b">PaymentOK</text>
+  
+  <path d="M 720 140 L 580 200" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead-green)"/>
+  <text x="660" y="185" font-size="9" fill="#059669">InventoryReserved</text>
+  
+  <path d="M 720 390 L 580 300" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead-purple-reply)"/>
+  <text x="670" y="355" font-size="9" fill="#7c3aed">ShipmentCreated</text>
+  
+  <!-- Service 1: Order Service -->
+  <rect x="60" y="80" width="160" height="70" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="140" y="105" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Order Service</text>
+  <text x="140" y="125" text-anchor="middle" font-size="10" fill="#1a1822">Step 1</text>
+  <text x="140" y="140" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Compensate: CancelOrder</text>
+  
+  <!-- Service 2: Payment Service -->
+  <rect x="370" y="80" width="160" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Payment Service</text>
+  <text x="450" y="125" text-anchor="middle" font-size="10" fill="#1a1822">Step 2</text>
+  <text x="450" y="140" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Compensate: RefundPayment</text>
+  
+  <!-- Service 3: Inventory Service -->
+  <rect x="680" y="80" width="160" height="70" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text x="760" y="105" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Inventory Service</text>
+  <text x="760" y="125" text-anchor="middle" font-size="10" fill="#1a1822">Step 3</text>
+  <text x="760" y="140" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Compensate: ReleaseInventory</text>
+  
+  <!-- Service 4: Shipping Service -->
+  <rect x="680" y="370" width="160" height="70" rx="8" fill="#cffafe" stroke="#0891b2" stroke-width="2"/>
+  <text x="760" y="395" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Shipping Service</text>
+  <text x="760" y="415" text-anchor="middle" font-size="10" fill="#1a1822">Step 4</text>
+  <text x="760" y="430" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.8">Compensate: CancelShipment</text>
+  
+  <!-- Characteristics callout -->
+  <rect x="40" y="260" width="220" height="210" rx="6" fill="#ffffff" stroke="#d4d0d8" stroke-width="1.5"/>
+  <text x="150" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Orchestration Traits</text>
+  <text x="55" y="304" font-size="10" fill="#1a1822">Central control - clear flow</text>
+  <text x="55" y="322" font-size="10" fill="#1a1822">Easy to add/remove steps</text>
+  <text x="55" y="340" font-size="10" fill="#1a1822">No cyclic dependencies</text>
+  <text x="55" y="358" font-size="10" fill="#1a1822">Single point of complexity</text>
+  <text x="55" y="376" font-size="10" fill="#1a1822">Services stay decoupled</text>
+  <text x="55" y="394" font-size="10" fill="#1a1822">Better for 5+ services</text>
+  <text x="55" y="412" font-size="10" fill="#1a1822">Orchestrator owns saga state</text>
+  <text x="55" y="430" font-size="10" fill="#1a1822">Compensation defined centrally</text>
+  
+  <defs>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+    </marker>
+    <marker id="arrowhead-purple-reply" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
 </svg>

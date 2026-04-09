@@ -1,10 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Adapter Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Adapter Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Object adapter vs class adapter comparison showing composition-based vs inheritance-based adapter implementations</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Object Adapter vs Class Adapter</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Composition-based (left) vs inheritance-based (right) adapter implementations</text>
+
+  <!-- LEFT: Object Adapter -->
+  <rect x="30" y="80" width="410" height="400" rx="12" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="410" height="10" fill="#6d5bd0"/>
+  <text x="235" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Object Adapter (Composition)</text>
+
+  <!-- Target -->
+  <rect x="80" y="130" width="140" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="150" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Target</text>
+  <text x="150" y="168" text-anchor="middle" font-size="9" fill="#64748b">request()</text>
+
+  <!-- Adapter -->
+  <rect x="270" y="130" width="140" height="70" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="340" y="155" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Adapter</text>
+  <text x="340" y="175" text-anchor="middle" font-size="9" fill="#1a1822">has-a Adaptee</text>
+  <text x="340" y="190" text-anchor="middle" font-size="9" fill="#1a1822">+ request()</text>
+
+  <!-- Adaptee -->
+  <rect x="270" y="240" width="140" height="50" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="340" y="260" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Adaptee</text>
+  <text x="340" y="278" text-anchor="middle" font-size="9" fill="#64748b">specificRequest()</text>
+
+  <!-- Arrow: Target implements Adapter -->
+  <line x1="220" y1="155" x2="265" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrOA)"/>
+
+  <!-- Arrow: Adapter has Adaptee (composition) -->
+  <line x1="340" y1="200" x2="340" y2="235" stroke="#cc4444" stroke-width="2" marker-end="url(#arrOA)"/>
+  <text x="380" y="220" font-size="9" font-weight="600" fill="#cc4444">HAS-A</text>
+
+  <!-- Object adapter pros -->
+  <rect x="50" y="320" width="370" height="145" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="345" text-anchor="middle" font-size="12" font-weight="700" fill="#16a34a">Advantages</text>
+  <text x="65" y="370" font-size="10" fill="#1a1822">Works with Adaptee AND all its subclasses</text>
+  <text x="65" y="390" font-size="10" fill="#1a1822">Can swap Adaptee at runtime</text>
+  <text x="65" y="410" font-size="10" fill="#1a1822">Single Adapter class handles multiple Adaptees</text>
+  <text x="65" y="430" font-size="10" fill="#1a1822">No inheritance conflicts — preferred in most languages</text>
+  <text x="65" y="450" font-size="10" fill="#64748b">Recommended approach for Java, C#, Python, TypeScript</text>
+
+  <!-- RIGHT: Class Adapter -->
+  <rect x="460" y="80" width="410" height="400" rx="12" fill="none" stroke="#d97706" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="35" rx="12" fill="#d97706"/>
+  <rect x="460" y="105" width="410" height="10" fill="#d97706"/>
+  <text x="665" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Class Adapter (Inheritance)</text>
+
+  <!-- Target -->
+  <rect x="510" y="130" width="140" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="580" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Target</text>
+  <text x="580" y="168" text-anchor="middle" font-size="9" fill="#64748b">request()</text>
+
+  <!-- Adaptee -->
+  <rect x="730" y="130" width="140" height="50" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="800" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Adaptee</text>
+  <text x="800" y="168" text-anchor="middle" font-size="9" fill="#64748b">specificRequest()</text>
+
+  <!-- Class Adapter (inherits from both) -->
+  <rect x="590" y="220" width="160" height="70" rx="8" fill="#d97706" opacity="0.1" stroke="#d97706" stroke-width="2"/>
+  <text x="670" y="245" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">ClassAdapter</text>
+  <text x="670" y="265" text-anchor="middle" font-size="9" fill="#1a1822">extends Adaptee</text>
+  <text x="670" y="280" text-anchor="middle" font-size="9" fill="#1a1822">implements Target</text>
+
+  <!-- Arrows: inheritance from both -->
+  <line x1="580" y1="180" x2="630" y2="220" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrCA)"/>
+  <text x="570" y="205" font-size="9" font-weight="600" fill="#6d5bd0">impl</text>
+  <line x1="800" y1="180" x2="720" y2="220" stroke="#4caf50" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrCA)"/>
+  <text x="790" y="205" font-size="9" font-weight="600" fill="#4caf50">extends</text>
+
+  <!-- Class adapter pros/cons -->
+  <rect x="480" y="320" width="370" height="145" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="665" y="345" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">Characteristics</text>
+  <text x="495" y="370" font-size="10" fill="#1a1822">Adapter IS-A Adaptee (inheritance)</text>
+  <text x="495" y="390" font-size="10" fill="#1a1822">No extra field reference needed</text>
+  <text x="495" y="410" font-size="10" fill="#1a1822">Cannot adapt subclasses of Adaptee</text>
+  <text x="495" y="430" font-size="10" fill="#1a1822">Language limitation: no multiple inheritance in Java/C#</text>
+  <text x="495" y="450" font-size="10" fill="#64748b">Only viable in C++ and languages supporting MI</text>
+
+  <defs>
+    <marker id="arrOA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrCA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
 </svg>

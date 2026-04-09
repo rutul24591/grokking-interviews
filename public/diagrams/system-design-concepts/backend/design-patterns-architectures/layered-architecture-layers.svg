@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <defs>
+    <style>
+      .bg-light { fill: #ffffff; }
+      .bg-dark { fill: #0f172a; }
+      .layer-1-light { fill: #eff6ff; stroke: #3b82f6; }
+      .layer-1-dark { fill: #1e3a5f; stroke: #60a5fa; }
+      .layer-2-light { fill: #f0fdf4; stroke: #22c55e; }
+      .layer-2-dark { fill: #1a4731; stroke: #4ade80; }
+      .layer-3-light { fill: #fefce8; stroke: #eab308; }
+      .layer-3-dark { fill: #4a4420; stroke: #facc15; }
+      .layer-4-light { fill: #f5f3ff; stroke: #8b5cf6; }
+      .layer-4-dark { fill: #2e1065; stroke: #a78bfa; }
+      .title-light { fill: #0f172a; }
+      .title-dark { fill: #f1f5f9; }
+      .label-light { fill: #1e293b; }
+      .label-dark { fill: #e2e8f0; }
+      .sublabel-light { fill: #475569; }
+      .sublabel-dark { fill: #94a3b8; }
+      .arrow-light { fill: #64748b; }
+      .arrow-dark { fill: #94a3b8; }
+    </style>
+  </defs>
+
+  <!-- Light mode background -->
+  <rect class="bg-light" width="900" height="520" />
+
+  <!-- Title -->
+  <text class="title-light" x="450" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold">Four-Tier Layered Architecture</text>
+  <text class="sublabel-light" x="450" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="13">Each tier has distinct responsibilities with downward-only dependencies</text>
+
+  <!-- Layer 1: Presentation -->
+  <rect class="layer-1-light" x="100" y="90" width="700" height="90" rx="8" />
+  <text class="label-light" x="130" y="120" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Presentation Layer</text>
+  <text class="sublabel-light" x="130" y="142" font-family="Arial, sans-serif" font-size="12">Controllers, API Endpoints, Views</text>
+  <text class="sublabel-light" x="130" y="160" font-family="Arial, sans-serif" font-size="12">Input validation, auth, response formatting</text>
+
+  <!-- Arrow 1 -->
+  <polygon class="arrow-light" points="450,185 440,200 460,200" />
+  <line x1="450" y1="180" x2="450" y2="200" stroke="#64748b" stroke-width="2" />
+
+  <!-- Layer 2: Business -->
+  <rect class="layer-2-light" x="100" y="200" width="700" height="90" rx="8" />
+  <text class="label-light" x="130" y="230" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Business Layer</text>
+  <text class="sublabel-light" x="130" y="252" font-family="Arial, sans-serif" font-size="12">Services, Domain Entities, Workflow Orchestrators</text>
+  <text class="sublabel-light" x="130" y="270" font-family="Arial, sans-serif" font-size="12">Business rules, invariants, transaction management</text>
+
+  <!-- Arrow 2 -->
+  <polygon class="arrow-light" points="450,295 440,310 460,310" />
+  <line x1="450" y1="290" x2="450" y2="310" stroke="#64748b" stroke-width="2" />
+
+  <!-- Layer 3: Data Access -->
+  <rect class="layer-3-light" x="100" y="310" width="700" height="90" rx="8" />
+  <text class="label-light" x="130" y="340" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Data Access Layer</text>
+  <text class="sublabel-light" x="130" y="362" font-family="Arial, sans-serif" font-size="12">Repositories, Query Builders, Data Mappers</text>
+  <text class="sublabel-light" x="130" y="380" font-family="Arial, sans-serif" font-size="12">Persistence, caching, connection management</text>
+
+  <!-- Arrow 3 -->
+  <polygon class="arrow-light" points="450,405 440,420 460,420" />
+  <line x1="450" y1="400" x2="450" y2="420" stroke="#64748b" stroke-width="2" />
+
+  <!-- Layer 4: Infrastructure -->
+  <rect class="layer-4-light" x="100" y="420" width="700" height="80" rx="8" />
+  <text class="label-light" x="130" y="450" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Infrastructure Layer</text>
+  <text class="sublabel-light" x="130" y="472" font-family="Arial, sans-serif" font-size="12">Logging, Configuration, Message Queues, External Services</text>
+  <text class="sublabel-light" x="130" y="490" font-family="Arial, sans-serif" font-size="12">Retry policies, circuit breakers, timeouts</text>
+
+  <!-- Dependency direction label -->
+  <rect x="820" y="90" width="60" height="410" rx="4" fill="#f1f5f9" stroke="#cbd5e1" />
+  <text x="850" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#334155" transform="rotate(90, 850, 280)">Dependency</text>
+  <text x="850" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#334155" transform="rotate(90, 850, 300)">Direction</text>
+  <polygon points="850,400 840,380 860,380" fill="#64748b" />
+</svg>

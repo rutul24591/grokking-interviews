@@ -1,10 +1,103 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Timeout Pattern Diagram 2</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Timeout Pattern</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Timeout Budget Across Call Chain</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  
+  <!-- Header bar -->
+  <rect x="0" y="0" width="900" height="52" rx="12" fill="#1a1822"/>
+  <rect x="0" y="40" width="900" height="12" fill="#1a1822"/>
+  <text x="30" y="33" font-size="18" font-weight="700" fill="#ffffff">Timeout Budget Across Call Chain</text>
+  <text x="30" y="75" font-size="12" fill="#1a1822" opacity="0.7">Each hop in the call chain receives a portion of the overall deadline to prevent cumulative timeout explosion</text>
+  
+  <!-- Overall deadline bar -->
+  <rect x="40" y="110" width="820" height="45" rx="6" fill="#e8e5f0" stroke="#7c6a96" stroke-width="2"/>
+  <text x="450" y="130" font-size="14" font-weight="700" fill="#1a1822" text-anchor="middle">Overall User-Facing Deadline: 10 seconds</text>
+  <text x="450" y="147" font-size="11" fill="#1a1822" opacity="0.7" text-anchor="middle">Maximum time from user request to final response</text>
+  
+  <!-- Call chain flow -->
+  <path d="M 120 160 L 120 185" stroke="#7c6a96" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <path d="M 290 160 L 290 185" stroke="#7c6a96" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <path d="M 470 160 L 470 185" stroke="#7c6a96" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <path d="M 650 160 L 650 185" stroke="#7c6a96" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <path d="M 815 160 L 815 185" stroke="#7c6a96" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Gateway/API Layer -->
+  <rect x="50" y="195" width="140" height="100" rx="8" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="50" y="195" width="140" height="28" rx="8" fill="#4a9c5d"/>
+  <rect x="50" y="210" width="140" height="13" fill="#4a9c5d"/>
+  <text x="120" y="214" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">API Gateway</text>
+  <text x="120" y="255" font-size="18" font-weight="700" fill="#4a9c5d" text-anchor="middle">2.0s</text>
+  <text x="120" y="275" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Auth + Routing</text>
+  <text x="120" y="288" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">+ Rate limiting</text>
+  
+  <!-- Horizontal arrows between services -->
+  <path d="M 195 245 L 235 245" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  
+  <!-- Application Service -->
+  <rect x="240" y="195" width="140" height="100" rx="8" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="240" y="195" width="140" height="28" rx="8" fill="#4a9c5d"/>
+  <rect x="240" y="210" width="140" height="13" fill="#4a9c5d"/>
+  <text x="310" y="214" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">App Service</text>
+  <text x="310" y="255" font-size="18" font-weight="700" fill="#4a9c5d" text-anchor="middle">3.0s</text>
+  <text x="310" y="275" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Business logic</text>
+  <text x="310" y="288" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">+ Aggregation</text>
+  
+  <path d="M 385 245 L 425 245" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  
+  <!-- Database -->
+  <rect x="430" y="195" width="140" height="100" rx="8" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="430" y="195" width="140" height="28" rx="8" fill="#4a9c5d"/>
+  <rect x="430" y="210" width="140" height="13" fill="#4a9c5d"/>
+  <text x="500" y="214" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Database</text>
+  <text x="500" y="255" font-size="18" font-weight="700" fill="#4a9c5d" text-anchor="middle">2.5s</text>
+  <text x="500" y="275" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Query execution</text>
+  <text x="500" y="288" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">+ Index lookup</text>
+  
+  <path d="M 575 245 L 615 245" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  
+  <!-- Cache -->
+  <rect x="620" y="195" width="140" height="100" rx="8" fill="#e8f5ec" stroke="#4a9c5d" stroke-width="2"/>
+  <rect x="620" y="195" width="140" height="28" rx="8" fill="#4a9c5d"/>
+  <rect x="620" y="210" width="140" height="13" fill="#4a9c5d"/>
+  <text x="690" y="214" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">Cache (Redis)</text>
+  <text x="690" y="255" font-size="18" font-weight="700" fill="#4a9c5d" text-anchor="middle">1.5s</text>
+  <text x="690" y="275" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Cache lookup</text>
+  <text x="690" y="288" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">+ Serialization</text>
+  
+  <path d="M 765 245 L 805 245" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowBlack)"/>
+  
+  <!-- Network/Buffer -->
+  <rect x="770" y="195" width="90" height="100" rx="8" fill="#fff8e1" stroke="#f0a030" stroke-width="2"/>
+  <rect x="770" y="195" width="90" height="28" rx="8" fill="#f0a030"/>
+  <rect x="770" y="210" width="90" height="13" fill="#f0a030"/>
+  <text x="815" y="214" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">Buffer</text>
+  <text x="815" y="255" font-size="18" font-weight="700" fill="#f0a030" text-anchor="middle">1.0s</text>
+  <text x="815" y="275" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">Network</text>
+  <text x="815" y="288" font-size="9" fill="#1a1822" opacity="0.7" text-anchor="middle">+ Safety</text>
+  
+  <!-- Budget breakdown table -->
+  <rect x="40" y="320" width="820" height="165" rx="8" fill="#f3f1f8" stroke="#d4d0dc" stroke-width="1"/>
+  <text x="60" y="350" font-size="13" font-weight="700" fill="#1a1822">Timeout Budget Allocation Rules:</text>
+  
+  <!-- Rules -->
+  <rect x="60" y="365" width="780" height="28" rx="4" fill="#e8e5f0" stroke="#7c6a96" stroke-width="1"/>
+  <text x="80" y="383" font-size="11" font-weight="600" fill="#1a1822">1. Leaf services (DB, cache) get the smallest timeouts &#x2014; they control the critical path</text>
+  
+  <rect x="60" y="400" width="780" height="28" rx="4" fill="#e8e5f0" stroke="#7c6a96" stroke-width="1"/>
+  <text x="80" y="418" font-size="11" font-weight="600" fill="#1a1822">2. Each upstream timeout = sum of downstream timeouts + network buffer (typically 10-20%)</text>
+  
+  <rect x="60" y="435" width="780" height="28" rx="4" fill="#e8e5f0" stroke="#7c6a96" stroke-width="1"/>
+  <text x="80" y="453" font-size="11" font-weight="600" fill="#1a1822">3. Parallel calls share the same budget &#x2014; longest call determines the response time</text>
+  
+  <rect x="60" y="470" width="780" height="28" rx="4" fill="#e8e5f0" stroke="#7c6a96" stroke-width="1"/>
+  <text x="80" y="488" font-size="11" font-weight="600" fill="#1a1822">4. Always reserve 10-15% of total budget for network latency, serialization, and safety margin</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c6a96"/>
+    </marker>
+    <marker id="arrowBlack" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
 </svg>
