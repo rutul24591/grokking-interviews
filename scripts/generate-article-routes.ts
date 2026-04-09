@@ -20,6 +20,8 @@ const PATH_MAPPINGS: Record<string, string> = {
   "system-design/backend": "system-design-concepts/backend-concepts",
   "requirements/functional-requirements": "requirements/functional-requirements",
   "requirements/non-functional-requirements": "requirements/non-functional-requirements",
+  "system-design-problems/high-level-design": "system-design-problems/high-level-design",
+  "system-design-problems/low-level-design": "system-design-problems/low-level-design",
 };
 
 function main() {
