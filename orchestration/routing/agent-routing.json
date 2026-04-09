@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "mode": "hybrid-fallback",
+  "taskTypes": {
+    "outline-draft": {
+      "primaryAgent": "claude",
+      "fallbackAgents": ["qwen"],
+      "eligibleAgents": ["claude", "qwen"],
+      "allowRunOverride": true
+    },
+    "article-draft": {
+      "primaryAgent": "claude",
+      "fallbackAgents": ["qwen"],
+      "eligibleAgents": ["claude", "qwen"],
+      "allowRunOverride": true
+    },
+    "audit-review": {
+      "primaryAgent": "claude",
+      "fallbackAgents": ["qwen"],
+      "eligibleAgents": ["claude", "qwen"],
+      "allowRunOverride": true
+    },
+    "enhancement-draft": {
+      "primaryAgent": "claude",
+      "fallbackAgents": ["qwen"],
+      "eligibleAgents": ["claude", "qwen"],
+      "allowRunOverride": true
+    },
+    "outline-review": {
+      "primaryAgent": "qwen",
+      "fallbackAgents": [],
+      "eligibleAgents": ["qwen"],
+      "allowRunOverride": true
+    },
+    "svg-plan": {
+      "primaryAgent": "qwen",
+      "fallbackAgents": [],
+      "eligibleAgents": ["qwen"],
+      "allowRunOverride": true
+    },
+    "svg-generation": {
+      "primaryAgent": "qwen",
+      "fallbackAgents": [],
+      "eligibleAgents": ["qwen"],
+      "allowRunOverride": true
+    },
+    "audit-draft": {
+      "primaryAgent": "qwen",
+      "fallbackAgents": [],
+      "eligibleAgents": ["qwen"],
+      "allowRunOverride": true
+    },
+    "example-spec-draft": {
+      "primaryAgent": "qwen",
+      "fallbackAgents": ["claude"],
+      "eligibleAgents": ["qwen", "claude"],
+      "allowRunOverride": true
+    },
+    "tsx-assembly": {
+      "primaryAgent": "codex",
+      "fallbackAgents": [],
+      "eligibleAgents": ["codex"],
+      "allowRunOverride": false
+    },
+    "build-validation": {
+      "primaryAgent": "codex",
+      "fallbackAgents": [],
+      "eligibleAgents": ["codex"],
+      "allowRunOverride": false
+    },
+    "parse-fix": {
+      "primaryAgent": "codex",
+      "fallbackAgents": [],
+      "eligibleAgents": ["codex"],
+      "allowRunOverride": false
+    },
+    "example-implementation": {
+      "primaryAgent": "codex",
+      "fallbackAgents": [],
+      "eligibleAgents": ["codex"],
+      "allowRunOverride": false
+    },
+    "svg-validation": {
+      "primaryAgent": "codex",
+      "fallbackAgents": [],
+      "eligibleAgents": ["codex"],
+      "allowRunOverride": false
+    }
+  }
+}

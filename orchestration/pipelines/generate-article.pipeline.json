@@ -1,0 +1,101 @@
+{
+  "id": "generate-article-v1",
+  "mode": "generate-article",
+  "description": "Generate a new article, SVG plan, TSX candidate, validation, and merge summary.",
+  "tasks": [
+    {
+      "id": "topic-normalize",
+      "title": "Normalize topic scope",
+      "taskType": "topic-normalize",
+      "execution": "system",
+      "artifactType": "topic-resolution"
+    },
+    {
+      "id": "context-pack",
+      "title": "Build shared context pack",
+      "taskType": "context-pack",
+      "execution": "system",
+      "dependsOn": ["topic-normalize"],
+      "artifactType": "context-pack"
+    },
+    {
+      "id": "outline-draft",
+      "title": "Draft article outline",
+      "taskType": "outline-draft",
+      "execution": "agent",
+      "preferredAgents": ["claude"],
+      "dependsOn": ["context-pack"],
+      "artifactType": "article-outline",
+      "outputSchema": "article-outline.schema.json"
+    },
+    {
+      "id": "outline-review",
+      "title": "Review outline gaps",
+      "taskType": "outline-review",
+      "execution": "agent",
+      "preferredAgents": ["qwen"],
+      "dependsOn": ["outline-draft"],
+      "artifactType": "evaluation",
+      "outputSchema": "evaluation.schema.json"
+    },
+    {
+      "id": "svg-plan",
+      "title": "Plan SVG set",
+      "taskType": "svg-plan",
+      "execution": "agent",
+      "preferredAgents": ["qwen"],
+      "dependsOn": ["outline-draft"],
+      "artifactType": "svg-plan",
+      "outputSchema": "svg-plan.schema.json"
+    },
+    {
+      "id": "article-draft",
+      "title": "Draft article content",
+      "taskType": "article-draft",
+      "execution": "agent",
+      "preferredAgents": ["claude"],
+      "dependsOn": ["outline-review", "svg-plan"],
+      "artifactType": "article-content",
+      "outputSchema": "article-content.schema.json"
+    },
+    {
+      "id": "tsx-assembly",
+      "title": "Assemble TSX article candidate",
+      "taskType": "tsx-assembly",
+      "execution": "agent",
+      "preferredAgents": ["codex"],
+      "dependsOn": ["article-draft"],
+      "artifactType": "tsx-candidate",
+      "outputSchema": "article-content.schema.json",
+      "writeIntent": "article"
+    },
+    {
+      "id": "svg-generation",
+      "title": "Generate SVG candidates",
+      "taskType": "svg-generation",
+      "execution": "agent",
+      "preferredAgents": ["qwen"],
+      "dependsOn": ["svg-plan"],
+      "artifactType": "svg-file",
+      "writeIntent": "diagram"
+    },
+    {
+      "id": "build-validation",
+      "title": "Validate parse and build readiness",
+      "taskType": "build-validation",
+      "execution": "agent",
+      "preferredAgents": ["codex"],
+      "dependsOn": ["tsx-assembly", "svg-generation"],
+      "artifactType": "evaluation",
+      "outputSchema": "evaluation.schema.json"
+    },
+    {
+      "id": "merge-decision",
+      "title": "Summarize merge readiness",
+      "taskType": "merge-decision",
+      "execution": "system",
+      "dependsOn": ["build-validation"],
+      "artifactType": "run-summary"
+    }
+  ]
+}

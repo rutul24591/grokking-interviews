@@ -1,0 +1,71 @@
+{
+  "id": "audit-articles-v1",
+  "mode": "audit-articles",
+  "description": "Enumerate articles in a sub-category, scan structure, draft audits per article, then aggregate the results.",
+  "tasks": [
+    {
+      "id": "topic-normalize",
+      "title": "Normalize sub-category scope",
+      "taskType": "topic-normalize",
+      "execution": "system",
+      "artifactType": "topic-resolution"
+    },
+    {
+      "id": "context-pack",
+      "title": "Build shared context pack",
+      "taskType": "context-pack",
+      "execution": "system",
+      "dependsOn": ["topic-normalize"],
+      "artifactType": "context-pack"
+    },
+    {
+      "id": "article-enumeration",
+      "title": "Enumerate articles in sub-category",
+      "taskType": "article-enumeration",
+      "execution": "system",
+      "dependsOn": ["context-pack"],
+      "artifactType": "article-enumeration"
+    },
+    {
+      "id": "article-structure-scan",
+      "title": "Scan article structure",
+      "taskType": "article-structure-scan",
+      "execution": "system",
+      "dependsOn": ["article-enumeration"],
+      "artifactType": "gap-report",
+      "fanOut": "article"
+    },
+    {
+      "id": "audit-draft",
+      "title": "Draft article audit",
+      "taskType": "audit-draft",
+      "execution": "agent",
+      "preferredAgents": ["qwen"],
+      "dependsOn": ["article-structure-scan"],
+      "artifactType": "audit-report",
+      "outputSchema": "audit-report.schema.json",
+      "fanOut": "article",
+      "writeIntent": "report"
+    },
+    {
+      "id": "audit-review",
+      "title": "Review and tighten article audit",
+      "taskType": "audit-review",
+      "execution": "agent",
+      "preferredAgents": ["claude"],
+      "dependsOn": ["audit-draft"],
+      "artifactType": "audit-report",
+      "outputSchema": "audit-report.schema.json",
+      "fanOut": "article",
+      "writeIntent": "report"
+    },
+    {
+      "id": "final-audit-report",
+      "title": "Aggregate sub-category audit summary",
+      "taskType": "final-audit-report",
+      "execution": "system",
+      "dependsOn": ["audit-review"],
+      "artifactType": "run-summary"
+    }
+  ]
+}

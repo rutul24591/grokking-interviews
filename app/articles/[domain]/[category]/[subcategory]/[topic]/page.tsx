@@ -59,9 +59,36 @@ export async function generateMetadata({ params }: ArticlePageProps) {
     return { title: "Article Not Found" };
   }
 
+  const m = article.metadata;
   return {
-    title: `${article?.metadata?.title} | Interview Prep Studio`,
-    description: article.metadata.description,
-    keywords: article.metadata.tags?.join(", "),
+    title: m.title,
+    description: m.description,
+    keywords: m.tags?.join(", "),
+    openGraph: {
+      title: m.title,
+      description: m.description,
+      type: "article",
+      locale: "en_US",
+      images: [
+        {
+          url: `/og-article.png?title=${encodeURIComponent(m.title)}`,
+          width: 1200,
+          height: 630,
+          alt: m.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: m.title,
+      description: m.description,
+    },
   };
 }
+
+/**
+ * Enable Incremental Static Regeneration (ISR).
+ * Articles are statically generated at build time but revalidated
+ * every 1 hour to pick up content changes without a full rebuild.
+ */
+export const revalidate = 3600; // 1 hour

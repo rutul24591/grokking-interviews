@@ -1,0 +1,107 @@
+{
+  "id": "enhance-article-v1",
+  "mode": "enhance-article",
+  "description": "Improve an existing article using scan, gap analysis, revision, TSX assembly, and validation.",
+  "tasks": [
+    {
+      "id": "topic-normalize",
+      "title": "Normalize topic scope",
+      "taskType": "topic-normalize",
+      "execution": "system",
+      "artifactType": "topic-resolution"
+    },
+    {
+      "id": "context-pack",
+      "title": "Build shared context pack",
+      "taskType": "context-pack",
+      "execution": "system",
+      "dependsOn": ["topic-normalize"],
+      "artifactType": "context-pack"
+    },
+    {
+      "id": "existing-article-parse",
+      "title": "Parse existing article",
+      "taskType": "existing-article-parse",
+      "execution": "system",
+      "dependsOn": ["context-pack"],
+      "artifactType": "gap-report"
+    },
+    {
+      "id": "gap-analysis",
+      "title": "Build article gap report",
+      "taskType": "gap-analysis",
+      "execution": "system",
+      "dependsOn": ["existing-article-parse"],
+      "artifactType": "gap-report"
+    },
+    {
+      "id": "outline-draft",
+      "title": "Draft enhancement outline",
+      "taskType": "outline-draft",
+      "execution": "agent",
+      "preferredAgents": ["claude"],
+      "dependsOn": ["gap-analysis"],
+      "artifactType": "article-outline",
+      "outputSchema": "article-outline.schema.json"
+    },
+    {
+      "id": "svg-plan",
+      "title": "Plan delta SVG set",
+      "taskType": "svg-plan",
+      "execution": "agent",
+      "preferredAgents": ["qwen"],
+      "dependsOn": ["gap-analysis"],
+      "artifactType": "svg-plan",
+      "outputSchema": "svg-plan.schema.json"
+    },
+    {
+      "id": "article-draft",
+      "title": "Draft article enhancement",
+      "taskType": "article-draft",
+      "execution": "agent",
+      "preferredAgents": ["claude"],
+      "dependsOn": ["outline-draft", "svg-plan"],
+      "artifactType": "article-content",
+      "outputSchema": "article-content.schema.json"
+    },
+    {
+      "id": "tsx-assembly",
+      "title": "Assemble enhanced TSX candidate",
+      "taskType": "tsx-assembly",
+      "execution": "agent",
+      "preferredAgents": ["codex"],
+      "dependsOn": ["article-draft"],
+      "artifactType": "tsx-candidate",
+      "outputSchema": "article-content.schema.json",
+      "writeIntent": "article"
+    },
+    {
+      "id": "svg-generation",
+      "title": "Generate enhanced SVG candidates",
+      "taskType": "svg-generation",
+      "execution": "agent",
+      "preferredAgents": ["qwen"],
+      "dependsOn": ["svg-plan"],
+      "artifactType": "svg-file",
+      "writeIntent": "diagram"
+    },
+    {
+      "id": "build-validation",
+      "title": "Validate parse and build readiness",
+      "taskType": "build-validation",
+      "execution": "agent",
+      "preferredAgents": ["codex"],
+      "dependsOn": ["tsx-assembly", "svg-generation"],
+      "artifactType": "evaluation",
+      "outputSchema": "evaluation.schema.json"
+    },
+    {
+      "id": "merge-decision",
+      "title": "Summarize merge readiness",
+      "taskType": "merge-decision",
+      "execution": "system",
+      "dependsOn": ["build-validation"],
+      "artifactType": "run-summary"
+    }
+  ]
+}

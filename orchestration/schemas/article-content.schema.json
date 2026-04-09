@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Article Content Artifact",
+  "type": "object",
+  "required": ["title", "contentFormat", "body"],
+  "properties": {
+    "title": { "type": "string" },
+    "contentFormat": {
+      "type": "string",
+      "enum": ["markdown", "tsx"]
+    },
+    "body": { "type": "string" },
+    "references": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "imageRefs": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

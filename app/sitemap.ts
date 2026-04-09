@@ -1,14 +1,21 @@
 import { getAllArticlePaths } from "@/lib/article-routes";
 import type { MetadataRoute } from "next";
 
+interface ArticlePath {
+  domain: string;
+  category: string;
+  subcategory: string;
+  topic: string;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   // Get all article paths from manifest
-  const articles = getAllArticlePaths();
+  const articles = getAllArticlePaths() as ArticlePath[];
 
   // Create entries for article pages
-  const articleEntries = articles.map((article: any) => ({
+  const articleEntries = articles.map((article: ArticlePath) => ({
     url: `${baseUrl}/articles/${article.domain}/${article.category}/${article.subcategory}/${article.topic}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,

@@ -3,8 +3,8 @@
 @import "../styles/animations.css";
 
 :root {
-  --font-sans: var(--font-space-grotesk);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: var(--font-sora);
+  --font-mono: var(--font-fira-code);
   --topbar-h: 4rem;
   --app-vh: 100vh;
 }

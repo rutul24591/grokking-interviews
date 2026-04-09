@@ -1,0 +1,50 @@
+{
+  "id": "build-debug-fix-v1",
+  "mode": "build-debug-fix",
+  "description": "Targeted build or parse failure handling with validation and merge summary.",
+  "tasks": [
+    {
+      "id": "topic-normalize",
+      "title": "Normalize target scope",
+      "taskType": "topic-normalize",
+      "execution": "system",
+      "artifactType": "topic-resolution"
+    },
+    {
+      "id": "context-pack",
+      "title": "Build shared context pack",
+      "taskType": "context-pack",
+      "execution": "system",
+      "dependsOn": ["topic-normalize"],
+      "artifactType": "context-pack"
+    },
+    {
+      "id": "build-validation",
+      "title": "Collect validation failure details",
+      "taskType": "build-validation",
+      "execution": "agent",
+      "preferredAgents": ["codex"],
+      "dependsOn": ["context-pack"],
+      "artifactType": "evaluation",
+      "outputSchema": "evaluation.schema.json"
+    },
+    {
+      "id": "parse-fix",
+      "title": "Fix targeted parse/build issue",
+      "taskType": "parse-fix",
+      "execution": "agent",
+      "preferredAgents": ["codex"],
+      "dependsOn": ["build-validation"],
+      "artifactType": "tsx-candidate",
+      "writeIntent": "article"
+    },
+    {
+      "id": "merge-decision",
+      "title": "Summarize merge readiness",
+      "taskType": "merge-decision",
+      "execution": "system",
+      "dependsOn": ["parse-fix"],
+      "artifactType": "run-summary"
+    }
+  ]
+}

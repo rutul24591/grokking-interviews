@@ -1,0 +1,40 @@
+{
+  "id": "claude",
+  "displayName": "Claude",
+  "strengths": [
+    "Long-form article synthesis",
+    "Trade-off analysis",
+    "Interview question and answer depth",
+    "Editorial tightening for audit reports"
+  ],
+  "preferredTaskTypes": [
+    "outline-draft",
+    "article-draft",
+    "audit-review",
+    "enhancement-draft"
+  ],
+  "supportedTaskTypes": [
+    "outline-draft",
+    "article-draft",
+    "audit-review",
+    "enhancement-draft",
+    "example-spec-draft",
+    "outline-review",
+    "svg-plan",
+    "audit-draft"
+  ],
+  "maxContextHints": {
+    "maxFiles": 8,
+    "maxCharsPerArtifact": 14000
+  },
+  "forbiddenDecisions": [
+    "Do not change repo files directly without a controller merge step.",
+    "Do not invent topics outside concepts/hierarchy-data.txt.",
+    "Do not redefine the required section order."
+  ],
+  "outputFormats": [
+    "json",
+    "markdown",
+    "text"
+  ]
+}

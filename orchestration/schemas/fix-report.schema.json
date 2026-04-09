@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fix Report Artifact",
+  "type": "object",
+  "required": ["summary", "changes", "remainingRisks"],
+  "properties": {
+    "summary": { "type": "string" },
+    "changes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "remainingRisks": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

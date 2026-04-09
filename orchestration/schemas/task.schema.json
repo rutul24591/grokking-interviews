@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Task Envelope",
+  "type": "object",
+  "required": ["id", "runId", "taskType", "status", "execution"],
+  "properties": {
+    "id": { "type": "string" },
+    "runId": { "type": "string" },
+    "taskType": { "type": "string" },
+    "status": { "type": "string" },
+    "execution": { "type": "string" },
+    "preferredAgents": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "contextPackPath": { "type": "string" },
+    "writeIntents": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

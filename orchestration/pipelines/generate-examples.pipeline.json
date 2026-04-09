@@ -1,0 +1,60 @@
+{
+  "id": "generate-examples-v1",
+  "mode": "generate-examples",
+  "description": "Plan and implement code examples in a controller-managed sequence.",
+  "tasks": [
+    {
+      "id": "topic-normalize",
+      "title": "Normalize topic scope",
+      "taskType": "topic-normalize",
+      "execution": "system",
+      "artifactType": "topic-resolution"
+    },
+    {
+      "id": "context-pack",
+      "title": "Build shared context pack",
+      "taskType": "context-pack",
+      "execution": "system",
+      "dependsOn": ["topic-normalize"],
+      "artifactType": "context-pack"
+    },
+    {
+      "id": "example-spec-draft",
+      "title": "Draft example spec",
+      "taskType": "example-spec-draft",
+      "execution": "agent",
+      "preferredAgents": ["qwen"],
+      "dependsOn": ["context-pack"],
+      "artifactType": "article-content",
+      "outputSchema": "article-content.schema.json"
+    },
+    {
+      "id": "example-implementation",
+      "title": "Implement example candidate",
+      "taskType": "example-implementation",
+      "execution": "agent",
+      "preferredAgents": ["codex"],
+      "dependsOn": ["example-spec-draft"],
+      "artifactType": "tsx-candidate",
+      "writeIntent": "article"
+    },
+    {
+      "id": "build-validation",
+      "title": "Validate example candidate",
+      "taskType": "build-validation",
+      "execution": "agent",
+      "preferredAgents": ["codex"],
+      "dependsOn": ["example-implementation"],
+      "artifactType": "evaluation",
+      "outputSchema": "evaluation.schema.json"
+    },
+    {
+      "id": "merge-decision",
+      "title": "Summarize merge readiness",
+      "taskType": "merge-decision",
+      "execution": "system",
+      "dependsOn": ["build-validation"],
+      "artifactType": "run-summary"
+    }
+  ]
+}

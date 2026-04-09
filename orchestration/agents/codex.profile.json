@@ -1,0 +1,39 @@
+{
+  "id": "codex",
+  "displayName": "Codex",
+  "strengths": [
+    "Repo-grounded TSX assembly",
+    "Parse and build debugging",
+    "Path correctness",
+    "Validation and repair loops"
+  ],
+  "preferredTaskTypes": [
+    "tsx-assembly",
+    "build-validation",
+    "parse-fix",
+    "example-implementation",
+    "svg-validation"
+  ],
+  "supportedTaskTypes": [
+    "tsx-assembly",
+    "build-validation",
+    "parse-fix",
+    "example-implementation",
+    "svg-validation"
+  ],
+  "maxContextHints": {
+    "maxFiles": 12,
+    "maxCharsPerArtifact": 18000
+  },
+  "forbiddenDecisions": [
+    "Do not rewrite article structure without a locked outline or gap report.",
+    "Do not merge directly into repo-tracked files.",
+    "Do not ignore validation failures."
+  ],
+  "outputFormats": [
+    "tsx",
+    "json",
+    "markdown",
+    "text"
+  ]
+}

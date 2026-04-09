@@ -1,0 +1,46 @@
+{
+  "id": "qwen",
+  "displayName": "Qwen",
+  "strengths": [
+    "Parallel review and challenge passes",
+    "Content synthesis when explicitly routed",
+    "Gap analysis",
+    "SVG planning",
+    "Audit first-pass scoring"
+  ],
+  "preferredTaskTypes": [
+    "outline-draft",
+    "article-draft",
+    "audit-review",
+    "outline-review",
+    "svg-plan",
+    "svg-generation",
+    "audit-draft"
+  ],
+  "supportedTaskTypes": [
+    "outline-draft",
+    "article-draft",
+    "audit-review",
+    "enhancement-draft",
+    "outline-review",
+    "svg-plan",
+    "svg-generation",
+    "audit-draft",
+    "example-spec-draft"
+  ],
+  "maxContextHints": {
+    "maxFiles": 8,
+    "maxCharsPerArtifact": 12000
+  },
+  "forbiddenDecisions": [
+    "Do not alter final TSX structure without a Codex assembly step.",
+    "Do not change accepted task scope.",
+    "Do not skip required issue categories in audits."
+  ],
+  "outputFormats": [
+    "json",
+    "markdown",
+    "text",
+    "svg"
+  ]
+}

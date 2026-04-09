@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Job Request",
+  "type": "object",
+  "required": ["mode", "domain", "category", "subcategory"],
+  "properties": {
+    "mode": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "subcategory": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "string"
+    },
+    "batchSize": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "overwritePolicy": {
+      "type": "string"
+    },
+    "approvalMode": {
+      "type": "string"
+    }
+  }
+}
