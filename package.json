@@ -2,6 +2,11 @@
   "name": "system-design-prep",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.11.1",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "generate-article-routes": "tsx scripts/generate-article-routes.ts",
