@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Hot partition problem showing one partition receiving 90% of traffic while others sit idle</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">The Hot Partition Problem</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">One partition receives 90% of traffic while others sit idle — caused by sequential keys, celebrities, or timestamps</text>
+
+  <!-- Partition boxes with traffic bars -->
+  <!-- Partition 1 (HOT) -->
+  <rect x="30" y="80" width="160" height="380" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="3"/>
+  <rect x="30" y="80" width="160" height="35" rx="12" fill="#cc4444"/>
+  <rect x="30" y="105" width="160" height="10" fill="#cc4444"/>
+  <text x="110" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Partition A</text>
+  <text x="110" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">HOT (90% traffic)</text>
+
+  <rect x="50" y="140" width="120" height="200" rx="6" fill="#cc4444" opacity="0.2"/>
+  <text x="110" y="250" text-anchor="middle" font-size="24" font-weight="700" fill="#cc4444">90%</text>
+  <text x="110" y="270" text-anchor="middle" font-size="9" fill="#1a1822">9,000 req/s</text>
+  <text x="110" y="285" text-anchor="middle" font-size="9" fill="#1a1822">CPU: 95%</text>
+  <text x="110" y="300" text-anchor="middle" font-size="9" fill="#1a1822">Latency: 500ms</text>
+
+  <rect x="50" y="320" width="120" height="60" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="110" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Cause: Celebrity Key</text>
+  <text x="110" y="358" text-anchor="middle" font-size="9" fill="#1a1822">user_1234 (celebrity)</text>
+  <text x="110" y="373" text-anchor="middle" font-size="9" fill="#1a1822">100M followers</text>
+
+  <!-- Partition 2 -->
+  <rect x="210" y="80" width="160" height="380" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="1"/>
+  <rect x="210" y="80" width="160" height="35" rx="12" fill="#4caf50"/>
+  <rect x="210" y="105" width="160" height="10" fill="#4caf50"/>
+  <text x="290" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Partition B</text>
+  <text x="290" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Idle (3% traffic)</text>
+
+  <rect x="230" y="140" width="120" height="30" rx="6" fill="#4caf50" opacity="0.1"/>
+  <text x="290" y="160" text-anchor="middle" font-size="18" font-weight="700" fill="#4caf50">3%</text>
+  <text x="290" y="180" text-anchor="middle" font-size="9" fill="#1a1822">300 req/s</text>
+  <text x="290" y="195" text-anchor="middle" font-size="9" fill="#1a1822">CPU: 5%</text>
+  <text x="290" y="210" text-anchor="middle" font-size="9" fill="#1a1822">Latency: 10ms</text>
+
+  <!-- Partition 3 -->
+  <rect x="390" y="80" width="160" height="380" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="1"/>
+  <rect x="390" y="80" width="160" height="35" rx="12" fill="#4caf50"/>
+  <rect x="390" y="105" width="160" height="10" fill="#4caf50"/>
+  <text x="470" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Partition C</text>
+  <text x="470" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Idle (3% traffic)</text>
+
+  <rect x="410" y="140" width="120" height="30" rx="6" fill="#4caf50" opacity="0.1"/>
+  <text x="470" y="160" text-anchor="middle" font-size="18" font-weight="700" fill="#4caf50">3%</text>
+  <text x="470" y="180" text-anchor="middle" font-size="9" fill="#1a1822">300 req/s</text>
+  <text x="470" y="195" text-anchor="middle" font-size="9" fill="#1a1822">CPU: 5%</text>
+  <text x="470" y="210" text-anchor="middle" font-size="9" fill="#1a1822">Latency: 10ms</text>
+
+  <!-- Partition 4 -->
+  <rect x="570" y="80" width="160" height="380" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="1"/>
+  <rect x="570" y="80" width="160" height="35" rx="12" fill="#4caf50"/>
+  <rect x="570" y="105" width="160" height="10" fill="#4caf50"/>
+  <text x="650" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Partition D</text>
+  <text x="650" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Idle (2% traffic)</text>
+
+  <rect x="590" y="140" width="120" height="30" rx="6" fill="#4caf50" opacity="0.1"/>
+  <text x="650" y="160" text-anchor="middle" font-size="18" font-weight="700" fill="#4caf50">2%</text>
+  <text x="650" y="180" text-anchor="middle" font-size="9" fill="#1a1822">200 req/s</text>
+  <text x="650" y="195" text-anchor="middle" font-size="9" fill="#1a1822">CPU: 3%</text>
+  <text x="650" y="210" text-anchor="middle" font-size="9" fill="#1a1822">Latency: 8ms</text>
+
+  <!-- Partition 5 -->
+  <rect x="750" y="80" width="120" height="380" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="1"/>
+  <rect x="750" y="80" width="120" height="35" rx="12" fill="#4caf50"/>
+  <rect x="750" y="105" width="120" height="10" fill="#4caf50"/>
+  <text x="810" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Partition E</text>
+  <text x="810" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Idle (2% traffic)</text>
+
+  <rect x="770" y="140" width="80" height="30" rx="6" fill="#4caf50" opacity="0.1"/>
+  <text x="810" y="160" text-anchor="middle" font-size="18" font-weight="700" fill="#4caf50">2%</text>
+  <text x="810" y="180" text-anchor="middle" font-size="9" fill="#1a1822">200 req/s</text>
+  <text x="810" y="195" text-anchor="middle" font-size="9" fill="#1a1822">CPU: 3%</text>
+  <text x="810" y="210" text-anchor="middle" font-size="9" fill="#1a1822">Latency: 8ms</text>
+
+  <!-- Common causes callout -->
+  <rect x="30" y="475" width="840" height="20" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="489" text-anchor="middle" font-size="10" fill="#1a1822">Common causes: Sequential keys, timestamp-based partitioning, celebrity accounts, skewed data distribution</text>
+
+  <defs>
+    <marker id="arrowHP" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

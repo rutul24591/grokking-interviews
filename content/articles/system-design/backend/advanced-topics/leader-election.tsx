@@ -1,257 +1,512 @@
 "use client";
 
-import { ArticleImage } from "@/components/articles/ArticleImage";
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-backend-leader-election-extensive",
+  id: "article-backend-advanced-topics-leader-election",
   title: "Leader Election",
   description:
-    "Choose a single coordinator safely: leader election patterns, leases and consensus, failure detection trade-offs, and operational practices to avoid split brain and flapping.",
+    "Staff-level deep dive into leader election algorithms: Bully algorithm, Raft, Zab, ZooKeeper-based election, split-brain prevention, and production-scale distributed coordination patterns.",
   category: "backend",
   subcategory: "advanced-topics",
   slug: "leader-election",
-  wordCount: 2800,
-  readingTime: 14,
-  lastUpdated: "2026-03-14",
-  tags: ["backend", "advanced", "distributed-systems", "coordination"],
-  relatedTopics: ["quorum", "consensus", "service-registry"],
+  wordCount: 5500,
+  readingTime: 25,
+  lastUpdated: "2026-04-08",
+  tags: ["backend", "leader-election", "distributed-systems", "consensus", "raft", "zookeeper"],
+  relatedTopics: ["consistency-models", "service-discovery", "conflict-free-replicated-data-types", "fault-detection"],
 };
 
-export default function LeaderElectionConciseArticle() {
+const BASE_PATH = "/diagrams/system-design-concepts/backend/advanced-topics";
+
+export default function ArticlePage() {
   return (
     <ArticleLayout metadata={metadata}>
+      {/* ============================================================
+          SECTION 1: Definition & Context
+          ============================================================ */}
       <section>
-        <h2>What Leader Election Is</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Leader election</strong> is the process of selecting a single node to act as a coordinator among a
-          group of nodes. Leaders are used to avoid conflicting actions: only one node schedules jobs, only one node
-          performs a maintenance task, or only one node acts as the writer for a shard.
+          <strong>Leader election</strong> is the process by which a distributed system selects
+          one node as the leader (coordinator) from among a group of candidate nodes. The leader
+          is responsible for coordinating shared resources, making decisions that require a
+          single point of authority, or serializing operations that would otherwise conflict if
+          executed concurrently by multiple nodes. Leader election is fundamental to distributed
+          systems because many coordination problems (distributed locking, transaction ordering,
+          configuration management) require a single decision-maker to ensure correctness.
         </p>
         <p>
-          The hard part is not picking a leader once. It is handling failure: detecting when the leader is dead,
-          promoting a new leader quickly, and avoiding split brain where multiple nodes believe they are leader at the
-          same time.
+          Consider a distributed database with three replica nodes. When a client sends a write
+          request, one node must be designated as the leader to determine the order of writes
+          and ensure that all replicas apply writes in the same order. Without a leader, two
+          replicas might concurrently accept conflicting writes, leading to inconsistent state
+          across replicas. The leader serializes writes: it assigns a sequence number to each
+          write, replicates the write to follower nodes in order, and waits for a majority of
+          nodes to acknowledge before committing the write. This ensures that all replicas
+          apply writes in the same order, maintaining consistency.
         </p>
+        <p>
+          For staff/principal engineers, leader election requires understanding the trade-offs
+          between election algorithms (Bully, Raft, Zab), failure detection mechanisms, split-brain
+          prevention, and the performance overhead of leader-based coordination. The challenge
+          is that leader election must be fast (quickly electing a new leader after the old leader
+          fails), safe (never electing two leaders simultaneously), and efficient (minimizing
+          the communication overhead of election and heartbeat protocols).
+        </p>
+        <p>
+          The business impact of leader election decisions is significant. A slow election
+          (seconds to minutes) means the system is unavailable during the election window,
+          impacting user experience and SLA compliance. An unsafe election (two leaders elected
+          simultaneously) causes split-brain, where two leaders accept conflicting writes,
+          leading to data corruption that is expensive to detect and repair. An inefficient
+          election consumes excessive network bandwidth and CPU, reducing the system&apos;s
+          overall throughput.
+        </p>
+        <p>
+          In system design interviews, leader election demonstrates understanding of distributed
+          consensus, failure detection, split-brain prevention, and the trade-offs between
+          different election algorithms (performance, safety, complexity).
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 2: Core Concepts
+          ============================================================ */}
+      <section>
+        <h2>Core Concepts</h2>
+
         <ArticleImage
-          src="/diagrams/system-design-concepts/backend/advanced-topics/leader-election-diagram-1.svg"
-          alt="Leader election diagram showing nodes competing for leadership and a single leader coordinating"
-          caption="Leader election is a coordination tool: one node holds leadership while others follow. Failure handling and avoiding split brain are the core design challenges."
+          src={`${BASE_PATH}/leader-election-algorithms.svg`}
+          alt="Leader election algorithms comparison: Bully (highest ID wins), Raft (term-based voting), Zab/ZooKeeper (ephemeral znodes), showing safety guarantees and performance characteristics"
+          caption="Leader election algorithms — Bully (highest ID wins, simple but O(N²) messages), Raft (term-based voting with majority, strong safety), Zab/ZooKeeper (ephemeral znodes with sequential ordering, production-proven)"
+        />
+
+        <h3>Leader Election Requirements</h3>
+        <p>
+          A correct leader election algorithm must satisfy three requirements. <strong>Safety</strong>:
+          at most one leader is elected at any time (no split-brain). <strong>Liveness</strong>:
+          eventually a leader is elected if one does not exist (the system does not remain leaderless
+          indefinitely). <strong>Agreement</strong>: all nodes agree on who the leader is (no two
+          nodes believe different nodes are the leader).
+        </p>
+        <p>
+          These requirements must hold even in the face of node failures (crash failures, where a
+          node stops responding) and network partitions (where some nodes cannot communicate with
+          others). The CAP theorem applies: during a network partition, the system must choose
+          between safety (not electing a leader if a quorum cannot be formed) and liveness
+          (electing a leader even if some nodes are unreachable, risking split-brain).
+        </p>
+
+        <h3>Failure Detection</h3>
+        <p>
+          Leader election requires failure detection: the ability to determine whether the current
+          leader is still alive. This is typically implemented through heartbeats: the leader sends
+          periodic heartbeat messages to follower nodes. If a follower does not receive a heartbeat
+          within a configured timeout, it suspects that the leader has failed and initiates a new
+          election. The heartbeat timeout must be carefully chosen: too short, and transient network
+          delays cause false failure detections (unnecessary elections); too long, and the system
+          remains leaderless for an extended period after a genuine failure.
+        </p>
+        <p>
+          Modern systems use adaptive timeouts that adjust based on observed heartbeat latency.
+          The timeout is set to a multiple of the observed P99 heartbeat latency (e.g., 3x P99),
+          ensuring that the timeout adapts to changing network conditions and reduces false
+          failure detections during periods of network congestion.
+        </p>
+
+        <h3>Split-Brain Prevention</h3>
+        <p>
+          Split-brain occurs when two nodes both believe they are the leader, typically because a
+          network partition prevents them from communicating. Split-brain is catastrophic for
+          leader-based systems: two leaders accepting writes concurrently will produce conflicting
+          state that is difficult or impossible to reconcile. Split-brain is prevented through
+          <strong>quorum-based voting</strong>: a candidate node must receive votes from a majority
+          of nodes (more than N/2, where N is the total number of nodes) to become the leader.
+          This ensures that at most one candidate can receive a majority of votes, because two
+          disjoint majorities cannot exist simultaneously (the intersection of any two majorities
+          is non-empty).
+        </p>
+        <p>
+          The quorum requirement means that leader election can proceed only if a majority of
+          nodes are reachable and can communicate. If a network partition isolates fewer than
+          a majority of nodes, that partition cannot elect a leader. This is the safety guarantee
+          of quorum-based leader election: the system prefers safety (no split-brain) over
+          liveness (having a leader) during network partitions.
+        </p>
+
+        <ArticleImage
+          src={`${BASE_PATH}/leader-election-raft-term.svg`}
+          alt="Raft leader election showing term-based voting: candidate requests votes, nodes grant one vote per term, candidate with majority wins, terms prevent stale leaders"
+          caption="Raft term-based election — candidate increments term, requests votes from peers, each node grants at most one vote per term, candidate with majority of votes becomes leader; terms prevent stale leaders from disrupting the cluster"
         />
       </section>
 
+      {/* ============================================================
+          SECTION 3: Architecture & Flow
+          ============================================================ */}
       <section>
-        <h2>Common Approaches: Leases, Consensus, and Ring Algorithms</h2>
+        <h2>Architecture &amp; Flow</h2>
+
+        <h3>Raft Leader Election</h3>
         <p>
-          There are multiple ways to elect a leader, and the right choice depends on your consistency needs and failure
-          model.
+          Raft is the most widely used leader election algorithm in production systems. It operates
+          in terms (monotonically increasing logical clock values). Each term begins with a leader
+          election: a candidate node increments its term, requests votes from other nodes, and
+          becomes the leader if it receives votes from a majority of nodes. Each node grants at
+          most one vote per term, ensuring that at most one candidate can win the election.
         </p>
-        <div className="my-6 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold">Lease-based</h3>
-            <p className="mt-2 text-sm text-muted">
-              A node acquires a time-bounded lease in a shared store. If it stops renewing, another node can take over.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold">Consensus-based</h3>
-            <p className="mt-2 text-sm text-muted">
-              A consensus group elects a leader and provides a consistent view of who the leader is (for example, Raft-like systems).
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold">Topology algorithms</h3>
-            <p className="mt-2 text-sm text-muted">
-              Ring and bully-style algorithms can work in controlled environments, but are less common in modern cloud systems.
-            </p>
-          </div>
-        </div>
         <p>
-          Lease-based leadership is often good enough for background tasks and schedulers when you can tolerate brief
-          gaps. Consensus-based leadership is preferred when you need stronger guarantees about single-writer behavior
-          and consistent state transitions.
+          The leader sends periodic heartbeats (AppendEntries RPCs with no log entries) to maintain
+          its authority. If a follower does not receive a heartbeat within its election timeout, it
+          transitions to candidate state, increments its term, and starts a new election. The
+          election timeout is randomized (e.g., 150-300ms) to prevent multiple nodes from starting
+          elections simultaneously, which would cause vote splitting and election timeouts.
         </p>
+
+        <h3>ZooKeeper-Based Leader Election</h3>
+        <p>
+          Apache ZooKeeper implements leader election using ephemeral znodes and sequential
+          ordering. Each candidate creates an ephemeral sequential znode under a designated
+          election path (e.g., <code className="inline-code">/election/leader_000001</code>).
+          The candidate with the lowest sequence number becomes the leader. Other candidates
+          watch the znode immediately preceding theirs in the sequence. If the leader fails,
+          its ephemeral znode is automatically deleted (because it is ephemeral), and the
+          candidate watching the leader&apos;s znode is notified and becomes the new leader.
+        </p>
+        <p>
+          This approach provides efficient failure detection: only the candidate immediately
+          following the leader needs to watch the leader&apos;s znode, rather than all candidates
+          watching all znodes. When the leader fails, only one candidate is notified and starts
+          the process of becoming the new leader, avoiding the thundering herd problem of all
+          candidates simultaneously attempting to become the leader.
+        </p>
+
         <ArticleImage
-          src="/diagrams/system-design-concepts/backend/advanced-topics/leader-election-diagram-2.svg"
-          alt="Leader election control points: leases, heartbeats, timeouts, and promotion"
-          caption="Leader election is a time and failure-detection problem. Heartbeats, timeouts, and lease expiry determine failover speed and false leader changes."
+          src={`${BASE_PATH}/leader-election-zk-ephemeral.svg`}
+          alt="ZooKeeper ephemeral znode leader election showing sequential znodes, watching predecessor, automatic cleanup on session expiration"
+          caption="ZooKeeper election — candidates create ephemeral sequential znodes, lowest sequence number wins, each candidate watches its predecessor; when leader fails, its znode auto-deletes, successor is notified and becomes new leader"
         />
       </section>
 
+      {/* ============================================================
+          SECTION 4: Trade-offs & Comparison
+          ============================================================ */}
       <section>
-        <h2>Failure Detection: Fast Failover vs False Positives</h2>
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          Leader failover is driven by failure detection: how quickly you decide the leader is unhealthy. Aggressive
-          timeouts produce fast failover but can cause false positives during transient pauses, GC events, or network
-          jitter. Conservative timeouts reduce flapping but increase recovery time when the leader is truly down.
+          Leader election algorithms involve trade-offs between safety, performance, and
+          complexity. The Bully algorithm is simplest to implement but generates O(N²) messages
+          per election, making it unsuitable for large clusters. Raft provides strong safety
+          guarantees (linearizable reads, log consistency) with O(N) messages per election,
+          but requires a majority quorum to proceed. ZooKeeper-based election provides efficient
+          failure detection (only one watcher per candidate) and automatic cleanup (ephemeral
+          znodes), but depends on an external ZooKeeper cluster, adding operational complexity.
         </p>
         <p>
-          This trade-off is operationally visible. If the system frequently changes leaders during normal load, you are
-          likely over-sensitive. If leader failover takes too long during real outages, you may be too conservative or
-          have an overloaded coordination plane.
+          The staff-level insight is that Raft is the preferred algorithm for most production
+          systems because it provides strong safety guarantees, reasonable performance, and is
+          well-understood (used by etcd, Consul, CockroachDB, TiDB). ZooKeeper-based election
+          is preferred when the system already depends on ZooKeeper for other coordination
+          tasks (configuration management, service discovery), avoiding the need to implement
+          a separate election protocol.
         </p>
       </section>
 
+      {/* ============================================================
+          SECTION 5: Best Practices
+          ============================================================ */}
       <section>
-        <h2>Split Brain: The Failure You Must Prevent</h2>
+        <h2>Best Practices</h2>
         <p>
-          Split brain occurs when multiple nodes believe they are leader and perform actions that should be unique. This
-          can corrupt state: duplicate scheduled jobs, multiple writers, or inconsistent metadata updates. Systems avoid
-          split brain by making leadership contingent on a single authoritative source: a lease, a quorum decision, or a
-          fencing mechanism.
+          Use an odd number of nodes (3, 5, or 7) for the election cluster. An odd number ensures
+          that a majority can be formed even if one node fails (3 nodes tolerate 1 failure, 5 nodes
+          tolerate 2 failures). Adding an even number of nodes does not increase fault tolerance
+          (4 nodes tolerate 1 failure, same as 3 nodes) but increases the quorum size, making
+          elections slower and more prone to failure during network partitions.
         </p>
         <p>
-          Fencing is the practical mitigation. When a leader is replaced, the old leader must be prevented from
-          continuing to act as leader even if it later resumes. Fencing is often implemented as monotonically increasing
-          tokens that downstream systems reject if stale.
+          Randomize election timeouts to prevent vote splitting. If all nodes start elections
+          simultaneously, they split the vote (no candidate receives a majority), and all nodes
+          time out again, causing repeated election timeouts. Randomized timeouts (e.g., 150-300ms)
+          ensure that one node times out first and starts its election before the others, giving
+          it a head start in collecting votes.
+        </p>
+        <p>
+          Implement leader lease: when a node becomes the leader, it receives a lease (time-bound
+          authority) from the quorum. During the lease period, the leader can make decisions
+          without consulting the quorum for each decision. When the lease expires, the leader
+          must renew it by demonstrating that it still has quorum support. This reduces the
+          communication overhead of leader-based coordination while maintaining safety (if the
+          leader loses connectivity to the quorum, its lease expires and a new election can
+          proceed).
+        </p>
+        <p>
+          Monitor leader election events and alert on frequent elections. Frequent elections
+          (more than once per minute) indicate network instability, leader overload, or
+          misconfigured election timeouts. Track the election duration and alert when it exceeds
+          a threshold (e.g., 5 seconds), indicating that the election is struggling to reach
+          consensus.
         </p>
       </section>
 
+      {/* ============================================================
+          SECTION 6: Common Pitfalls
+          ============================================================ */}
       <section>
-        <h2>Operational Considerations</h2>
+        <h2>Common Pitfalls</h2>
         <p>
-          Leader election is a cross-cutting dependency. If the coordination store is degraded, leadership becomes
-          unstable. Many incidents show up as repeated leader changes that cascade into higher load and retry storms.
+          The most common pitfall is using an even number of nodes in the election cluster.
+          Four nodes tolerate only 1 failure (same as 3 nodes) but require 3 votes for a
+          quorum (instead of 2 for 3 nodes), making elections harder to complete during network
+          partitions. The fix is to use 3, 5, or 7 nodes — odd numbers that maximize fault
+          tolerance for the cluster size.
         </p>
         <p>
-          Observability should include leader change frequency, lease renewal errors, and time-to-failover. When a
-          leader changes, downstream systems should surface whether the change was expected (planned maintenance) or
-          unexpected (instability).
+          Not randomizing election timeouts causes vote splitting and repeated election
+          timeouts. If all nodes use the same election timeout, they all start elections
+          simultaneously, split the vote, and time out again. The fix is to randomize the
+          election timeout within a range (e.g., 150-300ms) so that one node consistently
+          starts its election before the others.
+        </p>
+        <p>
+          Assuming the leader is always correct is a safety pitfall. The leader may have
+          uncommitted state (writes that were accepted by the leader but not yet replicated
+          to a majority of followers). If the leader fails before replicating these writes,
+          the writes are lost. The fix is to use a consensus protocol (Raft, Zab) that ensures
+          the new leader has all committed writes from the old leader, and uncommitted writes
+          are discarded.
+        </p>
+        <p>
+          Not monitoring leader election health means you won&apos;t know when the system is
+          experiencing frequent elections or prolonged leaderless periods. The fix is to
+          instrument the election protocol with metrics (election count, election duration,
+          leader tenure) and set alerts on abnormal values (elections per minute &gt; 1,
+          election duration &gt; 5 seconds, leader tenure &lt; 30 seconds).
         </p>
       </section>
 
+      {/* ============================================================
+          SECTION 7: Real-World Use Cases
+          ============================================================ */}
       <section>
-        <h2>Failure Modes and Mitigations</h2>
+        <h2>Real-World Use Cases</h2>
+
+        <h3>etcd: Raft-Based Leader Election</h3>
         <p>
-          Leader election failures tend to be coordination failures: instability, split brain, or slow recovery. The
-          mitigations are about fencing, timeouts, and careful dependency management.
+          etcd uses Raft for leader election in Kubernetes clusters. The etcd leader coordinates
+          configuration updates, service discovery, and distributed locking for the Kubernetes
+          control plane. When the leader fails, a new election completes within 1-3 seconds,
+          and the new leader resumes coordination. etcd uses leader leases to reduce the
+          communication overhead of read operations: the leader serves reads from its local
+          state during the lease period without consulting the quorum.
         </p>
-        <ArticleImage
-          src="/diagrams/system-design-concepts/backend/advanced-topics/leader-election-diagram-3.svg"
-          alt="Leader election failure modes: split brain, leader flapping, and slow failover"
-          caption="Leader election incidents come from instability: split brain, flapping leaders, and slow failover. Fencing and tuned timeouts keep coordination safe."
-        />
-        <div className="my-6 grid gap-4 sm:grid-cols-2">
+
+        <h3>Apache Kafka: Controller Election</h3>
+        <p>
+          Kafka uses ZooKeeper-based leader election to elect a controller node that manages
+          partition leadership (which broker is the leader for each partition), replica
+          reassignment, and topic creation/deletion. When the controller fails, ZooKeeper
+          automatically detects the failure (through ephemeral znode deletion) and the next
+          broker in the sequential order becomes the new controller. This election completes
+          within 100-500ms, ensuring minimal disruption to Kafka&apos;s partition management.
+        </p>
+
+        <h3>Consul: Server Leader Election</h3>
+        <p>
+          HashiCorp Consul uses Raft to elect a server leader that manages the service catalog,
+          health check results, and key-value store. The leader replicates all writes to follower
+          nodes through the Raft log, ensuring that the service catalog is consistent across
+          all Consul servers. Consul uses leader leases to serve reads from the leader without
+          consulting the quorum, reducing read latency for service discovery queries.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 8: Interview Questions & Answers
+          ============================================================ */}
+      <section>
+        <h2>Interview Questions &amp; Answers</h2>
+
+        <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold">Leader flapping</h3>
-            <p className="mt-2 text-sm text-muted">
-              Leaders change frequently due to aggressive timeouts or coordination store instability, causing work churn and outages.
+            <h3 className="text-lg font-semibold mb-3">Question 1: What is leader election and why is it needed?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Leader election selects one node from a group of candidates to serve as the
+              coordinator for shared resources or decisions that require a single point of
+              authority. It is needed because many distributed system problems (distributed
+              locking, transaction ordering, configuration management) require a single
+              decision-maker to ensure correctness.
             </p>
-            <ul className="mt-3 space-y-1 text-sm">
-              <li>
-                <strong>Mitigation:</strong> tune timeouts, add jitter to renewals, and ensure coordination plane has capacity and low latency.
-              </li>
-              <li>
-                <strong>Signal:</strong> increased leader changes without corresponding node failures and elevated coordination errors.
-              </li>
-            </ul>
+            <p>
+              Without a leader, multiple nodes might concurrently make conflicting decisions,
+              leading to inconsistent state. The leader serializes decisions and ensures that
+              all nodes agree on the outcome.
+            </p>
           </div>
+
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold">Split brain actions</h3>
-            <p className="mt-2 text-sm text-muted">
-              Two leaders execute unique actions concurrently, causing data corruption or duplicated work.
+            <h3 className="text-lg font-semibold mb-3">Question 2: How does Raft leader election work?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Raft operates in terms. When a node does not receive a heartbeat from the leader
+              within its election timeout, it transitions to candidate state, increments its
+              term, and requests votes from other nodes. Each node grants at most one vote per
+              term. The candidate that receives votes from a majority of nodes becomes the
+              leader for that term.
             </p>
-            <ul className="mt-3 space-y-1 text-sm">
-              <li>
-                <strong>Mitigation:</strong> fencing tokens and downstream validation that rejects stale leaders.
-              </li>
-              <li>
-                <strong>Signal:</strong> duplicated scheduled tasks, conflicting writes, or inconsistent metadata updates.
-              </li>
-            </ul>
+            <p>
+              Election timeouts are randomized (e.g., 150-300ms) to prevent vote splitting.
+              The leader sends periodic heartbeats to maintain its authority. If a follower
+              receives a heartbeat with a term higher than its own, it updates its term and
+              recognizes the sender as the leader.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 3: How do you prevent split-brain in leader election?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Split-brain is prevented through quorum-based voting: a candidate must receive
+              votes from a majority of nodes (more than N/2) to become the leader. This ensures
+              that at most one candidate can win, because two disjoint majorities cannot exist
+              simultaneously.
+            </p>
+            <p>
+              Additionally, each node grants at most one vote per term, preventing a node from
+              voting for multiple candidates in the same term. The term mechanism ensures that
+              stale leaders (from previous terms) are recognized and rejected by nodes with
+              higher terms.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 4: Why should you use an odd number of nodes for leader election?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              An odd number of nodes (3, 5, 7) maximizes fault tolerance for the cluster size.
+              Three nodes tolerate 1 failure, five nodes tolerate 2 failures, seven nodes
+              tolerate 3 failures. Adding an even number of nodes does not increase fault
+              tolerance (4 nodes tolerate 1 failure, same as 3) but increases the quorum
+              size, making elections harder to complete during network partitions.
+            </p>
+            <p>
+              For example, with 4 nodes, the quorum is 3 (need 3 of 4 votes). With 3 nodes,
+              the quorum is 2 (need 2 of 3 votes). Both tolerate 1 failure, but 3 nodes
+              require fewer votes for a quorum, making elections faster and more resilient
+              to network partitions.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 5: What is a leader lease and why is it useful?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              A leader lease is a time-bound authority granted to the leader by the quorum.
+              During the lease period, the leader can make decisions (e.g., serve reads from
+              its local state) without consulting the quorum for each decision. The lease
+              expires after a configured duration, and the leader must renew it by demonstrating
+              that it still has quorum support.
+            </p>
+            <p>
+              Leader leases reduce the communication overhead of leader-based coordination:
+              instead of consulting the quorum for every read, the leader serves reads locally
+              during the lease period. If the leader loses connectivity to the quorum, its
+              lease expires and a new election can proceed, ensuring safety.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 6: How does ZooKeeper implement leader election?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              ZooKeeper uses ephemeral sequential znodes. Each candidate creates an ephemeral
+              sequential znode under a designated election path (e.g.,
+              <code className="inline-code">/election/leader_000001</code>). The candidate
+              with the lowest sequence number becomes the leader.
+            </p>
+            <p>
+              Each candidate watches the znode immediately preceding its own in the sequence.
+              If the leader fails, its ephemeral znode is automatically deleted (because
+              ephemeral znodes are tied to the session that created them), and the candidate
+              watching the leader&apos;s znode is notified and becomes the new leader. This
+              provides efficient failure detection with only one watcher per candidate.
+            </p>
           </div>
         </div>
-        <div className="my-6 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold">Slow recovery</h3>
-            <p className="mt-2 text-sm text-muted">
-              Failover takes too long, leaving systems without a coordinator and causing backlog growth.
-            </p>
-            <ul className="mt-3 space-y-1 text-sm">
-              <li>
-                <strong>Mitigation:</strong> adjust timeouts based on SLOs, ensure coordination store is reliable, and pre-warm candidates for leadership.
-              </li>
-              <li>
-                <strong>Signal:</strong> long gaps with no leader and rising queue lag or maintenance job delays.
-              </li>
-            </ul>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-5">
-            <h3 className="text-lg font-semibold">Coordination store outage</h3>
-            <p className="mt-2 text-sm text-muted">
-              The system cannot acquire or renew leadership, causing either global stop or unsafe failover behavior.
-            </p>
-            <ul className="mt-3 space-y-1 text-sm">
-              <li>
-                <strong>Mitigation:</strong> redundant coordination plane, circuit breakers, and explicit degraded modes for non-critical leader tasks.
-              </li>
-              <li>
-                <strong>Signal:</strong> spikes in lease renew failures and leader churn across multiple clusters at once.
-              </li>
-            </ul>
-          </div>
-        </div>
       </section>
 
+      {/* ============================================================
+          SECTION 9: References
+          ============================================================ */}
       <section>
-        <h2>Scenario: Single Scheduler in a Multi-Node Cluster</h2>
-        <p>
-          A cluster runs periodic maintenance jobs, but only one node should schedule them. Lease-based leader election
-          works well here: the leader renews a lease periodically and enqueues jobs. If the leader fails, another node
-          takes over after lease expiry. Fencing prevents the old leader from continuing after recovery.
-        </p>
-        <p>
-          The system must also handle flapping: if the leader changes too often, jobs can run twice or not at all. That
-          is an operational sign that timeouts or coordination capacity need adjustment.
-        </p>
-      </section>
-
-      <section>
-        <h2>Checklist</h2>
+        <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
           <li>
-            Leadership is tied to a single authoritative mechanism (lease or quorum), with clear rules for promotion and expiry.
+            <a
+              href="https://raft.github.io/raft.pdf"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ongaro & Ousterhout (2014): In Search of an Understandable Consensus Algorithm
+            </a>{" "}
+            — The original Raft paper describing leader election and log replication.
           </li>
           <li>
-            Fencing prevents stale leaders from performing unique actions after losing leadership.
+            <a
+              href="https://zookeeper.apache.org/doc/r3.7.0/recipes.html#sc_recipes_leaderElection"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ZooKeeper: Leader Election Recipe
+            </a>{" "}
+            — How ZooKeeper implements leader election using ephemeral sequential znodes.
           </li>
           <li>
-            Timeouts are tuned to balance fast failover with avoiding false leader changes under jitter.
+            <a
+              href="https://etcd.io/docs/latest/learning/design/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              etcd: Raft-Based Leader Election
+            </a>{" "}
+            — How etcd uses Raft for leader election in Kubernetes.
           </li>
           <li>
-            Observability tracks leader change frequency, lease renewal errors, and time-to-failover.
+            <a
+              href="https://kafka.apache.org/documentation/#design_controller"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Apache Kafka: Controller Election
+            </a>{" "}
+            — How Kafka uses ZooKeeper for controller election.
           </li>
           <li>
-            Coordination dependencies are engineered for reliability because many subsystems rely on stable leadership.
+            Martin Kleppmann,{" "}
+            <em>Designing Data-Intensive Applications</em>, O&apos;Reilly, 2017. Chapter 9
+            (Consistency and Consensus).
+          </li>
+          <li>
+            <a
+              href="https://hashicorp.com/blog/consul-raft-protocol"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HashiCorp: Consul Raft Protocol
+            </a>{" "}
+            — How Consul uses Raft for server leader election.
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why do you need fencing tokens?</p>
-            <p className="mt-2 text-sm text-muted">
-              A: Because leaders can recover after losing leadership and still act. Fencing tokens allow downstream systems to reject actions from stale leaders and prevent split brain effects.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What drives the failover time?</p>
-            <p className="mt-2 text-sm text-muted">
-              A: Failure detection and lease expiry: heartbeat intervals, timeouts, and coordination store latency determine how quickly a new leader can be safely promoted.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: When do you prefer consensus-based leadership?</p>
-            <p className="mt-2 text-sm text-muted">
-              A: When a single-writer guarantee is critical for correctness and you need a consistent view of leadership across the cluster, not only best-effort coordination.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );
 }
-

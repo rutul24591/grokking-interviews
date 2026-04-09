@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Group commit showing individual fsyncs vs batched fsync reducing overhead</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Group Commit Optimization</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Collecting multiple commits within a time window into a single fsync reduces overhead by 10-100x</text>
+
+  <!-- Left column: Without group commit -->
+  <rect x="30" y="80" width="410" height="390" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="30" rx="12" fill="#cc4444"/>
+  <rect x="30" y="100" width="410" height="10" fill="#cc4444"/>
+  <text x="235" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Without Group Commit (individual fsyncs)</text>
+
+  <!-- Timeline without group commit -->
+  <text x="50" y="135" text-anchor="start" font-size="10" font-weight="600" fill="#1a1822">Time</text>
+  <line x1="50" y1="145" x2="410" y2="145" stroke="#1a1822" stroke-width="1" opacity="0.2"/>
+
+  <!-- T1 without group commit -->
+  <rect x="50" y="155" width="60" height="25" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="80" y="172" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">T1 commit</text>
+  <rect x="115" y="155" width="40" height="25" rx="4" fill="#cc4444" opacity="0.4" stroke="#cc4444" stroke-width="1"/>
+  <text x="135" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">fsync</text>
+
+  <!-- T2 without group commit -->
+  <rect x="160" y="155" width="60" height="25" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="190" y="172" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">T2 commit</text>
+  <rect x="225" y="155" width="40" height="25" rx="4" fill="#cc4444" opacity="0.4" stroke="#cc4444" stroke-width="1"/>
+  <text x="245" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">fsync</text>
+
+  <!-- T3 without group commit -->
+  <rect x="270" y="155" width="60" height="25" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="300" y="172" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">T3 commit</text>
+  <rect x="335" y="155" width="40" height="25" rx="4" fill="#cc4444" opacity="0.4" stroke="#cc4444" stroke-width="1"/>
+  <text x="355" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">fsync</text>
+
+  <!-- T4 without group commit -->
+  <rect x="50" y="195" width="60" height="25" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="80" y="212" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">T4 commit</text>
+  <rect x="115" y="195" width="40" height="25" rx="4" fill="#cc4444" opacity="0.4" stroke="#cc4444" stroke-width="1"/>
+  <text x="135" y="212" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">fsync</text>
+
+  <!-- T5 without group commit -->
+  <rect x="160" y="195" width="60" height="25" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="190" y="212" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">T5 commit</text>
+  <rect x="225" y="195" width="40" height="25" rx="4" fill="#cc4444" opacity="0.4" stroke="#cc4444" stroke-width="1"/>
+  <text x="245" y="212" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">fsync</text>
+
+  <!-- Summary without group commit -->
+  <rect x="50" y="245" width="360" height="60" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="230" y="265" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">5 transactions = 5 fsync calls</text>
+  <text x="230" y="283" text-anchor="middle" font-size="10" fill="#1a1822">Each fsync: ~1-10ms (disk flush)</text>
+  <text x="230" y="298" text-anchor="middle" font-size="10" fill="#1a1822">Total overhead: 5-50ms for fsync alone</text>
+
+  <!-- Problem annotation -->
+  <rect x="50" y="320" width="360" height="60" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="230" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Problem: fsync is the bottleneck</text>
+  <text x="230" y="358" text-anchor="middle" font-size="10" fill="#1a1822">At 1000 commits/sec = 1000 fsyncs/sec</text>
+  <text x="230" y="373" text-anchor="middle" font-size="10" fill="#1a1822">Disk IOPS exhausted, throughput capped</text>
+
+  <rect x="50" y="395" width="360" height="55" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="230" y="415" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Throughput: ~200-500 txn/sec</text>
+  <text x="230" y="433" text-anchor="middle" font-size="10" fill="#1a1822">Limited by sequential fsync latency</text>
+
+  <!-- Right column: With group commit -->
+  <rect x="460" y="80" width="410" height="390" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="30" rx="12" fill="#4caf50"/>
+  <rect x="460" y="100" width="410" height="10" fill="#4caf50"/>
+  <text x="665" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">With Group Commit (batched fsync)</text>
+
+  <!-- Timeline with group commit -->
+  <text x="480" y="135" text-anchor="start" font-size="10" font-weight="600" fill="#1a1822">Time</text>
+  <line x1="480" y1="145" x2="840" y2="145" stroke="#1a1822" stroke-width="1" opacity="0.2"/>
+
+  <!-- Collection window -->
+  <rect x="480" y="155" width="200" height="105" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="580" y="175" text-anchor="middle" font-size="9" font-weight="600" fill="#f0ad4e">5ms collection window</text>
+
+  <!-- T1 with group commit -->
+  <rect x="490" y="185" width="55" height="22" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="517" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">T1</text>
+
+  <!-- T2 with group commit -->
+  <rect x="550" y="185" width="55" height="22" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="577" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">T2</text>
+
+  <!-- T3 with group commit -->
+  <rect x="610" y="185" width="55" height="22" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="637" y="200" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">T3</text>
+
+  <!-- T4 with group commit -->
+  <rect x="490" y="215" width="55" height="22" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="517" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">T4</text>
+
+  <!-- T5 with group commit -->
+  <rect x="550" y="215" width="55" height="22" rx="6" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="577" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">T5</text>
+
+  <!-- Arrow to batch -->
+  <line x1="670" y1="205" x2="700" y2="205" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowGC)"/>
+
+  <!-- Batch buffer -->
+  <rect x="705" y="175" width="80" height="60" rx="8" fill="#f0ad4e" opacity="0.25" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="745" y="195" text-anchor="middle" font-size="9" font-weight="700" fill="#f0ad4e">Batch</text>
+  <text x="745" y="210" text-anchor="middle" font-size="8" fill="#1a1822">T1+T2+T3</text>
+  <text x="745" y="225" text-anchor="middle" font-size="8" fill="#1a1822">+T4+T5</text>
+
+  <!-- Single fsync -->
+  <rect x="795" y="185" width="40" height="40" rx="6" fill="#4caf50" opacity="0.4" stroke="#4caf50" stroke-width="2"/>
+  <text x="815" y="202" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">fsync</text>
+  <text x="815" y="215" text-anchor="middle" font-size="7" fill="#4caf50">x1</text>
+
+  <!-- Summary with group commit -->
+  <rect x="480" y="245" width="360" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="660" y="265" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">5 transactions = 1 fsync call</text>
+  <text x="660" y="283" text-anchor="middle" font-size="10" fill="#1a1822">Single fsync amortizes disk latency</text>
+  <text x="660" y="298" text-anchor="middle" font-size="10" fill="#1a1822">Total overhead: 1-10ms for all 5</text>
+
+  <!-- Benefit annotation -->
+  <rect x="480" y="320" width="360" height="60" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="660" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Benefit: 5x fewer fsyncs</text>
+  <text x="660" y="358" text-anchor="middle" font-size="10" fill="#1a1822">At 1000 commits/sec = 200 fsyncs/sec</text>
+  <text x="660" y="373" text-anchor="middle" font-size="10" fill="#1a1822">(with 5ms window, batch size ~5)</text>
+
+  <rect x="480" y="395" width="360" height="55" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="660" y="415" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Throughput: 2000-5000 txn/sec</text>
+  <text x="660" y="433" text-anchor="middle" font-size="10" fill="#1a1822">10-100x improvement over individual</text>
+
+  <defs>
+    <marker id="arrowGC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

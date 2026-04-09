@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>LSM tree architecture showing memtable, SSTable levels, and compaction flow</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">LSM Tree Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Memtable → Immutable memtables → SSTable levels with compaction from memory to disk</text>
+
+  <!-- Memory section -->
+  <rect x="30" y="80" width="400" height="160" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="400" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="100" width="400" height="10" fill="#6d5bd0"/>
+  <text x="230" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Memory (DRAM)</text>
+
+  <rect x="50" y="120" width="100" height="100" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="100" y="145" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Memtable</text>
+  <text x="100" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Mutable</text>
+  <text x="100" y="180" text-anchor="middle" font-size="9" fill="#1a1822">(accepting writes)</text>
+  <text x="100" y="200" text-anchor="middle" font-size="9" fill="#1a1822">128 MB</text>
+
+  <rect x="165" y="120" width="100" height="100" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="215" y="145" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Immutable</text>
+  <text x="215" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Waiting to flush</text>
+  <text x="215" y="180" text-anchor="middle" font-size="9" fill="#1a1822">128 MB</text>
+
+  <rect x="280" y="120" width="130" height="100" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="345" y="145" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">WAL</text>
+  <text x="345" y="165" text-anchor="middle" font-size="9" fill="#1a1822">Write-Ahead Log</text>
+  <text x="345" y="180" text-anchor="middle" font-size="9" fill="#1a1822">Durability</text>
+
+  <!-- Arrow to disk -->
+  <line x1="230" y1="245" x2="230" y2="285" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowLSM)"/>
+  <text x="260" y="270" text-anchor="start" font-size="9" font-weight="600" fill="#6d5bd0">Flush</text>
+
+  <!-- Disk section -->
+  <rect x="30" y="290" width="840" height="190" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="290" width="840" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="310" width="840" height="10" fill="#6d5bd0"/>
+  <text x="450" y="310" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Disk (SSTables)</text>
+
+  <!-- Level 0 -->
+  <rect x="50" y="330" width="160" height="130" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="130" y="350" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">Level 0</text>
+  <text x="130" y="370" text-anchor="middle" font-size="9" fill="#1a1822">4 SSTables</text>
+  <text x="130" y="385" text-anchor="middle" font-size="9" fill="#1a1822">64 MB each</text>
+  <text x="130" y="400" text-anchor="middle" font-size="9" fill="#1a1822">Overlap allowed</text>
+  <rect x="65" y="410" width="40" height="25" rx="4" fill="#f0ad4e" opacity="0.4"/>
+  <rect x="110" y="410" width="40" height="25" rx="4" fill="#f0ad4e" opacity="0.4"/>
+  <rect x="155" y="410" width="40" height="25" rx="4" fill="#f0ad4e" opacity="0.4"/>
+  <text x="130" y="428" text-anchor="middle" font-size="8" fill="#1a1822">...4 files</text>
+
+  <!-- Arrow L0 to L1 -->
+  <line x1="210" y1="395" x2="270" y2="395" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowLSM)"/>
+  <text x="240" y="385" text-anchor="middle" font-size="8" fill="#6d5bd0">Compact</text>
+
+  <!-- Level 1 -->
+  <rect x="275" y="330" width="160" height="130" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="355" y="350" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Level 1</text>
+  <text x="355" y="370" text-anchor="middle" font-size="9" fill="#1a1822">10 SSTables</text>
+  <text x="355" y="385" text-anchor="middle" font-size="9" fill="#1a1822">64 MB each</text>
+  <text x="355" y="400" text-anchor="middle" font-size="9" fill="#1a1822">No overlap</text>
+
+  <!-- Arrow L1 to L2 -->
+  <line x1="435" y1="395" x2="495" y2="395" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowLSM)"/>
+  <text x="465" y="385" text-anchor="middle" font-size="8" fill="#6d5bd0">Compact</text>
+
+  <!-- Level 2 -->
+  <rect x="500" y="330" width="160" height="130" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="580" y="350" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Level 2</text>
+  <text x="580" y="370" text-anchor="middle" font-size="9" fill="#1a1822">~100 SSTables</text>
+  <text x="580" y="385" text-anchor="middle" font-size="9" fill="#1a1822">64 MB each</text>
+  <text x="580" y="400" text-anchor="middle" font-size="9" fill="#1a1822">No overlap</text>
+
+  <!-- Arrow L2 to LN -->
+  <line x1="660" y1="395" x2="720" y2="395" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowLSM)"/>
+  <text x="690" y="385" text-anchor="middle" font-size="8" fill="#6d5bd0">Compact</text>
+
+  <!-- Level N -->
+  <rect x="725" y="330" width="125" height="130" rx="8" fill="#6d5bd0" opacity="0.05" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="787" y="350" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Level N</text>
+  <text x="787" y="370" text-anchor="middle" font-size="9" fill="#1a1822">Largest level</text>
+  <text x="787" y="385" text-anchor="middle" font-size="9" fill="#1a1822">10x previous</text>
+  <text x="787" y="400" text-anchor="middle" font-size="9" fill="#1a1822">Cold data</text>
+
+  <defs>
+    <marker id="arrowLSM" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

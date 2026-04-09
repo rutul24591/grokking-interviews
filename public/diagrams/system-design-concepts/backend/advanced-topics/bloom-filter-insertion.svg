@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a2e">Bloom Filter -- Insertion</text>
+  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#555555">Element &quot;hello&quot; hashed by k=3 functions, sets 3 bits to 1</text>
+
+  <!-- Input Element -->
+  <rect x="30" y="190" width="120" height="70" rx="12" fill="#6d5bd0" stroke="#5a48b0" stroke-width="1"/>
+  <text x="90" y="220" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Element</text>
+  <text x="90" y="242" text-anchor="middle" font-size="16" font-weight="bold" fill="white">&quot;hello&quot;</text>
+
+  <!-- Hash Functions -->
+  <rect x="220" y="110" width="140" height="55" rx="8" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="290" y="143" text-anchor="middle" font-size="14" font-weight="bold" fill="white">h₁(x) = 2</text>
+
+  <rect x="220" y="195" width="140" height="55" rx="8" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="290" y="228" text-anchor="middle" font-size="14" font-weight="bold" fill="white">h₂(x) = 7</text>
+
+  <rect x="220" y="280" width="140" height="55" rx="8" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="290" y="313" text-anchor="middle" font-size="14" font-weight="bold" fill="white">h₃(x) = 12</text>
+
+  <!-- Arrows from element to hash functions -->
+  <line x1="150" y1="210" x2="220" y2="140" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="150" y1="225" x2="220" y2="225" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="150" y1="240" x2="220" y2="305" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Bit Array - BEFORE -->
+  <text x="590" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#cc4444">Before Insertion</text>
+  <rect x="420" y="140" width="340" height="110" rx="8" fill="white" stroke="#cccccc" stroke-width="1"/>
+
+  <!-- Bit cells before -->
+  <rect x="425" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="439" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="455" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="469" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="485" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="499" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="515" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="529" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="545" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="559" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="575" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="589" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="605" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="619" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="635" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="649" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+
+  <rect x="665" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="679" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="695" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="709" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="725" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="739" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="755" y="148" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="769" y="167" text-anchor="middle" font-size="12" fill="#333333">0</text>
+
+  <!-- Bit indices -->
+  <text x="439" y="192" text-anchor="middle" font-size="9" fill="#888888">0</text>
+  <text x="469" y="192" text-anchor="middle" font-size="9" fill="#888888">1</text>
+  <text x="499" y="192" text-anchor="middle" font-size="9" fill="#888888">2</text>
+  <text x="529" y="192" text-anchor="middle" font-size="9" fill="#888888">3</text>
+  <text x="559" y="192" text-anchor="middle" font-size="9" fill="#888888">4</text>
+  <text x="589" y="192" text-anchor="middle" font-size="9" fill="#888888">5</text>
+  <text x="619" y="192" text-anchor="middle" font-size="9" fill="#888888">6</text>
+  <text x="649" y="192" text-anchor="middle" font-size="9" fill="#888888">7</text>
+  <text x="679" y="192" text-anchor="middle" font-size="9" fill="#888888">8</text>
+  <text x="709" y="192" text-anchor="middle" font-size="9" fill="#888888">9</text>
+  <text x="739" y="192" text-anchor="middle" font-size="9" fill="#888888">10</text>
+  <text x="769" y="192" text-anchor="middle" font-size="9" fill="#888888">11</text>
+
+  <text x="600" y="235" text-anchor="middle" font-size="11" fill="#666666">m = 16 bits, all initialized to 0</text>
+
+  <!-- Bit Array - AFTER -->
+  <text x="590" y="290" text-anchor="middle" font-size="14" font-weight="bold" fill="#4caf50">After Insertion</text>
+  <rect x="420" y="305" width="340" height="110" rx="8" fill="white" stroke="#cccccc" stroke-width="1"/>
+
+  <!-- Bit cells after - with 3 bits set -->
+  <rect x="425" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="439" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="455" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="469" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="485" y="313" width="28" height="28" rx="4" fill="#4caf50" stroke="#3d8b40" stroke-width="1"/>
+  <text x="499" y="332" text-anchor="middle" font-size="12" font-weight="bold" fill="white">1</text>
+  <rect x="515" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="529" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="545" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="559" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="575" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="589" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="605" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="619" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="635" y="313" width="28" height="28" rx="4" fill="#4caf50" stroke="#3d8b40" stroke-width="1"/>
+  <text x="649" y="332" text-anchor="middle" font-size="12" font-weight="bold" fill="white">1</text>
+
+  <rect x="665" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="679" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="695" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="709" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="725" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="739" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="755" y="313" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="769" y="332" text-anchor="middle" font-size="12" fill="#333333">0</text>
+
+  <rect x="455" y="350" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="469" y="369" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="485" y="350" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="499" y="369" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="515" y="350" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="529" y="369" text-anchor="middle" font-size="12" fill="#333333">0</text>
+  <rect x="545" y="350" width="28" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="559" y="369" text-anchor="middle" font-size="12" fill="#333333">0</text>
+
+  <!-- Bit indices after -->
+  <text x="439" y="388" text-anchor="middle" font-size="9" fill="#888888">0</text>
+  <text x="469" y="388" text-anchor="middle" font-size="9" fill="#888888">1</text>
+  <text x="499" y="388" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="bold">2</text>
+  <text x="529" y="388" text-anchor="middle" font-size="9" fill="#888888">3</text>
+  <text x="559" y="388" text-anchor="middle" font-size="9" fill="#888888">4</text>
+  <text x="589" y="388" text-anchor="middle" font-size="9" fill="#888888">5</text>
+  <text x="619" y="388" text-anchor="middle" font-size="9" fill="#888888">6</text>
+  <text x="649" y="388" text-anchor="middle" font-size="9" fill="#4caf50" font-weight="bold">7</text>
+  <text x="679" y="388" text-anchor="middle" font-size="9" fill="#888888">8</text>
+  <text x="709" y="388" text-anchor="middle" font-size="9" fill="#888888">9</text>
+  <text x="739" y="388" text-anchor="middle" font-size="9" fill="#888888">10</text>
+  <text x="769" y="388" text-anchor="middle" font-size="9" fill="#888888">11</text>
+
+  <text x="600" y="430" text-anchor="middle" font-size="11" fill="#666666">Bits at positions 2, 7 set to 1 (h₃ maps to index 12, shown in row below)</text>
+
+  <!-- Arrows from hash to bit positions -->
+  <line x1="360" y1="140" x2="485" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-purple)" stroke-dasharray="4,2"/>
+  <line x1="360" y1="225" x2="635" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-purple)" stroke-dasharray="4,2"/>
+  <line x1="360" y1="305" x2="455" y2="358" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-purple)" stroke-dasharray="4,2"/>
+
+  <!-- Key takeaway -->
+  <rect x="30" y="440" width="380" height="40" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="220" y="465" text-anchor="middle" font-size="12" font-weight="bold" fill="#4caf50">Insertion: O(k) time, sets k bits to 1</text>
+</svg>

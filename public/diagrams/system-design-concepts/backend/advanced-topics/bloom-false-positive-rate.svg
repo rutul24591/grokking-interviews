@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a2e">Bloom Filter -- False Positive Rate</text>
+  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#555555">FP rate vs bit array size for different k values, optimal point at k=(m/n)ln(2)</text>
+
+  <!-- Chart area -->
+  <rect x="100" y="70" width="500" height="260" fill="white" rx="12" stroke="#cccccc" stroke-width="1"/>
+
+  <!-- Grid lines -->
+  <line x1="140" y1="90" x2="140" y2="310" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="220" y1="90" x2="220" y2="310" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="300" y1="90" x2="300" y2="310" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="380" y1="90" x2="380" y2="310" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="460" y1="90" x2="460" y2="310" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="540" y1="90" x2="540" y2="310" stroke="#e0e0e0" stroke-width="0.5"/>
+
+  <line x1="140" y1="90" x2="540" y2="90" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="140" y1="140" x2="540" y2="140" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="140" y1="200" x2="540" y2="200" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="140" y1="260" x2="540" y2="260" stroke="#e0e0e0" stroke-width="0.5"/>
+  <line x1="140" y1="310" x2="540" y2="310" stroke="#e0e0e0" stroke-width="0.5"/>
+
+  <!-- Y-axis labels -->
+  <text x="135" y="94" text-anchor="end" font-size="10" fill="#666666">1.0</text>
+  <text x="135" y="144" text-anchor="end" font-size="10" fill="#666666">0.1</text>
+  <text x="135" y="204" text-anchor="end" font-size="10" fill="#666666">0.01</text>
+  <text x="135" y="264" text-anchor="end" font-size="10" fill="#666666">0.001</text>
+  <text x="135" y="314" text-anchor="end" font-size="10" fill="#666666">0</text>
+
+  <!-- Y-axis label -->
+  <text x="30" y="200" text-anchor="middle" font-size="12" font-weight="bold" fill="#333333" transform="rotate(-90,30,200)">False Positive Rate</text>
+
+  <!-- X-axis labels -->
+  <text x="140" y="328" text-anchor="middle" font-size="10" fill="#666666">4</text>
+  <text x="220" y="328" text-anchor="middle" font-size="10" fill="#666666">8</text>
+  <text x="300" y="328" text-anchor="middle" font-size="10" fill="#666666">12</text>
+  <text x="380" y="328" text-anchor="middle" font-size="10" fill="#666666">16</text>
+  <text x="460" y="328" text-anchor="middle" font-size="10" fill="#666666">20</text>
+  <text x="540" y="328" text-anchor="middle" font-size="10" fill="#666666">24</text>
+
+  <!-- X-axis label -->
+  <text x="340" y="348" text-anchor="middle" font-size="12" font-weight="bold" fill="#333333">m/n (bits per element)</text>
+
+  <!-- Curves for different k values -->
+  <!-- k=1: starts high, decreases slowly -->
+  <polyline points="140,100 220,115 300,130 380,145 460,158 540,168" fill="none" stroke="#cc4444" stroke-width="2"/>
+  <text x="545" y="172" font-size="10" font-weight="bold" fill="#cc4444">k=1</text>
+
+  <!-- k=3: starts moderate, goes down fast, then up slightly -->
+  <polyline points="140,145 220,180 300,220 380,245 460,255 540,248" fill="none" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="545" y="252" font-size="10" font-weight="bold" fill="#f0ad4e">k=3</text>
+
+  <!-- k=5: steeper descent, optimal around m/n=12 -->
+  <polyline points="140,170 220,210 300,250 380,270 460,265 540,255" fill="none" stroke="#4caf50" stroke-width="2"/>
+  <text x="545" y="260" font-size="10" font-weight="bold" fill="#4caf50">k=5</text>
+
+  <!-- k=7: very steep, optimal around m/n=16 -->
+  <polyline points="140,195 220,235 300,268 380,278 460,275 540,268" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="545" y="273" font-size="10" font-weight="bold" fill="#6d5bd0">k=7</text>
+
+  <!-- k=10: very high at low m/n, optimal at higher m/n -->
+  <polyline points="140,220 220,255 300,275 380,283 460,285 540,280" fill="none" stroke="#888888" stroke-width="2"/>
+  <text x="545" y="285" font-size="10" font-weight="bold" fill="#888888">k=10</text>
+
+  <!-- Optimal point marker -->
+  <circle cx="300" cy="250" r="5" fill="#4caf50" stroke="white" stroke-width="2"/>
+  <line x1="300" y1="255" x2="300" y2="290" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="300" y="300" text-anchor="middle" font-size="9" fill="#4caf50">Optimal: k=(m/n)ln(2)</text>
+
+  <!-- Legend -->
+  <rect x="145" y="75" width="180" height="18" rx="4" fill="white" stroke="#cccccc" stroke-width="0.5"/>
+  <text x="150" y="88" font-size="10" fill="#333333">Lower = better FP rate</text>
+
+  <!-- Table -->
+  <rect x="620" y="70" width="250" height="260" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="745" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a2e">m/n Ratio vs FP Rate</text>
+
+  <!-- Table header -->
+  <rect x="635" y="108" width="100" height="25" rx="6" fill="#6d5bd0"/>
+  <text x="685" y="125" text-anchor="middle" font-size="11" font-weight="bold" fill="white">m/n</text>
+  <rect x="740" y="108" width="115" height="25" rx="6" fill="#6d5bd0"/>
+  <text x="797" y="125" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Optimal FP Rate</text>
+
+  <!-- Table rows -->
+  <rect x="635" y="138" width="220" height="24" rx="0" fill="#f9f9f9"/>
+  <text x="685" y="154" text-anchor="middle" font-size="11" fill="#333333">4</text>
+  <text x="797" y="154" text-anchor="middle" font-size="11" fill="#cc4444">~0.150</text>
+
+  <rect x="635" y="167" width="220" height="24" rx="0" fill="white"/>
+  <text x="685" y="183" text-anchor="middle" font-size="11" fill="#333333">8</text>
+  <text x="797" y="183" text-anchor="middle" font-size="11" fill="#f0ad4e">~0.022</text>
+
+  <rect x="635" y="196" width="220" height="24" rx="0" fill="#f9f9f9"/>
+  <text x="685" y="212" text-anchor="middle" font-size="11" fill="#333333">12</text>
+  <text x="797" y="212" text-anchor="middle" font-size="11" fill="#4caf50">~0.003</text>
+
+  <rect x="635" y="225" width="220" height="24" rx="0" fill="white"/>
+  <text x="685" y="241" text-anchor="middle" font-size="11" fill="#333333">16</text>
+  <text x="797" y="241" text-anchor="middle" font-size="11" fill="#4caf50">~0.0004</text>
+
+  <rect x="635" y="254" width="220" height="24" rx="0" fill="#f9f9f9"/>
+  <text x="685" y="270" text-anchor="middle" font-size="11" fill="#333333">20</text>
+  <text x="797" y="270" text-anchor="middle" font-size="11" fill="#4caf50">~0.00006</text>
+
+  <rect x="635" y="283" width="220" height="24" rx="0" fill="white"/>
+  <text x="685" y="299" text-anchor="middle" font-size="11" fill="#333333">24</text>
+  <text x="797" y="299" text-anchor="middle" font-size="11" fill="#4caf50">~0.00001</text>
+
+  <!-- Key formulas -->
+  <rect x="620" y="350" width="250" height="130" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="745" y="375" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">Key Formulas</text>
+
+  <rect x="635" y="388" width="220" height="28" rx="6" fill="#f0f0f0"/>
+  <text x="745" y="407" text-anchor="middle" font-size="11" fill="#333333">Optimal k = (m/n) × ln(2)</text>
+
+  <rect x="635" y="422" width="220" height="28" rx="6" fill="#f0f0f0"/>
+  <text x="745" y="441" text-anchor="middle" font-size="11" fill="#333333">FP rate = (1 - e^(-kn/m))^k</text>
+
+  <rect x="635" y="456" width="220" height="28" rx="6" fill="#e8f5e9"/>
+  <text x="745" y="475" text-anchor="middle" font-size="11" font-weight="bold" fill="#4caf50">Rule: 10 bits/element gives ~1% FP</text>
+</svg>

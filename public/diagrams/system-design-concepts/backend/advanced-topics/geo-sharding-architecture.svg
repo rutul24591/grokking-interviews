@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Geo-sharding architecture showing regional shards with data locality and cross-region access</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Geo-Sharding Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Data partitioned by geographic region for locality, compliance, and isolation</text>
+
+  <!-- US Shard -->
+  <rect x="30" y="80" width="270" height="300" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">US Region Shard</text>
+
+  <rect x="50" y="125" width="230" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="145" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Primary Database</text>
+  <text x="165" y="160" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">US user data, writes</text>
+
+  <rect x="50" y="180" width="105" height="45" rx="8" fill="#6d5bd0" opacity="0.7"/>
+  <text x="102" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Read Replica 1</text>
+  <text x="102" y="215" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">US East</text>
+
+  <rect x="165" y="180" width="115" height="45" rx="8" fill="#6d5bd0" opacity="0.7"/>
+  <text x="222" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Read Replica 2</text>
+  <text x="222" y="215" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">US West</text>
+
+  <rect x="50" y="240" width="230" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="260" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Local Cache (Redis)</text>
+  <text x="165" y="275" text-anchor="middle" font-size="9" fill="#4caf50">5ms read latency</text>
+
+  <rect x="50" y="295" width="230" height="40" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="312" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Latency: 5-20ms</text>
+  <text x="165" y="328" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Users: 150M</text>
+
+  <!-- EU Shard -->
+  <rect x="315" y="80" width="270" height="300" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="315" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">EU Region Shard</text>
+
+  <rect x="335" y="125" width="230" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="145" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Primary Database</text>
+  <text x="450" y="160" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">EU user data, writes</text>
+
+  <rect x="335" y="180" width="105" height="45" rx="8" fill="#6d5bd0" opacity="0.7"/>
+  <text x="387" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Read Replica 1</text>
+  <text x="387" y="215" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">EU West</text>
+
+  <rect x="450" y="180" width="115" height="45" rx="8" fill="#6d5bd0" opacity="0.7"/>
+  <text x="507" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Read Replica 2</text>
+  <text x="507" y="215" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">EU Central</text>
+
+  <rect x="335" y="240" width="230" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="260" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Local Cache (Redis)</text>
+  <text x="450" y="275" text-anchor="middle" font-size="9" fill="#4caf50">5ms read latency</text>
+
+  <rect x="335" y="295" width="230" height="40" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="312" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Latency: 5-20ms</text>
+  <text x="450" y="328" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Users: 200M</text>
+
+  <!-- APAC Shard -->
+  <rect x="600" y="80" width="270" height="300" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="600" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="735" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">APAC Region Shard</text>
+
+  <rect x="620" y="125" width="230" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="735" y="145" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Primary Database</text>
+  <text x="735" y="160" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">APAC user data, writes</text>
+
+  <rect x="620" y="180" width="105" height="45" rx="8" fill="#6d5bd0" opacity="0.7"/>
+  <text x="672" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Read Replica 1</text>
+  <text x="672" y="215" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">APAC East</text>
+
+  <rect x="735" y="180" width="115" height="45" rx="8" fill="#6d5bd0" opacity="0.7"/>
+  <text x="792" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Read Replica 2</text>
+  <text x="792" y="215" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">APAC South</text>
+
+  <rect x="620" y="240" width="230" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="260" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Local Cache (Redis)</text>
+  <text x="735" y="275" text-anchor="middle" font-size="9" fill="#4caf50">5ms read latency</text>
+
+  <rect x="620" y="295" width="230" height="40" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="312" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Latency: 5-30ms</text>
+  <text x="735" y="328" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">Users: 300M</text>
+
+  <!-- Cross-region arrows -->
+  <line x1="300" y1="230" x2="315" y2="230" stroke="#f0ad4e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="585" y1="230" x2="600" y2="230" stroke="#f0ad4e" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Bottom summary -->
+  <rect x="30" y="400" width="840" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="220" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Data Locality</text>
+  <text x="220" y="445" text-anchor="middle" font-size="10" fill="#1a1822">Users read/write locally</text>
+  <text x="220" y="462" text-anchor="middle" font-size="10" fill="#1a1822">5-30ms latency</text>
+  <text x="450" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Compliance</text>
+  <text x="450" y="445" text-anchor="middle" font-size="10" fill="#1a1822">Data stays within region</text>
+  <text x="450" y="462" text-anchor="middle" font-size="10" fill="#1a1822">GDPR, CCPA compliant</text>
+  <text x="680" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Failure Isolation</text>
+  <text x="680" y="445" text-anchor="middle" font-size="10" fill="#1a1822">Regional outage isolated</text>
+  <text x="680" y="462" text-anchor="middle" font-size="10" fill="#1a1822">No global cascade</text>
+
+  <defs>
+    <marker id="arrowGeo" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f0ad4e"/>
+    </marker>
+  </defs>
+</svg>

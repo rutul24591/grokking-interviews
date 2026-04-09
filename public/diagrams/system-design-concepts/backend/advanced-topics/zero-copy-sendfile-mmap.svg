@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Comparing sendfile, mmap, and splice zero-copy techniques</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Zero-Copy Techniques: sendfile(), mmap(), splice()</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Comparing kernel data flow, CPU involvement, and use cases for three zero-copy system calls</text>
+
+  <!-- sendfile() column -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="100" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">sendfile()</text>
+
+  <!-- sendfile diagram -->
+  <!-- User space label -->
+  <text x="165" y="135" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822" opacity="0.5">User Space</text>
+
+  <!-- Kernel space -->
+  <rect x="45" y="150" width="240" height="250" rx="8" fill="#6d5bd0" opacity="0.05" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="165" y="170" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Kernel Space</text>
+
+  <!-- Source file descriptor -->
+  <rect x="60" y="190" width="120" height="50" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="120" y="210" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Source FD</text>
+  <text x="120" y="228" text-anchor="middle" font-size="9" fill="#1a1822">File descriptor</text>
+
+  <!-- Page cache -->
+  <rect x="195" y="190" width="75" height="50" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="232" y="210" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Page</text>
+  <text x="232" y="225" text-anchor="middle" font-size="9" fill="#1a1822">Cache</text>
+
+  <!-- Socket -->
+  <rect x="120" y="310" width="120" height="50" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="180" y="330" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Socket FD</text>
+  <text x="180" y="348" text-anchor="middle" font-size="9" fill="#1a1822">Network output</text>
+
+  <!-- DMA arrow -->
+  <line x1="120" y1="240" x2="120" y2="270" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowSC)"/>
+  <text x="100" y="260" text-anchor="middle" font-size="8" fill="#f0ad4e">DMA</text>
+
+  <!-- Direct to socket -->
+  <line x1="180" y1="240" x2="180" y2="310" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowSC)"/>
+  <text x="210" y="280" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">gather DMA</text>
+
+  <!-- Copy count -->
+  <rect x="60" y="380" width="210" height="40" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="400" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">2 copies (both DMA)</text>
+  <text x="165" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Lowest CPU overhead</text>
+
+  <!-- Signature -->
+  <rect x="60" y="430" width="210" height="30" rx="6" fill="#f3f1f8" stroke="#1a1822" stroke-width="1"/>
+  <text x="165" y="450" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">sendfile(out, in, offset, count)</text>
+
+  <!-- mmap() column -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="30" rx="12" fill="#f0ad4e"/>
+  <rect x="315" y="100" width="270" height="10" fill="#f0ad4e"/>
+  <text x="450" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">mmap()</text>
+
+  <!-- mmap diagram -->
+  <!-- User space with mapping -->
+  <rect x="330" y="150" width="240" height="110" rx="8" fill="#f3f1f8" stroke="#1a1822" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="450" y="170" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">User Space</text>
+
+  <!-- Mapped region -->
+  <rect x="350" y="185" width="200" height="55" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="450" y="205" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Memory-Mapped Region</text>
+  <text x="450" y="223" text-anchor="middle" font-size="9" fill="#1a1822">File directly mapped into process address space</text>
+
+  <!-- Mapping arrow -->
+  <line x1="450" y1="240" x2="450" y2="260" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="480" y="255" text-anchor="middle" font-size="8" fill="#f0ad4e">mmap()</text>
+
+  <!-- Kernel space -->
+  <rect x="330" y="270" width="240" height="130" rx="8" fill="#6d5bd0" opacity="0.05" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="450" y="290" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Kernel Space</text>
+
+  <!-- Page cache mmap -->
+  <rect x="370" y="310" width="160" height="50" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="330" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Page Cache</text>
+  <text x="450" y="348" text-anchor="middle" font-size="9" fill="#1a1822">Shared with user mapping</text>
+
+  <!-- write to socket -->
+  <rect x="370" y="370" width="160" height="20" rx="4" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="384" text-anchor="middle" font-size="9" fill="#4caf50">write(socket, addr, len)</text>
+
+  <!-- Copy count -->
+  <rect x="345" y="400" width="210" height="40" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="420" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">1 copy (CPU: user→socket)</text>
+  <text x="450" y="435" text-anchor="middle" font-size="9" fill="#1a1822">Allows in-place data processing</text>
+
+  <!-- Signature -->
+  <rect x="345" y="450" width="210" height="20" rx="6" fill="#f3f1f8" stroke="#1a1822" stroke-width="1"/>
+  <text x="450" y="464" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">mmap(fd) → pointer + write()</text>
+
+  <!-- splice() column -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="30" rx="12" fill="#4caf50"/>
+  <rect x="600" y="100" width="270" height="10" fill="#4caf50"/>
+  <text x="735" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">splice()</text>
+
+  <!-- splice diagram -->
+  <!-- User space label -->
+  <text x="735" y="135" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822" opacity="0.5">User Space (bypassed)</text>
+  <!-- X mark -->
+  <line x1="690" y1="142" x2="780" y2="142" stroke="#cc4444" stroke-width="1" opacity="0.3"/>
+
+  <!-- Kernel space -->
+  <rect x="615" y="150" width="240" height="250" rx="8" fill="#6d5bd0" opacity="0.05" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="735" y="170" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Kernel Space</text>
+
+  <!-- Pipe (the intermediary) -->
+  <rect x="660" y="190" width="150" height="45" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="735" y="210" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Pipe Buffer</text>
+  <text x="735" y="227" text-anchor="middle" font-size="9" fill="#1a1822">Kernel intermediary</text>
+
+  <!-- Source -->
+  <rect x="625" y="260" width="120" height="50" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="685" y="280" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Source FD</text>
+  <text x="685" y="298" text-anchor="middle" font-size="9" fill="#1a1822">File/socket</text>
+
+  <!-- Destination -->
+  <rect x="760" y="260" width="85" height="50" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="802" y="280" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Dest FD</text>
+  <text x="802" y="298" text-anchor="middle" font-size="9" fill="#1a1822">Socket</text>
+
+  <!-- splice arrows -->
+  <line x1="685" y1="260" x2="710" y2="235" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowSC)"/>
+  <text x="680" y="252" text-anchor="middle" font-size="8" font-weight="600" fill="#f0ad4e">splice in</text>
+
+  <line x1="760" y1="235" x2="785" y2="260" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowSC)"/>
+  <text x="790" y="252" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">splice out</text>
+
+  <!-- Copy count -->
+  <rect x="630" y="330" width="210" height="40" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="350" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">2 copies (both DMA)</text>
+  <text x="735" y="365" text-anchor="middle" font-size="9" fill="#1a1822">Most flexible: any FD pair</text>
+
+  <!-- Advantages -->
+  <rect x="630" y="380" width="210" height="55" rx="8" fill="#4caf50" opacity="0.08" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">Advantages:</text>
+  <text x="735" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Works with any FD pair</text>
+  <text x="735" y="430" text-anchor="middle" font-size="9" fill="#1a1822">Bidirectional, supports pipes</text>
+
+  <!-- Signature -->
+  <rect x="630" y="445" width="210" height="20" rx="6" fill="#f3f1f8" stroke="#1a1822" stroke-width="1"/>
+  <text x="735" y="459" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">splice(in, pipe, len) + splice(pipe, out)</text>
+
+  <!-- Comparison bar at bottom -->
+  <rect x="30" y="490" width="840" height="8" rx="4" fill="transparent"/>
+
+  <defs>
+    <marker id="arrowSC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

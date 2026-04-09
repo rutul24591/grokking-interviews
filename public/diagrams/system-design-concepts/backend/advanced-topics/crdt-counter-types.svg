@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a2e">CRDT Counter Types</text>
+  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#555555">G-Counter (grow-only) and PN-Counter (positive-negative, allows decrement)</text>
+
+  <!-- G-Counter Section -->
+  <rect x="30" y="70" width="410" height="410" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <rect x="30" y="70" width="410" height="40" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="95" width="410" height="15" fill="#6d5bd0"/>
+  <text x="235" y="96" text-anchor="middle" font-size="16" font-weight="bold" fill="white">G-Counter (Grow-Only)</text>
+
+  <text x="235" y="130" text-anchor="middle" font-size="12" fill="#666666">Vector of per-node counters, merge = element-wise max</text>
+
+  <!-- Node states -->
+  <rect x="60" y="150" width="350" height="100" rx="8" fill="#f9f9f9" stroke="#cccccc" stroke-width="1"/>
+  <text x="235" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">Per-Node Vector State</text>
+
+  <!-- Vector cells -->
+  <rect x="80" y="185" width="80" height="50" rx="8" fill="#e8e4f0" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="120" y="203" text-anchor="middle" font-size="11" fill="#333333">Node A</text>
+  <text x="120" y="225" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">3</text>
+
+  <rect x="190" y="185" width="80" height="50" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="230" y="203" text-anchor="middle" font-size="11" fill="#333333">Node B</text>
+  <text x="230" y="225" text-anchor="middle" font-size="16" font-weight="bold" fill="#4caf50">7</text>
+
+  <rect x="300" y="185" width="80" height="50" rx="8" fill="#fff8e1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="340" y="203" text-anchor="middle" font-size="11" fill="#333333">Node C</text>
+  <text x="340" y="225" text-anchor="middle" font-size="16" font-weight="bold" fill="#f0ad4e">2</text>
+
+  <!-- Total -->
+  <rect x="60" y="265" width="350" height="35" rx="8" fill="#6d5bd0"/>
+  <text x="235" y="288" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Total Value = 3 + 7 + 2 = 12</text>
+
+  <!-- Merge example -->
+  <text x="235" y="325" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">Merge: element-wise max</text>
+
+  <rect x="60" y="340" width="140" height="45" rx="8" fill="#e8e4f0" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="130" y="358" text-anchor="middle" font-size="11" fill="#333333">Before: [3, 7, 2]</text>
+  <text x="130" y="375" text-anchor="middle" font-size="11" fill="#666666">(Node A increments to 5)</text>
+
+  <rect x="270" y="340" width="140" height="45" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="340" y="358" text-anchor="middle" font-size="11" fill="#333333">After: [5, 7, 2]</text>
+  <text x="340" y="375" text-anchor="middle" font-size="11" fill="#666666">max(3,5)=5 for Node A</text>
+
+  <text x="205" y="368" text-anchor="middle" font-size="18" fill="#6d5bd0">--&gt;</text>
+
+  <!-- Properties -->
+  <rect x="60" y="400" width="350" height="60" rx="8" fill="#e8e4f0" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="235" y="420" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Properties:</text>
+  <text x="235" y="438" text-anchor="middle" font-size="11" fill="#333333">Only increment allowed. Monotonically increasing.</text>
+  <text x="235" y="454" text-anchor="middle" font-size="11" fill="#333333">Cannot decrement or reset. Simple merge function.</text>
+
+  <!-- PN-Counter Section -->
+  <rect x="460" y="70" width="410" height="410" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <rect x="460" y="70" width="410" height="40" rx="12" fill="#4caf50"/>
+  <rect x="460" y="95" width="410" height="15" fill="#4caf50"/>
+  <text x="665" y="96" text-anchor="middle" font-size="16" font-weight="bold" fill="white">PN-Counter (Positive-Negative)</text>
+
+  <text x="665" y="130" text-anchor="middle" font-size="12" fill="#666666">Two G-Counters (P and N), value = sum(P) - sum(N)</text>
+
+  <!-- P Counter -->
+  <rect x="490" y="150" width="350" height="90" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#4caf50">P-Counter (Increments)</text>
+
+  <rect x="510" y="185" width="80" height="40" rx="8" fill="#4caf50"/>
+  <text x="550" y="202" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node A</text>
+  <text x="550" y="218" text-anchor="middle" font-size="14" font-weight="bold" fill="white">10</text>
+
+  <rect x="610" y="185" width="80" height="40" rx="8" fill="#4caf50"/>
+  <text x="650" y="202" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node B</text>
+  <text x="650" y="218" text-anchor="middle" font-size="14" font-weight="bold" fill="white">5</text>
+
+  <rect x="710" y="185" width="80" height="40" rx="8" fill="#4caf50"/>
+  <text x="750" y="202" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node C</text>
+  <text x="750" y="218" text-anchor="middle" font-size="14" font-weight="bold" fill="white">8</text>
+
+  <!-- N Counter -->
+  <rect x="490" y="255" width="350" height="90" rx="8" fill="#ffebee" stroke="#cc4444" stroke-width="1"/>
+  <text x="665" y="277" text-anchor="middle" font-size="13" font-weight="bold" fill="#cc4444">N-Counter (Decrements)</text>
+
+  <rect x="510" y="290" width="80" height="40" rx="8" fill="#cc4444"/>
+  <text x="550" y="307" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node A</text>
+  <text x="550" y="323" text-anchor="middle" font-size="14" font-weight="bold" fill="white">2</text>
+
+  <rect x="610" y="290" width="80" height="40" rx="8" fill="#cc4444"/>
+  <text x="650" y="307" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node B</text>
+  <text x="650" y="323" text-anchor="middle" font-size="14" font-weight="bold" fill="white">1</text>
+
+  <rect x="710" y="290" width="80" height="40" rx="8" fill="#cc4444"/>
+  <text x="750" y="307" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Node C</text>
+  <text x="750" y="323" text-anchor="middle" font-size="14" font-weight="bold" fill="white">3</text>
+
+  <!-- Calculation -->
+  <rect x="490" y="360" width="350" height="50" rx="8" fill="#f9f9f9" stroke="#cccccc" stroke-width="1"/>
+  <text x="665" y="380" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a2e">Value = sum(P) - sum(N)</text>
+  <text x="665" y="400" text-anchor="middle" font-size="14" font-weight="bold" fill="#4caf50">= (10+5+8) - (2+1+3) = 23 - 6 = 17</text>
+
+  <!-- Properties -->
+  <rect x="490" y="420" width="350" height="50" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="665" y="440" text-anchor="middle" font-size="12" font-weight="bold" fill="#4caf50">Properties:</text>
+  <text x="665" y="458" text-anchor="middle" font-size="11" fill="#333333">Supports both increment and decrement. Each node tracks both.</text>
+</svg>

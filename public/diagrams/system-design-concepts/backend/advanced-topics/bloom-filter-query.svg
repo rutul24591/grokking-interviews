@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+    </marker>
+  </defs>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a2e">Bloom Filter -- Query</text>
+  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#555555">Query &quot;world&quot; through 3 hash functions, check bit positions</text>
+
+  <!-- Scenario 1: Possibly Present -->
+  <rect x="30" y="75" width="410" height="195" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="235" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#4caf50">Scenario 1: All Bits = 1</text>
+  <text x="235" y="118" text-anchor="middle" font-size="11" fill="#666666">Possibly present (may be false positive)</text>
+
+  <!-- Query element -->
+  <rect x="50" y="140" width="100" height="50" rx="8" fill="#6d5bd0" stroke="#5a48b0" stroke-width="1"/>
+  <text x="100" y="160" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Query</text>
+  <text x="100" y="178" text-anchor="middle" font-size="14" font-weight="bold" fill="white">&quot;world&quot;</text>
+
+  <!-- Hash functions -->
+  <rect x="200" y="135" width="80" height="22" rx="6" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="240" y="151" text-anchor="middle" font-size="11" font-weight="bold" fill="white">h₁ → 1</text>
+  <rect x="200" y="162" width="80" height="22" rx="6" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="240" y="178" text-anchor="middle" font-size="11" font-weight="bold" fill="white">h₂ → 5</text>
+  <rect x="200" y="189" width="80" height="22" rx="6" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="240" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="white">h₃ → 10</text>
+
+  <!-- Arrows -->
+  <line x1="150" y1="155" x2="200" y2="148" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="150" y1="165" x2="200" y2="173" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="150" y1="175" x2="200" y2="200" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Bit array -->
+  <rect x="310" y="130" width="115" height="80" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="367" y="148" text-anchor="middle" font-size="10" font-weight="bold" fill="#4caf50">Bit Array</text>
+  <text x="367" y="165" text-anchor="middle" font-size="11" fill="#333333">[0,1,0,0,0,1,0,0,0,0,1,0]</text>
+  <text x="367" y="180" text-anchor="middle" font-size="10" fill="#4caf50">Positions 1,5,10 = 1</text>
+  <text x="367" y="195" text-anchor="middle" font-size="11" fill="#333333">All checked bits = 1</text>
+
+  <!-- Green check -->
+  <rect x="320" y="225" width="95" height="30" rx="8" fill="#4caf50"/>
+  <text x="367" y="245" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Check PASS</text>
+
+  <!-- Scenario 2: Definitely Absent -->
+  <rect x="460" y="75" width="410" height="195" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="665" y="100" text-anchor="middle" font-size="15" font-weight="bold" fill="#cc4444">Scenario 2: Any Bit = 0</text>
+  <text x="665" y="118" text-anchor="middle" font-size="11" fill="#666666">Definitely absent (no false negatives)</text>
+
+  <!-- Query element -->
+  <rect x="480" y="140" width="100" height="50" rx="8" fill="#6d5bd0" stroke="#5a48b0" stroke-width="1"/>
+  <text x="530" y="160" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Query</text>
+  <text x="530" y="178" text-anchor="middle" font-size="14" font-weight="bold" fill="white">&quot;world&quot;</text>
+
+  <!-- Hash functions -->
+  <rect x="630" y="135" width="80" height="22" rx="6" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="670" y="151" text-anchor="middle" font-size="11" font-weight="bold" fill="white">h₁ → 2</text>
+  <rect x="630" y="162" width="80" height="22" rx="6" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="670" y="178" text-anchor="middle" font-size="11" font-weight="bold" fill="white">h₂ → 6</text>
+  <rect x="630" y="189" width="80" height="22" rx="6" fill="#a89ee0" stroke="#8a7fc7" stroke-width="1"/>
+  <text x="670" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="white">h₃ → 9</text>
+
+  <!-- Arrows -->
+  <line x1="580" y1="155" x2="630" y2="148" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="580" y1="165" x2="630" y2="173" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="580" y1="175" x2="630" y2="200" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Bit array -->
+  <rect x="740" y="130" width="115" height="80" rx="8" fill="#ffebee" stroke="#cc4444" stroke-width="1"/>
+  <text x="797" y="148" text-anchor="middle" font-size="10" font-weight="bold" fill="#cc4444">Bit Array</text>
+  <text x="797" y="165" text-anchor="middle" font-size="11" fill="#333333">[0,1,0,0,0,1,0,0,1,0,0,0]</text>
+  <text x="797" y="180" text-anchor="middle" font-size="10" fill="#cc4444">Position 6 = 0</text>
+  <text x="797" y="195" text-anchor="middle" font-size="11" fill="#333333">Bit 6 is 0, fails!</text>
+
+  <!-- Red X -->
+  <rect x="750" y="225" width="95" height="30" rx="8" fill="#cc4444"/>
+  <text x="797" y="245" text-anchor="middle" font-size="12" font-weight="bold" fill="white">X FAIL</text>
+
+  <!-- Bottom explanation -->
+  <rect x="30" y="290" width="840" height="190" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="450" y="318" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Query Properties</text>
+
+  <!-- Left card -->
+  <rect x="50" y="335" width="380" height="125" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="240" y="358" text-anchor="middle" font-size="14" font-weight="bold" fill="#4caf50">All Bits = 1: Possibly Present</text>
+  <text x="240" y="378" text-anchor="middle" font-size="12" fill="#333333">The element may have been inserted before,</text>
+  <text x="240" y="394" text-anchor="middle" font-size="12" fill="#333333">but it could also be a false positive -- other</text>
+  <text x="240" y="410" text-anchor="middle" font-size="12" fill="#333333">elements set the same bits by collision.</text>
+  <text x="240" y="430" text-anchor="middle" font-size="12" font-weight="bold" fill="#4caf50">Cannot distinguish true vs false positive.</text>
+
+  <!-- Right card -->
+  <rect x="470" y="335" width="380" height="125" rx="8" fill="#ffebee" stroke="#cc4444" stroke-width="1"/>
+  <text x="660" y="358" text-anchor="middle" font-size="14" font-weight="bold" fill="#cc4444">Any Bit = 0: Definitely Absent</text>
+  <text x="660" y="378" text-anchor="middle" font-size="12" fill="#333333">If even one of the k bit positions is 0,</text>
+  <text x="660" y="394" text-anchor="middle" font-size="12" fill="#333333">the element was NEVER inserted. This is</text>
+  <text x="660" y="410" text-anchor="middle" font-size="12" fill="#333333">guaranteed -- Bloom filters have ZERO</text>
+  <text x="660" y="430" text-anchor="middle" font-size="12" font-weight="bold" fill="#cc4444">false negatives. Query time: O(k).</text>
+</svg>

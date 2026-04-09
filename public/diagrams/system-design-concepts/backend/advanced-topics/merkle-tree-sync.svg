@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Data synchronization using Merkle trees: compare roots, find differing blocks, transmit only changed blocks</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Data Synchronization with Merkle Trees</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Compare roots → recursively find differing blocks → transmit only changed blocks, reducing bandwidth from O(N) to O(D log N)</text>
+
+  <!-- Replica A -->
+  <rect x="30" y="80" width="380" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="380" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="380" height="10" fill="#6d5bd0"/>
+  <text x="220" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Replica A</text>
+
+  <!-- Replica A's tree (simplified) -->
+  <rect x="140" y="130" width="160" height="35" rx="8" fill="#6d5bd0"/>
+  <text x="220" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Root: A1B2C3D4</text>
+
+  <line x1="180" y1="170" x2="100" y2="220" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="260" y1="170" x2="340" y2="220" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <rect x="50" y="220" width="100" height="30" rx="6" fill="#6d5bd0" opacity="0.5"/>
+  <text x="100" y="240" text-anchor="middle" font-size="10" fill="#ffffff">H(A1B2)</text>
+
+  <rect x="290" y="220" width="100" height="30" rx="6" fill="#6d5bd0" opacity="0.5"/>
+  <text x="340" y="240" text-anchor="middle" font-size="10" fill="#ffffff">H(C3D4)</text>
+
+  <!-- Leaves -->
+  <rect x="50" y="270" width="60" height="35" rx="6" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="80" y="292" text-anchor="middle" font-size="9" fill="#4caf50">A1</text>
+  <rect x="120" y="270" width="60" height="35" rx="6" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="150" y="292" text-anchor="middle" font-size="9" fill="#4caf50">B2</text>
+  <rect x="290" y="270" width="60" height="35" rx="6" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="320" y="292" text-anchor="middle" font-size="9" fill="#4caf50">C3</text>
+  <rect x="360" y="270" width="60" height="35" rx="6" fill="#cc4444" opacity="0.2" stroke="#cc4444" stroke-width="2"/>
+  <text x="390" y="292" text-anchor="middle" font-size="9" font-weight="700" fill="#cc4444">D4*</text>
+
+  <rect x="50" y="320" width="320" height="40" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="210" y="338" text-anchor="middle" font-size="10" fill="#1a1822">Data blocks: A1, B2, C3, D4 (v2)</text>
+  <text x="210" y="352" text-anchor="middle" font-size="9" fill="#1a1822">D4 was updated from D4 (v1) → D4 (v2)</text>
+
+  <!-- Replica B -->
+  <rect x="490" y="80" width="380" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="490" y="80" width="380" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="490" y="105" width="380" height="10" fill="#6d5bd0"/>
+  <text x="680" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Replica B</text>
+
+  <rect x="600" y="130" width="160" height="35" rx="8" fill="#6d5bd0"/>
+  <text x="680" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Root: A1B2C3D4&apos;</text>
+
+  <line x1="640" y1="170" x2="560" y2="220" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="720" y1="170" x2="800" y2="220" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <rect x="510" y="220" width="100" height="30" rx="6" fill="#6d5bd0" opacity="0.5"/>
+  <text x="560" y="240" text-anchor="middle" font-size="10" fill="#ffffff">H(A1B2)</text>
+
+  <rect x="750" y="220" width="100" height="30" rx="6" fill="#6d5bd0" opacity="0.5"/>
+  <text x="800" y="240" text-anchor="middle" font-size="10" fill="#ffffff">H(C3D4&apos;)</text>
+
+  <rect x="510" y="270" width="60" height="35" rx="6" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="540" y="292" text-anchor="middle" font-size="9" fill="#4caf50">A1</text>
+  <rect x="580" y="270" width="60" height="35" rx="6" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="610" y="292" text-anchor="middle" font-size="9" fill="#4caf50">B2</text>
+  <rect x="750" y="270" width="60" height="35" rx="6" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="780" y="292" text-anchor="middle" font-size="9" fill="#4caf50">C3</text>
+  <rect x="820" y="270" width="60" height="35" rx="6" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="850" y="292" text-anchor="middle" font-size="9" fill="#4caf50">D4&apos;</text>
+
+  <rect x="510" y="320" width="320" height="40" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="670" y="338" text-anchor="middle" font-size="10" fill="#1a1822">Data blocks: A1, B2, C3, D4&apos; (v1)</text>
+  <text x="670" y="352" text-anchor="middle" font-size="9" fill="#1a1822">D4&apos; is the old version (not yet updated)</text>
+
+  <!-- Sync process -->
+  <rect x="30" y="375" width="840" height="85" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="395" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Synchronization Process</text>
+  <text x="450" y="415" text-anchor="middle" font-size="10" fill="#1a1822">1. Compare roots: A1B2C3D4 ≠ A1B2C3D4&apos; → data differs</text>
+  <text x="450" y="432" text-anchor="middle" font-size="10" fill="#1a1822">2. Compare child hashes: H(A1B2) = H(A1B2) (match), H(C3D4) ≠ H(C3D4&apos;) (differ)</text>
+  <text x="450" y="449" text-anchor="middle" font-size="10" fill="#1a1822">3. Identify differing block: D4 (v2) on A vs D4&apos; (v1) on B</text>
+  <text x="450" y="466" text-anchor="middle" font-size="10" fill="#1a1822">4. Transmit only D4 (v2): bandwidth = O(1), not O(N)</text>
+
+  <defs>
+    <marker id="arrowMS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
+</svg>

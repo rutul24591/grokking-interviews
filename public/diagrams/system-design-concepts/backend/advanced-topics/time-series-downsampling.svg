@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Downsampling pipeline showing resolution reduction from 1-second to 1-day with retention policies</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Downsampling Pipeline</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Raw 1-second data → 1-minute → 1-hour → 1-day aggregates with decreasing retention periods</text>
+
+  <!-- Level 0: Raw -->
+  <rect x="30" y="80" width="200" height="120" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="30" y="80" width="200" height="30" rx="12" fill="#cc4444"/>
+  <rect x="30" y="100" width="200" height="10" fill="#cc4444"/>
+  <text x="130" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Raw Data (1-second)</text>
+
+  <!-- Mini visualization of data points -->
+  <rect x="45" y="120" width="3" height="50" rx="1" fill="#cc4444" opacity="0.8"/>
+  <rect x="50" y="115" width="3" height="55" rx="1" fill="#cc4444" opacity="0.8"/>
+  <rect x="55" y="125" width="3" height="45" rx="1" fill="#cc4444" opacity="0.8"/>
+  <rect x="60" y="110" width="3" height="60" rx="1" fill="#cc4444" opacity="0.8"/>
+  <rect x="65" y="130" width="3" height="40" rx="1" fill="#cc4444" opacity="0.8"/>
+  <rect x="70" y="118" width="3" height="52" rx="1" fill="#cc4444" opacity="0.8"/>
+  <rect x="75" y="122" width="3" height="48" rx="1" fill="#cc4444" opacity="0.8"/>
+  <rect x="80" y="112" width="3" height="58" rx="1" fill="#cc4444" opacity="0.8"/>
+  <text x="130" y="155" text-anchor="middle" font-size="8" fill="#1a1822">86,400 points/day</text>
+  <text x="130" y="170" text-anchor="middle" font-size="8" fill="#1a1822">Retention: 7 days</text>
+  <text x="130" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#cc4444">Avg, min, max, count, p95, p99</text>
+
+  <!-- Arrow to 1-min -->
+  <line x1="230" y1="140" x2="280" y2="140" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowTS)"/>
+  <text x="255" y="130" text-anchor="middle" font-size="8" font-weight="600" fill="#f0ad4e">Aggregate</text>
+  <text x="255" y="142" text-anchor="middle" font-size="7" fill="#1a1822">60 points → 1</text>
+
+  <!-- Level 1: 1-minute -->
+  <rect x="290" y="80" width="200" height="120" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="290" y="80" width="200" height="30" rx="12" fill="#f0ad4e"/>
+  <rect x="290" y="100" width="200" height="10" fill="#f0ad4e"/>
+  <text x="390" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1-Minute Aggregates</text>
+
+  <rect x="305" y="120" width="8" height="50" rx="2" fill="#f0ad4e" opacity="0.8"/>
+  <rect x="318" y="115" width="8" height="55" rx="2" fill="#f0ad4e" opacity="0.8"/>
+  <rect x="331" y="125" width="8" height="45" rx="2" fill="#f0ad4e" opacity="0.8"/>
+  <rect x="344" y="110" width="8" height="60" rx="2" fill="#f0ad4e" opacity="0.8"/>
+  <rect x="357" y="130" width="8" height="40" rx="2" fill="#f0ad4e" opacity="0.8"/>
+  <rect x="370" y="118" width="8" height="52" rx="2" fill="#f0ad4e" opacity="0.8"/>
+  <text x="390" y="155" text-anchor="middle" font-size="8" fill="#1a1822">1,440 points/day</text>
+  <text x="390" y="170" text-anchor="middle" font-size="8" fill="#1a1822">Retention: 30 days</text>
+  <text x="390" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#f0ad4e">60x reduction</text>
+
+  <!-- Arrow to 1-hour -->
+  <line x1="490" y1="140" x2="540" y2="140" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowTS)"/>
+  <text x="515" y="130" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">Aggregate</text>
+  <text x="515" y="142" text-anchor="middle" font-size="7" fill="#1a1822">60 points → 1</text>
+
+  <!-- Level 2: 1-hour -->
+  <rect x="550" y="80" width="200" height="120" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="550" y="80" width="200" height="30" rx="12" fill="#4caf50"/>
+  <rect x="550" y="100" width="200" height="10" fill="#4caf50"/>
+  <text x="650" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1-Hour Aggregates</text>
+
+  <rect x="565" y="120" width="15" height="50" rx="3" fill="#4caf50" opacity="0.8"/>
+  <rect x="585" y="115" width="15" height="55" rx="3" fill="#4caf50" opacity="0.8"/>
+  <rect x="605" y="125" width="15" height="45" rx="3" fill="#4caf50" opacity="0.8"/>
+  <rect x="625" y="110" width="15" height="60" rx="3" fill="#4caf50" opacity="0.8"/>
+  <text x="650" y="155" text-anchor="middle" font-size="8" fill="#1a1822">24 points/day</text>
+  <text x="650" y="170" text-anchor="middle" font-size="8" fill="#1a1822">Retention: 1 year</text>
+  <text x="650" y="185" text-anchor="middle" font-size="8" font-weight="600" fill="#4caf50">3,600x reduction</text>
+
+  <!-- Arrow to 1-day -->
+  <line x1="750" y1="140" x2="800" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowTS)"/>
+  <text x="775" y="130" text-anchor="middle" font-size="8" font-weight="600" fill="#6d5bd0">Aggregate</text>
+  <text x="775" y="142" text-anchor="middle" font-size="7" fill="#1a1822">24 points → 1</text>
+
+  <!-- Level 3: 1-day -->
+  <rect x="810" y="80" width="60" height="120" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="810" y="80" width="60" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="810" y="100" width="60" height="10" fill="#6d5bd0"/>
+  <text x="840" y="100" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">1-Day</text>
+
+  <rect x="820" y="120" width="40" height="50" rx="4" fill="#6d5bd0" opacity="0.8"/>
+  <text x="840" y="155" text-anchor="middle" font-size="7" fill="#1a1822">1 pt/day</text>
+  <text x="840" y="170" text-anchor="middle" font-size="7" fill="#1a1822">Retention: ∞</text>
+  <text x="840" y="185" text-anchor="middle" font-size="7" font-weight="600" fill="#6d5bd0">86,400x</text>
+
+  <!-- Storage comparison -->
+  <rect x="30" y="230" width="840" height="140" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="255" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Storage Reduction by Downsampling</text>
+
+  <rect x="50" y="275" width="180" height="80" rx="8" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1"/>
+  <text x="140" y="295" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Raw (1-second)</text>
+  <text x="140" y="315" text-anchor="middle" font-size="10" fill="#1a1822">86,400 pts/day</text>
+  <text x="140" y="335" text-anchor="middle" font-size="10" fill="#1a1822">1.2 TB / 7 days</text>
+  <text x="140" y="350" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Baseline (1x)</text>
+
+  <rect x="250" y="275" width="180" height="80" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="340" y="295" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">1-Minute</text>
+  <text x="340" y="315" text-anchor="middle" font-size="10" fill="#1a1822">1,440 pts/day</text>
+  <text x="340" y="335" text-anchor="middle" font-size="10" fill="#1a1822">86 GB / 30 days</text>
+  <text x="340" y="350" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">60x fewer points</text>
+
+  <rect x="450" y="275" width="180" height="80" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="540" y="295" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">1-Hour</text>
+  <text x="540" y="315" text-anchor="middle" font-size="10" fill="#1a1822">24 pts/day</text>
+  <text x="540" y="335" text-anchor="middle" font-size="10" fill="#1a1822">175 GB / 1 year</text>
+  <text x="540" y="350" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">3,600x fewer points</text>
+
+  <rect x="650" y="275" width="180" height="80" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="740" y="295" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">1-Day</text>
+  <text x="740" y="315" text-anchor="middle" font-size="10" fill="#1a1822">1 pt/day</text>
+  <text x="740" y="335" text-anchor="middle" font-size="10" fill="#1a1822">7 MB / year</text>
+  <text x="740" y="350" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">86,400x fewer points</text>
+
+  <!-- Key insight -->
+  <rect x="30" y="390" width="840" height="90" rx="12" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="415" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Aggregate Functions Preserved</text>
+  <text x="450" y="440" text-anchor="middle" font-size="10" fill="#1a1822">Each downsampling step preserves avg, min, max, count, sum, p50, p95, p99</text>
+  <text x="450" y="458" text-anchor="middle" font-size="10" fill="#1a1822">This enables queries like &quot;P99 latency over the last year&quot; without storing raw data</text>
+  <text x="450" y="472" text-anchor="middle" font-size="9" fill="#1a1822">HyperLogLog for cardinality, t-digest for percentiles — approximate but accurate within 1-2%</text>
+
+  <defs>
+    <marker id="arrowTS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

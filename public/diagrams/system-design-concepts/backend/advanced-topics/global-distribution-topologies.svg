@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Replication topologies: star, ring, mesh, tree for global data distribution</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Replication Topologies</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">How data flows between regions: star, ring, mesh, and tree topologies</text>
+
+  <!-- Star Topology -->
+  <rect x="30" y="80" width="200" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="200" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="100" width="200" height="10" fill="#6d5bd0"/>
+  <text x="130" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Star (Hub-Spoke)</text>
+
+  <rect x="80" y="130" width="100" height="35" rx="8" fill="#6d5bd0"/>
+  <text x="130" y="153" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Hub (Primary)</text>
+
+  <line x1="130" y1="170" x2="60" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowGD)"/>
+  <line x1="130" y1="170" x2="130" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowGD)"/>
+  <line x1="130" y1="170" x2="200" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowGD)"/>
+
+  <rect x="30" y="220" width="60" height="30" rx="6" fill="#6d5bd0" opacity="0.5"/>
+  <text x="60" y="240" text-anchor="middle" font-size="9" fill="#ffffff">EU</text>
+  <rect x="100" y="220" width="60" height="30" rx="6" fill="#6d5bd0" opacity="0.5"/>
+  <text x="130" y="240" text-anchor="middle" font-size="9" fill="#ffffff">US</text>
+  <rect x="170" y="220" width="60" height="30" rx="6" fill="#6d5bd0" opacity="0.5"/>
+  <text x="200" y="240" text-anchor="middle" font-size="9" fill="#ffffff">APAC</text>
+
+  <rect x="50" y="270" width="160" height="90" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Pros:</text>
+  <text x="130" y="305" text-anchor="middle" font-size="9" fill="#1a1822">Simple, single source of truth</text>
+  <text x="130" y="325" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Cons:</text>
+  <text x="130" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Hub bottleneck, single point of failure</text>
+  <text x="130" y="355" text-anchor="middle" font-size="9" fill="#1a1822">O(N) replication links</text>
+
+  <!-- Ring Topology -->
+  <rect x="245" y="80" width="200" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="245" y="80" width="200" height="30" rx="12" fill="#f0ad4e"/>
+  <rect x="245" y="100" width="200" height="10" fill="#f0ad4e"/>
+  <text x="345" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Ring (Circular)</text>
+
+  <rect x="295" y="130" width="100" height="30" rx="8" fill="#f0ad4e"/>
+  <text x="345" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Region A</text>
+
+  <rect x="395" y="200" width="50" height="30" rx="8" fill="#f0ad4e" opacity="0.6"/>
+  <text x="420" y="220" text-anchor="middle" font-size="9" fill="#ffffff">Region B</text>
+
+  <rect x="295" y="270" width="100" height="30" rx="8" fill="#f0ad4e" opacity="0.6"/>
+  <text x="345" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Region C</text>
+
+  <path d="M 345 165 Q 400 180 395 200" stroke="#f0ad4e" stroke-width="2" fill="none" marker-end="url(#arrowGD)"/>
+  <path d="M 420 235 Q 370 255 345 270" stroke="#f0ad4e" stroke-width="2" fill="none" marker-end="url(#arrowGD)"/>
+  <path d="M 295 270 Q 250 200 295 130" stroke="#f0ad4e" stroke-width="2" fill="none" marker-end="url(#arrowGD)"/>
+
+  <rect x="265" y="320" width="160" height="130" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="345" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Pros:</text>
+  <text x="345" y="355" text-anchor="middle" font-size="9" fill="#1a1822">Balanced bandwidth, no single bottleneck</text>
+  <text x="345" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Cons:</text>
+  <text x="345" y="390" text-anchor="middle" font-size="9" fill="#1a1822">High replication lag (N-1 hops)</text>
+  <text x="345" y="405" text-anchor="middle" font-size="9" fill="#1a1822">O(N) replication links</text>
+  <text x="345" y="425" text-anchor="middle" font-size="9" fill="#1a1822">One break breaks the ring</text>
+
+  <!-- Mesh Topology -->
+  <rect x="460" y="80" width="200" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="80" width="200" height="30" rx="12" fill="#4caf50"/>
+  <rect x="460" y="100" width="200" height="10" fill="#4caf50"/>
+  <text x="560" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Mesh (All-to-All)</text>
+
+  <rect x="510" y="130" width="100" height="30" rx="8" fill="#4caf50"/>
+  <text x="560" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Region A</text>
+
+  <rect x="610" y="200" width="50" height="30" rx="8" fill="#4caf50" opacity="0.6"/>
+  <text x="635" y="220" text-anchor="middle" font-size="9" fill="#ffffff">B</text>
+
+  <rect x="510" y="270" width="100" height="30" rx="8" fill="#4caf50" opacity="0.6"/>
+  <text x="560" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Region C</text>
+
+  <line x1="560" y1="165" x2="610" y2="200" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowGD)"/>
+  <line x1="610" y1="200" x2="560" y2="270" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowGD)"/>
+  <line x1="510" y1="145" x2="510" y2="270" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrowGD)"/>
+  <line x1="560" y1="165" x2="560" y2="270" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <line x1="610" y1="200" x2="510" y2="270" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <rect x="480" y="320" width="160" height="130" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="560" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Pros:</text>
+  <text x="560" y="355" text-anchor="middle" font-size="9" fill="#1a1822">Fastest convergence, no single point</text>
+  <text x="560" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Cons:</text>
+  <text x="560" y="390" text-anchor="middle" font-size="9" fill="#1a1822">O(N²) bandwidth, expensive at scale</text>
+  <text x="560" y="405" text-anchor="middle" font-size="9" fill="#1a1822">Complex conflict resolution</text>
+  <text x="560" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Best for 3-5 regions</text>
+
+  <!-- Tree Topology -->
+  <rect x="675" y="80" width="200" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="675" y="80" width="200" height="30" rx="12" fill="#cc4444"/>
+  <rect x="675" y="100" width="200" height="10" fill="#cc4444"/>
+  <text x="775" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Tree (Hierarchical)</text>
+
+  <rect x="725" y="130" width="100" height="30" rx="8" fill="#cc4444"/>
+  <text x="775" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Root</text>
+
+  <line x1="750" y1="165" x2="710" y2="210" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowGD)"/>
+  <line x1="790" y1="165" x2="830" y2="210" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrowGD)"/>
+
+  <rect x="690" y="210" width="50" height="30" rx="8" fill="#cc4444" opacity="0.6"/>
+  <text x="715" y="230" text-anchor="middle" font-size="9" fill="#ffffff">A</text>
+  <rect x="810" y="210" width="50" height="30" rx="8" fill="#cc4444" opacity="0.6"/>
+  <text x="835" y="230" text-anchor="middle" font-size="9" fill="#ffffff">B</text>
+
+  <line x1="700" y1="245" x2="690" y2="290" stroke="#cc4444" stroke-width="1" marker-end="url(#arrowGD)"/>
+  <line x1="720" y1="245" x2="740" y2="290" stroke="#cc4444" stroke-width="1" marker-end="url(#arrowGD)"/>
+  <line x1="820" y1="245" x2="810" y2="290" stroke="#cc4444" stroke-width="1" marker-end="url(#arrowGD)"/>
+  <line x1="840" y1="245" x2="860" y2="290" stroke="#cc4444" stroke-width="1" marker-end="url(#arrowGD)"/>
+
+  <rect x="675" y="290" width="40" height="25" rx="6" fill="#cc4444" opacity="0.3"/>
+  <text x="695" y="307" text-anchor="middle" font-size="8" fill="#cc4444">A1</text>
+  <rect x="725" y="290" width="40" height="25" rx="6" fill="#cc4444" opacity="0.3"/>
+  <text x="745" y="307" text-anchor="middle" font-size="8" fill="#cc4444">A2</text>
+  <rect x="795" y="290" width="40" height="25" rx="6" fill="#cc4444" opacity="0.3"/>
+  <text x="815" y="307" text-anchor="middle" font-size="8" fill="#cc4444">B1</text>
+  <rect x="845" y="290" width="40" height="25" rx="6" fill="#cc4444" opacity="0.3"/>
+  <text x="865" y="307" text-anchor="middle" font-size="8" fill="#cc4444">B2</text>
+
+  <rect x="695" y="340" width="160" height="110" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="775" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Pros:</text>
+  <text x="775" y="375" text-anchor="middle" font-size="9" fill="#1a1822">Balances bandwidth and convergence</text>
+  <text x="775" y="395" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Cons:</text>
+  <text x="775" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Complex to implement</text>
+  <text x="775" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Root failure impacts all children</text>
+  <text x="775" y="440" text-anchor="middle" font-size="9" fill="#1a1822">Best for 10+ regions</text>
+
+  <defs>
+    <marker id="arrowGD" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

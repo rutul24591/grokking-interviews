@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Server-based OT architecture showing clients sending operations to central server, server transforming and broadcasting</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Server-Based OT Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Central server transforms concurrent operations, maintains authoritative document state, broadcasts to clients</text>
+
+  <!-- Client A -->
+  <rect x="30" y="100" width="240" height="130" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="100" width="240" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="120" width="240" height="10" fill="#6d5bd0"/>
+  <text x="150" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Client A</text>
+
+  <rect x="50" y="140" width="200" height="35" rx="6" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="150" y="162" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Local Document State</text>
+  <text x="150" y="178" text-anchor="middle" font-size="9" fill="#1a1822">Version 5</text>
+
+  <rect x="50" y="185" width="200" height="35" rx="6" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="150" y="207" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Pending Operations</text>
+  <text x="150" y="223" text-anchor="middle" font-size="9" fill="#1a1822">Op A1 (awaiting ack)</text>
+
+  <!-- Client B -->
+  <rect x="630" y="100" width="240" height="130" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="630" y="100" width="240" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="630" y="120" width="240" height="10" fill="#6d5bd0"/>
+  <text x="750" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Client B</text>
+
+  <rect x="650" y="140" width="200" height="35" rx="6" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="750" y="162" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Local Document State</text>
+  <text x="750" y="178" text-anchor="middle" font-size="9" fill="#1a1822">Version 5</text>
+
+  <rect x="650" y="185" width="200" height="35" rx="6" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="750" y="207" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Pending Operations</text>
+  <text x="750" y="223" text-anchor="middle" font-size="9" fill="#1a1822">Op B1 (awaiting ack)</text>
+
+  <!-- Server -->
+  <rect x="285" y="270" width="330" height="150" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="3"/>
+  <rect x="285" y="270" width="330" height="30" rx="12" fill="#cc4444"/>
+  <rect x="285" y="290" width="330" height="10" fill="#cc4444"/>
+  <text x="450" y="290" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">OT Server</text>
+
+  <rect x="305" y="310" width="135" height="40" rx="6" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1"/>
+  <text x="372" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Authoritative</text>
+  <text x="372" y="345" text-anchor="middle" font-size="9" fill="#1a1822">Document State</text>
+
+  <rect x="460" y="310" width="135" height="40" rx="6" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1"/>
+  <text x="527" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Operation History</text>
+  <text x="527" y="345" text-anchor="middle" font-size="9" fill="#1a1822">v1-v5 ops stored</text>
+
+  <rect x="305" y="360" width="290" height="40" rx="6" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1"/>
+  <text x="450" y="380" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Transformation Engine</text>
+  <text x="450" y="395" text-anchor="middle" font-size="9" fill="#1a1822">Transforms concurrent ops against history</text>
+
+  <!-- Operation flow arrows -->
+  <!-- Client A to Server -->
+  <line x1="270" y1="235" x2="340" y2="270" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowOT)"/>
+  <text x="275" y="260" text-anchor="start" font-size="9" font-weight="600" fill="#4caf50">Op A1 →</text>
+
+  <!-- Client B to Server -->
+  <line x1="630" y1="235" x2="560" y2="270" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowOT)"/>
+  <text x="595" y="260" text-anchor="end" font-size="9" font-weight="600" fill="#4caf50">← Op B1</text>
+
+  <!-- Server to Client A (broadcast) -->
+  <line x1="340" y1="420" x2="150" y2="450" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowOT)" stroke-dasharray="5,3"/>
+  <text x="210" y="445" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Transformed B1</text>
+
+  <!-- Server to Client B (broadcast) -->
+  <line x1="560" y1="420" x2="750" y2="450" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowOT)" stroke-dasharray="5,3"/>
+  <text x="690" y="445" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Transformed A1</text>
+
+  <!-- Key properties -->
+  <rect x="30" y="460" width="840" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="480" text-anchor="middle" font-size="10" fill="#1a1822">Server ensures all clients receive operations in the same order → convergence guaranteed</text>
+
+  <defs>
+    <marker id="arrowOT" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

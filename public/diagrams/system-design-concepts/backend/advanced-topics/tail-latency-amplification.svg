@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Tail Latency Amplification</title>
+  <desc>Showing how 100 API calls amplify tail latency and how hedged requests reduce it</desc>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Tail Latency Amplification</text>
+  <text x="450" y="50" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">One straggler can ruin the entire page experience</text>
+
+  <!-- LEFT: Web page with 100 API calls -->
+  <rect x="25" y="70" width="420" height="280" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="235" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Web Page Loads 100 Resources</text>
+
+  <!-- Browser icon representation -->
+  <rect x="60" y="110" width="120" height="90" rx="8" fill="#6d5bd0"/>
+  <text x="120" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Web Page</text>
+  <text x="120" y="152" text-anchor="middle" font-size="9" fill="#e0d8f0">100 resources</text>
+  <text x="120" y="168" text-anchor="middle" font-size="9" fill="#e0d8f0">CSS, JS, images, API</text>
+  <text x="120" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Page Load = MAX</text>
+
+  <!-- 100 small call boxes - show as grid -->
+  <!-- 99 fast calls -->
+  <g transform="translate(200, 110)">
+    <!-- Row 1: 10 fast calls -->
+    <rect x="0" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="9" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="22" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="31" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="44" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="53" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="66" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="75" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="88" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="97" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="110" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="119" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="132" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="141" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="154" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="163" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="176" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="185" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="198" y="0" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="207" y="10" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+
+    <!-- Row 2: 10 fast calls -->
+    <rect x="0" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="9" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="22" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="31" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="44" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="53" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="66" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="75" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="88" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="97" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="110" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="119" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="132" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="141" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="154" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="163" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="176" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="185" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="198" y="20" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="207" y="30" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+
+    <!-- Row 3: 9 fast + 1 straggler -->
+    <rect x="0" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="9" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="22" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="31" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="44" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="53" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="66" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="75" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="88" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="97" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="110" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="119" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="132" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="141" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="154" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="163" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <rect x="176" y="40" width="18" height="14" rx="2" fill="#4caf50"/>
+    <text x="185" y="50" text-anchor="middle" font-size="6" font-weight="600" fill="#ffffff">10ms</text>
+    <!-- THE STRAGGLER -->
+    <rect x="198" y="40" width="18" height="14" rx="2" fill="#cc4444" stroke="#a83333" stroke-width="1.5"/>
+    <text x="207" y="50" text-anchor="middle" font-size="6" font-weight="700" fill="#ffffff">500ms</text>
+  </g>
+
+  <!-- Arrow to result -->
+  <line x1="120" y1="215" x2="120" y2="270" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <line x1="310" y1="215" x2="310" y2="270" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowDown)"/>
+
+  <!-- Result: Page load time -->
+  <rect x="60" y="270" width="120" height="40" rx="8" fill="#cc4444"/>
+  <text x="120" y="287" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">Total Page Load</text>
+  <text x="120" y="303" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">500ms</text>
+
+  <rect x="240" y="270" width="160" height="40" rx="8" fill="#f3f1f8" stroke="#cc4444" stroke-width="1"/>
+  <text x="320" y="287" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Bottleneck: 1 straggler</text>
+  <text x="320" y="303" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.7">of 100 calls (1%)</text>
+
+  <!-- RIGHT: Formula panel -->
+  <rect x="465" y="70" width="410" height="140" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="670" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">The Math: Tail Amplification</text>
+
+  <rect x="485" y="108" width="370" height="85" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="670" y="130" text-anchor="middle" font-size="10" fill="#1a1822">Each request has P99 = 1% chance of being slow</text>
+  <text x="670" y="150" text-anchor="middle" font-size="10" fill="#1a1822">Page needs ALL 100 requests to be fast</text>
+  <text x="670" y="172" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">P(all fast) = 0.99 ^ 100 = 36.6%</text>
+  <text x="670" y="184" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">P(at least 1 slow) = 1 - 0.99^100 = 63.4%</text>
+
+  <!-- Bottom: Hedged Requests -->
+  <rect x="25" y="368" width="850" height="115" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="392" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">Hedged Requests Cut the Tail</text>
+
+  <!-- Left: Without hedging -->
+  <rect x="45" y="405" width="390" height="65" rx="8" fill="#f3f1f8" stroke="#cc4444" stroke-width="1"/>
+  <text x="240" y="422" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Without Hedging (P99 = 500ms)</text>
+  <!-- Timeline without hedge -->
+  <line x1="65" y1="440" x2="420" y2="440" stroke="#1a1822" stroke-width="1"/>
+  <circle cx="65" cy="440" r="4" fill="#6d5bd0"/>
+  <text x="65" y="458" text-anchor="middle" font-size="8" fill="#1a1822">t=0</text>
+  <!-- Straggler line -->
+  <line x1="65" y1="440" x2="400" y2="440" stroke="#cc4444" stroke-width="3"/>
+  <circle cx="400" cy="440" r="4" fill="#cc4444"/>
+  <text x="400" y="458" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">t=500ms</text>
+  <text x="240" y="440" text-anchor="middle" font-size="8" fill="#cc4444" dy="-6">Waiting for straggler...</text>
+
+  <!-- Arrow between -->
+  <text x="455" y="440" text-anchor="middle" font-size="16" fill="#4caf50" font-weight="700">&#8594;</text>
+
+  <!-- Right: With hedging -->
+  <rect x="480" y="405" width="375" height="65" rx="8" fill="#f3f1f8" stroke="#4caf50" stroke-width="1"/>
+  <text x="667" y="422" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">With Hedged Request (P99 reduced 40%)</text>
+  <!-- Timeline with hedge -->
+  <line x1="500" y1="440" x2="835" y2="440" stroke="#1a1822" stroke-width="1"/>
+  <circle cx="500" cy="440" r="4" fill="#6d5bd0"/>
+  <text x="500" y="458" text-anchor="middle" font-size="8" fill="#1a1822">t=0</text>
+  <!-- Original request (straggler) -->
+  <line x1="500" y1="440" x2="800" y2="440" stroke="#cc4444" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="700" y="433" text-anchor="middle" font-size="7" fill="#cc4444">Original: 500ms</text>
+  <!-- Hedge request (fast) -->
+  <line x1="540" y1="450" x2="620" y2="450" stroke="#4caf50" stroke-width="3"/>
+  <text x="580" y="464" text-anchor="middle" font-size="7" font-weight="600" fill="#4caf50">Hedge @100ms</text>
+  <circle cx="620" cy="450" r="5" fill="#4caf50"/>
+  <text x="620" y="472" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">t=120ms</text>
+  <text x="720" y="452" text-anchor="middle" font-size="8" fill="#4caf50" font-weight="600">Fastest wins!</text>
+
+  <defs>
+    <marker id="arrowDown" markerWidth="8" markerHeight="8" refX="4" refY="8" orient="auto">
+      <polygon points="0,0 4,8 8,0" fill="#cc4444"/>
+    </marker>
+  </defs>
+</svg>

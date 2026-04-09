@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Time-series storage architecture showing append-only writes, time-based partitions, compression, and downsampling</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Time-Series Storage Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Append-only writes → time-based partitions → compression → downsampling pipeline</text>
+
+  <!-- Ingestion -->
+  <rect x="30" y="80" width="180" height="100" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="180" height="30" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="100" width="180" height="10" fill="#6d5bd0"/>
+  <text x="120" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Data Ingestion</text>
+
+  <text x="120" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">1M points/sec</text>
+  <text x="120" y="148" text-anchor="middle" font-size="9" fill="#1a1822">CPU, memory, disk, net</text>
+  <text x="120" y="163" text-anchor="middle" font-size="9" fill="#1a1822">10,000 servers</text>
+
+  <!-- Arrow to partitions -->
+  <line x1="210" y1="130" x2="270" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowTS)"/>
+  <text x="240" y="120" text-anchor="middle" font-size="8" fill="#6d5bd0">Append-only</text>
+
+  <!-- Partitions -->
+  <rect x="280" y="80" width="200" height="100" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="280" y="80" width="200" height="30" rx="12" fill="#4caf50"/>
+  <rect x="280" y="100" width="200" height="10" fill="#4caf50"/>
+  <text x="380" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Time-Based Partitions</text>
+
+  <rect x="295" y="120" width="45" height="45" rx="6" fill="#4caf50" opacity="0.3"/>
+  <text x="317" y="140" text-anchor="middle" font-size="8" fill="#1a1822">Day -3</text>
+  <rect x="345" y="120" width="45" height="45" rx="6" fill="#4caf50" opacity="0.4"/>
+  <text x="367" y="140" text-anchor="middle" font-size="8" fill="#1a1822">Day -2</text>
+  <rect x="395" y="120" width="45" height="45" rx="6" fill="#4caf50" opacity="0.6"/>
+  <text x="417" y="140" text-anchor="middle" font-size="8" fill="#1a1822">Day -1</text>
+  <rect x="445" y="120" width="45" height="45" rx="6" fill="#4caf50" opacity="0.9"/>
+  <text x="467" y="140" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Today</text>
+  <text x="380" y="170" text-anchor="middle" font-size="8" fill="#1a1822">1 partition per day</text>
+
+  <!-- Arrow to compression -->
+  <line x1="480" y1="130" x2="540" y2="130" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowTS)"/>
+  <text x="510" y="120" text-anchor="middle" font-size="8" fill="#4caf50">Compress</text>
+
+  <!-- Compression -->
+  <rect x="550" y="80" width="160" height="100" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="550" y="80" width="160" height="30" rx="12" fill="#f0ad4e"/>
+  <rect x="550" y="100" width="160" height="10" fill="#f0ad4e"/>
+  <text x="630" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Compression</text>
+
+  <text x="630" y="130" text-anchor="middle" font-size="9" font-weight="600" fill="#f0ad4e">Gorilla XOR: 10-20x</text>
+  <text x="630" y="148" text-anchor="middle" font-size="9" font-weight="600" fill="#f0ad4e">Delta encoding: 5-10x</text>
+  <text x="630" y="166" text-anchor="middle" font-size="9" fill="#1a1822">8B → 1-2B per sample</text>
+
+  <!-- Arrow to downsampling -->
+  <line x1="710" y1="130" x2="760" y2="130" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowTS)"/>
+  <text x="735" y="120" text-anchor="middle" font-size="8" fill="#f0ad4e">Downsample</text>
+
+  <!-- Downsampling -->
+  <rect x="770" y="80" width="100" height="100" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="770" y="80" width="100" height="30" rx="12" fill="#cc4444"/>
+  <rect x="770" y="100" width="100" height="10" fill="#cc4444"/>
+  <text x="820" y="100" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Downsample</text>
+
+  <text x="820" y="130" text-anchor="middle" font-size="8" fill="#1a1822">1s → 1min</text>
+  <text x="820" y="145" text-anchor="middle" font-size="8" fill="#1a1822">1min → 1hr</text>
+  <text x="820" y="160" text-anchor="middle" font-size="8" fill="#1a1822">1hr → 1day</text>
+
+  <!-- Retention policy -->
+  <rect x="30" y="210" width="840" height="260" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="235" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Multi-Tier Retention Policy</text>
+
+  <!-- Raw tier -->
+  <rect x="50" y="260" width="380" height="80" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="130" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Raw Data (1-second)</text>
+  <text x="130" y="305" text-anchor="middle" font-size="9" fill="#1a1822">86.4B points/day</text>
+  <text x="350" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Retention: 7 days</text>
+  <text x="350" y="305" text-anchor="middle" font-size="9" fill="#1a1822">604.8B points</text>
+  <text x="350" y="320" text-anchor="middle" font-size="9" fill="#1a1822">~1.2 TB (compressed)</text>
+
+  <!-- 1-minute tier -->
+  <rect x="50" y="350" width="380" height="80" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="130" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">1-Minute Aggregates</text>
+  <text x="130" y="395" text-anchor="middle" font-size="9" fill="#1a1822">1.44B points/day</text>
+  <text x="350" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ad4e">Retention: 30 days</text>
+  <text x="350" y="395" text-anchor="middle" font-size="9" fill="#1a1822">43.2B points</text>
+  <text x="350" y="410" text-anchor="middle" font-size="9" fill="#1a1822">~86 GB (compressed)</text>
+
+  <!-- 1-hour tier -->
+  <rect x="470" y="260" width="380" height="80" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="550" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">1-Hour Aggregates</text>
+  <text x="550" y="305" text-anchor="middle" font-size="9" fill="#1a1822">240M points/day</text>
+  <text x="770" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Retention: 1 year</text>
+  <text x="770" y="305" text-anchor="middle" font-size="9" fill="#1a1822">87.6B points</text>
+  <text x="770" y="320" text-anchor="middle" font-size="9" fill="#1a1822">~175 GB (compressed)</text>
+
+  <!-- 1-day tier -->
+  <rect x="470" y="350" width="380" height="80" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="550" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">1-Day Aggregates</text>
+  <text x="550" y="395" text-anchor="middle" font-size="9" fill="#1a1822">10K points/day</text>
+  <text x="770" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Retention: Indefinite</text>
+  <text x="770" y="395" text-anchor="middle" font-size="9" fill="#1a1822">~3.65M points/year</text>
+  <text x="770" y="410" text-anchor="middle" font-size="9" fill="#1a1822">~7 MB (compressed)</text>
+
+  <!-- Key insight -->
+  <rect x="50" y="455" width="800" height="30" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="475" text-anchor="middle" font-size="10" fill="#1a1822">Total storage: 1.5 TB vs 86.4B raw points/day × 365 = 31.5 TB uncompressed — 20x reduction with downsampling + compression</text>
+
+  <defs>
+    <marker id="arrowTS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>ZooKeeper ephemeral znode leader election showing sequential znodes and watching predecessor</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">ZooKeeper Ephemeral Znode Election</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Sequential znodes, watching predecessor, automatic cleanup on session expiration</text>
+
+  <!-- ZooKeeper cluster -->
+  <rect x="30" y="80" width="840" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="840" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="840" height="10" fill="#6d5bd0"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">ZooKeeper Election Path: /election/</text>
+
+  <!-- Sequential znodes -->
+  <rect x="80" y="140" width="150" height="70" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="155" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">leader_000001</text>
+  <text x="155" y="185" text-anchor="middle" font-size="10" fill="#1a1822">Session: Node A</text>
+  <text x="155" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">LEADER</text>
+
+  <rect x="260" y="140" width="150" height="70" rx="8" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="335" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">leader_000002</text>
+  <text x="335" y="185" text-anchor="middle" font-size="10" fill="#1a1822">Session: Node B</text>
+  <text x="335" y="200" text-anchor="middle" font-size="10" fill="#1a1822">Watching: 000001</text>
+
+  <rect x="440" y="140" width="150" height="70" rx="8" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="515" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">leader_000003</text>
+  <text x="515" y="185" text-anchor="middle" font-size="10" fill="#1a1822">Session: Node C</text>
+  <text x="515" y="200" text-anchor="middle" font-size="10" fill="#1a1822">Watching: 000002</text>
+
+  <rect x="620" y="140" width="150" height="70" rx="8" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="695" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">leader_000004</text>
+  <text x="695" y="185" text-anchor="middle" font-size="10" fill="#1a1822">Session: Node D</text>
+  <text x="695" y="200" text-anchor="middle" font-size="10" fill="#1a1822">Watching: 000003</text>
+
+  <!-- Watch arrows -->
+  <line x1="335" y1="215" x2="155" y2="215" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowZK)"/>
+  <text x="245" y="235" text-anchor="middle" font-size="8" fill="#f0ad4e">Watches</text>
+
+  <line x1="515" y1="215" x2="410" y2="215" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowZK)"/>
+  <text x="463" y="235" text-anchor="middle" font-size="8" fill="#f0ad4e">Watches</text>
+
+  <line x1="695" y1="215" x2="590" y2="215" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrowZK)"/>
+  <text x="643" y="235" text-anchor="middle" font-size="8" fill="#f0ad4e">Watches</text>
+
+  <!-- Failure scenario -->
+  <rect x="30" y="270" width="840" height="180" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Leader Failure: Node A Session Expires</text>
+
+  <!-- Step 1: Leader fails -->
+  <rect x="60" y="310" width="180" height="60" rx="8" fill="#cc4444" opacity="0.2" stroke="#cc4444" stroke-width="1"/>
+  <text x="150" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Step 1: Leader Fails</text>
+  <text x="150" y="348" text-anchor="middle" font-size="9" fill="#1a1822">Node A session expires</text>
+  <text x="150" y="363" text-anchor="middle" font-size="9" fill="#1a1822">ZK auto-deletes 000001</text>
+
+  <line x1="240" y1="340" x2="270" y2="340" stroke="#374151" stroke-width="2" marker-end="url(#arrowZK)"/>
+
+  <!-- Step 2: Notification -->
+  <rect x="280" y="310" width="180" height="60" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="370" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Step 2: Node B Notified</text>
+  <text x="370" y="348" text-anchor="middle" font-size="9" fill="#1a1822">Node B was watching 000001</text>
+  <text x="370" y="363" text-anchor="middle" font-size="9" fill="#1a1822">Receives deletion notification</text>
+
+  <line x1="460" y1="340" x2="490" y2="340" stroke="#374151" stroke-width="2" marker-end="url(#arrowZK)"/>
+
+  <!-- Step 3: New leader -->
+  <rect x="500" y="310" width="180" height="60" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="1"/>
+  <text x="590" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Step 3: Node B Becomes Leader</text>
+  <text x="590" y="348" text-anchor="middle" font-size="9" fill="#1a1822">Lowest sequence number</text>
+  <text x="590" y="363" text-anchor="middle" font-size="9" fill="#1a1822">No election needed</text>
+
+  <line x1="680" y1="340" x2="710" y2="340" stroke="#374151" stroke-width="2" marker-end="url(#arrowZK)"/>
+
+  <!-- Step 4: Chain update -->
+  <rect x="720" y="310" width="130" height="60" rx="8" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="785" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Step 4: Chain Updates</text>
+  <text x="785" y="348" text-anchor="middle" font-size="9" fill="#1a1822">C now watches 000002</text>
+  <text x="785" y="363" text-anchor="middle" font-size="9" fill="#1a1822">D now watches 000003</text>
+
+  <!-- Key insight -->
+  <rect x="60" y="390" width="780" height="45" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="410" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Key Advantage: Only one watcher per candidate (predecessor). No thundering herd — only the successor is notified.</text>
+  <text x="450" y="428" text-anchor="middle" font-size="10" fill="#1a1822">Ephemeral znodes auto-delete on session expiration, ensuring automatic cleanup without manual intervention.</text>
+
+  <defs>
+    <marker id="arrowZK" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

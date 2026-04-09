@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>LSM tree compaction strategies: size-tiered, leveled, and tiered-leveled comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">LSM Tree Compaction Strategies</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Size-tiered (low write amplification), leveled (low read amplification), tiered-leveled (hybrid)</text>
+
+  <!-- Size-Tiered -->
+  <rect x="30" y="80" width="270" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="30" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="165" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Size-Tiered Compaction</text>
+
+  <rect x="50" y="130" width="230" height="80" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">How It Works</text>
+  <text x="165" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Merge SSTables of similar size.</text>
+  <text x="165" y="185" text-anchor="middle" font-size="9" fill="#1a1822">4 small → 1 medium → 1 large.</text>
+  <text x="165" y="200" text-anchor="middle" font-size="9" fill="#1a1822">No level boundaries.</text>
+
+  <rect x="50" y="225" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="245" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Write Amplification</text>
+  <text x="165" y="262" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Low: O(log N)</text>
+
+  <rect x="50" y="285" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="305" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Read Amplification</text>
+  <text x="165" y="322" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">High: many files</text>
+
+  <rect x="50" y="345" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="365" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Space Amplification</text>
+  <text x="165" y="382" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">High: overlaps</text>
+
+  <rect x="50" y="405" width="230" height="50" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Best For:</text>
+  <text x="165" y="442" text-anchor="middle" font-size="10" fill="#1a1822">Write-heavy (time-series, logs)</text>
+
+  <!-- Leveled -->
+  <rect x="315" y="80" width="270" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#cc4444"/>
+  <rect x="315" y="105" width="270" height="10" fill="#cc4444"/>
+  <text x="450" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Leveled Compaction</text>
+
+  <rect x="335" y="130" width="230" height="80" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">How It Works</text>
+  <text x="450" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Organize SSTables into levels.</text>
+  <text x="450" y="185" text-anchor="middle" font-size="9" fill="#1a1822">L0 → L1 → L2 → LN.</text>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Each level 10x size of previous.</text>
+
+  <rect x="335" y="225" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="245" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Write Amplification</text>
+  <text x="450" y="262" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">High: 10-50x</text>
+
+  <rect x="335" y="285" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="305" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Read Amplification</text>
+  <text x="450" y="322" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Low: 1 per level</text>
+
+  <rect x="335" y="345" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="365" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Space Amplification</text>
+  <text x="450" y="382" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Low: no overlap</text>
+
+  <rect x="335" y="405" width="230" height="50" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="450" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Best For:</text>
+  <text x="450" y="442" text-anchor="middle" font-size="10" fill="#1a1822">Read-heavy (OLTP, key-value)</text>
+
+  <!-- Tiered-Leveled -->
+  <rect x="600" y="80" width="270" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="600" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="735" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Tiered-Leveled (Hybrid)</text>
+
+  <rect x="620" y="130" width="230" height="80" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">How It Works</text>
+  <text x="735" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Size-tiered within levels,</text>
+  <text x="735" y="185" text-anchor="middle" font-size="9" fill="#1a1822">leveled between levels.</text>
+  <text x="735" y="200" text-anchor="middle" font-size="9" fill="#1a1822">RocksDB default.</text>
+
+  <rect x="620" y="225" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="245" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Write Amplification</text>
+  <text x="735" y="262" text-anchor="middle" font-size="14" font-weight="700" fill="#f0ad4e">Medium: O(N)</text>
+
+  <rect x="620" y="285" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="305" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Read Amplification</text>
+  <text x="735" y="322" text-anchor="middle" font-size="14" font-weight="700" fill="#f0ad4e">Medium</text>
+
+  <rect x="620" y="345" width="230" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="365" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Space Amplification</text>
+  <text x="735" y="382" text-anchor="middle" font-size="14" font-weight="700" fill="#f0ad4e">Medium</text>
+
+  <rect x="620" y="405" width="230" height="50" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Best For:</text>
+  <text x="735" y="442" text-anchor="middle" font-size="10" fill="#1a1822">Mixed workloads (default)</text>
+
+  <defs>
+    <marker id="arrowLSM" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

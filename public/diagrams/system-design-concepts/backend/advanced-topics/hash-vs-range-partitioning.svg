@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Hash partitioning vs range partitioning comparison showing even distribution vs potential hot spots</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Hash vs Range Partitioning</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Hash provides even distribution but poor range queries; Range enables efficient range queries but risks hot partitions</text>
+
+  <!-- Hash Partitioning -->
+  <rect x="30" y="80" width="420" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="420" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="420" height="10" fill="#6d5bd0"/>
+  <text x="240" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Hash Partitioning</text>
+
+  <text x="240" y="130" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">partition = hash(key) % N</text>
+
+  <!-- Even distribution visualization -->
+  <rect x="50" y="145" width="75" height="60" rx="6" fill="#6d5bd0" opacity="0.2"/>
+  <text x="87" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Partition 0</text>
+  <text x="87" y="185" text-anchor="middle" font-size="9" fill="#1a1822">20% traffic</text>
+  <text x="87" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Even load</text>
+
+  <rect x="135" y="145" width="75" height="60" rx="6" fill="#6d5bd0" opacity="0.2"/>
+  <text x="172" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Partition 1</text>
+  <text x="172" y="185" text-anchor="middle" font-size="9" fill="#1a1822">20% traffic</text>
+  <text x="172" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Even load</text>
+
+  <rect x="220" y="145" width="75" height="60" rx="6" fill="#6d5bd0" opacity="0.2"/>
+  <text x="257" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Partition 2</text>
+  <text x="257" y="185" text-anchor="middle" font-size="9" fill="#1a1822">20% traffic</text>
+  <text x="257" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Even load</text>
+
+  <rect x="305" y="145" width="75" height="60" rx="6" fill="#6d5bd0" opacity="0.2"/>
+  <text x="342" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Partition 3</text>
+  <text x="342" y="185" text-anchor="middle" font-size="9" fill="#1a1822">20% traffic</text>
+  <text x="342" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Even load</text>
+
+  <rect x="390" y="145" width="45" height="60" rx="6" fill="#6d5bd0" opacity="0.2"/>
+  <text x="412" y="165" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Part 4</text>
+  <text x="412" y="185" text-anchor="middle" font-size="9" fill="#1a1822">20%</text>
+  <text x="412" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Even</text>
+
+  <!-- Pros and Cons -->
+  <rect x="50" y="225" width="370" height="100" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="235" y="245" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Advantages</text>
+  <text x="235" y="265" text-anchor="middle" font-size="9" fill="#1a1822">Even traffic distribution (no hot partitions)</text>
+  <text x="235" y="280" text-anchor="middle" font-size="9" fill="#1a1822">Resistant to skewed data patterns</text>
+  <text x="235" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Simple to implement (hash % N)</text>
+  <text x="235" y="310" text-anchor="middle" font-size="9" fill="#1a1822">Used by: DynamoDB, Cassandra, consistent hashing</text>
+
+  <rect x="50" y="340" width="370" height="110" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="235" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Disadvantages</text>
+  <text x="235" y="380" text-anchor="middle" font-size="9" fill="#1a1822">Poor range query performance (scan all partitions)</text>
+  <text x="235" y="395" text-anchor="middle" font-size="9" fill="#1a1822">No data locality (related keys scattered)</text>
+  <text x="235" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Complex rebalancing when N changes</text>
+  <text x="235" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Not suitable for time-series or ordered data</text>
+
+  <!-- Range Partitioning -->
+  <rect x="465" y="80" width="405" height="390" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="465" y="80" width="405" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="465" y="105" width="405" height="10" fill="#f0ad4e"/>
+  <text x="667" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Range Partitioning</text>
+
+  <text x="667" y="130" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">partition by key range (A-F, G-M, N-T, U-Z)</text>
+
+  <!-- Skewed distribution visualization -->
+  <rect x="485" y="145" width="80" height="60" rx="6" fill="#4caf50" opacity="0.2"/>
+  <text x="525" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">A-F</text>
+  <text x="525" y="185" text-anchor="middle" font-size="9" fill="#1a1822">5% traffic</text>
+  <text x="525" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Light load</text>
+
+  <rect x="575" y="145" width="80" height="60" rx="6" fill="#f0ad4e" opacity="0.2"/>
+  <text x="615" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">G-M</text>
+  <text x="615" y="185" text-anchor="middle" font-size="9" fill="#1a1822">15% traffic</text>
+  <text x="615" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Moderate</text>
+
+  <rect x="665" y="145" width="80" height="60" rx="6" fill="#cc4444" opacity="0.2" stroke="#cc4444" stroke-width="2"/>
+  <text x="705" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">N-T (HOT!)</text>
+  <text x="705" y="185" text-anchor="middle" font-size="9" fill="#1a1822">70% traffic</text>
+  <text x="705" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Overloaded!</text>
+
+  <rect x="755" y="145" width="80" height="60" rx="6" fill="#4caf50" opacity="0.2"/>
+  <text x="795" y="165" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">U-Z</text>
+  <text x="795" y="185" text-anchor="middle" font-size="9" fill="#1a1822">10% traffic</text>
+  <text x="795" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Light load</text>
+
+  <!-- Pros and Cons -->
+  <rect x="485" y="225" width="365" height="100" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="667" y="245" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Advantages</text>
+  <text x="667" y="265" text-anchor="middle" font-size="9" fill="#1a1822">Efficient range queries (scan only relevant partitions)</text>
+  <text x="667" y="280" text-anchor="middle" font-size="9" fill="#1a1822">Data locality (related keys co-located)</text>
+  <text x="667" y="295" text-anchor="middle" font-size="9" fill="#1a1822">Natural ordering preserved</text>
+  <text x="667" y="310" text-anchor="middle" font-size="9" fill="#1a1822">Used by: PostgreSQL, MySQL, time-series DBs</text>
+
+  <rect x="485" y="340" width="365" height="110" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="667" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Disadvantages</text>
+  <text x="667" y="380" text-anchor="middle" font-size="9" fill="#1a1822">Vulnerable to hot partitions (skewed data)</text>
+  <text x="667" y="395" text-anchor="middle" font-size="9" fill="#1a1822">Requires manual rebalancing</text>
+  <text x="667" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Sequential keys cause write hotspots</text>
+  <text x="667" y="425" text-anchor="middle" font-size="9" fill="#1a1822">Needs monitoring and manual intervention</text>
+
+  <!-- Summary -->
+  <rect x="485" y="470" width="365" height="20" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="667" y="484" text-anchor="middle" font-size="9" fill="#1a1822">Recommendation: Use hash for write-heavy, range for read-heavy workloads</text>
+
+  <defs>
+    <marker id="arrowHR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Time-series compression techniques comparison: delta encoding, Gorilla XOR, run-length encoding</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Time-Series Compression Techniques</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Delta encoding (5-10x), Gorilla XOR (10-20x), Run-length encoding (50x for flat metrics)</text>
+
+  <!-- Delta Encoding -->
+  <rect x="30" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Delta Encoding</text>
+
+  <text x="165" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Store difference between consecutive values</text>
+
+  <rect x="50" y="155" width="230" height="50" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="175" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Before: [100, 102, 105, 103, 106]</text>
+  <text x="165" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">After: [100, +2, +3, -2, +3]</text>
+
+  <rect x="50" y="220" width="230" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="240" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">8 bytes → 2 bytes per delta</text>
+  <text x="165" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">Compression: 5-10x</text>
+
+  <rect x="50" y="285" width="230" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="305" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best for: Integer metrics</text>
+  <text x="165" y="325" text-anchor="middle" font-size="10" fill="#1a1822">(request count, error count)</text>
+
+  <rect x="50" y="350" width="230" height="90" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Advantages</text>
+  <text x="165" y="390" text-anchor="middle" font-size="9" fill="#1a1822">• Simple to implement</text>
+  <text x="165" y="405" text-anchor="middle" font-size="9" fill="#1a1822">• Fast encode/decode</text>
+  <text x="165" y="420" text-anchor="middle" font-size="9" fill="#1a1822">• Works well for gradual changes</text>
+  <text x="165" y="435" text-anchor="middle" font-size="9" fill="#1a1822">• Lossless compression</text>
+
+  <!-- Gorilla XOR -->
+  <rect x="315" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="315" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Gorilla XOR (Facebook)</text>
+
+  <text x="450" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Store XOR difference between consecutive floats</text>
+
+  <rect x="335" y="155" width="230" height="50" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="175" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">If XOR=0: store 1 bit (same value)</text>
+  <text x="450" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">If XOR≠0: store leading zeros + value</text>
+
+  <rect x="335" y="220" width="230" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="240" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">8 bytes → 1-2 bytes per sample</text>
+  <text x="450" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">Compression: 10-20x</text>
+
+  <rect x="335" y="285" width="230" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="305" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best for: Floating-point metrics</text>
+  <text x="450" y="325" text-anchor="middle" font-size="10" fill="#1a1822">(CPU %, latency, memory usage)</text>
+
+  <rect x="335" y="350" width="230" height="90" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Advantages</text>
+  <text x="450" y="390" text-anchor="middle" font-size="9" fill="#1a1822">• Exploits temporal locality</text>
+  <text x="450" y="405" text-anchor="middle" font-size="9" fill="#1a1822">• 1 bit for identical values</text>
+  <text x="450" y="420" text-anchor="middle" font-size="9" fill="#1a1822">• Lossless compression</text>
+  <text x="450" y="435" text-anchor="middle" font-size="9" fill="#1a1822">• Used by Prometheus, InfluxDB</text>
+
+  <!-- Run-Length Encoding -->
+  <rect x="600" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#cc4444"/>
+  <rect x="600" y="105" width="270" height="10" fill="#cc4444"/>
+  <text x="735" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Run-Length Encoding</text>
+
+  <text x="735" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Store (count, value) for repeated values</text>
+
+  <rect x="620" y="155" width="230" height="50" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="735" y="175" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Before: [0, 0, 0, 0, 0, 1, 1, 1, 0, 0]</text>
+  <text x="735" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">After: [(5,0), (3,1), (2,0)]</text>
+
+  <rect x="620" y="220" width="230" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="240" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">10 values → 3 (count, value) pairs</text>
+  <text x="735" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">Compression: 50x for flat metrics</text>
+
+  <rect x="620" y="285" width="230" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="305" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best for: Status codes, flags</text>
+  <text x="735" y="325" text-anchor="middle" font-size="10" fill="#1a1822">(healthy/healthy/healthy/error)</text>
+
+  <rect x="620" y="350" width="230" height="90" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Advantages</text>
+  <text x="735" y="390" text-anchor="middle" font-size="9" fill="#1a1822">• Excellent for flat metrics</text>
+  <text x="735" y="405" text-anchor="middle" font-size="9" fill="#1a1822">• Simple to implement</text>
+  <text x="735" y="420" text-anchor="middle" font-size="9" fill="#1a1822">• Fast encode/decode</text>
+  <text x="735" y="435" text-anchor="middle" font-size="9" fill="#1a1822">• Lossless compression</text>
+
+  <!-- Comparison summary -->
+  <rect x="30" y="470" width="840" height="20" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="484" text-anchor="middle" font-size="10" fill="#1a1822">Combined: Delta + Gorilla + RLE → 10-100x compression for typical time-series workloads</text>
+
+  <defs>
+    <marker id="arrowTS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

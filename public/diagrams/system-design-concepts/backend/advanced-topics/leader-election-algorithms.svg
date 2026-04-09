@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Leader election algorithms comparison: Bully, Raft, Zab/ZooKeeper</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Leader Election Algorithms</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Bully (highest ID wins), Raft (term-based voting), Zab/ZooKeeper (ephemeral znodes)</text>
+
+  <!-- Bully Algorithm -->
+  <rect x="30" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Bully Algorithm</text>
+
+  <rect x="50" y="130" width="230" height="80" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">How It Works</text>
+  <text x="165" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Node with highest ID sends</text>
+  <text x="165" y="183" text-anchor="middle" font-size="9" fill="#1a1822">Election messages to higher-ID nodes.</text>
+  <text x="165" y="198" text-anchor="middle" font-size="9" fill="#1a1822">If no response, it becomes leader.</text>
+
+  <rect x="50" y="225" width="230" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="245" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Safety</text>
+  <text x="165" y="263" text-anchor="middle" font-size="9" fill="#1a1822">Guarantees one leader</text>
+  <text x="165" y="278" text-anchor="middle" font-size="9" fill="#1a1822">but O(N²) messages per election</text>
+
+  <rect x="50" y="300" width="230" height="60" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="165" y="320" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Performance</text>
+  <text x="165" y="338" text-anchor="middle" font-size="9" fill="#1a1822">Fast for small clusters (3-5 nodes)</text>
+  <text x="165" y="353" text-anchor="middle" font-size="9" fill="#1a1822">Slow for large clusters</text>
+
+  <rect x="50" y="375" width="230" height="60" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="165" y="395" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Best For</text>
+  <text x="165" y="413" text-anchor="middle" font-size="9" fill="#1a1822">Simple systems, educational purposes</text>
+  <text x="165" y="428" text-anchor="middle" font-size="9" fill="#1a1822">Not recommended for production</text>
+
+  <!-- Raft -->
+  <rect x="315" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="315" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Raft</text>
+
+  <rect x="335" y="130" width="230" height="80" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">How It Works</text>
+  <text x="450" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Candidate increments term, requests votes.</text>
+  <text x="450" y="183" text-anchor="middle" font-size="9" fill="#1a1822">Node grants one vote per term.</text>
+  <text x="450" y="198" text-anchor="middle" font-size="9" fill="#1a1822">Majority wins = leader for that term.</text>
+
+  <rect x="335" y="225" width="230" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="245" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Safety</text>
+  <text x="450" y="263" text-anchor="middle" font-size="9" fill="#1a1822">Strong: at most one leader per term</text>
+  <text x="450" y="278" text-anchor="middle" font-size="9" fill="#1a1822">O(N) messages per election</text>
+
+  <rect x="335" y="300" width="230" height="60" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="320" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Performance</text>
+  <text x="450" y="338" text-anchor="middle" font-size="9" fill="#1a1822">Election in 1-3 seconds</text>
+  <text x="450" y="353" text-anchor="middle" font-size="9" fill="#1a1822">Randomized timeouts prevent split vote</text>
+
+  <rect x="335" y="375" width="230" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="395" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Best For</text>
+  <text x="450" y="413" text-anchor="middle" font-size="9" fill="#1a1822">etcd, Consul, CockroachDB, TiDB</text>
+  <text x="450" y="428" text-anchor="middle" font-size="9" fill="#1a1822">Production distributed systems</text>
+
+  <!-- Zab/ZooKeeper -->
+  <rect x="600" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="600" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="735" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Zab / ZooKeeper</text>
+
+  <rect x="620" y="130" width="230" height="80" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">How It Works</text>
+  <text x="735" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Candidates create ephemeral</text>
+  <text x="735" y="183" text-anchor="middle" font-size="9" fill="#1a1822">sequential znodes. Lowest sequence</text>
+  <text x="735" y="198" text-anchor="middle" font-size="9" fill="#1a1822">number becomes leader.</text>
+
+  <rect x="620" y="225" width="230" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="245" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Safety</text>
+  <text x="735" y="263" text-anchor="middle" font-size="9" fill="#1a1822">Strong: one leader via sequential order</text>
+  <text x="735" y="278" text-anchor="middle" font-size="9" fill="#1a1822">Auto-cleanup on session expiry</text>
+
+  <rect x="620" y="300" width="230" height="60" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="320" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Performance</text>
+  <text x="735" y="338" text-anchor="middle" font-size="9" fill="#1a1822">100-500ms election</text>
+  <text x="735" y="353" text-anchor="middle" font-size="9" fill="#1a1822">One watcher per candidate</text>
+
+  <rect x="620" y="375" width="230" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="395" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Best For</text>
+  <text x="735" y="413" text-anchor="middle" font-size="9" fill="#1a1822">Kafka, HBase, systems using ZK</text>
+  <text x="735" y="428" text-anchor="middle" font-size="9" fill="#1a1822">Requires external ZK cluster</text>
+
+  <defs>
+    <marker id="arrowLE" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>OT conflict resolution showing concurrent edits, server transformation, and convergence to same document state</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">OT Conflict Resolution</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Two users concurrently edit → server transforms operations → all clients converge to same document state</text>
+
+  <!-- Timeline: Initial state -->
+  <rect x="30" y="80" width="840" height="70" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Initial State (Version 5)</text>
+  <text x="450" y="130" text-anchor="middle" font-size="16" font-weight="600" fill="#6d5bd0">The quick brown fox</text>
+
+  <!-- Concurrent operations -->
+  <rect x="30" y="170" width="400" height="100" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="230" y="195" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Client A: Insert(&quot;very &quot;, 4)</text>
+  <text x="230" y="220" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">The very quick brown fox</text>
+  <text x="230" y="245" text-anchor="middle" font-size="9" fill="#1a1822">Inserted at position 4</text>
+
+  <rect x="470" y="170" width="400" height="100" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="670" y="195" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Client B: Insert(&quot;lazy &quot;, 16)</text>
+  <text x="670" y="220" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">The quick brown lazy fox</text>
+  <text x="670" y="245" text-anchor="middle" font-size="9" fill="#1a1822">Inserted at position 16</text>
+
+  <!-- Server transformation -->
+  <rect x="250" y="290" width="400" height="80" rx="12" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="2"/>
+  <text x="450" y="315" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Server Transform: T(B, A)</text>
+  <text x="450" y="338" text-anchor="middle" font-size="11" fill="#1a1822">B&apos;s position 16 → 21 (shifted by 5, length of A&apos;s insertion)</text>
+  <text x="450" y="355" text-anchor="middle" font-size="10" fill="#1a1822">Transformed B1: Insert(&quot;lazy &quot;, 21)</text>
+
+  <!-- Converged state -->
+  <rect x="30" y="390" width="840" height="90" rx="12" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="415" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Converged State (Version 7)</text>
+  <text x="450" y="445" text-anchor="middle" font-size="18" font-weight="600" fill="#4caf50">The very quick brown lazy fox</text>
+  <text x="450" y="468" text-anchor="middle" font-size="10" fill="#1a1822">Both clients reach the same document state regardless of operation application order</text>
+
+  <!-- Flow arrows -->
+  <line x1="230" y1="275" x2="380" y2="290" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowOT)"/>
+  <line x1="670" y1="275" x2="520" y2="290" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowOT)"/>
+  <line x1="450" y1="375" x2="450" y2="390" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowOT)"/>
+
+  <!-- Key insight -->
+  <rect x="30" y="485" width="840" height="15" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="496" text-anchor="middle" font-size="9" fill="#1a1822">OT guarantees: Convergence (same final state) + Intention Preservation (both edits applied correctly)</text>
+
+  <defs>
+    <marker id="arrowOT" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

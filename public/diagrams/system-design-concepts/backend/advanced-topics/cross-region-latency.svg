@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Cross-region latency showing real-world RTT between regions and impact on replication</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Cross-Region Latency Realities</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Speed of light imposes fundamental limits on global data distribution</text>
+
+  <!-- Region Map -->
+  <rect x="30" y="80" width="840" height="220" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- US East -->
+  <rect x="100" y="120" width="140" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="170" y="145" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">US East</text>
+  <text x="170" y="165" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Virginia</text>
+
+  <!-- EU West -->
+  <rect x="380" y="100" width="140" height="60" rx="8" fill="#6d5bd0" opacity="0.8"/>
+  <text x="450" y="125" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">EU West</text>
+  <text x="450" y="145" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Ireland</text>
+
+  <!-- APAC -->
+  <rect x="660" y="140" width="140" height="60" rx="8" fill="#6d5bd0" opacity="0.6"/>
+  <text x="730" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">APAC</text>
+  <text x="730" y="185" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">Tokyo</text>
+
+  <!-- RTT Lines -->
+  <line x1="240" y1="150" x2="380" y2="130" stroke="#cc4444" stroke-width="2" stroke-dasharray="5,3"/>
+  <rect x="270" y="125" width="80" height="22" rx="4" fill="#cc4444"/>
+  <text x="310" y="140" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">~80ms</text>
+
+  <line x1="520" y1="130" x2="660" y2="170" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="5,3"/>
+  <rect x="560" y="135" width="80" height="22" rx="4" fill="#f0ad4e"/>
+  <text x="600" y="150" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">~220ms</text>
+
+  <line x1="240" y1="150" x2="660" y2="170" stroke="#4caf50" stroke-width="2" stroke-dasharray="5,3"/>
+  <rect x="410" y="195" width="80" height="22" rx="4" fill="#4caf50"/>
+  <text x="450" y="210" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">~180ms</text>
+
+  <!-- Impact Table -->
+  <rect x="30" y="320" width="840" height="160" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Impact on Replication Strategies</text>
+
+  <!-- Headers -->
+  <rect x="50" y="360" width="180" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="140" y="377" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Strategy</text>
+  <rect x="240" y="360" width="160" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="320" y="377" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Write Latency</text>
+  <rect x="410" y="360" width="160" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="490" y="377" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Read Latency</text>
+  <rect x="580" y="360" width="150" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="655" y="377" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Consistency</text>
+  <rect x="740" y="360" width="110" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="795" y="377" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Use Case</text>
+
+  <!-- Row 1 -->
+  <rect x="50" y="390" width="180" height="30" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="409" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Synchronous (All Regions)</text>
+  <rect x="240" y="390" width="160" height="30" rx="2" fill="#fecaca" stroke="#cc4444" stroke-width="1"/>
+  <text x="320" y="409" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">180ms+ (farthest)</text>
+  <rect x="410" y="390" width="160" height="30" rx="2" fill="#bbf7d0" stroke="#4caf50" stroke-width="1"/>
+  <text x="490" y="409" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">1-5ms (local)</text>
+  <rect x="580" y="390" width="150" height="30" rx="2" fill="#bbf7d0" stroke="#4caf50" stroke-width="1"/>
+  <text x="655" y="409" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">Strong</text>
+  <rect x="740" y="390" width="110" height="30" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="795" y="409" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Payments</text>
+
+  <!-- Row 2 -->
+  <rect x="50" y="425" width="180" height="30" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="444" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Async (Local Ack)</text>
+  <rect x="240" y="425" width="160" height="30" rx="2" fill="#bbf7d0" stroke="#4caf50" stroke-width="1"/>
+  <text x="320" y="444" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">1-5ms (local)</text>
+  <rect x="410" y="425" width="160" height="30" rx="2" fill="#bbf7d0" stroke="#4caf50" stroke-width="1"/>
+  <text x="490" y="444" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">1-5ms (local)</text>
+  <rect x="580" y="425" width="150" height="30" rx="2" fill="#fef3c7" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="655" y="444" text-anchor="middle" font-size="8" font-weight="700" fill="#f0ad4e">Eventual</text>
+  <rect x="740" y="425" width="110" height="30" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="795" y="444" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Social media</text>
+
+  <!-- Row 3 -->
+  <rect x="50" y="460" width="180" height="30" rx="2" fill="#ffffff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="140" y="479" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Causal (Vector Clocks)</text>
+  <rect x="240" y="460" width="160" height="30" rx="2" fill="#bbf7d0" stroke="#4caf50" stroke-width="1"/>
+  <text x="320" y="479" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">1-5ms (local)</text>
+  <rect x="410" y="460" width="160" height="30" rx="2" fill="#fef3c7" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="490" y="479" text-anchor="middle" font-size="8" font-weight="700" fill="#f0ad4e">5-50ms (local+track)</text>
+  <rect x="580" y="460" width="150" height="30" rx="2" fill="#fef3c7" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="655" y="479" text-anchor="middle" font-size="8" font-weight="700" fill="#f0ad4e">Causal</text>
+  <rect x="740" y="460" width="110" height="30" rx="2" fill="#f3f4f6" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="795" y="479" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Collaboration</text>
+
+  <defs>
+    <marker id="arrowCRL" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

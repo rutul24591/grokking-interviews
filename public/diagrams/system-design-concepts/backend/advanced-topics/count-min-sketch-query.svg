@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a2e">Count-Min Sketch Query</text>
+  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#555555">Query &quot;apple&quot;: return minimum of 4 counter values (overestimation guarantee)</text>
+
+  <!-- Query element -->
+  <rect x="30" y="195" width="110" height="60" rx="12" fill="#6d5bd0" stroke="#5a48b0" stroke-width="1"/>
+  <text x="85" y="218" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Query</text>
+  <text x="85" y="240" text-anchor="middle" font-size="15" font-weight="bold" fill="white">&quot;apple&quot;</text>
+
+  <!-- Hash functions -->
+  <rect x="190" y="100" width="90" height="40" rx="8" fill="#6d5bd0" stroke="#5a48b0" stroke-width="1"/>
+  <text x="235" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="white">h₁(x) = 2</text>
+
+  <rect x="190" y="175" width="90" height="40" rx="8" fill="#f0ad4e" stroke="#d49540" stroke-width="1"/>
+  <text x="235" y="200" text-anchor="middle" font-size="13" font-weight="bold" fill="white">h₂(x) = 5</text>
+
+  <rect x="190" y="250" width="90" height="40" rx="8" fill="#4caf50" stroke="#3d8b40" stroke-width="1"/>
+  <text x="235" y="275" text-anchor="middle" font-size="13" font-weight="bold" fill="white">h₃(x) = 2</text>
+
+  <rect x="190" y="325" width="90" height="40" rx="8" fill="#cc4444" stroke="#b03a3a" stroke-width="1"/>
+  <text x="235" y="350" text-anchor="middle" font-size="13" font-weight="bold" fill="white">h₄(x) = 6</text>
+
+  <!-- Arrows -->
+  <line x1="140" y1="215" x2="190" y2="125" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="140" y1="225" x2="190" y2="195" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="140" y1="235" x2="190" y2="270" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="140" y1="245" x2="190" y2="340" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Matrix with values -->
+  <rect x="320" y="80" width="400" height="250" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="520" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">Count-Min Sketch Matrix</text>
+
+  <!-- Row 1 - h1(x)=2, cell value=15 -->
+  <rect x="335" y="118" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="357" y="143" text-anchor="middle" font-size="12" fill="#666666">8</text>
+  <rect x="385" y="118" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="407" y="143" text-anchor="middle" font-size="12" fill="#666666">3</text>
+  <rect x="435" y="118" width="45" height="40" rx="6" fill="#e8e4f0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="457" y="143" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">15</text>
+  <rect x="485" y="118" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="507" y="143" text-anchor="middle" font-size="12" fill="#666666">7</text>
+  <rect x="535" y="118" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="557" y="143" text-anchor="middle" font-size="12" fill="#666666">2</text>
+  <rect x="585" y="118" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="607" y="143" text-anchor="middle" font-size="12" fill="#666666">9</text>
+  <rect x="635" y="118" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="657" y="143" text-anchor="middle" font-size="12" fill="#666666">4</text>
+  <rect x="685" y="118" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="707" y="143" text-anchor="middle" font-size="12" fill="#666666">6</text>
+  <text x="340" y="143" text-anchor="start" font-size="9" fill="#888888">h₁: </text>
+
+  <!-- Row 2 - h2(x)=5, cell value=22 -->
+  <rect x="335" y="170" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="357" y="195" text-anchor="middle" font-size="12" fill="#666666">5</text>
+  <rect x="385" y="170" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="407" y="195" text-anchor="middle" font-size="12" fill="#666666">11</text>
+  <rect x="435" y="170" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="457" y="195" text-anchor="middle" font-size="12" fill="#666666">3</text>
+  <rect x="485" y="170" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="507" y="195" text-anchor="middle" font-size="12" fill="#666666">18</text>
+  <rect x="535" y="170" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="557" y="195" text-anchor="middle" font-size="12" fill="#666666">6</text>
+  <rect x="585" y="170" width="45" height="40" rx="6" fill="#fff8e1" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="607" y="195" text-anchor="middle" font-size="14" font-weight="bold" fill="#f0ad4e">22</text>
+  <rect x="635" y="170" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="657" y="195" text-anchor="middle" font-size="12" fill="#666666">7</text>
+  <rect x="685" y="170" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="707" y="195" text-anchor="middle" font-size="12" fill="#666666">14</text>
+  <text x="340" y="195" text-anchor="start" font-size="9" fill="#888888">h₂: </text>
+
+  <!-- Row 3 - h3(x)=2, cell value=18 -->
+  <rect x="335" y="222" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="357" y="247" text-anchor="middle" font-size="12" fill="#666666">4</text>
+  <rect x="385" y="222" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="407" y="247" text-anchor="middle" font-size="12" fill="#666666">7</text>
+  <rect x="435" y="222" width="45" height="40" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+  <text x="457" y="247" text-anchor="middle" font-size="14" font-weight="bold" fill="#4caf50">18</text>
+  <rect x="485" y="222" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="507" y="247" text-anchor="middle" font-size="12" fill="#666666">9</text>
+  <rect x="535" y="222" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="557" y="247" text-anchor="middle" font-size="12" fill="#666666">2</text>
+  <rect x="585" y="222" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="607" y="247" text-anchor="middle" font-size="12" fill="#666666">13</text>
+  <rect x="635" y="222" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="657" y="247" text-anchor="middle" font-size="12" fill="#666666">5</text>
+  <rect x="685" y="222" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="707" y="247" text-anchor="middle" font-size="12" fill="#666666">10</text>
+  <text x="340" y="247" text-anchor="start" font-size="9" fill="#888888">h₃: </text>
+
+  <!-- Row 4 - h4(x)=6, cell value=12 -->
+  <rect x="335" y="274" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="357" y="299" text-anchor="middle" font-size="12" fill="#666666">3</text>
+  <rect x="385" y="274" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="407" y="299" text-anchor="middle" font-size="12" fill="#666666">8</text>
+  <rect x="435" y="274" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="457" y="299" text-anchor="middle" font-size="12" fill="#666666">5</text>
+  <rect x="485" y="274" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="507" y="299" text-anchor="middle" font-size="12" fill="#666666">16</text>
+  <rect x="535" y="274" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="557" y="299" text-anchor="middle" font-size="12" fill="#666666">7</text>
+  <rect x="585" y="274" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="607" y="299" text-anchor="middle" font-size="12" fill="#666666">9</text>
+  <rect x="635" y="274" width="45" height="40" rx="6" fill="#ffebee" stroke="#cc4444" stroke-width="2"/>
+  <text x="657" y="299" text-anchor="middle" font-size="14" font-weight="bold" fill="#cc4444">12</text>
+  <rect x="685" y="274" width="45" height="40" rx="6" fill="#f0f0f0" stroke="#cccccc" stroke-width="1"/>
+  <text x="707" y="299" text-anchor="middle" font-size="12" fill="#666666">4</text>
+  <text x="340" y="299" text-anchor="start" font-size="9" fill="#888888">h₄: </text>
+
+  <!-- Arrows from hash to cells -->
+  <line x1="280" y1="125" x2="435" y2="138" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-purple)" stroke-dasharray="3,2"/>
+  <line x1="280" y1="195" x2="585" y2="190" stroke="#f0ad4e" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="3,2"/>
+  <line x1="280" y1="270" x2="435" y2="242" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="3,2"/>
+  <line x1="280" y1="345" x2="635" y2="294" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="3,2"/>
+
+  <!-- Query result -->
+  <rect x="750" y="100" width="120" height="220" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="810" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">Query Result</text>
+
+  <rect x="760" y="140" width="100" height="25" rx="6" fill="#e8e4f0"/>
+  <text x="810" y="157" text-anchor="middle" font-size="11" fill="#6d5bd0">h₁: 15</text>
+
+  <rect x="760" y="175" width="100" height="25" rx="6" fill="#fff8e1"/>
+  <text x="810" y="192" text-anchor="middle" font-size="11" fill="#f0ad4e">h₂: 22</text>
+
+  <rect x="760" y="210" width="100" height="25" rx="6" fill="#e8f5e9"/>
+  <text x="810" y="227" text-anchor="middle" font-size="11" fill="#4caf50">h₃: 18</text>
+
+  <rect x="760" y="245" width="100" height="25" rx="6" fill="#ffebee"/>
+  <text x="810" y="262" text-anchor="middle" font-size="11" fill="#cc4444">h₄: 12</text>
+
+  <!-- MIN result -->
+  <rect x="760" y="280" width="100" height="30" rx="8" fill="#4caf50"/>
+  <text x="810" y="300" text-anchor="middle" font-size="13" font-weight="bold" fill="white">min = 12</text>
+
+  <!-- Overestimation note -->
+  <rect x="30" y="350" width="840" height="125" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="450" y="378" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a2e">Overestimation Guarantee</text>
+
+  <rect x="50" y="395" width="380" height="65" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="240" y="418" text-anchor="middle" font-size="12" fill="#333333">The minimum is always greater than or</text>
+  <text x="240" y="436" text-anchor="middle" font-size="12" fill="#333333">equal to the true count. Count-Min Sketch</text>
+  <text x="240" y="454" text-anchor="middle" font-size="12" font-weight="bold" fill="#4caf50">NEVER underestimates. May overestimate.</text>
+
+  <rect x="470" y="395" width="380" height="65" rx="8" fill="#fff8e1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="660" y="418" text-anchor="middle" font-size="12" fill="#333333">True count of &quot;apple&quot; might be 10, but</text>
+  <text x="660" y="436" text-anchor="middle" font-size="12" fill="#333333">hash collisions cause other items to increment</text>
+  <text x="660" y="454" text-anchor="middle" font-size="12" font-weight="bold" fill="#f0ad4e">the same cells, giving estimate = 12.</text>
+</svg>

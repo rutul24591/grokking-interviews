@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Geo-sharding vs global replication comparison</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Geo-Sharding vs Global Replication</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Two approaches to multi-region data management with different trade-offs</text>
+
+  <!-- Geo-Sharding -->
+  <rect x="30" y="80" width="420" height="400" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="80" width="420" height="35" rx="12" fill="#4caf50"/>
+  <rect x="30" y="105" width="420" height="10" fill="#4caf50"/>
+  <text x="240" y="103" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Geo-Sharding</text>
+
+  <rect x="50" y="125" width="380" height="90" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="240" y="150" text-anchor="middle" font-size="12" font-weight="600" fill="#4caf50">Architecture</text>
+  <text x="240" y="170" text-anchor="middle" font-size="10" fill="#1a1822">Data partitioned by region: US data in US shard,</text>
+  <text x="240" y="185" text-anchor="middle" font-size="10" fill="#1a1822">EU data in EU shard, APAC data in APAC shard</text>
+  <text x="240" y="200" text-anchor="middle" font-size="10" fill="#1a1822">Each region stores only its own data</text>
+
+  <rect x="50" y="230" width="380" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="240" y="250" text-anchor="middle" font-size="12" font-weight="600" fill="#4caf50">Read Path</text>
+  <text x="240" y="270" text-anchor="middle" font-size="10" fill="#1a1822">Users read from local shard: 5-30ms latency</text>
+  <text x="240" y="285" text-anchor="middle" font-size="10" fill="#1a1822">Cross-region reads: fan-out to relevant shards (slow)</text>
+
+  <rect x="50" y="305" width="380" height="60" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="240" y="325" text-anchor="middle" font-size="12" font-weight="600" fill="#4caf50">Compliance</text>
+  <text x="240" y="345" text-anchor="middle" font-size="10" fill="#1a1822">Data stays within region: GDPR, CCPA compliant</text>
+  <text x="240" y="360" text-anchor="middle" font-size="10" fill="#1a1822">Natural data residency enforcement</text>
+
+  <rect x="50" y="380" width="180" height="80" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="140" y="400" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Storage Cost</text>
+  <text x="140" y="420" text-anchor="middle" font-size="10" fill="#1a1822">1x (each row stored once)</text>
+  <text x="140" y="435" text-anchor="middle" font-size="10" fill="#1a1822">+ local replicas</text>
+  <text x="140" y="450" text-anchor="middle" font-size="10" fill="#4caf50">Low</text>
+
+  <rect x="250" y="380" width="180" height="80" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="340" y="400" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Query Complexity</text>
+  <text x="340" y="420" text-anchor="middle" font-size="10" fill="#1a1822">Cross-region: complex</text>
+  <text x="340" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Fan-out + merge needed</text>
+  <text x="340" y="450" text-anchor="middle" font-size="10" fill="#cc4444">High</text>
+
+  <!-- Global Replication -->
+  <rect x="465" y="80" width="405" height="400" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <rect x="465" y="80" width="405" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="465" y="105" width="405" height="10" fill="#f0ad4e"/>
+  <text x="667" y="103" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Global Replication</text>
+
+  <rect x="485" y="125" width="365" height="90" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="667" y="150" text-anchor="middle" font-size="12" font-weight="600" fill="#f0ad4e">Architecture</text>
+  <text x="667" y="170" text-anchor="middle" font-size="10" fill="#1a1822">All data replicated to every region: US, EU, APAC</text>
+  <text x="667" y="185" text-anchor="middle" font-size="10" fill="#1a1822">each store complete copy of all data</text>
+  <text x="667" y="200" text-anchor="middle" font-size="10" fill="#1a1822">Async replication between regions</text>
+
+  <rect x="485" y="230" width="365" height="60" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="667" y="250" text-anchor="middle" font-size="12" font-weight="600" fill="#f0ad4e">Read Path</text>
+  <text x="667" y="270" text-anchor="middle" font-size="10" fill="#1a1822">Any region can answer any query: 5-30ms locally</text>
+  <text x="667" y="285" text-anchor="middle" font-size="10" fill="#1a1822">No cross-region coordination needed for reads</text>
+
+  <rect x="485" y="305" width="365" height="60" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="667" y="325" text-anchor="middle" font-size="12" font-weight="600" fill="#cc4444">Compliance</text>
+  <text x="667" y="345" text-anchor="middle" font-size="10" fill="#1a1822">Data replicated everywhere: may violate GDPR</text>
+  <text x="667" y="360" text-anchor="middle" font-size="10" fill="#1a1822">Requires explicit data filtering per region</text>
+
+  <rect x="485" y="380" width="175" height="80" rx="8" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="572" y="400" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Storage Cost</text>
+  <text x="572" y="420" text-anchor="middle" font-size="10" fill="#1a1822">Nx (N regions × all data)</text>
+  <text x="572" y="435" text-anchor="middle" font-size="10" fill="#1a1822">+ replication bandwidth</text>
+  <text x="572" y="450" text-anchor="middle" font-size="10" fill="#cc4444">High</text>
+
+  <rect x="675" y="380" width="175" height="80" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="762" y="400" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Query Complexity</text>
+  <text x="762" y="420" text-anchor="middle" font-size="10" fill="#1a1822">Any region answers any query</text>
+  <text x="762" y="435" text-anchor="middle" font-size="10" fill="#1a1822">Simple local queries</text>
+  <text x="762" y="450" text-anchor="middle" font-size="10" fill="#4caf50">Low</text>
+
+  <defs>
+    <marker id="arrowGS" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
+</svg>

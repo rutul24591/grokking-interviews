@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>B-tree operations: search, insert, and delete</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">B-Tree Operations</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Search (O(log n)), Insert (split on overflow), Delete (merge/borrow)</text>
+
+  <!-- SEARCH -->
+  <rect x="30" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Search (Find Key)</text>
+
+  <rect x="50" y="130" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Start at Root</text>
+  <text x="165" y="172" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Compare key with node keys</text>
+
+  <line x1="165" y1="185" x2="165" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="50" y="210" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="232" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Traverse to Child</text>
+  <text x="165" y="252" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Follow appropriate child pointer</text>
+
+  <line x1="165" y1="265" x2="165" y2="290" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="50" y="290" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="312" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Repeat at Each Level</text>
+  <text x="165" y="332" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Binary search within node</text>
+
+  <line x1="165" y1="345" x2="165" y2="370" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="50" y="370" width="230" height="55" rx="8" fill="#4caf50"/>
+  <text x="165" y="392" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Found at Leaf (or not)</text>
+  <text x="165" y="412" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Height = O(log n) disk reads</text>
+
+  <rect x="50" y="440" width="230" height="30" rx="6" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="460" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="600">O(log n) disk I/Os</text>
+
+  <!-- INSERT -->
+  <rect x="315" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="315" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Insert (Add Key)</text>
+
+  <rect x="335" y="130" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Find Correct Leaf</text>
+  <text x="450" y="172" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Search to find insertion point</text>
+
+  <line x1="450" y1="185" x2="450" y2="210" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="335" y="210" width="230" height="55" rx="8" fill="#f0ad4e"/>
+  <text x="450" y="232" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Insert Key in Order</text>
+  <text x="450" y="252" text-anchor="middle" font-size="9" fill="#1a1822">If node not full: done</text>
+
+  <line x1="450" y1="265" x2="450" y2="290" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="335" y="290" width="230" height="55" rx="8" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1"/>
+  <text x="450" y="312" text-anchor="middle" font-size="11" font-weight="600" fill="#cc4444">Node Overflow?</text>
+  <text x="450" y="332" text-anchor="middle" font-size="9" fill="#1a1822">Split node, promote median</text>
+
+  <line x1="450" y1="345" x2="450" y2="370" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="335" y="370" width="230" height="55" rx="8" fill="#4caf50"/>
+  <text x="450" y="392" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Propagate Split Upward</text>
+  <text x="450" y="412" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">May split root → increase height</text>
+
+  <rect x="335" y="440" width="230" height="30" rx="6" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="460" text-anchor="middle" font-size="10" fill="#f0ad4e" font-weight="600">Split maintains balance</text>
+
+  <!-- DELETE -->
+  <rect x="600" y="80" width="270" height="400" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#cc4444"/>
+  <rect x="600" y="105" width="270" height="10" fill="#cc4444"/>
+  <text x="735" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Delete (Remove Key)</text>
+
+  <rect x="620" y="130" width="230" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="735" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Find Key to Delete</text>
+  <text x="735" y="172" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Search through tree</text>
+
+  <line x1="735" y1="185" x2="735" y2="210" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="620" y="210" width="230" height="55" rx="8" fill="#cc4444"/>
+  <text x="735" y="232" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Remove Key</text>
+  <text x="735" y="252" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">If internal: swap with predecessor</text>
+
+  <line x1="735" y1="265" x2="735" y2="290" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="620" y="290" width="230" height="55" rx="8" fill="#f0ad4e" opacity="0.15" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="312" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Node Underflow?</text>
+  <text x="735" y="332" text-anchor="middle" font-size="9" fill="#1a1822">Borrow from sibling or merge</text>
+
+  <line x1="735" y1="345" x2="735" y2="370" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowBT)"/>
+
+  <rect x="620" y="370" width="230" height="55" rx="8" fill="#4caf50"/>
+  <text x="735" y="392" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Borrow / Merge</text>
+  <text x="735" y="412" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">May propagate upward</text>
+
+  <rect x="620" y="440" width="230" height="30" rx="6" fill="#cc4444" opacity="0.1" stroke="#cc4444" stroke-width="1"/>
+  <text x="735" y="460" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="600">More complex than insert</text>
+
+  <defs>
+    <marker id="arrowBT" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

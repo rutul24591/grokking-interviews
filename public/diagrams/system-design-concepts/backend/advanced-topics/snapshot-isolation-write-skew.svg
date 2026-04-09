@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Write Skew Anomaly under Snapshot Isolation</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Write Skew Anomaly under Snapshot Isolation</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Two transactions read the same snapshot, each writes a different row, together they violate a cross-row invariant</text>
+
+  <!-- Initial State -->
+  <rect x="30" y="80" width="840" height="85" rx="12" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">Initial Database State (Snapshot S at t=0)</text>
+
+  <rect x="180" y="115" width="120" height="40" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="240" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Doctor X</text>
+  <text x="240" y="148" text-anchor="middle" font-size="10" fill="#1a1822">On Call = true</text>
+
+  <rect x="340" y="115" width="120" height="40" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="400" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Doctor Y</text>
+  <text x="400" y="148" text-anchor="middle" font-size="10" fill="#1a1822">On Call = true</text>
+
+  <rect x="520" y="115" width="250" height="40" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="645" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Invariant: OnCall(X) + OnCall(Y) &gt;= 1</text>
+  <text x="645" y="148" text-anchor="middle" font-size="9" fill="#1a1822">At least 1 doctor must be on call at all times</text>
+
+  <!-- Two concurrent transactions -->
+  <!-- Transaction A -->
+  <rect x="30" y="190" width="405" height="170" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <text x="232" y="215" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">Transaction A (t=1)</text>
+
+  <rect x="50" y="230" width="170" height="45" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="135" y="248" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">READ snapshot S</text>
+  <text x="135" y="265" text-anchor="middle" font-size="9" fill="#1a1822">X=OnCall, Y=OnCall</text>
+
+  <line x1="225" y1="252" x2="260" y2="252" stroke="#cc4444" stroke-width="2" marker-end="url(#arrowSkew)"/>
+  <text x="242" y="243" text-anchor="middle" font-size="8" fill="#cc4444">both on</text>
+
+  <rect x="265" y="230" width="140" height="45" rx="8" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="1"/>
+  <text x="335" y="248" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">WRITE X=OffCall</text>
+  <text x="335" y="265" text-anchor="middle" font-size="9" fill="#1a1822">Doctor X goes off call</text>
+
+  <rect x="50" y="290" width="355" height="55" rx="8" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
+  <text x="227" y="312" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">A checks: Y still OnCall = true</text>
+  <text x="227" y="330" text-anchor="middle" font-size="9" fill="#1a1822">Invariant appears satisfied (1 doctor remains) -- proceeds to commit</text>
+
+  <!-- Transaction B -->
+  <rect x="465" y="190" width="405" height="170" rx="12" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="667" y="215" text-anchor="middle" font-size="13" font-weight="700" fill="#f0ad4e">Transaction B (t=2)</text>
+
+  <rect x="485" y="230" width="170" height="45" rx="8" fill="#4caf50" opacity="0.15" stroke="#4caf50" stroke-width="1"/>
+  <text x="570" y="248" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">READ snapshot S</text>
+  <text x="570" y="265" text-anchor="middle" font-size="9" fill="#1a1822">X=OnCall, Y=OnCall</text>
+
+  <line x1="660" y1="252" x2="695" y2="252" stroke="#f0ad4e" stroke-width="2" marker-end="url(#arrowSkewB)"/>
+  <text x="677" y="243" text-anchor="middle" font-size="8" fill="#f0ad4e">both on</text>
+
+  <rect x="700" y="230" width="140" height="45" rx="8" fill="#f0ad4e" opacity="0.25" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="770" y="248" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">WRITE Y=OffCall</text>
+  <text x="770" y="265" text-anchor="middle" font-size="9" fill="#1a1822">Doctor Y goes off call</text>
+
+  <rect x="485" y="290" width="355" height="55" rx="8" fill="#f0ad4e" opacity="0.08" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="662" y="312" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">B checks: X still OnCall = true</text>
+  <text x="662" y="330" text-anchor="middle" font-size="9" fill="#1a1822">Invariant appears satisfied (1 doctor remains) -- proceeds to commit</text>
+
+  <!-- Commits -->
+  <rect x="100" y="385" width="180" height="50" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="2"/>
+  <text x="190" y="405" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Transaction A: COMMIT</text>
+  <text x="190" y="422" text-anchor="middle" font-size="9" fill="#e8f5e9">X=OffCall persisted</text>
+
+  <line x1="280" y1="410" x2="320" y2="410" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowResult)"/>
+
+  <rect x="620" y="385" width="180" height="50" rx="8" fill="#4caf50" stroke="#4caf50" stroke-width="2"/>
+  <text x="710" y="405" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Transaction B: COMMIT</text>
+  <text x="710" y="422" text-anchor="middle" font-size="9" fill="#e8f5e9">Y=OffCall persisted</text>
+
+  <line x1="620" y1="410" x2="580" y2="410" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowResult)"/>
+
+  <!-- Final violated state -->
+  <rect x="330" y="385" width="240" height="95" rx="12" fill="#ffffff" stroke="#cc4444" stroke-width="3"/>
+  <text x="450" y="410" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">Final State: INVARIANT VIOLATED</text>
+
+  <rect x="350" y="420" width="85" height="35" rx="8" fill="#cc4444" opacity="0.2" stroke="#cc4444" stroke-width="2"/>
+  <text x="392" y="437" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">X=Off</text>
+  <text x="392" y="450" text-anchor="middle" font-size="8" fill="#1a1822">Not on call</text>
+
+  <rect x="465" y="420" width="85" height="35" rx="8" fill="#cc4444" opacity="0.2" stroke="#cc4444" stroke-width="2"/>
+  <text x="507" y="437" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Y=Off</text>
+  <text x="507" y="450" text-anchor="middle" font-size="8" fill="#1a1822">Not on call</text>
+
+  <text x="450" y="475" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">OnCall(X)+OnCall(Y) = 0 &lt; 1</text>
+
+  <defs>
+    <marker id="arrowSkew" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+    <marker id="arrowSkewB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arrowResult" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

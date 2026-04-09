@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a2e">Count-Min Sketch Structure</text>
+  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#555555">d=4 rows x w=8 columns matrix, each row has independent hash function</text>
+
+  <!-- Matrix -->
+  <rect x="300" y="80" width="500" height="280" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+
+  <!-- Row labels and cells -->
+  <!-- Row 1 -->
+  <rect x="320" y="100" width="480" height="55" rx="8" fill="#f9f9f9"/>
+  <rect x="320" y="100" width="80" height="55" rx="8" fill="#6d5bd0"/>
+  <rect x="320" y="130" width="80" height="25" fill="#6d5bd0"/>
+  <text x="360" y="118" text-anchor="middle" font-size="10" font-weight="bold" fill="white">h₁(x)</text>
+  <text x="360" y="147" text-anchor="middle" font-size="11" fill="white">Row 1</text>
+
+  <!-- Cells row 1 -->
+  <rect x="410" y="108" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="435" y="133" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="465" y="108" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="490" y="133" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="520" y="108" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="545" y="133" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="575" y="108" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="600" y="133" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="630" y="108" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="655" y="133" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="685" y="108" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="710" y="133" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="740" y="108" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="765" y="133" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="795" y="108" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="820" y="133" text-anchor="middle" font-size="13" fill="#333333">0</text>
+
+  <!-- Column indices row 1 -->
+  <text x="435" y="162" text-anchor="middle" font-size="8" fill="#888888">0</text>
+  <text x="490" y="162" text-anchor="middle" font-size="8" fill="#888888">1</text>
+  <text x="545" y="162" text-anchor="middle" font-size="8" fill="#888888">2</text>
+  <text x="600" y="162" text-anchor="middle" font-size="8" fill="#888888">3</text>
+  <text x="655" y="162" text-anchor="middle" font-size="8" fill="#888888">4</text>
+  <text x="710" y="162" text-anchor="middle" font-size="8" fill="#888888">5</text>
+  <text x="765" y="162" text-anchor="middle" font-size="8" fill="#888888">6</text>
+  <text x="820" y="162" text-anchor="middle" font-size="8" fill="#888888">7</text>
+
+  <!-- Row 2 -->
+  <rect x="320" y="170" width="480" height="55" rx="8" fill="#f9f9f9"/>
+  <rect x="320" y="170" width="80" height="55" rx="8" fill="#f0ad4e"/>
+  <rect x="320" y="200" width="80" height="25" fill="#f0ad4e"/>
+  <text x="360" y="188" text-anchor="middle" font-size="10" font-weight="bold" fill="white">h₂(x)</text>
+  <text x="360" y="217" text-anchor="middle" font-size="11" fill="white">Row 2</text>
+
+  <rect x="410" y="178" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="435" y="203" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="465" y="178" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="490" y="203" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="520" y="178" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="545" y="203" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="575" y="178" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="600" y="203" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="630" y="178" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="655" y="203" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="685" y="178" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="710" y="203" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="740" y="178" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="765" y="203" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="795" y="178" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="820" y="203" text-anchor="middle" font-size="13" fill="#333333">0</text>
+
+  <!-- Row 3 -->
+  <rect x="320" y="240" width="480" height="55" rx="8" fill="#f9f9f9"/>
+  <rect x="320" y="240" width="80" height="55" rx="8" fill="#4caf50"/>
+  <rect x="320" y="270" width="80" height="25" fill="#4caf50"/>
+  <text x="360" y="258" text-anchor="middle" font-size="10" font-weight="bold" fill="white">h₃(x)</text>
+  <text x="360" y="287" text-anchor="middle" font-size="11" fill="white">Row 3</text>
+
+  <rect x="410" y="248" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="435" y="273" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="465" y="248" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="490" y="273" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="520" y="248" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="545" y="273" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="575" y="248" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="600" y="273" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="630" y="248" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="655" y="273" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="685" y="248" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="710" y="273" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="740" y="248" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="765" y="273" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="795" y="248" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="820" y="273" text-anchor="middle" font-size="13" fill="#333333">0</text>
+
+  <!-- Row 4 -->
+  <rect x="320" y="310" width="480" height="55" rx="8" fill="#f9f9f9"/>
+  <rect x="320" y="310" width="80" height="55" rx="8" fill="#cc4444"/>
+  <rect x="320" y="340" width="80" height="25" fill="#cc4444"/>
+  <text x="360" y="328" text-anchor="middle" font-size="10" font-weight="bold" fill="white">h₄(x)</text>
+  <text x="360" y="357" text-anchor="middle" font-size="11" fill="white">Row 4</text>
+
+  <rect x="410" y="318" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="435" y="343" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="465" y="318" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="490" y="343" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="520" y="318" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="545" y="343" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="575" y="318" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="600" y="343" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="630" y="318" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="655" y="343" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="685" y="318" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="710" y="343" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="740" y="318" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="765" y="343" text-anchor="middle" font-size="13" fill="#333333">0</text>
+  <rect x="795" y="318" width="50" height="38" rx="4" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="820" y="343" text-anchor="middle" font-size="13" fill="#333333">0</text>
+
+  <!-- Width annotation -->
+  <line x1="410" y1="380" x2="845" y2="380" stroke="#333333" stroke-width="1"/>
+  <line x1="410" y1="375" x2="410" y2="385" stroke="#333333" stroke-width="1"/>
+  <line x1="845" y1="375" x2="845" y2="385" stroke="#333333" stroke-width="1"/>
+  <text x="627" y="398" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">w = 8 columns</text>
+
+  <!-- Depth annotation -->
+  <line x1="300" y1="100" x2="300" y2="365" stroke="#333333" stroke-width="1"/>
+  <line x1="295" y1="100" x2="305" y2="100" stroke="#333333" stroke-width="1"/>
+  <line x1="295" y1="365" x2="305" y2="365" stroke="#333333" stroke-width="1"/>
+  <text x="270" y="240" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e" transform="rotate(-90,270,240)">d = 4 rows</text>
+
+  <!-- Left info panel -->
+  <rect x="30" y="80" width="240" height="200" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="150" y="108" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a2e">Parameters</text>
+
+  <rect x="45" y="125" width="210" height="30" rx="6" fill="#f0f0f0"/>
+  <text x="150" y="145" text-anchor="middle" font-size="12" fill="#333333">d = 4 (depth/rows)</text>
+
+  <rect x="45" y="165" width="210" height="30" rx="6" fill="#f0f0f0"/>
+  <text x="150" y="185" text-anchor="middle" font-size="12" fill="#333333">w = 8 (width/columns)</text>
+
+  <rect x="45" y="205" width="210" height="30" rx="6" fill="#f0f0f0"/>
+  <text x="150" y="225" text-anchor="middle" font-size="12" fill="#333333">Total cells = 4 x 8 = 32</text>
+
+  <rect x="45" y="245" width="210" height="30" rx="6" fill="#f0f0f0"/>
+  <text x="150" y="265" text-anchor="middle" font-size="12" fill="#333333">All cells init to 0</text>
+
+  <!-- Update operation -->
+  <rect x="30" y="300" width="240" height="170" rx="12" fill="white" stroke="#cccccc" stroke-width="1"/>
+  <text x="150" y="328" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a2e">Update(x, count)</text>
+
+  <rect x="45" y="345" width="210" height="55" rx="8" fill="#f9f9f9" stroke="#cccccc" stroke-width="1"/>
+  <text x="150" y="363" text-anchor="middle" font-size="11" fill="#666666">For each row i in 0..d-1:</text>
+  <text x="150" y="380" text-anchor="middle" font-size="11" fill="#666666">  col = hᵢ(x) mod w</text>
+  <text x="150" y="397" text-anchor="middle" font-size="11" fill="#666666">  sketch[i][col] += count</text>
+
+  <!-- Space complexity -->
+  <rect x="45" y="410" width="210" height="40" rx="6" fill="#e8e4f0" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="150" y="430" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Space: O(d x w)</text>
+  <text x="150" y="445" text-anchor="middle" font-size="11" fill="#666666">Fixed size, never grows</text>
+</svg>

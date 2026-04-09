@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Raft leader election showing term-based voting and majority wins</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Raft Term-Based Election</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Candidate increments term, requests votes, majority wins — terms prevent stale leaders</text>
+
+  <!-- Timeline with 5 nodes -->
+  <rect x="30" y="80" width="840" height="390" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- Node rows -->
+  <text x="100" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Node A</text>
+  <text x="100" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Node B</text>
+  <text x="100" y="270" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Node C</text>
+  <text x="100" y="350" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Node D</text>
+  <text x="100" y="430" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Node E</text>
+
+  <!-- Time markers -->
+  <text x="200" y="100" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.5">t=0</text>
+  <text x="400" y="100" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.5">t=150ms</text>
+  <text x="600" y="100" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.5">t=200ms</text>
+  <text x="800" y="100" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.5">t=250ms</text>
+
+  <!-- Phase 1: Timeout and Candidate -->
+  <rect x="140" y="160" width="120" height="60" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="200" y="185" text-anchor="middle" font-size="10" font-weight="600" fill="#f0ad4e">Election Timeout</text>
+  <text x="200" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Term 2 begins</text>
+
+  <rect x="140" y="240" width="120" height="60" rx="8" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="200" y="265" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Candidate (C)</text>
+  <text x="200" y="280" text-anchor="middle" font-size="9" fill="#ffffff">Requests votes</text>
+
+  <!-- Vote request arrows -->
+  <line x1="260" y1="270" x2="340" y2="190" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowRE)"/>
+  <line x1="260" y1="270" x2="340" y2="350" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowRE)"/>
+  <line x1="260" y1="270" x2="340" y2="430" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowRE)"/>
+
+  <text x="300" y="215" text-anchor="middle" font-size="8" fill="#6d5bd0">Vote?</text>
+  <text x="300" y="345" text-anchor="middle" font-size="8" fill="#6d5bd0">Vote?</text>
+  <text x="300" y="425" text-anchor="middle" font-size="8" fill="#6d5bd0">Vote?</text>
+
+  <!-- Phase 2: Votes granted -->
+  <rect x="380" y="160" width="120" height="60" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="440" y="185" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Vote Granted</text>
+  <text x="440" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Node A votes for C</text>
+
+  <rect x="380" y="320" width="120" height="60" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="440" y="345" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Vote Granted</text>
+  <text x="440" y="360" text-anchor="middle" font-size="9" fill="#1a1822">Node E votes for C</text>
+
+  <rect x="380" y="400" width="120" height="60" rx="8" fill="#cc4444" opacity="0.2" stroke="#cc4444" stroke-width="2"/>
+  <text x="440" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Vote Denied</text>
+  <text x="440" y="440" text-anchor="middle" font-size="9" fill="#1a1822">Node D already voted</text>
+
+  <!-- Vote response arrows back to C -->
+  <line x1="500" y1="190" x2="560" y2="270" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowRE)"/>
+  <line x1="500" y1="430" x2="560" y2="290" stroke="#4caf50" stroke-width="2" marker-end="url(#arrowRE)"/>
+
+  <!-- Phase 3: Leader elected -->
+  <rect x="580" y="240" width="140" height="80" rx="8" fill="#4caf50" opacity="0.3" stroke="#4caf50" stroke-width="2"/>
+  <text x="650" y="265" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Leader Elected!</text>
+  <text x="650" y="285" text-anchor="middle" font-size="10" fill="#1a1822">Node C: 3/5 votes</text>
+  <text x="650" y="300" text-anchor="middle" font-size="10" fill="#1a1822">(A, C, E voted)</text>
+
+  <!-- Phase 4: Heartbeat -->
+  <rect x="740" y="240" width="100" height="80" rx="8" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="790" y="265" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Heartbeat</text>
+  <text x="790" y="285" text-anchor="middle" font-size="9" fill="#1a1822">Leader sends</text>
+  <text x="790" y="300" text-anchor="middle" font-size="9" fill="#1a1822">AppendEntries</text>
+  <text x="790" y="315" text-anchor="middle" font-size="9" fill="#1a1822">to maintain authority</text>
+
+  <!-- Heartbeat arrows -->
+  <line x1="740" y1="270" x2="680" y2="190" stroke="#6d5bd0" stroke-width="1" marker-end="url(#arrowRE)"/>
+  <line x1="740" y1="280" x2="680" y2="350" stroke="#6d5bd0" stroke-width="1" marker-end="url(#arrowRE)"/>
+  <line x1="740" y1="290" x2="680" y2="430" stroke="#6d5bd0" stroke-width="1" marker-end="url(#arrowRE)"/>
+
+  <!-- Key insight -->
+  <rect x="30" y="475" width="840" height="25" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="492" text-anchor="middle" font-size="10" fill="#1a1822">Key: Each node grants at most ONE vote per term. Terms prevent stale leaders from previous elections.</text>
+
+  <defs>
+    <marker id="arrowRE" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

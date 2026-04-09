@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>HyperLogLog use cases: unique visitors, query diversity, network flows</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">HyperLogLog Use Cases</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Unique visitors, search query diversity, network flow tracking with space efficiency comparison</text>
+
+  <!-- Use Case 1: Unique Visitors -->
+  <rect x="30" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="80" width="270" height="35" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="105" width="270" height="10" fill="#6d5bd0"/>
+  <text x="165" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Unique Visitors</text>
+
+  <rect x="50" y="130" width="230" height="70" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="165" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Scenario</text>
+  <text x="165" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Count distinct daily visitors</text>
+  <text x="165" y="185" text-anchor="middle" font-size="9" fill="#1a1822">across 500M user base</text>
+
+  <rect x="50" y="215" width="230" height="70" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="165" y="237" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Solution</text>
+  <text x="165" y="255" text-anchor="middle" font-size="9" fill="#1a1822">HLL with m=16,384 (12 KB)</text>
+  <text x="165" y="270" text-anchor="middle" font-size="9" fill="#1a1822">±0.81% error</text>
+
+  <rect x="50" y="300" width="230" height="70" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="165" y="322" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Space Savings</text>
+  <text x="165" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Exact: 16 GB (hash set)</text>
+  <text x="165" y="355" text-anchor="middle" font-size="9" fill="#1a1822">HLL: 12 KB (1,300x reduction)</text>
+
+  <rect x="50" y="385" width="230" height="50" rx="8" fill="#6d5bd0" opacity="0.05" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Used By:</text>
+  <text x="165" y="422" text-anchor="middle" font-size="9" fill="#1a1822">Google Analytics, Redis, BigQuery</text>
+
+  <!-- Use Case 2: Query Diversity -->
+  <rect x="315" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="80" width="270" height="35" rx="12" fill="#4caf50"/>
+  <rect x="315" y="105" width="270" height="10" fill="#4caf50"/>
+  <text x="450" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Search Query Diversity</text>
+
+  <rect x="335" y="130" width="230" height="70" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Scenario</text>
+  <text x="450" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Track distinct search queries</text>
+  <text x="450" y="185" text-anchor="middle" font-size="9" fill="#1a1822">per hour for 100M queries</text>
+
+  <rect x="335" y="215" width="230" height="70" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="450" y="237" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Solution</text>
+  <text x="450" y="255" text-anchor="middle" font-size="9" fill="#1a1822">HLL with m=4,096 (3 KB)</text>
+  <text x="450" y="270" text-anchor="middle" font-size="9" fill="#1a1822">±1.62% error per hour</text>
+
+  <rect x="335" y="300" width="230" height="70" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="450" y="322" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Space Savings</text>
+  <text x="450" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Exact: 3.2 GB (hash set)</text>
+  <text x="450" y="355" text-anchor="middle" font-size="9" fill="#1a1822">HLL: 3 KB (1,000x reduction)</text>
+
+  <rect x="335" y="385" width="230" height="50" rx="8" fill="#4caf50" opacity="0.05" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Used By:</text>
+  <text x="450" y="422" text-anchor="middle" font-size="9" fill="#1a1822">Elasticsearch, Google Search</text>
+
+  <!-- Use Case 3: Network Flows -->
+  <rect x="600" y="80" width="270" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="80" width="270" height="35" rx="12" fill="#f0ad4e"/>
+  <rect x="600" y="105" width="270" height="10" fill="#f0ad4e"/>
+  <text x="735" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Network Flow Tracking</text>
+
+  <rect x="620" y="130" width="230" height="70" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Scenario</text>
+  <text x="735" y="170" text-anchor="middle" font-size="9" fill="#1a1822">Track distinct source IPs per</text>
+  <text x="735" y="185" text-anchor="middle" font-size="9" fill="#1a1822">router for DDoS detection</text>
+
+  <rect x="620" y="215" width="230" height="70" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="735" y="237" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Solution</text>
+  <text x="735" y="255" text-anchor="middle" font-size="9" fill="#1a1822">HLL per router (12 KB each)</text>
+  <text x="735" y="270" text-anchor="middle" font-size="9" fill="#1a1822">Merge across routers</text>
+
+  <rect x="620" y="300" width="230" height="70" rx="8" fill="#f0ad4e" opacity="0.1" stroke="#f0ad4e" stroke-width="1"/>
+  <text x="735" y="322" text-anchor="middle" font-size="11" font-weight="600" fill="#f0ad4e">Space Savings</text>
+  <text x="735" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Exact: 40 MB per router</text>
+  <text x="735" y="355" text-anchor="middle" font-size="9" fill="#1a1822">HLL: 12 KB (3,300x reduction)</text>
+
+  <rect x="620" y="385" width="230" height="50" rx="8" fill="#f0ad4e" opacity="0.05" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="735" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Used By:</text>
+  <text x="735" y="422" text-anchor="middle" font-size="9" fill="#1a1822">Cloudflare, AWS VPC Flow Logs</text>
+
+  <defs>
+    <marker id="arrowHLL" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

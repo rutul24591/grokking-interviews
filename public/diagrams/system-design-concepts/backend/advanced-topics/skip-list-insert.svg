@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f0ad4e"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#333">Skip List Insert Operation</text>
+  <text x="450" y="64" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="400" fill="#666">Insert element 4 with tower height 3 (coin flips: H, H, T)</text>
+
+  <!-- Phase 1: Search Path -->
+  <rect x="20" y="80" width="260" height="400" rx="12" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="150" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#333">Phase 1: Search Path</text>
+
+  <!-- Level labels -->
+  <text x="40" y="140" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">L3</text>
+  <text x="40" y="184" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">L2</text>
+  <text x="40" y="228" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">L1</text>
+  <text x="40" y="272" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">L0</text>
+
+  <!-- Simplified skip list -->
+  <rect x="65" y="130" width="40" height="20" rx="6" fill="#6d5bd0"/>
+  <text x="85" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#fff">Head</text>
+
+  <rect x="65" y="174" width="40" height="20" rx="6" fill="#f0ad4e"/>
+  <text x="85" y="188" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#fff">Head</text>
+
+  <!-- L3: Head -> 1 -> 5 -->
+  <path d="M 110 140 L 170 140" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 200 140 L 230 140" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="175" y="130" width="28" height="20" rx="6" fill="#6d5bd0"/>
+  <text x="189" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">1</text>
+
+  <rect x="235" y="130" width="28" height="20" rx="6" fill="#6d5bd0"/>
+  <text x="249" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">5</text>
+
+  <!-- L2: Head -> 1 -> 5 -->
+  <path d="M 110 184 L 170 184" stroke="#f0ad4e" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 200 184 L 230 184" stroke="#f0ad4e" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="175" y="174" width="28" height="20" rx="6" fill="#f0ad4e"/>
+  <text x="189" y="188" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">1</text>
+
+  <rect x="235" y="174" width="28" height="20" rx="6" fill="#f0ad4e"/>
+  <text x="249" y="188" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">5</text>
+
+  <!-- L1: 1,3,5,7 -->
+  <path d="M 110 228 L 140 228" stroke="#4caf50" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 170 228 L 195 228" stroke="#4caf50" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 220 228 L 250 228" stroke="#4caf50" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="145" y="218" width="28" height="20" rx="6" fill="#4caf50"/>
+  <text x="159" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">1</text>
+
+  <rect x="175" y="218" width="28" height="20" rx="6" fill="#4caf50"/>
+  <text x="189" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">3</text>
+
+  <rect x="235" y="218" width="28" height="20" rx="6" fill="#4caf50"/>
+  <text x="249" y="232" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">5</text>
+
+  <!-- L0: 1,2,3,5,7 -->
+  <path d="M 85 272 L 105 272" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 130 272 L 145 272" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 170 272 L 190 272" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 215 272 L 230 272" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+
+  <rect x="65" y="262" width="28" height="20" rx="6" fill="#cc4444"/>
+  <text x="79" y="276" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">1</text>
+
+  <rect x="108" y="262" width="28" height="20" rx="6" fill="#cc4444"/>
+  <text x="122" y="276" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">2</text>
+
+  <rect x="145" y="262" width="28" height="20" rx="6" fill="#cc4444"/>
+  <text x="159" y="276" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">3</text>
+
+  <rect x="190" y="262" width="28" height="20" rx="6" fill="#cc4444"/>
+  <text x="204" y="276" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">5</text>
+
+  <rect x="230" y="262" width="28" height="20" rx="6" fill="#cc4444"/>
+  <text x="244" y="276" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">7</text>
+
+  <!-- Search path arrows -->
+  <path d="M 105 140 C 120 140, 130 140, 175 140" stroke="#cc4444" stroke-width="2.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowhead-red)"/>
+  <path d="M 189 144 L 189 174" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-red)"/>
+  <path d="M 105 184 C 120 184, 130 184, 175 184" stroke="#cc4444" stroke-width="2.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowhead-red)"/>
+  <path d="M 189 188 L 189 218" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-red)"/>
+  <path d="M 159 228 L 175 228" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-red)"/>
+  <path d="M 189 232 L 189 262" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-red)"/>
+  <path d="M 159 272 L 170 272" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="5,3" marker-end="url(#arrowhead-red)"/>
+
+  <text x="150" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#cc4444">Search path to</text>
+  <text x="150" y="326" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#cc4444">insert 4 (after 3)</text>
+
+  <!-- Phase 2: Coin Flips -->
+  <rect x="300" y="80" width="280" height="400" rx="12" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="440" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#333">Phase 2: Coin Flips</text>
+
+  <!-- Coin flip visualization -->
+  <rect x="320" y="125" width="240" height="140" rx="8" fill="#f3f1f8" stroke="#e0ddd5" stroke-width="1"/>
+
+  <text x="440" y="148" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#333">Determine tower height</text>
+
+  <!-- Flip 1: H -->
+  <rect x="340" y="165" width="60" height="32" rx="8" fill="#4caf50"/>
+  <text x="370" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">Flip 1</text>
+
+  <rect x="410" y="165" width="40" height="32" rx="8" fill="#4caf50"/>
+  <text x="430" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#fff">H</text>
+
+  <text x="465" y="183" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">= level 1</text>
+
+  <!-- Flip 2: H -->
+  <rect x="340" y="205" width="60" height="32" rx="8" fill="#4caf50"/>
+  <text x="370" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">Flip 2</text>
+
+  <rect x="410" y="205" width="40" height="32" rx="8" fill="#4caf50"/>
+  <text x="430" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#fff">H</text>
+
+  <text x="465" y="223" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">= level 2</text>
+
+  <!-- Flip 3: T -->
+  <rect x="340" y="245" width="60" height="32" rx="8" fill="#f0ad4e"/>
+  <text x="370" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">Flip 3</text>
+
+  <rect x="410" y="245" width="40" height="32" rx="8" fill="#f0ad4e"/>
+  <text x="430" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#fff">T</text>
+
+  <text x="465" y="263" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">stop here</text>
+
+  <!-- Result -->
+  <rect x="320" y="285" width="240" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="440" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">Tower height = 3 layers</text>
+  <text x="440" y="323" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#e0ddd5">Element 4 will occupy L0, L1, L2</text>
+
+  <!-- Algorithm explanation -->
+  <rect x="320" y="350" width="240" height="115" rx="8" fill="#f3f1f8" stroke="#e0ddd5" stroke-width="1"/>
+  <text x="335" y="370" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#333">Algorithm:</text>
+  <text x="335" y="390" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">1. Flip coin: H=50% promote, T=stop</text>
+  <text x="335" y="408" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">2. Each H adds one more level</text>
+  <text x="335" y="426" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">3. Max level capped at log2(n)</text>
+  <text x="335" y="444" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">4. Expected height: O(log n)</text>
+
+  <!-- Phase 3: Insert and Update -->
+  <rect x="600" y="80" width="280" height="400" rx="12" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="740" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#333">Phase 3: Insert Element</text>
+
+  <!-- After insertion skip list -->
+  <!-- Level labels -->
+  <text x="620" y="140" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">L2</text>
+  <text x="620" y="184" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">L1</text>
+  <text x="620" y="228" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">L0</text>
+
+  <!-- L2: Head -> 1 -> 4(new) -> 5 -->
+  <path d="M 650 138 L 700 138" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 728 138 L 780 138" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 808 138 L 860 138" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="655" y="128" width="36" height="20" rx="6" fill="#6d5bd0"/>
+  <text x="673" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">Head</text>
+
+  <rect x="705" y="128" width="24" height="20" rx="6" fill="#6d5bd0"/>
+  <text x="717" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">1</text>
+
+  <rect x="785" y="128" width="24" height="20" rx="6" fill="#6d5bd0" stroke="#4caf50" stroke-width="2.5"/>
+  <text x="797" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#fff">4</text>
+
+  <rect x="835" y="128" width="24" height="20" rx="6" fill="#6d5bd0"/>
+  <text x="847" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">5</text>
+
+  <!-- L1: 1,3,4(new),5 -->
+  <path d="M 650 182 L 685 182" stroke="#4caf50" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 710 182 L 735 182" stroke="#4caf50" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 760 182 L 785 182" stroke="#4caf50" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 810 182 L 835 182" stroke="#4caf50" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="690" y="172" width="24" height="20" rx="6" fill="#4caf50"/>
+  <text x="702" y="186" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">1</text>
+
+  <rect x="735" y="172" width="24" height="20" rx="6" fill="#4caf50"/>
+  <text x="747" y="186" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">3</text>
+
+  <rect x="790" y="172" width="24" height="20" rx="6" fill="#4caf50" stroke="#cc4444" stroke-width="2.5"/>
+  <text x="802" y="186" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#fff">4</text>
+
+  <rect x="840" y="172" width="24" height="20" rx="6" fill="#4caf50"/>
+  <text x="852" y="186" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">5</text>
+
+  <!-- L0: 1,2,3,4(new),5 -->
+  <path d="M 650 226 L 675 226" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 700 226 L 725 226" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 750 226 L 775 226" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 800 226 L 825 226" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 850 226 L 875 226" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrowhead-red)"/>
+
+  <rect x="655" y="216" width="24" height="20" rx="6" fill="#cc4444"/>
+  <text x="667" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">1</text>
+
+  <rect x="700" y="216" width="24" height="20" rx="6" fill="#cc4444"/>
+  <text x="712" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">2</text>
+
+  <rect x="745" y="216" width="24" height="20" rx="6" fill="#cc4444"/>
+  <text x="757" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">3</text>
+
+  <rect x="790" y="216" width="24" height="20" rx="6" fill="#cc4444" stroke="#f0ad4e" stroke-width="2.5"/>
+  <text x="802" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#fff">4</text>
+
+  <rect x="835" y="216" width="24" height="20" rx="6" fill="#cc4444"/>
+  <text x="847" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">5</text>
+
+  <!-- Pointer update annotations -->
+  <rect x="620" y="255" width="250" height="100" rx="8" fill="#f3f1f8" stroke="#e0ddd5" stroke-width="1"/>
+
+  <text x="635" y="275" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#333">Updated Forward Pointers:</text>
+
+  <text x="635" y="295" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">L0: 3.next = 4, 4.next = 5</text>
+
+  <text x="635" y="313" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">L1: 3.next = 4, 4.next = 5</text>
+
+  <text x="635" y="331" font-family="system-ui, sans-serif" font-size="11" font-weight="400" fill="#666">L2: 1.next = 4, 4.next = 5</text>
+
+  <!-- Complexity note -->
+  <rect x="620" y="365" width="250" height="100" rx="8" fill="#6d5bd0"/>
+  <text x="745" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">Time Complexity</text>
+
+  <text x="640" y="415" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#e0ddd5">Search: O(log n) expected</text>
+  <text x="640" y="435" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#e0ddd5">Insert: O(log n) expected</text>
+  <text x="640" y="455" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#e0ddd5">Space: O(n) expected</text>
+</svg>

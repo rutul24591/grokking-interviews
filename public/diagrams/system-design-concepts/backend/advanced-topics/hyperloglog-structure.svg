@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>HyperLogLog structure showing m registers, hash splitting, and max tracking</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">HyperLogLog Structure</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">m registers, hash splits into prefix (register index) and suffix (leading zero count)</text>
+
+  <!-- Hash input -->
+  <rect x="350" y="80" width="200" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Element: "user_12345"</text>
+
+  <!-- Hash function -->
+  <line x1="450" y1="125" x2="450" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowHLL)"/>
+  <rect x="350" y="155" width="200" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="180" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Hash Function (MurmurHash3)</text>
+
+  <!-- Hash output -->
+  <line x1="450" y1="200" x2="450" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowHLL)"/>
+  <rect x="200" y="230" width="500" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="255" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">01101001 10110110 00100111 10011010 01010011 11001001</text>
+
+  <!-- Split into prefix and suffix -->
+  <line x1="450" y1="275" x2="200" y2="320" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,2"/>
+  <line x1="450" y1="275" x2="700" y2="320" stroke="#4caf50" stroke-width="2" stroke-dasharray="4,2"/>
+
+  <rect x="100" y="320" width="200" height="50" rx="8" fill="#f0ad4e" opacity="0.2" stroke="#f0ad4e" stroke-width="2"/>
+  <text x="200" y="342" text-anchor="middle" font-size="12" font-weight="600" fill="#f0ad4e">Prefix (p bits)</text>
+  <text x="200" y="360" text-anchor="middle" font-size="10" fill="#1a1822">Register index = 01101 = 13</text>
+
+  <rect x="600" y="320" width="200" height="50" rx="8" fill="#4caf50" opacity="0.2" stroke="#4caf50" stroke-width="2"/>
+  <text x="700" y="342" text-anchor="middle" font-size="12" font-weight="600" fill="#4caf50">Suffix (remaining bits)</text>
+  <text x="700" y="360" text-anchor="middle" font-size="10" fill="#1a1822">Leading zeros = 3</text>
+
+  <!-- Register array -->
+  <rect x="330" y="390" width="240" height="50" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Register Array (m = 2^p registers)</text>
+  <text x="450" y="428" text-anchor="middle" font-size="10" fill="#1a1822">Register[13] = max(2, 3) = 3</text>
+
+  <!-- Flow summary -->
+  <rect x="30" y="455" width="840" height="30" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="475" text-anchor="middle" font-size="11" fill="#1a1822">Estimate = α_m × m² × (Σ 2^(-M[j]))^(-1), with bias correction for small/large cardinalities. Standard error = 1.04/√m</text>
+
+  <defs>
+    <marker id="arrowHLL" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

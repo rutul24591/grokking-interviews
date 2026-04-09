@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#333">Skip List Structure</text>
+  <text x="450" y="64" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="400" fill="#666">Probabilistic data structure with layered forward pointers for O(log n) search</text>
+
+  <!-- Level labels -->
+  <rect x="12" y="84" width="68" height="26" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="46" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6d5bd0">Level 3</text>
+
+  <rect x="12" y="128" width="68" height="26" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="46" y="146" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6d5bd0">Level 2</text>
+
+  <rect x="12" y="172" width="68" height="26" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="46" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6d5bd0">Level 1</text>
+
+  <rect x="12" y="216" width="68" height="26" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="46" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#6d5bd0">Level 0</text>
+
+  <!-- Level 3: Head -> 1 -> 5 -->
+  <rect x="95" y="90" width="48" height="24" rx="8" fill="#6d5bd0"/>
+  <text x="119" y="106" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Head</text>
+
+  <path d="M 148 102 L 262 102" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 314 102 L 672 102" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="278" y="90" width="36" height="24" rx="8" fill="#6d5bd0"/>
+  <text x="296" y="106" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">1</text>
+
+  <rect x="688" y="90" width="36" height="24" rx="8" fill="#6d5bd0"/>
+  <text x="706" y="106" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">5</text>
+
+  <!-- Vertical connections Level 3 to Level 2 -->
+  <line x1="119" y1="114" x2="119" y2="132" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="296" y1="114" x2="296" y2="132" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="706" y1="114" x2="706" y2="132" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Level 2: Head -> 1 -> 5 -->
+  <rect x="95" y="134" width="48" height="24" rx="8" fill="#f0ad4e"/>
+  <text x="119" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Head</text>
+
+  <path d="M 148 146 L 262 146" stroke="#f0ad4e" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 314 146 L 672 146" stroke="#f0ad4e" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="278" y="134" width="36" height="24" rx="8" fill="#f0ad4e"/>
+  <text x="296" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">1</text>
+
+  <rect x="688" y="134" width="36" height="24" rx="8" fill="#f0ad4e"/>
+  <text x="706" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">5</text>
+
+  <!-- Vertical connections Level 2 to Level 1 -->
+  <line x1="119" y1="158" x2="119" y2="176" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="296" y1="158" x2="296" y2="176" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="706" y1="158" x2="706" y2="176" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Level 1: 1,3,5,7 -->
+  <path d="M 148 190 L 262 190" stroke="#4caf50" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 314 190 L 448 190" stroke="#4caf50" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 484 190 L 672 190" stroke="#4caf50" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 706 190 L 842 190" stroke="#4caf50" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="278" y="178" width="36" height="24" rx="8" fill="#4caf50"/>
+  <text x="296" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">1</text>
+
+  <rect x="460" y="178" width="36" height="24" rx="8" fill="#4caf50"/>
+  <text x="478" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">3</text>
+
+  <rect x="688" y="178" width="36" height="24" rx="8" fill="#4caf50"/>
+  <text x="706" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">5</text>
+
+  <rect x="848" y="178" width="36" height="24" rx="8" fill="#4caf50"/>
+  <text x="866" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">7</text>
+
+  <!-- Vertical connections Level 1 to Level 0 -->
+  <line x1="296" y1="202" x2="296" y2="220" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="478" y1="202" x2="478" y2="220" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="706" y1="202" x2="706" y2="220" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="866" y1="202" x2="866" y2="220" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Level 0: 1,2,3,4,5,6,7,8 -->
+  <path d="M 148 234 L 220 234" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 256 234 L 340 234" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 376 234 L 460 234" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 496 234 L 580 234" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 616 234 L 700 234" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 736 234 L 820 234" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arrowhead-red)"/>
+  <path d="M 856 234 L 880 234" stroke="#cc4444" stroke-width="2" fill="none" marker-end="url(#arrowhead-red)"/>
+
+  <rect x="119" y="222" width="36" height="24" rx="8" fill="#cc4444"/>
+  <text x="137" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">1</text>
+
+  <rect x="232" y="222" width="36" height="24" rx="8" fill="#cc4444"/>
+  <text x="250" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">2</text>
+
+  <rect x="358" y="222" width="36" height="24" rx="8" fill="#cc4444"/>
+  <text x="376" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">3</text>
+
+  <rect x="460" y="222" width="36" height="24" rx="8" fill="#cc4444"/>
+  <text x="478" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">4</text>
+
+  <rect x="580" y="222" width="36" height="24" rx="8" fill="#cc4444"/>
+  <text x="598" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">5</text>
+
+  <rect x="700" y="222" width="36" height="24" rx="8" fill="#cc4444"/>
+  <text x="718" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">6</text>
+
+  <rect x="820" y="222" width="36" height="24" rx="8" fill="#cc4444"/>
+  <text x="838" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">7</text>
+
+  <rect x="880" y="222" width="36" height="24" rx="8" fill="#cc4444"/>
+  <text x="898" y="238" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">8</text>
+
+  <!-- Annotations card -->
+  <rect x="95" y="280" width="700" height="200" rx="12" fill="#fff" stroke="#ddd" stroke-width="1"/>
+
+  <text x="120" y="310" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#333">Key Properties</text>
+
+  <rect x="120" y="325" width="10" height="10" rx="3" fill="#6d5bd0"/>
+  <text x="140" y="334" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#333">Level 3: 1 element (1/8 probability)</text>
+  <text x="140" y="352" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#666">Sparsest layer: longest skip, fastest traversal</text>
+
+  <rect x="120" y="368" width="10" height="10" rx="3" fill="#f0ad4e"/>
+  <text x="140" y="377" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#333">Level 2: 2 elements (1/4 probability)</text>
+  <text x="140" y="395" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#666">Every 4th element promoted with p=1/4</text>
+
+  <rect x="120" y="411" width="10" height="10" rx="3" fill="#4caf50"/>
+  <text x="140" y="420" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#333">Level 1: 4 elements (1/2 probability)</text>
+  <text x="140" y="438" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#666">Every other element: 1, 3, 5, 7</text>
+
+  <rect x="120" y="454" width="10" height="10" rx="3" fill="#cc4444"/>
+  <text x="140" y="463" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#333">Level 0: 8 elements (all elements)</text>
+  <text x="140" y="481" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#666">Base linked list: sequential access to every node</text>
+</svg>

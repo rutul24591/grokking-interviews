@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Hedged Requests for Tail Latency Reduction</title>
+  <desc>Timeline showing hedged requests: original and hedge request, fastest response wins, 40% tail reduction</desc>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Hedged Requests Flow</text>
+  <text x="450" y="50" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Send a duplicate request after a timeout threshold — fastest response wins</text>
+
+  <!-- LEFT: Timeline Diagram -->
+  <rect x="25" y="70" width="560" height="310" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="305" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Request Timeline with Hedging</text>
+
+  <!-- Client box -->
+  <rect x="45" y="120" width="110" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="100" y="143" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Client</text>
+
+  <!-- Server A box -->
+  <rect x="340" y="120" width="110" height="36" rx="8" fill="#cc4444"/>
+  <text x="395" y="143" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Server A</text>
+
+  <!-- Server B box -->
+  <rect x="340" y="250" width="110" height="36" rx="8" fill="#4caf50"/>
+  <text x="395" y="273" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Server B</text>
+
+  <!-- Original request: Client -> Server A at t=0 -->
+  <line x1="155" y1="138" x2="340" y2="138" stroke="#6d5bd0" stroke-width="2.5"/>
+  <polygon points="335,134 340,138 335,142" fill="#6d5bd0"/>
+  <text x="247" y="132" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Req @ t=0</text>
+
+  <!-- Server A response: Server A -> Client at t=200ms (slow) -->
+  <line x1="340" y1="156" x2="155" y2="156" stroke="#cc4444" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="160,152 155,156 160,160" fill="#cc4444"/>
+  <text x="247" y="152" text-anchor="middle" font-size="8" fill="#cc4444">Resp @ t=200ms (slow)</text>
+
+  <!-- Hedge trigger at t=100ms -->
+  <rect x="100" y="170" width="200" height="22" rx="4" fill="#f0ad4e"/>
+  <text x="200" y="185" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">Hedge trigger @ t=100ms (P95 threshold)</text>
+
+  <!-- Hedged request: Client -> Server B at t=100ms -->
+  <line x1="155" y1="195" x2="340" y2="262" stroke="#f0ad4e" stroke-width="2.5" stroke-dasharray="4,2"/>
+  <polygon points="334,258 340,262 332,264" fill="#f0ad4e"/>
+  <text x="247" y="222" text-anchor="middle" font-size="9" font-weight="600" fill="#f0ad4e">Hedge Req @ t=100ms</text>
+
+  <!-- Server B response: Server B -> Client at t=120ms (fast) -->
+  <line x1="340" y1="272" x2="155" y2="272" stroke="#4caf50" stroke-width="2.5"/>
+  <polygon points="160,268 155,272 160,276" fill="#4caf50"/>
+  <text x="247" y="268" text-anchor="middle" font-size="9" font-weight="600" fill="#4caf50">Resp @ t=120ms (fast!)</text>
+
+  <!-- Winner annotation -->
+  <rect x="480" y="260" width="95" height="24" rx="6" fill="#4caf50"/>
+  <text x="527" y="276" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">WINNER!</text>
+
+  <!-- Loser annotation for Server A -->
+  <rect x="480" y="144" width="95" height="24" rx="6" fill="#cc4444"/>
+  <text x="527" y="160" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">CANCELLED</text>
+  <line x1="480" y1="156" x2="450" y2="156" stroke="#cc4444" stroke-width="1" stroke-dasharray="2,2"/>
+
+  <!-- Time markers on the left -->
+  <line x1="35" y1="138" x2="45" y2="138" stroke="#1a1822" stroke-width="1"/>
+  <text x="30" y="141" text-anchor="end" font-size="8" fill="#1a1822">t=0</text>
+
+  <line x1="35" y1="195" x2="45" y2="195" stroke="#1a1822" stroke-width="1"/>
+  <text x="30" y="198" text-anchor="end" font-size="8" fill="#1a1822">t=100ms</text>
+
+  <line x1="35" y1="272" x2="45" y2="272" stroke="#1a1822" stroke-width="1"/>
+  <text x="30" y="275" text-anchor="end" font-size="8" font-weight="600" fill="#4caf50">t=120ms</text>
+
+  <line x1="35" y1="156" x2="45" y2="156" stroke="#cc4444" stroke-width="1"/>
+  <text x="30" y="159" text-anchor="end" font-size="8" fill="#cc4444">t=200ms</text>
+
+  <!-- RIGHT: Comparison panel -->
+  <rect x="605" y="70" width="270" height="310" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="740" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Hedging vs No Hedging</text>
+
+  <!-- Without hedging -->
+  <rect x="625" y="110" width="230" height="100" rx="8" fill="#fef3f3" stroke="#cc4444" stroke-width="1"/>
+  <text x="740" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">Without Hedging</text>
+
+  <!-- Timeline without hedge -->
+  <line x1="645" y1="155" x2="835" y2="155" stroke="#1a1822" stroke-width="1"/>
+  <circle cx="645" cy="155" r="4" fill="#6d5bd0"/>
+  <text x="645" y="172" text-anchor="middle" font-size="8" fill="#1a1822">t=0</text>
+  <rect x="645" y="150" width="190" height="10" rx="2" fill="#cc4444"/>
+  <circle cx="835" cy="155" r="4" fill="#cc4444"/>
+  <text x="835" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="#cc4444">t=200ms</text>
+
+  <text x="740" y="192" text-anchor="middle" font-size="10" fill="#1a1822">Page blocked on straggler</text>
+  <text x="740" y="205" text-anchor="middle" font-size="9" fill="#cc4444">Response time: 200ms</text>
+
+  <!-- With hedging -->
+  <rect x="625" y="225" width="230" height="115" rx="8" fill="#f0faf0" stroke="#4caf50" stroke-width="1"/>
+  <text x="740" y="247" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">With Hedging</text>
+
+  <!-- Timeline with hedge -->
+  <line x1="645" y1="275" x2="835" y2="275" stroke="#1a1822" stroke-width="1"/>
+  <circle cx="645" cy="275" r="4" fill="#6d5bd0"/>
+  <text x="645" y="292" text-anchor="middle" font-size="8" fill="#1a1822">t=0</text>
+  <!-- Original request (slow, cancelled) -->
+  <rect x="645" y="270" width="190" height="10" rx="2" fill="#cc4444" opacity="0.3" stroke="#cc4444" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="740" y="266" text-anchor="middle" font-size="7" fill="#cc4444">Original (cancelled)</text>
+  <!-- Hedge request (fast, wins) -->
+  <rect x="695" y="280" width="40" height="8" rx="2" fill="#4caf50"/>
+  <text x="715" y="300" text-anchor="middle" font-size="7" fill="#4caf50">Hedge</text>
+  <!-- Winner marker -->
+  <circle cx="735" cy="284" r="5" fill="#4caf50"/>
+  <text x="715" y="312" text-anchor="middle" font-size="8" font-weight="700" fill="#4caf50">t=120ms</text>
+
+  <text x="740" y="327" text-anchor="middle" font-size="10" fill="#1a1822">Fastest response wins</text>
+  <text x="740" y="340" text-anchor="middle" font-size="9" font-weight="700" fill="#4caf50">Response time: 120ms (40% faster)</text>
+
+  <!-- Bottom panel: Key insights -->
+  <rect x="25" y="398" width="850" height="82" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+
+  <!-- Card 1 -->
+  <rect x="45" y="410" width="250" height="58" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="170" y="430" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">When to Hedge</text>
+  <text x="170" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Trigger at P95 or P99 threshold</text>
+  <text x="170" y="462" text-anchor="middle" font-size="9" fill="#1a1822">Only when latency exceeds budget</text>
+
+  <!-- Card 2 -->
+  <rect x="325" y="410" width="250" height="58" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="430" text-anchor="middle" font-size="11" font-weight="700" fill="#f0ad4e">Trade-offs</text>
+  <text x="450" y="448" text-anchor="middle" font-size="9" fill="#1a1822">Extra capacity for duplicate requests</text>
+  <text x="450" y="462" text-anchor="middle" font-size="9" fill="#1a1822">Cancel losing request to save resources</text>
+
+  <!-- Card 3 -->
+  <rect x="605" y="410" width="250" height="58" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="730" y="430" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">Results</text>
+  <text x="730" y="448" text-anchor="middle" font-size="9" fill="#1a1822">40% tail latency reduction</text>
+  <text x="730" y="462" text-anchor="middle" font-size="9" fill="#1a1822">~5% additional capacity cost</text>
+</svg>
