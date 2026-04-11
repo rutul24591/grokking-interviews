@@ -12,9 +12,9 @@ export const metadata: ArticleMetadata = {
   subcategory: "nfr",
   slug: "battery-cpu-efficiency",
   version: "extensive",
-  wordCount: 11000,
-  readingTime: 44,
-  lastUpdated: "2026-03-19",
+  wordCount: 5600,
+  readingTime: 23,
+  lastUpdated: "2026-04-11",
   tags: ["advanced", "nfr", "battery", "cpu", "mobile", "performance", "power-optimization"],
   relatedTopics: ["memory-management", "performance-optimization", "network-efficiency"],
 };
@@ -23,280 +23,127 @@ export default function BatteryCpuEfficiencyArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Battery & CPU Efficiency</strong> refers to optimizing application behavior to minimize
-          power consumption and CPU usage, particularly critical for mobile devices where battery life is a
-          primary user concern. Unlike desktop applications where power is often assumed to be unlimited,
-          mobile apps must operate within strict energy budgets.
+          <strong>Battery &amp; CPU Efficiency</strong> refers to the systematic optimization of
+          application behavior to minimize power consumption and CPU usage, particularly critical for
+          mobile devices where battery life represents a primary user concern and a hard constraint on
+          application design. Unlike desktop applications where power is often assumed to be effectively
+          unlimited through mains connection, mobile applications must operate within strict energy budgets
+          defined by battery capacities typically ranging from 2,000 to 5,000 milliamp-hours.
         </p>
         <p>
-          Battery drain is one of the top reasons users uninstall mobile apps. A study by Greenlytics found
-          that poorly optimized apps can drain up to 30% of daily battery capacity. Users expect their devices
-          to last a full day on a single charge, and apps that violate this expectation face negative reviews
-          and abandonment.
+          Battery drain ranks among the top reasons users uninstall mobile applications. Research from
+          Greenlytics found that poorly optimized applications can consume up to 30% of daily battery
+          capacity. Users expect their devices to last a full day on a single charge, and applications
+          that violate this expectation face negative reviews, poor app store ratings, and eventual
+          abandonment. The CPU is one of the most power-hungry components in a mobile device, and high
+          CPU usage creates a cascade of problems including accelerated battery depletion, thermal
+          throttling that reduces performance, janky animations, slow interactions, device warmth that
+          signals poor optimization to users, and aggressive background resource termination by both
+          iOS and Android platforms.
         </p>
         <p>
-          CPU efficiency directly impacts battery life. The CPU is one of the most power-hungry components in
-          a mobile device. High CPU usage causes:
+          Power efficiency is not an optional optimization but a core quality metric that directly impacts
+          user retention, app store ratings, and platform compliance. Both Apple and Google enforce
+          background execution limits and may reject applications that abuse system resources. Every
+          operation from rendering and network requests to animations and sensor polling draws from a
+          finite energy pool, and efficient applications maximize user value per milliamp-hour consumed.
         </p>
-        <ul>
-          <li>
-            <strong>Battery drain:</strong> CPU cycles consume power. More cycles = faster battery depletion.
-          </li>
-          <li>
-            <strong>Thermal throttling:</strong> Sustained high CPU usage generates heat, triggering thermal
-            throttling that reduces performance.
-          </li>
-          <li>
-            <strong>Poor user experience:</strong> Janky animations, slow interactions, and device warmth
-            signal poor optimization.
-          </li>
-          <li>
-            <strong>Background restrictions:</strong> iOS and Android aggressively terminate apps that abuse
-            background resources.
-          </li>
-        </ul>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Power Is a Finite Resource</h3>
           <p>
             Mobile devices have battery capacities ranging from 2,000-5,000 mAh. Every operation — rendering,
             network requests, animations, sensor polling — draws from this finite pool. Efficient apps
-            maximize user value per milliamp-hour.
-          </p>
-          <p className="mt-3">
-            <strong>Power efficiency is not optional</strong> — it is a core quality metric that impacts user
-            retention, app store ratings, and platform compliance (both Apple and Google enforce background
-            execution limits).
+            maximize user value per milliamp-hour. Power efficiency is not optional — it is a core quality
+            metric that impacts user retention, app store ratings, and platform compliance.
           </p>
         </div>
-
-        <p>
-          This article covers power consumption fundamentals, CPU profiling techniques, optimization strategies
-          for common operations, and platform-specific best practices for iOS and Android.
-        </p>
       </section>
 
       <section>
-        <h2>Power Consumption Fundamentals</h2>
+        <h2>Core Concepts</h2>
         <p>
-          Understanding how mobile devices consume power is essential for optimization.
+          Understanding how mobile devices consume power is essential before attempting optimization. A
+          typical smartphone power budget breaks down across several major consumers. The display accounts
+          for 30-40% of total power consumption, making it the single largest consumer. The CPU consumes
+          20-30% of total power, while the radio subsystem including cellular and WiFi accounts for 15-25%.
+          The GPU uses 10-15% and sensors such as GPS consume 5-10% of the total power budget. These
+          proportions vary based on usage patterns, but the display and CPU consistently dominate the
+          energy profile.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Major Power Consumers</h3>
-        <p>
-          A typical smartphone&apos;s power budget breaks down as follows:
-        </p>
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Component</th>
-                <th className="p-2 text-left">Power Draw</th>
-                <th className="p-2 text-left">Optimization Impact</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-theme">
-              <tr>
-                <td className="p-2">Display</td>
-                <td className="p-2">30-40% of total</td>
-                <td className="p-2">Reduce brightness, use dark mode, minimize screen-on time</td>
-              </tr>
-              <tr>
-                <td className="p-2">CPU</td>
-                <td className="p-2">20-30% of total</td>
-                <td className="p-2">Optimize algorithms, reduce polling, batch operations</td>
-              </tr>
-              <tr>
-                <td className="p-2">Radio (Cellular/WiFi)</td>
-                <td className="p-2">15-25% of total</td>
-                <td className="p-2">Batch network requests, use push notifications</td>
-              </tr>
-              <tr>
-                <td className="p-2">GPU</td>
-                <td className="p-2">10-15% of total</td>
-                <td className="p-2">Simplify animations, reduce overdraw</td>
-              </tr>
-              <tr>
-                <td className="p-2">Sensors (GPS, etc.)</td>
-                <td className="p-2">5-10% of total</td>
-                <td className="p-2">Use coarse location, reduce polling frequency</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CPU Power States</h3>
         <p>
           Modern mobile CPUs use dynamic voltage and frequency scaling (DVFS) to balance performance and
-          power consumption:
+          power consumption. When idle, CPU cores enter progressively deeper sleep states known as C-states,
+          where C0 represents active operation and C1 through C6 represent increasingly deep sleep states
+          that save more power but require longer wake times. When active, CPU frequency scales based on
+          workload through P-states, where higher frequencies provide more performance but consume
+          exponentially more power following the relationship P is proportional to V-squared times f.
+          Modern system-on-chips use Big.LITTLE architecture with heterogeneous processing, deploying
+          high-efficiency cores for light tasks and high-performance cores for demanding workloads,
+          automatically migrating threads between core types based on load.
         </p>
-        <ul>
-          <li>
-            <strong>Idle (C-states):</strong> CPU cores enter low-power sleep states when idle. Deeper sleep
-            states (C3, C6) save more power but take longer to wake.
-          </li>
-          <li>
-            <strong>Active (P-states):</strong> CPU frequency scales based on workload. Higher frequencies
-            provide more performance but consume exponentially more power (P ∝ V²f).
-          </li>
-          <li>
-            <strong>Big.LITTLE Architecture:</strong> Modern SoCs use heterogeneous processing with high-efficiency
-            cores for light tasks and high-performance cores for demanding workloads.
-          </li>
-        </ul>
+        <p>
+          Tail energy represents a frequently overlooked but critical concept in mobile power consumption.
+          Tail energy is the power consumed after an operation completes while the radio or CPU returns to
+          an idle state, and it can account for 30-50% of total energy usage for bursty workloads. After a
+          network request completes, the cellular radio remains in a high-power state for several seconds
+          before transitioning to idle. Making many small requests incurs tail energy overhead for each
+          individual request, whereas batching operations together amortizes the tail energy cost across
+          all batched operations. This principle applies broadly to any operation that has a warm-up and
+          cool-down period with associated energy costs.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/advanced-topics/cpu-power-states.svg"
           alt="CPU Power States and DVFS"
           caption="CPU Power States — showing idle C-states (C0 active, C1-C6 progressively deeper sleep), active P-states (frequency scaling), and Big.LITTLE architecture with efficiency vs performance cores"
         />
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Tail Energy</h3>
-        <p>
-          <strong>Tail energy</strong> is the power consumed after an operation completes, while the radio or
-          CPU returns to idle. This is often overlooked but can account for 30-50% of total energy usage.
-        </p>
-        <p>
-          <strong>Example:</strong> After a network request completes, the cellular radio remains in a
-          high-power state for several seconds before transitioning to idle. Making many small requests
-          incurs tail energy overhead for each request.
-        </p>
-        <p>
-          <strong>Mitigation:</strong> Batch operations together to amortize tail energy. Instead of sending
-          10 analytics events individually, batch them into a single request.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Power Profiling Tools</h3>
-        <p>
-          Measure power consumption to identify optimization opportunities:
-        </p>
-        <ul>
-          <li>
-            <strong>Android Battery Historian:</strong> Analyze battery usage, wake locks, and background
-            activity from bugreports.
-          </li>
-          <li>
-            <strong>iOS Energy Log:</strong> Profile app energy impact using Xcode&apos;s Instruments
-            (Energy Log template).
-          </li>
-          <li>
-            <strong>Android Profiler:</strong> Real-time CPU, memory, and network profiling in Android Studio.
-          </li>
-          <li>
-            <strong>Chrome DevTools Performance:</strong> Profile web app CPU usage and identify long tasks.
-          </li>
-        </ul>
       </section>
 
       <section>
-        <h2>CPU Optimization Strategies</h2>
+        <h2>Architecture &amp; Flow</h2>
         <p>
-          Reducing CPU usage is the most impactful way to improve battery efficiency.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">1. Minimize Main Thread Work</h3>
-        <p>
-          The main thread handles UI rendering, user input, and JavaScript execution. Blocking the main
-          thread causes jank and forces the CPU to stay in high-power states longer.
-        </p>
-        <p>
-          <strong>Strategies:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Avoid long tasks:</strong> Break work into chunks of {'<'}50ms to allow the browser to
-            process input and paint frames.
-          </li>
-          <li>
-            <strong>Use Web Workers:</strong> Offload CPU-intensive computations (image processing, data
-            transformation) to background threads.
-          </li>
-          <li>
-            <strong>Defer non-critical work:</strong> Use <code>requestIdleCallback</code> to schedule work
-            during idle periods.
-          </li>
-          <li>
-            <strong>Virtualize long lists:</strong> Render only visible items to reduce DOM manipulation and
-            layout calculations.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">2. Optimize Animations</h3>
-        <p>
-          Animations are a major source of CPU and GPU usage. Poorly optimized animations cause frame drops
-          and excessive power consumption.
+          Reducing CPU usage represents the most impactful approach to improving battery efficiency. The
+          main thread handles UI rendering, user input, and JavaScript execution in web applications.
+          Blocking the main thread causes visible jank and forces the CPU to remain in high-power states
+          longer than necessary. The strategy involves breaking work into chunks of less than 50 milliseconds
+          to allow the browser to process input and paint frames, offloading CPU-intensive computations
+          like image processing and data transformation to Web Workers running on background threads,
+          deferring non-critical work using requestIdleCallback to schedule processing during idle periods,
+          and virtualizing long lists to render only visible items, thereby reducing DOM manipulation and
+          layout calculations.
         </p>
         <p>
-          <strong>Best practices:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Use CSS transforms:</strong> <code>transform</code> and <code>opacity</code> are
-            GPU-accelerated and avoid layout recalculation.
-          </li>
-          <li>
-            <strong>Avoid animating layout properties:</strong> Properties like <code>width</code>,
-            <code>height</code>, <code>top</code>, <code>left</code> trigger layout and paint on every frame.
-          </li>
-          <li>
-            <strong>Use will-change sparingly:</strong> This hints the browser to promote elements to
-            compositor layers, but overuse increases memory usage.
-          </li>
-          <li>
-            <strong>Reduce animation complexity:</strong> Simplify animations on low-end devices using
-            <code>prefers-reduced-motion</code> media query.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">3. Efficient Event Handling</h3>
-        <p>
-          Event listeners can cause excessive CPU wakeups if not implemented carefully.
+          Animations constitute a major source of CPU and GPU usage, and poorly optimized animations cause
+          frame drops and excessive power consumption. The correct approach uses CSS transform and opacity
+          properties exclusively for animations because these are GPU-accelerated and avoid expensive layout
+          recalculation. Properties like width, height, top, and left must be avoided in animations because
+          they trigger layout and paint on every frame. The will-change CSS property should be used sparingly
+          since it hints the browser to promote elements to compositor layers, but overuse increases memory
+          usage and can negate performance benefits. On low-end devices, animation complexity should be
+          reduced using the prefers-reduced-motion media query to respect user preferences and device
+          capabilities.
         </p>
         <p>
-          <strong>Strategies:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Debounce and throttle:</strong> Limit how often scroll, resize, and input handlers fire.
-            Debouncing waits for a pause; throttling limits to once per interval.
-          </li>
-          <li>
-            <strong>Use passive listeners:</strong> <code>{`{ passive: true }`}</code> for scroll and touch
-            events tells the browser the listener won&apos;t call <code>preventDefault()</code>, allowing
-            smoother scrolling.
-          </li>
-          <li>
-            <strong>Remove unused listeners:</strong> Clean up event listeners when components unmount to
-            prevent unnecessary callbacks.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">4. Reduce Polling</h3>
-        <p>
-          Polling keeps the CPU awake and prevents deep sleep states. Replace polling with event-driven
-          alternatives where possible.
+          Event listeners can cause excessive CPU wakeups if not implemented carefully. Scroll, resize, and
+          input handlers fire frequently and must be controlled through debouncing, which waits for a pause
+          in events before executing, or throttling, which limits execution to once per defined interval.
+          Passive event listeners should be used for scroll and touch events by setting passive to true,
+          which tells the browser the listener will not call preventDefault, allowing smoother scrolling
+          without waiting for the handler to complete. Event listeners must be removed when components
+          unmount to prevent unnecessary callbacks on destroyed elements.
         </p>
         <p>
-          <strong>Alternatives to polling:</strong>
+          Polling keeps the CPU awake and prevents deep sleep states, making it one of the most
+          energy-inefficient patterns in application design. The preferred alternative uses event-driven
+          approaches such as push notifications via WebSocket or Server-Sent Events, Intersection Observer
+          for detecting element visibility without polling scroll position, and Mutation Observer for
+          reacting to DOM changes without polling. When polling is unavoidable, adaptive polling strategies
+          increase intervals during periods of inactivity and decrease them during active use to balance
+          responsiveness with energy consumption.
         </p>
-        <ul>
-          <li>
-            <strong>Push notifications:</strong> Use WebSocket, Server-Sent Events, or platform push
-            notifications instead of polling for updates.
-          </li>
-          <li>
-            <strong>Intersection Observer:</strong> Detect element visibility without polling scroll position.
-          </li>
-          <li>
-            <strong>Mutation Observer:</strong> React to DOM changes without polling.
-          </li>
-          <li>
-            <strong>Adaptive polling:</strong> If polling is unavoidable, increase intervals during inactivity
-            and decrease during active use.
-          </li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/advanced-topics/cpu-optimization-strategies.svg"
@@ -306,71 +153,51 @@ export default function BatteryCpuEfficiencyArticle() {
       </section>
 
       <section>
-        <h2>Network Efficiency</h2>
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          Network operations are among the most power-intensive tasks a mobile app performs. The radio
-          subsystem consumes significant power during transmission and has substantial tail energy.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Radio State Machine</h3>
-        <p>
-          Cellular radios operate in multiple states with different power consumption:
-        </p>
-        <ul>
-          <li>
-            <strong>Connected (DCH):</strong> High power (~500-1000 mW). Active data transfer.
-          </li>
-          <li>
-            <strong>FACH:</strong> Medium power (~200-400 mW). Low-rate data, short tail period after transfer.
-          </li>
-          <li>
-            <strong>IDLE (PCH):</strong> Low power (~5-20 mW). No active transfer, periodic paging.
-          </li>
-        </ul>
-        <p>
-          <strong>Tail energy problem:</strong> After data transfer completes, the radio stays in FACH for
-          5-12 seconds before transitioning to IDLE. Making multiple small requests within this window is
-          efficient; spreading them out wastes tail energy.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network Optimization Strategies</h3>
-        <p>
-          <strong>1. Batch Requests:</strong> Combine multiple API calls into a single request. Instead of
-          fetching user data, preferences, and feed separately, use a single GraphQL query or batched REST
-          endpoint.
+          Network operations rank among the most power-intensive tasks a mobile application performs. The
+          radio subsystem consumes significant power during transmission and has substantial tail energy
+          costs. Cellular radios operate in multiple states with different power consumption levels. The
+          Connected state, also known as DCH, consumes approximately 500-1000 milliwatts during active
+          data transfer. The FACH state consumes medium power at 200-400 milliwatts for low-rate data
+          during a short tail period after transfer. The IDLE state, also known as PCH, consumes low
+          power at 5-20 milliwatts with no active transfer but periodic paging checks.
         </p>
         <p>
-          <strong>2. Use Connection Coalescing:</strong> HTTP/2 multiplexing allows multiple requests over a
-          single TCP connection, reducing connection setup overhead.
+          The tail energy problem manifests when data transfer completes but the radio remains in the FACH
+          state for 5-12 seconds before transitioning to IDLE. Making multiple small requests within this
+          window is efficient because the radio is already active, but spreading requests out beyond the
+          tail period wastes energy by forcing the radio through additional high-power state transitions.
+          The optimization strategy combines multiple API calls into single requests using GraphQL queries
+          or batched REST endpoints, leverages HTTP/2 multiplexing for multiple requests over a single
+          TCP connection, caches responses aggressively using ETag and conditional requests, prefetches
+          data when the radio is already active after user actions, and reduces payload size through
+          compression with Brotli or gzip and efficient formats like Protocol Buffers.
         </p>
         <p>
-          <strong>3. Implement Smart Caching:</strong> Cache responses aggressively to avoid redundant
-          network requests. Use ETag and If-None-Match for conditional requests.
+          WiFi proves significantly more power-efficient than cellular for data transfers. WiFi consumes
+          approximately 100-300 milliwatts during transfer with fast tail decay, while cellular on 4G or
+          5G consumes 500-1500 milliwatts during transfer with longer tail periods. The strategy defers
+          non-urgent transfers such as analytics uploads, backups, and synchronization until WiFi is
+          available, using the Network Information API to detect connection type and adjust transfer
+          behavior accordingly. However, this trade-off must be balanced against data freshness
+          requirements — deferring critical updates for WiFi could degrade user experience, so the
+          decision depends on the nature of the data being transferred.
         </p>
         <p>
-          <strong>4. Prefetch Strategically:</strong> Prefetch data when the radio is already active (e.g.,
-          after a user action) rather than waking it separately.
-        </p>
-        <p>
-          <strong>5. Reduce Payload Size:</strong> Compress responses (gzip, Brotli), use efficient formats
-          (Protocol Buffers, MessagePack), and request only needed fields (GraphQL).
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">WiFi vs Cellular</h3>
-        <p>
-          WiFi is significantly more power-efficient than cellular:
-        </p>
-        <ul>
-          <li>
-            <strong>WiFi:</strong> ~100-300 mW during transfer, fast tail decay.
-          </li>
-          <li>
-            <strong>Cellular (4G/5G):</strong> ~500-1500 mW during transfer, longer tail period.
-          </li>
-        </ul>
-        <p>
-          <strong>Strategy:</strong> Defer non-urgent transfers (analytics, backups, sync) until WiFi is
-          available. Use Network Information API to detect connection type.
+          Background execution is heavily restricted on mobile platforms to preserve battery, and
+          understanding these constraints is critical for designing efficient applications. iOS allows
+          limited background execution for specific purposes including Background Fetch that wakes
+          approximately every 15 minutes based on system-determined usage patterns, remote notifications
+          with the content-available flag, BGTaskScheduler for processing or refresh tasks with quality
+          of service constraints, location updates requiring user permission and App Store justification,
+          and audio or VoIP services. Android provides WorkManager for deferred background work with
+          constraints on network type, charging state, and battery level, foreground services with visible
+          notifications for long-running tasks, JobScheduler with Doze mode compatibility, and AlarmManager
+          for precise timing that should be used sparingly due to battery impact. The trade-off here
+          centers on data freshness versus battery preservation — more aggressive background updates
+          provide fresher data but consume more battery, and platform restrictions enforce this balance
+          at the operating system level.
         </p>
 
         <ArticleImage
@@ -381,304 +208,84 @@ export default function BatteryCpuEfficiencyArticle() {
       </section>
 
       <section>
-        <h2>Background Task Management</h2>
+        <h2>Best Practices</h2>
         <p>
-          Background execution is heavily restricted on mobile platforms to preserve battery. Understanding
-          these constraints is critical for designing efficient apps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">iOS Background Execution</h3>
-        <p>
-          iOS allows limited background execution for specific purposes:
-        </p>
-        <ul>
-          <li>
-            <strong>Background Fetch:</strong> App wakes periodically (~every 15 minutes) to fetch content.
-            System controls timing based on usage patterns.
-          </li>
-          <li>
-            <strong>Remote Notifications:</strong> Push notifications can wake app for background processing
-            (content-available flag).
-          </li>
-          <li>
-            <strong>Background Tasks (BGTaskScheduler):</strong> Schedule processing or refresh tasks with
-            quality-of-service constraints.
-          </li>
-          <li>
-            <strong>Location Updates:</strong> Continuous or significant location changes (requires user
-            permission and App Store justification).
-          </li>
-          <li>
-            <strong>Audio/VoIP:</strong> Apps providing audio or VoIP services can run in background.
-          </li>
-        </ul>
-        <p>
-          <strong>Best practices:</strong>
-        </p>
-        <ul>
-          <li>Complete background tasks quickly (under 30 seconds).</li>
-          <li>Use expiration handlers to save state if time runs out.</li>
-          <li>Avoid waking the device unnecessarily — batch work during system-scheduled fetches.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Android Background Execution</h3>
-        <p>
-          Android provides more flexibility but has progressively tightened restrictions:
-        </p>
-        <ul>
-          <li>
-            <strong>WorkManager:</strong> Deferred background work with constraints (network type, charging
-            state, battery level).
-          </li>
-          <li>
-            <strong>Foreground Services:</strong> Long-running tasks with visible notification (music
-            playback, navigation, fitness tracking).
-          </li>
-          <li>
-            <strong>JobScheduler:</strong> System-managed job scheduling with Doze mode compatibility.
-          </li>
-          <li>
-            <strong>AlarmManager:</strong> Precise timing for alarms (use sparingly due to battery impact).
-          </li>
-        </ul>
-        <p>
-          <strong>Doze Mode:</strong> When device is stationary and screen-off, Android enters Doze mode,
-          deferring network access, alarms, and background work to periodic maintenance windows.
+          CPU efficiency requires breaking long tasks into chunks under 50 milliseconds to allow idle
+          periods between processing bursts. Web Workers should handle heavy computations that would
+          otherwise block the main thread and prevent user interaction. Animations should use only
+          GPU-accelerated properties, specifically transform and opacity, to avoid triggering layout
+          recalculation on every frame. Scroll and resize handlers must be debounced or throttled to
+          limit their execution frequency, and passive event listeners should be used for touch and
+          scroll events. Polling should be replaced with event-driven alternatives like
+          IntersectionObserver and MutationObserver wherever possible. Long lists must be virtualized
+          to render only the items visible in the viewport, and requestIdleCallback should schedule
+          deferrable work during browser idle periods.
         </p>
         <p>
-          <strong>App Standby:</strong> Apps not used recently are placed in standby, restricting background
-          network and job execution.
+          Network efficiency depends on batching API requests together to amortize tail energy costs
+          across multiple logical operations. HTTP/2 connection multiplexing reduces connection setup
+          overhead for multiple concurrent requests. Aggressive caching using ETag headers and
+          Cache-Control directives avoids redundant network transfers entirely. Response compression
+          through Brotli or gzip reduces transfer size and associated radio active time. Prefetching
+          should occur during periods when the radio is already active rather than waking it separately.
+          Non-urgent transfers like analytics and backups should be deferred until WiFi is available,
+          and binary data formats like Protocol Buffers should replace JSON for large payloads where
+          the size difference justifies the encoding overhead.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Web Background Sync</h3>
         <p>
-          Progressive Web Apps have limited background capabilities:
+          Background task management requires using platform-appropriate scheduling mechanisms —
+          WorkManager on Android and BGTaskScheduler on iOS — rather than ad-hoc background execution.
+          Background tasks should complete in under 30 seconds, and expiration handlers must save state
+          gracefully if time runs out. The device should not be woken unnecessarily for deferrable work,
+          and Doze mode and App Standby restrictions must be respected. Foreground services should be
+          used only when the user has an explicit need for ongoing background processing, such as music
+          playback or navigation.
         </p>
-        <ul>
-          <li>
-            <strong>Background Sync API:</strong> Defer actions until network is available. Browser handles
-            retry logic.
-          </li>
-          <li>
-            <strong>Periodic Background Sync:</strong> Fetch content periodically (requires user permission
-            and Chrome on Android).
-          </li>
-          <li>
-            <strong>Push Notifications:</strong> Wake service worker to handle push events.
-          </li>
-        </ul>
         <p>
-          <strong>Limitation:</strong> Web APIs are less powerful than native. For heavy background processing,
-          native apps have significant advantages.
-        </p>
-
-        <ArticleImage
-          src="/diagrams/requirements/nfr/advanced-topics/background-task-management.svg"
-          alt="Background Task Management"
-          caption="Background Task Management — comparing iOS (BGTaskScheduler, Background Fetch) and Android (WorkManager, JobScheduler, Doze Mode) background execution models"
-        />
-      </section>
-
-      <section>
-        <h2>Sensor and Location Efficiency</h2>
-        <p>
-          Sensors (GPS, accelerometer, gyroscope) and location services are significant power consumers.
-          Optimize their usage carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Location Services</h3>
-        <p>
-          GPS is one of the most power-hungry sensors. Optimize location usage:
-        </p>
-        <ul>
-          <li>
-            <strong>Use appropriate accuracy:</strong> Don&apos;t request <code>highAccuracy</code> unless
-            necessary. Coarse location (cell tower, WiFi) uses far less power.
-          </li>
-          <li>
-            <strong>Reduce update frequency:</strong> Request location updates only as often as needed. For
-            fitness tracking, 1 Hz may be sufficient; for navigation, 5-10 Hz.
-          </li>
-          <li>
-            <strong>Use significant location changes:</strong> iOS provides significant location change
-            notifications (~500m movement) with minimal power impact.
-          </li>
-          <li>
-            <strong>Stop updates when not needed:</strong> Always call <code>clearWatch()</code> or
-            <code>stopLocationUpdates()</code> when location is no longer required.
-          </li>
-          <li>
-            <strong>Geofencing:</strong> Use geofences to trigger location-based actions instead of
-            continuous polling.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Motion Sensors</h3>
-        <p>
-          Accelerometer, gyroscope, and magnetometer consume less power than GPS but still impact battery:
-        </p>
-        <ul>
-          <li>
-            <strong>Use appropriate sampling rate:</strong> Higher sample rates (100 Hz+) drain more power.
-            Use the lowest rate that meets your needs.
-          </li>
-          <li>
-            <strong>Batch sensor data:</strong> Read sensor data in batches rather than continuous streaming.
-          </li>
-          <li>
-            <strong>Use step detector:</strong> Android&apos;s step detector hardware offloads step counting
-            to a low-power co-processor.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sensor Fusion</h3>
-        <p>
-          Modern devices use sensor fusion to combine data from multiple sensors efficiently:
-        </p>
-        <ul>
-          <li>
-            <strong>Android Sensor Hub:</strong> Dedicated low-power processor handles sensor fusion, allowing
-            main CPU to sleep.
-          </li>
-          <li>
-            <strong>iOS Motion Coprocessor:</strong> M-series coprocessors continuously track motion data
-            with minimal power impact.
-          </li>
-        </ul>
-        <p>
-          <strong>Best practice:</strong> Use fused sensor APIs (Android SensorManager, iOS CMDeviceMotion)
-          rather than raw sensor data when possible.
+          Location and sensor optimization demands using coarse location accuracy when high precision
+          is not required, since GPS-based high-accuracy mode consumes significantly more power than
+          cell tower or WiFi-based positioning. Location update frequency should be reduced to the
+          minimum acceptable for the use case. Location updates must be stopped when no longer needed
+          by calling the appropriate cleanup methods. Geofencing should replace continuous tracking for
+          location-triggered scenarios. Sensor fusion APIs should be preferred over raw sensor access
+          because they leverage low-power coprocessors like the M-series on iOS and the Sensor Hub on
+          Android that handle continuous sensor monitoring while the main CPU sleeps.
         </p>
       </section>
 
       <section>
-        <h2>Display Optimization</h2>
+        <h2>Common Pitfalls</h2>
         <p>
-          The display is the largest power consumer. While web developers have limited control over display
-          hardware, several optimizations are possible.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Dark Mode</h3>
-        <p>
-          OLED displays (used in most premium smartphones) power individual pixels. Black pixels are off and
-          consume no power.
+          One of the most pervasive pitfalls is ignoring tail energy costs by making many small,
+          unbatched network requests. Each request forces the radio through a complete high-power cycle
+          including the tail period, and the cumulative energy waste can reach 30-50% of total radio
+          energy consumption. Developers often focus on reducing individual request latency without
+          considering the aggregate energy cost of request frequency, which is the dominant factor in
+          radio power consumption.
         </p>
         <p>
-          <strong>Power savings:</strong> Studies show dark mode can reduce display power consumption by
-          30-60% on OLED displays, depending on content.
+          Another common pitfall is blocking the main thread with synchronous computations or large DOM
+          operations. When the main thread is blocked, the browser cannot process user input, paint
+          frames, or enter idle power states. The result is both poor perceived performance and excessive
+          battery drain. Developers must profile their applications to identify long tasks and
+          systematically break them into smaller chunks or offload them to Web Workers.
         </p>
         <p>
-          <strong>Implementation:</strong> Use <code>prefers-color-scheme</code> media query to respect
-          system dark mode setting:
+          Excessive polling represents a third major pitfall. Many applications poll for updates at
+          fixed intervals even when no changes have occurred, keeping the CPU awake and preventing
+          deep sleep states. The energy waste from unnecessary polling is particularly severe on
+          mobile devices where every CPU cycle draws from a finite battery. Event-driven alternatives
+          should be used wherever possible, and adaptive polling strategies should be employed when
+          polling cannot be eliminated entirely.
         </p>
-        <ul>
-          <li>Design dark theme with true black (#000000) for maximum OLED savings.</li>
-          <li>Avoid pure white backgrounds — use dark gray (#1a1a1a to #2a2a2a).</li>
-          <li>Reduce brightness of non-essential UI elements.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Reduce Screen-On Time</h3>
         <p>
-          The longer the screen is on, the more power is consumed. Optimize user flows to minimize
-          screen-on time:
+          Neglecting to profile energy consumption before and after optimization represents a strategic
+          pitfall. Without measurement, teams cannot identify the actual power-hungry operations in
+          their applications and may waste effort optimizing components that contribute minimally to
+          overall energy consumption. Chrome DevTools Performance panel, Android Battery Historian, and
+          Xcode Instruments Energy Log provide the necessary visibility into energy impact at the
+          operation level, and profiling should precede any optimization effort.
         </p>
-        <ul>
-          <li>
-            <strong>Quick interactions:</strong> Design efficient UIs that allow users to complete tasks
-            quickly.
-          </li>
-          <li>
-            <strong>Voice interfaces:</strong> For certain tasks (timers, reminders, queries), voice
-            interaction can reduce screen dependency.
-          </li>
-          <li>
-            <strong>Ambient display:</strong> Show only essential information when device is idle (e.g.,
-            always-on display for notifications).
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Refresh Rate</h3>
-        <p>
-          High refresh rate displays (90 Hz, 120 Hz) consume more power. Consider:
-        </p>
-        <ul>
-          <li>
-            <strong>Match content frame rate:</strong> Don&apos;t render at 120 fps if content only updates
-            at 30 fps.
-          </li>
-          <li>
-            <strong>Reduce refresh during static content:</strong> Some devices support variable refresh
-            rates — use this when available.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Profiling and Measurement</h2>
-        <p>
-          You cannot optimize what you cannot measure. Use profiling tools to identify power-hungry
-          operations.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Chrome DevTools Performance</h3>
-        <p>
-          The Performance panel shows CPU activity over time:
-        </p>
-        <ul>
-          <li>
-            <strong>Main thread waterfall:</strong> Identify long tasks, layout thrashing, and scripting
-            bottlenecks.
-          </li>
-          <li>
-            <strong>Frame analysis:</strong> Check for dropped frames (red bars) indicating CPU/GPU overload.
-          </li>
-          <li>
-            <strong>Event timing:</strong> See how user interactions trigger cascading work.
-          </li>
-        </ul>
-        <p>
-          <strong>Power profiler (experimental):</strong> Chrome&apos;s <code>chrome://tracing</code> with
-          power profiling enabled shows energy impact of web operations.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Android Battery Historian</h3>
-        <p>
-          Analyze battery usage from bugreports:
-        </p>
-        <ol className="list-decimal pl-6 space-y-2">
-          <li>Enable USB debugging on device.</li>
-          <li>Run <code>adb bugreport</code> to capture battery stats.</li>
-          <li>Run <code>battery-historian --port 9999</code> and open in browser.</li>
-          <li>Analyze wake locks, network usage, and background activity.</li>
-        </ol>
-        <p>
-          <strong>Key metrics:</strong>
-        </p>
-        <ul>
-          <li>Wake lock duration</li>
-          <li>Cellular radio active time</li>
-          <li>Background job execution</li>
-          <li>Alarm triggers</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Xcode Instruments (iOS)</h3>
-        <p>
-          Energy Log template in Xcode Instruments:
-        </p>
-        <ul>
-          <li>
-            <strong>Energy Impact:</strong> Real-time energy consumption graph.
-          </li>
-          <li>
-            <strong>App Nap:</strong> See when system reduces app priority.
-          </li>
-          <li>
-            <strong>Idle Display Sleep:</strong> Track display power states.
-          </li>
-          <li>
-            <strong>Power Report:</strong> Detailed breakdown by subsystem (CPU, GPU, network, location).
-          </li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/advanced-topics/power-profiling-tools.svg"
@@ -688,150 +295,167 @@ export default function BatteryCpuEfficiencyArticle() {
       </section>
 
       <section>
-        <h2>Best Practices Summary</h2>
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">CPU Efficiency Checklist</h3>
-          <ul className="space-y-2">
-            <li>✓ Break long tasks into chunks {'<'}50ms</li>
-            <li>✓ Use Web Workers for heavy computations</li>
-            <li>✓ Animate only transform and opacity</li>
-            <li>✓ Debounce/throttle scroll and resize handlers</li>
-            <li>✓ Use passive event listeners</li>
-            <li>✓ Replace polling with event-driven alternatives</li>
-            <li>✓ Virtualize long lists</li>
-            <li>✓ Use requestIdleCallback for deferrable work</li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Network Efficiency Checklist</h3>
-          <ul className="space-y-2">
-            <li>✓ Batch API requests together</li>
-            <li>✓ Use HTTP/2 for connection multiplexing</li>
-            <li>✓ Implement aggressive caching (ETag, Cache-Control)</li>
-            <li>✓ Compress responses (Brotli, gzip)</li>
-            <li>✓ Prefetch during radio active periods</li>
-            <li>✓ Defer non-urgent transfers to WiFi</li>
-            <li>✓ Use Protocol Buffers for binary data</li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Background Task Checklist</h3>
-          <ul className="space-y-2">
-            <li>✓ Use WorkManager (Android) / BGTaskScheduler (iOS)</li>
-            <li>✓ Complete background tasks in {'<'}30 seconds</li>
-            <li>✓ Handle expiration gracefully</li>
-            <li>✓ Avoid waking device unnecessarily</li>
-            <li>✓ Respect Doze mode and App Standby</li>
-            <li>✓ Use foreground services only when necessary</li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Location & Sensor Checklist</h3>
-          <ul className="space-y-2">
-            <li>✓ Use coarse location when high accuracy not needed</li>
-            <li>✓ Reduce location update frequency</li>
-            <li>✓ Stop location updates when not needed</li>
-            <li>✓ Use geofencing instead of continuous tracking</li>
-            <li>✓ Use sensor fusion APIs (not raw sensors)</li>
-            <li>✓ Leverage low-power coprocessors (M-series, Sensor Hub)</li>
-          </ul>
-        </div>
+        <h2>Real-world use cases</h2>
+        <p>
+          Navigation and ride-sharing applications face extreme battery efficiency challenges because
+          they require continuous GPS tracking, network communication, and screen-on time. A leading
+          ride-sharing company optimized their driver application by using adaptive location accuracy,
+          switching from high-accuracy GPS to coarse network-based positioning when the driver was
+          stationary, and only engaging high-accuracy GPS during active trips. They batched telemetry
+          uploads to occur every 30 seconds rather than on every location update, reducing radio active
+          time by 60%. Dark mode implementation on OLED displays provided additional display power
+          savings during night driving when drivers predominantly used the application.
+        </p>
+        <p>
+          Social media applications with infinite scroll feeds face CPU efficiency challenges from
+          continuous DOM growth as users scroll. A major social platform implemented aggressive list
+          virtualization, maintaining only the visible items plus a small buffer in the DOM while
+          recycling elements that scrolled out of view. They replaced polling-based feed refresh with
+          WebSocket-based push notifications for new content, eliminating the CPU wakeups from
+          periodic feed polling. Image processing for filters and transformations was offloaded to
+          Web Workers, keeping the main thread responsive for user interactions.
+        </p>
+        <p>
+          Fitness tracking applications must balance accurate data collection with battery preservation
+          during extended activities like marathons or multi-day hikes. A fitness application optimized
+          location tracking by using the step detector hardware for step counting instead of GPS-based
+          calculation, reducing location update frequency during steady-state running while maintaining
+          accuracy at route boundaries. They leveraged the low-power motion coprocessors available on
+          both iOS and Android for continuous motion detection while the main CPU remained in deep
+          sleep states, extending battery life during multi-hour activities.
+        </p>
+        <p>
+          E-commerce applications on mobile devices benefit from network optimization strategies that
+          reduce both latency and power consumption. A major retailer implemented GraphQL-based request
+          batching, combining what were previously five separate API calls for product details, pricing,
+          inventory, reviews, and recommendations into a single request. They implemented aggressive
+          caching with ETag-based conditional requests for product catalogs that change infrequently,
+          and deferred analytics uploads to batch during WiFi connectivity. These changes reduced
+          average network-related battery consumption by 35% during typical shopping sessions.
+        </p>
       </section>
 
       <section>
-        <h2>Common Interview Questions</h2>
+        <h2>Common Interview Questions with Detailed Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How does tail energy impact mobile battery life?</p>
             <p className="mt-2 text-sm">
-              A: Tail energy is power consumed after data transfer while the radio returns to idle. Cellular
-              radios stay in high-power FACH state for 5-12 seconds post-transfer. Making many small requests
-              incurs tail energy for each, potentially wasting 30-50% of total radio energy. Solution: batch
-              requests together to amortize tail overhead.
+              A: Tail energy is the power consumed after a data transfer completes while the radio
+              returns to an idle state. Cellular radios remain in the high-power FACH state for 5-12
+              seconds after a transfer finishes before transitioning to the low-power IDLE state. Making
+              many small, spread-out requests incurs tail energy overhead for each individual request,
+              potentially wasting 30-50% of total radio energy consumption. The solution is to batch
+              requests together so they all execute within a single radio active period, amortizing the
+              tail energy overhead across all batched operations. This principle applies to any operation
+              with warm-up and cool-down energy costs.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What strategies reduce CPU usage in mobile web apps?</p>
             <p className="mt-2 text-sm">
-              A: Key strategies: (1) Break long tasks into {'<'}50ms chunks to allow idle periods, (2) Use Web
-              Workers for heavy computations, (3) Animate only GPU-accelerated properties (transform, opacity),
-              (4) Debounce/throttle scroll and resize handlers, (5) Use passive event listeners, (6) Replace
-              polling with IntersectionObserver/MutationObserver, (7) Virtualize long lists.
+              A: Key strategies include breaking long tasks into chunks under 50 milliseconds to allow
+              idle periods for input processing and frame painting. Use Web Workers for heavy computations
+              like image processing and data transformation to keep the main thread free. Animate only
+              GPU-accelerated properties, specifically transform and opacity, to avoid triggering layout
+              recalculation on every frame. Debounce or throttle scroll and resize handlers to limit their
+              execution frequency. Use passive event listeners for touch and scroll events. Replace polling
+              with IntersectionObserver for visibility detection and MutationObserver for DOM change
+              detection. Virtualize long lists to minimize DOM operations. Use requestIdleCallback to
+              schedule deferrable work during browser idle periods.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do iOS and Android handle background execution differently?</p>
             <p className="mt-2 text-sm">
-              A: iOS is more restrictive: Background Fetch (~every 15 min), BGTaskScheduler for deferred work,
-              remote notifications, and specific modes (audio, VoIP, location). Android offers WorkManager,
-              JobScheduler, Foreground Services with notifications, and AlarmManager. Both have Doze-like
-              modes that defer background work during inactivity.
+              A: iOS takes a more restrictive approach with Background Fetch that wakes approximately
+              every 15 minutes based on system-determined usage patterns, BGTaskScheduler for deferred
+              work with quality of service constraints, remote notifications with content-available flag,
+              and specific background modes for audio, VoIP, and location. Android offers more flexibility
+              through WorkManager for deferred background work with constraints on network type, charging
+              state, and battery level, JobScheduler with Doze mode compatibility, Foreground Services
+              with visible notifications for long-running tasks, and AlarmManager for precise timing.
+              Both platforms have Doze-like modes that defer background work during device inactivity,
+              and both progressively tighten restrictions with each OS release to improve overall battery
+              life across their ecosystems.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: Why is dark mode more power-efficient on OLED displays?</p>
             <p className="mt-2 text-sm">
-              A: OLED pixels emit their own light. Black pixels are turned off completely, consuming zero
-              power. White pixels require all sub-pixels (RGB) at full brightness. Studies show dark mode
-              reduces display power by 30-60% on OLED. LCD displays use a constant backlight, so dark mode
-              provides minimal power savings.
+              A: OLED pixels emit their own light individually, unlike LCD displays that use a constant
+              backlight. On OLED, black pixels are turned off completely and consume zero power, while
+              white pixels require all RGB sub-pixels at full brightness. Studies show that dark mode
+              reduces display power consumption by 30-60% on OLED displays depending on the content
+              being displayed. LCD displays use a constant backlight regardless of pixel content, so
+              dark mode provides minimal power savings on LCD. The power savings are maximized when
+              using true black backgrounds rather than dark gray, though accessibility considerations
+              around pure black backgrounds should be weighed against pure power savings.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you optimize location tracking for a fitness app?</p>
             <p className="mt-2 text-sm">
-              A: Use appropriate accuracy (GPS for outdoor runs, coarse for general tracking). Reduce update
-              frequency (1 Hz sufficient for most fitness use cases). Use step detector hardware for step
-              counting. Implement geofencing for route boundaries. Stop tracking when activity pauses. Use
-              sensor fusion APIs that leverage low-power coprocessors. Batch location data for upload.
+              A: Use appropriate accuracy levels — GPS for outdoor runs where route precision matters,
+              but coarse network-based positioning for general activity tracking. Reduce location update
+              frequency to the minimum acceptable rate, typically 1 Hz for most fitness use cases rather
+              than the maximum available rate. Use step detector hardware for step counting since it
+              offloads processing to a low-power co-processor. Implement geofencing for route boundary
+              detection instead of continuous position checking. Stop location tracking immediately when
+              the activity pauses or completes. Use sensor fusion APIs that leverage low-power coprocessors
+              like the M-series on iOS and the Sensor Hub on Android. Batch location data for upload
+              rather than sending individual updates to amortize tail energy costs.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What tools would you use to profile battery consumption?</p>
             <p className="mt-2 text-sm">
-              A: For web: Chrome DevTools Performance panel, chrome://tracing with power profiling. For
-              Android: Battery Historian (from bugreports), Android Profiler in Android Studio. For iOS:
-              Xcode Instruments Energy Log template. Key metrics: wake lock duration, radio active time,
-              background job execution, CPU usage patterns.
+              A: For web applications, use Chrome DevTools Performance panel to identify long tasks,
+              layout thrashing, and scripting bottlenecks, and chrome://tracing with power profiling
+              enabled for energy impact measurement of web operations. For Android, use Battery
+              Historian by capturing bugreports with adb bugreport and analyzing wake lock duration,
+              cellular radio active time, background job execution, and alarm triggers. The Android
+              Profiler in Android Studio provides real-time CPU, memory, and network profiling. For
+              iOS, use Xcode Instruments Energy Log template which shows real-time energy impact, app
+              nap events, display power states, and detailed subsystem breakdowns for CPU, GPU, network,
+              and location. The key is profiling before optimization to identify the actual power-hungry
+              operations rather than guessing.
             </p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
+        <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
           <li>
             <a href="https://developer.android.com/topic/performance/power" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Android Developers - Power Efficiency
+              Power Efficiency — Android Developers
             </a>
           </li>
           <li>
             <a href="https://developer.apple.com/documentation/xcode/improving-your-app-s-energy-impact" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Apple Developer - Improving Your App&apos;s Energy Impact
+              Improving Your App&apos;s Energy Impact — Apple Developer
             </a>
           </li>
           <li>
-            <a href="https://web.dev/power-efficiency/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - Power Efficiency for Web Apps
+            <a href="https://web.dev/articles/power-efficiency" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Power Efficiency for Web Apps — web.dev
             </a>
           </li>
           <li>
-            <a href="https://www.gsmarena.com/battery-life-testing_methodology-news-28687.php" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              GSM Arena - Battery Life Testing Methodology
+            <a href="https://developer.android.com/topic/performance/battery/battery-historian" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Battery Historian — Android Developers
             </a>
           </li>
           <li>
             <a href="https://chromium.googlesource.com/chromium/src/+/main/docs/scheduling.md" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Chromium Docs - Scheduling and Task Management
+              Scheduling and Task Management — Chromium Docs
             </a>
           </li>
         </ul>

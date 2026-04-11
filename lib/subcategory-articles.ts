@@ -3951,7 +3951,7 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
     {
       "slug": "latency-slas",
       "title": "Latency SLAs",
-      "description": "Comprehensive guide to backend latency SLAs, covering percentiles (P50/P95/P99), tail latency optimization, SLOs, error budgets, and production latency management for staff/principal engineer interviews."
+      "description": "Comprehensive guide to latency SLAs — percentiles, tail latency, error budgets, SLI/SLO/SLA hierarchy, and latency optimization strategies for staff/principal engineer interviews."
     },
     {
       "slug": "message-ordering-guarantees",
