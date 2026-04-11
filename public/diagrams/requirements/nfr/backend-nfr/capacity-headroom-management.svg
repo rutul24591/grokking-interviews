@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Capacity Headroom Management</text>
+  
+  <!-- Current Capacity -->
+  <rect x="40" y="70" width="220" height="160" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="150" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Current Capacity</text>
+  <text x="150" y="135" font-size="11" text-anchor="middle" fill="#666666">Measured throughput:</text>
+  <text x="150" y="155" font-size="11" text-anchor="middle" fill="#1a1a1a">10,000 RPS</text>
+  <text x="150" y="185" font-size="11" text-anchor="middle" fill="#666666">CPU utilization: 45%</text>
+  <text x="150" y="205" font-size="11" text-anchor="middle" fill="#666666">Memory: 60%</text>
+  
+  <!-- Headroom -->
+  <rect x="290" y="70" width="220" height="160" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Headroom Target</text>
+  <text x="400" y="135" font-size="11" text-anchor="middle" fill="#666666">Recommended headroom:</text>
+  <text x="400" y="155" font-size="11" text-anchor="middle" fill="#1a1a1a">30-50% capacity</text>
+  <text x="400" y="185" font-size="11" text-anchor="middle" fill="#666666">Max utilization: 70%</text>
+  <text x="400" y="205" font-size="11" text-anchor="middle" fill="#666666">Alert at: 60%</text>
+  
+  <!-- Scaling Trigger -->
+  <rect x="540" y="70" width="220" height="160" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="650" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Scaling Trigger</text>
+  <text x="650" y="135" font-size="11" text-anchor="middle" fill="#666666">When utilization hits:</text>
+  <text x="650" y="155" font-size="11" text-anchor="middle" fill="#1a1a1a">Scale at 70% utilization</text>
+  <text x="650" y="185" font-size="11" text-anchor="middle" fill="#666666">Target: 45% after scaling</text>
+  <text x="650" y="205" font-size="11" text-anchor="middle" fill="#666666">Provides 25% headroom</text>
+  
+  <!-- Growth Chart -->
+  <rect x="40" y="260" width="720" height="160" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="290" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Capacity Growth Projection</text>
+  
+  <!-- Y axis -->
+  <line x1="100" y1="310" x2="100" y2="390" stroke="#666666" stroke-width="2"/>
+  <text x="80" y="315" font-size="10" text-anchor="middle" fill="#666666">100%</text>
+  <text x="80" y="355" font-size="10" text-anchor="middle" fill="#666666">50%</text>
+  <text x="80" y="390" font-size="10" text-anchor="middle" fill="#666666">0%</text>
+  
+  <!-- X axis -->
+  <line x1="100" y1="390" x2="700" y2="390" stroke="#666666" stroke-width="2"/>
+  <text x="150" y="405" font-size="10" text-anchor="middle" fill="#666666">Today</text>
+  <text x="300" y="405" font-size="10" text-anchor="middle" fill="#666666">3 mo</text>
+  <text x="450" y="405" font-size="10" text-anchor="middle" fill="#666666">6 mo</text>
+  <text x="600" y="405" font-size="10" text-anchor="middle" fill="#666666">12 mo</text>
+  
+  <!-- Usage line -->
+  <polyline points="150,370 300,340 450,300 600,250" fill="none" stroke="#2196f3" stroke-width="3"/>
+  
+  <!-- Alert threshold line -->
+  <line x1="100" y1="312" x2="700" y2="312" stroke="#ff9800" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="710" y="316" font-size="9" fill="#ff9800">Alert at 60%</text>
+  
+  <!-- Scale threshold line -->
+  <line x1="100" y1="282" x2="700" y2="282" stroke="#f44336" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="710" y="286" font-size="9" fill="#f44336">Scale at 70%</text>
+  
+  <!-- Scaling points -->
+  <circle cx="450" cy="300" r="5" fill="#f44336"/>
+  <text x="450" y="290" font-size="9" text-anchor="middle" fill="#f44336">Scale now!</text>
+  
+  <!-- Alert point -->
+  <circle cx="300" cy="340" r="5" fill="#ff9800"/>
+  <text x="300" y="330" font-size="9" text-anchor="middle" fill="#ff9800">Alert</text>
+  
+  <!-- Recommendations -->
+  <rect x="40" y="450" width="220" height="130" rx="8" fill="#e8f5e9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="150" y="480" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Proactive Scaling</text>
+  <text x="150" y="505" font-size="10" text-anchor="middle" fill="#666666">Scale before reaching 70%</text>
+  <text x="150" y="525" font-size="10" text-anchor="middle" fill="#666666">Maintain 30-50% headroom</text>
+  <text x="150" y="545" font-size="10" text-anchor="middle" fill="#666666">Auto-scaling with cooldown</text>
+  <text x="150" y="565" font-size="10" text-anchor="middle" fill="#666666">Monitor growth trends</text>
+  
+  <rect x="290" y="450" width="220" height="130" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="400" y="480" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Headroom Benefits</text>
+  <text x="400" y="505" font-size="10" text-anchor="middle" fill="#666666">Handles traffic spikes</text>
+  <text x="400" y="525" font-size="10" text-anchor="middle" fill="#666666">Time for capacity planning</li>
+  <text x="400" y="545" font-size="10" text-anchor="middle" fill="#666666">Prevents cascading failures</text>
+  <text x="400" y="565" font-size="10" text-anchor="middle" fill="#666666">Reduces emergency scaling</text>
+  
+  <rect x="540" y="450" width="220" height="130" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="650" y="480" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Without Headroom</text>
+  <text x="650" y="505" font-size="10" text-anchor="middle" fill="#666666">No buffer for spikes</text>
+  <text x="650" y="525" font-size="10" text-anchor="middle" fill="#666666">Reactive scaling (too late)</text>
+  <text x="650" y="545" font-size="10" text-anchor="middle" fill="#666666">Higher outage risk</text>
+  <text x="650" y="565" font-size="10" text-anchor="middle" fill="#666666">Emergency procurement costs</text>
+</svg>

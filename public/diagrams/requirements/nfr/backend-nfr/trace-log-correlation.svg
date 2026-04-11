@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Trace-Log Correlation</text>
+  
+  <!-- Architecture Overview -->
+  <rect x="40" y="70" width="720" height="160" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Observability Architecture</text>
+  
+  <!-- Application -->
+  <rect x="60" y="120" width="140" height="90" rx="6" fill="#bbdefb"/>
+  <text x="130" y="145" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Application</text>
+  <text x="130" y="165" font-size="10" text-anchor="middle" fill="#666666">Generates traces</text>
+  <text x="130" y="183" font-size="10" text-anchor="middle" fill="#666666">Emits logs with trace_id</text>
+  <text x="130" y="203" font-size="10" text-anchor="middle" fill="#666666">Propagates context</text>
+  
+  <!-- Log Aggregator -->
+  <rect x="230" y="120" width="140" height="90" rx="6" fill="#c8e6c9"/>
+  <text x="300" y="145" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Log Aggregator</text>
+  <text x="300" y="165" font-size="10" text-anchor="middle" fill="#666666">Collects logs</text>
+  <text x="300" y="183" font-size="10" text-anchor="middle" fill="#666666">Indexes by trace_id</text>
+  <text x="300" y="203" font-size="10" text-anchor="middle" fill="#666666">Stores centrally</text>
+  
+  <!-- Trace Store -->
+  <rect x="400" y="120" width="140" height="90" rx="6" fill="#fff3e0"/>
+  <text x="470" y="145" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Trace Store</text>
+  <text x="470" y="165" font-size="10" text-anchor="middle" fill="#666666">Stores spans</text>
+  <text x="470" y="183" font-size="10" text-anchor="middle" fill="#666666">Correlates by trace_id</text>
+  <text x="470" y="203" font-size="10" text-anchor="middle" fill="#666666">Builds trace trees</text>
+  
+  <!-- Query UI -->
+  <rect x="570" y="120" width="140" height="90" rx="6" fill="#e1bee7"/>
+  <text x="640" y="145" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Query UI</text>
+  <text x="640" y="165" font-size="10" text-anchor="middle" fill="#666666">Search by trace_id</text>
+  <text x="640" y="183" font-size="10" text-anchor="middle" fill="#666666">View trace + logs</text>
+  <text x="640" y="203" font-size="10" text-anchor="middle" fill="#666666">Correlated view</text>
+  
+  <!-- Correlation Flow -->
+  <rect x="40" y="260" width="720" height="160" rx="8" fill="#e8f5e9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="290" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Trace-Log Correlation Flow</text>
+  
+  <rect x="60" y="310" width="180" height="90" rx="6" fill="#bbdefb"/>
+  <text x="150" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">1. Request arrives</text>
+  <text x="150" y="355" font-size="10" text-anchor="middle" fill="#666666">Generate trace_id</text>
+  <text x="150" y="375" font-size="10" text-anchor="middle" fill="#666666">Add to request context</text>
+  <text x="150" y="393" font-size="10" text-anchor="middle" fill="#666666">Propagate to all services</text>
+  
+  <rect x="270" y="310" width="180" height="90" rx="6" fill="#c8e6c9"/>
+  <text x="360" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">2. Services process</text>
+  <text x="360" y="355" font-size="10" text-anchor="middle" fill="#666666">Each service adds spans</text>
+  <text x="360" y="375" font-size="10" text-anchor="middle" fill="#666666">Each log includes trace_id</text>
+  <text x="360" y="393" font-size="10" text-anchor="middle" fill="#666666">Context propagates</text>
+  
+  <rect x="480" y="310" width="180" height="90" rx="6" fill="#fff3e0"/>
+  <text x="570" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">3. Collect & Store</text>
+  <text x="570" y="355" font-size="10" text-anchor="middle" fill="#666666">Spans → trace store</text>
+  <text x="570" y="375" font-size="10" text-anchor="middle" fill="#666666">Logs → log aggregator</text>
+  <text x="570" y="393" font-size="10" text-anchor="middle" fill="#666666">Both indexed by trace_id</text>
+  
+  <rect x="690" y="310" width="60" height="90" rx="6" fill="#e1bee7"/>
+  <text x="720" y="350" font-size="10" text-anchor="middle" fill="#1a1a1a">Query</text>
+  <text x="720" y="370" font-size="10" text-anchor="middle" fill="#666666">by</text>
+  <text x="720" y="390" font-size="10" text-anchor="middle" fill="#666666">trace_id</text>
+  
+  <!-- Key Benefits -->
+  <rect x="40" y="450" width="720" height="130" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="480" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Key Benefits</text>
+  
+  <rect x="60" y="500" width="220" height="60" rx="6" fill="#e3f2fd"/>
+  <text x="170" y="525" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Unified Debugging</text>
+  <text x="170" y="545" font-size="10" text-anchor="middle" fill="#666666">Single view of trace + logs</text>
+  <text x="170" y="563" font-size="10" text-anchor="middle" fill="#666666">No context switching</text>
+  
+  <rect x="300" y="500" width="220" height="60" rx="6" fill="#c8e6c9"/>
+  <text x="410" y="525" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Faster Debugging</text>
+  <text x="410" y="545" font-size="10" text-anchor="middle" fill="#666666">Jump from trace to logs instantly</text>
+  <text x="410" y="563" font-size="10" text-anchor="middle" fill="#666666">Reduce MTTR significantly</text>
+  
+  <rect x="540" y="500" width="200" height="60" rx="6" fill="#fff3e0"/>
+  <text x="640" y="525" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Root Cause Analysis</text>
+  <text x="640" y="545" font-size="10" text-anchor="middle" fill="#666666">Correlate errors across services</text>
+  <text x="640" y="563" font-size="10" text-anchor="middle" fill="#666666">Identify root cause faster</text>
+</svg>

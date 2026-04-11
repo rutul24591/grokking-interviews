@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Schema Evolution Strategies</text>
+  
+  <!-- Strategy 1: Expand Contract -->
+  <rect x="40" y="70" width="220" height="180" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="150" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Expand-Contract</text>
+  
+  <rect x="60" y="115" width="200" height="30" rx="4" fill="#bbdefb"/>
+  <text x="160" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">1. Add new field (nullable)</text>
+  
+  <rect x="60" y="150" width="200" height="30" rx="4" fill="#bbdefb"/>
+  <text x="160" y="170" font-size="10" text-anchor="middle" fill="#1a1a1a">2. Dual-write to old + new</text>
+  
+  <rect x="60" y="185" width="200" height="30" rx="4" fill="#bbdefb"/>
+  <text x="160" y="205" font-size="10" text-anchor="middle" fill="#1a1a1a">3. Migrate existing data</text>
+  
+  <rect x="60" y="220" width="200" height="30" rx="4" fill="#bbdefb"/>
+  <text x="160" y="240" font-size="10" text-anchor="middle" fill="#1a1a1a">4. Remove old field</text>
+  
+  <text x="150" y="265" font-size="10" text-anchor="middle" fill="#4caf50">✓ Zero downtime migration</text>
+  
+  <!-- Strategy 2: Versioned Schema -->
+  <rect x="290" y="70" width="220" height="180" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Versioned Schema</text>
+  
+  <rect x="310" y="115" width="200" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="410" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">v1 schema exists</text>
+  
+  <rect x="310" y="150" width="200" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="410" y="170" font-size="10" text-anchor="middle" fill="#1a1a1a">Deploy v2 schema (parallel)</text>
+  
+  <rect x="310" y="185" width="200" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="410" y="205" font-size="10" text-anchor="middle" fill="#1a1a1a">Route traffic to v2 gradually</text>
+  
+  <rect x="310" y="220" width="200" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="410" y="240" font-size="10" text-anchor="middle" fill="#1a1a1a">Deprecate v1 when ready</text>
+  
+  <text x="400" y="265" font-size="10" text-anchor="middle" fill="#4caf50">✓ Gradual migration</text>
+  
+  <!-- Strategy 3: Backward Compatible -->
+  <rect x="540" y="70" width="220" height="180" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="650" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Backward Compatible</text>
+  
+  <rect x="560" y="115" width="200" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="660" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">Add optional fields only</text>
+  
+  <rect x="560" y="150" width="200" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="660" y="170" font-size="10" text-anchor="middle" fill="#1a1a1a">Never remove required fields</text>
+  
+  <rect x="560" y="185" width="200" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="660" y="205" font-size="10" text-anchor="middle" fill="#1a1a1a">Default values for new fields</text>
+  
+  <rect x="560" y="220" width="200" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="660" y="240" font-size="10" text-anchor="middle" fill="#1a1a1a">No breaking changes</text>
+  
+  <text x="650" y="265" font-size="10" text-anchor="middle" fill="#4caf50">✓ No migration needed</text>
+  
+  <!-- Evolution Flow -->
+  <rect x="40" y="280" width="720" height="140" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Schema Evolution Flow</text>
+  
+  <rect x="60" y="330" width="140" height="70" rx="6" fill="#bbdefb"/>
+  <text x="130" y="355" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">v1 Schema</text>
+  <text x="130" y="375" font-size="10" text-anchor="middle" fill="#666666">field_a, field_b</text>
+  <text x="130" y="393" font-size="10" text-anchor="middle" fill="#666666">All services use v1</text>
+  
+  <rect x="230" y="330" width="140" height="70" rx="6" fill="#c8e6c9"/>
+  <text x="300" y="355" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Add field_c</text>
+  <text x="300" y="375" font-size="10" text-anchor="middle" fill="#666666">Nullable with default</text>
+  <text x="300" y="393" font-size="10" text-anchor="middle" fill="#666666">Dual-write mode</text>
+  
+  <rect x="400" y="330" width="140" height="70" rx="6" fill="#fff3e0"/>
+  <text x="470" y="355" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Migrate Data</text>
+  <text x="470" y="375" font-size="10" text-anchor="middle" fill="#666666">Backfill field_c</text>
+  <text x="470" y="393" font-size="10" text-anchor="middle" fill="#666666">Verify data integrity</text>
+  
+  <rect x="570" y="330" width="140" height="70" rx="6" fill="#ffebee"/>
+  <text x="640" y="355" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">v2 Schema</text>
+  <text x="640" y="375" font-size="10" text-anchor="middle" fill="#666666">field_c required</text>
+  <text x="640" y="393" font-size="10" text-anchor="middle" fill="#666666">Deprecate v1</text>
+  
+  <!-- Best Practices -->
+  <rect x="40" y="450" width="340" height="130" rx="8" fill="#e8f5e9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="480" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Best Practices</text>
+  <text x="210" y="505" font-size="10" text-anchor="middle" fill="#666666">• Always add fields as optional first</text>
+  <text x="210" y="525" font-size="10" text-anchor="middle" fill="#666666">• Never remove fields, deprecate instead</text>
+  <text x="210" y="545" font-size="10" text-anchor="middle" fill="#666666">• Use default values for new fields</text>
+  <text x="210" y="565" font-size="10" text-anchor="middle" fill="#666666">• Test backward compatibility in CI</text>
+  
+  <!-- Anti-Patterns -->
+  <rect x="420" y="450" width="340" height="130" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="590" y="480" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Anti-Patterns</text>
+  <text x="590" y="505" font-size="10" text-anchor="middle" fill="#666666">✗ Removing required fields</text>
+  <text x="590" y="525" font-size="10" text-anchor="middle" fill="#666666">✗ Changing field types</text>
+  <text x="590" y="545" font-size="10" text-anchor="middle" fill="#666666">✗ Renaming fields without alias</text>
+  <text x="590" y="565" font-size="10" text-anchor="middle" fill="#666666">✗ Skipping backward compatibility tests</text>
+</svg>

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Idempotent Event Processing</text>
+  
+  <!-- Event Flow -->
+  <rect x="40" y="70" width="720" height="140" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Event Processing Flow</text>
+  
+  <!-- Producer -->
+  <rect x="60" y="120" width="140" height="70" rx="6" fill="#bbdefb"/>
+  <text x="130" y="145" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Event Producer</text>
+  <text x="130" y="165" font-size="10" text-anchor="middle" fill="#666666">Generates events</text>
+  <text x="130" y="183" font-size="10" text-anchor="middle" fill="#666666">with unique IDs</text>
+  
+  <!-- Event Bus -->
+  <rect x="230" y="120" width="140" height="70" rx="6" fill="#c8e6c9"/>
+  <text x="300" y="145" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Event Bus</text>
+  <text x="300" y="165" font-size="10" text-anchor="middle" fill="#666666">Deduplication</text>
+  <text x="300" y="183" font-size="10" text-anchor="middle" fill="#666666">Ordering guarantee</text>
+  
+  <!-- Consumer -->
+  <rect x="400" y="120" width="140" height="70" rx="6" fill="#fff3e0"/>
+  <text x="470" y="145" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Event Consumer</text>
+  <text x="470" y="165" font-size="10" text-anchor="middle" fill="#666666">Processes events</text>
+  <text x="470" y="183" font-size="10" text-anchor="middle" fill="#666666">Idempotent handlers</text>
+  
+  <!-- State Store -->
+  <rect x="570" y="120" width="140" height="70" rx="6" fill="#e1bee7"/>
+  <text x="640" y="145" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">State Store</text>
+  <text x="640" y="165" font-size="10" text-anchor="middle" fill="#666666">Processed events</text>
+  <text x="640" y="183" font-size="10" text-anchor="middle" fill="#666666">Idempotency keys</text>
+  
+  <!-- Arrows -->
+  <line x1="200" y1="155" x2="230" y2="155" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="370" y1="155" x2="400" y2="155" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="540" y1="155" x2="570" y2="155" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Idempotency Pattern -->
+  <rect x="40" y="240" width="340" height="180" rx="8" fill="#e8f5e9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="270" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Idempotency Pattern</text>
+  
+  <rect x="60" y="290" width="300" height="30" rx="4" fill="#e8f5e9"/>
+  <text x="210" y="310" font-size="11" text-anchor="middle" fill="#666666">1. Check if event ID already processed</text>
+  
+  <rect x="60" y="325" width="300" height="30" rx="4" fill="#e8f5e9"/>
+  <text x="210" y="345" font-size="11" text-anchor="middle" fill="#666666">2. If yes → return cached result (skip)</text>
+  
+  <rect x="60" y="360" width="300" height="30" rx="4" fill="#e8f5e9"/>
+  <text x="210" y="380" font-size="11" text-anchor="middle" fill="#666666">3. If no → process event, store result</text>
+  
+  <rect x="60" y="395" width="300" height="30" rx="4" fill="#e8f5e9"/>
+  <text x="210" y="415" font-size="11" text-anchor="middle" fill="#666666">4. Return result to caller</text>
+  
+  <!-- Retry Safety -->
+  <rect x="420" y="240" width="340" height="180" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="270" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Retry Safety</text>
+  
+  <rect x="440" y="290" width="300" height="30" rx="4" fill="#fff3e0"/>
+  <text x="590" y="310" font-size="11" text-anchor="middle" fill="#666666">Network timeout → safe to retry</text>
+  
+  <rect x="440" y="325" width="300" height="30" rx="4" fill="#fff3e0"/>
+  <text x="590" y="345" font-size="11" text-anchor="middle" fill="#666666">Duplicate event → idempotent (no-op)</text>
+  
+  <rect x="440" y="360" width="300" height="30" rx="4" fill="#fff3e0"/>
+  <text x="590" y="380" font-size="11" text-anchor="middle" fill="#666666">Out-of-order → consistent result</text>
+  
+  <rect x="440" y="395" width="300" height="30" rx="4" fill="#fff3e0"/>
+  <text x="590" y="415" font-size="11" text-anchor="middle" fill="#666666">Partial failure → retry completes</text>
+  
+  <!-- Key Requirements -->
+  <rect x="40" y="450" width="720" height="130" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="480" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Key Requirements for Idempotency</text>
+  
+  <rect x="60" y="500" width="220" height="60" rx="6" fill="#e1bee7"/>
+  <text x="170" y="525" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Unique Event IDs</text>
+  <text x="170" y="545" font-size="10" text-anchor="middle" fill="#666666">UUID or composite keys</text>
+  <text x="170" y="563" font-size="10" text-anchor="middle" fill="#666666">Guaranteed unique per event</text>
+  
+  <rect x="300" y="500" width="220" height="60" rx="6" fill="#e1bee7"/>
+  <text x="410" y="525" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Processed State Tracking</text>
+  <text x="410" y="545" font-size="10" text-anchor="middle" fill="#666666">Store processed event IDs</text>
+  <text x="410" y="563" font-size="10" text-anchor="middle" fill="#666666">With TTL for cleanup</text>
+  
+  <rect x="540" y="500" width="200" height="60" rx="6" fill="#e1bee7"/>
+  <text x="640" y="525" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Atomic Operations</text>
+  <text x="640" y="545" font-size="10" text-anchor="middle" fill="#666666">Check + process + store atomically</text>
+  <text x="640" y="563" font-size="10" text-anchor="middle" fill="#666666">Prevent race conditions</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+  </defs>
+</svg>

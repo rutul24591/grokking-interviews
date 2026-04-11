@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Replication Topologies</text>
+  
+  <!-- Primary-Replica -->
+  <rect x="40" y="70" width="220" height="180" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="150" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Primary-Replica</text>
+  
+  <rect x="70" y="115" width="160" height="30" rx="4" fill="#bbdefb"/>
+  <text x="150" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Primary (Write)</text>
+  
+  <line x1="150" y1="145" x2="150" y2="165" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="70" y="170" width="75" height="30" rx="4" fill="#e3f2fd"/>
+  <text x="107" y="190" font-size="10" text-anchor="middle" fill="#666666">Replica 1</text>
+  
+  <rect x="155" y="170" width="75" height="30" rx="4" fill="#e3f2fd"/>
+  <text x="192" y="190" font-size="10" text-anchor="middle" fill="#666666">Replica 2</text>
+  
+  <rect x="70" y="210" width="160" height="25" rx="4" fill="#e3f2fd"/>
+  <text x="150" y="227" font-size="10" text-anchor="middle" fill="#666666">Async replication, read scaling</text>
+  
+  <!-- Multi-Primary -->
+  <rect x="290" y="70" width="220" height="180" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Multi-Primary</text>
+  
+  <rect x="320" y="115" width="75" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="357" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Primary 1</text>
+  
+  <rect x="405" y="115" width="75" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="442" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Primary 2</text>
+  
+  <line x1="357" y1="145" x2="357" y2="165" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="442" y1="145" x2="442" y2="165" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="320" y="170" width="75" height="30" rx="4" fill="#c8e6c9"/>
+  <text x="357" y="190" font-size="10" text-anchor="middle" fill="#666666">Replica 1</text>
+  
+  <rect x="405" y="170" width="75" height="30" rx="4" fill="#c8e6c9"/>
+  <text x="442" y="190" font-size="10" text-anchor="middle" fill="#666666">Replica 2</text>
+  
+  <rect x="320" y="210" width="160" height="25" rx="4" fill="#c8e6c9"/>
+  <text x="400" y="227" font-size="10" text-anchor="middle" fill="#666666">Writes everywhere, conflict resolution</text>
+  
+  <!-- Peer-to-Peer -->
+  <rect x="540" y="70" width="220" height="180" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="650" y="100" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Peer-to-Peer</text>
+  
+  <circle cx="590" cy="145" r="20" fill="#ffcc80"/>
+  <text x="590" y="150" font-size="10" text-anchor="middle" fill="#1a1a1a">Node 1</text>
+  
+  <circle cx="710" cy="145" r="20" fill="#ffcc80"/>
+  <text x="710" y="150" font-size="10" text-anchor="middle" fill="#1a1a1a">Node 2</text>
+  
+  <circle cx="590" cy="210" r="20" fill="#ffcc80"/>
+  <text x="590" y="215" font-size="10" text-anchor="middle" fill="#1a1a1a">Node 3</text>
+  
+  <circle cx="710" cy="210" r="20" fill="#ffcc80"/>
+  <text x="710" y="215" font-size="10" text-anchor="middle" fill="#1a1a1a">Node 4</text>
+  
+  <line x1="590" y1="165" x2="590" y2="190" stroke="#666666" stroke-width="1.5"/>
+  <line x1="710" y1="165" x2="710" y2="190" stroke="#666666" stroke-width="1.5"/>
+  <line x1="610" y1="145" x2="690" y2="145" stroke="#666666" stroke-width="1.5"/>
+  <line x1="610" y1="210" x2="690" y2="210" stroke="#666666" stroke-width="1.5"/>
+  
+  <rect x="560" y="240" width="160" height="25" rx="4" fill="#fff3e0"/>
+  <text x="640" y="257" font-size="10" text-anchor="middle" fill="#666666">All nodes equal, gossip protocol</text>
+  
+  <!-- Comparison Table -->
+  <rect x="40" y="280" width="720" height="140" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Topology Comparison</text>
+  
+  <!-- Table headers -->
+  <rect x="60" y="325" width="180" height="25" rx="4" fill="#e0e0e0"/>
+  <text x="150" y="342" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Topology</text>
+  <rect x="240" y="325" width="180" height="25" rx="4" fill="#e0e0e0"/>
+  <text x="330" y="342" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Write Scalability</text>
+  <rect x="420" y="325" width="180" height="25" rx="4" fill="#e0e0e0"/>
+  <text x="510" y="342" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Read Scalability</text>
+  <rect x="600" y="325" width="140" height="25" rx="4" fill="#e0e0e0"/>
+  <text x="670" y="342" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Conflict Risk</text>
+  
+  <!-- Table rows -->
+  <rect x="60" y="350" width="180" height="25" rx="4" fill="#e3f2fd"/>
+  <text x="150" y="367" font-size="10" text-anchor="middle" fill="#1a1a1a">Primary-Replica</text>
+  <rect x="240" y="350" width="180" height="25" rx="4" fill="#e3f2fd"/>
+  <text x="330" y="367" font-size="10" text-anchor="middle" fill="#1a1a1a">Low (single primary)</text>
+  <rect x="420" y="350" width="180" height="25" rx="4" fill="#e3f2fd"/>
+  <text x="510" y="367" font-size="10" text-anchor="middle" fill="#1a1a1a">High (multiple replicas)</text>
+  <rect x="600" y="350" width="140" height="25" rx="4" fill="#e3f2fd"/>
+  <text x="670" y="367" font-size="10" text-anchor="middle" fill="#1a1a1a">None</text>
+  
+  <rect x="60" y="375" width="180" height="25" rx="4" fill="#c8e6c9"/>
+  <text x="150" y="392" font-size="10" text-anchor="middle" fill="#1a1a1a">Multi-Primary</text>
+  <rect x="240" y="375" width="180" height="25" rx="4" fill="#c8e6c9"/>
+  <text x="330" y="392" font-size="10" text-anchor="middle" fill="#1a1a1a">High (multiple primaries)</text>
+  <rect x="420" y="375" width="180" height="25" rx="4" fill="#c8e6c9"/>
+  <text x="510" y="392" font-size="10" text-anchor="middle" fill="#1a1a1a">High (multiple replicas)</text>
+  <rect x="600" y="375" width="140" height="25" rx="4" fill="#c8e6c9"/>
+  <text x="670" y="392" font-size="10" text-anchor="middle" fill="#1a1a1a">High (write-write conflicts)</text>
+  
+  <rect x="60" y="400" width="180" height="25" rx="4" fill="#fff3e0"/>
+  <text x="150" y="417" font-size="10" text-anchor="middle" fill="#1a1a1a">Peer-to-Peer</text>
+  <rect x="240" y="400" width="180" height="25" rx="4" fill="#fff3e0"/>
+  <text x="330" y="417" font-size="10" text-anchor="middle" fill="#1a1a1a">Very High (all nodes)</text>
+  <rect x="420" y="400" width="180" height="25" rx="4" fill="#fff3e0"/>
+  <text x="510" y="417" font-size="10" text-anchor="middle" fill="#1a1a1a">Very High (all nodes)</text>
+  <rect x="600" y="400" width="140" height="25" rx="4" fill="#fff3e0"/>
+  <text x="670" y="417" font-size="10" text-anchor="middle" fill="#1a1a1a">Medium (convergent)</text>
+  
+  <!-- Recommendation -->
+  <rect x="40" y="450" width="720" height="130" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="480" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Recommendation</text>
+  <text x="400" y="510" font-size="12" text-anchor="middle" fill="#666666">Use Primary-Replica for most production workloads</text>
+  <text x="400" y="535" font-size="11" text-anchor="middle" fill="#666666">• Simple to understand and operate</text>
+  <text x="400" y="555" font-size="11" text-anchor="middle" fill="#666666">• No write-write conflicts</text>
+  <text x="400" y="575" font-size="11" text-anchor="middle" fill="#666666">• Add read replicas for read-heavy workloads</text>
+</svg>
