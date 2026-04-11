@@ -894,6 +894,11 @@ export const articleRoutes: Record<string, () => Promise<any>> = {
   "system-design-problems/low-level-design/state-management-data-architecture/state-persistence-rehydration": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/state-persistence-rehydration"),
   "system-design-problems/low-level-design/state-management-data-architecture/transient-vs-persistent-ui-state": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/transient-vs-persistent-ui-state"),
   "system-design-problems/low-level-design/state-management-data-architecture/usereducer-vs-usestate": () => import("@/content/articles/system-design-problems/low-level-design/state-management-data-architecture/usereducer-vs-usestate"),
+  "other/artificial-intelligence/core-concepts/agents": () => import("@/content/articles/other/artificial-intelligence/core-concepts/agents"),
+  "other/artificial-intelligence/core-concepts/large-language-models": () => import("@/content/articles/other/artificial-intelligence/core-concepts/large-language-models"),
+  "other/artificial-intelligence/core-concepts/mcp": () => import("@/content/articles/other/artificial-intelligence/core-concepts/mcp"),
+  "other/artificial-intelligence/core-concepts/prompting": () => import("@/content/articles/other/artificial-intelligence/core-concepts/prompting"),
+  "other/artificial-intelligence/core-concepts/tokens": () => import("@/content/articles/other/artificial-intelligence/core-concepts/tokens"),
 };
 
 /**
