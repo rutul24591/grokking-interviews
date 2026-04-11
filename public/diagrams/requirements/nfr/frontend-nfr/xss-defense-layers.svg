@@ -1,119 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
-  <defs>
-    <style>
-      .bg-base { fill: #ffffff; }
-      .text-primary { fill: #1a202c; }
-      .text-secondary { fill: #4a5568; }
-      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
-      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
-      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
-      .arrow { stroke: #4a5568; }
-      .highlight-green { fill: #48bb78; }
-      .highlight-purple { fill: #9f7aea; }
-      .highlight-red { fill: #f56565; }
-      .highlight-blue { fill: #4299e1; }
-      @media (prefers-color-scheme: dark) {
-        .bg-base { fill: #1a1a2e; }
-        .text-primary { fill: #f7fafc; }
-        .text-secondary { fill: #a0aec0; }
-        .box-base { fill: #2d3748; stroke: #4a5568; }
-        .accent-box { fill: #2c5282; stroke: #63b3ed; }
-        .highlight-box { fill: #744210; stroke: #d69e2e; }
-        .arrow { stroke: #a0aec0; }
-      }
-    </style>
-  </defs>
-  <rect width="900" height="500" class="bg-base"/>
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">XSS Defense Layers</text>
-  
-  <!-- Layer 1: Input Validation -->
-  <rect x="30" y="70" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
-  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Layer 1: Input</text>
-  <rect x="50" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="130" y="130" text-anchor="middle" font-size="9" class="text-primary">• Validate type</text>
-  <text x="130" y="145" text-anchor="middle" font-size="9" class="text-primary">• Validate format</text>
-  <text x="130" y="160" text-anchor="middle" font-size="9" class="text-primary">• Sanitize HTML</text>
-  <text x="130" y="175" text-anchor="middle" font-size="9" class="highlight-green">✓ Reject bad input</text>
-  
-  <line x1="230" y1="130" x2="270" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
-  
-  <!-- Layer 2: Output Encoding -->
-  <rect x="270" y="70" width="200" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
-  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Layer 2: Output</text>
-  <rect x="290" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="370" y="130" text-anchor="middle" font-size="9" class="text-primary">• HTML encode</text>
-  <text x="370" y="145" text-anchor="middle" font-size="9" class="text-primary">• JS encode</text>
-  <text x="370" y="160" text-anchor="middle" font-size="9" class="text-primary">• URL encode</text>
-  <text x="370" y="175" text-anchor="middle" font-size="9" class="highlight-green">✓ Escape context</text>
-  
-  <line x1="470" y1="130" x2="510" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
-  
-  <!-- Layer 3: CSP -->
-  <rect x="510" y="70" width="200" height="120" rx="5" class="highlight-box" stroke-width="2.5"/>
-  <text x="610" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Layer 3: CSP</text>
-  <rect x="530" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="610" y="130" text-anchor="middle" font-size="9" class="text-primary">• Restrict sources</text>
-  <text x="610" y="145" text-anchor="middle" font-size="9" class="text-primary">• Block inline</text>
-  <text x="610" y="160" text-anchor="middle" font-size="9" class="text-primary">• Report violations</text>
-  <text x="610" y="175" text-anchor="middle" font-size="9" class="highlight-green">✓ Last defense</text>
-  
-  <line x1="710" y1="130" x2="750" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
-  
-  <!-- Layer 4: Framework -->
-  <rect x="750" y="70" width="120" height="120" rx="5" class="highlight-purple" stroke-width="2"/>
-  <text x="810" y="130" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Layer 4: Framework</text>
-  
-  <!-- Attack Vectors -->
-  <rect x="30" y="210" width="840" height="120" rx="5" class="box-base" stroke-width="2"/>
-  <text x="450" y="235" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Common Attack Vectors &amp; Mitigations</text>
-  
-  <rect x="50" y="250" width="190" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="145" y="270" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">innerHTML</text>
-  <text x="145" y="290" text-anchor="middle" font-size="9" class="highlight-red">⚠ Dangerous</text>
-  <text x="145" y="305" text-anchor="middle" font-size="9" class="highlight-green">✓ Use textContent</text>
-  
-  <rect x="255" y="250" width="190" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="350" y="270" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">eval()</text>
-  <text x="350" y="290" text-anchor="middle" font-size="9" class="highlight-red">⚠ Never use</text>
-  <text x="350" y="305" text-anchor="middle" font-size="9" class="highlight-green">✓ Use JSON.parse</text>
-  
-  <rect x="460" y="250" width="190" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="555" y="270" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">document.write()</text>
-  <text x="555" y="290" text-anchor="middle" font-size="9" class="highlight-red">⚠ Dangerous</text>
-  <text x="555" y="305" text-anchor="middle" font-size="9" class="highlight-green">✓ Use DOM APIs</text>
-  
-  <rect x="665" y="250" width="190" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="760" y="270" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">href="javascript:"</text>
-  <text x="760" y="290" text-anchor="middle" font-size="9" class="highlight-red">⚠ Dangerous</text>
-  <text x="760" y="305" text-anchor="middle" font-size="9" class="highlight-green">✓ Use event handlers</text>
-  
-  <!-- Security Headers -->
-  <rect x="30" y="350" width="840" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
-  <text x="450" y="375" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Essential Security Headers</text>
-  
-  <rect x="50" y="390" width="190" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="145" y="410" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Content-Security-Policy</text>
-  <text x="145" y="430" text-anchor="middle" font-size="9" class="text-primary">default-src 'self'</text>
-  <text x="145" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Critical</text>
-  
-  <rect x="255" y="390" width="190" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="350" y="410" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">X-Content-Type-Options</text>
-  <text x="350" y="430" text-anchor="middle" font-size="9" class="text-primary">nosniff</text>
-  <text x="350" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Recommended</text>
-  
-  <rect x="460" y="390" width="190" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="555" y="410" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">X-Frame-Options</text>
-  <text x="555" y="430" text-anchor="middle" font-size="9" class="text-primary">DENY or SAMEORIGIN</text>
-  <text x="555" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Clickjacking</text>
-  
-  <rect x="665" y="390" width="190" height="65" rx="3" class="box-base" stroke-width="1"/>
-  <text x="760" y="410" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Strict-Transport-Security</text>
-  <text x="760" y="430" text-anchor="middle" font-size="9" class="text-primary">max-age=31536000</text>
-  <text x="760" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ HTTPS only</text>
-  
-  <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs><style>.bg-l{fill:#f8f9fa}.bx-l{fill:#fff;stroke:#2563eb;stroke-width:2}.tl{fill:#1e293b;font-family:system-ui,sans-serif;font-size:18px;font-weight:700}.lb{fill:#334155;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}.sl{fill:#64748b;font-family:system-ui,sans-serif;font-size:11px;font-weight:400}</style></defs>
+  <g class="light-mode">
+    <rect class="bg-l" width="800" height="420" rx="8"/>
+    <text class="tl" x="400" y="35" text-anchor="middle">XSS Defense Layers</text>
+    <rect class="bx-l" x="30" y="70" width="360" height="80" rx="6"/>
+    <text class="lb" x="210" y="100" text-anchor="middle">Layer 1: Output Encoding (Primary Defense)</text>
+    <text class="sl" x="100" y="130" text-anchor="middle">Framework auto-escaping (React JSX, Vue {{ }})</text>
+    <text class="sl" x="320" y="130" text-anchor="middle">Context-aware encoding (HTML, JS, CSS, URL)</text>
+    <rect class="bx-l" x="410" y="70" width="360" height="80" rx="6"/>
+    <text class="lb" x="590" y="100" text-anchor="middle">Layer 2: Input Validation (Supplementary)</text>
+    <text class="sl" x="470" y="130" text-anchor="middle">Allowlist validation (type, length, format, range)</text>
+    <text class="sl" x="710" y="130" text-anchor="middle">Both client and server-side</text>
+    <rect class="bx-l" x="30" y="170" width="360" height="80" rx="6"/>
+    <text class="lb" x="210" y="200" text-anchor="middle">Layer 3: Content Security Policy (Safety Net)</text>
+    <text class="sl" x="100" y="230" text-anchor="middle">script-src restricts script sources</text>
+    <text class="sl" x="320" y="230" text-anchor="middle">No unsafe-inline / unsafe-eval</text>
+    <rect class="bx-l" x="410" y="170" width="360" height="80" rx="6"/>
+    <text class="lb" x="590" y="200" text-anchor="middle">Layer 4: Sanitization (HTML Input)</text>
+    <text class="sl" x="470" y="230" text-anchor="middle">DOMPurify strips dangerous elements</text>
+    <text class="sl" x="710" y="230" text-anchor="middle">Configurable allowlist for tags/attributes</text>
+    <rect class="bx-l" x="30" y="280" width="740" height="60" rx="6"/>
+    <text class="lb" x="400" y="310" text-anchor="middle">Framework-Specific Protections</text>
+    <text class="sl" x="130" y="330" text-anchor="middle">React: JSX auto-escaping</text>
+    <text class="sl" x="400" y="330" text-anchor="middle">Vue: Text interpolation escaping</text>
+    <text class="sl" x="670" y="330" text-anchor="middle">Angular: DomSanitizer built-in</text>
+  </g>
 </svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs><style>.bg-l{fill:#f8f9fa}.bx-l{fill:#fff;stroke:#2563eb;stroke-width:2}.tl{fill:#1e293b;font-family:system-ui,sans-serif;font-size:18px;font-weight:700}.lb{fill:#334155;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}.sl{fill:#64748b;font-family:system-ui,sans-serif;font-size:11px;font-weight:400}</style></defs>
+  <g class="light-mode">
+    <rect class="bg-l" width="800" height="420" rx="8"/>
+    <text class="tl" x="400" y="35" text-anchor="middle">Page Load Multi-Layer Optimization</text>
+    <rect class="bx-l" x="30" y="70" width="170" height="80" rx="6"/>
+    <text class="lb" x="115" y="100" text-anchor="middle">Network Layer</text>
+    <text class="sl" x="115" y="120" text-anchor="middle">CDN edge caching</text>
+    <text class="sl" x="115" y="135" text-anchor="middle">HTTP/2 multiplexing</text>
+    <text class="sl" x="115" y="150" text-anchor="middle">Brotli compression</text>
+    <rect class="bx-l" x="220" y="70" width="170" height="80" rx="6"/>
+    <text class="lb" x="305" y="100" text-anchor="middle">Server Layer</text>
+    <text class="sl" x="305" y="120" text-anchor="middle">SSR / SSG / ISR</text>
+    <text class="sl" x="305" y="135" text-anchor="middle">TTFB optimization</text>
+    <text class="sl" x="305" y="150" text-anchor="middle">Early hints (103)</text>
+    <rect class="bx-l" x="410" y="70" width="170" height="80" rx="6"/>
+    <text class="lb" x="495" y="100" text-anchor="middle">HTML Layer</text>
+    <text class="sl" x="495" y="120" text-anchor="middle">Inline critical CSS</text>
+    <text class="sl" x="495" y="135" text-anchor="middle">Defer non-critical JS</text>
+    <text class="sl" x="495" y="150" text-anchor="middle">Preload LCP resource</text>
+    <rect class="bx-l" x="600" y="70" width="170" height="80" rx="6"/>
+    <text class="lb" x="685" y="100" text-anchor="middle">JS Layer</text>
+    <text class="sl" x="685" y="120" text-anchor="middle">Code splitting</text>
+    <text class="sl" x="685" y="135" text-anchor="middle">Tree-shaking</text>
+    <text class="sl" x="685" y="150" text-anchor="middle">Lazy loading</text>
+    <rect class="bx-l" x="30" y="200" width="740" height="100" rx="6"/>
+    <text class="lb" x="400" y="230" text-anchor="middle">Performance Budget Enforcement</text>
+    <text class="sl" x="130" y="260" text-anchor="middle">Initial bundle: &lt;200KB gzipped</text>
+    <text class="sl" x="400" y="260" text-anchor="middle">Total page weight: &lt;1MB</text>
+    <text class="sl" x="670" y="260" text-anchor="middle">LCP: &lt;2.5s on 4G</text>
+    <text class="sl" x="130" y="280" text-anchor="middle">Third-party JS: &lt;30% of total</text>
+    <text class="sl" x="400" y="280" text-anchor="middle">INP: &lt;200ms</text>
+    <text class="sl" x="670" y="280" text-anchor="middle">CLS: &lt;0.1</text>
+    <rect class="bx-l" x="30" y="320" width="360" height="80" rx="6"/>
+    <text class="lb" x="210" y="350" text-anchor="middle">RUM Monitoring</text>
+    <text class="sl" x="100" y="380" text-anchor="middle">Core Web Vitals by page</text>
+    <text class="sl" x="320" y="380" text-anchor="middle">Percentile tracking (p75, p95)</text>
+    <rect class="bx-l" x="410" y="320" width="360" height="80" rx="6"/>
+    <text class="lb" x="590" y="350" text-anchor="middle">CI/CD Gates</text>
+    <text class="sl" x="470" y="380" text-anchor="middle">Lighthouse CI on every PR</text>
+    <text class="sl" x="710" y="380" text-anchor="middle">Bundle size budgets</text>
+  </g>
+</svg>

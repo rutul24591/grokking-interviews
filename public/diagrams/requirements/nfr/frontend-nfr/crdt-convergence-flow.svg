@@ -2,17 +2,11 @@
   <defs>
     <style>
       .bg-light { fill: #f8f9fa; }
-      .bg-dark { fill: #1a1a2e; }
       .box-light { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
-      .box-dark { fill: #16213e; stroke: #60a5fa; stroke-width: 2; }
       .title-light { fill: #1e293b; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
-      .title-dark { fill: #f1f5f9; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
       .label-light { fill: #334155; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
-      .label-dark { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
       .sub-light { fill: #64748b; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
-      .sub-dark { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
       .arrow-light { stroke: #2563eb; stroke-width: 2; fill: none; }
-      .arrow-dark { stroke: #60a5fa; stroke-width: 2; fill: none; }
     </style>
   </defs>
   <g class="light-mode">
@@ -48,39 +42,5 @@
     <text class="sub-light" x="660" y="385" text-anchor="middle">Mathematical guarantee</text>
     <rect class="box-light" x="30" y="370" width="240" height="40" rx="6"/>
     <text class="label-light" x="150" y="395" text-anchor="middle">Types: G-Counter, OR-Set, LWW-Register, RGA</text>
-  </g>
-  <g class="dark-mode">
-    <rect class="bg-dark" width="800" height="420" rx="8"/>
-    <text class="title-dark" x="400" y="35" text-anchor="middle">CRDT Convergence Flow</text>
-    <rect class="box-dark" x="30" y="70" width="160" height="80" rx="6"/>
-    <text class="label-dark" x="110" y="100" text-anchor="middle">User A Edit</text>
-    <text class="sub-dark" x="110" y="120" text-anchor="middle">Insert text at pos 5</text>
-    <text class="sub-dark" x="110" y="135" text-anchor="middle">Op: { insert: "Hello" }</text>
-    <rect class="box-dark" x="30" y="270" width="160" height="80" rx="6"/>
-    <text class="label-dark" x="110" y="300" text-anchor="middle">User B Edit</text>
-    <text class="sub-dark" x="110" y="320" text-anchor="middle">Delete chars 3-7</text>
-    <text class="sub-dark" x="110" y="335" text-anchor="middle">Op: { delete: 5 }</text>
-    <path class="arrow-dark" d="M 190 110 L 300 110 L 300 210"/>
-    <polygon class="arrow-dark" points="295,208 300,218 305,208" fill="#60a5fa" stroke="none"/>
-    <path class="arrow-dark" d="M 190 310 L 300 310 L 300 210"/>
-    <polygon class="arrow-dark" points="295,208 300,218 305,208" fill="#60a5fa" stroke="none"/>
-    <rect class="box-dark" x="300" y="170" width="180" height="80" rx="6"/>
-    <text class="label-dark" x="390" y="200" text-anchor="middle">Conflict Detection</text>
-    <text class="sub-dark" x="390" y="220" text-anchor="middle">Concurrent operations</text>
-    <text class="sub-dark" x="390" y="235" text-anchor="middle">Different positions</text>
-    <path class="arrow-dark" d="M 480 210 L 540 210"/>
-    <polygon class="arrow-dark" points="538,205 548,210 538,215" fill="#60a5fa" stroke="none"/>
-    <rect class="box-dark" x="550" y="170" width="220" height="80" rx="6"/>
-    <text class="label-dark" x="660" y="200" text-anchor="middle">Transformation Function</text>
-    <text class="sub-dark" x="660" y="220" text-anchor="middle">T(opA, opB) adjusts position</text>
-    <text class="sub-dark" x="660" y="235" text-anchor="middle">Preserves intent of both</text>
-    <path class="arrow-dark" d="M 660 250 L 660 310"/>
-    <polygon class="arrow-dark" points="655,308 660,318 665,308" fill="#60a5fa" stroke="none"/>
-    <rect class="box-dark" x="550" y="320" width="220" height="80" rx="6"/>
-    <text class="label-dark" x="660" y="350" text-anchor="middle">Converged State</text>
-    <text class="sub-dark" x="660" y="370" text-anchor="middle">Same result on all nodes</text>
-    <text class="sub-dark" x="660" y="385" text-anchor="middle">Mathematical guarantee</text>
-    <rect class="box-dark" x="30" y="370" width="240" height="40" rx="6"/>
-    <text class="label-dark" x="150" y="395" text-anchor="middle">Types: G-Counter, OR-Set, LWW-Register, RGA</text>
   </g>
 </svg>

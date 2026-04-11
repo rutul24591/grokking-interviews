@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs><style>.bg-l{fill:#f8f9fa}.bx-l{fill:#fff;stroke:#2563eb;stroke-width:2}.tl{fill:#1e293b;font-family:system-ui,sans-serif;font-size:18px;font-weight:700}.lb{fill:#334155;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}.sl{fill:#64748b;font-family:system-ui,sans-serif;font-size:11px;font-weight:400}.ar{stroke:#2563eb;stroke-width:2;fill:none}</style></defs>
+  <g class="light-mode">
+    <rect class="bg-l" width="800" height="420" rx="8"/>
+    <text class="tl" x="400" y="35" text-anchor="middle">Offline-First Sync Architecture</text>
+    <rect class="bx-l" x="30" y="70" width="180" height="100" rx="6"/>
+    <text class="lb" x="120" y="100" text-anchor="middle">Local Database</text>
+    <text class="sl" x="120" y="120" text-anchor="middle">IndexedDB as source of truth</text>
+    <text class="sl" x="120" y="135" text-anchor="middle">All reads/writes local first</text>
+    <text class="sl" x="120" y="150" text-anchor="middle">Optimistic mutations queued</text>
+    <text class="sl" x="120" y="165" text-anchor="middle">Works fully offline</text>
+    <path class="ar" d="M 210 120 L 280 120"/>
+    <polygon class="ar" points="278,115 288,120 278,125" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="290" y="70" width="200" height="100" rx="6"/>
+    <text class="lb" x="390" y="100" text-anchor="middle">Sync Queue Manager</text>
+    <text class="sl" x="390" y="120" text-anchor="middle">Monitors connectivity</text>
+    <text class="sl" x="390" y="135" text-anchor="middle">Orders mutations by timestamp</text>
+    <text class="sl" x="390" y="150" text-anchor="middle">Retries failed sync with backoff</text>
+    <text class="sl" x="390" y="165" text-anchor="middle">Detects conflicts</text>
+    <path class="ar" d="M 490 120 L 560 120"/>
+    <polygon class="ar" points="558,115 568,120 558,125" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="570" y="70" width="200" height="100" rx="6"/>
+    <text class="lb" x="670" y="100" text-anchor="middle">Server API</text>
+    <text class="sl" x="670" y="120" text-anchor="middle">Receives queued mutations</text>
+    <text class="sl" x="670" y="135" text-anchor="middle">Returns server changes</text>
+    <text class="sl" x="670" y="150" text-anchor="middle">Conflict detection response</text>
+    <text class="sl" x="670" y="165" text-anchor="middle">Version vectors exchanged</text>
+    <rect class="bx-l" x="30" y="220" width="740" height="80" rx="6"/>
+    <text class="lb" x="400" y="250" text-anchor="middle">Connectivity Monitoring</text>
+    <text class="sl" x="150" y="280" text-anchor="middle">navigator.onLine + online/offline events</text>
+    <text class="sl" x="400" y="280" text-anchor="middle">Service Worker fetch interception</text>
+    <text class="sl" x="650" y="280" text-anchor="middle">Heartbeat ping for actual connectivity</text>
+    <rect class="bx-l" x="30" y="320" width="360" height="80" rx="6"/>
+    <text class="lb" x="210" y="350" text-anchor="middle">Conflict Resolution</text>
+    <text class="sl" x="100" y="380" text-anchor="middle">Field-level merge (auto)</text>
+    <text class="sl" x="320" y="380" text-anchor="middle">Manual review (critical data)</text>
+    <rect class="bx-l" x="410" y="320" width="360" height="80" rx="6"/>
+    <text class="lb" x="590" y="350" text-anchor="middle">Background Sync API</text>
+    <text class="sl" x="470" y="380" text-anchor="middle">Defers actions until online</text>
+    <text class="sl" x="710" y="380" text-anchor="middle">Works even after tab close</text>
+  </g>
+</svg>

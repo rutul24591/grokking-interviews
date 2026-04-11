@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs><style>.bg-l{fill:#f8f9fa}.bx-l{fill:#fff;stroke:#2563eb;stroke-width:2}.tl{fill:#1e293b;font-family:system-ui,sans-serif;font-size:18px;font-weight:700}.lb{fill:#334155;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}.sl{fill:#64748b;font-family:system-ui,sans-serif;font-size:11px;font-weight:400}.ar{stroke:#2563eb;stroke-width:2;fill:none}</style></defs>
+  <g class="light-mode">
+    <rect class="bg-l" width="800" height="420" rx="8"/>
+    <text class="tl" x="400" y="35" text-anchor="middle">Multi-Tab Message Protocol Flow</text>
+    <rect class="bx-l" x="30" y="70" width="180" height="80" rx="6"/>
+    <text class="lb" x="120" y="100" text-anchor="middle">State Change</text>
+    <text class="sl" x="120" y="120" text-anchor="middle">User action in Tab A</text>
+    <text class="sl" x="120" y="135" text-anchor="middle">Cart update, settings</text>
+    <path class="ar" d="M 210 110 L 260 110"/>
+    <polygon class="ar" points="258,105 268,110 258,115" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="270" y="70" width="180" height="80" rx="6"/>
+    <text class="lb" x="360" y="100" text-anchor="middle">Message Creation</text>
+    <text class="sl" x="360" y="120" text-anchor="middle">{type, ts, source, payload}</text>
+    <text class="sl" x="360" y="135" text-anchor="middle">Unique message ID</text>
+    <path class="ar" d="M 450 110 L 500 110"/>
+    <polygon class="ar" points="498,105 508,110 498,115" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="510" y="70" width="160" height="80" rx="6"/>
+    <text class="lb" x="590" y="100" text-anchor="middle">BroadcastChannel</text>
+    <text class="sl" x="590" y="120" text-anchor="middle">postMessage()</text>
+    <text class="sl" x="590" y="135" text-anchor="middle">All tabs receive</text>
+    <path class="ar" d="M 590 150 L 590 210"/>
+    <polygon class="ar" points="585,208 590,218 595,208" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="510" y="220" width="160" height="80" rx="6"/>
+    <text class="lb" x="590" y="250" text-anchor="middle">Message Filtering</text>
+    <text class="sl" x="590" y="270" text-anchor="middle">Skip if source = self</text>
+    <text class="sl" x="590" y="285" text-anchor="middle">Check for duplicates</text>
+    <path class="ar" d="M 510 260 L 460 260"/>
+    <polygon class="ar" points="462,255 452,260 462,265" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="270" y="220" width="180" height="80" rx="6"/>
+    <text class="lb" x="360" y="250" text-anchor="middle">State Update</text>
+    <text class="sl" x="360" y="270" text-anchor="middle">Apply payload to store</text>
+    <text class="sl" x="360" y="285" text-anchor="middle">React to changes</text>
+    <path class="ar" d="M 270 260 L 220 260"/>
+    <polygon class="ar" points="222,255 212,260 222,265" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="30" y="220" width="180" height="80" rx="6"/>
+    <text class="lb" x="120" y="250" text-anchor="middle">UI Re-render</text>
+    <text class="sl" x="120" y="270" text-anchor="middle">Tab B updates</text>
+    <text class="sl" x="120" y="285" text-anchor="middle">Reflects Tab A changes</text>
+    <rect class="bx-l" x="30" y="330" width="740" height="70" rx="6"/>
+    <text class="lb" x="400" y="360" text-anchor="middle">Message Types: AUTH_CHANGE, CART_UPDATE, SETTINGS_CHANGE, TAB_CLOSE, LEADER_ELECT</text>
+    <text class="sl" x="150" y="385" text-anchor="middle">Timestamp for ordering</text>
+    <text class="sl" x="400" y="385" text-anchor="middle">Source tab ID to prevent loops</text>
+    <text class="sl" x="650" y="385" text-anchor="middle">Debounce frequent updates</text>
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs><style>.bg-l{fill:#f8f9fa}.bx-l{fill:#fff;stroke:#2563eb;stroke-width:2}.tl{fill:#1e293b;font-family:system-ui,sans-serif;font-size:18px;font-weight:700}.lb{fill:#334155;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}.sl{fill:#64748b;font-family:system-ui,sans-serif;font-size:11px;font-weight:400}</style></defs>
+  <g class="light-mode">
+    <rect class="bg-l" width="800" height="420" rx="8"/>
+    <text class="tl" x="400" y="35" text-anchor="middle">Data Flow Architecture -- Server vs Client State</text>
+    <rect class="bx-l" x="30" y="70" width="220" height="120" rx="6"/>
+    <text class="lb" x="140" y="100" text-anchor="middle">Server State (React Query)</text>
+    <text class="sl" x="140" y="125" text-anchor="middle">Automatic caching &amp; deduplication</text>
+    <text class="sl" x="140" y="145" text-anchor="middle">Background refetch (stale-while-revalidate)</text>
+    <text class="sl" x="140" y="165" text-anchor="middle">Optimistic updates &amp; rollback</text>
+    <text class="sl" x="140" y="185" text-anchor="middle">Pagination &amp; infinite scroll</text>
+    <rect class="bx-l" x="550" y="70" width="220" height="120" rx="6"/>
+    <text class="lb" x="660" y="100" text-anchor="middle">Client State (Zustand)</text>
+    <text class="sl" x="660" y="125" text-anchor="middle">UI state (modals, sidebar, theme)</text>
+    <text class="sl" x="660" y="145" text-anchor="middle">User preferences (localStorage sync)</text>
+    <text class="sl" x="660" y="165" text-anchor="middle">Feature flags</text>
+    <text class="sl" x="660" y="185" text-anchor="middle">Ephemeral session data</text>
+    <rect class="bx-l" x="300" y="70" width="200" height="120" rx="6"/>
+    <text class="lb" x="400" y="100" text-anchor="middle">URL State (Router)</text>
+    <text class="sl" x="400" y="125" text-anchor="middle">Query parameters (filters, sort)</text>
+    <text class="sl" x="400" y="145" text-anchor="middle">Route params (ID, slug)</text>
+    <text class="sl" x="400" y="165" text-anchor="middle">Shareable state</text>
+    <text class="sl" x="400" y="185" text-anchor="middle">Navigation history</text>
+    <rect class="bx-l" x="30" y="230" width="740" height="80" rx="6"/>
+    <text class="lb" x="400" y="260" text-anchor="middle">Decision Framework -- Where Does State Belong?</text>
+    <text class="sl" x="130" y="290" text-anchor="middle">Local to component? -> useState</text>
+    <text class="sl" x="370" y="290" text-anchor="middle">From API? -> React Query</text>
+    <text class="sl" x="610" y="290" text-anchor="middle">In URL? -> Router params</text>
+    <rect class="bx-l" x="30" y="330" width="740" height="70" rx="6"/>
+    <text class="lb" x="400" y="360" text-anchor="middle">Shared across components? -> Zustand (complex) / Context (simple)</text>
+    <text class="sl" x="130" y="385" text-anchor="middle">Form state? -> React Hook Form</text>
+    <text class="sl" x="370" y="385" text-anchor="middle">Persistent? -> Zustand + persist middleware</text>
+    <text class="sl" x="610" y="385" text-anchor="middle">Never duplicate URL state in store</text>
+  </g>
+</svg>

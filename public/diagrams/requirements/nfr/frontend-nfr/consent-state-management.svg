@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs><style>.bg-l{fill:#f8f9fa}.bx-l{fill:#fff;stroke:#2563eb;stroke-width:2}.tl{fill:#1e293b;font-family:system-ui,sans-serif;font-size:18px;font-weight:700}.lb{fill:#334155;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}.sl{fill:#64748b;font-family:system-ui,sans-serif;font-size:11px;font-weight:400}.ar{stroke:#2563eb;stroke-width:2;fill:none}</style></defs>
+  <g class="light-mode">
+    <rect class="bg-l" width="800" height="420" rx="8"/>
+    <text class="tl" x="400" y="35" text-anchor="middle">Consent State Management Flow</text>
+    <rect class="bx-l" x="30" y="70" width="170" height="80" rx="6"/>
+    <text class="lb" x="115" y="100" text-anchor="middle">First Visit</text>
+    <text class="sl" x="115" y="120" text-anchor="middle">No consent cookie</text>
+    <text class="sl" x="115" y="135" text-anchor="middle">Show consent banner</text>
+    <path class="ar" d="M 200 110 L 250 110"/>
+    <polygon class="ar" points="248,105 258,110 248,115" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="260" y="70" width="150" height="80" rx="6"/>
+    <text class="lb" x="335" y="100" text-anchor="middle">User Choice</text>
+    <text class="sl" x="335" y="120" text-anchor="middle">Accept/Reject/Granular</text>
+    <text class="sl" x="335" y="135" text-anchor="middle">Timestamp + version</text>
+    <path class="ar" d="M 410 110 L 460 110"/>
+    <polygon class="ar" points="458,105 468,110 458,115" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="470" y="70" width="150" height="80" rx="6"/>
+    <text class="lb" x="545" y="100" text-anchor="middle">Store Consent</text>
+    <text class="sl" x="545" y="120" text-anchor="middle">localStorage + server</text>
+    <text class="sl" x="545" y="135" text-anchor="middle">Audit log entry</text>
+    <path class="ar" d="M 620 110 L 670 110"/>
+    <polygon class="ar" points="668,105 678,110 668,115" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="680" y="70" width="100" height="80" rx="6"/>
+    <text class="lb" x="730" y="100" text-anchor="middle">Apply</text>
+    <text class="sl" x="730" y="120" text-anchor="middle">Load allowed</text>
+    <text class="sl" x="730" y="135" text-anchor="middle">Block denied</text>
+    <rect class="bx-l" x="30" y="200" width="240" height="80" rx="6"/>
+    <text class="lb" x="150" y="230" text-anchor="middle">GPC Signal Check</text>
+    <text class="sl" x="150" y="250" text-anchor="middle">navigator.globalPrivacyControl</text>
+    <text class="sl" x="150" y="265" text-anchor="middle">Auto opt-out if true</text>
+    <rect class="bx-l" x="290" y="200" width="240" height="80" rx="6"/>
+    <text class="lb" x="410" y="230" text-anchor="middle">Script Loading Gate</text>
+    <text class="sl" x="410" y="250" text-anchor="middle">Essential: load immediately</text>
+    <text class="sl" x="410" y="265" text-anchor="middle">Analytics/Marketing: check consent</text>
+    <rect class="bx-l" x="550" y="200" width="230" height="80" rx="6"/>
+    <text class="lb" x="665" y="230" text-anchor="middle">Preference Center</text>
+    <text class="sl" x="665" y="250" text-anchor="middle">Change consent anytime</text>
+    <text class="sl" x="665" y="265" text-anchor="middle">Re-consent on policy change</text>
+    <rect class="bx-l" x="30" y="310" width="740" height="90" rx="6"/>
+    <text class="lb" x="400" y="340" text-anchor="middle">Consent Versioning &amp; Re-consent Logic</text>
+    <text class="sl" x="150" y="370" text-anchor="middle">v1.0 to v1.1: No re-consent</text>
+    <text class="sl" x="400" y="370" text-anchor="middle">v1.0 to v2.0: Re-consent required</text>
+    <text class="sl" x="650" y="370" text-anchor="middle">12-month re-ask for opt-out</text>
+  </g>
+</svg>

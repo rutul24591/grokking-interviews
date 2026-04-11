@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs><style>.bg-l{fill:#f8f9fa}.bx-l{fill:#fff;stroke:#2563eb;stroke-width:2}.tl{fill:#1e293b;font-family:system-ui,sans-serif;font-size:18px;font-weight:700}.lb{fill:#334155;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}.sl{fill:#64748b;font-family:system-ui,sans-serif;font-size:11px;font-weight:400}.ar{stroke:#2563eb;stroke-width:2;fill:none}</style></defs>
+  <g class="light-mode">
+    <rect class="bg-l" width="800" height="420" rx="8"/>
+    <text class="tl" x="400" y="35" text-anchor="middle">Test Automation Pipeline</text>
+    <rect class="bx-l" x="30" y="70" width="150" height="80" rx="6"/>
+    <text class="lb" x="105" y="100" text-anchor="middle">Unit Tests</text>
+    <text class="sl" x="105" y="120" text-anchor="middle">&lt;100ms per test</text>
+    <text class="sl" x="105" y="135" text-anchor="middle">Isolated components</text>
+    <path class="ar" d="M 180 110 L 230 110"/>
+    <polygon class="ar" points="228,105 238,110 228,115" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="240" y="70" width="150" height="80" rx="6"/>
+    <text class="lb" x="315" y="100" text-anchor="middle">Integration Tests</text>
+    <text class="sl" x="315" y="120" text-anchor="middle">Component trees</text>
+    <text class="sl" x="315" y="135" text-anchor="middle">MSW API mocking</text>
+    <path class="ar" d="M 390 110 L 440 110"/>
+    <polygon class="ar" points="438,105 448,110 438,115" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="450" y="70" width="150" height="80" rx="6"/>
+    <text class="lb" x="525" y="100" text-anchor="middle">E2E Tests</text>
+    <text class="sl" x="525" y="120" text-anchor="middle">Critical flows</text>
+    <text class="sl" x="525" y="135" text-anchor="middle">Playwright/Cypress</text>
+    <path class="ar" d="M 600 110 L 650 110"/>
+    <polygon class="ar" points="648,105 658,110 648,115" fill="#2563eb" stroke="none"/>
+    <rect class="bx-l" x="660" y="70" width="120" height="80" rx="6"/>
+    <text class="lb" x="720" y="100" text-anchor="middle">Visual</text>
+    <text class="sl" x="720" y="120" text-anchor="middle">Regression</text>
+    <text class="sl" x="720" y="135" text-anchor="middle">Chromatic/Percy</text>
+    <rect class="bx-l" x="30" y="200" width="360" height="100" rx="6"/>
+    <text class="lb" x="210" y="230" text-anchor="middle">Flaky Test Detection &amp; Quarantine</text>
+    <text class="sl" x="100" y="260" text-anchor="middle">Auto-detect intermittent failures</text>
+    <text class="sl" x="320" y="260" text-anchor="middle">Quarantine dashboard</text>
+    <text class="sl" x="100" y="280" text-anchor="middle">Retry with backoff</text>
+    <text class="sl" x="320" y="280" text-anchor="middle">Root cause analysis</text>
+    <rect class="bx-l" x="410" y="200" width="370" height="100" rx="6"/>
+    <text class="lb" x="595" y="230" text-anchor="middle">Parallel Test Execution</text>
+    <text class="sl" x="470" y="260" text-anchor="middle">File-level parallelism</text>
+    <text class="sl" x="680" y="260" text-anchor="middle">CI matrix strategies</text>
+    <text class="sl" x="470" y="280" text-anchor="middle">DB transaction isolation</text>
+    <text class="sl" x="680" y="280" text-anchor="middle">Test sharding</text>
+    <rect class="bx-l" x="30" y="320" width="750" height="80" rx="6"/>
+    <text class="lb" x="405" y="350" text-anchor="middle">Accessibility Testing Integration</text>
+    <text class="sl" x="150" y="380" text-anchor="middle">axe-core in unit tests</text>
+    <text class="sl" x="400" y="380" text-anchor="middle">cypress-axe in E2E</text>
+    <text class="sl" x="650" y="380" text-anchor="middle">Manual screen readers: 30-40% caught by automation</text>
+  </g>
+</svg>

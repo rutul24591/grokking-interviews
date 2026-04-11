@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg-light { fill: #f8f9fa; }
+      .box-light { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
+      .title-light { fill: #1e293b; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .label-light { fill: #334155; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .sub-light { fill: #64748b; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+      .arrow-light { stroke: #2563eb; stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+  <g class="light-mode">
+    <rect class="bg-light" width="800" height="420" rx="8"/>
+    <text class="title-light" x="400" y="35" text-anchor="middle">Feature Flag Rollout Progression</text>
+    <rect class="box-light" x="30" y="70" width="140" height="80" rx="6"/>
+    <text class="label-light" x="100" y="100" text-anchor="middle">Internal (0%)</text>
+    <text class="sub-light" x="100" y="120" text-anchor="middle">Dev team only</text>
+    <text class="sub-light" x="100" y="135" text-anchor="middle">Dogfooding phase</text>
+    <path class="arrow-light" d="M 170 110 L 210 110"/>
+    <polygon class="arrow-light" points="208,105 218,110 208,115" fill="#2563eb" stroke="none"/>
+    <rect class="box-light" x="220" y="70" width="140" height="80" rx="6"/>
+    <text class="label-light" x="290" y="100" text-anchor="middle">Beta (1-5%)</text>
+    <text class="sub-light" x="290" y="120" text-anchor="middle">Opt-in users</text>
+    <text class="sub-light" x="290" y="135" text-anchor="middle">Monitor closely</text>
+    <path class="arrow-light" d="M 360 110 L 400 110"/>
+    <polygon class="arrow-light" points="398,105 408,110 398,115" fill="#2563eb" stroke="none"/>
+    <rect class="box-light" x="410" y="70" width="140" height="80" rx="6"/>
+    <text class="label-light" x="480" y="100" text-anchor="middle">Staged (25-50%)</text>
+    <text class="sub-light" x="480" y="120" text-anchor="middle">Gradual increase</text>
+    <text class="sub-light" x="480" y="135" text-anchor="middle">Metric gates</text>
+    <path class="arrow-light" d="M 550 110 L 590 110"/>
+    <polygon class="arrow-light" points="588,105 598,110 588,115" fill="#2563eb" stroke="none"/>
+    <rect class="box-light" x="600" y="70" width="170" height="80" rx="6"/>
+    <text class="label-light" x="685" y="100" text-anchor="middle">Full (100%)</text>
+    <text class="sub-light" x="685" y="120" text-anchor="middle">All users</text>
+    <text class="sub-light" x="685" y="135" text-anchor="middle">Monitor 30 days</text>
+    <rect class="box-light" x="30" y="200" width="740" height="100" rx="6"/>
+    <text class="label-light" x="400" y="230" text-anchor="middle">Kill Switch -- Instant Disable at Any Stage</text>
+    <text class="sub-light" x="120" y="260" text-anchor="middle">Error spike detected</text>
+    <text class="sub-light" x="300" y="260" text-anchor="middle">Performance regression</text>
+    <text class="sub-light" x="500" y="260" text-anchor="middle">Business metric drop</text>
+    <text class="sub-light" x="680" y="260" text-anchor="middle">Security vulnerability</text>
+    <text class="sub-light" x="400" y="285" text-anchor="middle">Action: Disable flag immediately -- no redeploy needed</text>
+    <rect class="box-light" x="30" y="320" width="240" height="80" rx="6"/>
+    <text class="label-light" x="150" y="350" text-anchor="middle">Cleanup Phase</text>
+    <text class="sub-light" x="150" y="370" text-anchor="middle">Remove flag after 30 days</text>
+    <text class="sub-light" x="150" y="385" text-anchor="middle">Delete conditional logic</text>
+    <rect class="box-light" x="290" y="320" width="240" height="80" rx="6"/>
+    <text class="label-light" x="410" y="350" text-anchor="middle">Flag Registry</text>
+    <text class="sub-light" x="410" y="370" text-anchor="middle">Track all active flags</text>
+    <text class="sub-light" x="410" y="385" text-anchor="middle">Owner, expiry, purpose</text>
+    <rect class="box-light" x="550" y="320" width="220" height="80" rx="6"/>
+    <text class="label-light" x="660" y="350" text-anchor="middle">Audit Log</text>
+    <text class="sub-light" x="660" y="370" text-anchor="middle">Who changed what</text>
+    <text class="sub-light" x="660" y="385" text-anchor="middle">When and why</text>
+  </g>
+</svg>
