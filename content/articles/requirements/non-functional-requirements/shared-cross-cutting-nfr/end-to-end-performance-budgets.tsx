@@ -26,160 +26,29 @@ export default function EndToEndPerformanceBudgetsArticle() {
         <h2>Definition & Context</h2>
         <p>
           <strong>End-to-End Performance Budgets</strong> are quantitative limits on performance metrics
-          that span the entire system — from user interaction to backend processing and back. Unlike
-          component-level budgets (frontend bundle size, API latency), end-to-end budgets define the
-          total acceptable latency, resource consumption, or error rate for complete user journeys.
+          that span the entire system—from user interaction to backend processing and back. Unlike
+          component-level budgets such as frontend bundle size or API latency, end-to-end budgets define
+          the total acceptable latency, resource consumption, or error rate for complete user journeys.
         </p>
         <p>
-          Performance budgets answer critical questions: How long should a page take to load? What&apos;s
+          Performance budgets answer critical questions: How long should a page take to load? What is
           the maximum acceptable latency for a search query? How much data can we transfer before the
           user experience degrades? By setting and enforcing these budgets, teams ensure consistent user
-          experience and prevent performance regressions.
+          experience and prevent performance regressions. Performance budgets provide objective criteria
+          for architectural decisions—when considering a new feature, you can ask whether it fits within
+          the performance budget, and if not, you must either optimize elsewhere, increase the budget
+          with justification, or reconsider the feature. Without budgets, performance degrades gradually
+          through death by a thousand cuts; with budgets, every change is evaluated against clear
+          criteria, preventing incremental degradation.
         </p>
         <p>
-          <strong>Key characteristics of end-to-end budgets:</strong>
+          End-to-end budgets are user-centric, based on user-perceived metrics like Time to Interactive
+          and First Contentful Paint rather than technical metrics alone. They are cross-functional,
+          spanning frontend, backend, network, and infrastructure with all teams sharing responsibility.
+          They must be enforceable through integration into CI/CD with automated checks and alerts.
+          They are progressive, with different budgets for different conditions such as 3G versus WiFi,
+          mobile versus desktop, and first visit versus returning visit.
         </p>
-        <ul>
-          <li>
-            <strong>User-centric:</strong> Based on user-perceived metrics (Time to Interactive, First
-            Contentful Paint) rather than technical metrics alone.
-          </li>
-          <li>
-            <strong>Cross-functional:</strong> Span frontend, backend, network, and infrastructure — all
-            teams share responsibility.
-          </li>
-          <li>
-            <strong>Enforceable:</strong> Integrated into CI/CD, with automated checks and alerts.
-          </li>
-          <li>
-            <strong>Progressive:</strong> Different budgets for different conditions (3G vs WiFi, mobile
-            vs desktop, first visit vs returning).
-          </li>
-        </ul>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Budgets Enable Trade-off Decisions</h3>
-          <p>
-            Performance budgets provide objective criteria for architectural decisions. When considering
-            a new feature, you can ask: &quot;Does this fit within our performance budget?&quot; If not,
-            you must either optimize elsewhere, increase the budget (with justification), or reconsider
-            the feature.
-          </p>
-          <p className="mt-3">
-            <strong>Without budgets:</strong> Performance degrades gradually, death by a thousand cuts.
-            <strong>With budgets:</strong> Every change is evaluated against clear criteria, preventing
-            incremental degradation.
-          </p>
-        </div>
-
-        <p>
-          This article covers performance budget definition, allocation strategies across system layers,
-          monitoring and enforcement, and organizational practices for maintaining performance discipline.
-        </p>
-      </section>
-
-      <section>
-        <h2>Performance Budget Categories</h2>
-        <p>
-          Different types of budgets address different aspects of performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Budgets</h3>
-        <p>
-          Limits on latency and timing metrics:
-        </p>
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Metric</th>
-                <th className="p-2 text-left">Budget</th>
-                <th className="p-2 text-left">User Perception</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-theme">
-              <tr>
-                <td className="p-2">Time to First Byte (TTFB)</td>
-                <td className="p-2">{'<'} 200ms</td>
-                <td className="p-2">Server responsiveness</td>
-              </tr>
-              <tr>
-                <td className="p-2">First Contentful Paint (FCP)</td>
-                <td className="p-2">{'<'} 1.5s</td>
-                <td className="p-2">&quot;Something is happening&quot;</td>
-              </tr>
-              <tr>
-                <td className="p-2">Largest Contentful Paint (LCP)</td>
-                <td className="p-2">{'<'} 2.5s</td>
-                <td className="p-2">&quot;Page is loaded&quot;</td>
-              </tr>
-              <tr>
-                <td className="p-2">Time to Interactive (TTI)</td>
-                <td className="p-2">{'<'} 3.5s</td>
-                <td className="p-2">&quot;Page is usable&quot;</td>
-              </tr>
-              <tr>
-                <td className="p-2">API Response Time (P95)</td>
-                <td className="p-2">{'<'} 300ms</td>
-                <td className="p-2">Responsive interactions</td>
-              </tr>
-              <tr>
-                <td className="p-2">Total Page Load</td>
-                <td className="p-2">{'<'} 5s</td>
-                <td className="p-2">Complete loading experience</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Resource-Based Budgets</h3>
-        <p>
-          Limits on data transfer and resource consumption:
-        </p>
-        <ul>
-          <li>
-            <strong>Total Page Weight:</strong> Maximum total bytes transferred (e.g., {'<'} 1.5MB for
-            desktop, {'<'} 500KB for mobile).
-          </li>
-          <li>
-            <strong>JavaScript Budget:</strong> Maximum JS bytes (e.g., {'<'} 200KB gzipped for initial
-            load).
-          </li>
-          <li>
-            <strong>CSS Budget:</strong> Maximum CSS bytes (e.g., {'<'} 50KB gzipped).
-          </li>
-          <li>
-            <strong>Image Budget:</strong> Maximum image bytes per page (e.g., {'<'} 500KB).
-          </li>
-          <li>
-            <strong>Font Budget:</strong> Maximum font bytes (e.g., {'<'} 100KB with subset).
-          </li>
-          <li>
-            <strong>Request Count:</strong> Maximum number of HTTP requests (e.g., {'<'} 50 requests).
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Quality Budgets</h3>
-        <p>
-          Limits on error rates and quality metrics:
-        </p>
-        <ul>
-          <li>
-            <strong>Error Rate:</strong> Maximum acceptable error percentage (e.g., {'<'} 0.1% for
-            critical paths).
-          </li>
-          <li>
-            <strong>Core Web Vitals:</strong> Percentage of users meeting CWV thresholds (e.g., 75%
-            &quot;good&quot; ratings).
-          </li>
-          <li>
-            <strong>Frame Rate:</strong> Minimum FPS for animations (e.g., {'>'} 55 FPS for 60Hz
-            displays).
-          </li>
-          <li>
-            <strong>Cumulative Layout Shift:</strong> Maximum layout shift score (e.g., CLS {'<'} 0.1).
-          </li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/performance-budget-categories.svg"
@@ -189,104 +58,50 @@ export default function EndToEndPerformanceBudgetsArticle() {
       </section>
 
       <section>
-        <h2>Budget Allocation Across Layers</h2>
+        <h2>Core Concepts</h2>
         <p>
-          End-to-end budgets must be decomposed into component budgets for each system layer.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Example: Page Load Budget Breakdown</h3>
-        <p>
-          For a 3-second TTI budget:
-        </p>
-        <ul>
-          <li>
-            <strong>Network (DNS + TCP + TLS):</strong> 200ms
-          </li>
-          <li>
-            <strong>Backend Processing:</strong> 300ms
-          </li>
-          <li>
-            <strong>HTML Download:</strong> 100ms
-          </li>
-          <li>
-            <strong>CSS Download + Parse:</strong> 200ms
-          </li>
-          <li>
-            <strong>JavaScript Download + Parse:</strong> 500ms
-          </li>
-          <li>
-            <strong>JavaScript Execution:</strong> 800ms
-          </li>
-          <li>
-            <strong>Layout + Paint:</strong> 300ms
-          </li>
-          <li>
-            <strong>Buffer/Margin:</strong> 600ms
-          </li>
-        </ul>
-        <p>
-          <strong>Total:</strong> 3,000ms (3 seconds)
+          Performance budgets fall into three categories: time-based, resource-based, and quality
+          budgets. Time-based budgets set limits on latency and timing metrics. Time to First Byte
+          (TTFB) should be under 200ms to indicate server responsiveness. First Contentful Paint (FCP)
+          should be under 1.5 seconds so users perceive that something is happening. Largest Contentful
+          Paint (LCP) should be under 2.5 seconds so users perceive the page as loaded. Time to
+          Interactive (TTI) should be under 3.5 seconds so users perceive the page as usable. API
+          Response Time at P95 should be under 300ms for responsive interactions. Total Page Load should
+          be under 5 seconds for the complete loading experience.
         </p>
         <p>
-          Each team owns their portion: backend team owns &quot;Backend Processing,&quot; frontend team
-          owns &quot;JavaScript Download + Execution,&quot; infrastructure team owns &quot;Network.&quot;
+          Resource-based budgets limit data transfer and resource consumption. Total page weight might
+          be capped at under 1.5MB for desktop and under 500KB for mobile. JavaScript budgets might
+          limit initial load to under 200KB gzipped. CSS budgets might cap at under 50KB gzipped. Image
+          budgets might limit total image bytes per page to under 500KB. Font budgets might cap at under
+          100KB with subsetting. Request count budgets might limit total HTTP requests to under 50.
+          Quality budgets limit error rates and quality metrics, including maximum acceptable error
+          percentage (under 0.1% for critical paths), Core Web Vitals pass rate (75% good ratings),
+          minimum frame rate for animations (above 55 FPS for 60Hz displays), and maximum cumulative
+          layout shift score (under 0.1).
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Example: API Request Budget Breakdown</h3>
         <p>
-          For a 200ms P95 API latency budget:
+          Setting realistic budgets requires balancing user expectations with technical feasibility.
+          User perception research shows that 0-100ms feels like an instant response with no perceived
+          delay, 100-300ms is noticeable but acceptable and feels responsive, 300-1000ms is a clearly
+          visible delay where users notice they are waiting, and over 1000ms is frustrating and users
+          may abandon. Industry benchmarks from Google research show that 53% of mobile users abandon
+          pages that take over 3 seconds to load, which serves as a starting point for LCP budgets.
+          Data-driven budgets use historical performance data by collecting baseline measurements across
+          user segments, identifying percentiles (P50, P75, P95, P99), setting initial budgets at P75
+          or P90 which are achievable but require effort, and gradually tightening budgets as performance
+          improves. Competitive benchmarking involves measuring competitor performance using tools like
+          WebPageTest and Lighthouse, setting relative targets to be 10-20% faster than key competitors,
+          and tracking competitor performance over time.
         </p>
-        <ul>
-          <li>
-            <strong>Network (client to server):</strong> 30ms
-          </li>
-          <li>
-            <strong>Load Balancer:</strong> 5ms
-          </li>
-          <li>
-            <strong>Authentication/Authorization:</strong> 15ms
-          </li>
-          <li>
-            <strong>Business Logic:</strong> 100ms
-          </li>
-          <li>
-            <strong>Database Query:</strong> 40ms
-          </li>
-          <li>
-            <strong>Response Serialization:</strong> 5ms
-          </li>
-          <li>
-            <strong>Network (server to client):</strong> 30ms
-          </li>
-          <li>
-            <strong>Buffer/Margin:</strong> 25ms
-          </li>
-        </ul>
         <p>
-          <strong>Total:</strong> 250ms (with 50ms buffer for P95 variance)
+          Progressive budgets set different limits for different conditions. Desktop with WiFi might
+          have an LCP budget under 2.0 seconds and TTI under 3.0 seconds, while mobile with 4G might
+          allow LCP under 2.5 seconds and TTI under 3.5 seconds. Mobile with 3G might permit LCP under
+          4.0 seconds and TTI under 6.0 seconds. First visits might allow LCP under 3.0 seconds and
+          TTI under 4.5 seconds, while returning visits with cached resources should achieve LCP under
+          1.5 seconds and TTI under 2.0 seconds.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Budget Contention</h3>
-        <p>
-          When multiple components compete for the same budget:
-        </p>
-        <ul>
-          <li>
-            <strong>Prioritize:</strong> Critical path gets priority (e.g., above-the-fold content before
-            analytics).
-          </li>
-          <li>
-            <strong>Defer:</strong> Non-critical resources load after essential content (lazy loading).
-          </li>
-          <li>
-            <strong>Optimize:</strong> Reduce budget consumption through optimization (compression,
-            caching).
-          </li>
-          <li>
-            <strong>Reallocate:</strong> Shift budget from over-performing components to under-performing
-            ones.
-          </li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/budget-allocation-layers.svg"
@@ -296,178 +111,61 @@ export default function EndToEndPerformanceBudgetsArticle() {
       </section>
 
       <section>
-        <h2>Setting Realistic Budgets</h2>
+        <h2>Architecture & Flow</h2>
         <p>
-          Budget-setting requires balancing user expectations with technical feasibility.
+          Performance budget enforcement relies on an interconnected architecture of CI/CD integration,
+          real user monitoring, budget evaluation engines, and alerting systems. Understanding this
+          architecture enables staff and principal engineers to design effective enforcement strategies
+          that catch regressions before they reach production and monitor actual user experience
+          continuously.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Research-Driven Budgets</h3>
         <p>
-          Base budgets on user perception research:
+          The CI/CD integration pipeline catches performance regressions before deployment. Lighthouse
+          CI runs Lighthouse audits on every pull request and fails the build if budgets are exceeded,
+          with configurable thresholds for blocking versus advisory budgets. Webpack Bundle Analyzer
+          and similar tools fail builds if bundle sizes exceed budget limits. Synthetic performance
+          tests run in staging environments to measure page load times, API latencies, and interaction
+          responsiveness under controlled conditions. Budget gates can block deployment entirely if
+          critical budgets are violated or allow deployment with warnings for advisory budget breaches.
+          The pipeline integrates with code review workflows so that performance regressions are visible
+          to reviewers before merge, enabling teams to address issues proactively rather than reactively.
         </p>
-        <ul>
-          <li>
-            <strong>0-100ms:</strong> Instant response — users perceive no delay.
-          </li>
-          <li>
-            <strong>100-300ms:</strong> Noticeable but acceptable — feels responsive.
-          </li>
-          <li>
-            <strong>300-1000ms:</strong> Clearly visible delay — users notice waiting.
-          </li>
-          <li>
-            <strong>{'>'} 1000ms:</strong> Frustrating — users may abandon.
-          </li>
-        </ul>
         <p>
-          <strong>Industry benchmarks:</strong> Google research shows 53% of mobile users abandon pages
-          that take {'>'} 3 seconds to load. Use this as a starting point for LCP budget.
+          Real User Monitoring (RUM) data collection tracks actual user experience in production. The
+          Performance API and Navigation Timing API in browsers collect metrics like TTFB, FCP, LCP,
+          and TTI from real user sessions. This data is aggregated by calculating percentiles across
+          user segments (by device type, network condition, geographic region, user cohort). The RUM
+          data flows through a collection SDK embedded in the frontend application, which batches and
+          sends telemetry to a backend aggregation service. The aggregation service computes percentiles,
+          tracks trends over time, and evaluates budgets against configured thresholds. RUM data provides
+          the ground truth of user experience that synthetic testing cannot replicate, capturing the
+          variability of real-world network conditions, device capabilities, and user behavior patterns.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data-Driven Budgets</h3>
         <p>
-          Use historical performance data:
+          The budget evaluation engine compares measured performance against defined budgets and
+          determines pass/fail status for each metric. In CI/CD, the evaluation engine runs on every
+          build with synthetic test results, producing a budget report that shows which budgets passed,
+          which failed, and by how much. In production, the evaluation engine runs continuously on RUM
+          data, calculating the percentage of users experiencing budget violations. The engine supports
+          different enforcement modes: strict mode fails builds or pages on-call when budgets are
+          exceeded, advisory mode generates warnings without blocking deployment, and trend mode tracks
+          budget adherence over time for review. Budget allocation across system layers decomposes
+          end-to-end budgets into component budgets for each layer—for a 3-second TTI budget, network
+          might get 200ms, backend processing 300ms, HTML download 100ms, CSS download and parse 200ms,
+          JavaScript download and parse 500ms, JavaScript execution 800ms, layout and paint 300ms, with
+          600ms buffer for margin.
         </p>
-        <ol className="list-decimal pl-6 space-y-2">
-          <li>
-            <strong>Collect baseline:</strong> Measure current performance across user segments.
-          </li>
-          <li>
-            <strong>Identify percentiles:</strong> P50 (median), P75, P95, P99.
-          </li>
-          <li>
-            <strong>Set initial budget:</strong> Start at P75 or P90 — achievable but requires effort.
-          </li>
-          <li>
-            <strong>Iterate:</strong> Gradually tighten budgets as performance improves.
-          </li>
-        </ol>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Competitive Budgets</h3>
         <p>
-          Benchmark against competitors:
+          The alerting and feedback loop notifies teams of budget violations and drives corrective
+          action. Tiered alerting is based on severity: warnings when budgets are exceeded for over
+          5% of users generate tickets for review, critical alerts when over 20% of users are affected
+          page the on-call engineer, and emergency alerts when over 50% of users are affected require
+          immediate response. Feedback loops connect budget violations back to the responsible teams
+          through dashboards, sprint reviews, and post-incident reviews. Performance trends are reviewed
+          weekly to identify gradual degradation, included in sprint planning to ensure performance work
+          is prioritized, and analyzed quarterly in deep-dive sessions to adjust budgets and identify
+          systemic issues.
         </p>
-        <ul>
-          <li>
-            <strong>Measure competitors:</strong> Use tools like WebPageTest, Lighthouse to measure
-            competitor performance.
-          </li>
-          <li>
-            <strong>Set relative targets:</strong> Aim to be 10-20% faster than key competitors.
-          </li>
-          <li>
-            <strong>Monitor:</strong> Track competitor performance over time.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Progressive Budgets</h3>
-        <p>
-          Different budgets for different conditions:
-        </p>
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Condition</th>
-                <th className="p-2 text-left">LCP Budget</th>
-                <th className="p-2 text-left">TTI Budget</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-theme">
-              <tr>
-                <td className="p-2">Desktop + WiFi</td>
-                <td className="p-2">{'<'} 2.0s</td>
-                <td className="p-2">{'<'} 3.0s</td>
-              </tr>
-              <tr>
-                <td className="p-2">Mobile + 4G</td>
-                <td className="p-2">{'<'} 2.5s</td>
-                <td className="p-2">{'<'} 3.5s</td>
-              </tr>
-              <tr>
-                <td className="p-2">Mobile + 3G</td>
-                <td className="p-2">{'<'} 4.0s</td>
-                <td className="p-2">{'<'} 6.0s</td>
-              </tr>
-              <tr>
-                <td className="p-2">First Visit</td>
-                <td className="p-2">{'<'} 3.0s</td>
-                <td className="p-2">{'<'} 4.5s</td>
-              </tr>
-              <tr>
-                <td className="p-2">Returning (cached)</td>
-                <td className="p-2">{'<'} 1.5s</td>
-                <td className="p-2">{'<'} 2.0s</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section>
-        <h2>Monitoring and Enforcement</h2>
-        <p>
-          Budgets without monitoring and enforcement are just documentation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CI/CD Integration</h3>
-        <p>
-          Catch regressions before deployment:
-        </p>
-        <ul>
-          <li>
-            <strong>Lighthouse CI:</strong> Run Lighthouse on every PR, fail if budgets exceeded.
-          </li>
-          <li>
-            <strong>Webpack Bundle Analyzer:</strong> Fail builds if bundle size exceeds budget.
-          </li>
-          <li>
-            <strong>Performance Tests:</strong> Synthetic tests in staging environment.
-          </li>
-          <li>
-            <strong>Budget Gates:</strong> Block deployment if critical budgets violated.
-          </li>
-        </ul>
-        <p>
-          <strong>Example configuration (Lighthouse CI):</strong> Set assertions for FCP (max 1500ms),
-          LCP (max 2500ms), total-byte-weight (max 1.5MB). Use &quot;warn&quot; for advisory budgets,
-          &quot;error&quot; for blocking budgets.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real User Monitoring (RUM)</h3>
-        <p>
-          Track actual user experience:
-        </p>
-        <ul>
-          <li>
-            <strong>Collect metrics:</strong> Use Performance API, Navigation Timing API.
-          </li>
-          <li>
-            <strong>Aggregate data:</strong> Calculate percentiles across user segments.
-          </li>
-          <li>
-            <strong>Alert on violations:</strong> Page when budget violation rate exceeds threshold.
-          </li>
-          <li>
-            <strong>Trend analysis:</strong> Track budget adherence over time.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Alerting Strategy</h3>
-        <p>
-          Tiered alerting based on severity:
-        </p>
-        <ul>
-          <li>
-            <strong>Warning:</strong> Budget exceeded for {'>'} 5% of users. Ticket for review.
-          </li>
-          <li>
-            <strong>Critical:</strong> Budget exceeded for {'>'} 20% of users. Page on-call.
-          </li>
-          <li>
-            <strong>Emergency:</strong> Budget exceeded for {'>'} 50% of users. Immediate response.
-          </li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/performance-budget-monitoring.svg"
@@ -477,93 +175,266 @@ export default function EndToEndPerformanceBudgetsArticle() {
       </section>
 
       <section>
-        <h2>Organizational Practices</h2>
+        <h2>Trade-offs & Comparison</h2>
         <p>
-          Sustaining performance requires culture and process, not just tools.
+          Performance budget enforcement decisions involve significant trade-offs across monitoring
+          approaches, enforcement strictness, and evaluation granularity. Understanding these trade-offs
+          enables teams to choose the right approach for their maturity level, traffic patterns, and
+          organizational constraints.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Champions</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Synthetic vs RUM Monitoring</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Synthetic</th>
+                <th className="p-2 text-left">Real User Monitoring</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Environment</td>
+                <td className="p-2">Controlled, repeatable</td>
+                <td className="p-2">Real-world, variable</td>
+              </tr>
+              <tr>
+                <td className="p-2">Coverage</td>
+                <td className="p-2">Predefined scenarios only</td>
+                <td className="p-2">All user journeys</td>
+              </tr>
+              <tr>
+                <td className="p-2">Detection Speed</td>
+                <td className="p-2">Immediate (on every run)</td>
+                <td className="p-2">Delayed (need sufficient data)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Best Use</td>
+                <td className="p-2">CI/CD regression detection</td>
+                <td className="p-2">Production experience tracking</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Strict Enforcement vs Advisory Budgets</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Strict (Blocking)</th>
+                <th className="p-2 text-left">Advisory (Warning)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Deployment Impact</td>
+                <td className="p-2">Blocks deployment on violation</td>
+                <td className="p-2">Allows deployment with warning</td>
+              </tr>
+              <tr>
+                <td className="p-2">Team Velocity</td>
+                <td className="p-2">May slow down (must fix first)</td>
+                <td className="p-2">Unimpeded (track and address)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Performance Discipline</td>
+                <td className="p-2">Strong (forced compliance)</td>
+                <td className="p-2">Variable (may ignore warnings)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Best For</td>
+                <td className="p-2">Mature teams, critical budgets</td>
+                <td className="p-2">Building performance culture</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">CI/CD Blocking vs Post-Merge Alerts</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">CI/CD Blocking</th>
+                <th className="p-2 text-left">Post-Merge Alerts</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Regression Prevention</td>
+                <td className="p-2">Prevents regression from merging</td>
+                <td className="p-2">Detects after merge, must fix</td>
+              </tr>
+              <tr>
+                <td className="p-2">Developer Experience</td>
+                <td className="p-2">Friction (must fix before merge)</td>
+                <td className="p-2">Smoother (merge, then fix)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Fix Cost</td>
+                <td className="p-2">Lower (fix in PR context)</td>
+                <td className="p-2">Higher (revert or hotfix)</td>
+              </tr>
+              <tr>
+                <td className="p-2">False Positive Impact</td>
+                <td className="p-2">High (blocks on false alarms)</td>
+                <td className="p-2">Low (investigate before acting)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Aggregate vs Per-User-Segment Budgets</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Aggregate</th>
+                <th className="p-2 text-left">Per-User-Segment</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Fairness</td>
+                <td className="p-2">May hide poor segments</td>
+                <td className="p-2">Exposes worst-affected users</td>
+              </tr>
+              <tr>
+                <td className="p-2">Complexity</td>
+                <td className="p-2">Low (single threshold)</td>
+                <td className="p-2">High (multiple thresholds)</td>
+              </tr>
+              <tr>
+                <td className="p-2">User Impact</td>
+                <td className="p-2">Average experience</td>
+                <td className="p-2">Protects vulnerable segments</td>
+              </tr>
+              <tr>
+                <td className="p-2">Best For</td>
+                <td className="p-2">Homogeneous user base</td>
+                <td className="p-2">Diverse devices and networks</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Best Practices</h2>
         <p>
-          Designate performance advocates in each team:
+          Designate performance champions or advocates in each team who serve as the first point of
+          contact for performance questions, review pull requests for performance impact, and educate
+          team members on performance best practices. These champions should receive advanced training
+          in performance optimization techniques and act as liaisons between teams on performance
+          matters. Establish a regular performance review cadence with weekly reviews of RUM dashboards
+          to discuss trends, inclusion of performance tasks in sprint planning, and quarterly deep dives
+          into performance metrics with budget adjustments based on findings.
         </p>
-        <ul>
-          <li>
-            <strong>Role:</strong> First point of contact for performance questions.
-          </li>
-          <li>
-            <strong>Responsibilities:</strong> Review PRs for performance impact, educate team members.
-          </li>
-          <li>
-            <strong>Training:</strong> Advanced training in performance optimization techniques.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Reviews</h3>
         <p>
-          Regular performance review cadence:
+          Build a performance culture through regular training sessions on performance best practices,
+          public dashboards showing performance metrics for visibility, team ownership of their portion
+          of the budget, and recognition of performance improvements and wins. Include documentation
+          in the definition of done so that API changes are documented, architecture decisions are
+          recorded, runbooks are updated for operational impact, and changelog entries are created.
+          Treat performance requirements as first-class user stories: &quot;As a user, I need the page
+          to load in under 3 seconds so I can start my workflow quickly.&quot;
         </p>
-        <ul>
-          <li>
-            <strong>Weekly:</strong> Review RUM dashboards, discuss trends.
-          </li>
-          <li>
-            <strong>Sprint:</strong> Include performance tasks in sprint planning.
-          </li>
-          <li>
-            <strong>Quarterly:</strong> Deep dive on performance metrics, adjust budgets.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Culture</h3>
         <p>
-          Build a culture that values performance:
+          Integrate performance tools into CI/CD with Lighthouse CI running on every pull request,
+          webpack-bundle-analyzer failing builds when bundle size exceeds budget, and synthetic
+          performance tests running in staging environments. Configure thresholds that fail builds when
+          exceeded, running on every PR before merge, and combine with RUM for production monitoring.
+          Alert when budget violation rates exceed thresholds using a tiered approach where warnings
+          affect over 5% of users and generate tickets, critical alerts affect over 20% and page
+          on-call, and emergencies affect over 50% and require immediate response.
         </p>
-        <ul>
-          <li>
-            <strong>Education:</strong> Regular training sessions on performance best practices.
-          </li>
-          <li>
-            <strong>Visibility:</strong> Public dashboards showing performance metrics.
-          </li>
-          <li>
-            <strong>Accountability:</strong> Teams own their portion of the budget.
-          </li>
-          <li>
-            <strong>Celebration:</strong> Recognize performance improvements and wins.
-          </li>
-        </ul>
+        <p>
+          Decompose end-to-end budgets into component budgets for each system layer so that each team
+          owns their portion. The backend team owns backend processing time, the frontend team owns
+          JavaScript download and execution time, and the infrastructure team owns network time. When
+          budget contention occurs between competing components, prioritize critical paths so that
+          above-the-fold content loads before analytics, defer non-critical resources through lazy
+          loading, optimize through compression and caching, and reallocate budget from over-performing
+          components to under-performing ones.
+        </p>
+      </section>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Common Pitfalls</h3>
-        <div className="my-6 rounded-lg border border-warning/30 bg-warning/10 p-6">
-          <h3 className="mb-3 font-semibold">Setting Unrealistic Budgets</h3>
-          <p>
-            Budgets that are too strict will be ignored; too loose provide no value. Start achievable,
-            tighten gradually.
-          </p>
-        </div>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          Setting unrealistic budgets that are too strict leads to them being ignored, while budgets
+          that are too loose provide no value. The fix is to start with achievable budgets and tighten
+          them gradually as performance improves. Focusing only on averages (P50 or median) hides poor
+          experiences for a significant portion of users. Always track P75, P95, and P99 percentiles
+          to understand the full distribution of user experiences.
+        </p>
+        <p>
+          Setting desktop-only budgets ignores mobile users who often have worse network conditions
+          and devices. Set separate budgets for mobile that account for slower networks and less
+          powerful processors. Budgets without CI/CD gates and alerts become mere suggestions that
+          teams ignore. Integrate enforcement into the development workflow with automated checks on
+          every pull request and production monitoring for ongoing compliance.
+        </p>
+        <p>
+          Treating performance as a one-time effort rather than an ongoing commitment leads to gradual
+          degradation over time. Performance requires continuous monitoring, regular budget reviews,
+          and a culture that values performance as a feature. Not accounting for geographic variation
+          means users in distant regions experience significantly worse performance than budgets suggest.
+          Include geographic segmentation in RUM data and set region-aware budgets. Finally, optimizing
+          for synthetic benchmarks at the expense of real user experience creates a false sense of
+          performance. Always validate improvements with RUM data to ensure they translate to actual
+          user experience improvements.
+        </p>
+      </section>
 
-        <div className="my-6 rounded-lg border border-warning/30 bg-warning/10 p-6">
-          <h3 className="mb-3 font-semibold">Focusing Only on Averages</h3>
-          <p>
-            P50 (median) hides poor experiences. Always track P75, P95, P99 percentiles.
-          </p>
-        </div>
-
-        <div className="my-6 rounded-lg border border-warning/30 bg-warning/10 p-6">
-          <h3 className="mb-3 font-semibold">Desktop-Only Budgets</h3>
-          <p>
-            Mobile users often have worse network and devices. Set separate (stricter relative) budgets
-            for mobile.
-          </p>
-        </div>
-
-        <div className="my-6 rounded-lg border border-warning/30 bg-warning/10 p-6">
-          <h3 className="mb-3 font-semibold">No Enforcement</h3>
-          <p>
-            Budgets without CI/CD gates and alerts become suggestions. Integrate enforcement into
-            development workflow.
-          </p>
-        </div>
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Google&apos;s Core Web Vitals represent the most influential performance budget framework in
+          the industry. Google defined three key metrics—Largest Contentful Paint (LCP) under 2.5s,
+          First Input Delay (FID) under 100ms, and Cumulative Layout Shift (CLS) under 0.1—as part of
+          their page experience signals that directly impact search rankings. This created a powerful
+          incentive for the entire web ecosystem to adopt these budgets. Google Search Console provides
+          a Core Web Vitals report showing how pages perform against these budgets, and Lighthouse
+          integrates these budgets into its auditing. Google&apos;s approach demonstrates how combining
+          performance budgets with business incentives (search ranking) drives industry-wide adoption.
+        </p>
+        <p>
+          Amazon found that every 100ms of latency cost them 1% in sales, a finding that has become
+          one of the most cited performance statistics in the industry. Amazon enforces strict
+          performance budgets across their platform with automated monitoring of page load times,
+          API latencies, and checkout flow performance. Their performance engineering team uses
+          progressive budgets that vary by device type, network condition, and geographic region.
+          Amazon&apos;s performance culture includes performance reviews in every sprint, dedicated
+          performance engineers embedded in teams, and executive-level accountability for performance
+          metrics. Their approach demonstrates the direct business impact of performance budgets and
+          the organizational commitment required to maintain them at scale.
+        </p>
+        <p>
+          Walmart measured the impact of performance on conversion rates and found that for every 1
+          second improvement in page load time, conversions increased by 2%. Walmart invested in
+          performance budgets for their e-commerce platform, focusing on mobile performance given that
+          the majority of their traffic comes from mobile devices. They use Lighthouse CI in their
+          CI/CD pipeline, RUM for production monitoring, and synthetic testing for competitive
+          benchmarking. Walmart&apos;s performance team publishes weekly performance reports, holds
+          monthly performance reviews, and includes performance metrics in team OKRs.
+        </p>
+        <p>
+          Shopify enforces performance budgets across their platform serving millions of merchants,
+          with particular focus on checkout performance since every millisecond of latency directly
+          impacts revenue. Shopify uses a combination of Lighthouse CI for pull request gating,
+          synthetic monitoring for key user journeys, and RUM for production visibility. Their
+          performance budgets are progressive, with different targets for desktop and mobile, and
+          they use per-user-segment budgets to ensure that merchants in emerging markets with slower
+          networks still receive acceptable performance. Shopify open-sourced their performance
+          monitoring tooling and contributes to the Lighthouse project, demonstrating how performance
+          budgets can be enforced at platform scale.
+        </p>
       </section>
 
       <section>
@@ -620,7 +491,7 @@ export default function EndToEndPerformanceBudgetsArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you set performance budgets for a new product?</p>
             <p className="mt-2 text-sm">
-              A: Start with industry benchmarks (LCP {'<'} 2.5s, TTI {'<'} 3.5s). Measure competitor
+              A: Start with industry benchmarks (Google CWV, Nielsen research). Collect baseline
               performance. Collect baseline data if possible. Set initial budgets at P75-P90 of expected
               performance. Tighten gradually as you optimize. Adjust for target markets (mobile vs
               desktop, geographic regions).
@@ -656,6 +527,24 @@ export default function EndToEndPerformanceBudgetsArticle() {
             <a href="https://www.smashingmagazine.com/2020/02/performance-budgets-tooling/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               Smashing Magazine — Performance Budget Tooling
             </a>
+          </li>
+          <li>
+            <a href="https://web.dev/vitals/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Core Web Vitals
+            </a>
+          </li>
+          <li>
+            <a href="https://httparchive.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              HTTP Archive — Web Performance Statistics
+            </a>
+          </li>
+          <li>
+            <a href="https://www.calibreapp.com/blog/performance-budgets" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Calibre — Making Performance Budgets Work
+            </a>
+          </li>
+          <li>
+            &quot;Using a Performance Budget to Manage a Site&apos;s Impact&quot; by Tim Kadlec
           </li>
         </ul>
       </section>

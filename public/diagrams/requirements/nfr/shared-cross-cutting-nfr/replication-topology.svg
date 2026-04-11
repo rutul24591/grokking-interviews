@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f1f5f9"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Replication Topology Patterns</text>
+
+  <!-- Pattern 1: Single Primary (Synchronous) -->
+  <g transform="translate(30, 70)">
+    <rect x="0" y="0" width="260" height="200" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#166534">Single Primary (Synchronous)</text>
+
+    <!-- Primary -->
+    <rect x="80" y="45" width="100" height="45" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="130" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#166534">Primary</text>
+    <text x="130" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">R/W</text>
+
+    <!-- Write arrow down to replicas -->
+    <line x1="100" y1="90" x2="60" y2="125" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+    <line x1="160" y1="90" x2="200" y2="125" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+    <!-- Sync label -->
+    <text x="130" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">SYNC</text>
+
+    <!-- Replicas -->
+    <rect x="20" y="130" width="80" height="40" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+    <text x="60" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Replica 1</text>
+    <text x="60" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">Read only</text>
+
+    <rect x="160" y="130" width="80" height="40" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+    <text x="200" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">Replica 2</text>
+    <text x="200" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">Read only</text>
+
+    <text x="130" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Strong consistency, primary SPOF</text>
+  </g>
+
+  <!-- Pattern 2: Multi-Primary (Async) -->
+  <g transform="translate(320, 70)">
+    <rect x="0" y="0" width="260" height="200" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e40af">Multi-Primary (Asynchronous)</text>
+
+    <!-- Two primaries -->
+    <rect x="30" y="50" width="80" height="40" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="70" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Primary A</text>
+    <text x="70" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">R/W</text>
+
+    <rect x="150" y="50" width="80" height="40" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="190" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">Primary B</text>
+    <text x="190" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">R/W</text>
+
+    <!-- Bidirectional async replication -->
+    <path d="M110,70 Q130,55 150,70" fill="none" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+    <path d="M150,80 Q130,95 110,80" fill="none" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+    <text x="130" y="73" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="bold" fill="#3b82f6">ASYNC</text>
+
+    <!-- Replicas under each primary -->
+    <line x1="70" y1="90" x2="50" y2="125" stroke="#3b82f6" stroke-width="1" marker-end="url(#arrowBlue)"/>
+    <line x1="70" y1="90" x2="90" y2="125" stroke="#3b82f6" stroke-width="1" marker-end="url(#arrowBlue)"/>
+    <line x1="190" y1="90" x2="170" y2="125" stroke="#3b82f6" stroke-width="1" marker-end="url(#arrowBlue)"/>
+    <line x1="190" y1="90" x2="210" y2="125" stroke="#3b82f6" stroke-width="1" marker-end="url(#arrowBlue)"/>
+
+    <rect x="15" y="130" width="70" height="38" rx="5" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+    <text x="50" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">Replica A1</text>
+    <text x="50" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">Read only</text>
+
+    <rect x="95" y="130" width="70" height="38" rx="5" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+    <text x="130" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">Replica A2</text>
+    <text x="130" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">Read only</text>
+
+    <rect x="155" y="130" width="70" height="38" rx="5" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+    <text x="190" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">Replica B1</text>
+    <text x="190" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">Read only</text>
+
+    <text x="130" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Cross-region, conflict resolution needed</text>
+  </g>
+
+  <!-- Pattern 3: Leaderless (Quorum) -->
+  <g transform="translate(610, 70)">
+    <rect x="0" y="0" width="260" height="200" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Leaderless (Quorum R+W&gt;N)</text>
+
+    <!-- All nodes equal -->
+    <rect x="20" y="50" width="65" height="40" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="52" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Node 1</text>
+    <text x="52" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">R/W</text>
+
+    <rect x="97" y="50" width="65" height="40" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="130" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Node 2</text>
+    <text x="130" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">R/W</text>
+
+    <rect x="174" y="50" width="65" height="40" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="206" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">Node 3</text>
+    <text x="206" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#374151">R/W</text>
+
+    <!-- All-to-all replication -->
+    <line x1="85" y1="70" x2="97" y2="70" stroke="#d97706" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+    <line x1="162" y1="70" x2="174" y2="70" stroke="#d97706" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+    <!-- Sloped quorum annotation -->
+    <rect x="30" y="105" width="200" height="65" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+    <text x="130" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#92400e">N=3, W=2, R=2</text>
+    <text x="130" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Write to 2 nodes, read from 2</text>
+    <text x="130" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#374151">Guaranteed overlap: R+W &gt; N</text>
+
+    <text x="130" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Tunable consistency, high availability</text>
+  </g>
+
+  <!-- Comparison Table at Bottom -->
+  <g transform="translate(30, 300)">
+    <rect x="0" y="0" width="840" height="185" rx="10" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+    <text x="420" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e293b">Replication Pattern Comparison</text>
+
+    <!-- Header row -->
+    <rect x="10" y="40" width="820" height="28" rx="4" fill="#cbd5e1"/>
+    <text x="160" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Pattern</text>
+    <text x="330" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Consistency</text>
+    <text x="500" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Availability</text>
+    <text x="670" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Write Latency</text>
+    <text x="790" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Use Case</text>
+
+    <!-- Row 1 -->
+    <rect x="10" y="68" width="820" height="28" fill="#f8fafc"/>
+    <text x="160" y="86" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#334155">Single Primary Sync</text>
+    <text x="330" y="86" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#166534">Strong</text>
+    <text x="500" y="86" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Medium</text>
+    <text x="670" y="86" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Higher (wait for sync)</text>
+    <text x="790" y="86" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#334155">Financial, ACID</text>
+
+    <!-- Row 2 -->
+    <rect x="10" y="96" width="820" height="28" fill="#f1f5f9"/>
+    <text x="160" y="114" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#334155">Multi-Primary Async</text>
+    <text x="330" y="114" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Eventual</text>
+    <text x="500" y="114" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#166534">High</text>
+    <text x="670" y="114" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#166534">Low (local write)</text>
+    <text x="790" y="114" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#334155">Cross-region, global</text>
+
+    <!-- Row 3 -->
+    <rect x="10" y="124" width="820" height="28" fill="#f8fafc"/>
+    <text x="160" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#334155">Leaderless Quorum</text>
+    <text x="330" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Tunable</text>
+    <text x="500" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#166534">High</text>
+    <text x="670" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Medium (W of N)</text>
+    <text x="790" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#334155">Dynamo, Cassandra</text>
+
+    <!-- Row 4 -->
+    <rect x="10" y="152" width="820" height="28" fill="#f1f5f9"/>
+    <text x="160" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#334155">Semi-Synchronous</text>
+    <text x="330" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Bounded Staleness</text>
+    <text x="500" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#166534">High</text>
+    <text x="670" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#166534">Low-Medium</text>
+    <text x="790" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#334155">Cosmos DB, MySQL</text>
+  </g>
+</svg>

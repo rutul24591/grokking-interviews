@@ -27,531 +27,432 @@ export default function EndToEndObservabilityArticle() {
         <p>
           <strong>End-to-End Observability</strong> is the ability to understand the internal state of a
           system by examining its outputs—across all services, from user request to backend processing
-          and back. Unlike monitoring (which tells you when something is wrong), observability enables you
+          and back. Unlike monitoring, which tells you when something is wrong, observability enables you
           to ask arbitrary questions about system behavior without knowing the question in advance.
         </p>
         <p>
-          Observability rests on three pillars:
-        </p>
-        <ul>
-          <li><strong>Logs:</strong> Timestamped records of events.</li>
-          <li><strong>Metrics:</strong> Numerical measurements over time.</li>
-          <li><strong>Traces:</strong> Request flow across services.</li>
-        </ul>
-        <p>
-          In distributed systems, observability is critical for debugging issues that span multiple
-          services. A single user request may traverse 10+ services—without end-to-end tracing,
-          identifying the root cause of latency or failures is nearly impossible. For staff and principal
-          engineers, observability is both a technical and organizational concern—the decisions you make
-          about instrumentation, data retention, and tooling have lasting impact on operational
-          effectiveness.
+          Observability rests on three pillars: logs (timestamped records of events), metrics (numerical
+          measurements over time), and traces (request flow across services). In distributed systems,
+          observability is critical for debugging issues that span multiple services. A single user
+          request may traverse ten or more services—without end-to-end tracing, identifying the root
+          cause of latency or failures is nearly impossible. For staff and principal engineers,
+          observability is both a technical and organizational concern—the decisions you make about
+          instrumentation, data retention, and tooling have lasting impact on operational effectiveness.
         </p>
         <p>
-          <strong>Key principles:</strong>
+          The key principles of observability include high cardinality (capturing rich context such as
+          user IDs, request IDs, and versions), correlation (linking logs, metrics, and traces via
+          common identifiers), sampling (balancing cost with visibility through intelligent sampling
+          strategies), standardization (consistent schemas, naming conventions, and instrumentation),
+          and actionability (ensuring observability data drives action through alerts, dashboards, and
+          investigations).
         </p>
-        <ul>
-          <li><strong>High Cardinality:</strong> Capture rich context (user IDs, request IDs, versions).</li>
-          <li><strong>Correlation:</strong> Link logs, metrics, and traces via common identifiers.</li>
-          <li><strong>Sampling:</strong> Balance cost with visibility through intelligent sampling.</li>
-          <li><strong>Standardization:</strong> Consistent schemas, naming conventions, and instrumentation.</li>
-          <li><strong>Actionability:</strong> Observability data should drive action (alerts, dashboards, investigations).</li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/observability-three-pillars.svg"
           alt="Three Pillars of Observability showing logs, metrics, and traces"
           caption="The Three Pillars of Observability: Logs (timestamped events), Metrics (numerical measurements), and Traces (request flow) with correlation linking all three for complete visibility."
         />
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Observability Enables Debugging the Unknown</h3>
-          <p>
-            Monitoring alerts you to known failure modes. Observability enables investigating novel
-            failures—the &quot;unknown unknowns&quot; that weren&apos;t anticipated when dashboards
-            were built. Invest in observability before you need it.
-          </p>
-        </div>
       </section>
 
       <section>
-        <h2>The Three Pillars</h2>
+        <h2>Core Concepts</h2>
         <p>
-          Each pillar provides a different lens into system behavior. Together, they provide complete
-          visibility.
+          Logs are structured, timestamped event records that provide the most detailed form of
+          observability data. Application logs capture business events, errors, warnings, and info
+          messages, while access logs record HTTP requests, response codes, latency, and user agents.
+          Audit logs track security-relevant events such as logins and permission changes, and system
+          logs capture OS-level events and kernel messages. Best practices for logging include using
+          structured logging in JSON format for machine parsing, maintaining a consistent schema with
+          standard fields (timestamp, level, service, trace ID), including correlation IDs in every log
+          entry, applying appropriate log levels (DEBUG, INFO, WARN, ERROR, FATAL) consistently, managing
+          disk space through log rotation, and shipping logs to a centralized aggregation system such as
+          ELK, Splunk, or Datadog.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Logs</h3>
         <p>
-          Structured, timestamped event records. The most detailed form of observability data.
+          Metrics are numerical measurements aggregated over time, ideal for alerting and dashboards.
+          Counters are monotonically increasing values such as request count and error count. Gauges
+          represent point-in-time values such as CPU usage and queue depth. Histograms capture the
+          distribution of values, particularly for latency percentiles, while summaries provide
+          pre-calculated percentiles. The RED method for services tracks Rate (requests per second),
+          Errors (error rate as percentage or count), and Duration (latency percentiles P50, P95, P99).
+          The USE method for resources monitors Utilization (percentage of resource in use), Saturation
+          (queue depth, wait time), and Errors (hardware errors, dropped packets). The Golden Signals
+          cover Latency (time to process requests), Traffic (demand on system as requests per second),
+          Errors (rate of failed requests), and Saturation (how full the service is). Metrics should
+          use high cardinality labels (service, endpoint, status, region), appropriate aggregation
+          to maintain flexibility, SLO burn rate tracking, and consistent naming conventions across
+          all services.
         </p>
-        <h4 className="mt-4 mb-2 font-semibold">Log Types</h4>
-        <ul>
-          <li><strong>Application Logs:</strong> Business events, errors, warnings, info messages.</li>
-          <li><strong>Access Logs:</strong> HTTP requests, response codes, latency, user agents.</li>
-          <li><strong>Audit Logs:</strong> Security-relevant events (logins, permission changes).</li>
-          <li><strong>System Logs:</strong> OS-level events, kernel messages.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Best Practices</h4>
-        <ul>
-          <li><strong>Structured Logging:</strong> JSON format for machine parsing.</li>
-          <li><strong>Consistent Schema:</strong> Standard fields (timestamp, level, service, trace_id).</li>
-          <li><strong>Correlation IDs:</strong> Include trace_id in every log entry.</li>
-          <li><strong>Appropriate Levels:</strong> DEBUG, INFO, WARN, ERROR, FATAL—use consistently.</li>
-          <li><strong>Log Rotation:</strong> Manage disk space, archive old logs.</li>
-          <li><strong>Centralized Aggregation:</strong> Ship logs to central system (ELK, Splunk, Datadog).</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Common Log Fields</h4>
-        <ul>
-          <li><code className="mx-1 rounded bg-panel-soft px-1">timestamp</code>: ISO 8601 format</li>
-          <li><code className="mx-1 rounded bg-panel-soft px-1">level</code>: DEBUG, INFO, WARN, ERROR</li>
-          <li><code className="mx-1 rounded bg-panel-soft px-1">service</code>: Service name</li>
-          <li><code className="mx-1 rounded bg-panel-soft px-1">trace_id</code>: Distributed trace ID</li>
-          <li><code className="mx-1 rounded bg-panel-soft px-1">span_id</code>: Current span ID</li>
-          <li><code className="mx-1 rounded bg-panel-soft px-1">user_id</code>: User identifier (if applicable)</li>
-          <li><code className="mx-1 rounded bg-panel-soft px-1">request_id</code>: Request identifier</li>
-          <li><code className="mx-1 rounded bg-panel-soft px-1">message</code>: Human-readable message</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Metrics</h3>
         <p>
-          Numerical measurements aggregated over time. Ideal for alerting and dashboards.
+          Traces track request flow across services and are essential for understanding distributed
+          system behavior. A trace represents the complete request flow from start to finish, composed
+          of spans where each span is a single operation within one service. Trace IDs uniquely identify
+          the entire request flow, while span IDs identify individual operations. Parent-child
+          relationships define span hierarchies, tags provide key-value metadata on spans (HTTP method,
+          status code), and logs capture events within a span such as errors and checkpoints. Traces
+          must propagate context by passing trace IDs via headers across all services, sample
+          appropriately (100% for low traffic, sampling for high traffic), add meaningful tags with
+          business context (user ID, order ID), instrument dependencies including database calls and
+          external APIs, and use OpenTelemetry for cross-vendor compatibility.
         </p>
-        <h4 className="mt-4 mb-2 font-semibold">Metric Types</h4>
-        <ul>
-          <li><strong>Counters:</strong> Monotonically increasing (request count, error count).</li>
-          <li><strong>Gauges:</strong> Point-in-time values (CPU usage, queue depth).</li>
-          <li><strong>Histograms:</strong> Distribution of values (latency percentiles).</li>
-          <li><strong>Summaries:</strong> Pre-calculated percentiles.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">RED Method (for Services)</h4>
-        <ul>
-          <li><strong>Rate:</strong> Requests per second.</li>
-          <li><strong>Errors:</strong> Error rate (percentage or count).</li>
-          <li><strong>Duration:</strong> Latency (P50, P95, P99).</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">USE Method (for Resources)</h4>
-        <ul>
-          <li><strong>Utilization:</strong> Percentage of resource in use (CPU, memory).</li>
-          <li><strong>Saturation:</strong> Queue depth, wait time.</li>
-          <li><strong>Errors:</strong> Hardware errors, dropped packets.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Golden Signals</h4>
-        <ul>
-          <li><strong>Latency:</strong> Time to process requests.</li>
-          <li><strong>Traffic:</strong> Demand on system (requests/sec).</li>
-          <li><strong>Errors:</strong> Rate of failed requests.</li>
-          <li><strong>Saturation:</strong> How &quot;full&quot; the service is.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Best Practices</h4>
-        <ul>
-          <li><strong>High Cardinality Labels:</strong> Include service, endpoint, status, region.</li>
-          <li><strong>Appropriate Aggregation:</strong> Don&apos;t over-aggregate; keep flexibility.</li>
-          <li><strong>SLO Tracking:</strong> Track SLO burn rate as metrics.</li>
-          <li><strong>Consistent Naming:</strong> Standard naming conventions across services.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Traces</h3>
         <p>
-          Request flow across services. Essential for understanding distributed system behavior.
+          Correlation links logs, metrics, and traces together, enabling engineers to jump from a metric
+          alert to relevant traces to detailed logs without manual searching. Including trace IDs in
+          every log entry enables log aggregation by trace ID and allows jumping from trace to logs in
+          the UI. Implementation uses MDC (Mapped Diagnostic Context) or equivalent to automatically
+          inject trace IDs into logs. Adding trace context to metric labels enables jumping from metric
+          spikes to traces, though care must be taken to avoid cardinality explosion. Unified dashboards
+          provide a single view across all telemetry with metrics, logs, and traces in the same view,
+          click-through navigation from metric to traces to logs, and time synchronization across all
+          data types. Service maps auto-generated from trace data show latency and error rates on edges
+          between services, helping identify critical paths and bottlenecks. This correlation
+          infrastructure directly reduces mean time to resolution during incidents.
         </p>
-        <h4 className="mt-4 mb-2 font-semibold">Trace Concepts</h4>
-        <ul>
-          <li><strong>Trace:</strong> Complete request flow from start to finish.</li>
-          <li><strong>Span:</strong> Single operation within a trace (one service call).</li>
-          <li><strong>Trace ID:</strong> Unique identifier for entire request flow.</li>
-          <li><strong>Span ID:</strong> Unique identifier for individual span.</li>
-          <li><strong>Parent/Child:</strong> Span relationships (parent span creates child spans).</li>
-          <li><strong>Tags:</strong> Key-value metadata on spans (HTTP method, status code).</li>
-          <li><strong>Logs:</strong> Events within a span (errors, checkpoints).</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Best Practices</h4>
-        <ul>
-          <li><strong>Propagate Context:</strong> Pass trace_id via headers across all services.</li>
-          <li><strong>Sample Appropriately:</strong> 100% for low traffic, sampling for high traffic.</li>
-          <li><strong>Add Meaningful Tags:</strong> Include business context (user_id, order_id).</li>
-          <li><strong>Instrument Dependencies:</strong> Database calls, external APIs, message queues.</li>
-          <li><strong>Standardize:</strong> Use OpenTelemetry for cross-vendor compatibility.</li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/observability-implementation.svg"
           alt="Observability Implementation showing data flow from services to backend"
           caption="Observability Implementation: Services emit logs, metrics, and traces to collectors, which forward to centralized backends for storage, analysis, and visualization."
         />
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Correlation Is Key</h3>
-          <p>
-            The real power of observability comes from correlating logs, metrics, and traces. A metric
-            alert should link to relevant traces. A trace should show all related logs. Invest in
-            correlation infrastructure (trace_id in logs, metric labels) to enable this.
-          </p>
-        </div>
       </section>
 
       <section>
-        <h2>Distributed Tracing</h2>
+        <h2>Architecture & Flow</h2>
         <p>
-          Distributed tracing tracks requests as they flow through multiple services. This is essential
-          for debugging latency and failures in microservices architectures.
+          The observability infrastructure architecture consists of several interconnected systems that
+          collect, process, store, and surface telemetry data. Understanding this architecture is
+          essential for designing observability at scale and making informed trade-off decisions about
+          tooling, retention, and cost.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Context Propagation</h3>
         <p>
-          Trace context must be passed across service boundaries:
+          The data collection pipeline begins with instrumentation at the service level. OpenTelemetry
+          SDKs are embedded in each service to auto-instrument common libraries (HTTP clients, database
+          drivers, message queue clients) and provide APIs for manual instrumentation of business logic.
+          Collectors (such as the OpenTelemetry Collector) receive telemetry data from services via
+          various protocols (gRPC, HTTP, Fluentd) and process it through a pipeline of receivers,
+          processors, and exporters. Receivers accept data in multiple formats, processors handle
+          batching, filtering, and attribute manipulation, and exporters send data to backends such as
+          Prometheus, Jaeger, Elasticsearch, or commercial platforms. Sidecar or DaemonSet deployments
+          ensure collectors run alongside every service instance, providing local aggregation before
+          forwarding to centralized backends.
         </p>
-        <h4 className="mt-4 mb-2 font-semibold">HTTP Headers</h4>
-        <ul>
-          <li><strong>W3C traceparent:</strong> Standard format (<code className="mx-1 rounded bg-panel-soft px-1">{`00-{trace_id}-{span_id}-{flags}`}</code>).</li>
-          <li><strong>B3 Headers:</strong> Zipkin format (<code className="mx-1 rounded bg-panel-soft px-1">X-B3-TraceId</code>, <code className="mx-1 rounded bg-panel-soft px-1">X-B3-SpanId</code>).</li>
-          <li><strong>Jaeger:</strong> <code className="mx-1 rounded bg-panel-soft px-1">uber-trace-id</code> header.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Message Queues</h4>
-        <ul>
-          <li>Include trace context in message headers.</li>
-          <li>Consumer creates child span from parent context.</li>
-          <li>Enables tracing across async boundaries.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Database Calls</h4>
-        <ul>
-          <li>Include trace_id in database query comments.</li>
-          <li>Some databases support query tagging.</li>
-          <li>Enables correlating slow queries with traces.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sampling Strategies</h3>
         <p>
-          Tracing every request is expensive. Sampling reduces cost while maintaining visibility.
+          The sampling infrastructure determines which telemetry data is retained and which is discarded.
+          Head-based sampling makes decisions at trace start, using rate-based (sample a fixed percentage
+          of all traces) or probabilistic (random sampling with fixed probability) strategies. It is
+          simple and consistent but may miss important traces. Tail-based sampling makes decisions after
+          trace completion, enabling sampling based on trace content such as error sampling (always
+          sample traces with errors), latency sampling (sample slow traces at P99+), and business
+          sampling (sample high-value transactions). A hybrid approach combines head sampling at a low
+          rate (e.g., 1%) for baseline visibility with tail sampling for errors, slow traces, and VIP
+          users, ensuring important traces are captured while controlling storage costs.
         </p>
-        <h4 className="mt-4 mb-2 font-semibold">Head-Based Sampling</h4>
         <p>
-          Decision made at trace start. Simple, consistent, but may miss important traces.
+          Storage and retention architecture varies by telemetry type. Metrics are stored in
+          time-series databases (Prometheus, Thanos, Cortex) with configurable retention periods and
+          downsampling for older data to reduce storage costs. Logs are stored in search-optimized
+          indexes (Elasticsearch, Loki) with hot-warm-cold tiering—recent logs on fast storage for
+          active querying, older logs on cheaper storage for occasional access, and archived logs in
+          object storage for compliance. Traces are stored in trace-optimized stores (Jaeger with
+          Elasticsearch or Cassandra, Tempo with object storage) with shorter retention periods due
+          to their large size. Retention policies balance debugging needs against storage costs, with
+          typical retention of 7-30 days for traces, 30-90 days for logs, and 13 months for metrics.
         </p>
-        <ul>
-          <li><strong>Rate-Based:</strong> Sample X% of all traces.</li>
-          <li><strong>Probabilistic:</strong> Random sampling with fixed probability.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Tail-Based Sampling</h4>
         <p>
-          Decision made after trace completes. Can sample based on trace content.
+          The query and visualization layer provides interfaces for engineers to explore observability
+          data. Grafana serves as the primary dashboard tool, querying Prometheus for metrics, Loki
+          for logs, and Tempo or Jaeger for traces, with the ability to link between data types in a
+          single view. Ad-hoc query interfaces enable engineers to ask arbitrary questions during
+          incident investigation—searching logs by trace ID, filtering traces by latency or error
+          status, and aggregating metrics by arbitrary labels. Service maps auto-generated from trace
+          data visualize service dependencies, latency, and error rates, helping engineers understand
+          system topology at a glance.
         </p>
-        <ul>
-          <li><strong>Error Sampling:</strong> Always sample traces with errors.</li>
-          <li><strong>Latency Sampling:</strong> Sample slow traces (P99+).</li>
-          <li><strong>Business Sampling:</strong> Sample high-value transactions.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Hybrid Approach</h4>
         <p>
-          Combine head and tail sampling:
+          The alerting pipeline processes metric thresholds and SLO burn rates to notify engineers of
+          issues. Alert rules are defined in Prometheus (or equivalent) and evaluated at configurable
+          intervals. Alertmanager handles deduplication, grouping, and routing of alerts to the
+          appropriate channels (PagerDuty, Slack, email). SLO-based alerting uses error budget burn
+          rates to alert on symptoms rather than causes, with multi-window burn rate alerts that
+          consider both the rate of budget consumption and the time window. Every alert must be
+          actionable with a linked runbook, and alert fatigue is managed through regular review and
+          tuning of alert thresholds.
         </p>
-        <ul>
-          <li>Head sample at low rate (e.g., 1%)</li>
-          <li>Tail sample for errors, slow traces, VIP users</li>
-          <li>Ensures important traces are captured</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Tracing Tools</h3>
-        <h4 className="mt-4 mb-2 font-semibold">Open Source</h4>
-        <ul>
-          <li><strong>Jaeger:</strong> CNCF project, widely adopted, rich features.</li>
-          <li><strong>Zipkin:</strong> Original distributed tracing system, simple.</li>
-          <li><strong>Tempo:</strong> Grafana Labs, integrates with Prometheus/Grafana.</li>
-          <li><strong>OpenTelemetry:</strong> Vendor-neutral instrumentation (not a backend).</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Commercial</h4>
-        <ul>
-          <li><strong>Datadog:</strong> Full observability platform.</li>
-          <li><strong>New Relic:</strong> APM with distributed tracing.</li>
-          <li><strong>Dynatrace:</strong> AI-powered observability.</li>
-          <li><strong>Honeycomb:</strong> High-cardinality observability.</li>
-          <li><strong>Lightstep:</strong> High-scale tracing.</li>
-        </ul>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Instrument Everything</h3>
-          <p>
-            Partial tracing is worse than no tracing—if you can&apos;t trace across all services, you
-            have blind spots. Instrument all services consistently. Use auto-instrumentation where
-            available (OpenTelemetry). Manual instrumentation for business-critical paths.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <h2>Correlation</h2>
-        <p>
-          Correlation links logs, metrics, and traces together. This enables jumping from a metric alert
-          to relevant traces to detailed logs—without manual searching.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Trace ID in Logs</h3>
-        <p>
-          Include trace_id in every log entry:
-        </p>
-        <ul>
-          <li>Enable log aggregation by trace_id.</li>
-          <li>Jump from trace to logs in UI.</li>
-          <li>Search logs by trace_id for debugging.</li>
-        </ul>
-        <p><strong>Implementation:</strong> Use MDC (Mapped Diagnostic Context) or equivalent to
-        automatically inject trace_id into logs.</p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Metric Labels</h3>
-        <p>
-          Add trace context to metrics:
-        </p>
-        <ul>
-          <li>Include trace_id as label on error metrics.</li>
-          <li>Enable jumping from metric spike to traces.</li>
-          <li>Be careful with cardinality explosion.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unified Dashboards</h3>
-        <p>
-          Single view across all telemetry:
-        </p>
-        <ul>
-          <li>Metrics, logs, and traces in same view.</li>
-          <li>Click from metric to traces to logs.</li>
-          <li>Time-synchronized across all data types.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Service Maps</h3>
-        <p>
-          Visual representation of service dependencies:
-        </p>
-        <ul>
-          <li>Auto-generated from trace data.</li>
-          <li>Show latency and error rates on edges.</li>
-          <li>Identify critical paths and bottlenecks.</li>
-        </ul>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Correlation Reduces MTTR</h3>
-          <p>
-            When an alert fires, engineers should be able to jump directly to relevant traces and logs.
-            Manual correlation (searching for trace_id, matching timestamps) wastes precious time during
-            incidents. Invest in correlation infrastructure.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <h2>Observability Maturity</h2>
-        <p>
-          Organizations typically progress through maturity levels. Understanding your current level helps
-          prioritize investments.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Level 1: Basic Monitoring</h3>
-        <p>
-          Reactive monitoring with basic alerts:
-        </p>
-        <ul>
-          <li>Server-level metrics (CPU, memory, disk).</li>
-          <li>Basic uptime monitoring.</li>
-          <li>Alerts on threshold breaches.</li>
-          <li>Logs on individual servers.</li>
-        </ul>
-        <p><strong>Limitations:</strong> Can&apos;t debug distributed issues, reactive not proactive.</p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Level 2: Centralized Logging</h3>
-        <p>
-          Logs aggregated to central system:
-        </p>
-        <ul>
-          <li>ELK stack or similar.</li>
-          <li>Search across all logs.</li>
-          <li>Basic log-based alerts.</li>
-          <li>Still siloed from metrics.</li>
-        </ul>
-        <p><strong>Improvement:</strong> Can search logs centrally, but still reactive.</p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Level 3: Metrics + Tracing</h3>
-        <p>
-          Full metrics and distributed tracing:
-        </p>
-        <ul>
-          <li>Prometheus/Grafana for metrics.</li>
-          <li>Jaeger/Zipkin for tracing.</li>
-          <li>RED/USE method dashboards.</li>
-          <li>SLO tracking.</li>
-        </ul>
-        <p><strong>Improvement:</strong> Can debug distributed issues, proactive alerting.</p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Level 4: Full Observability</h3>
-        <p>
-          Correlated logs, metrics, and traces:
-        </p>
-        <ul>
-          <li>Unified observability platform.</li>
-          <li>Correlation across all telemetry.</li>
-          <li>High-cardinality exploration.</li>
-          <li>Observability-driven development.</li>
-        </ul>
-        <p><strong>Capabilities:</strong> Debug unknown unknowns, ask arbitrary questions.</p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/observability-maturity-model.svg"
           alt="Observability Maturity Model showing progression from Level 1 to Level 4"
           caption="Observability Maturity Model: Progression from basic monitoring (Level 1) through centralized logging (Level 2), metrics + tracing (Level 3), to full observability with correlation (Level 4)."
         />
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Progress Incrementally</h3>
-          <p>
-            Don&apos;t try to jump from Level 1 to Level 4. Each level provides value. Start with
-            centralized logging, add metrics, then tracing, then correlation. Each step improves
-            operational effectiveness.
-          </p>
-        </div>
       </section>
 
       <section>
-        <h2>Observability-Driven Development</h2>
+        <h2>Trade-offs & Comparison</h2>
         <p>
-          Observability-driven development (ODD) means considering observability as a first-class concern
-          during development, not as an afterthought.
+          Observability architecture decisions involve significant trade-offs across data collection,
+          storage, and analysis dimensions. Understanding these trade-offs enables staff and principal
+          engineers to design observability systems that balance cost, completeness, and operational
+          effectiveness.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Development Practices</h3>
-        <h4 className="mt-4 mb-2 font-semibold">Instrumentation as Code</h4>
-        <ul>
-          <li>Treat instrumentation like production code.</li>
-          <li>Code review for instrumentation quality.</li>
-          <li>Test instrumentation in CI/CD.</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Define Metrics Before Launch</h4>
-        <ul>
-          <li>What metrics indicate success?</li>
-          <li>What alerts should fire?</li>
-          <li>What dashboards are needed?</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Trace Critical Paths</h4>
-        <ul>
-          <li>Identify critical user journeys.</li>
-          <li>Ensure full tracing coverage.</li>
-          <li>Add business context to traces.</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Push vs Pull Metrics</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Push (StatsD, Datadog)</th>
+                <th className="p-2 text-left">Pull (Prometheus)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Service Awareness</td>
+                <td className="p-2">Server knows all targets</td>
+                <td className="p-2">Server discovers targets</td>
+              </tr>
+              <tr>
+                <td className="p-2">Failure Detection</td>
+                <td className="p-2">Cannot detect dead services</td>
+                <td className="p-2">Can detect scrape failures</td>
+              </tr>
+              <tr>
+                <td className="p-2">Network Load</td>
+                <td className="p-2">Bursts during high activity</td>
+                <td className="p-2">Steady, predictable</td>
+              </tr>
+              <tr>
+                <td className="p-2">Short-Lived Jobs</td>
+                <td className="p-2">Works well</td>
+                <td className="p-2">Difficult to scrape</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Pre-Launch Checklist</h3>
-        <ul>
-          <li>Metrics defined and instrumented</li>
-          <li>Logs structured and shipped</li>
-          <li>Traces propagated across services</li>
-          <li>Dashboards created</li>
-          <li>Alerts configured</li>
-          <li>Runbooks documented</li>
-          <li>On-call trained</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Head-Based vs Tail-Based Sampling</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Head-Based</th>
+                <th className="p-2 text-left">Tail-Based</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Decision Timing</td>
+                <td className="p-2">At trace start</td>
+                <td className="p-2">After trace completes</td>
+              </tr>
+              <tr>
+                <td className="p-2">Important Trace Capture</td>
+                <td className="p-2">May miss (random)</td>
+                <td className="p-2">Guaranteed (content-based)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Complexity</td>
+                <td className="p-2">Low (simple probability)</td>
+                <td className="p-2">High (buffer, evaluate)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Storage Cost</td>
+                <td className="p-2">Predictable (fixed rate)</td>
+                <td className="p-2">Variable (depends on content)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Post-Launch Review</h3>
-        <ul>
-          <li>Are metrics being emitted correctly?</li>
-          <li>Are alerts firing appropriately?</li>
-          <li>Are dashboards useful?</li>
-          <li>What gaps were discovered?</li>
-          <li>Update instrumentation based on learnings</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Open-Source vs Commercial Observability Platforms</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Open Source</th>
+                <th className="p-2 text-left">Commercial</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Cost</td>
+                <td className="p-2">Lower license cost, higher ops cost</td>
+                <td className="p-2">Higher license cost, lower ops cost</td>
+              </tr>
+              <tr>
+                <td className="p-2">Flexibility</td>
+                <td className="p-2">Full control, customizable</td>
+                <td className="p-2">Vendor-defined features</td>
+              </tr>
+              <tr>
+                <td className="p-2">Integration</td>
+                <td className="p-2">Manual (assemble components)</td>
+                <td className="p-2">Built-in (all-in-one platform)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Vendor Lock-In</td>
+                <td className="p-2">Low (open standards)</td>
+                <td className="p-2">High (proprietary features)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Observability Is a Feature</h3>
-          <p>
-            Observability isn&apos;t optional infrastructure—it&apos;s a feature that enables rapid
-            debugging and confident deployments. Include observability requirements in user stories.
-            &quot;As an operator, I need to see latency by endpoint so I can identify slow endpoints.&quot;
-          </p>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Centralized vs Distributed Tracing Backends</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Centralized Backend</th>
+                <th className="p-2 text-left">Distributed Backend</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Scalability</td>
+                <td className="p-2">Vertical scaling limits</td>
+                <td className="p-2">Horizontal, unlimited</td>
+              </tr>
+              <tr>
+                <td className="p-2">Operational Complexity</td>
+                <td className="p-2">Lower (single system)</td>
+                <td className="p-2">Higher (manage cluster)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Query Performance</td>
+                <td className="p-2">Fast for small datasets</td>
+                <td className="p-2">Consistent at any scale</td>
+              </tr>
+              <tr>
+                <td className="p-2">Best For</td>
+                <td className="p-2">Small to medium deployments</td>
+                <td className="p-2">Large-scale, high-throughput</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Instrumentation</h3>
-        <ul>
-          <li>Use OpenTelemetry for vendor-neutral instrumentation</li>
-          <li>Auto-instrument where possible</li>
-          <li>Manual instrumentation for business logic</li>
-          <li>Consistent naming conventions</li>
-          <li>Include business context (user_id, order_id)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Management</h3>
-        <ul>
-          <li>Appropriate retention policies</li>
-          <li>Sampling for high-volume data</li>
-          <li>Cost monitoring and optimization</li>
-          <li>Data governance (PII in logs)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Alerting</h3>
-        <ul>
-          <li>Alert on symptoms, not causes</li>
-          <li>Use SLO-based alerting (burn rate)</li>
-          <li>Avoid alert fatigue (tune thresholds)</li>
-          <li>Actionable alerts with runbooks</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Dashboards</h3>
-        <ul>
-          <li>Golden signals for every service</li>
-          <li>Service-specific dashboards</li>
-          <li>Business metrics dashboards</li>
-          <li>Regular dashboard reviews (remove unused)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Operations</h3>
-        <ul>
-          <li>On-call training on observability tools</li>
-          <li>Runbooks linked from alerts</li>
-          <li>Regular game days using observability</li>
-          <li>Post-incident observability improvements</li>
-        </ul>
+        <p>
+          Use OpenTelemetry for vendor-neutral instrumentation across all services. Apply
+          auto-instrumentation wherever possible through SDK-provided instrumentations for common
+          libraries, and reserve manual instrumentation for business logic and critical paths. Maintain
+          consistent naming conventions for metrics, spans, and log fields across all services. Include
+          business context such as user ID and order ID in trace tags to enable filtering by business
+          dimensions. Define observability requirements before launching any service, including what
+          metrics indicate success, what alerts should fire, and what dashboards are needed.
+        </p>
+        <p>
+          Implement appropriate retention policies for each telemetry type, balancing debugging needs
+          against storage costs. Use intelligent sampling for high-volume data to control storage and
+          processing costs. Monitor observability costs and optimize continuously, adjusting retention
+          and sampling as traffic patterns change. Enforce data governance by scanning logs for PII and
+          sensitive data, implementing log scrubbing, and providing developer training on what should
+          and should not be logged.
+        </p>
+        <p>
+          Alert on symptoms rather than causes, using SLO-based alerting with burn rate alerts that
+          consider both error rate and time window. Avoid alert fatigue by tuning thresholds based on
+          historical data and conducting regular alert reviews to remove or tune noisy alerts. Ensure
+          every alert is actionable with a linked runbook. Build golden signals dashboards for every
+          service, create service-specific dashboards for deep dives, maintain business metrics
+          dashboards for stakeholder visibility, and conduct regular dashboard reviews to remove unused
+          or low-value dashboards.
+        </p>
+        <p>
+          Observability-driven development means considering observability as a first-class concern
+          during development, not as an afterthought. Treat instrumentation like production code with
+          code review for instrumentation quality and testing in CI/CD pipelines. Identify critical user
+          journeys and ensure full tracing coverage for these paths, adding business context to traces.
+          Use a pre-launch checklist covering metrics definition and instrumentation, structured logging
+          shipped to central systems, trace propagation across all services, dashboard creation, alert
+          configuration, runbook documentation, and on-call training. After launch, verify that metrics
+          are being emitted correctly, alerts are firing appropriately, dashboards are useful, and any
+          gaps discovered during operation are addressed with updated instrumentation.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <ul>
-          <li>
-            <strong>Siloed tools:</strong> Logs, metrics, traces in separate systems. Fix: Invest in
-            correlation, unified platform.
-          </li>
-          <li>
-            <strong>No trace propagation:</strong> Traces stop at service boundaries. Fix: Instrument
-            all services, propagate context.
-          </li>
-          <li>
-            <strong>Too much data:</strong> 100% sampling, logging everything. Fix: Intelligent sampling,
-            log levels, retention policies.
-          </li>
-          <li>
-            <strong>Alert fatigue:</strong> Too many alerts, ignored pages. Fix: SLO-based alerting,
-            tune thresholds, regular review.
-          </li>
-          <li>
-            <strong>Dashboard sprawl:</strong> Hundreds of unused dashboards. Fix: Regular cleanup,
-            ownership, usage tracking.
-          </li>
-          <li>
-            <strong>PII in logs:</strong> Sensitive data logged inadvertently. Fix: Log scrubbing,
-            developer training, automated scanning.
-          </li>
-          <li>
-            <strong>Observability as afterthought:</strong> Added post-launch. Fix: ODD, pre-launch
-            checklist, observability requirements.
-          </li>
-          <li>
-            <strong>No standardization:</strong> Each team does their own thing. Fix: Standard schemas,
-            naming conventions, shared libraries.
-          </li>
-          <li>
-            <strong>Cost surprises:</strong> Observability bill spikes. Fix: Cost monitoring, budgets,
-            sampling, retention policies.
-          </li>
-          <li>
-            <strong>Not using the data:</strong> Collecting but not acting. Fix: Regular reviews,
-            incident analysis, continuous improvement.
-          </li>
-        </ul>
+        <p>
+          Siloed tools with logs, metrics, and traces in separate systems prevent effective correlation
+          and increase mean time to resolution. The fix is to invest in correlation infrastructure and
+          either a unified observability platform or well-integrated open-source components. Missing
+          trace propagation where traces stop at service boundaries creates blind spots in distributed
+          debugging. Instrument all services consistently and propagate context via standard headers
+          such as W3C traceparent.
+        </p>
+        <p>
+          Collecting too much data through 100% sampling and logging everything leads to storage cost
+          explosions and performance degradation. Implement intelligent sampling, appropriate log
+          levels, and retention policies. Alert fatigue from too many alerts results in ignored pages
+          and missed critical incidents. Use SLO-based alerting, tune thresholds regularly, and ensure
+          every alert has an actionable runbook.
+        </p>
+        <p>
+          Dashboard sprawl with hundreds of unused dashboards creates confusion and wastes resources.
+          Conduct regular cleanup, assign ownership to dashboards, and track usage to identify and
+          remove low-value dashboards. Logging PII inadvertently creates security and compliance risks.
+          Implement log scrubbing, provide developer training, and use automated scanning to detect
+          sensitive data in logs. Treating observability as an afterthought added post-launch means
+          critical instrumentation is missing when incidents occur. Adopt observability-driven
+          development, use pre-launch checklists, and include observability requirements in user
+          stories. Lack of standardization where each team uses different tools and conventions
+          prevents cross-team debugging. Establish standard schemas, naming conventions, and shared
+          instrumentation libraries. Finally, collecting observability data but not using it wastes
+          resources and provides no operational benefit. Conduct regular reviews, analyze incidents
+          using observability data, and drive continuous improvement.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Netflix built Atlas, a dimensional time-series metrics platform, to handle the observability
+          needs of its microservices architecture serving hundreds of millions of users. Atlas supports
+          high cardinality metrics with real-time streaming evaluation of alerts, enabling Netflix
+          engineers to detect and respond to issues within seconds. Netflix open-sourced their
+          observability stack including Atlas for metrics, Mantis for real-time stream processing of
+          observability data, and Vector for high-performance telemetry data collection. Their approach
+          demonstrates how custom observability infrastructure can be built when commercial solutions
+          do not meet scale requirements.
+        </p>
+        <p>
+          Uber created Jaeger, a CNCF graduated project that is now one of the most widely used
+          distributed tracing systems. Uber&apos;s microservices architecture with thousands of services
+          required end-to-end tracing to debug latency issues and service dependencies. Jaeger supports
+          distributed context propagation, real-time trace processing, and dependency graph generation.
+          Uber uses Jaeger to identify critical paths in their ride-hailing and food delivery platforms,
+          optimize latency across service chains, and debug production incidents. Jaeger&apos;s success
+          demonstrates the value of building and open-sourcing observability tools that solve
+          production-scale problems.
+        </p>
+        <p>
+          Shopify uses a combination of open-source and commercial observability tools to monitor their
+          e-commerce platform serving millions of merchants. They use Prometheus and Grafana for metrics,
+          Elasticsearch and Kibana for logs, and a commercial tracing platform for distributed tracing.
+          Shopify&apos;s observability strategy focuses on correlating business metrics (order volume,
+          checkout conversion) with infrastructure metrics (latency, error rate) to understand how
+          technical issues impact revenue. During high-traffic events like Black Friday, Shopify uses
+          tail-based sampling to capture all error traces and slow traces while head-sampling normal
+          traffic, ensuring visibility into issues during peak load.
+        </p>
+        <p>
+          Datadog as an observability platform provider demonstrates the all-in-one approach to
+          observability. Datadog integrates metrics, logs, traces, network monitoring, security
+          monitoring, and real-user monitoring in a single platform with automatic correlation between
+          data types. Their service map feature auto-generates service dependency graphs from trace data,
+          and their watchdog feature uses machine learning to detect anomalies without manual threshold
+          configuration. Companies using Datadog benefit from reduced operational overhead compared to
+          assembling open-source components, but they accept vendor lock-in and per-host pricing that
+          scales with infrastructure size.
+        </p>
       </section>
 
       <section>

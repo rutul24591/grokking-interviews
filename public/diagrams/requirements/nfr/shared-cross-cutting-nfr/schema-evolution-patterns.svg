@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f1f5f9"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Schema Evolution: Compatible vs Breaking Changes</text>
+
+  <!-- LEFT: Compatible Changes -->
+  <g transform="translate(30, 70)">
+    <rect x="0" y="0" width="400" height="400" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="32" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#166534">Safe (No Version Bump Needed)</text>
+
+    <!-- Add Optional Field -->
+    <rect x="15" y="50" width="370" height="60" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="30" y="72" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Add Optional Field</text>
+    <text x="30" y="92" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">{ "name": "John", "age": 30, "middle_name": "A" }</text>
+    <rect x="300" y="62" width="75" height="24" rx="12" fill="#dcfce7"/>
+    <text x="337" y="78" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">SAFE</text>
+
+    <!-- Add Enum Value -->
+    <rect x="15" y="120" width="370" height="60" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="30" y="142" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Add Enum Value</text>
+    <text x="30" y="162" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">enum Tier { FREE, PRO, PREMIUM }</text>
+    <rect x="300" y="132" width="75" height="24" rx="12" fill="#dcfce7"/>
+    <text x="337" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">SAFE</text>
+
+    <!-- Widen Type -->
+    <rect x="15" y="190" width="370" height="60" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="30" y="212" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Widen Type</text>
+    <text x="30" y="232" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">int32 → int64, float32 → float64</text>
+    <rect x="300" y="202" width="75" height="24" rx="12" fill="#dcfce7"/>
+    <text x="337" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">SAFE</text>
+
+    <!-- Add Optional Param -->
+    <rect x="15" y="260" width="370" height="60" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="30" y="282" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Add Optional Query Param</text>
+    <text x="30" y="302" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">GET /users?include=metadata</text>
+    <rect x="300" y="272" width="75" height="24" rx="12" fill="#dcfce7"/>
+    <text x="337" y="288" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">SAFE</text>
+
+    <!-- Deprecate (not remove) -->
+    <rect x="15" y="330" width="370" height="60" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="30" y="352" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Deprecate Field (Keep Functional)</text>
+    <text x="30" y="372" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">@deprecated("use phones[] instead")</text>
+    <rect x="300" y="342" width="75" height="24" rx="12" fill="#dcfce7"/>
+    <text x="337" y="358" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">SAFE</text>
+  </g>
+
+  <!-- RIGHT: Breaking Changes -->
+  <g transform="translate(470, 70)">
+    <rect x="0" y="0" width="400" height="400" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="32" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#991b1b">Breaking (Requires Version Bump)</text>
+
+    <!-- Remove Field -->
+    <rect x="15" y="50" width="370" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+    <text x="30" y="72" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Remove Field</text>
+    <text x="30" y="92" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Removing "legacy_id" from response</text>
+    <rect x="300" y="62" width="75" height="24" rx="12" fill="#fee2e2"/>
+    <text x="337" y="78" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#991b1b">BREAKING</text>
+
+    <!-- Rename Field -->
+    <rect x="15" y="120" width="370" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+    <text x="30" y="142" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Rename Field</text>
+    <text x="30" y="162" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">userName → username</text>
+    <rect x="300" y="132" width="75" height="24" rx="12" fill="#fee2e2"/>
+    <text x="337" y="148" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#991b1b">BREAKING</text>
+
+    <!-- Change Type -->
+    <rect x="15" y="190" width="370" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+    <text x="30" y="212" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Change Field Type</text>
+    <text x="30" y="232" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">price: number → price: string ("$9.99")</text>
+    <rect x="300" y="202" width="75" height="24" rx="12" fill="#fee2e2"/>
+    <text x="337" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#991b1b">BREAKING</text>
+
+    <!-- Add Required Field -->
+    <rect x="15" y="260" width="370" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+    <text x="30" y="282" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Add Required Field</text>
+    <text x="30" y="302" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Making "email" required (was optional)</text>
+    <rect x="300" y="272" width="75" height="24" rx="12" fill="#fee2e2"/>
+    <text x="337" y="288" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#991b1b">BREAKING</text>
+
+    <!-- Change Semantics -->
+    <rect x="15" y="330" width="370" height="60" rx="6" fill="#ffffff" stroke="#fecaca" stroke-width="1"/>
+    <text x="30" y="352" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Change Field Semantics</text>
+    <text x="30" y="372" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">status: boolean → status: enum</text>
+    <rect x="300" y="342" width="75" height="24" rx="12" fill="#fee2e2"/>
+    <text x="337" y="358" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#991b1b">BREAKING</text>
+  </g>
+</svg>

@@ -39,501 +39,417 @@ export default function DataConsistencyGuaranteesArticle() {
           data requires strong consistency.
         </p>
         <p>
-          <strong>Key concepts:</strong>
+          Consistency is not binary but rather a spectrum ranging from strong (linearizable) to weak
+          (eventual). The right choice depends on the use case: financial transactions need strong
+          consistency, while social media feeds can tolerate eventual consistency. The guiding principle
+          is to choose the weakest consistency model that meets requirements for maximum availability
+          and performance.
         </p>
-        <ul>
-          <li><strong>ACID:</strong> Atomicity, Consistency, Isolation, Durability (traditional databases).</li>
-          <li><strong>BASE:</strong> Basically Available, Soft state, Eventual consistency (distributed systems).</li>
-          <li><strong>Isolation Levels:</strong> Read committed, repeatable read, serializable.</li>
-          <li><strong>Distributed Transactions:</strong> Two-phase commit, saga pattern.</li>
-          <li><strong>Consistency Models:</strong> Linearizable, sequential, causal, eventual.</li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/consistency-models-comparison.svg"
           alt="Consistency Models comparison showing different guarantees"
           caption="Consistency Models Spectrum: From strong (linearizable) to weak (eventual) consistency with their guarantees, latency implications, and use cases."
         />
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Consistency Is a Spectrum</h3>
-          <p>
-            Consistency isn&apos;t binary. It ranges from strong (linearizable) to weak (eventual). The
-            right choice depends on use case: financial transactions need strong consistency; social media
-            feeds can tolerate eventual consistency. Choose the weakest consistency that meets requirements
-            for maximum availability and performance.
-          </p>
-        </div>
       </section>
 
       <section>
-        <h2>ACID vs BASE</h2>
+        <h2>Core Concepts</h2>
         <p>
-          These represent two fundamentally different approaches to data consistency, each suited to
-          different use cases.
+          Data consistency in distributed systems is governed by two fundamentally different approaches:
+          ACID and BASE. ACID (Atomicity, Consistency, Isolation, Durability) guarantees strong consistency
+          and forms the foundation of traditional relational databases. Atomicity ensures all operations in
+          a transaction succeed or all fail with no partial completion—such as a bank transfer where debit
+          and credit either both happen or neither happens. Consistency ensures the database moves from one
+          valid state to another with all constraints enforced. Isolation ensures concurrent transactions
+          do not interfere with each other, and Durability ensures committed data persists even after
+          system failure. ACID is essential for financial systems, inventory management, order processing,
+          and any domain where data correctness is critical.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">ACID Properties</h3>
         <p>
-          ACID guarantees strong consistency and is the foundation of traditional relational databases.
+          BASE (Basically Available, Soft state, Eventual consistency) sacrifices strong consistency for
+          availability and partition tolerance, and is common in distributed NoSQL databases. Basically
+          Available means the system remains available even during failures, potentially returning stale
+          data rather than failing. Soft State means the state may change over time without new input due
+          to eventual consistency processes—replicas may have different data than the primary until
+          replication completes. Eventual Consistency means the system will become consistent eventually
+          if no new updates are made, with convergence time depending on replication lag and conflict
+          resolution. BASE suits social media feeds, caching layers, activity feeds, analytics, and
+          content management systems.
         </p>
-        <h4 className="mt-4 mb-2 font-semibold">Atomicity</h4>
         <p>
-          All operations in a transaction succeed or all fail—no partial completion. If any part of the
-          transaction fails, the entire transaction is rolled back.
+          Transaction isolation levels define how concurrent transactions interact, with higher isolation
+          preventing more anomalies but reducing concurrency and performance. The four standard SQL
+          isolation levels are Read Uncommitted (allows dirty reads, rarely used), Read Committed (prevents
+          dirty reads, default in PostgreSQL and Oracle, sufficient for most OLTP workloads), Repeatable
+          Read (prevents dirty and non-repeatable reads, default in MySQL, used for reporting and batch
+          processing), and Serializable (highest isolation, prevents all anomalies, significant performance
+          cost, used for critical financial operations). Concurrency anomalies include dirty reads (reading
+          uncommitted data), non-repeatable reads (different values for the same row in one transaction),
+          phantom reads (different row counts for the same query), and lost updates (two transactions
+          updating the same value with one update lost).
         </p>
-        <p><strong>Example:</strong> Bank transfer—debit from account A and credit to account B either
-        both happen or neither happens.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Consistency</h4>
         <p>
-          Database moves from one valid state to another. All constraints, triggers, and rules are
-          enforced. Invalid transactions are rejected.
+          Consistency model selection should be driven by business requirements rather than technology
+          preferences. Strong consistency is required for financial transactions, inventory management,
+          booking systems, identity and access control, and any scenario with legal or regulatory
+          requirements. Eventual consistency is appropriate for social media feeds, analytics and
+          reporting, caching layers, activity feeds, and product catalogs. Read-your-writes consistency
+          is needed for user settings, shopping carts, draft content, and any user-facing feature where
+          users expect to see their changes immediately.
         </p>
-        <p><strong>Example:</strong> Foreign key constraints prevent orphaned records; check constraints
-        prevent invalid values.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Isolation</h4>
         <p>
-          Concurrent transactions don&apos;t interfere with each other. Each transaction appears to execute
-          in isolation, even when running concurrently.
+          Real systems often combine ACID and BASE approaches. Use ACID for critical operations like
+          payments and inventory, and BASE for non-critical operations like feeds and analytics.
+          Microservices typically use ACID within individual services and eventual consistency between
+          services. Documenting which data uses which consistency model helps engineers make correct
+          decisions when adding features.
         </p>
-        <p><strong>Example:</strong> Two users updating the same record simultaneously don&apos;t see
-        each other&apos;s intermediate states.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Durability</h4>
-        <p>
-          Once a transaction commits, the data persists even after system failure. Committed data is
-          written to durable storage (disk, replicated).
-        </p>
-        <p><strong>Example:</strong> After order confirmation, order persists even if server crashes
-        immediately.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Use Cases</h4>
-        <ul>
-          <li>Financial systems (banking, payments, trading)</li>
-          <li>Inventory management (prevent overselling)</li>
-          <li>Order processing</li>
-          <li>Booking systems (flights, hotels)</li>
-          <li>Any system where data correctness is critical</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">BASE Properties</h3>
-        <p>
-          BASE sacrifices strong consistency for availability and partition tolerance. Common in
-          distributed NoSQL databases.
-        </p>
-        <h4 className="mt-4 mb-2 font-semibold">Basically Available</h4>
-        <p>
-          System remains available even during failures. May return stale data rather than failing.
-          Prioritizes availability over consistency.
-        </p>
-        <p><strong>Example:</strong> Social media feed shows slightly stale data but is always available.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Soft State</h4>
-        <p>
-          State may change over time without new input, due to eventual consistency processes. No
-          guarantee that state is stable at any moment.
-        </p>
-        <p><strong>Example:</strong> Replica may have different data than primary until replication completes.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Eventual Consistency</h4>
-        <p>
-          System will become consistent eventually if no new updates are made. Convergence time depends
-          on replication lag, conflict resolution.
-        </p>
-        <p><strong>Example:</strong> DNS propagation—changes take time to reach all servers.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Use Cases</h4>
-        <ul>
-          <li>Social media feeds</li>
-          <li>Caching layers</li>
-          <li>Activity feeds and notifications</li>
-          <li>Analytics and reporting</li>
-          <li>Content management (blogs, comments)</li>
-          <li>Shopping carts (with read-your-writes)</li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/distributed-transactions.svg"
           alt="Distributed Transaction Patterns comparison"
           caption="Distributed Transactions: Comparing 2PC (strong consistency, blocking) vs Saga (eventual consistency, non-blocking) patterns."
         />
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Hybrid Approaches</h3>
-          <p>
-            Real systems often combine ACID and BASE. Use ACID for critical operations (payments, inventory)
-            and BASE for non-critical (feeds, analytics). Microservices may use ACID within services and
-            eventual consistency between services.
-          </p>
-        </div>
       </section>
 
       <section>
-        <h2>Transaction Isolation Levels</h2>
+        <h2>Architecture & Flow</h2>
         <p>
-          Isolation levels define how concurrent transactions interact. Higher isolation prevents more
-          anomalies but reduces concurrency and performance.
+          Consistency systems in distributed environments rely on several architectural patterns that
+          govern how data is replicated, how consensus is reached, and how conflicts are resolved.
+          Understanding these architectures is critical for designing systems with the right consistency
+          guarantees.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Concurrency Anomalies</h3>
-        <h4 className="mt-4 mb-2 font-semibold">Dirty Read</h4>
         <p>
-          Reading uncommitted data from another transaction. If that transaction rolls back, you&apos;ve
-          read data that never existed.
+          Replication topology determines how data flows between nodes. In single-primary (leader-follower)
+          replication, all writes go to the leader and are asynchronously or synchronously replicated to
+          followers. This provides strong read-after-write consistency for the leader but may serve stale
+          data from followers. Multi-primary (leader-leader) replication allows writes to multiple nodes
+          simultaneously, improving write availability but requiring conflict resolution when concurrent
+          writes target the same data. Leaderless replication, used by Dynamo-style databases and Cassandra,
+          routes reads and writes to any node using consistent hashing, with consistency determined by
+          quorum configuration.
         </p>
-        <p><strong>Example:</strong> Transaction A reads value X=100. Transaction B updates X to 200 but
-        hasn&apos;t committed. Transaction A reads X=200. Transaction B rolls back. Transaction A has
-        read &quot;dirty&quot; data.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Non-Repeatable Read</h4>
         <p>
-          Reading different values for the same row in the same transaction. Another transaction modified
-          the row between reads.
+          Consensus protocols like Raft and Paxos enable distributed systems to agree on a single value
+          despite node failures. Raft, used by etcd, Consul, and CockroachDB, achieves consensus through
+          leader election and log replication. A leader is elected by a majority of nodes, all log entries
+          flow through the leader, and entries are committed once replicated to a majority. Paxos, used
+          by Google Spanner and Chubby, is mathematically proven correct but more complex to implement.
+          Both protocols guarantee that committed values are never lost and that all nodes eventually
+          agree, but they require a majority of nodes to be operational, which limits availability during
+          network partitions.
         </p>
-        <p><strong>Example:</strong> Transaction A reads X=100. Transaction B updates X to 200 and commits.
-        Transaction A reads X again, gets 200. Same query, different results.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Phantom Read</h4>
         <p>
-          Getting different number of rows for the same query. Another transaction inserted or deleted
-          matching rows.
+          Quorum reads and writes provide configurable consistency in leaderless systems. With N total
+          replicas, W nodes must acknowledge writes and R nodes must respond to reads. Consistency is
+          guaranteed when R + W &gt; N, ensuring at least one node in the read set has the latest value.
+          For example, with N=3, W=2, R=2, writes go to 2 of 3 replicas and reads come from 2 of 3,
+          guaranteeing overlap. This allows tuning the consistency-availability trade-off: stronger
+          consistency requires higher W and R values at the cost of increased latency and reduced
+          availability.
         </p>
-        <p><strong>Example:</strong> Transaction A queries &quot;SELECT * FROM orders WHERE status=&apos;pending&apos;&quot;
-        and gets 10 rows. Transaction B inserts a new pending order and commits. Transaction A runs same
-        query, gets 11 rows—a &quot;phantom&quot; row appeared.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Lost Update</h4>
         <p>
-          Two transactions read same value, both update, one update is lost.
+          The conflict resolution pipeline handles divergent data in eventually consistent systems.
+          Write-Ahead Logs (WAL) record all writes before applying them, with replicas replaying the log
+          to achieve consistency—this is the foundation of database replication and change data capture.
+          Conflict-Free Replicated Data Types (CRDTs) are data structures designed to converge
+          automatically with mathematical guarantees of eventual consistency without coordination,
+          including counters, sets, registers, and maps used in collaborative editing and distributed
+          counters. Vector clocks track causality between events to detect concurrent updates and
+          conflicts, used internally by DynamoDB and Riak. Last-write-wins with timestamps provides
+          simple but potentially lossy conflict resolution.
         </p>
-        <p><strong>Example:</strong> Transaction A reads X=100. Transaction B reads X=100. Transaction A
-        updates X to 150. Transaction B updates X to 120. Transaction A&apos;s update is lost.</p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">SQL Isolation Levels</h3>
-        <h4 className="mt-4 mb-2 font-semibold">Read Uncommitted</h4>
-        <p>Lowest isolation. Allows dirty reads, non-repeatable reads, and phantom reads.</p>
-        <p><strong>Use:</strong> Rarely used. Maybe for approximate analytics where accuracy doesn&apos;t matter.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Read Committed</h4>
         <p>
-          Default in most databases (PostgreSQL, Oracle, SQL Server). Prevents dirty reads. Allows
-          non-repeatable reads and phantom reads.
+          Distributed transaction architectures span multiple services or databases. Two-Phase Commit
+          (2PC) uses a coordinator-based protocol where Phase 1 (Prepare) has the coordinator send
+          prepare requests to all participants, who acquire locks and respond ready or abort, and Phase 2
+          (Commit) has the coordinator send commit or abort based on all responses. While 2PC provides
+          strong consistency and atomicity, it is blocking (participants hold locks throughout), has a
+          single point of failure in the coordinator, requires multiple round trips, and does not scale
+          to many participants. The Saga pattern addresses these limitations by modeling long-running
+          transactions as sequences of local transactions with compensating actions for rollback. The
+          choreography approach has each service publish events that others react to, while the
+          orchestration approach uses a central coordinator. Each step must have a compensating action
+          (create order → cancel order, reserve inventory → release inventory, process payment → refund
+          payment). Sagas are non-blocking, work across microservices, provide better availability, and
+          scale to many participants, but they only provide eventual consistency, require careful design
+          of compensating actions, lack isolation between concurrent sagas, and are harder to debug.
         </p>
-        <p><strong>Use:</strong> Most OLTP workloads. Product browsing, user profiles, general queries.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Repeatable Read</h4>
-        <p>
-          Default in MySQL. Prevents dirty reads and non-repeatable reads. Phantom reads may still occur
-          (though MySQL InnoDB prevents them with gap locking).
-        </p>
-        <p><strong>Use:</strong> When you need consistent reads within a transaction. Reporting, batch
-        processing.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Serializable</h4>
-        <p>
-          Highest isolation. Prevents all anomalies. Transactions execute as if serial (one at a time).
-          Significant performance cost.
-        </p>
-        <p><strong>Use:</strong> Critical financial operations, inventory management, when correctness
-        is paramount.</p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Database-Specific Behavior</h3>
-        <p>
-          Isolation level implementation varies by database:
-        </p>
-        <ul>
-          <li><strong>PostgreSQL:</strong> Read Committed (default), Repeatable Read, Serializable.</li>
-          <li><strong>MySQL:</strong> Read Committed, Repeatable Read (default), Serializable.</li>
-          <li><strong>Oracle:</strong> Read Committed (default), Serializable, Read Only.</li>
-          <li><strong>SQL Server:</strong> Read Uncommitted, Read Committed (default), Repeatable Read,
-          Serializable, Snapshot.</li>
-          <li><strong>CockroachDB:</strong> Serializable only (always serializable).</li>
-        </ul>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Choose Minimum Required Isolation</h3>
-          <p>
-            Higher isolation means more locking, less concurrency, higher latency. Choose the minimum
-            isolation that prevents the anomalies your use case cares about. Read Committed is sufficient
-            for most workloads.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <h2>Distributed Transactions</h2>
-        <p>
-          When data spans multiple services or databases, maintaining consistency requires distributed
-          transaction patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Two-Phase Commit (2PC)</h3>
-        <p>
-          Coordinator-based protocol for atomic commits across multiple participants.
-        </p>
-        <h4 className="mt-4 mb-2 font-semibold">Phase 1: Prepare</h4>
-        <ol>
-          <li>Coordinator sends &quot;prepare&quot; to all participants</li>
-          <li>Each participant prepares transaction (acquires locks, writes to log)</li>
-          <li>Participant responds &quot;ready&quot; or &quot;abort&quot;</li>
-        </ol>
-        <h4 className="mt-4 mb-2 font-semibold">Phase 2: Commit</h4>
-        <ol>
-          <li>If all participants ready, coordinator sends &quot;commit&quot;</li>
-          <li>If any participant aborts, coordinator sends &quot;abort&quot;</li>
-          <li>Participants complete transaction, release locks</li>
-          <li>Participants acknowledge completion</li>
-        </ol>
-        <h4 className="mt-4 mb-2 font-semibold">Pros</h4>
-        <ul>
-          <li>Strong consistency across participants</li>
-          <li>Atomic—either all commit or all abort</li>
-          <li>Well-understood, standardized protocol</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Cons</h4>
-        <ul>
-          <li>Blocking—participants hold locks during entire protocol</li>
-          <li>Single point of failure (coordinator)</li>
-          <li>Poor performance (multiple round trips)</li>
-          <li>Doesn&apos;t scale to many participants</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Use Cases</h4>
-        <ul>
-          <li>Cross-database transactions in same datacenter</li>
-          <li>When strong consistency is required</li>
-          <li>Short transactions with few participants</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Saga Pattern</h3>
-        <p>
-          Long-running transaction as sequence of local transactions with compensating actions for rollback.
-        </p>
-        <h4 className="mt-4 mb-2 font-semibold">Choreography Approach</h4>
-        <p>
-          Each service publishes events. Other services listen and react. No central coordinator.
-        </p>
-        <p><strong>Flow:</strong> Order Service creates order → Inventory Service reserves inventory →
-        Payment Service processes payment → Shipping Service ships order. If payment fails, Inventory
-        Service receives failure event and releases reservation.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Orchestration Approach</h4>
-        <p>
-          Central orchestrator coordinates all steps. More control, easier to understand flow.
-        </p>
-        <p><strong>Flow:</strong> Orchestrator tells Order Service to create order → tells Inventory
-        Service to reserve → tells Payment Service to process → tells Shipping Service to ship. On
-        failure, orchestrator executes compensating actions in reverse order.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Compensating Actions</h4>
-        <p>
-          Each step has a compensating action that undoes it:
-        </p>
-        <ul>
-          <li>Create Order → Cancel Order</li>
-          <li>Reserve Inventory → Release Inventory</li>
-          <li>Process Payment → Refund Payment</li>
-          <li>Ship Order → Initiate Return</li>
-        </ul>
-
-        <h4 className="mt-4 mb-2 font-semibold">Pros</h4>
-        <ul>
-          <li>Non-blocking—no distributed locks</li>
-          <li>Works across microservices</li>
-          <li>Better availability than 2PC</li>
-          <li>Scales to many participants</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Cons</h4>
-        <ul>
-          <li>Eventual consistency (not atomic)</li>
-          <li>Complex—must design compensating actions</li>
-          <li>No isolation (concurrent sagas may interfere)</li>
-          <li>Debugging is harder</li>
-        </ul>
-        <h4 className="mt-4 mb-2 font-semibold">Use Cases</h4>
-        <ul>
-          <li>E-commerce order fulfillment</li>
-          <li>Travel booking (flight + hotel + car)</li>
-          <li>Multi-service workflows</li>
-          <li>Long-running business processes</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Eventual Consistency Patterns</h3>
 
         <ArticleImage
-          src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/slo-error-budget-policy.svg"
-          alt="SLO Error Budget Policy showing consistency vs availability trade-offs"
-          caption="SLO Error Budget Policy: Balancing consistency requirements with availability targets through error budget management."
+          src="/diagrams/requirements/nfr/shared-cross-cutting-nfr/replication-topology.svg"
+          alt="Replication Topology showing single-primary, multi-primary, and leaderless replication patterns"
+          caption="Replication Topology: Single-primary (leader-follower), multi-primary (leader-leader), and leaderless replication patterns with their consistency guarantees and failure modes."
         />
-
-        <h4 className="mt-4 mb-2 font-semibold">Write-Ahead Log (WAL)</h4>
-        <p>
-          Log all writes before applying. Replicas replay log to achieve consistency.
-        </p>
-        <p><strong>Use:</strong> Database replication, change data capture.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Conflict-Free Replicated Data Types (CRDTs)</h4>
-        <p>
-          Data structures designed to converge automatically. Mathematical guarantees of eventual
-          consistency without coordination.
-        </p>
-        <p><strong>Types:</strong> Counters (G-Counter, PN-Counter), Sets (G-Set, 2P-Set), Registers
-        (LWW-Register), Maps.</p>
-        <p><strong>Use:</strong> Collaborative editing, distributed counters, shopping carts.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Vector Clocks</h4>
-        <p>
-          Track causality between events. Detect concurrent updates and conflicts.
-        </p>
-        <p><strong>Use:</strong> DynamoDB (internally), Riak, conflict detection.</p>
-
-        <h4 className="mt-4 mb-2 font-semibold">Quorum Reads/Writes</h4>
-        <p>
-          Read from R nodes, write to W nodes, total N replicas. Consistency when R + W &gt; N.
-        </p>
-        <p><strong>Example:</strong> N=3, W=2, R=2. Write to 2 of 3, read from 2 of 3. At least one
-        node has latest value.</p>
-        <p><strong>Use:</strong> Dynamo-style databases, Cassandra, configurable consistency.</p>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Saga Is the Microservices Pattern</h3>
-          <p>
-            For microservices, saga is the practical choice for distributed transactions. 2PC couples
-            services too tightly. Saga accepts eventual consistency but provides atomicity through
-            compensating actions. Design compensating actions carefully—they&apos;re your rollback plan.
-          </p>
-        </div>
       </section>
 
       <section>
-        <h2>Choosing Consistency Model</h2>
+        <h2>Trade-offs & Comparison</h2>
         <p>
-          Consistency decisions should be driven by business requirements, not technology preferences.
+          Choosing the right consistency model requires understanding the trade-offs across multiple
+          dimensions. No single approach is universally optimal—the right choice depends on workload
+          characteristics, availability requirements, and acceptable complexity.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Decision Framework</h3>
-        <h4 className="mt-4 mb-2 font-semibold">Questions to Ask</h4>
-        <ul>
-          <li>What happens if a user reads stale data?</li>
-          <li>Can two users safely make conflicting updates?</li>
-          <li>Is availability more important than consistency?</li>
-          <li>What are the business costs of inconsistency?</li>
-          <li>What are the business costs of unavailability?</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">ACID vs BASE</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">ACID</th>
+                <th className="p-2 text-left">BASE</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Consistency</td>
+                <td className="p-2">Strong (immediate)</td>
+                <td className="p-2">Eventual</td>
+              </tr>
+              <tr>
+                <td className="p-2">Availability</td>
+                <td className="p-2">May degrade during partitions</td>
+                <td className="p-2">Always available</td>
+              </tr>
+              <tr>
+                <td className="p-2">Latency</td>
+                <td className="p-2">Higher (coordination overhead)</td>
+                <td className="p-2">Lower (async replication)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Complexity</td>
+                <td className="p-2">Lower (handled by database)</td>
+                <td className="p-2">Higher (application handles conflicts)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Use Cases</td>
+                <td className="p-2">Financial, inventory, booking</td>
+                <td className="p-2">Feeds, caching, analytics</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <h4 className="mt-4 mb-2 font-semibold">Strong Consistency When</h4>
-        <ul>
-          <li>Financial transactions (payments, transfers)</li>
-          <li>Inventory management (prevent overselling)</li>
-          <li>Booking systems (seats, rooms—can&apos;t double-book)</li>
-          <li>Identity and access control</li>
-          <li>Legal/regulatory requirements</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">2PC vs Saga for Distributed Transactions</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Two-Phase Commit</th>
+                <th className="p-2 text-left">Saga Pattern</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Consistency</td>
+                <td className="p-2">Strong (atomic)</td>
+                <td className="p-2">Eventual</td>
+              </tr>
+              <tr>
+                <td className="p-2">Blocking</td>
+                <td className="p-2">Yes (locks held throughout)</td>
+                <td className="p-2">No (local transactions)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Availability</td>
+                <td className="p-2">Poor (coordinator SPOF)</td>
+                <td className="p-2">Better (no distributed locks)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Scalability</td>
+                <td className="p-2">Limited (few participants)</td>
+                <td className="p-2">Scales to many participants</td>
+              </tr>
+              <tr>
+                <td className="p-2">Complexity</td>
+                <td className="p-2">Lower (standardized protocol)</td>
+                <td className="p-2">Higher (compensating actions)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Best For</td>
+                <td className="p-2">Same-datacenter, short transactions</td>
+                <td className="p-2">Microservices, long-running workflows</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <h4 className="mt-4 mb-2 font-semibold">Eventual Consistency When</h4>
-        <ul>
-          <li>Social media feeds (slightly stale is acceptable)</li>
-          <li>Analytics and reporting (approximate is fine)</li>
-          <li>Caching layers (stale cache is better than no cache)</li>
-          <li>Activity feeds and notifications</li>
-          <li>Content management (blogs, comments, wiki)</li>
-          <li>Product catalogs (price changes can propagate)</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Strong vs Eventual vs Causal Consistency</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Strong</th>
+                <th className="p-2 text-left">Causal</th>
+                <th className="p-2 text-left">Eventual</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Read Freshness</td>
+                <td className="p-2">Always latest write</td>
+                <td className="p-2">Causally related writes ordered</td>
+                <td className="p-2">May read stale data</td>
+              </tr>
+              <tr>
+                <td className="p-2">Write Latency</td>
+                <td className="p-2">Highest (sync replication)</td>
+                <td className="p-2">Moderate</td>
+                <td className="p-2">Lowest (async)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Availability During Partition</td>
+                <td className="p-2">Unavailable</td>
+                <td className="p-2">Partially available</td>
+                <td className="p-2">Fully available</td>
+              </tr>
+              <tr>
+                <td className="p-2">Implementation Cost</td>
+                <td className="p-2">High (consensus required)</td>
+                <td className="p-2">Moderate (vector clocks)</td>
+                <td className="p-2">Low</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <h4 className="mt-4 mb-2 font-semibold">Read-Your-Writes When</h4>
-        <ul>
-          <li>User settings and preferences</li>
-          <li>Shopping carts</li>
-          <li>Draft content (documents, posts)</li>
-          <li>Any user-facing feature where users expect to see their changes</li>
-        </ul>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Document Consistency Choices</h3>
-          <p>
-            Document which data uses which consistency model. This helps engineers make correct decisions
-            when adding features. &quot;Inventory uses strong consistency—don&apos;t cache without
-            invalidation.&quot; &quot;Product reviews use eventual consistency—stale reads acceptable.&quot;
-          </p>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Synchronous vs Asynchronous Replication</h3>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Dimension</th>
+                <th className="p-2 text-left">Synchronous</th>
+                <th className="p-2 text-left">Asynchronous</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Data Loss on Primary Failure</td>
+                <td className="p-2">Zero (committed on both)</td>
+                <td className="p-2">Possible (replication lag)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Write Latency</td>
+                <td className="p-2">Higher (wait for all replicas)</td>
+                <td className="p-2">Lower (return immediately)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Primary Availability</td>
+                <td className="p-2">Blocked if replica down</td>
+                <td className="p-2">Unaffected by replica status</td>
+              </tr>
+              <tr>
+                <td className="p-2">Geographic Span</td>
+                <td className="p-2">Limited (latency sensitive)</td>
+                <td className="p-2">Global (tolerates latency)</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Design</h3>
-        <ul>
-          <li>Choose consistency per data type, not one-size-fits-all</li>
-          <li>Document consistency requirements clearly</li>
-          <li>Design for the weakest consistency that works</li>
-          <li>Consider read-your-writes for user-facing features</li>
-          <li>Plan for conflicts in eventual consistency systems</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Implementation</h3>
-        <ul>
-          <li>Use optimistic locking for concurrent updates</li>
-          <li>Implement idempotent operations for retries</li>
-          <li>Design compensating actions for sagas</li>
-          <li>Use version vectors for conflict detection</li>
-          <li>Test concurrent scenarios thoroughly</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul>
-          <li>Monitor replication lag</li>
-          <li>Track consistency violations</li>
-          <li>Alert on transaction failures</li>
-          <li>Track saga completion rates</li>
-          <li>Monitor recovery time</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Testing</h3>
-        <ul>
-          <li>Test concurrent transactions</li>
-          <li>Test failure scenarios (network partitions, node failures)</li>
-          <li>Test saga compensating actions</li>
-          <li>Test conflict resolution</li>
-          <li>Chaos engineering for distributed consistency</li>
-        </ul>
+        <p>
+          Design consistency strategies per data type rather than applying a one-size-fits-all approach.
+          Document consistency requirements clearly so engineers understand which guarantees each data
+          store provides. Design for the weakest consistency that meets requirements to maximize
+          availability and performance. Consider read-your-writes consistency for user-facing features
+          where users expect to see their changes immediately. Plan for conflict resolution in eventual
+          consistency systems before conflicts occur in production.
+        </p>
+        <p>
+          Implementation should use optimistic locking for concurrent updates to avoid the overhead of
+          pessimistic locking. Implement idempotent operations so retries do not cause duplicate effects.
+          Design compensating actions for every step in saga-based distributed transactions. Use version
+          vectors for conflict detection in leaderless replication scenarios. Test concurrent scenarios
+          thoroughly, including race conditions and conflict resolution paths.
+        </p>
+        <p>
+          Monitoring must track replication lag to detect consistency degradation before it impacts users.
+          Track consistency violations to understand how often stale data is served. Alert on transaction
+          failures and track saga completion rates to identify failing workflows. Monitor recovery time
+          after failures to ensure systems converge within acceptable timeframes.
+        </p>
+        <p>
+          Testing should cover concurrent transactions, failure scenarios including network partitions
+          and node failures, saga compensating actions, conflict resolution logic, and chaos engineering
+          for distributed consistency. Choose the minimum required isolation level for each workload—Read
+          Committed is sufficient for most OLTP operations, and higher isolation levels should be reserved
+          for operations that specifically need them.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <ul>
-          <li>
-            <strong>Over-engineering consistency:</strong> Using strong consistency when eventual is
-            fine. Fix: Choose weakest consistency that meets requirements.
-          </li>
-          <li>
-            <strong>Under-engineering consistency:</strong> Using eventual when strong is needed. Fix:
-            Understand business requirements, document consistency needs.
-          </li>
-          <li>
-            <strong>Ignoring conflicts:</strong> Assuming conflicts won&apos;t happen. Fix: Plan conflict
-            detection and resolution.
-          </li>
-          <li>
-            <strong>No compensating actions:</strong> Sagas without rollback plan. Fix: Design compensating
-            actions for every step.
-          </li>
-          <li>
-            <strong>Wrong isolation level:</strong> Using default when different level is needed. Fix:
-            Choose isolation per use case.
-          </li>
-          <li>
-            <strong>Not testing concurrency:</strong> Only testing single-threaded. Fix: Test concurrent
-            scenarios, use chaos engineering.
-          </li>
-          <li>
-            <strong>Assuming 2PC works for microservices:</strong> 2PC couples services too tightly. Fix:
-            Use saga pattern for microservices.
-          </li>
-          <li>
-            <strong>Ignoring replication lag:</strong> Assuming replicas are always current. Fix: Monitor
-            lag, design for stale reads.
-          </li>
-        </ul>
+        <p>
+          Over-engineering consistency by using strong consistency when eventual consistency is sufficient
+          leads to unnecessary latency and reduced availability. The fix is to choose the weakest
+          consistency model that meets requirements for each data type. Conversely, under-engineering
+          consistency by using eventual consistency when strong consistency is required leads to data
+          corruption and business impact. Understanding business requirements and documenting consistency
+          needs prevents this.
+        </p>
+        <p>
+          Ignoring conflict resolution in eventually consistent systems results in data loss or
+          inconsistent states when concurrent writes occur. Design conflict detection and resolution
+          mechanisms before deploying to production. Sagas without compensating actions leave the system
+          in an inconsistent state on failure—every saga step must have a corresponding compensating
+          action. Using the default isolation level when a different level is needed can cause subtle
+          concurrency anomalies; choose isolation levels per use case rather than relying on defaults.
+        </p>
+        <p>
+          Assuming Two-Phase Commit works well for microservices couples services too tightly and degrades
+          availability—use the Saga pattern for microservice transactions instead. Ignoring replication
+          lag and assuming replicas are always current leads to stale reads; monitor lag explicitly and
+          design applications to handle stale data. Not testing concurrent scenarios leaves race conditions
+          undetected until production; use chaos engineering and concurrent test suites to surface these
+          issues early.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Amazon DynamoDB uses eventual consistency as its default model with configurable strong
+          consistency for reads. It implements quorum-based reads and writes across multiple availability
+          zones, achieving single-digit millisecond latency at any scale. DynamoDB uses vector clocks
+          internally for conflict detection and resolution, and offers DynamoDB Streams for change data
+          capture. For cross-region replication, DynamoDB Global Tables use multi-primary replication
+          with last-writer-wins conflict resolution, providing globally distributed, eventually
+          consistent tables with single-digit millisecond latency.
+        </p>
+        <p>
+          Google Spanner provides externally consistent (serializable) isolation for globally distributed
+          databases—a rarity in distributed systems. It achieves this through TrueTime API, which uses
+          GPS and atomic clocks to bound clock uncertainty across datacenters. Spanner uses synchronous
+          replication within regions and Paxos-based consensus across regions, trading higher write
+          latency for strong consistency guarantees. This enables applications like Google Ads and Google
+          Cloud Spanner customers to run globally distributed transactions with serializable isolation.
+        </p>
+        <p>
+          CockroachDB is a distributed SQL database that is always serializable, using Raft consensus for
+          replication and synchronous writes within regions. It uses a hybrid clock model for timestamp
+          assignment and supports multi-active availability across regions. CockroachDB automatically
+          rebalances data and handles node failures transparently, making it suitable for financial
+          services requiring strong consistency with geo-distribution. Companies like Comcast and Bose
+          use CockroachDB for globally distributed, strongly consistent data layers.
+        </p>
+        <p>
+          Apache Cassandra uses a tunable consistency model with quorum-based reads and writes. Each
+          write goes to a configurable number of replicas (ONE, QUORUM, ALL), and reads similarly query
+          a configurable number of replicas. Read repair and anti-entropy processes ensure eventual
+          convergence. Cassandra&apos;s leaderless architecture provides high write throughput and linear
+          scalability, making it ideal for time-series data, IoT telemetry, and messaging platforms where
+          availability and write throughput are prioritized over strong consistency. Companies like Apple
+          and Netflix use Cassandra for massive-scale, highly available data stores.
+        </p>
       </section>
 
       <section>

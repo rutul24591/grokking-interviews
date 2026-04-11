@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f8fafc"/>
+  <rect width="900" height="520" fill="#0f172a" class="dark:bg-[#0f172a]"/>
+
+  <!-- Dark mode background overlay - handled via CSS class in real app; here we use explicit colors for light mode and a separate SVG would be needed for dark. We'll use neutral colors that work in both. -->
+  <rect width="900" height="520" fill="#f1f5f9"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">API Version Lifecycle &amp; Deprecation Flow</text>
+
+  <!-- Phase 1: Current -->
+  <g transform="translate(50, 70)">
+    <rect x="0" y="0" width="240" height="110" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2" filter="url(#shadow)"/>
+    <text x="120" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#166534">Phase 1: Current (Active)</text>
+    <text x="120" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Full support, active development</text>
+    <text x="120" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">All clients on this version</text>
+    <text x="120" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">Duration: Ongoing</text>
+  </g>
+
+  <!-- Arrow 1->2 -->
+  <g transform="translate(300, 115)">
+    <line x1="0" y1="0" x2="70" y2="0" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="35" y="-10" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">New version</text>
+    <text x="35" y="15" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">released</text>
+  </g>
+
+  <!-- Phase 2: Deprecated -->
+  <g transform="translate(380, 70)">
+    <rect x="0" y="0" width="240" height="110" rx="10" fill="#fef9c3" stroke="#ca8a04" stroke-width="2" filter="url(#shadow)"/>
+    <text x="120" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#854d0e">Phase 2: Deprecated</text>
+    <text x="120" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Deprecation headers in responses</text>
+    <text x="120" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Migration guides published</text>
+    <text x="120" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#ca8a04">Duration: 6-12 months</text>
+  </g>
+
+  <!-- Arrow 2->3 -->
+  <g transform="translate(630, 115)">
+    <line x1="0" y1="0" x2="70" y2="0" stroke="#64748b" stroke-width="2"/>
+    <polygon points="70,-5 80,0 70,5" fill="#64748b"/>
+    <text x="35" y="-10" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">Sunset date</text>
+    <text x="35" y="15" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">approached</text>
+  </g>
+
+  <!-- Phase 3: Sunset -->
+  <g transform="translate(710, 70)">
+    <rect x="0" y="0" width="160" height="110" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2" filter="url(#shadow)"/>
+    <text x="80" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#991b1b">Phase 3: Sunset</text>
+    <text x="80" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">HTTP 410 Gone returned</text>
+    <text x="80" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#374151">Migration link in response</text>
+    <text x="80" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">Version removed</text>
+  </g>
+
+  <!-- Communication Channels Row -->
+  <g transform="translate(50, 220)">
+    <rect x="0" y="0" width="800" height="100" rx="10" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+    <text x="400" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e293b">Communication Channels Throughout Lifecycle</text>
+
+    <rect x="20" y="40" width="140" height="45" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="90" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#334155">Blog Post</text>
+    <text x="90" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#64748b">Announcement</text>
+
+    <rect x="180" y="40" width="140" height="45" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="250" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#334155">Email + Dashboard</text>
+    <text x="250" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#64748b">Direct Notification</text>
+
+    <rect x="340" y="40" width="140" height="45" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="410" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#334155">Deprecation Headers</text>
+    <text x="410" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#64748b">Sunset, Link headers</text>
+
+    <rect x="500" y="40" width="140" height="45" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="570" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#334155">Migration Guide</text>
+    <text x="570" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#64748b">Step-by-step docs</text>
+
+    <rect x="660" y="40" width="120" height="45" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="720" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#334155">Direct Outreach</text>
+    <text x="720" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#64748b">Active users contacted</text>
+  </g>
+
+  <!-- Migration Patterns Row -->
+  <g transform="translate(50, 350)">
+    <rect x="0" y="0" width="800" height="150" rx="10" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+    <text x="400" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#1e293b">Migration Patterns</text>
+
+    <!-- Parallel Run -->
+    <rect x="20" y="45" width="170" height="85" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+    <text x="105" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Parallel Run</text>
+    <text x="105" y="88" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Old + new side-by-side,</text>
+    <text x="105" y="103" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">gradual traffic shift</text>
+    <text x="105" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#3b82f6">Zero downtime</text>
+
+    <!-- Strangler Fig -->
+    <rect x="210" y="45" width="170" height="85" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+    <text x="295" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Strangler Fig</text>
+    <text x="295" y="88" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Piece-by-piece migration,</text>
+    <text x="295" y="103" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">route incrementally</text>
+    <text x="295" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#3b82f6">Large systems</text>
+
+    <!-- Expansion-Contract -->
+    <rect x="400" y="45" width="180" height="85" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+    <text x="490" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Expansion-Contract</text>
+    <text x="490" y="88" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Add new, migrate data,</text>
+    <text x="490" y="103" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">remove old</text>
+    <text x="490" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#3b82f6">Schema changes</text>
+
+    <!-- Shadow Mode -->
+    <rect x="600" y="45" width="180" height="85" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+    <text x="690" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">Shadow Mode</text>
+    <text x="690" y="88" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">Dual traffic, compare</text>
+    <text x="690" y="103" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#374151">responses before switch</text>
+    <text x="690" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#3b82f6">Critical correctness</text>
+  </g>
+</svg>
