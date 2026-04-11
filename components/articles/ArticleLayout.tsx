@@ -17,6 +17,9 @@ import {
   ArticleExampleToggle,
   useArticleViewMode,
 } from "@/components/articles/ArticleExampleToggle";
+import {
+  HighlightsProvider,
+} from "@/components/articles/HighlightsContext";
 import { classNames } from "@/lib/classNames";
 import type { ExampleGroup } from "@/types/examples";
 
@@ -60,6 +63,32 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
   const [view, setView] = useArticleViewMode();
   const hasExamples = useMemo(() => examples.length > 0, [examples]);
   const [activeExampleId, setActiveExampleId] = useState(examples[0]?.id ?? "");
+  const [highlightsOn, setHighlightsOn] = useState(false);
+
+  // Reset highlights when navigating to a different article
+  useEffect(() => {
+    setHighlightsOn(false);
+  }, [pathname]);
+
+  // Wrap all <table> elements in a responsive scroll container
+  useEffect(() => {
+    const article = containerRef.current?.querySelector("article.prose");
+    if (!article) return;
+
+    const tables = article.querySelectorAll("table");
+    tables.forEach((table) => {
+      // Skip if already wrapped
+      if (table.parentElement?.classList.contains("table-scroll-wrapper")) return;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-scroll-wrapper";
+      wrapper.style.maxWidth = "100%";
+      wrapper.style.overflowX = "auto";
+      wrapper.style.setProperty("-webkit-overflow-scrolling", "touch");
+      table.parentNode?.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+  }, []);
 
   // Load examples for this article
   useEffect(() => {
@@ -168,8 +197,26 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
                 )}
               </div>
             </div>
-            <div className="sm:sticky sm:top-4">
-              <ArticleExampleToggle value={view} onChange={setView} />
+            <div className="sm:sticky sm:top-4 self-start sm:self-end">
+              <div className="flex w-fit flex-col items-start gap-2 sm:w-auto sm:flex-row sm:items-center">
+                {/* Highlights Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setHighlightsOn(!highlightsOn)}
+                  className={classNames(
+                    "inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1.5 text-xs font-medium transition sm:px-4 sm:py-2 sm:text-sm",
+                    highlightsOn
+                      ? "bg-accent text-white"
+                      : "border border-theme bg-panel text-muted hover:text-body",
+                  )}
+                  aria-label="Toggle highlights"
+                >
+                  Highlights
+                </button>
+
+                {/* Article / Example Toggle */}
+                <ArticleExampleToggle value={view} onChange={setView} />
+              </div>
             </div>
           </div>
         </header>
@@ -195,16 +242,18 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
         )}
 
         {/* Article Content */}
-        <article className="prose max-w-none">
-          {view === "example" ? (
-            <ExampleViewer
-              key={activeExample?.id ?? "no-example"}
-              example={activeExample}
-            />
-          ) : (
-            children
-          )}
-        </article>
+        <HighlightsProvider value={{ highlightsOn, setHighlightsOn }}>
+          <article className="prose max-w-none">
+            {view === "example" ? (
+              <ExampleViewer
+                key={activeExample?.id ?? "no-example"}
+                example={activeExample}
+              />
+            ) : (
+              children
+            )}
+          </article>
+        </HighlightsProvider>
 
         {/* Article Footer */}
         <footer className="mt-12 border-t border-theme pt-6">
