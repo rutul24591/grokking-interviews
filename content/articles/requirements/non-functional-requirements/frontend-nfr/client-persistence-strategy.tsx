@@ -96,6 +96,12 @@ export default function ClientPersistenceStrategyArticle() {
           alt="Storage Mechanisms Comparison"
           caption="Client storage comparison — localStorage, IndexedDB, Cache API, and cookies with capacity, API complexity, and use cases"
         />
+
+        <ArticleImage
+          src="/diagrams/requirements/nfr/frontend-nfr/offline-sync-architecture.svg"
+          alt="Offline-First Sync Architecture"
+          caption="Offline-first sync architecture — local IndexedDB as source of truth, sync queue manager monitors connectivity and orders mutations, server API receives queued changes and returns conflicts, with background sync API deferring actions until connectivity returns"
+        />
       </section>
 
       {/* Section 3: Architecture & Flow */}

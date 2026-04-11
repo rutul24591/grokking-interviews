@@ -133,6 +133,12 @@ export default function XSSInjectionProtectionArticle() {
           alt="XSS Types Comparison"
           caption="Comparison of Reflected XSS (malicious URL, server reflects input), Stored XSS (persistent in database, automatic execution), and DOM-based XSS (client-side only, payload never reaches server)"
         />
+
+        <ArticleImage
+          src="/diagrams/requirements/nfr/frontend-nfr/xss-defense-layers.svg"
+          alt="XSS Defense Layers"
+          caption="XSS defense in depth — Layer 1: Output Encoding (primary, framework auto-escaping), Layer 2: Input Validation (supplementary, allowlist), Layer 3: CSP (safety net, restricts script sources), Layer 4: Sanitization (for HTML input, DOMPurify with configurable allowlist)"
+        />
       </section>
 
       <section>

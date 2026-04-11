@@ -225,6 +225,350 @@ export default function ErrorUXRecoveryArticle() {
       </section>
 
       <section>
+        <h2>Error Boundary Composition Patterns</h2>
+        <p>
+          Error boundary composition is the architectural pattern of nesting
+          and layering error boundaries to create a resilient error handling
+          surface that catches failures at the appropriate granularity. The most
+          effective composition follows a tiered model: a top-level app boundary
+          wraps the entire application tree, catching truly catastrophic errors
+          that would otherwise produce a blank white screen. This boundary
+          renders a full-page error state with a reload option and a support
+          contact link. Below it, route-level boundaries wrap each major route
+          or page section, ensuring that a crash in the settings page does not
+          prevent the user from accessing the dashboard. At the component level,
+          boundaries wrap individual widgets (comments section, recommendation
+          carousel, user profile card) so that a failure in one widget does not
+          affect sibling widgets or the page layout.
+        </p>
+        <p>
+          The react-error-boundary library provides a clean compositional API
+          that supports this pattern elegantly. The <code>ErrorBoundary</code>{" "}
+          component accepts a <code>FallbackComponent</code> prop for
+          customizing the error UI, an <code>onError</code> callback for
+          logging to monitoring services, and a <code>onReset</code> callback
+          for retry logic. The <code>ErrorBoundaryGroup</code> component enables
+          resetting multiple boundaries together — useful when a route-level
+          retry should also retry all nested component boundaries. The{" "}
+          <code>useErrorBoundary</code> hook allows components to programmatically
+          trigger boundary capture, useful for catching errors in event handlers
+          that Error Boundaries do not catch natively. This compositional
+          approach keeps error handling logic declarative and co-located with
+          the components it protects, rather than centralized in a monolithic
+          error handler that lacks context about what failed.
+        </p>
+        <p>
+          Error boundary state management involves deciding what information to
+          preserve and what to discard when a component crashes. When a comments
+          widget crashes, the rest of the page should continue functioning
+          normally — the user can still read the article, adjust settings, and
+          navigate. However, if the widget auto-recovers after a retry, it
+          should restore its previous state (any partially typed comment, the
+          scroll position, loaded pagination). The error boundary should pass
+          the error details to the FallbackComponent so it can display
+          context-specific recovery options. For a network error in the
+          comments widget, the fallback shows &quot;Unable to load comments —
+          tap to retry&quot; with a retry button. For a rendering error
+          (JavaScript exception), the fallback shows &quot;Comments temporarily
+          unavailable&quot; with a reload option and an error report link. The
+          distinction matters because network errors are typically transient and
+          user-recoverable, while rendering errors indicate a code bug that
+          retrying is unlikely to fix.
+        </p>
+        <p>
+          Testing error boundaries requires deliberate error injection at each
+          boundary level to verify that the fallback UI renders correctly, the
+          error is reported to monitoring services, and the surrounding
+          application continues functioning. In development, the{" "}
+          <code>useDebugValue</code> hook and React DevTools can inspect
+          boundary state. In automated tests, components can be wrapped with a
+          test error boundary that captures errors for assertion, and the{" "}
+          <code>useErrorBoundary</code> hook can throw test errors to verify
+          fallback rendering. Visual regression tests should capture the error
+          fallback states to ensure the error UI meets accessibility and design
+          standards — a poorly designed error state is almost as bad as no error
+          handling at all.
+        </p>
+      </section>
+
+      <section>
+        <h2>Retry Strategies Per Error Type</h2>
+        <p>
+          Different error categories demand distinct retry strategies because
+          their root causes and resolution timelines vary dramatically. Network
+          timeouts and connection failures are typically transient — the user&apos;s
+          connection dropped momentarily, the DNS resolver was slow, or the
+          cellular network switched towers. For these errors, aggressive retry
+          with short backoff intervals (500ms, 1s, 2s) is appropriate because
+          the condition usually resolves quickly. The retry should be transparent
+          to the user for background operations (data fetches, analytics
+          events) and visible for foreground operations (form submissions, file
+          uploads) where the user is actively waiting.
+        </p>
+        <p>
+          Server errors (HTTP 500, 502, 503, 504) indicate backend failures
+          that may be transient (a single server in the pool crashed, the
+          database connection pool is temporarily exhausted) or systemic (a
+          full production outage, database migration failure). The retry
+          strategy should be conservative — longer backoff intervals (2s, 4s,
+          8s, 16s, 32s) with a maximum of 5 attempts, because the server needs
+          time to recover. The Retry-After header, when present, should override
+          the backoff schedule — if the server says &quot;retry after 60
+          seconds,&quot; the client should respect that rather than retrying
+          aggressively. For 503 Service Unavailable specifically, the backoff
+          should be particularly conservative because this status often indicates
+          the server is under heavy load or undergoing maintenance, and
+          aggressive retries contribute to the load problem (the thundering herd
+          effect where thousands of clients retry simultaneously).
+        </p>
+        <p>
+          Rate limiting errors (HTTP 429) require a fundamentally different
+          approach — the server is operational but actively rejecting the client
+          due to request volume limits. The retry delay should be determined
+          exclusively by the Retry-After header (absolute timestamp or seconds
+          value) or the X-RateLimit-Reset header (Unix timestamp). Retrying
+          before the rate limit window resets is futile and may result in
+          further penalties (temporary IP ban, account flagging). The client
+          should display a user-friendly message (&quot;Too many requests —
+          please wait 30 seconds before trying again&quot;) with a countdown
+          timer and a disabled retry button that enables when the window resets.
+          For applications with authentication, the rate limit may be per-user
+          rather than per-IP, and the error message should reflect this context.
+        </p>
+        <p>
+          Client errors (HTTP 400, 401, 403, 404) should never be retried
+          automatically because the error persists until the client changes its
+          request. A 401 Unauthorized error should trigger an authentication
+          recovery flow — attempt a silent token refresh, and if that fails,
+          redirect to the login page with a return URL. A 403 Forbidden error
+          should display a permissions explanation with a link to request access.
+          A 404 Not Found should offer navigation alternatives (similar content,
+          search, homepage). A 400 Bad Request should display the validation
+          errors inline on the form that caused them. These are not transient
+          conditions — retrying the same request produces the same error — and
+          the appropriate response is user guidance, not automated retry.
+        </p>
+      </section>
+
+      <section>
+        <h2>Network Resilience Patterns</h2>
+        <p>
+          Network resilience patterns ensure the application functions
+          gracefully under degraded or intermittent connectivity, which is the
+          normal condition for mobile users in transit, users in areas with poor
+          coverage, and users on congested public WiFi networks. The online/offline
+          detection pattern uses <code>navigator.onLine</code> for initial state
+          and the <code>online</code>/<code>offline</code> browser events for
+          real-time status changes. When the application detects an offline
+          state, it should display a non-intrusive banner (&quot;You are
+          offline — some features may be unavailable&quot;) and disable actions
+          that require network connectivity (search, form submission, file
+          upload) with visual feedback (disabled buttons, grayed-out links).
+          Queued actions (operations the user attempted while offline) should be
+          stored in IndexedDB or localStorage with metadata (action type,
+          payload, timestamp) for later submission.
+        </p>
+        <p>
+          Request queuing and deferred submission handle user actions performed
+          during offline periods. When a user submits a form while offline, the
+          application should not show an error — instead, it should queue the
+          submission locally, display a &quot;Will send when connected&quot;
+          indicator, and automatically submit when connectivity returns. The
+          queue processing on reconnection should handle conflicts gracefully —
+          if the user edited a document offline and the server-side version also
+          changed, the application should detect the version conflict (using
+          ETags or last-modified timestamps) and present a merge or
+          conflict-resolution UI. For simpler operations (posting a comment,
+          liking content), the queued action can be submitted directly on
+          reconnection with standard retry logic for any failures.
+        </p>
+        <p>
+          Stale-while-revalidate caching is a network resilience pattern that
+          serves cached data immediately while fetching fresh data in the
+          background. This ensures the application displays meaningful content
+          even when the network is slow — the user sees their last-known data
+          instantly, and the UI updates when fresh data arrives. React Query
+          implements this pattern natively through its staleTime configuration —
+          if data is younger than staleTime, it is served from cache immediately
+          and refetched in the background; if older, the refetch is triggered
+          immediately and the stale data is displayed until fresh data arrives.
+          This pattern is particularly valuable for dashboard and analytics
+          pages where showing last-known data is preferable to showing a loading
+          spinner.
+        </p>
+        <p>
+          Timeout configuration is an often-overlooked network resilience
+          consideration. Default fetch() has no timeout — a hung connection can
+          keep a request pending indefinitely, blocking the UI and consuming
+          resources. Every network request should have an explicit timeout
+          (AbortController with setTimeout) configured based on the operation
+          type — 10 seconds for data fetches, 30 seconds for file uploads, 60
+          seconds for large file downloads. When a timeout fires, the request
+          is aborted and the error handler treats it as a transient network
+          error (offering retry) rather than a server error. This prevents
+          infinite loading states and ensures the user always gets feedback
+          within a predictable timeframe.
+        </p>
+      </section>
+
+      <section>
+        <h2>Form Recovery with Auto-Save</h2>
+        <p>
+          Form recovery with auto-save is one of the most impactful error
+          resilience features because forms represent significant user effort —
+          filling out a multi-field form, writing a long comment, or composing
+          a support message requires cognitive investment that users find
+          devastating to lose. The auto-save architecture periodically serializes
+          form state (field values, validation state, cursor position) to
+          localStorage at configurable intervals (every 5-15 seconds) or on
+          every field change. The serialized state includes a version identifier
+          and a timestamp for conflict detection — if the user opens the form
+          on multiple tabs, the most recent state wins, or the user is prompted
+          to choose which version to keep.
+        </p>
+        <p>
+          On form load, the recovery logic checks for a saved draft in
+          localStorage and offers to restore it. The restoration should be
+          selective — only restore fields that are currently empty or where the
+          saved value differs from the server-side value, so that a user who
+          intentionally cleared a field does not have it unexpectedly
+          repopulated. The restoration UI should clearly communicate what is
+          being restored (&quot;We found an unsaved draft from 2 hours ago —
+          would you like to restore it?&quot;) with options to restore, discard,
+          or review the draft before applying it. After restoration, the saved
+          draft should be cleared from localStorage to prevent confusion on
+          subsequent loads.
+        </p>
+        <p>
+          Browser crash and accidental navigation recovery requires additional
+          safeguards beyond periodic auto-save. The beforeunload event can
+          detect accidental tab closure and prompt the user to confirm if there
+          are unsaved changes — however, this prompt is generic and browser
+          controlled, so the primary recovery mechanism should be the
+          auto-saved draft. For accidental navigation (clicking a link that
+          navigates away), the application can intercept navigation events and
+          show a confirmation dialog when the form has unsaved changes. In
+          single-page applications with client-side routing, the router&apos;s
+          navigation guards provide this capability; in server-rendered
+          applications, the beforeunload event is the primary mechanism.
+        </p>
+        <p>
+          Multi-step form recovery requires saving progress after each
+          completed step, not just the current step&apos;s data. If a user
+          completes steps 1-3 of a 5-step onboarding flow and their browser
+          crashes on step 4, they should be able to resume from step 4 with all
+          previous steps&apos; data intact. The architecture stores each
+          step&apos;s data in a structured draft object indexed by step
+          identifier, with a metadata field tracking the current step and
+          completion status. On recovery, the application restores all saved
+          steps and positions the user at the last incomplete step. The saved
+          draft should have an expiration policy (7-30 days depending on the
+          form type) to prevent users from accidentally submitting stale data
+          weeks or months later.
+        </p>
+      </section>
+
+      <section>
+        <h2>Payment Error Handling UX</h2>
+        <p>
+          Payment error handling is the highest-stakes error scenario because
+          financial transactions directly impact user trust and have real
+          monetary consequences. When a payment fails, the error UX must
+          accomplish multiple objectives simultaneously: clearly communicate
+          that the payment did not succeed (so the user does not assume it went
+          through), explain the specific reason for the failure (insufficient
+          funds, card expired, bank declined, 3D Secure authentication failed),
+          reassure the user that no duplicate charge occurred, preserve the
+          cart and billing information for retry, and offer alternative payment
+          methods. The error message must be precise — &quot;Your payment could
+          not be processed&quot; is insufficient; &quot;Your card ending in 4242
+          was declined — insufficient funds&quot; provides actionable information.
+        </p>
+        <p>
+          The payment retry architecture should distinguish between retryable
+          and non-retryable failures. Network timeouts during payment processing
+          are retryable — the payment may have gone through on the server, so
+          the client should query the payment status before attempting a retry
+          to avoid double-charging. Card declines due to insufficient funds are
+          retryable (the user may add funds or use a different card) but should
+          not be auto-retried with the same card. 3D Secure authentication
+          failures are retryable by redirecting to the authentication flow.
+          Fraud detection blocks and account-level restrictions are
+          non-retryable — the user must contact support or use a different
+          payment method. Each failure type maps to a specific UI flow and
+          recovery path.
+        </p>
+        <p>
+          Idempotency in payment operations is the technical foundation that
+          makes safe retry possible. Every payment request should include an
+          idempotency key (a unique identifier for the specific payment attempt)
+          so that if the request is retried (due to network timeout, user retry
+          click, or automatic retry), the server recognizes the duplicate and
+          returns the same result without processing a second charge. This is
+          critical because network timeouts during payment processing create
+          ambiguity — the client does not know whether the server received and
+          processed the request. With idempotency, the client can safely retry
+          knowing that a duplicate charge is impossible.
+        </p>
+      </section>
+
+      <section>
+        <h2>Error Monitoring Architecture &amp; Production Triage</h2>
+        <p>
+          Error monitoring architecture spans client-side capture, transport,
+          aggregation, analysis, and alerting. On the client side, Sentry SDK
+          (or equivalent) is initialized with the application and configured to
+          capture unhandled exceptions, unhandled Promise rejections, and
+          manually reported errors. The SDK automatically enriches each error
+          with context: user identifier (anonymized hash), session ID, page URL,
+          browser and OS, device type, network status, recent breadcrumbs (the
+          sequence of user actions and navigation leading to the error), and
+          application state snapshot (current Redux/Zustand state, active route).
+          This context is essential for reproducing and triaging errors — an
+          error without context is nearly impossible to diagnose.
+        </p>
+        <p>
+          Error grouping and deduplication prevent alert fatigue when the same
+          error affects thousands of users. Sentry groups errors by stack trace
+          fingerprint — errors with the same call stack are aggregated into a
+          single issue, even if they occur on different pages or for different
+          users. Each issue tracks the total event count, unique user count,
+          first and last seen timestamps, and frequency trend. The triage
+          workflow prioritizes issues by impact: high-frequency errors affecting
+          many users are investigated immediately, low-frequency edge-case errors
+          are queued for regular backlog grooming, and known benign errors
+          (specific browser quirks, extensions injecting scripts) are muted or
+          ignored.
+        </p>
+        <p>
+          Production error triage follows a structured workflow. When an alert
+          fires (new error type, frequency spike, or critical error affecting
+          payment or authentication), the on-call engineer reviews the error
+          details: stack trace, user impact, reproduction steps, and recent
+          deployments (was this error introduced in the latest release?). If the
+          error is linked to a recent deployment, the fastest remediation is a
+          rollback. If the error is from a pre-existing bug, the engineer
+          creates a high-priority ticket with reproduction details, assigns it
+          to the relevant team, and implements a temporary mitigation (feature
+          flag disable, error boundary addition) if the impact is severe. The
+          triage process should be documented in a runbook so that any engineer
+          can follow it during off-hours incidents.
+        </p>
+        <p>
+          Error budget policies, borrowed from SRE practices, provide a
+          quantitative framework for balancing feature development against
+          reliability investment. An error budget defines the acceptable
+          error rate for the application (e.g., 99.9% of requests must be
+          error-free per month). When the error budget is healthy, the team can
+          prioritize feature development. When the error budget is depleted
+          (error rate exceeds the threshold), the team shifts focus to
+          reliability work — fixing bugs, improving error handling, and
+          hardening the application. This prevents the common pattern of
+          neglecting reliability until a major incident forces reactive firefighting.
+        </p>
+      </section>
+
+      <section>
         <h2>Best Practices</h2>
         <p>
           Craft error messages that are clear, specific, and actionable. State

@@ -118,6 +118,12 @@ export default function StateManagementStrategyArticle() {
           alt="State Management Comparison"
           caption="State management library comparison — Context, Redux Toolkit, Zustand, Recoil/Jotai, and MobX with their boilerplate, learning curve, devtools support, and best use cases"
         />
+
+        <ArticleImage
+          src="/diagrams/requirements/nfr/frontend-nfr/state-decision-framework.svg"
+          alt="State Decision Framework"
+          caption="State management decision framework — server state (React Query), client state (Zustand/Context), URL state (router), form state (React Hook Form), with decision tree for placement"
+        />
       </section>
 
       <section>
@@ -209,6 +215,390 @@ export default function StateManagementStrategyArticle() {
           Is it form state? Use React Hook Form. Is it shared UI state? Context
           (simple) or Zustand (complex). Is it complex application state?
           Zustand or Redux based on team preference and complexity needs.
+        </p>
+      </section>
+
+      <section>
+        <h2>React Query Deep Dive</h2>
+        <p>
+          React Query (TanStack Query) is a server state management library that
+          handles the full lifecycle of server data: fetching, caching,
+          background refetching, pagination, and optimistic updates. At its core,
+          React Query maintains a query cache keyed by a query key (an array of
+          identifiers that uniquely identify the data being fetched) and a query
+          function (an async function that returns the data). When a component
+          calls <code>useQuery</code> with a key, React Query checks the cache —
+          if fresh data exists (younger than staleTime), it returns the cached
+          data immediately and schedules a background refetch. If no data or
+          stale data exists, it fetches immediately and returns the result.
+          Multiple components requesting the same key share a single network
+          request (deduplication), preventing redundant API calls.
+        </p>
+        <p>
+          Caching strategies in React Query are configured through three key
+          parameters: staleTime (how long data is considered fresh), gcTime
+          (formerly cacheTime, how long unused data remains in cache before
+          garbage collection), and refetchInterval (automatic polling interval).
+          For data that changes rarely (user profile, product catalog), a long
+          staleTime (5-30 minutes) minimizes unnecessary refetches while keeping
+          data reasonably current. For data that changes frequently (stock prices,
+          notification counts, real-time metrics), a short staleTime (10-30
+          seconds) or refetchInterval ensures the UI stays synchronized with the
+          server. Setting staleTime to Infinity means data is always considered
+          fresh — it will only refetch when the component remounts or when
+          manually invalidated. The gcTime default of 5 minutes means that even
+          after a component unmounts, its data remains cached for 5 minutes, so
+          navigating away and back to a page shows instant data from cache rather
+          than a loading spinner.
+        </p>
+        <p>
+          Query invalidation is the mechanism for telling React Query that
+          cached data is stale and should be refetched. After a mutation
+          succeeds (creating, updating, or deleting a resource), the
+          application calls <code>queryClient.invalidateQueries</code> with the
+          affected query keys. For example, after creating a new comment,
+          invalidating the comments query key triggers a background refetch that
+          updates the comments list across all components that display it.
+          Partial invalidation allows targeting specific subsets — after updating
+          a single user&apos;s profile, invalidating <code>[&apos;users&apos;, userId]</code> refetches only that user&apos;s data, not the entire
+          user list. This granular invalidation minimizes network traffic while
+          ensuring data consistency.
+        </p>
+        <p>
+          Optimistic updates in React Query allow the UI to reflect changes
+          immediately before the server confirms them, providing the perception
+          of instant response. The pattern uses <code>onMutate</code> to
+          immediately update the cache with the expected result (and save the
+          previous cache state for rollback), <code>onError</code> to rollback
+          the cache if the mutation fails, and <code>onSettled</code> to
+          invalidate the query and refetch fresh data regardless of success or
+          failure. For a like button, the optimistic update increments the like
+          count in the cache immediately — if the server confirms, the refetch
+          confirms the count; if the server rejects, the rollback restores the
+          original count and the UI reverts. This pattern requires that the
+          mutation result is predictable — you can only optimistically update
+          data where the server response is deterministic.
+        </p>
+        <p>
+          Pagination and infinite scroll patterns are first-class concerns in
+          React Query. <code>useInfiniteQuery</code> manages paginated data by
+          maintaining an array of pages, each fetched with a <code>getNextPageParam</code>{" "}
+          function that extracts the cursor or page token from the current
+          page&apos;s response. When the user scrolls to the bottom, the next
+          page is fetched and appended to the pages array. The key design
+          decision is how to handle mutations in paginated data — if a user
+          creates a new item, should it appear at the top of page 1 (requiring
+          a full refetch of all pages), or should it be optimistically inserted
+          into the cached pages? The recommended approach for infinite scroll is
+          to optimistically insert new items into the first page and accept that
+          pagination may be slightly off (one extra or one fewer item on a page)
+          until the next full refetch, because refetching all pages on every
+          mutation is prohibitively expensive for long scroll lists.
+        </p>
+      </section>
+
+      <section>
+        <h2>Zustand Architecture Deep Dive</h2>
+        <p>
+          Zustand&apos;s architecture is built around a single store creation
+          function that returns a custom hook. The store is defined by a state
+          initializer function and optional middleware. Unlike Redux, Zustand has
+          no action types, reducers, or dispatch — state updates are plain
+          functions that receive the current state and return the new state (or
+          mutate it directly when using the immer middleware). This simplicity
+          is Zustand&apos;s primary differentiator — a complete store with
+          multiple state slices, actions, and computed values can be defined in
+          under 30 lines of code. Components subscribe to specific state slices
+          using selector functions, and Zustand uses reference equality
+          (Object.is) to determine if the selected value has changed — if not,
+          the component does not re-render.
+        </p>
+        <p>
+          The middleware system extends Zustand&apos;s core functionality
+          without adding complexity to the primary API. The <code>devtools</code>{" "}
+          middleware connects to Redux DevTools for time-travel debugging, state
+          inspection, and action replay — essential for debugging complex state
+          transitions in development. The <code>persist</code> middleware
+          automatically serializes the store to localStorage (or any custom
+          storage engine) on every state change and hydrates the store from
+          persisted data on initialization. The persist configuration supports
+          partial hydration (persisting only specific state slices), versioning
+          (migrating stored state when the schema changes), and merge strategies
+          (controlling how persisted data merges with default state). The{" "}
+          <code>immer</code> middleware allows writing state updates as mutable
+          operations (state.count++) while immer produces immutable state under
+          the hood — this eliminates the spread-operator boilerplate that makes
+          complex nested state updates hard to read.
+        </p>
+        <p>
+          Selector memoization is critical for Zustand performance. When a
+          component selects a derived value (e.g., <code>state =&gt; state.items.filter(item =&gt; item.active)</code>), the selector function
+          creates a new array on every call, causing the component to re-render
+          on every store change even when the underlying data has not changed.
+          The solution is to use external memoization — either React&apos;s{" "}
+          <code>useMemo</code> hook within the component, or a memoized selector
+          library like Reselect that caches the selector output and returns the
+          cached reference when inputs have not changed. Zustand also provides{" "}
+          <code>useStoreWithEqualityFn</code> from the zustand/traditional
+          subpath, which uses a custom equality function (like{" "}
+          <code>shallow</code> from the zustand/shallow subpath) to compare
+          selected values, reducing unnecessary re-renders when the selected
+          object has the same content but a different reference.
+        </p>
+        <p>
+          Store splitting versus single store is an architectural decision in
+          Zustand. A single monolithic store is simple to set up but creates a
+          single subscription point — every state change triggers selector
+          evaluation in all subscribing components, even if their selected slice
+          was not affected. Splitting state into multiple stores (user store,
+          UI store, feature stores) limits the blast radius of each state change
+          — updating the UI store does not trigger selector evaluation in
+          components subscribed only to the user store. The recommended approach
+          for medium-complexity applications is 2-4 stores organized by domain
+          (user/auth store, UI preferences store, feature-specific stores) with
+          clear boundaries between them. For simpler applications, a single store
+          is perfectly adequate because the selector-based subscription model
+          already prevents unnecessary re-renders.
+        </p>
+      </section>
+
+      <section>
+        <h2>State Normalization Strategies</h2>
+        <p>
+          State normalization is the practice of organizing state as a flat
+          collection of entities indexed by unique identifiers, rather than
+          deeply nested object hierarchies. In a normalized state, users are
+          stored as <code>entities.users.byId: &#123;&quot;1&quot;: &#123;id: &quot;1&quot;, name: &quot;Alice&quot;&#125;, &quot;2&quot;: &#123;id: &quot;2&quot;, name: &quot;Bob&quot;&#125;&#125;</code> with a
+          separate <code>entities.users.allIds: [&quot;1&quot;, &quot;2&quot;]</code> array for ordering, rather than{" "}
+          <code>users: [&#123;id: &quot;1&quot;, name: &quot;Alice&quot;&#125;, &#123;id: &quot;2&quot;, name: &quot;Bob&quot;&#125;]</code>. The benefits are
+          substantial: updating a user requires a single lookup and mutation
+          (update <code>byId[&quot;1&quot;]</code>) rather than searching through
+          a potentially large array, the same user entity is never duplicated
+          (appearing in multiple lists with potentially different values), and
+          the state structure naturally mirrors database tables, making it
+          straightforward to map API responses to state.
+        </p>
+        <p>
+          Redux Toolkit&apos;s <code>createEntityAdapter</code> provides a
+          battle-tested normalization implementation with CRUD operations
+          (addOne, addMany, upsertOne, upsertMany, removeOne, removeMany),
+          auto-generated selectors (selectById, selectIds, selectEntities,
+          selectAll, selectTotal), and sorting. The adapter generates
+          memoized selectors that only recompute when the relevant slice of
+          state changes, preventing unnecessary re-renders. For Zustand, the
+          same pattern can be implemented manually — the store maintains an
+          entities object with byId maps and allIds arrays for each entity
+          type, and actions provide the same CRUD operations. The key insight
+          is that normalization is a data pattern, not a library pattern — it
+          applies regardless of whether you use Redux, Zustand, or Context.
+        </p>
+        <p>
+          Handling relational data in normalized state requires managing
+          references between entities. When a user has posts, and posts have
+          comments, the normalized structure stores each entity type separately
+          with ID references: users reference their post IDs, posts reference
+          their author ID and comment IDs. Denormalized selectors reconstruct
+          the nested structure on demand — a selector that returns a user with
+          their posts and comments looks up each referenced entity from the
+          appropriate byId map. These selectors must be memoized (using Reselect
+          or equivalent) to avoid recalculating the nested structure on every
+          render. The trade-off is that normalized state requires more boilerplate
+          (entity maps, ID references, denormalizing selectors) but provides
+          O(1) entity lookups, eliminates duplication, and simplifies
+          cross-entity operations (deleting a user and all their posts is a
+          matter of removing the user from users.byId and filtering the user&apos;s
+          IDs from posts.allIds).
+        </p>
+      </section>
+
+      <section>
+        <h2>URL State as Single Source of Truth</h2>
+        <p>
+          The URL is the most accessible and shareable form of application
+          state — it survives page refresh, can be bookmarked, shared via link,
+          and is the basis for browser history (back/forward navigation). URL
+          state encompasses query parameters (<code>?page=2&amp;sort=date</code>),
+          route parameters (<code>/users/:userId</code>), and hash fragments
+          (<code>#section-3</code>). The principle of URL state as the single
+          source of truth means that any state that affects what the user sees
+          and that should be shareable should be represented in the URL, not in
+          a JavaScript store. When the URL changes, the application re-renders
+          to match; when the application state changes, the URL updates.
+        </p>
+        <p>
+          The common anti-pattern is duplicating URL state in a store — reading
+          <code>page</code> from the URL into a Zustand store, then writing
+          changes back to the URL. This creates two sources of truth that can
+          diverge: the URL says <code>page=2</code> but the store says{" "}
+          <code>page=3</code>, causing confusion about which value is correct.
+          The fix is to read URL state directly through the router&apos;s API
+          (<code>useSearchParams()</code> in Next.js, <code>useSearchParams()</code>{" "}
+          in React Router) and write URL state through the router&apos;s
+          navigation API (<code>router.push(&apos;/page?sort=date&apos;)</code>).
+          Components that need the current page call <code>searchParams.get(&apos;page&apos;)</code> directly — no intermediate store is involved.
+        </p>
+        <p>
+          URL state serialization requires careful design because URLs only
+          support string values. Complex state (arrays, objects, nested filters)
+          must be serialized into URL-compatible formats. For arrays, repeated
+          query parameters (<code>?tags=react&amp;tags=performance</code>) or
+          comma-separated values (<code>?tags=react,performance</code>) are
+          common approaches. For objects, JSON encoding with URL encoding
+          (<code>?filters=%7B%22status%22%3A%22open%22%7D</code>) works but
+          produces unreadable URLs. The recommended approach is to keep URL
+          state flat and simple — use individual query parameters for each
+          filter, sort, and pagination value, and reserve complex serialization
+          for truly nested state that cannot be flattened. URL length limits
+          (approximately 2000 characters for broad browser compatibility)
+          constrain how much state can be stored in the URL.
+        </p>
+        <p>
+          URL state and browser history integration enables powerful user
+          experiences. When a user opens a modal, the URL should update to
+          include the modal state (<code>?modal=settings</code>) so that
+          pressing the back button closes the modal (removing the query
+          parameter) rather than navigating away from the page. When a user
+          selects a tab, the URL should reflect the active tab
+          (<code>?tab=analytics</code>) so that bookmarking and sharing preserve
+          the tab selection. When a user navigates through a wizard or multi-step
+          flow, each step should have its own URL so that the user can navigate
+          directly to any step and the back button returns to the previous step.
+          This URL-driven state model makes the application fully navigable and
+          shareable without any special handling.
+        </p>
+      </section>
+
+      <section>
+        <h2>Form State Management Patterns</h2>
+        <p>
+          Form state management is distinct from general application state
+          because forms have unique requirements: real-time validation, dirty
+          tracking (has the user modified this field?), touched tracking (has
+          the user visited this field?), submission state (is the form
+          submitting?), and field-level error messages. Managing this state
+          manually with useState quickly becomes verbose and error-prone,
+          especially for forms with 20+ fields and complex validation rules.
+          React Hook Form addresses this by using uncontrolled components with
+          refs — field values are read from the DOM on submission rather than
+          on every keystroke, minimizing re-renders. The library tracks field
+          registration, validation rules, and error state internally, exposing
+          only the values the component needs through the <code>formState</code>{" "}
+          object.
+        </p>
+        <p>
+          Validation strategies in React Hook Form support multiple approaches.
+          HTML5 constraint validation (required, minLength, pattern, max) is
+          the simplest and works without JavaScript, but provides limited
+          customization of error messages. Schema-based validation with Zod,
+          Yup, or Joi provides the most power — the validation schema defines
+          all field rules in a single declarative structure, supports
+          cross-field validation (confirm password matches password, end date is
+          after start date), and produces typed validation errors. React Hook
+          Form&apos;s <code>resolver</code> function integrates the schema
+          validator, running validation on field blur and form submit, and
+          surfacing errors to individual fields through the <code>errors</code>{" "}
+          object. The recommended pattern is schema-based validation with Zod
+          because the schema can be shared between the frontend form and the
+          backend API handler, ensuring consistent validation on both sides.
+        </p>
+        <p>
+          Form submission architecture involves coordinating form state,
+          validation, server communication, and error handling. The submission
+          flow validates all fields (triggering inline error display for
+          failures), serializes the form data, sends it to the server (using
+          React Query&apos;s <code>useMutation</code> for automatic loading and
+          error state management), and handles the response. On success, the
+          form resets and triggers a query invalidation to refresh the affected
+          data. On error, server-side validation errors are mapped back to
+          specific form fields (if the API returns field-level errors) or
+          displayed as a form-level error message. The mutation&apos;s{" "}
+          <code>isPending</code> state disables the submit button and shows a
+          loading indicator, preventing duplicate submissions.
+        </p>
+        <p>
+          Complex form patterns (dynamic field arrays, conditional fields,
+          multi-step wizards, nested sub-forms) require additional architecture.
+          Dynamic field arrays (adding/removing items in a list) use React Hook
+          Form&apos;s <code>useFieldArray</code> hook, which manages the array
+          state with proper key assignment for React list rendering. Conditional
+          fields (showing a &quot;company name&quot; field only when
+          &quot;employment type = employed&quot; is selected) are handled by
+          registering/unregistering fields based on the condition, so
+          unregistered fields do not appear in the submission data. Multi-step
+          wizards share form state across steps using a parent component that
+          holds the form data and passes it to each step — the final step
+          submits the accumulated data. Alternatively, the form data can be
+          persisted to URL state or localStorage between steps, enabling the
+          user to navigate away and resume later.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Optimization</h2>
+        <p>
+          Selector memoization is the single most impactful state management
+          performance optimization. When a component subscri to a store slice
+          using a selector function, the store calls the selector on every state
+          change and compares the result to the previous result using Object.is.
+          If the selector creates a new object or array each time (e.g.,{" "}
+          <code>state =&gt; state.items.filter(...)</code>), the comparison
+          always fails and the component always re-renders, even when the
+          filtered result is identical. The fix is to use a stable selector
+          reference that returns the same object when inputs have not changed.
+          Reselect&apos;s <code>createSelector</code> provides memoized
+          selectors that cache their output — the selector only recalculates
+          when its input selectors produce new values. For Zustand, the{" "}
+          <code>shallow</code> equality function from zustand/shallow provides
+          shallow comparison of objects and arrays, preventing re-renders when
+          the selected value has the same content.
+        </p>
+        <p>
+          Batch updates reduce the number of re-renders when multiple state
+          changes occur in quick succession. React 18 automatically batches
+          state updates within event handlers and lifecycle methods, but updates
+          in setTimeout, Promise callbacks, and event listeners are not batched
+          by default. React Query batches query invalidations — when multiple
+          queries are invalidated simultaneously, React Query schedules a single
+          re-render for all affected components rather than one re-render per
+          query. In Zustand, calling multiple setState operations in a single
+          action function produces a single state update and a single re-render
+          cycle, because Zustand processes the entire action atomically. For
+          manual batching outside React&apos;s automatic batching context,{" "}
+          <code>ReactDOM.flushSync</code> can force synchronous batching, and
+          React 18&apos;s <code>startTransition</code> can mark state updates
+          as non-urgent, allowing React to batch them with other pending updates.
+        </p>
+        <p>
+          Store write optimization ensures that state updates only change the
+          values that actually differ from the current values. When a Zustand
+          action updates a field to the same value it already has, components
+          subscribed to that field should not re-render. Zustand handles this
+          naturally — it uses Object.is to compare the new state to the old
+          state and only notifies subscribers if something changed. However, when
+          using the immer middleware, immer always produces a new state object
+          even if no mutations occurred, potentially triggering unnecessary
+          notifications. The solution is to check for actual changes before
+          committing the immer draft, or to use Zustand without immer for
+          performance-critical stores. For Redux, the same consideration applies
+          — reducers must return the existing state object (not a copy) when no
+          changes are needed, which Redux Toolkit&apos;s immer-based reducers
+          handle automatically.
+        </p>
+        <p>
+          Store subscription optimization prevents components from subscribing
+          to state they do not need. In Zustand, every <code>useStore</code>{" "}
+          call creates a subscription — if a component calls <code>useStore()</code>{" "}
+          without a selector, it subscribes to the entire store and re-renders
+          on every state change. The fix is to always use selectors:{" "}
+          <code>useStore(state =&gt; state.count)</code> subscribes only to the
+          count field. For components that need multiple values from the store,
+          call <code>useStore</code> multiple times with different selectors
+          (each call creates an independent subscription) rather than calling it
+          once with a selector that returns an object (which creates a new object
+          on every call, triggering re-renders). The component re-renders only
+          when its specific selected values change, providing fine-grained
+          subscription control that scales to large applications with many
+          components and complex state.
         </p>
       </section>
 

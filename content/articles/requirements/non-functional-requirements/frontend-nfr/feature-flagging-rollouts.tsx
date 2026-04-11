@@ -120,6 +120,12 @@ export default function FeatureFlaggingRolloutsArticle() {
           alt="Feature Flag Types"
           caption="Feature flag types — release flags (short-lived), experiment flags (A/B testing), ops flags (operational control), and permission flags (user attributes) with their lifecycle and use cases"
         />
+
+        <ArticleImage
+          src="/diagrams/requirements/nfr/frontend-nfr/flag-rollout-progression.svg"
+          alt="Feature Flag Rollout Progression"
+          caption="Feature flag rollout stages — internal dogfooding, beta (1-5%), staged rollout (25-50%), full rollout (100%), with kill switch capability at any stage and cleanup/audit tracking"
+        />
       </section>
 
       <section>
