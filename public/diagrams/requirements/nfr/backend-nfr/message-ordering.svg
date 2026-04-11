@@ -1,97 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
-  <defs>
-    <marker id="orderArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Message Ordering Guarantees</text>
   
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
+  <!-- Partition Ordering -->
+  <rect x="40" y="70" width="720" height="160" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Partition-Based Ordering</text>
   
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Message Ordering Guarantees</text>
+  <rect x="55" y="115" width="220" height="100" rx="6" fill="#bbdefb"/>
+  <text x="165" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Partition 1 (Key: User A)</text>
+  <text x="165" y="155" font-size="9" text-anchor="middle" fill="#666666">Msg 1: Create Account (seq: 1)</text>
+  <text x="165" y="173" font-size="9" text-anchor="middle" fill="#666666">Msg 2: Update Profile (seq: 2)</text>
+  <text x="165" y="191" font-size="9" text-anchor="middle" fill="#666666">Msg 3: Delete Account (seq: 3)</text>
+  <text x="165" y="209" font-size="9" text-anchor="middle" fill="#4caf50">✓ Processed in order: 1→2→3</text>
   
-  <!-- Ordering Levels -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Ordering Levels</text>
+  <rect x="295" y="115" width="220" height="100" rx="6" fill="#bbdefb"/>
+  <text x="405" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Partition 2 (Key: User B)</text>
+  <text x="405" y="155" font-size="9" text-anchor="middle" fill="#666666">Msg 1: Create Account (seq: 1)</text>
+  <text x="405" y="173" font-size="9" text-anchor="middle" fill="#666666">Msg 2: Update Profile (seq: 2)</text>
+  <text x="405" y="191" font-size="9" text-anchor="middle" fill="#666666">Msg 3: Delete Account (seq: 3)</text>
+  <text x="405" y="209" font-size="9" text-anchor="middle" fill="#4caf50">✓ Processed in order: 1→2→3</text>
   
-  <!-- No ordering -->
-  <rect x="70" y="110" width="180" height="55" rx="4" fill="#ef4444" opacity="0.2" stroke="#ef4444" stroke-width="2"/>
-  <text x="160" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#ef4444">No Ordering</text>
-  <text x="160" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Messages may arrive</text>
-  <text x="160" y="170" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">in any order</text>
+  <rect x="535" y="115" width="210" height="100" rx="6" fill="#c8e6c9"/>
+  <text x="640" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Cross-Partition</text>
+  <text x="640" y="155" font-size="9" text-anchor="middle" fill="#666666">No ordering guarantee</text>
+  <text x="640" y="173" font-size="9" text-anchor="middle" fill="#666666">Partition 1 msg may process</text>
+  <text x="640" y="191" font-size="9" text-anchor="middle" fill="#666666">before or after Partition 2 msg</text>
+  <text x="640" y="209" font-size="9" text-anchor="middle" fill="#f57c00">⚠ Order not guaranteed across partitions</text>
   
-  <!-- Partition ordering -->
-  <rect x="270" y="110" width="180" height="55" rx="4" fill="#f97316" opacity="0.2" stroke="#f97316" stroke-width="2"/>
-  <text x="360" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#f97316">Partition Ordering</text>
-  <text x="360" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Ordered within partition</text>
-  <text x="360" y="170" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Not across partitions</text>
+  <!-- Out-of-Order Handling -->
+  <rect x="40" y="260" width="720" height="180" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="290" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Out-of-Order Message Handling</text>
   
-  <!-- Global ordering -->
-  <rect x="70" y="180" width="180" height="55" rx="4" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="2"/>
-  <text x="160" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#22c55e">Global Ordering</text>
-  <text x="160" y="225" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Total order across</text>
-  <text x="160" y="240" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">all messages</text>
+  <rect x="55" y="305" width="220" height="120" rx="6" fill="#a5d6a7"/>
+  <text x="165" y="325" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Option 1: Buffer</text>
+  <text x="165" y="345" font-size="9" text-anchor="middle" fill="#666666">Buffer out-of-order msg</text>
+  <text x="165" y="363" font-size="9" text-anchor="middle" fill="#666666">Wait for missing msgs</text>
+  <text x="165" y="381" font-size="9" text-anchor="middle" fill="#666666">Process in order when ready</text>
+  <text x="165" y="399" font-size="9" text-anchor="middle" fill="#666666">✓ Correct order</text>
+  <text x="165" y="417" font-size="9" text-anchor="middle" fill="#d84315">✗ Adds latency</text>
   
-  <!-- Causal ordering -->
-  <rect x="270" y="180" width="180" height="55" rx="4" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
-  <text x="360" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#3b82f6">Causal Ordering</text>
-  <text x="360" y="225" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Cause before effect</text>
-  <text x="360" y="240" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Concurrent unordered</text>
+  <rect x="295" y="305" width="220" height="120" rx="6" fill="#a5d6a7"/>
+  <text x="405" y="325" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Option 2: Process with Warning</text>
+  <text x="405" y="345" font-size="9" text-anchor="middle" fill="#666666">Process immediately</text>
+  <text x="405" y="363" font-size="9" text-anchor="middle" fill="#666666">Log warning for reordering</text>
+  <text x="405" y="381" font-size="9" text-anchor="middle" fill="#666666">Monitor for state issues</text>
+  <text x="405" y="399" font-size="9" text-anchor="middle" fill="#4caf50">✓ Low latency</text>
+  <text x="405" y="417" font-size="9" text-anchor="middle" fill="#d84315">✗ May cause incorrect state</text>
   
-  <!-- Partition example -->
-  <rect x="520" y="60" width="430" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Partition-Based Ordering</text>
+  <rect x="535" y="305" width="210" height="120" rx="6" fill="#a5d6a7"/>
+  <text x="640" y="325" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Option 3: Dead Letter Queue</text>
+  <text x="640" y="345" font-size="9" text-anchor="middle" fill="#666666">Send to DLQ for investigation</text>
+  <text x="640" y="363" font-size="9" text-anchor="middle" fill="#666666">Manual intervention required</text>
+  <text x="640" y="381" font-size="9" text-anchor="middle" fill="#666666">Preserves correctness</text>
+  <text x="640" y="399" font-size="9" text-anchor="middle" fill="#4caf50">✓ Correct, auditable</text>
+  <text x="640" y="417" font-size="9" text-anchor="middle" fill="#d84315">✗ Requires manual work</text>
   
-  <!-- Partitions -->
-  <rect x="540" y="110" width="120" height="150" rx="4" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
-  <text x="600" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#3b82f6">Partition 0</text>
+  <!-- Sequence Number Detection -->
+  <rect x="40" y="470" width="720" height="110" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="400" y="500" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Sequence Number-Based Ordering Detection</text>
   
-  <rect x="550" y="145" width="100" height="25" rx="2" fill="#3b82f6"/>
-  <text x="600" y="162" text-anchor="middle" font-size="8" fill="#ffffff">Msg A (seq 1)</text>
+  <rect x="55" y="515" width="340" height="50" rx="6" fill="#ffe0b2"/>
+  <text x="225" y="535" font-size="10" text-anchor="middle" fill="#1a1a1a">Consumer expects seq: 3, receives seq: 5 → Gap detected (missing seq: 3, 4)</text>
+  <text x="225" y="555" font-size="9" text-anchor="middle" fill="#666666">Action: Buffer seq: 5, wait for seq: 3 and 4</text>
   
-  <rect x="550" y="175" width="100" height="25" rx="2" fill="#3b82f6"/>
-  <text x="600" y="192" text-anchor="middle" font-size="8" fill="#ffffff">Msg C (seq 2)</text>
-  
-  <rect x="550" y="205" width="100" height="25" rx="2" fill="#3b82f6"/>
-  <text x="600" y="222" text-anchor="middle" font-size="8" fill="#ffffff">Msg E (seq 3)</text>
-  
-  <rect x="690" y="110" width="120" height="150" rx="4" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="750" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#8b5cf6">Partition 1</text>
-  
-  <rect x="700" y="145" width="100" height="25" rx="2" fill="#8b5cf6"/>
-  <text x="750" y="162" text-anchor="middle" font-size="8" fill="#ffffff">Msg B (seq 1)</text>
-  
-  <rect x="700" y="175" width="100" height="25" rx="2" fill="#8b5cf6"/>
-  <text x="750" y="192" text-anchor="middle" font-size="8" fill="#ffffff">Msg D (seq 2)</text>
-  
-  <rect x="830" y="110" width="120" height="150" rx="4" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="2"/>
-  <text x="890" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#22c55e">Partition 2</text>
-  
-  <rect x="840" y="145" width="100" height="25" rx="2" fill="#22c55e"/>
-  <text x="890" y="162" text-anchor="middle" font-size="8" fill="#ffffff">Msg F (seq 1)</text>
-  
-  <text x="735" y="250" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">✓ Ordered within partition (A→C→E, B→D, F)</text>
-  <text x="735" y="270" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">✗ No ordering across partitions (A,B,F unordered)</text>
-  
-  <!-- Ordering Strategies -->
-  <rect x="50" y="300" width="450" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Ordering Strategies</text>
-  
-  <text x="70" y="355" font-size="10" fill="var(--text-secondary, #47556ird">• Same partition key → same partition → ordered</text>
-  <text x="70" y="375" font-size="10" fill="var(--text-secondary, #47556ird">• Sequence numbers per partition</text>
-  <text x="70" y="395" font-size="10" fill="var(--text-secondary, #47556ird">• Single partition for total order (limits scalability)</text>
-  <text x="70" y="415" font-size="10" fill="var(--text-secondary, #47556ird">• Timestamp ordering (clock skew issues)</text>
-  <text x="70" y="435" font-size="10" fill="var(--text-secondary, #47556ird">• Vector clocks for causal ordering</text>
-  
-  <!-- Reordering at Consumer -->
-  <rect x="520" y="300" width="430" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Consumer-Side Reordering</text>
-  
-  <text x="540" y="355" font-size="10" fill="var(--text-secondary, #47556ird">• Buffer messages and reorder by sequence number</text>
-  <text x="540" y="375" font-size="10" fill="var(--text-secondary, #47556ird">• Wait for missing messages (timeout)</text>
-  <text x="540" y="395" font-size="10" fill="var(--text-secondary, #47556ird">• Process in-order, buffer out-of-order</text>
-  <text x="540" y="415" font-size="10" fill="var(--text-secondary, #47556ird">• Trade-off: Latency vs ordering guarantee</text>
-  
-  <text x="500" y="470" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Partition key design determines ordering. Related messages must share partition key.</text>
+  <rect x="415" y="515" width="330" height="50" rx="6" fill="#ffe0b2"/>
+  <text x="580" y="535" font-size="10" text-anchor="middle" fill="#1a1a1a">Consumer expects seq: 3, receives seq: 2 → Out-of-order detected</text>
+  <text x="580" y="555" font-size="9" text-anchor="middle" fill="#666666">Action: Discard duplicate or buffer until seq: 3 arrives</text>
 </svg>

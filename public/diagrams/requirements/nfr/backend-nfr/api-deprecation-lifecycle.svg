@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">API Deprecation Lifecycle & Migration</text>
+  
+  <!-- Lifecycle Stages -->
+  <rect x="40" y="70" width="720" height="120" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">API Version Lifecycle</text>
+  
+  <rect x="55" y="115" width="160" height="60" rx="6" fill="#c8e6c9"/>
+  <text x="135" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">1. Active</text>
+  <text x="135" y="155" font-size="9" text-anchor="middle" fill="#666666">New features, bug fixes</text>
+  <text x="135" y="170" font-size="9" text-anchor="middle" fill="#666666">Duration: 18 months</text>
+  
+  <line x1="215" y1="145" x2="235" y2="145" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="235" y="115" width="160" height="60" rx="6" fill="#fff3e0"/>
+  <text x="315" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">2. Deprecated</text>
+  <text x="315" y="155" font-size="9" text-anchor="middle" fill="#666666">Bug fixes only, no new features</text>
+  <text x="315" y="170" font-size="9" text-anchor="middle" fill="#666666">Duration: 12 months</text>
+  
+  <line x1="395" y1="145" x2="415" y2="145" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="415" y="115" width="160" height="60" rx="6" fill="#ffebee"/>
+  <text x="495" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">3. Sunset</text>
+  <text x="495" y="155" font-size="9" text-anchor="middle" fill="#666666">Security fixes only</text>
+  <text x="495" y="170" font-size="9" text-anchor="middle" fill="#666666">Duration: 6 months</text>
+  
+  <line x1="575" y1="145" x2="595" y2="145" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="595" y="115" width="160" height="60" rx="6" fill="#e0e0e0"/>
+  <text x="675" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">4. Retired</text>
+  <text x="675" y="155" font-size="9" text-anchor="middle" fill="#666666">No longer accessible</text>
+  <text x="675" y="170" font-size="9" text-anchor="middle" fill="#666666">404/410 responses</text>
+  
+  <!-- Communication Channels -->
+  <rect x="40" y="220" width="340" height="200" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="250" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Deprecation Communication</text>
+  
+  <rect x="55" y="265" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="285" font-size="10" text-anchor="middle" fill="#1a1a1a">Response Headers: Deprecation: true</text>
+  
+  <rect x="55" y="300" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="320" font-size="10" text-anchor="middle" fill="#1a1a1a">Response Headers: Sunset: 2026-12-31</text>
+  
+  <rect x="55" y="335" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="355" font-size="10" text-anchor="middle" fill="#1a1a1a">Email notifications to API key owners</text>
+  
+  <rect x="55" y="370" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="390" font-size="10" text-anchor="middle" fill="#1a1a1a">Dashboard announcements</text>
+  
+  <rect x="55" y="405" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="425" font-size="10" text-anchor="middle" fill="#1a1a1a">Direct outreach for high-volume consumers</text>
+  
+  <!-- Migration Tooling -->
+  <rect x="420" y="220" width="340" height="200" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="250" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Migration Tooling</text>
+  
+  <rect x="435" y="265" width="310" height="35" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="288" font-size="10" text-anchor="middle" fill="#1a1a1a">Codemods: Automated code transformation scripts</text>
+  
+  <rect x="435" y="305" width="310" height="35" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="328" font-size="10" text-anchor="middle" fill="#1a1a1a">Compatibility Shims: v1 API on top of v2 impl</text>
+  
+  <rect x="435" y="345" width="310" height="35" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="368" font-size="10" text-anchor="middle" fill="#1a1a1a">Migration Guides: Before/after documentation</text>
+  
+  <rect x="435" y="385" width="310" height="35" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="408" font-size="10" text-anchor="middle" fill="#1a1a1a">Version Testing: Test v2 in staging before prod</text>
+  
+  <!-- Version Coexistence -->
+  <rect x="40" y="450" width="720" height="130" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="480" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Version Coexistence Architecture</text>
+  
+  <rect x="55" y="495" width="210" height="70" rx="6" fill="#e3f2fd"/>
+  <text x="160" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">v1 (Deprecated)</text>
+  <text x="160" y="535" font-size="9" text-anchor="middle" fill="#666666">Legacy transformer</text>
+  <text x="160" y="550" font-size="9" text-anchor="middle" fill="#666666">50% of traffic</text>
+  <text x="160" y="565" font-size="9" text-anchor="middle" fill="#666666">Retiring: 2026-06</text>
+  
+  <rect x="295" y="495" width="210" height="70" rx="6" fill="#c8e6c9"/>
+  <text x="400" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">v2 (Active)</text>
+  <text x="400" y="535" font-size="9" text-anchor="middle" fill="#666666">Current version</text>
+  <text x="400" y="550" font-size="9" text-anchor="middle" fill="#666666">40% of traffic</text>
+  <text x="400" y="565" font-size="9" text-anchor="middle" fill="#666666">New features here</text>
+  
+  <rect x="535" y="495" width="210" height="70" rx="6" fill="#fff3e0"/>
+  <text x="640" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">v3 (Beta)</text>
+  <text x="640" y="535" font-size="9" text-anchor="middle" fill="#666666">Preview version</text>
+  <text x="640" y="550" font-size="9" text-anchor="middle" fill="#666666">10% of traffic</text>
+  <text x="640" y="565" font-size="9" text-anchor="middle" fill="#666666">Early adopters only</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+  </defs>
+</svg>

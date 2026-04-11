@@ -1,93 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
-  <defs>
-    <marker id="costArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
-  
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Cloud Cost Optimization</text>
-  
-  <!-- Cost Breakdown -->
-  <rect x="50" y="60" width="450" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Typical Cloud Cost Breakdown</text>
-  
-  <!-- Compute -->
-  <rect x="70" y="110" width="180" height="40" rx="3" fill="#3b82f6"/>
-  <text x="160" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Compute (40-50%)</text>
-  
-  <!-- Database -->
-  <rect x="70" y="155" width="180" height="40" rx="3" fill="#8b5cf6"/>
-  <text x="160" y="180" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Database (20-30%)</text>
-  
-  <!-- Network -->
-  <rect x="270" y="110" width="180" height="40" rx="3" fill="#f97316"/>
-  <text x="360" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Network/Egress (10-20%)</text>
-  
-  <!-- Storage -->
-  <rect x="270" y="155" width="180" height="40" rx="3" fill="#22c55e"/>
-  <text x="360" y="180" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Storage (10-15%)</text>
-  
-  <!-- Optimization Strategies -->
-  <rect x="520" y="60" width="430" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Cost Optimization Strategies</text>
-  
-  <rect x="540" y="110" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Right-Sizing</text>
-  <text x="635" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Match resources to usage</text>
-  <text x="635" y="172" text-anchor="middle" font-size="8" fill="#22c55e" font-weight="bold">Save 30-50%</text>
-  
-  <rect x="750" y="110" width="180" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Reserved Instances</text>
-  <text x="840" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">1-3 year commitment</text>
-  <text x="840" y="172" text-anchor="middle" font-size="8" fill="#22c55e" font-weight="bold">Save 40-72%</text>
-  
-  <rect x="540" y="185" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="210" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Spot Instances</text>
-  <text x="635" y="230" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Spare capacity (interruptible)</text>
-  <text x="635" y="247" text-anchor="middle" font-size="8" fill="#22c55e" font-weight="bold">Save 60-90%</text>
-  
-  <rect x="750" y="185" width="180" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="210" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Auto-Scaling</text>
-  <text x="840" y="230" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Scale with demand</text>
-  <text x="840" y="247" text-anchor="middle" font-size="8" fill="#22c55e" font-weight="bold">Save 20-40%</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Cost Optimization Architecture</text>
   
   <!-- Pricing Models -->
-  <rect x="50" y="280" width="450" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Pricing Models Comparison</text>
+  <rect x="40" y="70" width="720" height="120" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Cloud Pricing Models</text>
   
-  <rect x="70" y="325" width="110" height="45" rx="3" fill="#ef4444" opacity="0.2" stroke="#ef4444" stroke-width="1"/>
-  <text x="125" y="345" text-anchor="middle" font-size="9" font-weight="bold" fill="#ef4444">On-Demand</text>
-  <text x="125" y="362" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">100% cost</text>
+  <rect x="55" y="115" width="160" height="60" rx="6" fill="#bbdefb"/>
+  <text x="135" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">On-Demand</text>
+  <text x="135" y="155" font-size="9" text-anchor="middle" fill="#666666">Pay-as-you-go</text>
+  <text x="135" y="170" font-size="9" text-anchor="middle" fill="#666666">0% discount</text>
   
-  <rect x="200" y="325" width="110" height="45" rx="3" fill="#f97316" opacity="0.2" stroke="#f97316" stroke-width="1"/>
-  <text x="255" y="345" text-anchor="middle" font-size="9" font-weight="bold" fill="#f97316">Reserved (1yr)</text>
-  <text x="255" y="362" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">~60% cost</text>
+  <rect x="235" y="115" width="160" height="60" rx="6" fill="#bbdefb"/>
+  <text x="315" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Reserved (1yr)</text>
+  <text x="315" y="155" font-size="9" text-anchor="middle" fill="#666666">30-40% discount</text>
+  <text x="315" y="170" font-size="9" text-anchor="middle" fill="#666666">1 year commitment</text>
   
-  <rect x="330" y="325" width="110" height="45" rx="3" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="1"/>
-  <text x="385" y="345" text-anchor="middle" font-size="9" font-weight="bold" fill="#3b82f6">Reserved (3yr)</text>
-  <text x="385" y="362" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">~40% cost</text>
+  <rect x="415" y="115" width="160" height="60" rx="6" fill="#bbdefb"/>
+  <text x="495" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Spot Instances</text>
+  <text x="495" y="155" font-size="9" text-anchor="middle" fill="#666666">70-90% discount</text>
+  <text x="495" y="170" font-size="9" text-anchor="middle" fill="#666666">Reclaimable (2min notice)</text>
   
-  <rect x="70" y="380" width="110" height="45" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1"/>
-  <text x="125" y="400" text-anchor="middle" font-size="9" font-weight="bold" fill="#22c55e">Spot</text>
-  <text x="125" y="417" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">~20% cost</text>
+  <rect x="595" y="115" width="150" height="60" rx="6" fill="#bbdefb"/>
+  <text x="670" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Savings Plans</text>
+  <text x="670" y="155" font-size="9" text-anchor="middle" fill="#666666">20-50% discount</text>
+  <text x="670" y="170" font-size="9" text-anchor="middle" fill="#666666">Flexible commitment</text>
   
-  <text x="200" y="395" font-size="8" fill="var(--text-secondary, #47556ird">✓ Flexible</text>
-  <text x="330" y="395" font-size="8" fill="var(--text-secondary, #47556ird">✓ Best value</text>
-  <text x="70" y="435" font-size="8" fill="#f59e0b">⚠ Can be terminated</text>
+  <!-- Cost Optimization Strategies -->
+  <rect x="40" y="220" width="340" height="200" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="250" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Cost Optimization Strategies</text>
   
-  <!-- Cost Allocation -->
-  <rect x="520" y="280" width="430" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Cost Allocation &amp; Governance</text>
+  <rect x="55" y="265" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="285" font-size="10" text-anchor="middle" fill="#1a1a1a">Resource Rightsizing: Match capacity to utilization</text>
   
-  <text x="540" y="335" font-size="9" fill="var(--text-secondary, #47556ird">• Tag all resources (team, project, environment)</text>
-  <text x="540" y="355" font-size="9" fill="var(--text-secondary, #47556ird">• Set up cost alerts at thresholds</text>
-  <text x="540" y="375" font-size="9" fill="var(--text-secondary, #47556ird">• Regular cost reviews (weekly/monthly)</text>
-  <text x="540" y="395" font-size="9" fill="var(--text-secondary, #47556ird">• Showback/chargeback to teams</text>
-  <text x="540" y="415" font-size="9" fill="var(--text-secondary, #47556ird">• Budget caps and spending limits</text>
+  <rect x="55" y="300" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="320" font-size="10" text-anchor="middle" fill="#1a1a1a">Auto-Scaling: Scale down during low-traffic periods</text>
   
-  <text x="500" y="470" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Start with right-sizing and reserved instances for stable workloads. Use spot for fault-tolerant workloads.</text>
+  <rect x="55" y="335" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="355" font-size="10" text-anchor="middle" fill="#1a1a1a">Storage Tiering: Hot → Warm → Cold → Archive</text>
+  
+  <rect x="55" y="370" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="390" font-size="10" text-anchor="middle" fill="#1a1a1a">Waste Elimination: Remove unused resources</text>
+  
+  <rect x="55" y="405" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="425" font-size="10" text-anchor="middle" fill="#1a1a1a">Data Transfer Optimization: CDN, co-location, VPC endpoints</text>
+  
+  <!-- FinOps Governance -->
+  <rect x="420" y="220" width="340" height="200" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="250" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">FinOps Governance</text>
+  
+  <rect x="435" y="265" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="285" font-size="10" text-anchor="middle" fill="#1a1a1a">Cost Allocation Tags: team, service, environment</text>
+  
+  <rect x="435" y="300" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="320" font-size="10" text-anchor="middle" fill="#1a1a1a">Monthly Cost Reports: per team, per service</text>
+  
+  <rect x="435" y="335" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="355" font-size="10" text-anchor="middle" fill="#1a1a1a">Cost Budgets: alert at 80% and 100% thresholds</text>
+  
+  <rect x="435" y="370" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="390" font-size="10" text-anchor="middle" fill="#1a1a1a">Cost Reviews: include in team retrospectives</text>
+  
+  <rect x="435" y="405" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="425" font-size="10" text-anchor="middle" fill="#1a1a1a">Optimization Tracking: measure and report savings</text>
+  
+  <!-- Capacity Mix -->
+  <rect x="40" y="450" width="720" height="130" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="480" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Optimal Capacity Mix</text>
+  
+  <rect x="55" y="495" width="210" height="70" rx="6" fill="#e1bee7"/>
+  <text x="160" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Reserved: 60-70%</text>
+  <text x="160" y="535" font-size="9" text-anchor="middle" fill="#666666">Baseline capacity</text>
+  <text x="160" y="550" font-size="9" text-anchor="middle" fill="#666666">Predictable workloads</text>
+  <text x="160" y="565" font-size="9" text-anchor="middle" fill="#666666">30-60% cost savings</text>
+  
+  <rect x="295" y="495" width="210" height="70" rx="6" fill="#e1bee7"/>
+  <text x="400" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">On-Demand: 10-20%</text>
+  <text x="400" y="535" font-size="9" text-anchor="middle" fill="#666666">Variable capacity</text>
+  <text x="400" y="550" font-size="9" text-anchor="middle" fill="#666666">Unpredictable spikes</text>
+  <text x="400" y="565" font-size="9" text-anchor="middle" fill="#666666">New deployments</text>
+  
+  <rect x="535" y="495" width="210" height="70" rx="6" fill="#e1bee7"/>
+  <text x="640" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Spot: 10-30%</text>
+  <text x="640" y="535" font-size="9" text-anchor="middle" fill="#666666">Fault-tolerant workloads</text>
+  <text x="640" y="550" font-size="9" text-anchor="middle" fill="#666666">Batch, CI/CD, stateless</text>
+  <text x="640" y="565" font-size="9" text-anchor="middle" fill="#666666">70-90% cost savings</text>
 </svg>

@@ -1,94 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Migration Patterns Deep Dive</text>
+  
+  <!-- Online Migration Flow -->
+  <rect x="40" y="70" width="720" height="180" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Online Migration with Dual-Write</text>
+  
+  <rect x="55" y="115" width="140" height="60" rx="6" fill="#bbdefb"/>
+  <text x="125" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Phase 1: Dual-Write</text>
+  <text x="125" y="155" font-size="9" text-anchor="middle" fill="#666666">Write to both old</text>
+  <text x="125" y="170" font-size="9" text-anchor="middle" fill="#666666">and new systems</text>
+  
+  <line x1="195" y1="145" x2="235" y2="145" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="235" y="115" width="140" height="60" rx="6" fill="#bbdefb"/>
+  <text x="305" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Phase 2: Backfill</text>
+  <text x="305" y="155" font-size="9" text-anchor="middle" fill="#666666">Copy historical data</text>
+  <text x="305" y="170" font-size="9" text-anchor="middle" fill="#666666">from old to new</text>
+  
+  <line x1="375" y1="145" x2="415" y2="145" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="415" y="115" width="140" height="60" rx="6" fill="#bbdefb"/>
+  <text x="485" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Phase 3: Verify</text>
+  <text x="485" y="155" font-size="9" text-anchor="middle" fill="#666666">Compare row counts,</text>
+  <text x="485" y="170" font-size="9" text-anchor="middle" fill="#666666">checksums, samples</text>
+  
+  <line x1="555" y1="145" x2="595" y2="145" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="595" y="115" width="140" height="60" rx="6" fill="#c8e6c9"/>
+  <text x="665" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Phase 4: Cutover</text>
+  <text x="665" y="155" font-size="9" text-anchor="middle" fill="#666666">Switch reads to new,</text>
+  <text x="665" y="170" font-size="9" text-anchor="middle" fill="#666666">decommission old</text>
+  
+  <!-- Backfill Execution -->
+  <rect x="40" y="280" width="340" height="180" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Backfill Execution</text>
+  
+  <rect x="55" y="325" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="345" font-size="10" text-anchor="middle" fill="#1a1a1a">Read batch from old system (e.g., 1000 rows)</text>
+  
+  <rect x="55" y="360" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="380" font-size="10" text-anchor="middle" fill="#1a1a1a">Transform data to new format</text>
+  
+  <rect x="55" y="395" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="415" font-size="10" text-anchor="middle" fill="#1a1a1a">Write batch to new system</text>
+  
+  <rect x="55" y="430" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="450" font-size="10" text-anchor="middle" fill="#1a1a1a">Update progress tracking</text>
+  
+  <rect x="55" y="465" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="485" font-size="10" text-anchor="middle" fill="#1a1a1a">Sleep (control rate), repeat until complete</text>
+  
+  <!-- Verification and Rollback -->
+  <rect x="420" y="280" width="340" height="180" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Verification & Rollback</text>
+  
+  <rect x="435" y="325" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="345" font-size="10" text-anchor="middle" fill="#1a1a1a">Row count comparison: old vs new system</text>
+  
+  <rect x="435" y="360" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="380" font-size="10" text-anchor="middle" fill="#1a1a1a">Checksum verification for data integrity</text>
+  
+  <rect x="435" y="395" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="415" font-size="10" text-anchor="middle" fill="#1a1a1a">Sample record comparison (random sampling)</text>
+  
+  <rect x="435" y="430" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="450" font-size="10" text-anchor="middle" fill="#1a1a1a">Rollback: switch reads back to old system</text>
+  
+  <!-- Migration Timeline -->
+  <rect x="40" y="490" width="720" height="90" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="520" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Migration Timeline (Typical)</text>
+  
+  <rect x="55" y="535" width="160" height="35" rx="4" fill="#e1bee7"/>
+  <text x="135" y="558" font-size="9" text-anchor="middle" fill="#1a1a1a">Week 1: Schema expand</text>
+  
+  <rect x="235" y="535" width="160" height="35" rx="4" fill="#e1bee7"/>
+  <text x="315" y="558" font-size="9" text-anchor="middle" fill="#1a1a1a">Week 2-3: Backfill</text>
+  
+  <rect x="415" y="535" width="160" height="35" rx="4" fill="#e1bee7"/>
+  <text x="495" y="558" font-size="9" text-anchor="middle" fill="#1a1a1a">Week 4: Deploy + Verify</text>
+  
+  <rect x="595" y="535" width="150" height="35" rx="4" fill="#e1bee7"/>
+  <text x="670" y="558" font-size="9" text-anchor="middle" fill="#1a1a1a">Week 5: Cutover + Contract</text>
+  
   <defs>
-    <marker id="migrateArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
     </marker>
   </defs>
-  
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
-  
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Zero-Downtime Migration Patterns</text>
-  
-  <!-- Expand-Contract Pattern -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Expand-Contract Pattern</text>
-  
-  <!-- Phase 1: Expand -->
-  <rect x="70" y="110" width="120" height="55" rx="4" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
-  <text x="130" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#3b82f6">Phase 1: Expand</text>
-  <text x="130" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569">Add new column</text>
-  
-  <!-- Arrow -->
-  <line x1="195" y1="137" x2="225" y2="137" stroke="#3b82f6" stroke-width="2" marker-end="url(#migrateArrow)"/>
-  
-  <!-- Phase 2: Migrate -->
-  <rect x="230" y="110" width="120" height="55" rx="4" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="290" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#8b5cf6">Phase 2: Migrate</text>
-  <text x="290" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569">Backfill data</text>
-  
-  <!-- Arrow -->
-  <line x1="355" y1="137" x2="385" y2="137" stroke="#3b82f6" stroke-width="2" marker-end="url(#migrateArrow)"/>
-  
-  <!-- Phase 3: Contract -->
-  <rect x="390" y="110" width="100" height="55" rx="4" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="2"/>
-  <text x="440" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#22c55e">Phase 3: Contract</text>
-  <text x="440" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569">Remove old</text>
-  
-  <!-- Code example -->
-  <rect x="70" y="180" width="410" height="90" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="90" y="205" font-size="9" fill="var(--text-secondary, #475569">-- Phase 1: Add new column (nullable)</text>
-  <text x="90" y="222" font-size="9" fill="#0f172a" font-weight="bold">ALTER TABLE users ADD COLUMN email_new VARCHAR(255);</text>
-  <text x="90" y="245" font-size="9" fill="var(--text-secondary, #475569">-- Phase 2: Backfill (batched)</text>
-  <text x="90" y="262" font-size="9" fill="#0f172a" font-weight="bold">UPDATE users SET email_new = LOWER(email_old) WHERE email_new IS NULL;</text>
-  
-  <!-- Dual Write Pattern -->
-  <rect x="520" y="60" width="430" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Dual Write Pattern</text>
-  
-  <!-- Diagram -->
-  <rect x="550" y="110" width="100" height="50" rx="4" fill="#3b82f6"/>
-  <text x="600" y="140" text-anchor="middle" font-size="10" fill="#ffffff">Application</text>
-  
-  <line x1="650" y1="135" x2="680" y2="135" stroke="#3b82f6" stroke-width="2" marker-end="url(#migrateArrow)"/>
-  <line x1="650" y1="145" x2="680" y2="165" stroke="#3b82f6" stroke-width="2" marker-end="url(#migrateArrow)"/>
-  
-  <rect x="680" y="110" width="110" height="50" rx="4" fill="#22c55e" opacity="0.7"/>
-  <text x="735" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">Old Schema</text>
-  <text x="735" y="152" text-anchor="middle" font-size="8" fill="#ffffff">Primary</text>
-  
-  <rect x="680" y="170" width="110" height="50" rx="4" fill="#8b5cf6" opacity="0.7"/>
-  <text x="735" y="195" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">New Schema</text>
-  <text x="735" y="212" text-anchor="middle" font-size="8" fill="#ffffff">Secondary</text>
-  
-  <text x="735" y="250" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">✓ Both writes succeed before completing</text>
-  <text x="735" y="270" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">✓ Read from old, verify new</text>
-  <text x="735" y="290" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ Complex, potential inconsistency</text>
-  
-  <!-- Migration Strategies -->
-  <rect x="50" y="300" width="900" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="500" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Migration Strategy Comparison</text>
-  
-  <text x="150" y="355" text-anchor="middle" font-size="11" fill="var(--text-secondary, #475569">Big Bang</text>
-  <text x="150" y="375" text-anchor="middle" font-size="9" fill="#ef4444">✗ Downtime required</text>
-  <text x="150" y="395" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569">Simple, fast</text>
-  <text x="150" y="415" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Low risk tolerance</text>
-  
-  <text x="350" y="355" text-anchor="middle" font-size="11" fill="var(--text-secondary, #475569">Expand-Contract</text>
-  <text x="350" y="375" text-anchor="middle" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓ Zero downtime</text>
-  <text x="350" y="395" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569">Gradual, safe</text>
-  <text x="350" y="415" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Schema changes</text>
-  
-  <text x="550" y="355" text-anchor="middle" font-size="11" fill="var(--text-secondary, #47556ird">Dual Write</text>
-  <text x="550" y="375" text-anchor="middle" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓ Zero downtime</text>
-  <text x="550" y="395" text-anchor="middle" font-size="9" fill="#f59e0b">⚠ Complex</text>
-  <text x="550" y="415" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Database migrations</text>
-  
-  <text x="750" y="355" text-anchor="middle" font-size="11" fill="var(--text-secondary, #47556ird">Shadow Read</text>
-  <text x="750" y="375" text-anchor="middle" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓ Validate silently</text>
-  <text x="750" y="395" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Read from both</text>
-  <text x="750" y="415" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Data verification</text>
-  
-  <text x="500" y="460" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Choose strategy based on risk tolerance, complexity, and downtime requirements</text>
 </svg>

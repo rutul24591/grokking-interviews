@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Backward Compatibility & Schema Evolution</text>
+  
+  <!-- Breaking vs Non-Breaking Changes -->
+  <rect x="40" y="70" width="340" height="200" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="210" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Breaking vs Non-Breaking Changes</text>
+  
+  <rect x="55" y="115" width="150" height="130" rx="6" fill="#c8e6c9"/>
+  <text x="130" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Non-Breaking</text>
+  <text x="130" y="155" font-size="9" text-anchor="middle" fill="#666666">✓ Add optional fields</text>
+  <text x="130" y="173" font-size="9" text-anchor="middle" fill="#666666">✓ Add new endpoints</text>
+  <text x="130" y="191" font-size="9" text-anchor="middle" fill="#666666">✓ Add enum values</text>
+  <text x="130" y="209" font-size="9" text-anchor="middle" fill="#666666">✓ Relax validation</text>
+  <text x="130" y="227" font-size="9" text-anchor="middle" fill="#666666">✓ Improve performance</text>
+  <text x="130" y="245" font-size="9" text-anchor="middle" fill="#666666">Safe to deploy directly</text>
+  
+  <rect x="225" y="115" width="150" height="130" rx="6" fill="#ffebee"/>
+  <text x="300" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Breaking</text>
+  <text x="300" y="155" font-size="9" text-anchor="middle" fill="#666666">✗ Remove fields</text>
+  <text x="300" y="173" font-size="9" text-anchor="middle" fill="#666666">✗ Rename fields</text>
+  <text x="300" y="191" font-size="9" text-anchor="middle" fill="#666666">✗ Change field types</text>
+  <text x="300" y="209" font-size="9" text-anchor="middle" fill="#666666">✗ Add required fields</text>
+  <text x="300" y="227" font-size="9" text-anchor="middle" fill="#666666">✗ Tighten validation</text>
+  <text x="300" y="245" font-size="9" text-anchor="middle" fill="#666666">Requires new version</text>
+  
+  <!-- Tolerance Readers -->
+  <rect x="420" y="70" width="340" height="200" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="590" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tolerance Readers</text>
+  
+  <rect x="435" y="115" width="310" height="45" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Strict Parser (Fails on Unknown Fields)</text>
+  <text x="590" y="153" font-size="9" text-anchor="middle" fill="#666666">v1 client receives v2 response → FAIL (new fields unknown)</text>
+  
+  <rect x="435" y="165" width="310" height="45" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="185" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tolerance Reader (Ignores Unknown Fields)</text>
+  <text x="590" y="203" font-size="9" text-anchor="middle" fill="#666666">v1 client receives v2 response → OK (ignores new fields)</text>
+  
+  <text x="590" y="235" font-size="10" text-anchor="middle" fill="#666666">Enables forward compatibility — v1 clients work with v2 responses</text>
+  <text x="590" y="255" font-size="10" text-anchor="middle" fill="#666666">Implementation: JSON parsers with unknown field handling</text>
+  
+  <!-- Contract Testing -->
+  <rect x="40" y="300" width="720" height="140" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="400" y="330" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Contract Testing for API Compatibility</text>
+  
+  <rect x="55" y="345" width="210" height="80" rx="6" fill="#ffe0b2"/>
+  <text x="160" y="365" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Provider Contract</text>
+  <text x="160" y="385" font-size="9" text-anchor="middle" fill="#666666">API defines expected</text>
+  <text x="160" y="400" font-size="9" text-anchor="middle" fill="#666666">request/response schema</text>
+  <text x="160" y="415" font-size="9" text-anchor="middle" fill="#666666">Published as OpenAPI/JSON</text>
+  
+  <rect x="295" y="345" width="210" height="80" rx="6" fill="#ffe0b2"/>
+  <text x="400" y="365" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Consumer Contract</text>
+  <text x="400" y="385" font-size="9" text-anchor="middle" fill="#666666">Consumer defines expected</text>
+  <text x="400" y="400" font-size="9" text-anchor="middle" fill="#666666">fields it depends on</text>
+  <text x="400" y="415" font-size="9" text-anchor="middle" fill="#666666">Validated against provider</text>
+  
+  <rect x="535" y="345" width="210" height="80" rx="6" fill="#ffe0b2"/>
+  <text x="640" y="365" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Pact Testing</text>
+  <text x="640" y="385" font-size="9" text-anchor="middle" fill="#666666">Consumer generates test</text>
+  <text x="640" y="400" font-size="9" text-anchor="middle" fill="#666666">Provider runs consumer tests</text>
+  <text x="640" y="415" font-size="9" text-anchor="middle" fill="#666666">Breakages caught in CI</text>
+  
+  <!-- Safe Change Patterns -->
+  <rect x="40" y="470" width="720" height="110" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="500" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Safe Change Patterns — How to Evolve Without Breaking</text>
+  
+  <rect x="55" y="515" width="210" height="50" rx="4" fill="#e1bee7"/>
+  <text x="160" y="535" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Expand-Contract Pattern</text>
+  <text x="160" y="553" font-size="9" text-anchor="middle" fill="#666666">1. Add new field 2. Migrate consumers 3. Remove old field</text>
+  
+  <rect x="295" y="515" width="210" height="50" rx="4" fill="#e1bee7"/>
+  <text x="400" y="535" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Dual-Write Pattern</text>
+  <text x="400" y="553" font-size="9" text-anchor="middle" fill="#666666">Write to both old and new schemas during transition</text>
+  
+  <rect x="535" y="515" width="210" height="50" rx="4" fill="#e1bee7"/>
+  <text x="640" y="535" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Adapter Layer</text>
+  <text x="640" y="553" font-size="9" text-anchor="middle" fill="#666666">Canonical model with version-specific transformers</text>
+</svg>

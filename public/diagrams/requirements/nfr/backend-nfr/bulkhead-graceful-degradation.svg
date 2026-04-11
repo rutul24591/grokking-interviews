@@ -1,111 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
-  <defs>
-    <marker id="bulkArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
-  
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Bulkhead Pattern &amp; Graceful Degradation</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Bulkhead Pattern & Graceful Degradation</text>
   
   <!-- Without Bulkhead -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Without Bulkhead (Single Pool)</text>
+  <rect x="40" y="70" width="340" height="160" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="210" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Without Bulkhead (Shared Pool)</text>
   
-  <!-- Resource pool -->
-  <rect x="100" y="110" width="350" height="80" rx="6" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
-  <text x="275" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a">Shared Thread/Connection Pool</text>
-  <text x="275" y="165" text-anchor="middle" font-size="10" fill="#475569">100 threads total</text>
+  <rect x="55" y="115" width="310" height="35" rx="4" fill="#ffcdd2"/>
+  <text x="210" y="138" font-size="11" text-anchor="middle" fill="#1a1a1a">Shared Thread Pool: 100 threads across 10 services</text>
   
-  <!-- Services consuming -->
-  <rect x="120" y="200" width="80" height="50" rx="4" fill="#ef4444" opacity="0.7"/>
-  <text x="160" y="225" text-anchor="middle" font-size="9" fill="#ffffff">Service A</text>
-  <text x="160" y="242" text-anchor="middle" font-size="8" fill="#ffffff">Slow/Failed</text>
-  <text x="160" y="258" text-anchor="middle" font-size="8" fill="#ffffff">90 threads</text>
-  
-  <rect x="235" y="200" width="80" height="50" rx="4" fill="#22c55e" opacity="0.5"/>
-  <text x="275" y="225" text-anchor="middle" font-size="9" fill="#ffffff">Service B</text>
-  <text x="275" y="242" text-anchor="middle" font-size="8" fill="#ffffff">Healthy</text>
-  <text x="275" y="258" text-anchor="middle" font-size="8" fill="#ffffff">5 threads</text>
-  
-  <rect x="350" y="200" width="80" height="50" rx="4" fill="#22c55e" opacity="0.5"/>
-  <text x="390" y="225" text-anchor="middle" font-size="9" fill="#ffffff">Service C</text>
-  <text x="390" y="242" text-anchor="middle" font-size="8" fill="#ffffff">Healthy</text>
-  <text x="390" y="258" text-anchor="middle" font-size="8" fill="#ffffff">5 threads</text>
-  
-  <text x="275" y="290" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">✗ One failing service starves others</text>
+  <rect x="55" y="155" width="310" height="55" rx="6" fill="#ff8a80"/>
+  <text x="210" y="175" font-size="10" text-anchor="middle" fill="#1a1a1a">Service 3 hangs → consumes all 100 threads</text>
+  <text x="210" y="195" font-size="10" text-anchor="middle" fill="#666666">All 10 services fail — cascade failure</text>
+  <text x="210" y="215" font-size="10" text-anchor="middle" fill="#d84315">Blast radius: 100% of services affected</text>
   
   <!-- With Bulkhead -->
-  <rect x="520" y="60" width="430" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">With Bulkhead (Isolated Pools)</text>
+  <rect x="420" y="70" width="340" height="160" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="590" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">With Bulkhead (Isolated Pools)</text>
   
-  <!-- Separate pools -->
-  <rect x="540" y="110" width="120" height="60" rx="4" fill="#ef4444" opacity="0.7" stroke="#ef4444" stroke-width="2"/>
-  <text x="600" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Pool A</text>
-  <text x="600" y="155" text-anchor="middle" font-size="9" fill="#ffffff">30 threads</text>
-  <text x="600" y="170" text-anchor="middle" font-size="8" fill="#ffffff">Service A only</text>
+  <rect x="435" y="115" width="95" height="55" rx="4" fill="#a5d6a7"/>
+  <text x="482" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">Pool A</text>
+  <text x="482" y="155" font-size="9" text-anchor="middle" fill="#666666">Service 1-2</text>
+  <text x="482" y="172" font-size="9" text-anchor="middle" fill="#666666">10 threads OK</text>
   
-  <rect x="680" y="110" width="120" height="60" rx="4" fill="#22c55e" opacity="0.7" stroke="#22c55e" stroke-width="2"/>
-  <text x="740" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Pool B</text>
-  <text x="740" y="155" text-anchor="middle" font-size="9" fill="#ffffff">35 threads</text>
-  <text x="740" y="170" text-anchor="middle" font-size="8" fill="#ffffff">Service B only</text>
+  <rect x="545" y="115" width="95" height="55" rx="4" fill="#ff8a80"/>
+  <text x="592" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">Pool B</text>
+  <text x="592" y="155" font-size="9" text-anchor="middle" fill="#666666">Service 3</text>
+  <text x="592" y="172" font-size="9" text-anchor="middle" fill="#666666">10 threads FAIL</text>
   
-  <rect x="820" y="110" width="120" height="60" rx="4" fill="#22c55e" opacity="0.7" stroke="#22c55e" stroke-width="2"/>
-  <text x="880" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Pool C</text>
-  <text x="880" y="155" text-anchor="middle" font-size="9" fill="#ffffff">35 threads</text>
-  <text x="880" y="170" text-anchor="middle" font-size="8" fill="#ffffff">Service C only</text>
+  <rect x="655" y="115" width="95" height="55" rx="4" fill="#a5d6a7"/>
+  <text x="702" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">Pool C</text>
+  <text x="702" y="155" font-size="9" text-anchor="middle" fill="#666666">Service 4-10</text>
+  <text x="702" y="172" font-size="9" text-anchor="middle" fill="#666666">10 threads OK</text>
   
-  <text x="735" y="210" text-anchor="middle" font-size="10" fill="#22c55e" font-weight="bold">✓ Failure isolated to one pool</text>
-  <text x="735" y="230" text-anchor="middle" font-size="10" fill="#22c55e" font-weight="bold">✓ Other services unaffected</text>
-  <text x="735" y="250" text-anchor="middle" font-size="10" fill="#475569">Named after ship bulkheads that prevent flooding spread</text>
+  <rect x="435" y="185" width="310" height="35" rx="4" fill="#e8f5e9"/>
+  <text x="590" y="208" font-size="10" text-anchor="middle" fill="#666666">Service 3 isolated — other 9 services continue operating</text>
   
   <!-- Graceful Degradation -->
-  <rect x="50" y="300" width="900" height="240" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="500" y="325" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Graceful Degradation Strategies</text>
+  <rect x="40" y="260" width="720" height="160" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="290" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Graceful Degradation Modes</text>
   
-  <!-- Full functionality -->
-  <rect x="70" y="345" width="260" height="180" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="200" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a">Normal Operation</text>
+  <rect x="55" y="305" width="210" height="100" rx="6" fill="#bbdefb"/>
+  <text x="160" y="328" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Full Functionality</text>
+  <text x="160" y="348" font-size="9" text-anchor="middle" fill="#666666">• All features operational</text>
+  <text x="160" y="365" font-size="9" text-anchor="middle" fill="#666666">• Real-time data</text>
+  <text x="160" y="382" font-size="9" text-anchor="middle" fill="#666666">• Personalized content</text>
+  <text x="160" y="399" font-size="9" text-anchor="middle" fill="#666666">• Recommendations active</text>
   
-  <rect x="90" y="385" width="220" height="30" rx="3" fill="#22c55e"/>
-  <text x="200" y="405" text-anchor="middle" font-size="10" fill="#ffffff">✓ Full feature set</text>
+  <rect x="295" y="305" width="210" height="100" rx="6" fill="#fff3e0"/>
+  <text x="400" y="328" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Degraded Mode</text>
+  <text x="400" y="348" font-size="9" text-anchor="middle" fill="#666666">• Core features work</text>
+  <text x="400" y="365" font-size="9" text-anchor="middle" fill="#666666">• Cached data served</text>
+  <text x="400" y="382" font-size="9" text-anchor="middle" fill="#666666">• Non-critical disabled</text>
+  <text x="400" y="399" font-size="9" text-anchor="middle" fill="#666666">• Checkout works, no recs</text>
   
-  <rect x="90" y="425" width="220" height="30" rx="3" fill="#22c55e"/>
-  <text x="200" y="445" text-anchor="middle" font-size="10" fill="#ffffff">✓ Real-time data</text>
+  <rect x="535" y="305" width="210" height="100" rx="6" fill="#ffebee"/>
+  <text x="640" y="328" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Fallback Mode</text>
+  <text x="640" y="348" font-size="9" text-anchor="middle" fill="#666666">• Minimal operations</text>
+  <text x="640" y="365" font-size="9" text-anchor="middle" fill="#666666">• Read-only access</text>
+  <text x="640" y="382" font-size="9" text-anchor="middle" fill="#666666">• Static responses</text>
+  <text x="640" y="399" font-size="9" text-anchor="middle" fill="#666666">• Browse only, no checkout</text>
   
-  <rect x="90" y="465" width="220" height="30" rx="3" fill="#22c55e"/>
-  <text x="200" y="485" text-anchor="middle" font-size="10" fill="#ffffff">✓ Personalized recommendations</text>
+  <!-- Feature Tiers -->
+  <rect x="40" y="440" width="720" height="140" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="470" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Feature Tier Classification</text>
   
-  <!-- Degraded mode -->
-  <rect x="350" y="345" width="260" height="180" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="480" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a">Degraded Mode</text>
+  <rect x="55" y="485" width="160" height="80" rx="6" fill="#c8e6c9"/>
+  <text x="135" y="505" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tier 1: Critical</text>
+  <text x="135" y="525" font-size="9" text-anchor="middle" fill="#666666">Auth, Checkout</text>
+  <text x="135" y="542" font-size="9" text-anchor="middle" fill="#666666">Core APIs</text>
+  <text x="135" y="559" font-size="9" text-anchor="middle" fill="#666666">Never disabled</text>
   
-  <rect x="370" y="385" width="220" height="30" rx="3" fill="#22c55e"/>
-  <text x="480" y="405" text-anchor="middle" font-size="10" fill="#ffffff">✓ Core functionality</text>
+  <rect x="245" y="485" width="160" height="80" rx="6" fill="#fff3e0"/>
+  <text x="325" y="505" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tier 2: Important</text>
+  <text x="325" y="525" font-size="9" text-anchor="middle" fill="#666666">Search, Cart</text>
+  <text x="325" y="542" font-size="9" text-anchor="middle" fill="#666666">User Profiles</text>
+  <text x="325" y="559" font-size="9" text-anchor="middle" fill="#666666">Cached fallback</text>
   
-  <rect x="370" y="425" width="220" height="30" rx="3" fill="#f97316"/>
-  <text x="480" y="445" text-anchor="middle" font-size="10" fill="#ffffff">⚠ Cached/stale data</text>
+  <rect x="435" y="485" width="160" height="80" rx="6" fill="#e1bee7"/>
+  <text x="515" y="505" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tier 3: Nice-to-have</text>
+  <text x="515" y="525" font-size="9" text-anchor="middle" fill="#666666">Reviews, Ratings</text>
+  <text x="515" y="542" font-size="9" text-anchor="middle" fill="#666666">Wishlists</text>
+  <text x="515" y="559" font-size="9" text-anchor="middle" fill="#666666">Disabled first</text>
   
-  <rect x="370" y="465" width="220" height="30" rx="3" fill="#ef4444"/>
-  <text x="480" y="485" text-anchor="middle" font-size="10" fill="#ffffff">✗ Recommendations disabled</text>
-  
-  <!-- Fallback mode -->
-  <rect x="630" y="345" width="300" height="180" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="780" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a">Fallback Mode</text>
-  
-  <rect x="650" y="385" width="260" height="30" rx="3" fill="#22c55e"/>
-  <text x="780" y="405" text-anchor="middle" font-size="10" fill="#ffffff">✓ Basic read-only operations</text>
-  
-  <rect x="650" y="425" width="260" height="30" rx="3" fill="#ef4444"/>
-  <text x="780" y="445" text-anchor="middle" font-size="10" fill="#ffffff">✗ No writes/updates</text>
-  
-  <rect x="650" y="465" width="260" height="30" rx="3" fill="#ef4444"/>
-  <text x="780" y="485" text-anchor="middle" font-size="10" fill="#ffffff">✗ Static/default responses</text>
-  
-  <!-- Degradation triggers -->
-  <rect x="70" y="535" width="860" height="40" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="500" y="558" text-anchor="middle" font-size="10" fill="#475569">Triggers: High error rates, timeout spikes, resource exhaustion, circuit breaker open, dependency failures</text>
+  <rect x="625" y="485" width="120" height="80" rx="6" fill="#ffebee"/>
+  <text x="685" y="505" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tier 4: Experimental</text>
+  <text x="685" y="525" font-size="9" text-anchor="middle" fill="#666666">A/B Tests</text>
+  <text x="685" y="542" font-size="9" text-anchor="middle" fill="#666666">New Features</text>
+  <text x="685" y="559" font-size="9" text-anchor="middle" fill="#666666">Always first off</text>
 </svg>

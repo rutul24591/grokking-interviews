@@ -1,122 +1,76 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
-  <defs>
-    <marker id="retryArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-    <linearGradient id="retryGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.2"/>
-      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.05"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Retry and Backoff Strategies</text>
   
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
+  <!-- Immediate Retry (Anti-Pattern) -->
+  <rect x="40" y="70" width="340" height="120" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="210" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Immediate Retry (Anti-Pattern)</text>
   
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Retry Patterns &amp; Backoff Strategies</text>
+  <rect x="55" y="115" width="310" height="55" rx="6" fill="#ffcdd2"/>
+  <text x="210" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">t=0: Fail → t=0: Retry → t=0: Fail → t=0: Retry</text>
+  <text x="210" y="155" font-size="10" text-anchor="middle" fill="#666666">All clients retry simultaneously → Thundering herd</text>
+  <text x="210" y="173" font-size="10" text-anchor="middle" fill="#d84315">Overwhelms failing service, prevents recovery</text>
   
-  <!-- Retry without backoff -->
-  <rect x="50" y="60" width="300" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="200" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Immediate Retry (Anti-Pattern)</text>
+  <!-- Fixed Delay -->
+  <rect x="420" y="70" width="340" height="120" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Fixed Delay Retry</text>
   
-  <!-- Timeline -->
-  <line x1="80" y1="140" x2="320" y2="140" stroke="#3b82f6" stroke-width="2"/>
-  
-  <rect x="80" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
-  <text x="100" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
-  
-  <rect x="130" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
-  <text x="150" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
-  
-  <rect x="180" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
-  <text x="200" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
-  
-  <rect x="230" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
-  <text x="250" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
-  
-  <text x="200" y="190" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">✗ Overwhelms failing service</text>
-  <text x="200" y="210" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">✗ Wastes resources</text>
-  <text x="200" y="230" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">✗ Rarely succeeds</text>
-  
-  <!-- Fixed Delay Retry -->
-  <rect x="370" y="60" width="300" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="520" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Fixed Delay Retry</text>
-  
-  <line x1="400" y1="140" x2="640" y2="140" stroke="#3b82f6" stroke-width="2"/>
-  
-  <rect x="400" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
-  <text x="420" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
-  
-  <rect x="470" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
-  <text x="490" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
-  
-  <rect x="540" y="125" width="40" height="30" rx="3" fill="#22c55e"/>
-  <text x="560" y="145" text-anchor="middle" font-size="9" fill="#ffffff">OK</text>
-  
-  <!-- Delay markers -->
-  <text x="445" y="180" text-anchor="middle" font-size="9" fill="#3b82f6" font-weight="bold">5s delay</text>
-  <text x="515" y="180" text-anchor="middle" font-size="9" fill="#3b82f6" font-weight="bold">5s delay</text>
-  
-  <text x="520" y="210" text-anchor="middle" font-size="10" fill="#475569">✓ Simple to implement</text>
-  <text x="520" y="230" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ May retry too aggressively</text>
-  <text x="520" y="250" text-anchor="middle" font-size="10" fill="#475569">Use case: Known transient errors</text>
+  <rect x="435" y="115" width="310" height="55" rx="6" fill="#ffe0b2"/>
+  <text x="590" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">t=0: Fail → wait 5s → t=5s: Retry → wait 5s → t=10s: Retry</text>
+  <text x="590" y="155" font-size="10" text-anchor="middle" fill="#666666">Simple but can still cause synchronized retries</text>
+  <text x="590" y="173" font-size="10" text-anchor="middle" fill="#f57c00">Better than immediate, but not optimal at scale</text>
   
   <!-- Exponential Backoff -->
-  <rect x="690" y="60" width="260" height="220" rx="8" fill="url(#retryGrad)" stroke="#3b82f6" stroke-width="2"/>
-  <text x="820" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Exponential Backoff</text>
+  <rect x="40" y="220" width="340" height="150" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="210" y="250" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Exponential Backoff</text>
   
-  <line x1="710" y1="140" x2="930" y2="140" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="55" y="265" width="310" height="85" rx="6" fill="#bbdefb"/>
+  <text x="210" y="285" font-size="10" text-anchor="middle" fill="#1a1a1a">delay = base × 2^attempt</text>
+  <text x="210" y="305" font-size="10" text-anchor="middle" fill="#1a1a1a">1s → 2s → 4s → 8s → 16s → 32s</text>
+  <text x="210" y="325" font-size="10" text-anchor="middle" fill="#666666">Gives service more time to recover</text>
+  <text x="210" y="345" font-size="10" text-anchor="middle" fill="#666666">Naturally desynchronizes clients</text>
   
-  <rect x="710" y="125" width="35" height="30" rx="3" fill="#ef4444"/>
-  <text x="727" y="145" text-anchor="middle" font-size="8" fill="#ffffff">FAIL</text>
+  <!-- Exponential Backoff with Jitter -->
+  <rect x="420" y="220" width="340" height="150" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="590" y="250" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Exponential Backoff with Jitter</text>
   
-  <rect x="760" y="125" width="35" height="30" rx="3" fill="#ef4444"/>
-  <text x="777" y="145" text-anchor="middle" font-size="8" fill="#ffffff">FAIL</text>
+  <rect x="435" y="265" width="310" height="85" rx="6" fill="#a5d6a7"/>
+  <text x="590" y="285" font-size="10" text-anchor="middle" fill="#1a1a1a">delay = min(maxDelay, base × 2^attempt ± jitter)</text>
+  <text x="590" y="305" font-size="10" text-anchor="middle" fill="#1a1a1a">1s±0.5s, 2s±1s, 4s±2s, 8s±4s</text>
+  <text x="590" y="325" font-size="10" text-anchor="middle" fill="#666666">Prevents synchronized retry storms</text>
+  <text x="590" y="345" font-size="10" text-anchor="middle" fill="#666666">Best practice for production systems</text>
   
-  <rect x="820" y="125" width="35" height="30" rx="3" fill="#22c55e"/>
-  <text x="837" y="145" text-anchor="middle" font-size="8" fill="#ffffff">OK</text>
+  <!-- Retry Budget -->
+  <rect x="40" y="400" width="720" height="180" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="430" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Retry Budget — Preventing Retry Storms</text>
   
-  <!-- Increasing delays -->
-  <text x="745" y="180" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="bold">1s</text>
-  <text x="795" y="180" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="bold">2s</text>
-  <text x="850" y="180" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="bold">4s → 8s → 16s</text>
+  <!-- Normal traffic -->
+  <rect x="60" y="450" width="200" height="50" rx="6" fill="#e3f2fd"/>
+  <text x="160" y="470" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Normal Traffic</text>
+  <text x="160" y="490" font-size="10" text-anchor="middle" fill="#666666">1000 req/s</text>
   
-  <text x="820" y="210" text-anchor="middle" font-size="10" fill="#475569">✓ Gives service time to recover</text>
-  <text x="820" y="230" text-anchor="middle" font-size="10" fill="#475569">✓ Reduces load during failures</text>
-  <text x="820" y="250" text-anchor="middle" font-size="10" fill="#475569">Formula: delay = base × 2^attempt</text>
+  <!-- Retry Budget -->
+  <rect x="300" y="450" width="200" height="50" rx="6" fill="#c8e6c9"/>
+  <text x="400" y="470" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Retry Budget (20%)</text>
+  <text x="400" y="490" font-size="10" text-anchor="middle" fill="#666666">Max 200 retries/s</text>
   
-  <!-- Backoff Comparison -->
-  <rect x="50" y="300" width="900" height="240" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="500" y="325" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Backoff Strategy Comparison</text>
+  <!-- Budget Exhausted -->
+  <rect x="540" y="450" width="200" height="50" rx="6" fill="#ffebee"/>
+  <text x="640" y="470" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Budget Exhausted</text>
+  <text x="640" y="490" font-size="10" text-anchor="middle" fill="#666666">Fail fast, no more retries</text>
   
-  <!-- Graph area -->
-  <rect x="70" y="345" width="860" height="180" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <!-- Arrows -->
+  <line x1="260" y1="475" x2="300" y2="475" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="475" x2="540" y2="475" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
   
-  <!-- Axes -->
-  <line x1="100" y1="500" x2="900" y2="500" stroke="#e2e8f0" stroke-width="2"/>
-  <line x1="100" y1="360" x2="100" y2="500" stroke="#e2e8f0" stroke-width="2"/>
+  <!-- Config Parameters -->
+  <rect x="60" y="520" width="680" height="50" rx="6" fill="#e8f5e9"/>
+  <text x="400" y="540" font-size="11" text-anchor="middle" fill="#1a1a1a">Config: max_retries=5, base_delay=1s, max_delay=60s, jitter=0.5, retry_budget=20%, budget_window=10s</text>
+  <text x="400" y="560" font-size="10" text-anchor="middle" fill="#666666">Rule: total retry time must be less than caller&apos;s timeout</text>
   
-  <text x="500" y="520" text-anchor="middle" font-size="11" fill="#475569">Retry Attempt Number →</text>
-  <text x="60" y="430" text-anchor="middle" font-size="11" fill="#475569" transform="rotate(-90, 60, 430)">Delay Time →</text>
-  
-  <!-- Fixed delay line -->
-  <line x1="100" y1="450" x2="900" y2="450" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8,4"/>
-  <text x="850" y="440" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="bold">Fixed (5s)</text>
-  
-  <!-- Exponential backoff curve -->
-  <path d="M 100 450 L 200 440 L 300 420 L 400 390 L 500 360 L 600 360 L 700 360 L 800 360" fill="none" stroke="#3b82f6" stroke-width="3"/>
-  <text x="750" y="375" text-anchor="middle" font-size="10" fill="#3b82f6" font-weight="bold">Exponential</text>
-  
-  <!-- Exponential with jitter -->
-  <circle cx="200" cy="430" r="5" fill="#22c55e"/>
-  <circle cx="300" cy="410" r="5" fill="#22c55e"/>
-  <circle cx="400" cy="385" r="5" fill="#22c55e"/>
-  <circle cx="500" cy="370" r="5" fill="#22c55e"/>
-  <circle cx="600" cy="365" r="5" fill="#22c55e"/>
-  <text x="750" y="395" text-anchor="middle" font-size="10" fill="#22c55e" font-weight="bold">+ Jitter</text>
-  
-  <!-- Legend -->
-  <rect x="70" y="535" width="860" height="40" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="100" y="558" font-size="10" fill="#475569">Best Practice: Exponential backoff with jitter prevents thundering herd</text>
-  <text x="500" y="558" font-size="10" fill="#475569">Formula: delay = min(maxDelay, base × 2^attempt ± random_jitter)</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+  </defs>
 </svg>

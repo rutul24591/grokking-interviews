@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Resource Utilization Modeling</text>
+  
+  <!-- Demand to Resources -->
+  <rect x="40" y="70" width="720" height="140" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Demand → Resource Translation Model</text>
+  
+  <rect x="55" y="115" width="160" height="80" rx="6" fill="#bbdefb"/>
+  <text x="135" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Input: Demand</text>
+  <text x="135" y="155" font-size="9" text-anchor="middle" fill="#666666">10,000 RPS peak</text>
+  <text x="135" y="170" font-size="9" text-anchor="middle" fill="#666666">1ms CPU per request</text>
+  <text x="135" y="185" font-size="9" text-anchor="middle" fill="#666666">10MB memory per request</text>
+  
+  <rect x="235" y="115" width="160" height="80" rx="6" fill="#bbdefb"/>
+  <text x="315" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Raw Calculation</text>
+  <text x="315" y="155" font-size="9" text-anchor="middle" fill="#666666">CPU: 10,000 × 1ms = 10 cores</text>
+  <text x="315" y="170" font-size="9" text-anchor="middle" fill="#666666">Memory: 10,000 × 10MB = 100GB</text>
+  <text x="315" y="185" font-size="9" text-anchor="middle" fill="#666666">at 100% utilization</text>
+  
+  <rect x="415" y="115" width="160" height="80" rx="6" fill="#bbdefb"/>
+  <text x="495" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Add Headroom (40%)</text>
+  <text x="495" y="155" font-size="9" text-anchor="middle" fill="#666666">CPU: 10 × 1.4 = 14 cores</text>
+  <text x="495" y="170" font-size="9" text-anchor="middle" fill="#666666">Memory: 100 × 1.4 = 140GB</text>
+  <text x="495" y="185" font-size="9" text-anchor="middle" fill="#666666">at 70% target utilization</text>
+  
+  <rect x="595" y="115" width="150" height="80" rx="6" fill="#c8e6c9"/>
+  <text x="670" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Infrastructure</text>
+  <text x="670" y="155" font-size="9" text-anchor="middle" fill="#666666">2 × 8-core instances</text>
+  <text x="670" y="170" font-size="9" text-anchor="middle" fill="#666666">16 cores total (14 needed)</text>
+  <text x="670" y="185" font-size="9" text-anchor="middle" fill="#666666">128GB memory (close to 140GB)</text>
+  
+  <!-- Resource Categories -->
+  <rect x="40" y="240" width="340" height="200" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="270" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Direct Capacity Constraints</text>
+  
+  <rect x="55" y="285" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="305" font-size="10" text-anchor="middle" fill="#1a1a1a">CPU: cores, utilization %, steal time</text>
+  
+  <rect x="55" y="320" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="340" font-size="10" text-anchor="middle" fill="#1a1a1a">Memory: total, used, cached, swap usage</text>
+  
+  <rect x="55" y="355" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="375" font-size="10" text-anchor="middle" fill="#1a1a1a">Disk: space, IOPS, throughput, latency</text>
+  
+  <rect x="55" y="390" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="410" font-size="10" text-anchor="middle" fill="#1a1a1a">Network: bandwidth, connections, packet rate</text>
+  
+  <!-- Indirect Constraints -->
+  <rect x="420" y="240" width="340" height="200" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="270" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Indirect Capacity Constraints</text>
+  
+  <rect x="435" y="285" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="305" font-size="10" text-anchor="middle" fill="#1a1a1a">Connection pools: max connections, active connections</text>
+  
+  <rect x="435" y="320" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="340" font-size="10" text-anchor="middle" fill="#1a1a1a">Thread pools: max threads, queued threads, wait time</text>
+  
+  <rect x="435" y="355" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="375" font-size="10" text-anchor="middle" fill="#1a1a1a">File descriptors: open FDs, max FDs, leak detection</text>
+  
+  <rect x="435" y="390" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="410" font-size="10" text-anchor="middle" fill="#1a1a1a">Rate limits: requests/second, burst capacity, throttle rate</text>
+  
+  <!-- Growth Projection -->
+  <rect x="40" y="470" width="720" height="110" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="500" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Growth Projection & Capacity Timeline</text>
+  
+  <rect x="55" y="515" width="210" height="50" rx="6" fill="#e1bee7"/>
+  <text x="160" y="535" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Month 1: 55% utilization</text>
+  <text x="160" y="555" font-size="9" text-anchor="middle" fill="#666666">Current state, comfortable</text>
+  
+  <rect x="295" y="515" width="210" height="50" rx="6" fill="#fff3e0"/>
+  <text x="400" y="535" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Month 3: 72% utilization</text>
+  <text x="400" y="555" font-size="9" text-anchor="middle" fill="#666666">Alert threshold approaching</text>
+  
+  <rect x="535" y="515" width="210" height="50" rx="6" fill="#ffcdd2"/>
+  <text x="640" y="535" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Month 5: 85% utilization</text>
+  <text x="640" y="555" font-size="9" text-anchor="middle" fill="#666666">Critical — scale immediately</text>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Authorization Models Comparison</text>
+  
+  <!-- RBAC -->
+  <rect x="40" y="70" width="220" height="160" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">RBAC</text>
+  <text x="150" y="120" font-size="10" text-anchor="middle" fill="#666666">Role-Based Access Control</text>
+  
+  <rect x="55" y="135" width="190" height="80" rx="4" fill="#bbdefb"/>
+  <text x="150" y="155" font-size="9" text-anchor="middle" fill="#666666">Users → Roles → Permissions</text>
+  <text x="150" y="175" font-size="9" text-anchor="middle" fill="#666666">Simple, fast, auditable</text>
+  <text x="150" y="195" font-size="9" text-anchor="middle" fill="#666666">Role explosion for granularity</text>
+  <text x="150" y="215" font-size="9" text-anchor="middle" fill="#666666">Best for: Organizations with clear hierarchies</text>
+  
+  <!-- ABAC -->
+  <rect x="290" y="70" width="220" height="160" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">ABAC</text>
+  <text x="400" y="120" font-size="10" text-anchor="middle" fill="#666666">Attribute-Based Access Control</text>
+  
+  <rect x="305" y="135" width="190" height="80" rx="4" fill="#a5d6a7"/>
+  <text x="400" y="155" font-size="9" text-anchor="middle" fill="#666666">User attrs + Resource attrs + Context → Decision</text>
+  <text x="400" y="175" font-size="9" text-anchor="middle" fill="#666666">Fine-grained, contextual</text>
+  <text x="400" y="195" font-size="9" text-anchor="middle" fill="#666666">Complex policy management</text>
+  <text x="400" y="215" font-size="9" text-anchor="middle" fill="#666666">Best for: Dynamic, context-aware access</text>
+  
+  <!-- ReBAC -->
+  <rect x="540" y="70" width="220" height="160" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="650" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">ReBAC</text>
+  <text x="650" y="120" font-size="10" text-anchor="middle" fill="#666666">Relationship-Based Access Control</text>
+  
+  <rect x="555" y="135" width="190" height="80" rx="4" fill="#ffe0b2"/>
+  <text x="650" y="155" font-size="9" text-anchor="middle" fill="#666666">User → Relationship → Resource → Access</text>
+  <text x="650" y="175" font-size="9" text-anchor="middle" fill="#666666">Natural sharing model</text>
+  <text x="650" y="195" font-size="9" text-anchor="middle" fill="#666666">Requires graph infrastructure</text>
+  <text x="650" y="215" font-size="9" text-anchor="middle" fill="#666666">Best for: Social, collaborative platforms</text>
+  
+  <!-- Hybrid Model -->
+  <rect x="40" y="260" width="720" height="140" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="290" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Hybrid Authorization: RBAC + ABAC</text>
+  
+  <rect x="55" y="305" width="340" height="80" rx="6" fill="#e3f2fd"/>
+  <text x="225" y="325" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Layer 1: RBAC (Coarse)</text>
+  <text x="225" y="345" font-size="9" text-anchor="middle" fill="#666666">admin → full access</text>
+  <text x="225" y="360" font-size="9" text-anchor="middle" fill="#666666">editor → read/write own resources</text>
+  <text x="225" y="375" font-size="9" text-anchor="middle" fill="#666666">viewer → read-only access</text>
+  
+  <rect x="415" y="305" width="330" height="80" rx="6" fill="#c8e6c9"/>
+  <text x="580" y="325" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Layer 2: ABAC (Fine-Grained)</text>
+  <text x="580" y="345" font-size="9" text-anchor="middle" fill="#666666">editors can only edit documents they own</text>
+  <text x="580" y="360" font-size="9" text-anchor="middle" fill="#666666">access only during business hours</text>
+  <text x="580" y="375" font-size="9" text-anchor="middle" fill="#666666">from corporate network only</text>
+  
+  <!-- Permission Evaluation -->
+  <rect x="40" y="430" width="720" height="150" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="460" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Permission Evaluation Process</text>
+  
+  <rect x="55" y="475" width="160" height="90" rx="6" fill="#e1bee7"/>
+  <text x="135" y="495" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">1. Extract Context</text>
+  <text x="135" y="515" font-size="9" text-anchor="middle" fill="#666666">User identity</text>
+  <text x="135" y="530" font-size="9" text-anchor="middle" fill="#666666">Resource ID</text>
+  <text x="135" y="545" font-size="9" text-anchor="middle" fill="#666666">Action type</text>
+  <text x="135" y="560" font-size="9" text-anchor="middle" fill="#666666">Environment</text>
+  
+  <rect x="235" y="475" width="160" height="90" rx="6" fill="#e1bee7"/>
+  <text x="315" y="495" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">2. Load Policies</text>
+  <text x="315" y="515" font-size="9" text-anchor="middle" fill="#666666">User role policies</text>
+  <text x="315" y="530" font-size="9" text-anchor="middle" fill="#666666">Resource policies</text>
+  <text x="315" y="545" font-size="9" text-anchor="middle" fill="#666666">Environmental policies</text>
+  <text x="315" y="560" font-size="9" text-anchor="middle" fill="#666666">Deny overrides</text>
+  
+  <rect x="415" y="475" width="160" height="90" rx="6" fill="#e1bee7"/>
+  <text x="495" y="495" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">3. Evaluate</text>
+  <text x="495" y="515" font-size="9" text-anchor="middle" fill="#666666">Check RBAC roles</text>
+  <text x="495" y="530" font-size="9" text-anchor="middle" fill="#666666">Check ABAC conditions</text>
+  <text x="495" y="545" font-size="9" text-anchor="middle" fill="#666666">Apply deny-first</text>
+  <text x="495" y="560" font-size="9" text-anchor="middle" fill="#666666">Return allow/deny</text>
+  
+  <rect x="595" y="475" width="150" height="90" rx="6" fill="#e1bee7"/>
+  <text x="670" y="495" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">4. Enforce</text>
+  <text x="670" y="515" font-size="9" text-anchor="middle" fill="#666666">Allow: process request</text>
+  <text x="670" y="530" font-size="9" text-anchor="middle" fill="#666666">Deny: return 403</text>
+  <text x="670" y="545" font-size="9" text-anchor="middle" fill="#666666">Log decision</text>
+  <text x="670" y="560" font-size="9" text-anchor="middle" fill="#666666">Cache result (short TTL)</text>
+</svg>

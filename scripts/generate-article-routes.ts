@@ -22,6 +22,7 @@ const PATH_MAPPINGS: Record<string, string> = {
   "requirements/non-functional-requirements": "requirements/non-functional-requirements",
   "system-design-problems/high-level-design": "system-design-problems/high-level-design",
   "system-design-problems/low-level-design": "system-design-problems/low-level-design",
+  "other/artificial-intelligence": "other/artificial-intelligence",
 };
 
 // Map sidebar slugs back to filesystem paths (for subcategory manifest)
@@ -32,6 +33,8 @@ const SIDEBAR_TO_FS_MAP: Record<string, string> = {
   "requirements/non-functional-requirements": "requirements/non-functional-requirements",
   "system-design-problems/high-level-design": "system-design-problems/high-level-design",
   "system-design-problems/low-level-design": "system-design-problems/low-level-design",
+  "other/artificial-intelligence/core-concepts": "other/artificial-intelligence/core-concepts",
+  "other/artificial-intelligence/additional-topics": "other/artificial-intelligence/additional-topics",
 };
 
 function main() {

@@ -1,101 +1,80 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
-  <defs>
-    <marker id="cicdArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">CI/CD Pipeline Deep Dive</text>
   
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
+  <!-- Parallel Test Execution -->
+  <rect x="40" y="70" width="720" height="160" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Parallel Test Execution</text>
   
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">CI/CD Pipeline Deep Dive</text>
+  <rect x="55" y="115" width="340" height="100" rx="6" fill="#bbdefb"/>
+  <text x="225" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Sequential (Slow)</text>
+  <rect x="70" y="145" width="310" height="15" rx="3" fill="#90caf9"/>
+  <rect x="70" y="165" width="310" height="15" rx="3" fill="#90caf9"/>
+  <rect x="70" y="185" width="310" height="15" rx="3" fill="#90caf9"/>
+  <text x="390" y="156" font-size="8" text-anchor="end" fill="#1a1a1a">Unit (5m)</text>
+  <text x="390" y="176" font-size="8" text-anchor="end" fill="#1a1a1a">Integration (10m)</text>
+  <text x="390" y="196" font-size="8" text-anchor="end" fill="#1a1a1a">Security (8m)</text>
+  <text x="225" y="225" font-size="9" text-anchor="middle" fill="#666666">Total: 23 minutes</text>
   
-  <!-- Pipeline Stages -->
-  <rect x="50" y="60" width="450" height="280" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">CI/CD Pipeline Stages</text>
+  <rect x="415" y="115" width="330" height="100" rx="6" fill="#c8e6c9"/>
+  <text x="580" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Parallel (Fast)</text>
+  <rect x="430" y="145" width="100" height="15" rx="3" fill="#a5d6a7"/>
+  <rect x="430" y="165" width="160" height="15" rx="3" fill="#a5d6a7"/>
+  <rect x="430" y="185" width="130" height="15" rx="3" fill="#a5d6a7"/>
+  <text x="540" y="156" font-size="8" text-anchor="end" fill="#1a1a1a">Unit (5m)</text>
+  <text x="600" y="176" font-size="8" text-anchor="end" fill="#1a1a1a">Integration (10m)</text>
+  <text x="570" y="196" font-size="8" text-anchor="end" fill="#1a1a1a">Security (8m)</text>
+  <text x="580" y="225" font-size="9" text-anchor="middle" fill="#666666">Total: 10 minutes (longest stage)</text>
   
-  <!-- Commit stage -->
-  <rect x="70" y="110" width="100" height="60" rx="4" fill="#3b82f6"/>
-  <text x="120" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">1. Commit</text>
-  <text x="120" y="155" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Code review</text>
-  <text x="120" y="168" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Static analysis</text>
+  <!-- Artifact Management -->
+  <rect x="40" y="260" width="340" height="180" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="290" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Artifact Management</text>
   
-  <line x1="170" y1="140" x2="200" y2="140" stroke="#3b82f6" stroke-width="2" marker-end="url(#cicdArrow)"/>
+  <rect x="55" y="305" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="325" font-size="10" text-anchor="middle" fill="#1a1a1a">Build once → same artifact to all environments</text>
   
-  <!-- Build stage -->
-  <rect x="200" y="110" width="100" height="60" rx="4" fill="#8b5cf6"/>
-  <text x="250" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">2. Build</text>
-  <text x="250" y="155" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Compile</text>
-  <text x="250" y="168" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Package</text>
+  <rect x="55" y="340" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="360" font-size="10" text-anchor="middle" fill="#1a1a1a">Version artifacts with git commit SHA</text>
   
-  <line x1="300" y1="140" x2="330" y2="140" stroke="#3b82f6" stroke-width="2" marker-end="url(#cicdArrow)"/>
+  <rect x="55" y="375" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="395" font-size="10" text-anchor="middle" fill="#1a1a1a">Store in artifact registry (ECR, Nexus)</text>
   
-  <!-- Test stage -->
-  <rect x="330" y="110" width="100" height="60" rx="4" fill="#f97316"/>
-  <text x="380" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">3. Test</text>
-  <text x="380" y="155" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Unit tests</text>
-  <text x="380" y="168" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Integration</text>
+  <rect x="55" y="410" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="430" font-size="10" text-anchor="middle" fill="#1a1a1a">Sign artifacts for integrity verification</text>
   
-  <line x1="250" y1="170" x2="250" y2="200" stroke="#3b82f6" stroke-width="2" marker-end="url(#cicdArrow)"/>
+  <!-- Deployment Orchestration -->
+  <rect x="420" y="260" width="340" height="180" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="290" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Deployment Orchestration</text>
   
-  <!-- Deploy staging -->
-  <rect x="200" y="200" width="100" height="60" rx="4" fill="#22c55e"/>
-  <text x="250" y="225" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">4. Staging</text>
-  <text x="250" y="245" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Deploy</text>
-  <text x="250" y="258" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Smoke tests</text>
+  <rect x="435" y="305" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="325" font-size="10" text-anchor="middle" fill="#1a1a1a">Infrastructure-as-Code (Terraform, CloudFormation)</text>
   
-  <line x1="300" y1="230" x2="330" y2="230" stroke="#3b82f6" stroke-width="2" marker-end="url(#cicdArrow)"/>
+  <rect x="435" y="340" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="360" font-size="10" text-anchor="middle" fill="#1a1a1a">Configuration injected at deploy time (env vars)</text>
   
-  <!-- Deploy production -->
-  <rect x="330" y="200" width="100" height="60" rx="4" fill="#ef4444"/>
-  <text x="380" y="225" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">5. Production</text>
-  <text x="380" y="245" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Canary/Blue-Green</text>
-  <text x="380" y="258" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Health checks</text>
+  <rect x="435" y="375" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="395" font-size="10" text-anchor="middle" fill="#1a1a1a">Database migrations run before app deployment</text>
   
-  <!-- Deployment Strategies -->
-  <rect x="520" y="60" width="430" height="140" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Deployment Strategies</text>
+  <rect x="435" y="410" width="310" height="30" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="430" font-size="10" text-anchor="middle" fill="#1a1a1a">Health checks verify deployment success</text>
   
-  <rect x="540" y="110" width="190" height="70" rx="3" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="1"/>
-  <text x="635" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">Rolling Update</text>
-  <text x="635" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Gradual replacement</text>
-  <text x="635" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Zero downtime</text>
+  <!-- Pipeline Metrics -->
+  <rect x="40" y="470" width="720" height="110" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="500" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Pipeline Performance Metrics</text>
   
-  <rect x="540" y="190" width="190" height="70" rx="3" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="1"/>
-  <text x="635" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">Blue-Green</text>
-  <text x="635" y="235" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Two environments</text>
-  <text x="635" y="252" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Instant switch</text>
+  <rect x="55" y="515" width="160" height="50" rx="6" fill="#e1bee7"/>
+  <text x="135" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Build Time</text>
+  <text x="135" y="555" font-size="10" text-anchor="middle" fill="#666666">Target: &lt; 5 minutes</text>
   
-  <rect x="750" y="110" width="180" height="70" rx="3" fill="#f97316" opacity="0.2" stroke="#f97316" stroke-width="1"/>
-  <text x="840" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">Canary</text>
-  <text x="840" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Small % first</text>
-  <text x="840" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Gradual expansion</text>
+  <rect x="245" y="515" width="160" height="50" rx="6" fill="#e1bee7"/>
+  <text x="325" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Test Time</text>
+  <text x="325" y="555" font-size="10" text-anchor="middle" fill="#666666">Target: &lt; 15 minutes</text>
   
-  <rect x="750" y="190" width="180" height="70" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1"/>
-  <text x="840" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">Feature Flags</text>
-  <text x="840" y="235" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Deploy hidden</text>
-  <text x="840" y="252" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Enable gradually</text>
+  <rect x="435" y="515" width="160" height="50" rx="6" fill="#e1bee7"/>
+  <text x="515" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Deploy Time</text>
+  <text x="515" y="555" font-size="10" text-anchor="middle" fill="#666666">Target: &lt; 10 minutes</text>
   
-  <!-- Rollback Mechanisms -->
-  <rect x="520" y="220" width="430" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Rollback Mechanisms</text>
-  
-  <rect x="540" y="265" width="190" height="40" rx="3" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Automated Rollback</text>
-  <text x="635" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">On health check failure</text>
-  
-  <rect x="540" y="315" width="190" height="40" rx="3" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Database Migration Rollback</text>
-  <text x="635" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Down migrations</text>
-  
-  <rect x="750" y="265" width="180" height="40" rx="3" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Feature Flag Kill Switch</text>
-  <text x="840" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Instant disable</text>
-  
-  <rect x="750" y="315" width="180" height="40" rx="3" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Previous Version Artifacts</text>
-  <text x="840" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Keep N versions</text>
-  
-  <text x="500" y="390" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Automate pipeline. Use safe deployment strategies. Always have rollback plan.</text>
+  <rect x="625" y="515" width="120" height="50" rx="6" fill="#e1bee7"/>
+  <text x="685" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Total</text>
+  <text x="685" y="555" font-size="10" text-anchor="middle" fill="#666666">Target: &lt; 30 minutes</text>
 </svg>

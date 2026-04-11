@@ -1,107 +1,125 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Compliance Auditing Deep Dive</text>
+  
+  <!-- Audit Log Entry Structure -->
+  <rect x="40" y="70" width="720" height="140" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Audit Log Entry Structure</text>
+  
+  <rect x="55" y="115" width="100" height="80" rx="6" fill="#bbdefb"/>
+  <text x="105" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Actor</text>
+  <text x="105" y="155" font-size="9" text-anchor="middle" fill="#666666">User ID</text>
+  <text x="105" y="170" font-size="9" text-anchor="middle" fill="#666666">Service account</text>
+  <text x="105" y="185" font-size="9" text-anchor="middle" fill="#666666">API key ID</text>
+  
+  <rect x="175" y="115" width="100" height="80" rx="6" fill="#bbdefb"/>
+  <text x="225" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Action</text>
+  <text x="225" y="155" font-size="9" text-anchor="middle" fill="#666666">read, write, delete</text>
+  <text x="225" y="170" font-size="9" text-anchor="middle" fill="#666666">export, import</text>
+  <text x="225" y="185" font-size="9" text-anchor="middle" fill="#666666">login, logout</text>
+  
+  <rect x="295" y="115" width="100" height="80" rx="6" fill="#bbdefb"/>
+  <text x="345" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Resource</text>
+  <text x="345" y="155" font-size="9" text-anchor="middle" fill="#666666">Data identifier</text>
+  <text x="345" y="170" font-size="9" text-anchor="middle" fill="#666666">Table, row, file</text>
+  <text x="345" y="185" font-size="9" text-anchor="middle" fill="#666666">API endpoint</text>
+  
+  <rect x="415" y="115" width="100" height="80" rx="6" fill="#bbdefb"/>
+  <text x="465" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Context</text>
+  <text x="465" y="155" font-size="9" text-anchor="middle" fill="#666666">Timestamp</text>
+  <text x="465" y="170" font-size="9" text-anchor="middle" fill="#666666">Source IP</text>
+  <text x="465" y="185" font-size="9" text-anchor="middle" fill="#666666">Request ID</text>
+  
+  <rect x="535" y="115" width="100" height="80" rx="6" fill="#bbdefb"/>
+  <text x="585" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Outcome</text>
+  <text x="585" y="155" font-size="9" text-anchor="middle" fill="#666666">Success/failure</text>
+  <text x="585" y="170" font-size="9" text-anchor="middle" fill="#666666">Error code</text>
+  <text x="585" y="185" font-size="9" text-anchor="middle" fill="#666666">Denial reason</text>
+  
+  <rect x="655" y="115" width="90" height="80" rx="6" fill="#c8e6c9"/>
+  <text x="700" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Integrity</text>
+  <text x="700" y="155" font-size="9" text-anchor="middle" fill="#666666">Previous hash</text>
+  <text x="700" y="170" font-size="9" text-anchor="middle" fill="#666666">Entry hash</text>
+  <text x="700" y="185" font-size="9" text-anchor="middle" fill="#666666">Signature</text>
+  
+  <!-- Hash Chain -->
+  <rect x="40" y="240" width="720" height="160" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="270" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Hash Chain — Tamper Evidence</text>
+  
+  <rect x="55" y="285" width="140" height="100" rx="6" fill="#a5d6a7"/>
+  <text x="125" y="305" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Entry 1</text>
+  <text x="125" y="325" font-size="9" text-anchor="middle" fill="#666666">Action: login</text>
+  <text x="125" y="340" font-size="9" text-anchor="middle" fill="#666666">User: alice</text>
+  <text x="125" y="355" font-size="9" text-anchor="middle" fill="#666666">Hash: 0x1a2b</text>
+  <text x="125" y="370" font-size="9" text-anchor="middle" fill="#666666">Prev: genesis</text>
+  
+  <line x1="195" y1="335" x2="235" y2="335" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="215" y="325" font-size="8" text-anchor="middle" fill="#666666">hash</text>
+  
+  <rect x="235" y="285" width="140" height="100" rx="6" fill="#a5d6a7"/>
+  <text x="305" y="305" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Entry 2</text>
+  <text x="305" y="325" font-size="9" text-anchor="middle" fill="#666666">Action: read</text>
+  <text x="305" y="340" font-size="9" text-anchor="middle" fill="#666666">User: alice</text>
+  <text x="305" y="355" font-size="9" text-anchor="middle" fill="#666666">Hash: 0x3c4d</text>
+  <text x="305" y="370" font-size="9" text-anchor="middle" fill="#666666">Prev: 0x1a2b</text>
+  
+  <line x1="375" y1="335" x2="415" y2="335" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="395" y="325" font-size="8" text-anchor="middle" fill="#666666">hash</text>
+  
+  <rect x="415" y="285" width="140" height="100" rx="6" fill="#ffcdd2"/>
+  <text x="485" y="305" font-size="10" font-weight="bold" text-anchor="middle" fill="#d84315">Entry 3 (TAMPERED)</text>
+  <text x="485" y="325" font-size="9" text-anchor="middle" fill="#666666">Action: delete</text>
+  <text x="485" y="340" font-size="9" text-anchor="middle" fill="#666666">User: alice</text>
+  <text x="485" y="355" font-size="9" text-anchor="middle" fill="#d84315">Hash: MODIFIED</text>
+  <text x="485" y="370" font-size="9" text-anchor="middle" fill="#d84315">Prev: CHAINED</text>
+  
+  <line x1="555" y1="335" x2="595" y2="335" stroke="#f44336" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrow-red)"/>
+  <text x="575" y="325" font-size="8" text-anchor="middle" fill="#f44336">BROKEN</text>
+  
+  <rect x="595" y="285" width="140" height="100" rx="6" fill="#ffcdd2"/>
+  <text x="665" y="305" font-size="10" font-weight="bold" text-anchor="middle" fill="#d84315">Chain Broken</text>
+  <text x="665" y="325" font-size="9" text-anchor="middle" fill="#666666">Hash mismatch detected</text>
+  <text x="665" y="340" font-size="9" text-anchor="middle" fill="#d84315">Tamper alert triggered</text>
+  <text x="665" y="355" font-size="9" text-anchor="middle" fill="#666666">Investigation initiated</text>
+  
+  <!-- Data Subject Rights -->
+  <rect x="40" y="430" width="720" height="150" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="400" y="460" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Automated Data Subject Rights (GDPR)</text>
+  
+  <rect x="55" y="475" width="160" height="90" rx="6" fill="#ffe0b2"/>
+  <text x="135" y="495" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Right to Access</text>
+  <text x="135" y="515" font-size="9" text-anchor="middle" fill="#666666">Automated data discovery</text>
+  <text x="135" y="530" font-size="9" text-anchor="middle" fill="#666666">Compile from all stores</text>
+  <text x="135" y="545" font-size="9" text-anchor="middle" fill="#666666">Machine-readable format</text>
+  <text x="135" y="560" font-size="9" text-anchor="middle" fill="#666666">Delivered within 30 days</text>
+  
+  <rect x="245" y="475" width="160" height="90" rx="6" fill="#ffe0b2"/>
+  <text x="325" y="495" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Right to Erasure</text>
+  <text x="325" y="515" font-size="9" text-anchor="middle" fill="#666666">Delete from all stores</text>
+  <text x="325" y="530" font-size="9" text-anchor="middle" fill="#666666">Including backups</text>
+  <text x="325" y="545" font-size="9" text-anchor="middle" fill="#666666">Cryptographic erasure</text>
+  <text x="325" y="560" font-size="9" text-anchor="middle" fill="#666666">Confirmation to user</text>
+  
+  <rect x="435" y="475" width="160" height="90" rx="6" fill="#ffe0b2"/>
+  <text x="515" y="495" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Right to Portability</text>
+  <text x="515" y="515" font-size="9" text-anchor="middle" fill="#666666">Export in common format</text>
+  <text x="515" y="530" font-size="9" text-anchor="middle" fill="#666666">JSON, CSV, XML</text>
+  <text x="515" y="545" font-size="9" text-anchor="middle" fill="#666666">Structured data only</text>
+  <text x="515" y="560" font-size="9" text-anchor="middle" fill="#666666">Direct transfer option</text>
+  
+  <rect x="625" y="475" width="120" height="90" rx="6" fill="#ffe0b2"/>
+  <text x="685" y="495" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Right to Rectify</text>
+  <text x="685" y="515" font-size="9" text-anchor="middle" fill="#666666">Update incorrect data</text>
+  <text x="685" y="530" font-size="9" text-anchor="middle" fill="#666666">Self-service portal</text>
+  <text x="685" y="545" font-size="9" text-anchor="middle" fill="#666666">Audit trail of changes</text>
+  <text x="685" y="560" font-size="9" text-anchor="middle" fill="#666666">Notify downstream</text>
+  
   <defs>
-    <marker id="complianceArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f44336"/>
     </marker>
   </defs>
-  
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
-  
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Compliance &amp; Auditing Deep Dive</text>
-  
-  <!-- Compliance Frameworks -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Major Compliance Frameworks</text>
-  
-  <!-- GDPR -->
-  <rect x="70" y="110" width="120" height="70" rx="4" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
-  <text x="130" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">GDPR</text>
-  <text x="130" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">EU Data Protection</text>
-  <text x="130" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Right to erasure</text>
-  
-  <!-- HIPAA -->
-  <rect x="210" y="110" width="120" height="70" rx="4" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="2"/>
-  <text x="270" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">HIPAA</text>
-  <text x="270" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">US Healthcare</text>
-  <text x="270" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">PHI protection</text>
-  
-  <!-- SOC 2 -->
-  <rect x="350" y="110" width="120" height="70" rx="4" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="410" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">SOC 2</text>
-  <text x="410" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Security Controls</text>
-  <text x="410" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Trust Services</text>
-  
-  <!-- PCI DSS -->
-  <rect x="70" y="195" width="120" height="70" rx="4" fill="#f97316" opacity="0.2" stroke="#f97316" stroke-width="2"/>
-  <text x="130" y="220" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">PCI DSS</text>
-  <text x="130" y="240" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Payment Cards</text>
-  <text x="130" y="257" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Cardholder data</text>
-  
-  <!-- SOX -->
-  <rect x="210" y="195" width="120" height="70" rx="4" fill="#ef4444" opacity="0.2" stroke="#ef4444" stroke-width="2"/>
-  <text x="270" y="220" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-red, #ef4444">SOX</text>
-  <text x="270" y="240" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Financial Reporting</text>
-  <text x="270" y="257" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">7 year retention</text>
-  
-  <!-- ISO 27001 -->
-  <rect x="350" y="195" width="120" height="70" rx="4" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="410" y="220" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">ISO 27001</text>
-  <text x="410" y="240" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">InfoSec Management</text>
-  <text x="410" y="257" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">International standard</text>
-  
-  <!-- Audit Trail Requirements -->
-  <rect x="520" y="60" width="430" height="140" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Audit Trail Requirements</text>
-  
-  <rect x="540" y="110" width="190" height="70" rx="3" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="1"/>
-  <text x="635" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">What to Log</text>
-  <text x="635" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Who, what, when, where</text>
-  <text x="635" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Authentication, data access</text>
-  
-  <rect x="540" y="190" width="190" height="70" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1"/>
-  <text x="635" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">Log Protection</text>
-  <text x="635" y="235" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Immutable storage</text>
-  <text x="635" y="252" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Tamper-evident</text>
-  
-  <rect x="750" y="110" width="180" height="70" rx="3" fill="#f97316" opacity="0.2" stroke="#f97316" stroke-width="1"/>
-  <text x="840" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">Retention Period</text>
-  <text x="840" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Based on compliance</text>
-  <text x="840" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">7 years typical</text>
-  
-  <rect x="750" y="190" width="180" height="70" rx="3" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="1"/>
-  <text x="840" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">Access Controls</text>
-  <text x="840" y="235" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Who can view logs</text>
-  <text x="840" y="252" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Segregation of duties</text>
-  
-  <!-- Compliance Implementation -->
-  <rect x="520" y="220" width="430" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Compliance Implementation Checklist</text>
-  
-  <text x="540" y="275" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
-  <text x="555" y="275" font-size="8" fill="var(--text-secondary, #47556ird">Data classification (PII, PHI, PCI)</text>
-  
-  <text x="540" y="295" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
-  <text x="555" y="295" font-size="8" fill="var(--text-secondary, #47556ird">Encryption at rest and in transit</text>
-  
-  <text x="540" y="315" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
-  <text x="555" y="315" font-size="8" fill="var(--text-secondary, #47556ird">Access logging and monitoring</text>
-  
-  <text x="540" y="335" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
-  <text x="555" y="335" font-size="8" fill="var(--text-secondary, #47556ird">Regular security assessments</text>
-  
-  <text x="750" y="275" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
-  <text x="765" y="275" font-size="8" fill="var(--text-secondary, #47556ird">Incident response procedures</text>
-  
-  <text x="750" y="295" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
-  <text x="765" y="295" font-size="8" fill="var(--text-secondary, #47556ird">Data retention policies</text>
-  
-  <text x="750" y="315" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
-  <text x="765" y="315" font-size="8" fill="var(--text-secondary, #47556ird">User consent management</text>
-  
-  <text x="750" y="335" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
-  <text x="765" y="335" font-size="8" fill="var(--text-secondary, #47556ird">Regular compliance audits</text>
-  
-  <text x="500" y="390" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Understand applicable regulations. Implement audit logging. Regular compliance reviews.</text>
 </svg>

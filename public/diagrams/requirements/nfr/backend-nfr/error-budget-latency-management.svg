@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Error Budget & Latency Management</text>
+  
+  <!-- Error Budget -->
+  <rect x="40" y="70" width="340" height="200" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="210" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Error Budget Model</text>
+  
+  <rect x="55" y="115" width="310" height="35" rx="4" fill="#bbdefb"/>
+  <text x="210" y="138" font-size="11" text-anchor="middle" fill="#1a1a1a">SLO: 99.9% = 0.1% error budget</text>
+  
+  <rect x="55" y="155" width="310" height="28" rx="4" fill="#e8f5e9"/>
+  <text x="210" y="175" font-size="10" text-anchor="middle" fill="#1a1a1a">Monthly budget: 43.2 minutes of errors</text>
+  
+  <rect x="55" y="188" width="310" height="28" rx="4" fill="#fff3e0"/>
+  <text x="210" y="208" font-size="10" text-anchor="middle" fill="#1a1a1a">If budget exhausted → freeze releases</text>
+  
+  <rect x="55" y="221" width="310" height="28" rx="4" fill="#e8f5e9"/>
+  <text x="210" y="241" font-size="10" text-anchor="middle" fill="#1a1a1a">Unused budget → release velocity increases</text>
+  
+  <rect x="55" y="254" width="310" height="28" rx="4" fill="#bbdefb"/>
+  <text x="210" y="274" font-size="10" text-anchor="middle" fill="#1a1a1a">Balance: reliability vs feature velocity</text>
+  
+  <!-- Latency SLO Design -->
+  <rect x="420" y="70" width="340" height="200" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="590" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Latency SLO Design Process</text>
+  
+  <rect x="435" y="115" width="310" height="28" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">1. Collect baseline: measure P50, P95, P99, P99.9</text>
+  
+  <rect x="435" y="148" width="310" height="28" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="168" font-size="10" text-anchor="middle" fill="#1a1a1a">2. Set SLO: P99 + 20% headroom for normal ops</text>
+  
+  <rect x="435" y="181" width="310" height="28" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="201" font-size="10" text-anchor="middle" fill="#1a1a1a">3. Set alert threshold: 80% of SLO (early warning)</text>
+  
+  <rect x="435" y="214" width="310" height="28" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="234" font-size="10" text-anchor="middle" fill="#1a1a1a">4. Set SLA: SLO - 10% (safety margin for customers)</text>
+  
+  <rect x="435" y="247" width="310" height="28" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="267" font-size="10" text-anchor="middle" fill="#1a1a1a">5. Review quarterly: adjust based on actual data</text>
+  
+  <!-- Latency Impact Chain -->
+  <rect x="40" y="300" width="720" height="140" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="400" y="330" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Latency Impact Chain — How 50ms Becomes 500ms</text>
+  
+  <rect x="55" y="345" width="120" height="50" rx="6" fill="#ffe0b2"/>
+  <text x="115" y="365" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">API Gateway</text>
+  <text x="115" y="383" font-size="9" text-anchor="middle" fill="#666666">5ms overhead</text>
+  
+  <line x1="175" y1="370" x2="195" y2="370" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="195" y="345" width="120" height="50" rx="6" fill="#ffe0b2"/>
+  <text x="255" y="365" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Auth Service</text>
+  <text x="255" y="383" font-size="9" text-anchor="middle" fill="#666666">20ms (cache miss)</text>
+  
+  <line x1="315" y1="370" x2="335" y2="370" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="335" y="345" width="120" height="50" rx="6" fill="#ffe0b2"/>
+  <text x="395" y="365" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">User Service</text>
+  <text x="395" y="383" font-size="9" text-anchor="middle" fill="#666666">30ms (DB query)</text>
+  
+  <line x1="455" y1="370" x2="475" y2="370" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="475" y="345" width="120" height="50" rx="6" fill="#ffe0b2"/>
+  <text x="535" y="365" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Recommendations</text>
+  <text x="535" y="383" font-size="9" text-anchor="middle" fill="#666666">50ms (ML inference)</text>
+  
+  <line x1="595" y1="370" x2="615" y2="370" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="615" y="345" width="120" height="50" rx="6" fill="#ffe0b2"/>
+  <text x="675" y="365" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Total: 105ms</text>
+  <text x="675" y="383" font-size="9" text-anchor="middle" fill="#666666">+ network RTT</text>
+  
+  <!-- Tail Latency Multiplier -->
+  <rect x="40" y="470" width="720" height="110" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="400" y="500" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tail Latency Multiplier Effect</text>
+  
+  <rect x="55" y="515" width="220" height="50" rx="6" fill="#ffcdd2"/>
+  <text x="165" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">P50: 105ms total</text>
+  <text x="165" y="555" font-size="9" text-anchor="middle" fill="#666666">Fast path for all services</text>
+  
+  <rect x="295" y="515" width="220" height="50" rx="6" fill="#ffcdd2"/>
+  <text x="405" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">P99: ~500ms total</text>
+  <text x="405" y="555" font-size="9" text-anchor="middle" fill="#666666">One service at P99 dominates</text>
+  
+  <rect x="535" y="515" width="210" height="50" rx="6" fill="#ffcdd2"/>
+  <text x="640" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">P99.9: ~2000ms total</text>
+  <text x="640" y="555" font-size="9" text-anchor="middle" fill="#666666">Multiple services at P99</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+  </defs>
+</svg>

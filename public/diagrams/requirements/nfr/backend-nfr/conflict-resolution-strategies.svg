@@ -1,115 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
-  <defs>
-    <marker id="conflictArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Conflict Resolution Strategies</text>
   
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
+  <!-- Write Conflict -->
+  <rect x="40" y="70" width="340" height="160" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="210" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Write Conflict Scenario</text>
   
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Conflict Resolution Strategies</text>
+  <rect x="55" y="115" width="140" height="80" rx="6" fill="#e3f2fd"/>
+  <text x="125" y="140" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Client A (US)</text>
+  <text x="125" y="160" font-size="9" text-anchor="middle" fill="#666666">Write X = 10</text>
+  <text x="125" y="178" font-size="9" text-anchor="middle" fill="#666666">t = 100</text>
+  <text x="125" y="195" font-size="9" text-anchor="middle" fill="#666666">→ Replica 1</text>
   
-  <!-- Conflict scenario -->
-  <rect x="50" y="60" width="450" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Write Conflict Scenario</text>
+  <rect x="235" y="115" width="140" height="80" rx="6" fill="#c8e6c9"/>
+  <text x="305" y="140" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Client B (EU)</text>
+  <text x="305" y="160" font-size="9" text-anchor="middle" fill="#666666">Write X = 20</text>
+  <text x="305" y="178" font-size="9" text-anchor="middle" fill="#666666">t = 101</text>
+  <text x="305" y="195" font-size="9" text-anchor="middle" fill="#666666">→ Replica 2</text>
   
-  <!-- Two clients writing to different nodes -->
-  <rect x="80" y="110" width="90" height="45" rx="4" fill="#3b82f6"/>
-  <text x="125" y="135" text-anchor="middle" font-size="10" fill="#ffffff">Client A</text>
+  <text x="210" y="220" font-size="10" text-anchor="middle" fill="#d84315">Conflict: X = 10 vs X = 20 — which wins?</text>
   
-  <rect x="380" y="110" width="90" height="45" rx="4" fill="#8b5cf6"/>
-  <text x="425" y="135" text-anchor="middle" font-size="10" fill="#ffffff">Client B</text>
+  <!-- Resolution Strategies -->
+  <rect x="420" y="70" width="340" height="160" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="590" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Resolution Strategies</text>
   
-  <!-- Nodes -->
-  <rect x="100" y="180" width="80" height="50" rx="4" fill="#22c55e"/>
-  <text x="140" y="205" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">Node 1</text>
-  <text x="140" y="222" text-anchor="middle" font-size="8" fill="#ffffff">v1: x=5</text>
+  <rect x="435" y="115" width="310" height="28" rx="4" fill="#bbdefb"/>
+  <text x="590" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">Last-Write-Wins (LWW): Compare timestamps</text>
   
-  <rect x="320" y="180" width="80" height="50" rx="4" fill="#22c55e"/>
-  <text x="360" y="205" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">Node 2</text>
-  <text x="360" y="222" text-anchor="middle" font-size="8" fill="#ffffff">v2: x=10</text>
+  <rect x="435" y="148" width="310" height="28" rx="4" fill="#bbdefb"/>
+  <text x="590" y="168" font-size="10" text-anchor="middle" fill="#1a1a1a">Vector Clocks: Track causal ordering</text>
   
-  <!-- Arrows -->
-  <line x1="125" y1="155" x2="140" y2="175" stroke="#3b82f6" stroke-width="2" marker-end="url(#conflictArrow)"/>
-  <text x="115" y="170" text-anchor="middle" font-size="8" fill="#3b82f6">Write x=5</text>
+  <rect x="435" y="181" width="310" height="28" rx="4" fill="#bbdefb"/>
+  <text x="590" y="201" font-size="10" text-anchor="middle" fill="#1a1a1a">CRDTs: Mathematically convergent types</text>
   
-  <line x1="425" y1="155" x2="360" y2="175" stroke="#8b5cf6" stroke-width="2" marker-end="url(#conflictArrow)"/>
-  <text x="405" y="170" text-anchor="middle" font-size="8" fill="#8b5cf6">Write x=10</text>
+  <rect x="435" y="214" width="310" height="28" rx="4" fill="#bbdefb"/>
+  <text x="590" y="234" font-size="10" text-anchor="middle" fill="#1a1a1a">Application-Level: Custom merge logic</text>
   
-  <!-- Async replication causing conflict -->
-  <path d="M 180 205 Q 250 180 320 205" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#conflictArrow)"/>
-  <text x="275" y="185" text-anchor="middle" font-size="8" fill="#f97316">Async Replication</text>
+  <!-- Strategy Comparison -->
+  <rect x="40" y="260" width="340" height="180" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="290" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Strategy Comparison</text>
   
-  <text x="275" y="250" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">CONFLICT: Different values on different nodes!</text>
+  <rect x="55" y="305" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="325" font-size="10" text-anchor="middle" fill="#1a1a1a">LWW: Simple, but loses concurrent writes</text>
   
-  <!-- Resolution strategies -->
-  <rect x="520" y="60" width="430" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Resolution Strategies</text>
+  <rect x="55" y="340" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="360" font-size="10" text-anchor="middle" fill="#1a1a1a">Vector Clocks: Preserves causality, complex</text>
   
-  <!-- Last Write Wins -->
-  <rect x="540" y="110" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Last Write Wins (LWW)</text>
-  <text x="635" y="155" text-anchor="middle" font-size="9" fill="#475569">Use timestamp to decide</text>
-  <text x="635" y="170" text-anchor="middle" font-size="9" fill="#475569">✓ Simple, widely used</text>
+  <rect x="55" y="375" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="395" font-size="10" text-anchor="middle" fill="#1a1a1a">CRDTs: Automatic convergence, limited types</text>
   
-  <!-- Vector Clocks -->
-  <rect x="750" y="110" width="180" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Vector Clocks</text>
-  <text x="840" y="155" text-anchor="middle" font-size="9" fill="#475569">Track causality</text>
-  <text x="840" y="170" text-anchor="middle" font-size="9" fill="#475569">✓ Detects conflicts</text>
+  <rect x="55" y="410" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="430" font-size="10" text-anchor="middle" fill="#1a1a1a">App-Level: Most flexible, most complex</text>
   
-  <!-- CRDTs -->
-  <rect x="540" y="185" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="210" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">CRDTs</text>
-  <text x="635" y="230" text-anchor="middle" font-size="9" fill="#475569">Mathematical merge functions</text>
-  <text x="635" y="245" text-anchor="middle" font-size="9" fill="#475569">✓ Automatic conflict-free merge</text>
+  <!-- Conflict Resolution Flow -->
+  <rect x="420" y="260" width="340" height="180" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="290" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Resolution Flow</text>
   
-  <!-- Application-level -->
-  <rect x="750" y="185" width="180" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="210" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Application-Level</text>
-  <text x="840" y="230" text-anchor="middle" font-size="9" fill="#475569">Custom merge logic</text>
-  <text x="840" y="245" text-anchor="middle" font-size="9" fill="#475569">✓ Domain-specific resolution</text>
+  <rect x="435" y="305" width="310" height="28" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="325" font-size="10" text-anchor="middle" fill="#1a1a1a">1. Detect conflict (divergent replicas)</text>
   
-  <!-- Consistency vs Latency trade-off -->
-  <rect x="50" y="275" width="900" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="500" y="300" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Consistency vs Latency Trade-off</text>
+  <rect x="435" y="338" width="310" height="28" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="358" font-size="10" text-anchor="middle" fill="#1a1a1a">2. Apply resolution strategy</text>
   
-  <!-- Graph -->
-  <rect x="70" y="320" width="400" height="70" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="435" y="371" width="310" height="28" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="391" font-size="10" text-anchor="middle" fill="#1a1a1a">3. Converge replicas to same state</text>
   
-  <line x1="100" y1="375" x2="440" y2="375" stroke="#3b82f6" stroke-width="2"/>
-  <line x1="100" y1="330" x2="100" y2="375" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="435" y="404" width="310" height="28" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="424" font-size="10" text-anchor="middle" fill="#1a1a1a">4. Notify application if data loss occurred</text>
   
-  <!-- Curve showing inverse relationship -->
-  <path d="M 100 335 Q 200 340 300 360 Q 400 370 440 373" fill="none" stroke="#ef4444" stroke-width="3"/>
+  <!-- Real-World Examples -->
+  <rect x="40" y="470" width="720" height="110" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="500" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Real-World Examples</text>
   
-  <text x="270" y="395" text-anchor="middle" font-size="10" fill="#475569">Consistency →</text>
-  <text x="70" y="355" text-anchor="middle" font-size="10" fill="#475569" transform="rotate(-90, 70, 355)">Latency →</text>
+  <rect x="55" y="515" width="210" height="50" rx="6" fill="#e3f2fd"/>
+  <text x="160" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Amazon Shopping Cart</text>
+  <text x="160" y="555" font-size="9" text-anchor="middle" fill="#666666">CRDT (union of cart items)</text>
   
-  <text x="120" y="350" text-anchor="middle" font-size="9" fill="#22c55e" font-weight="bold">Weak</text>
-  <text x="420" y="365" text-anchor="middle" font-size="9" fill="#ef4444" font-weight="bold">Strong</text>
+  <rect x="295" y="515" width="210" height="50" rx="6" fill="#c8e6c9"/>
+  <text x="400" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Google Docs Editing</text>
+  <text x="400" y="555" font-size="9" text-anchor="middle" fill="#666666">Operational Transformation (OT)</text>
   
-  <!-- Key insight -->
-  <rect x="500" y="320" width="430" height="70" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="715" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Key Insight</text>
-  <text x="715" y="365" text-anchor="middle" font-size="10" fill="#475569">Stronger consistency = Higher latency</text>
-  <text x="715" y="382" text-anchor="middle" font-size="10" fill="#475569">(more coordination required)</text>
-  
-  <!-- Use case recommendations -->
-  <rect x="50" y="420" width="900" height="120" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="500" y="445" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Choosing Consistency Model by Use Case</text>
-  
-  <text x="150" y="470" font-size="10" fill="#475569">Strong: Banking, payments</text>
-  <text x="150" y="488" font-size="10" fill="#475569">Causal: Collaborative editing</text>
-  <text x="150" y="506" font-size="10" fill="#475569">Eventual: Social feeds, likes</text>
-  
-  <text x="450" y="470" font-size="10" fill="#475569">Strong: Inventory management</text>
-  <text x="450" y="488" font-size="10" fill="#475569">Causal: Comments, replies</text>
-  <text x="450" y="506" font-size="10" fill="#475569">Eventual: Analytics, counters</text>
-  
-  <text x="750" y="470" font-size="10" fill="#475569">Strong: Authentication</text>
-  <text x="750" y="488" font-size="10" fill="#475569">Causal: Activity streams</text>
-  <text x="750" y="506" font-size="10" fill="#475569">Eventual: Recommendations</text>
+  <rect x="535" y="515" width="210" height="50" rx="6" fill="#fff3e0"/>
+  <text x="640" y="535" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Social Media Likes</text>
+  <text x="640" y="555" font-size="9" text-anchor="middle" fill="#666666">LWW with client-side reconciliation</text>
 </svg>

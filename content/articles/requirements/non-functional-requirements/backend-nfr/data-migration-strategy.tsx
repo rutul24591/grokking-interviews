@@ -5,384 +5,469 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-backend-nfr-data-migration-strategy-extensive",
+  id: "article-backend-nfr-data-migration-strategy",
   title: "Data Migration Strategy",
-  description: "Comprehensive guide to zero-downtime data migrations, covering expand-contract pattern, dual writes, schema evolution, and production migration patterns for staff/principal engineer interviews.",
+  description: "Comprehensive guide to data migration — schema evolution, zero-downtime migration, backward compatibility, expand-contract pattern, and migration testing for staff/principal engineer interviews.",
   category: "backend",
   subcategory: "nfr",
   slug: "data-migration-strategy",
-  version: "extensive",
-  wordCount: 9500,
-  readingTime: 38,
-  lastUpdated: "2026-03-16",
-  tags: ["backend", "nfr", "data-migration", "schema", "zero-downtime", "database", "deployment"],
-  relatedTopics: ["schema-governance", "api-versioning", "database-selection", "disaster-recovery"],
+  wordCount: 5800,
+  readingTime: 25,
+  lastUpdated: "2026-04-11",
+  tags: ["backend", "nfr", "data-migration", "schema-evolution", "zero-downtime", "backward-compatibility"],
+  relatedTopics: ["schema-governance", "api-versioning", "durability-guarantees", "compliance-auditing"],
 };
 
 export default function DataMigrationStrategyArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      {/* Section 1: Definition & Context */}
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Data Migration</strong> is the process of changing data schema or structure while
-          maintaining system availability. Zero-downtime migrations are essential for systems that
-          must remain available 24/7.
+          <strong>Data migration</strong> is the process of moving data from one storage format, schema,
+          or system to another while maintaining data integrity, availability, and consistency. Data
+          migrations are required when evolving database schemas, migrating between database technologies,
+          consolidating or splitting data stores, or transitioning to new data models. Unlike application
+          deployments that can be rolled back instantly, data migrations are often irreversible or
+          expensive to reverse — a failed migration can corrupt data, cause extended downtime, or require
+          manual data recovery.
         </p>
         <p>
-          Migration challenges:
+          The challenge of data migration is compounded by the requirement for zero-downtime deployments.
+          Modern services must remain available 24/7, which means data migrations must execute while the
+          application continues to read and write data. This requires careful coordination between schema
+          changes, data transformation, and application deployment — the old application version must
+          work with the new schema during the migration window, and the new application version must
+          work with both the old and new schema during the transition.
         </p>
-        <ul>
-          <li>Large tables (millions/billions of rows).</li>
-          <li>High-traffic systems (can&apos;t afford downtime).</li>
-          <li>Complex schema changes (splitting columns, normalizing).</li>
-          <li>Backward compatibility (old and new code running simultaneously).</li>
-        </ul>
+        <p>
+          For staff and principal engineer candidates, data migration architecture demonstrates
+          understanding of schema evolution, backward compatibility, and the ability to design migrations
+          that are safe, reversible, and transparent to users. Interviewers expect you to design
+          migrations that can be rolled forward or backward without data loss, handle terabytes of data
+          without extended downtime, and maintain data consistency throughout the migration process.
+        </p>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight: Migration is a Deployment Problem</h3>
+          <h3 className="mb-3 font-semibold">Key Distinction: Schema Migration vs Data Migration</h3>
           <p>
-            Data migrations aren&apos;t just database operations — they require coordinating code
-            deployments, schema changes, and data backfills. The safest migrations are gradual,
-            reversible, and tested at production scale.
+            <strong>Schema migration</strong> changes the structure of the database (adding columns, changing data types, creating indexes) without moving data between systems. <strong>Data migration</strong> moves data from one system or format to another (MySQL to PostgreSQL, monolith database to sharded databases, row-based to columnar storage).
+          </p>
+          <p className="mt-3">
+            Schema migrations are typically faster and lower-risk — they modify metadata and gradually transform data in place. Data migrations are higher-risk — they involve copying or transforming large volumes of data between systems, requiring dual-write, verification, and cutover planning. In interviews, always clarify which type of migration you are designing.
           </p>
         </div>
-      </section>
 
-      <section>
-        <h2>Migration Patterns</h2>
-        <ArticleImage
-          src="/diagrams/requirements/nfr/backend-nfr/migration-patterns.svg"
-          alt="Zero-Downtime Migration Patterns"
-          caption="Migration Patterns — showing Expand-Contract pattern phases, Dual Write pattern, and strategy comparison"
-        />
         <p>
-          Three-phase migration for schema changes:
+          A mature data migration strategy follows the expand-contract pattern: expand the schema to
+          support both old and new formats, run a backfill to migrate existing data to the new format,
+          deploy the new application version that uses the new format, and contract the schema by
+          removing the old format. Each step is backward compatible, allowing rollback at any point
+          without data loss.
         </p>
       </section>
 
+      {/* Section 2: Core Concepts */}
       <section>
-        <h2>Migration Strategies Deep Dive</h2>
-        <ArticleImage
-          src="/diagrams/requirements/nfr/backend-nfr/data-migration-strategies.svg"
-          alt="Data Migration Strategies"
-          caption="Data Migration — showing Expand-Contract pattern with database schema evolution, Dual Write pattern, and migration checklist"
-        />
+        <h2>Core Concepts</h2>
         <p>
-          Advanced migration techniques for production systems:
+          Understanding data migration requires grasping several foundational concepts about schema
+          evolution, backward compatibility, and migration patterns.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Expand-Contract Pattern</h3>
         <p>
-          Three-phase migration for schema changes:
-        </p>
-        <ol className="list-decimal pl-6 space-y-3">
-          <li>
-            <strong>Expand:</strong> Add new schema elements (columns, tables) without removing old.
-            Deploy code that writes to both old and new.
-          </li>
-          <li>
-            <strong>Migrate:</strong> Backfill existing data from old to new schema. Run as background
-            job, batched to avoid load.
-          </li>
-          <li>
-            <strong>Contract:</strong> Once all data migrated and old code deprecated, remove old schema.
-          </li>
-        </ol>
-        <p>
-          <strong>Example: Renaming a column</strong>
-        </p>
-        <ul>
-          <li>Phase 1: Add new column as nullable, deploy code writing to both old and new columns</li>
-          <li>Phase 2: Backfill existing data in batches (e.g., 10,000 rows at a time) to avoid table locks</li>
-          <li>Phase 3: Deploy code reading from new column only, then remove old column</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Dual Write Pattern</h3>
-        <p>
-          Write to both old and new schema simultaneously:
-        </p>
-        <ul>
-          <li>Deploy code that writes to both schemas.</li>
-          <li>Read from old, verify new matches.</li>
-          <li>Once verified, switch reads to new.</li>
-          <li>Remove old schema.</li>
-        </ul>
-        <p>
-          <strong>Use when:</strong> Complex migrations, need to validate before switching.
-        </p>
-        <p>
-          <strong>Risk:</strong> Inconsistency if one write fails.
+          The expand-contract pattern is the safest approach to schema migration. In the expand phase,
+          the schema is modified to support both the old and new formats — new columns are added (not
+          renamed or removed), new tables are created alongside existing tables, and triggers or
+          application logic maintain data in both formats. In the backfill phase, existing data is
+          migrated from the old format to the new format while the application continues to operate.
+          In the contract phase, after all data is migrated and the new application version is deployed,
+          the old format is removed — columns are dropped, old tables are deleted, and triggers are
+          removed. Each phase is backward compatible, allowing rollback at any point.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Shadow Read Pattern</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Backward-Compatible Schema Changes</h3>
         <p>
-          Read from both schemas, compare results:
+          Schema changes must be backward compatible — the old application version must continue to
+          function correctly after the schema change. Adding columns is backward compatible (old
+          applications ignore new columns). Adding tables is backward compatible (old applications
+          do not access new tables). Removing columns is NOT backward compatible (old applications
+          expect the column to exist). Renaming columns is NOT backward compatible (old applications
+          reference the old column name). Changing data types is NOT backward compatible (old
+          applications expect the old data type).
         </p>
-        <ul>
-          <li>Deploy code that reads from old and new.</li>
-          <li>Use old for actual response.</li>
-          <li>Log discrepancies between old and new.</li>
-          <li>Fix issues, then switch to new.</li>
-        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Dual-Write and Verification</h3>
         <p>
-          <strong>Use when:</strong> Validating migration correctness before cutover.
+          For data migrations between systems (MySQL to PostgreSQL, monolith to sharded), the dual-write
+          pattern writes data to both the old and new systems simultaneously. A verification process
+          compares data between the two systems to ensure consistency. Once verification confirms that
+          the new system contains all data and is consistent with the old system, read traffic is
+          migrated to the new system, and eventually the old system is decommissioned. Dual-write
+          ensures zero data loss during migration but adds write latency and operational complexity.
         </p>
       </section>
 
+      {/* Section 3: Architecture & Flow */}
       <section>
-        <h2>Data Migration Deep Dive</h2>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Data migration architecture spans schema evolution, backfill execution, verification,
+          cutover, and rollback.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/nfr/backend-nfr/data-migration-strategies.svg"
+          alt="Data Migration Strategies"
+          caption="Data Migration — showing expand-contract pattern, dual-write verification, and cutover flow"
+        />
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Migration Execution Flow</h3>
+        <p>
+          The migration begins with schema expansion — adding new columns, tables, or indexes that
+          support both old and new application versions. The expansion is deployed as a backward-compatible
+          schema change that does not affect the old application&apos;s behavior. Next, the backfill process
+          runs — a batch job that reads existing data from the old format and writes it to the new format.
+          The backfill runs at a controlled rate to avoid overwhelming the database, and can be paused
+          and resumed if issues are detected.
+        </p>
+        <p>
+          After the backfill completes, the new application version is deployed. The new version reads
+          from the new format and writes to both formats (dual-write) during the transition period. A
+          verification process compares data between the old and new formats to detect discrepancies.
+          Once verification confirms consistency, read traffic is migrated from the old format to the
+          new format. Finally, the schema is contracted — the old format is removed, dual-write is
+          disabled, and the migration is complete.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/nfr/backend-nfr/migration-patterns.svg"
+          alt="Migration Patterns"
+          caption="Migration Patterns — comparing online migration, offline migration, and dual-write verification"
+        />
+
         <ArticleImage
           src="/diagrams/requirements/nfr/backend-nfr/data-migration-deep-dive.svg"
           alt="Data Migration Deep Dive"
-          caption="Data Migration Deep Dive — showing zero-downtime migration patterns, backfill strategies, migration best practices"
+          caption="Migration Deep Dive — showing backfill execution, verification, and rollback mechanisms"
         />
-        <p>
-          Advanced data migration concepts:
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero-Downtime Migration Patterns</h3>
-        <p>
-          Different approaches to migrating data without downtime:
-        </p>
-        <ul>
-          <li>
-            <strong>Expand-Contract (Safest):</strong> Add new column/table (expand), migrate data gradually,
-            remove old column/table (contract). Most common pattern for schema changes. Allows rollback at any stage.
-          </li>
-          <li>
-            <strong>Dual Write:</strong> Write to both old and new schema simultaneously during transition.
-            Faster migration but risk of inconsistency if one write fails. Requires careful error handling.
-          </li>
-          <li>
-            <strong>Shadow Read:</strong> Read from both schemas, compare results to validate correctness
-            before switching. Excellent for testing but doubles read load during migration.
-          </li>
-          <li>
-            <strong>Strangler Fig:</strong> Gradually replace old system with new, routing traffic incrementally.
-            Low risk but slow. Good for large-scale migrations.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Backfill Strategies</h3>
-        <p>
-          Different approaches to migrating existing data:
-        </p>
-        <ul>
-          <li>
-            <strong>Batch Backfill:</strong> Process data in chunks (e.g., 1000 rows at a time).
-            Control database load, can pause/resume, easy to monitor progress. Most common approach.
-          </li>
-          <li>
-            <strong>Trigger-Based:</strong> Backfill data on first access (lazy migration).
-            No bulk operation needed, but inconsistent migration state during transition.
-          </li>
-          <li>
-            <strong>Parallel Backfill:</strong> Multiple workers process different data ranges simultaneously.
-            Fastest approach but complex coordination, risk of conflicts.
-          </li>
-          <li>
-            <strong>CDC-Based:</strong> Use Change Data Capture to replicate changes in real-time.
-            Most accurate, enables zero-downtime cutover. Requires CDC infrastructure.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Migration Best Practices</h3>
-        <p>
-          Critical practices for successful migrations:
-        </p>
-        <ul>
-          <li>
-            <strong>Test on Production-Sized Dataset:</strong> Performance characteristics change at scale.
-            Test migration scripts on data volume matching production.
-          </li>
-          <li>
-            <strong>Implement Rollback Procedure:</strong> Always have a way to revert if migration fails.
-            Test rollback procedure before starting migration.
-          </li>
-          <li>
-            <strong>Monitor Replication Lag:</strong> During backfill, monitor database replication lag.
-            Slow down batch size if lag increases.
-          </li>
-          <li>
-            <strong>Use Feature Flags:</strong> Gradually roll out new schema usage via feature flags.
-            Enables quick rollback by disabling flag.
-          </li>
-          <li>
-            <strong>Batch Backfill:</strong> Avoid table locks by processing in small batches.
-            Add delays between batches to reduce load.
-          </li>
-          <li>
-            <strong>Verify Data Consistency:</strong> Before cutover, verify data consistency between
-            old and new schema. Sample comparison or full checksum verification.
-          </li>
-        </ul>
       </section>
 
+      {/* Section 4: Trade-offs & Comparison */}
       <section>
-        <h2>Large Table Migrations</h2>
-        <p>
-          Migrating tables with millions/billions of rows requires special techniques:
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Batched Backfill</h3>
-        <p>
-          Process data in small batches to avoid locks and replication lag:
-        </p>
-        <ul>
-          <li>Query for rows needing migration with LIMIT clause</li>
-          <li>Update batch of rows (e.g., 10,000 at a time)</li>
-          <li>Sleep briefly between batches to avoid overwhelming database</li>
-          <li>Repeat until all rows migrated</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Trigger-Based Migration</h3>
-        <p>
-          Use database triggers to keep new schema in sync during migration:
-        </p>
-        <ul>
-          <li>Create trigger that fires on UPDATE/INSERT</li>
-          <li>Trigger populates new column from old column automatically</li>
-          <li>Ensures new column stays in sync during transition</li>
-        </ul>
-        <p>
-          <strong>Pros:</strong> Automatic, no code changes needed.
-        </p>
-        <p>
-          <strong>Cons:</strong> Database load, hard to debug.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Table Copy Strategy</h3>
-        <p>
-          For major schema changes, create new table and migrate:
-        </p>
-        <ol className="list-decimal pl-6 space-y-2">
-          <li>Create new table with new schema.</li>
-          <li>Set up triggers to sync old → new.</li>
-          <li>Backfill existing data.</li>
-          <li>Swap tables (rename).</li>
-          <li>Drop old table.</li>
-        </ol>
+        <h2>Trade-Offs &amp; Comparisons</h2>
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-theme">
+              <th className="p-3 text-left">Pattern</th>
+              <th className="p-3 text-left">Advantages</th>
+              <th className="p-3 text-left">Disadvantages</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-theme">
+            <tr>
+              <td className="p-3"><strong>Expand-Contract</strong></td>
+              <td className="p-3">
+                Zero downtime. Rollback at any phase. Backward compatible. Safe for large datasets.
+              </td>
+              <td className="p-3">
+                Multi-phase process (weeks). Schema bloat during migration. Complex coordination.
+              </td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>Dual-Write + Verify</strong></td>
+              <td className="p-3">
+                Zero data loss. Verification ensures consistency. Can rollback to old system.
+              </td>
+              <td className="p-3">
+                Write latency overhead. Verification complexity. Temporary storage cost (2× data).
+              </td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>Offline Migration</strong></td>
+              <td className="p-3">
+                Simple to implement. No dual-write overhead. Fast execution (no concurrency concerns).
+              </td>
+              <td className="p-3">
+                Downtime required. Not suitable for 24/7 services. Rollback requires full restore.
+              </td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>Online CDC Migration</strong></td>
+              <td className="p-3">
+                Zero downtime. Continuous replication. Minimal write overhead. Near-real-time sync.
+              </td>
+              <td className="p-3">
+                Requires CDC infrastructure. Complex conflict resolution. Schema compatibility required.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
+      {/* Section 5: Best Practices */}
       <section>
-        <h2>Interview Questions</h2>
-        <div className="space-y-6">
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold">
-              1. How do you migrate a database table with 100M rows without downtime?
-            </p>
-            <div className="mt-4 p-4 bg-panel rounded-lg">
-              <p className="font-semibold text-accent">Answer:</p>
-              <ul className="mt-2 space-y-2 text-sm">
-                <li><strong>Expand-Contract pattern:</strong> (1) Add new column. (2) Dual write (old + new). (3) Backfill in batches. (4) Switch reads. (5) Remove old column.</li>
-                <li><strong>Batching:</strong> Backfill 1000 rows at a time. Sleep between batches. Prevents replication lag.</li>
-                <li><strong>Triggers:</strong> Keep old + new in sync during migration. Automatic sync for new writes.</li>
-                <li><strong>Monitoring:</strong> Watch replication lag, query latency. Pause migration if lag &gt; threshold.</li>
-                <li><strong>Timeline:</strong> 100M rows at 1000/batch = 100K batches. At 10 batches/sec = 3 hours. Plan for 6-8 hours with buffer.</li>
-              </ul>
-            </div>
-          </div>
+        <h2>Best Practices</h2>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold">
-              2. Explain the Expand-Contract pattern. When would you use it?
-            </p>
-            <div className="mt-4 p-4 bg-panel rounded-lg">
-              <p className="font-semibold text-accent">Answer:</p>
-              <ul className="mt-2 space-y-2 text-sm">
-                <li><strong>Expand phase:</strong> Add new schema element (column, table, field). Both old and new coexist.</li>
-                <li><strong>Migration phase:</strong> Deploy code that writes to both. Backfill existing data gradually.</li>
-                <li><strong>Contract phase:</strong> Remove old schema element. Complete migration.</li>
-                <li><strong>When to use:</strong> Zero-downtime migrations, breaking schema changes, large tables.</li>
-                <li><strong>Benefits:</strong> No downtime, gradual rollout, easy rollback (just stop writing to new).</li>
-                <li><strong>Trade-offs:</strong> More complex, temporary storage overhead, longer migration time.</li>
-              </ul>
-            </div>
-          </div>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Make All Migrations Reversible</h3>
+        <p>
+          Every migration must have a rollback plan that restores the pre-migration state without data
+          loss. For schema migrations, rollback means deploying the old application version and reversing
+          the schema change (dropping new columns, recreating old columns from backup data). For data
+          migrations, rollback means switching read traffic back to the old system and verifying data
+          consistency. Test the rollback plan before executing the migration — a rollback plan that has
+          never been tested is not a rollback plan, it is a hope.
+        </p>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold">
-              3. Your migration is causing replication lag. How do you diagnose and fix this?
-            </p>
-            <div className="mt-4 p-4 bg-panel rounded-lg">
-              <p className="font-semibold text-accent">Answer:</p>
-              <ul className="mt-2 space-y-2 text-sm">
-                <li><strong>Diagnosis:</strong> (1) Check replication lag metrics. (2) Identify long-running queries. (3) Check lock waits.</li>
-                <li><strong>Immediate fix:</strong> Pause migration. Reduce batch size. Add sleep between batches.</li>
-                <li><strong>Root causes:</strong> (1) Batch too large (locks held too long). (2) No sleep between batches. (3) Missing index on backfill query.</li>
-                <li><strong>Long-term fix:</strong> (1) Smaller batches (100-1000 rows). (2) Sleep 100-500ms between batches. (3) Add indexes for backfill queries.</li>
-                <li><strong>Monitoring:</strong> Alert on replication lag &gt; 30 seconds. Auto-pause migration if lag &gt; 60 seconds.</li>
-              </ul>
-            </div>
-          </div>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Backfill at Controlled Rate</h3>
+        <p>
+          Backfill operations read and write large volumes of data, which can overwhelm the database
+          and degrade application performance. Control the backfill rate by limiting throughput (rows
+          per second), running during off-peak hours, and monitoring database utilization (CPU, memory,
+          disk I/O, replication lag). If the backfill causes database utilization to exceed 80%, pause
+          the backfill and resume when utilization drops. A backfill that takes 2 weeks at a controlled
+          rate is preferable to a backfill that takes 2 days and causes production incidents.
+        </p>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold">
-              4. How do you handle rollback if a migration fails halfway through?
-            </p>
-            <div className="mt-4 p-4 bg-panel rounded-lg">
-              <p className="font-semibold text-accent">Answer:</p>
-              <ul className="mt-2 space-y-2 text-sm">
-                <li><strong>Prevention:</strong> Test rollback before migration. Every UP migration needs DOWN migration.</li>
-                <li><strong>Rollback strategy:</strong> (1) Stop deployment. (2) Deploy old code. (3) Run DOWN migration. (4) Verify data integrity.</li>
-                <li><strong>Partial migration:</strong> If backfill partially complete, old code must handle both migrated and unmigrated rows.</li>
-                <li><strong>Data integrity:</strong> Verify row counts, checksums after rollback. Ensure no data loss.</li>
-                <li><strong>Best practice:</strong> Design migrations to be forward-only (old code ignores new columns). Avoids rollback complexity.</li>
-              </ul>
-            </div>
-          </div>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Verify Data Consistency Before Cutover</h3>
+        <p>
+          Before migrating read traffic from the old system to the new system, verify that the new
+          system contains all data and that the data is consistent with the old system. Run comparison
+          queries that check row counts, checksums, and sample records between the two systems. For
+          large datasets, use statistical sampling — compare 1% of records randomly selected from both
+          systems. If the sample passes, proceed with cutover. If the sample fails, investigate and
+          resolve discrepancies before proceeding.
+        </p>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold">
-              5. Design a migration strategy for splitting a monolithic database into microservices.
-            </p>
-            <div className="mt-4 p-4 bg-panel rounded-lg">
-              <p className="font-semibold text-accent">Answer:</p>
-              <ul className="mt-2 space-y-2 text-sm">
-                <li><strong>Strangler fig pattern:</strong> Gradually extract tables into service-specific databases.</li>
-                <li><strong>Phase 1:</strong> Create new service with own database. Dual write from monolith to new service.</li>
-                <li><strong>Phase 2:</strong> Migrate reads to new service. Verify data consistency.</li>
-                <li><strong>Phase 3:</strong> Migrate writes to new service. Remove dual write.</li>
-                <li><strong>Phase 4:</strong> Remove old tables from monolith.</li>
-                <li><strong>Data sync:</strong> Use CDC (Debezium) to keep databases in sync during transition.</li>
-                <li><strong>Rollback:</strong> Keep old tables until migration complete. Can revert at any phase.</li>
-              </ul>
-            </div>
-          </div>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitor Migration Progress</h3>
+        <p>
+          Migrations that run for hours or days require continuous monitoring to detect issues early.
+          Monitor migration progress (rows migrated, percentage complete, estimated time remaining),
+          database health (CPU, memory, disk I/O, replication lag), and application performance
+          (latency, error rate, throughput). Set alerts for migration stalls (no progress for 30
+          minutes), database overload (utilization &gt; 80%), and application degradation (latency
+          increase &gt; 50%). If any alert fires, pause the migration and investigate before resuming.
+        </p>
+      </section>
 
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <p className="font-semibold">
-              6. How do you test database migrations before deploying to production?
-            </p>
-            <div className="mt-4 p-4 bg-panel rounded-lg">
-              <p className="font-semibold text-accent">Answer:</p>
-              <ul className="mt-2 space-y-2 text-sm">
-                <li><strong>Unit tests:</strong> Test migration logic (UP and DOWN). Verify data transformations.</li>
-                <li><strong>Integration tests:</strong> Run migration on test database. Verify schema changes, data integrity.</li>
-                <li><strong>Staging test:</strong> Run on staging with production-sized data. Measure migration time, replication lag.</li>
-                <li><strong>Dry run:</strong> Run migration in read-only mode. Verify no errors, estimate time.</li>
-                <li><strong>Rollback test:</strong> Run UP migration, then DOWN migration. Verify data integrity after rollback.</li>
-                <li><strong>Best practice:</strong> Automate migration testing in CI. Block deployment if migration tests fail.</li>
-              </ul>
-            </div>
-          </div>
+      {/* Section 6: Common Pitfalls */}
+      <section>
+        <h2>Common Pitfalls</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Non-Backward-Compatible Schema Changes</h3>
+        <p>
+          The most destructive migration pitfall is deploying a schema change that breaks the old
+          application version — removing a column that the old application reads, renaming a column
+          that the old application references, or changing a data type that the old application expects.
+          If the old application is deployed when the schema change is applied, it will crash, and
+          rolling back requires restoring the old schema — which may not be possible if data has already
+          been written in the new format. Always deploy schema changes that are backward compatible with
+          the old application version.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Migrating Data Without Dual-Write</h3>
+        <p>
+          For data migrations between systems, writing only to the new system after the migration starts
+          causes data loss — data written during the migration window is lost if the migration fails
+          and rollback is required. Implement dual-write — write to both the old and new systems
+          simultaneously during the migration window. Dual-write ensures that all data is available in
+          both systems, enabling rollback to the old system without data loss.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Skipping Verification</h3>
+        <p>
+          Migrating data without verifying consistency between the old and new systems risks data
+          corruption going undetected until users report issues — at which point the old system may
+          have been decommissioned and rollback is impossible. Always run verification before cutover
+          — compare row counts, checksums, and sample records between the two systems. Automate
+          verification as part of the migration pipeline — the migration cannot proceed to cutover
+          until verification passes.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Unbounded Backfill Impact</h3>
+        <p>
+          Running a backfill at full speed can overwhelm the database, causing latency spikes,
+          replication lag, and application timeouts. Unbounded backfills are the most common cause of
+          production incidents during migrations. Always bound the backfill rate — limit rows per
+          second, monitor database utilization, and pause the backfill if utilization exceeds
+          thresholds. A slow, controlled backfill is always preferable to a fast, disruptive one.
+        </p>
+      </section>
+
+      {/* Section 7: Real-World Use Cases */}
+      <section>
+        <h2>Real-World Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">GitHub — MySQL Schema Migration at Scale</h3>
+        <p>
+          GitHub manages one of the largest MySQL deployments in the world, with schema migrations that
+          affect billions of rows. GitHub uses the expand-contract pattern for all schema migrations —
+          new columns are added alongside existing columns, data is backfilled at a controlled rate
+          (thousands of rows per second), and old columns are removed only after the new application
+          version is fully deployed. GitHub&apos;s migration tool (gh-ost) performs online schema changes
+          without locking tables, allowing the database to continue serving reads and writes during the
+          migration. GitHub&apos;s migration process has zero downtime and has been tested on tables with
+          billions of rows.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Slack — Database Sharding Migration</h3>
+        <p>
+          Slack migrated from a monolithic database to a sharded architecture to support growing user
+          base and message volume. The migration used dual-write — new messages were written to both the
+          monolithic database and the sharded database, while historical messages were backfilled from
+          the monolithic database to the sharded database. A verification process compared message
+          counts and checksums between the two systems to ensure consistency. Once verification passed,
+          read traffic was migrated to the sharded database, and the monolithic database was
+          decommissioned. The migration was completed with zero downtime and zero data loss.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Stripe — Payment Schema Evolution</h3>
+        <p>
+          Stripe&apos;s payment schema evolves frequently as new payment methods, currencies, and regulatory
+          requirements are added. Stripe uses backward-compatible schema changes exclusively — new fields
+          are added as nullable columns with default values, allowing the old application version to
+          continue functioning without modification. New application versions read and write the new
+          fields, while the old application version ignores them. After all application instances are
+          deployed to the new version, the schema is finalized (default values removed, NOT NULL
+          constraints added). Stripe&apos;s migration process supports continuous deployment — schema
+          changes are deployed independently of application changes, with no coordination required.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Airbnb — Data Warehouse Migration</h3>
+        <p>
+          Airbnb migrated its data warehouse from a Hadoop-based system to a cloud-native analytics
+          platform. The migration used a parallel run approach — both systems ingested the same data,
+          and automated comparison queries verified that query results were identical between the two
+          systems. The migration was phased — non-critical workloads were migrated first, followed by
+          critical workloads after verification passed. The migration completed with zero data loss and
+          zero impact on business operations, and the new system provided 5× better query performance
+          at 50% lower cost.
+        </p>
+      </section>
+
+      {/* Section 8: Security Considerations */}
+      <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Data migrations involve copying and transforming large volumes of data, creating security risks that must be addressed.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Migration Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Data Exposure During Migration:</strong> Data copied between systems may be exposed in transit or in temporary storage. Mitigation: encrypt data in transit (TLS) and at rest during migration, use dedicated migration infrastructure with restricted access, delete temporary data after migration completes.
+            </li>
+            <li>
+              <strong>Migration Access Controls:</strong> Migration tools require elevated database permissions that could be exploited if compromised. Mitigation: use dedicated migration service accounts with minimum required permissions, rotate credentials before and after migration, audit all migration tool access.
+            </li>
+            <li>
+              <strong>Dual-Write Data Consistency:</strong> During dual-write, data exists in two systems with potentially different security controls. Mitigation: ensure both systems have equivalent security controls (encryption, access control, audit logging), monitor both systems for unauthorized access during the migration window, decommission the old system promptly after cutover.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Compliance During Migration</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>GDPR Data Mapping:</strong> Migrations must maintain accurate records of where personal data is stored. Update data maps during migration to reflect new storage locations, and ensure that GDPR rights (access, erasure, portability) can be fulfilled from both the old and new systems during the migration window.
+            </li>
+            <li>
+              <strong>Audit Trail Preservation:</strong> Audit logs must be preserved during migration and remain accessible for compliance investigations. Migrate audit logs to the new system with integrity verification (checksums), and verify that the new system&apos;s audit log format satisfies compliance requirements.
+            </li>
+          </ul>
         </div>
       </section>
 
+      {/* Section 9: Testing Strategies */}
       <section>
-        <h2>Migration Checklist</h2>
+        <h2>Testing Strategies</h2>
+        <p>
+          Data migrations must be validated through systematic testing — migration correctness, rollback
+          functionality, data consistency, and performance impact must all be verified.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Migration Testing</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Dry Run Testing:</strong> Execute the migration against a production-like staging environment with a representative data sample. Verify that the migration completes successfully, data is consistent after migration, and the application functions correctly with the migrated data. Measure migration duration and resource utilization.
+            </li>
+            <li>
+              <strong>Rollback Testing:</strong> After a successful dry run, execute the rollback plan. Verify that the system returns to the pre-migration state without data loss, the old application version functions correctly, and all data is consistent. Measure rollback duration and verify that it meets the RTO target.
+            </li>
+            <li>
+              <strong>Verification Testing:</strong> Run comparison queries between the old and new systems to verify data consistency. Check row counts, checksums, and sample records. Test with edge cases (null values, special characters, large payloads) to ensure the migration handles all data types correctly.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Testing</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Backfill Impact Testing:</strong> Run the backfill at the planned rate and verify that database utilization remains within acceptable thresholds (CPU &lt; 80%, replication lag &lt; 10 seconds, application latency increase &lt; 50%). Test with different backfill rates to find the optimal rate that balances migration speed with production impact.
+            </li>
+            <li>
+              <strong>Concurrency Testing:</strong> Test the migration while the application is running at production traffic levels. Verify that the migration does not cause deadlocks, lock contention, or transaction conflicts. Verify that application latency and error rate remain within SLOs during the migration.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Data Migration Readiness Checklist</h3>
+          <ul className="space-y-2">
+            <li>✓ Migration plan documented with phases, timeline, and rollback procedure</li>
+            <li>✓ Schema changes are backward compatible with old application version</li>
+            <li>✓ Dry run completed successfully in staging environment</li>
+            <li>✓ Rollback plan tested and verified in staging environment</li>
+            <li>✓ Backfill rate bounded and tested at production traffic levels</li>
+            <li>✓ Verification process automated (row counts, checksums, sample records)</li>
+            <li>✓ Monitoring configured (migration progress, database health, application performance)</li>
+            <li>✓ Alerts configured for migration stall, database overload, application degradation</li>
+            <li>✓ Dual-write implemented for data migrations between systems</li>
+            <li>✓ Compliance requirements verified (GDPR data mapping, audit trail preservation)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Section 10: References */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li>✓ Migration tested on production-sized dataset</li>
-          <li>✓ Rollback plan documented and tested</li>
-          <li>✓ Backfill script batched to avoid locks</li>
-          <li>✓ Monitoring for replication lag, query performance</li>
-          <li>✓ Old and new code compatible during transition</li>
-          <li>✓ Feature flag for gradual rollout</li>
-          <li>✓ Communication plan for stakeholders</li>
-          <li>✓ Post-migration validation queries</li>
-          <li>✓ Cleanup plan for old schema/data</li>
-          <li>✓ Runbook for common issues</li>
+          <li>
+            <a href="https://github.blog/2020-04-20-engineering-mysql-schema-changes-github/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              GitHub — Engineering Safe MySQL Schema Changes
+            </a>
+          </li>
+          <li>
+            <a href="https://slack.engineering/mysql-schema-migrations/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Slack — MySQL Schema Migrations at Scale
+            </a>
+          </li>
+          <li>
+            <a href="https://stripe.com/blog" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Stripe Engineering Blog — Schema Evolution
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/github/gh-ost" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              GitHub — gh-ost: Online Schema Migration Tool
+            </a>
+          </li>
+          <li>
+            <a href="https://www.martinfowler.com/articles/schema-evolution.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Martin Fowler — Schema Evolution Patterns
+            </a>
+          </li>
+          <li>
+            <a href="https://www.usenix.org/system/files/login-logout_1305_bettis.pdf" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              USENIX — Database Migration Best Practices
+            </a>
+          </li>
         </ul>
       </section>
     </ArticleLayout>

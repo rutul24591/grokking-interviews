@@ -1,118 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600">
-  <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-    <linearGradient id="verticalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.3"/>
-      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.1"/>
-    </linearGradient>
-    <linearGradient id="horizontalGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.3"/>
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.1"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Scalability Strategies Overview</text>
   
-  <!-- Background -->
-  <rect width="1000" height="600" fill="#ffffff"/>
+  <!-- Scaling Approaches -->
+  <rect x="40" y="60" width="340" height="200" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="210" y="90" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Horizontal vs Vertical Scaling</text>
+  <text x="210" y="115" font-size="11" fill="#666666">Vertical: Scale up (bigger server)</text>
+  <text x="210" y="135" font-size="11" fill="#666666">Horizontal: Scale out (more servers)</text>
+  <text x="210" y="155" font-size="11" fill="#666666">Vertical → Simple, limited ceiling</text>
+  <text x="210" y="175" font-size="11" fill="#666666">Horizontal → Complex, near-linear scale</text>
+  <text x="210" y="195" font-size="11" fill="#666666">Transition: 100K users → start horizontal</text>
+  <text x="210" y="215" font-size="11" fill="#666666">Stateless → easy horizontal, Stateful → hard</text>
   
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Horizontal vs Vertical Scaling</text>
+  <!-- Database Patterns -->
+  <rect x="420" y="60" width="340" height="200" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="590" y="90" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Database Scaling</text>
+  <text x="590" y="115" font-size="11" fill="#666666">Read Replicas: 1 primary + N replicas</text>
+  <text x="590" y="135" font-size="11" fill="#666666">Sharding: Split data across databases</text>
+  <text x="590" y="155" font-size="11" fill="#666666">Shard Keys: User ID, Hash, Range</text>
+  <text x="590" y="175" font-size="11" fill="#666666">Replication Lag: Seconds behind primary</text>
+  <text x="590" y="195" font-size="11" fill="#666666">Cross-Shard Joins: Expensive, avoid</text>
+  <text x="590" y="215" font-size="11" fill="#666666">Consistent Hashing: Minimal rebalancing</text>
   
-  <!-- Vertical Scaling Section -->
-  <rect x="50" y="60" width="420" height="250" rx="8" fill="url(#verticalGrad)" stroke="#3b82f6" stroke-width="2"/>
-  <text x="260" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Vertical Scaling (Scale Up)</text>
+  <!-- Load Balancing -->
+  <rect x="40" y="280" width="340" height="200" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="210" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Load Balancing</text>
+  <text x="210" y="335" font-size="11" fill="#666666">Layer 4: IP/port, fast, no inspection</text>
+  <text x="210" y="355" font-size="11" fill="#666666">Layer 7: HTTP headers, content routing</text>
+  <text x="210" y="375" font-size="11" fill="#666666">Algorithms: Round Robin, Least Conn</text>
+  <text x="210" y="395" font-size="11" fill="#666666">Health Checks: Active (probes), Passive</text>
+  <text x="210" y="415" font-size="11" fill="#666666">Session Affinity: Cookie-based, IP-based</text>
+  <text x="210" y="435" font-size="11" fill="#666666">Prefer: Stateless, avoid sticky sessions</text>
   
-  <!-- Server stack visualization -->
-  <rect x="100" y="120" width="120" height="40" rx="4" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
-  <text x="160" y="145" text-anchor="middle" font-size="11" fill="#475569">CPU: 4 cores</text>
+  <!-- Auto-Scaling -->
+  <rect x="420" y="280" width="340" height="200" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="590" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Auto-Scaling</text>
+  <text x="590" y="335" font-size="11" fill="#666666">Triggers: CPU, Memory, QPS, Custom</text>
+  <text x="590" y="355" font-size="11" fill="#666666">Policies: Reactive, Predictive, Scheduled</text>
+  <text x="590" y="375" font-size="11" fill="#666666">Cooldown: 3-5 min prevent thrashing</text>
+  <text x="590" y="395" font-size="11" fill="#666666">Hysteresis: Scale up 70%, down 40%</text>
+  <text x="590" y="415" font-size="11" fill="#666666">Graceful Drain: Deregister, wait, terminate</text>
+  <text x="590" y="435" font-size="11" fill="#666666">Buffer: 30-50% above expected peak</text>
   
-  <rect x="100" y="165" width="120" height="40" rx="4" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
-  <text x="160" y="190" text-anchor="middle" font-size="11" fill="#475569">RAM: 16GB</text>
-  
-  <rect x="100" y="210" width="120" height="40" rx="4" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
-  <text x="160" y="235" text-anchor="middle" font-size="11" fill="#475569">Storage: 500GB</text>
-  
-  <!-- Arrow pointing up -->
-  <line x1="160" y1="115" x2="160" y2="80" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowhead)"/>
-  <text x="160" y="75" text-anchor="middle" font-size="10" fill="#3b82f6" font-weight="bold">UPGRADE</text>
-  
-  <!-- Upgraded server -->
-  <rect x="280" y="120" width="140" height="40" rx="4" fill="#3b82f6" stroke="#3b82f6" stroke-width="2"/>
-  <text x="350" y="145" text-anchor="middle" font-size="11" fill="#ffffff">CPU: 16 cores</text>
-  
-  <rect x="280" y="165" width="140" height="40" rx="4" fill="#3b82f6" stroke="#3b82f6" stroke-width="2"/>
-  <text x="350" y="190" text-anchor="middle" font-size="11" fill="#ffffff">RAM: 64GB</text>
-  
-  <rect x="280" y="210" width="140" height="40" rx="4" fill="#3b82f6" stroke="#3b82f6" stroke-width="2"/>
-  <text x="350" y="235" text-anchor="middle" font-size="11" fill="#ffffff">Storage: 2TB</text>
-  
-  <!-- Vertical scaling characteristics -->
-  <rect x="50" y="320" width="420" height="120" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="70" y="345" font-size="12" font-weight="bold" fill="#0f172a">Characteristics:</text>
-  <text x="70" y="365" font-size="11" fill="#475569">• Single point of failure</text>
-  <text x="70" y="385" font-size="11" fill="#475569">• Limited by hardware ceiling</text>
-  <text x="70" y="405" font-size="11" fill="#475569">• Simple to implement</text>
-  <text x="260" y="365" font-size="11" fill="#475569">• Downtime required for upgrades</text>
-  <text x="260" y="385" font-size="11" fill="#475569">• Cost increases exponentially</text>
-  <text x="260" y="405" font-size="11" fill="#475569">• Good for stateful workloads</text>
-  
-  <!-- Horizontal Scaling Section -->
-  <rect x="530" y="60" width="420" height="250" rx="8" fill="url(#horizontalGrad)" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="740" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Horizontal Scaling (Scale Out)</text>
-  
-  <!-- Load balancer -->
-  <rect x="680" y="110" width="120" height="50" rx="6" fill="#8b5cf6" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="740" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">Load Balancer</text>
-  <text x="740" y="150" text-anchor="middle" font-size="9" fill="#ffffff">Traffic Distributor</text>
-  
-  <!-- Server nodes -->
-  <rect x="560" y="200" width="100" height="60" rx="4" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="610" y="225" text-anchor="middle" font-size="11" fill="#475569">Server 1</text>
-  <text x="610" y="245" text-anchor="middle" font-size="9" fill="#94a3b8">4 cores, 16GB</text>
-  
-  <rect x="690" y="200" width="100" height="60" rx="4" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="740" y="225" text-anchor="middle" font-size="11" fill="#475569">Server 2</text>
-  <text x="740" y="245" text-anchor="middle" font-size="9" fill="#94a3b8">4 cores, 16GB</text>
-  
-  <rect x="820" y="200" width="100" height="60" rx="4" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="870" y="225" text-anchor="middle" font-size="11" fill="#475569">Server 3</text>
-  <text x="870" y="245" text-anchor="middle" font-size="9" fill="#94a3b8">4 cores, 16GB</text>
-  
-  <!-- Arrows from LB to servers -->
-  <line x1="700" y1="160" x2="610" y2="195" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <line x1="740" y1="160" x2="740" y2="195" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <line x1="780" y1="160" x2="870" y2="195" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrowhead)"/>
-  
-  <!-- Add more servers arrow -->
-  <line x1="950" y1="230" x2="970" y2="230" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <text x="960" y="220" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="bold">ADD MORE</text>
-  
-  <!-- Horizontal scaling characteristics -->
-  <rect x="530" y="320" width="420" height="120" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="550" y="345" font-size="12" font-weight="bold" fill="#0f172a">Characteristics:</text>
-  <text x="550" y="365" font-size="11" fill="#475569">• High availability</text>
-  <text x="550" y="385" font-size="11" fill="#475569">• Near-linear scalability</text>
-  <text x="550" y="405" font-size="11" fill="#475569">• No downtime for scaling</text>
-  <text x="740" y="365" font-size="11" fill="#475569">• Requires load balancing</text>
-  <text x="740" y="385" font-size="11" fill="#475569">• State management complexity</text>
-  <text x="740" y="405" font-size="11" fill="#475569">• Cost increases linearly</text>
-  
-  <!-- Decision Matrix -->
-  <rect x="50" y="460" width="900" height="130" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="500" y="485" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">When to Use Each Approach</text>
-  
-  <!-- Vertical column -->
-  <text x="200" y="510" text-anchor="middle" font-size="12" font-weight="bold" fill="#3b82f6">Choose Vertical Scaling When:</text>
-  <text x="200" y="530" text-anchor="middle" font-size="10" fill="#475569">• Database with complex joins</text>
-  <text x="200" y="548" text-anchor="middle" font-size="10" fill="#475569">• Stateful applications</text>
-  <text x="200" y="566" text-anchor="middle" font-size="10" fill="#475569">• Low to moderate traffic</text>
-  <text x="200" y="584" text-anchor="middle" font-size="10" fill="#475569">• Quick initial deployment needed</text>
-  
-  <!-- Horizontal column -->
-  <text x="800" y="510" text-anchor="middle" font-size="12" font-weight="bold" fill="#8b5cf6">Choose Horizontal Scaling When:</text>
-  <text x="800" y="530" text-anchor="middle" font-size="10" fill="#475569">• Stateless web services</text>
-  <text x="800" y="548" text-anchor="middle" font-size="10" fill="#475569">• High availability required</text>
-  <text x="800" y="566" text-anchor="middle" font-size="10" fill="#475569">• Unpredictable traffic patterns</text>
-  <text x="800" y="584" text-anchor="middle" font-size="10" fill="#475569">• Long-term growth expected</text>
+  <!-- Key Metrics (bottom) -->
+  <rect x="40" y="500" width="720" height="80" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="530" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Key Scalability Metrics</text>
+  <text x="400" y="555" font-size="11" text-anchor="middle" fill="#666666">Throughput (RPS) | Concurrent Users | Data Volume | Latency Under Load (P99 at target RPS)</text>
+  <text x="400" y="575" font-size="10" text-anchor="middle" fill="#666666">Rule: Simplest architecture meeting targets with 2-3× safety margin. Don&apos;t build for 100M if you have 10K.</text>
 </svg>

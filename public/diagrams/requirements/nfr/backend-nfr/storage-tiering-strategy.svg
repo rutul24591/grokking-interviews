@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Storage Tiering Strategy</text>
+  
+  <!-- Access Pattern Distribution -->
+  <rect x="40" y="70" width="720" height="160" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Data Access Pattern Distribution</text>
+  
+  <rect x="55" y="115" width="560" height="30" rx="4" fill="#bbdefb"/>
+  <text x="335" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">80% of data accessed within first 30 days → Keep in Hot storage</text>
+  
+  <rect x="55" y="150" width="400" height="30" rx="4" fill="#c8e6c9"/>
+  <text x="255" y="170" font-size="10" text-anchor="middle" fill="#1a1a1a">15% accessed within 30-90 days → Transition to Warm storage</text>
+  
+  <rect x="55" y="185" width="200" height="30" rx="4" fill="#fff3e0"/>
+  <text x="155" y="205" font-size="10" text-anchor="middle" fill="#1a1a1a">5% accessed after 90 days → Transition to Cold storage</text>
+  
+  <!-- Cost vs Access Frequency -->
+  <rect x="40" y="260" width="340" height="200" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="210" y="290" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Cost vs Access Frequency</text>
+  
+  <rect x="55" y="305" width="310" height="35" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="328" font-size="10" text-anchor="middle" fill="#1a1a1a">High frequency (daily) → Hot SSD ($100-200/TB)</text>
+  
+  <rect x="55" y="345" width="310" height="35" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="368" font-size="10" text-anchor="middle" fill="#1a1a1a">Medium frequency (weekly) → Warm HDD ($20-50/TB)</text>
+  
+  <rect x="55" y="385" width="310" height="35" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="408" font-size="10" text-anchor="middle" fill="#1a1a1a">Low frequency (monthly) → Cold Archive ($4-10/TB)</text>
+  
+  <rect x="55" y="425" width="310" height="35" rx="4" fill="#a5d6a7"/>
+  <text x="210" y="448" font-size="10" text-anchor="middle" fill="#1a1a1a">Rare (yearly) → Deep Archive ($1-4/TB)</text>
+  
+  <!-- Tiering Decision Matrix -->
+  <rect x="420" y="260" width="340" height="200" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="590" y="290" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tiering Decision Matrix</text>
+  
+  <rect x="435" y="305" width="310" height="35" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="328" font-size="10" text-anchor="middle" fill="#1a1a1a">Last accessed &gt; 30 days → Move to Warm</text>
+  
+  <rect x="435" y="345" width="310" height="35" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="368" font-size="10" text-anchor="middle" fill="#1a1a1a">Last accessed &gt; 90 days → Move to Cold</text>
+  
+  <rect x="435" y="385" width="310" height="35" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="408" font-size="10" text-anchor="middle" fill="#1a1a1a">Age &gt; retention period → Delete or archive</text>
+  
+  <rect x="435" y="425" width="310" height="35" rx="4" fill="#ffe0b2"/>
+  <text x="590" y="448" font-size="10" text-anchor="middle" fill="#1a1a1a">Legal hold → Preserve regardless of age/access</text>
+  
+  <!-- Lifecycle Automation -->
+  <rect x="40" y="490" width="720" height="90" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="520" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Automated Lifecycle Management</text>
+  
+  <rect x="55" y="535" width="220" height="35" rx="4" fill="#e1bee7"/>
+  <text x="165" y="558" font-size="10" text-anchor="middle" fill="#1a1a1a">Cloud provider lifecycle policies</text>
+  
+  <rect x="295" y="535" width="220" height="35" rx="4" fill="#e1bee7"/>
+  <text x="405" y="558" font-size="10" text-anchor="middle" fill="#1a1a1a">Custom lifecycle scripts</text>
+  
+  <rect x="535" y="535" width="210" height="35" rx="4" fill="#e1bee7"/>
+  <text x="640" y="558" font-size="10" text-anchor="middle" fill="#1a1a1a">Compliance-driven rules</text>
+</svg>

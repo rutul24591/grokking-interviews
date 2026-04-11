@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">RBAC/ABAC Hybrid Authorization Architecture</text>
+  
+  <!-- RBAC Foundation -->
+  <rect x="40" y="70" width="340" height="180" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="210" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Layer 1: RBAC Foundation</text>
+  
+  <rect x="55" y="115" width="310" height="30" rx="4" fill="#bbdefb"/>
+  <text x="210" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">Roles: admin, editor, viewer, custom roles</text>
+  
+  <rect x="55" y="150" width="310" height="30" rx="4" fill="#bbdefb"/>
+  <text x="210" y="170" font-size="10" text-anchor="middle" fill="#1a1a1a">Permissions: read, write, delete, admin</text>
+  
+  <rect x="55" y="185" width="310" height="30" rx="4" fill="#bbdefb"/>
+  <text x="210" y="205" font-size="10" text-anchor="middle" fill="#1a1a1a">Users assigned to roles (many-to-many)</text>
+  
+  <rect x="55" y="220" width="310" height="30" rx="4" fill="#bbdefb"/>
+  <text x="210" y="240" font-size="10" text-anchor="middle" fill="#1a1a1a">Fast lookup: O(1) role → permission check</text>
+  
+  <!-- ABAC Refinement -->
+  <rect x="420" y="70" width="340" height="180" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="590" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Layer 2: ABAC Refinement</text>
+  
+  <rect x="435" y="115" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">Conditions: ownership, department, location</text>
+  
+  <rect x="435" y="150" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="170" font-size="10" text-anchor="middle" fill="#1a1a1a">Resource attrs: classification, sensitivity</text>
+  
+  <rect x="435" y="185" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="205" font-size="10" text-anchor="middle" fill="#1a1a1a">Environment: time, network, device posture</text>
+  
+  <rect x="435" y="220" width="310" height="30" rx="4" fill="#a5d6a7"/>
+  <text x="590" y="240" font-size="10" text-anchor="middle" fill="#1a1a1a">Fine-grained: editors can only edit own docs</text>
+  
+  <!-- Combined Evaluation -->
+  <rect x="40" y="280" width="720" height="160" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="400" y="310" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Combined Evaluation: RBAC Check → ABAC Conditions → Final Decision</text>
+  
+  <rect x="55" y="325" width="220" height="100" rx="6" fill="#ffe0b2"/>
+  <text x="165" y="345" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Step 1: RBAC</text>
+  <text x="165" y="365" font-size="9" text-anchor="middle" fill="#666666">Is user an editor?</text>
+  <text x="165" y="383" font-size="9" text-anchor="middle" fill="#666666">Yes → proceed</text>
+  <text x="165" y="400" font-size="9" text-anchor="middle" fill="#666666">No → deny (no ABAC needed)</text>
+  
+  <rect x="295" y="325" width="220" height="100" rx="6" fill="#ffe0b2"/>
+  <text x="405" y="345" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Step 2: ABAC</text>
+  <text x="405" y="365" font-size="9" text-anchor="middle" fill="#666666">Does user own this doc?</text>
+  <text x="405" y="383" font-size="9" text-anchor="middle" fill="#666666">Yes → allow</text>
+  <text x="405" y="400" font-size="9" text-anchor="middle" fill="#666666">No → deny (insufficient scope)</text>
+  
+  <rect x="535" y="325" width="210" height="100" rx="6" fill="#ffe0b2"/>
+  <text x="640" y="345" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Step 3: Result</text>
+  <text x="640" y="365" font-size="9" text-anchor="middle" fill="#666666">Allow + obligations</text>
+  <text x="640" y="383" font-size="9" text-anchor="middle" fill="#666666">Log access, redact fields</text>
+  <text x="640" y="400" font-size="9" text-anchor="middle" fill="#666666">Cache for 5 seconds</text>
+  
+  <!-- Example Scenario -->
+  <rect x="40" y="470" width="720" height="110" rx="8" fill="#e1bee7" stroke="#ce93d8" stroke-width="2"/>
+  <text x="400" y="500" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Example: Editor Access Evaluation</text>
+  
+  <rect x="55" y="515" width="690" height="50" rx="6" fill="#e1bee7"/>
+  <text x="400" y="535" font-size="10" text-anchor="middle" fill="#1a1a1a">User: alice (role: editor, dept: engineering) → Resource: doc:123 (owner: alice, classification: internal) → Action: write</text>
+  <text x="400" y="555" font-size="10" text-anchor="middle" fill="#666666">RBAC: editor has write permission → PASS | ABAC: alice owns doc:123 → PASS | Decision: ALLOW</text>
+</svg>

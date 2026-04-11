@@ -1,97 +1,94 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Compliance Framework Architecture</text>
+  
+  <!-- Regulatory Frameworks -->
+  <rect x="40" y="70" width="720" height="120" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="400" y="100" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Regulatory Frameworks</text>
+  
+  <rect x="55" y="115" width="160" height="60" rx="6" fill="#bbdefb"/>
+  <text x="135" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">GDPR</text>
+  <text x="135" y="155" font-size="9" text-anchor="middle" fill="#666666">EU personal data</text>
+  <text x="135" y="170" font-size="9" text-anchor="middle" fill="#666666">Consent, erasure, portability</text>
+  
+  <rect x="235" y="115" width="160" height="60" rx="6" fill="#bbdefb"/>
+  <text x="315" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">HIPAA</text>
+  <text x="315" y="155" font-size="9" text-anchor="middle" fill="#666666">US health data</text>
+  <text x="315" y="170" font-size="9" text-anchor="middle" fill="#666666">Access controls, audit controls</text>
+  
+  <rect x="415" y="115" width="160" height="60" rx="6" fill="#bbdefb"/>
+  <text x="495" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">PCI-DSS</text>
+  <text x="495" y="155" font-size="9" text-anchor="middle" fill="#666666">Payment card data</text>
+  <text x="495" y="170" font-size="9" text-anchor="middle" fill="#666666">Encryption, access control</text>
+  
+  <rect x="595" y="115" width="150" height="60" rx="6" fill="#bbdefb"/>
+  <text x="670" y="135" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">SOC 2</text>
+  <text x="670" y="155" font-size="9" text-anchor="middle" fill="#666666">Cloud services</text>
+  <text x="670" y="170" font-size="9" text-anchor="middle" fill="#666666">Security, availability</text>
+  
+  <!-- Audit Log Pipeline -->
+  <rect x="40" y="220" width="720" height="180" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="250" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Audit Log Pipeline</text>
+  
+  <rect x="55" y="265" width="160" height="50" rx="6" fill="#a5d6a7"/>
+  <text x="135" y="285" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Event Sources</text>
+  <text x="135" y="303" font-size="9" text-anchor="middle" fill="#666666">App, DB, infra, network</text>
+  
+  <line x1="215" y1="290" x2="255" y2="290" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="255" y="265" width="160" height="50" rx="6" fill="#a5d6a7"/>
+  <text x="335" y="285" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Event Collection</text>
+  <text x="335" y="303" font-size="9" text-anchor="middle" fill="#666666">Structured JSON, enriched</text>
+  
+  <line x1="415" y1="290" x2="455" y2="290" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="455" y="265" width="160" height="50" rx="6" fill="#a5d6a7"/>
+  <text x="535" y="285" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Append-Only Store</text>
+  <text x="535" y="303" font-size="9" text-anchor="middle" fill="#666666">WORM, tamper-evident</text>
+  
+  <line x1="615" y1="290" x2="655" y2="290" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="655" y="265" width="90" height="50" rx="6" fill="#a5d6a7"/>
+  <text x="700" y="285" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Audit Report</text>
+  <text x="700" y="303" font-size="9" text-anchor="middle" fill="#666666">Auditor access</text>
+  
+  <!-- Tamper Evidence -->
+  <rect x="55" y="330" width="340" height="55" rx="6" fill="#c8e6c9"/>
+  <text x="225" y="350" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tamper Evidence: Hash Chain</text>
+  <text x="225" y="370" font-size="9" text-anchor="middle" fill="#666666">Each entry hashes previous entry — modification breaks chain</text>
+  
+  <rect x="415" y="330" width="330" height="55" rx="6" fill="#c8e6c9"/>
+  <text x="580" y="350" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Access Control: Restricted</text>
+  <text x="580" y="370" font-size="9" text-anchor="middle" fill="#666666">Only security/compliance teams can access audit logs</text>
+  
+  <!-- Automated Compliance Checking -->
+  <rect x="40" y="420" width="720" height="160" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="400" y="450" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Automated Compliance Checking</text>
+  
+  <rect x="55" y="465" width="210" height="100" rx="6" fill="#ffe0b2"/>
+  <text x="160" y="485" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Policy-as-Code</text>
+  <text x="160" y="505" font-size="9" text-anchor="middle" fill="#666666">OPA/Rego, AWS Config Rules</text>
+  <text x="160" y="523" font-size="9" text-anchor="middle" fill="#666666">Machine-readable policies</text>
+  <text x="160" y="541" font-size="9" text-anchor="middle" fill="#666666">Evaluated against system state</text>
+  <text x="160" y="559" font-size="9" text-anchor="middle" fill="#666666">Continuous compliance checking</text>
+  
+  <rect x="295" y="465" width="210" height="100" rx="6" fill="#ffe0b2"/>
+  <text x="400" y="485" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Violation Detection</text>
+  <text x="400" y="505" font-size="9" text-anchor="middle" fill="#666666">Unencrypted databases detected</text>
+  <text x="400" y="523" font-size="9" text-anchor="middle" fill="#666666">Overly permissive access flagged</text>
+  <text x="400" y="541" font-size="9" text-anchor="middle" fill="#666666">Expired certificates identified</text>
+  <text x="400" y="559" font-size="9" text-anchor="middle" fill="#666666">Automated alert generation</text>
+  
+  <rect x="535" y="465" width="210" height="100" rx="6" fill="#ffe0b2"/>
+  <text x="640" y="485" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Automated Remediation</text>
+  <text x="640" y="505" font-size="9" text-anchor="middle" fill="#666666">Encrypt unencrypted databases</text>
+  <text x="640" y="523" font-size="9" text-anchor="middle" fill="#666666">Revoke excessive permissions</text>
+  <text x="640" y="541" font-size="9" text-anchor="middle" fill="#666666">Rotate expired certificates</text>
+  <text x="640" y="559" font-size="9" text-anchor="middle" fill="#666666">Compliance restored automatically</text>
+  
   <defs>
-    <marker id="complianceArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
     </marker>
   </defs>
-  
-  <!-- Background -->
-  <rect width="1000" height="550" fill="#ffffff"/>
-  
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Compliance Framework Overview</text>
-  
-  <!-- Major Regulations -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Key Regulations</text>
-  
-  <!-- GDPR -->
-  <rect x="70" y="110" width="180" height="70" rx="4" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
-  <text x="160" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="#3b82f6">GDPR</text>
-  <text x="160" y="155" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569">EU Data Protection</text>
-  <text x="160" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569">Consent, Right to Erasure</text>
-  
-  <!-- HIPAA -->
-  <rect x="270" y="110" width="180" height="70" rx="4" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="2"/>
-  <text x="360" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="#22c55e">HIPAA</text>
-  <text x="360" y="155" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569">US Healthcare</text>
-  <text x="360" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569">PHI Protection</text>
-  
-  <!-- SOC 2 -->
-  <rect x="70" y="195" width="180" height="70" rx="4" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="160" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#8b5cf6">SOC 2</text>
-  <text x="160" y="240" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569">Security Controls</text>
-  <text x="160" y="257" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569">Trust Services Criteria</text>
-  
-  <!-- PCI DSS -->
-  <rect x="270" y="195" width="180" height="70" rx="4" fill="#f97316" opacity="0.2" stroke="#f97316" stroke-width="2"/>
-  <text x="360" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#f97316">PCI DSS</text>
-  <text x="360" y="240" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569">Payment Cards</text>
-  <text x="360" y="257" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569">Cardholder Data Protection</text>
-  
-  <!-- CCPA -->
-  <rect x="70" y="110" transform="translate(380, 42)" width="180" height="70" rx="4" fill="#ef4444" opacity="0.2" stroke="#ef4444" stroke-width="2"/>
-  <text x="360" y="177" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">CCPA</text>
-  <text x="360" y="197" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569">California Privacy</text>
-  <text x="360" y="214" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569">Consumer Rights</text>
-  
-  <!-- Audit Trail -->
-  <rect x="520" y="60" width="430" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Audit Trail Requirements</text>
-  
-  <!-- What to log -->
-  <rect x="540" y="110" width="190" height="150" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a">What to Audit</text>
-  <text x="560" y="160" font-size="9" fill="var(--text-secondary, #475569">• User authentication</text>
-  <text x="560" y="178" font-size="9" fill="var(--text-secondary, #475569">• Data access (read/write)</text>
-  <text x="560" y="196" font-size="9" fill="var(--text-secondary, #475569">• Permission changes</text>
-  <text x="560" y="214" font-size="9" fill="var(--text-secondary, #475569">• System configuration</text>
-  <text x="560" y="232" font-size="9" fill="var(--text-secondary, #475569">• Data exports/deletion</text>
-  <text x="560" y="250" font-size="9" fill="var(--text-secondary, #475569">• Failed operations</text>
-  
-  <!-- Audit properties -->
-  <rect x="750" y="110" width="180" height="150" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a">Required Fields</text>
-  <text x="770" y="160" font-size="9" fill="var(--text-secondary, #475569">• Timestamp (UTC)</text>
-  <text x="770" y="178" font-size="9" fill="var(--text-secondary, #475569">• User ID</text>
-  <text x="770" y="196" font-size="9" fill="var(--text-secondary, #475569">• Action performed</text>
-  <text x="770" y="214" font-size="9" fill="var(--text-secondary, #475569">• Resource affected</text>
-  <text x="770" y="232" font-size="9" fill="var(--text-secondary, #475569">• Result (success/fail)</text>
-  <text x="770" y="250" font-size="9" fill="var(--text-secondary, #475569">• IP address</text>
-  
-  <!-- Compliance Implementation -->
-  <rect x="50" y="300" width="900" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="500" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Implementation Checklist</text>
-  
-  <text x="150" y="355" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">Data Classification</text>
-  <text x="150" y="375" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• PII identification</text>
-  <text x="150" y="395" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Sensitivity levels</text>
-  <text x="150" y="415" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Retention policies</text>
-  
-  <text x="350" y="355" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">Access Controls</text>
-  <text x="350" y="375" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Role-based access</text>
-  <text x="350" y="395" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Least privilege</text>
-  <text x="350" y="415" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Regular reviews</text>
-  
-  <text x="550" y="355" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">Data Protection</text>
-  <text x="550" y="375" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Encryption at rest</text>
-  <text x="550" y="395" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Encryption in transit</text>
-  <text x="550" y="415" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Key management</text>
-  
-  <text x="750" y="355" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">Audit &amp; Monitor</text>
-  <text x="750" y="375" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Audit logging</text>
-  <text x="750" y="395" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Anomaly detection</text>
-  <text x="750" y="415" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569">• Regular audits</text>
-  
-  <text x="500" y="460" text-anchor="middle" font-size="10" fill="var(--text-muted, #64748b">Key: Compliance is ongoing, not a one-time certification. Continuous monitoring and improvement required.</text>
 </svg>

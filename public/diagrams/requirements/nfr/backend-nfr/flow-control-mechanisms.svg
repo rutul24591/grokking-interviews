@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Flow Control Mechanisms Comparison</text>
+  
+  <!-- Push-Based -->
+  <rect x="40" y="70" width="220" height="200" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Push-Based</text>
+  
+  <rect x="55" y="115" width="80" height="50" rx="4" fill="#bbdefb"/>
+  <text x="95" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Producer</text>
+  <text x="95" y="153" font-size="9" text-anchor="middle" fill="#666666">Sends at own pace</text>
+  
+  <line x1="135" y1="140" x2="175" y2="140" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="155" y="132" font-size="8" text-anchor="middle" fill="#666666">push</text>
+  
+  <rect x="175" y="115" width="80" height="50" rx="4" fill="#ffcdd2"/>
+  <text x="215" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Consumer</text>
+  <text x="215" y="153" font-size="9" text-anchor="middle" fill="#666666">Must buffer or drop</text>
+  
+  <rect x="55" y="180" width="190" height="70" rx="4" fill="#e3f2fd"/>
+  <text x="150" y="200" font-size="9" text-anchor="middle" fill="#1a1a1a">✓ Simple, low latency when fast</text>
+  <text x="150" y="218" font-size="9" text-anchor="middle" fill="#d84315">✗ Consumer overload risk</text>
+  <text x="150" y="236" font-size="9" text-anchor="middle" fill="#d84315">✗ Requires bounded buffers</text>
+  <text x="150" y="254" font-size="9" text-anchor="middle" fill="#666666">Use: Fast, reliable consumers</text>
+  
+  <!-- Pull-Based -->
+  <rect x="290" y="70" width="220" height="200" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>
+  <text x="400" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Pull-Based</text>
+  
+  <rect x="305" y="115" width="80" height="50" rx="4" fill="#ffcdd2"/>
+  <text x="345" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Producer</text>
+  <text x="345" y="153" font-size="9" text-anchor="middle" fill="#666666">Waits for requests</text>
+  
+  <line x1="385" y1="130" x2="425" y2="130" stroke="#4caf50" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="405" y="122" font-size="8" text-anchor="middle" fill="#4caf50">request</text>
+  <line x1="425" y1="150" x2="385" y2="150" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="405" y="168" font-size="8" text-anchor="middle" fill="#666666">data</text>
+  
+  <rect x="425" y="115" width="80" height="50" rx="4" fill="#bbdefb"/>
+  <text x="465" y="135" font-size="10" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Consumer</text>
+  <text x="465" y="153" font-size="9" text-anchor="middle" fill="#666666">Controls flow rate</text>
+  
+  <rect x="305" y="180" width="190" height="70" rx="4" fill="#c8e6c9"/>
+  <text x="400" y="200" font-size="9" text-anchor="middle" fill="#1a1a1a">✓ Natural backpressure</text>
+  <text x="400" y="218" font-size="9" text-anchor="middle" fill="#1a1a1a">✓ No consumer overload</text>
+  <text x="400" y="236" font-size="9" text-anchor="middle" fill="#d84315">✗ Higher latency (request roundtrip)</text>
+  <text x="400" y="254" font-size="9" text-anchor="middle" fill="#666666">Use: Variable speed consumers</text>
+  
+  <!-- Bounded Buffer -->
+  <rect x="540" y="70" width="220" height="200" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>
+  <text x="650" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Bounded Buffer</text>
+  
+  <rect x="555" y="115" width="60" height="40" rx="4" fill="#bbdefb"/>
+  <text x="585" y="135" font-size="9" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Producer</text>
+  
+  <line x1="615" y1="135" x2="635" y2="135" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="635" y="115" width="110" height="80" rx="4" fill="#ffe0b2"/>
+  <text x="690" y="135" font-size="9" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Buffer (max 10)</text>
+  <text x="690" y="155" font-size="12" text-anchor="middle" fill="#1a1a1a">[1][2][3][ ][ ]</text>
+  <text x="690" y="175" font-size="9" text-anchor="middle" fill="#666666">3/10 full</text>
+  <text x="690" y="190" font-size="9" text-anchor="middle" fill="#4caf50">OK: accept more</text>
+  
+  <line x1="745" y1="135" x2="765" y2="135" stroke="#666666" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="765" y="115" width="60" height="40" rx="4" fill="#bbdefb"/>
+  <text x="795" y="135" font-size="9" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Consumer</text>
+  
+  <rect x="555" y="205" width="190" height="50" rx="4" fill="#fff3e0"/>
+  <text x="650" y="225" font-size="9" text-anchor="middle" fill="#1a1a1a">When full (10/10): producer waits</text>
+  <text x="650" y="243" font-size="9" text-anchor="middle" fill="#1a1a1a">Natural backpressure signal</text>
+  <text x="650" y="261" font-size="9" text-anchor="middle" fill="#666666">Use: Most production systems</text>
+  
+  <!-- Comparison Matrix -->
+  <rect x="40" y="300" width="720" height="280" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="330" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Flow Control Mechanism Comparison</text>
+  
+  <rect x="55" y="345" width="160" height="35" rx="4" fill="#e0e0e0"/>
+  <text x="135" y="368" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Mechanism</text>
+  
+  <rect x="215" y="345" width="160" height="35" rx="4" fill="#e0e0e0"/>
+  <text x="295" y="368" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Backpressure</text>
+  
+  <rect x="375" y="345" width="160" height="35" rx="4" fill="#e0e0e0"/>
+  <text x="455" y="368" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Memory Safety</text>
+  
+  <rect x="535" y="345" width="210" height="35" rx="4" fill="#e0e0e0"/>
+  <text x="640" y="368" font-size="11" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Best Use Case</text>
+  
+  <rect x="55" y="380" width="160" height="35" rx="4" fill="#e3f2fd"/>
+  <text x="135" y="403" font-size="10" text-anchor="middle" fill="#1a1a1a">Unbounded Queue</text>
+  <rect x="215" y="380" width="160" height="35" rx="4" fill="#ffcdd2"/>
+  <text x="295" y="403" font-size="10" text-anchor="middle" fill="#d84315">None (dangerous)</text>
+  <rect x="375" y="380" width="160" height="35" rx="4" fill="#ffcdd2"/>
+  <text x="455" y="403" font-size="10" text-anchor="middle" fill="#d84315">No (OOM risk)</text>
+  <rect x="535" y="380" width="210" height="35" rx="4" fill="#ffcdd2"/>
+  <text x="640" y="403" font-size="10" text-anchor="middle" fill="#d84315">Never use in production</text>
+  
+  <rect x="55" y="415" width="160" height="35" rx="4" fill="#e3f2fd"/>
+  <text x="135" y="438" font-size="10" text-anchor="middle" fill="#1a1a1a">Bounded Queue</text>
+  <rect x="215" y="415" width="160" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="295" y="438" font-size="10" text-anchor="middle" fill="#4caf50">When full</text>
+  <rect x="375" y="415" width="160" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="455" y="438" font-size="10" text-anchor="middle" fill="#4caf50">Yes (bounded)</text>
+  <rect x="535" y="415" width="210" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="640" y="438" font-size="10" text-anchor="middle" fill="#4caf50">Inter-service communication</text>
+  
+  <rect x="55" y="450" width="160" height="35" rx="4" fill="#e3f2fd"/>
+  <text x="135" y="473" font-size="10" text-anchor="middle" fill="#1a1a1a">TCP Flow Control</text>
+  <rect x="215" y="450" width="160" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="295" y="473" font-size="10" text-anchor="middle" fill="#4caf50">Window size</text>
+  <rect x="375" y="450" width="160" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="455" y="473" font-size="10" text-anchor="middle" fill="#4caf50">Yes (kernel managed)</text>
+  <rect x="535" y="450" width="210" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="640" y="473" font-size="10" text-anchor="middle" fill="#4caf50">Network transport layer</text>
+  
+  <rect x="55" y="485" width="160" height="35" rx="4" fill="#e3f2fd"/>
+  <text x="135" y="508" font-size="10" text-anchor="middle" fill="#1a1a1a">HTTP/2 Flow Ctrl</text>
+  <rect x="215" y="485" width="160" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="295" y="508" font-size="10" text-anchor="middle" fill="#4caf50">WINDOW_UPDATE</text>
+  <rect x="375" y="485" width="160" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="455" y="508" font-size="10" text-anchor="middle" fill="#4caf50">Yes (protocol level)</text>
+  <rect x="535" y="485" width="210" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="640" y="508" font-size="10" text-anchor="middle" fill="#4caf50">gRPC, HTTP/2 streams</text>
+  
+  <rect x="55" y="520" width="160" height="35" rx="4" fill="#e3f2fd"/>
+  <text x="135" y="543" font-size="10" text-anchor="middle" fill="#1a1a1a">Rate Limiting</text>
+  <rect x="215" y="520" width="160" height="35" rx="4" fill="#fff3e0"/>
+  <text x="295" y="543" font-size="10" text-anchor="middle" fill="#f57c00">Proactive (not reactive)</text>
+  <rect x="375" y="520" width="160" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="455" y="543" font-size="10" text-anchor="middle" fill="#4caf50">Yes (limits input)</text>
+  <rect x="535" y="520" width="210" height="35" rx="4" fill="#c8e6c9"/>
+  <text x="640" y="543" font-size="10" text-anchor="middle" fill="#4caf50">API entrance, abuse prevention</text>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
+</svg>

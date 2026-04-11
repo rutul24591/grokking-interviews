@@ -1,105 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
-  <defs>
-    <marker id="tailArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tail Latency Analysis & Optimization</text>
   
-  <!-- Background -->
-  <rect width="1000" height="500" fill="#ffffff"/>
+  <!-- Latency Distribution -->
+  <rect x="40" y="70" width="340" height="200" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
+  <text x="210" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Latency Distribution Curve</text>
   
-  <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Tail Latency Optimization Techniques</text>
+  <!-- Histogram bars -->
+  <rect x="55" y="130" width="40" height="120" rx="2" fill="#bbdefb"/>
+  <text x="75" y="260" font-size="8" text-anchor="middle" fill="#666666">0-50ms</text>
   
-  <!-- Problem: Tail latency compounding -->
-  <rect x="50" y="60" width="450" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Problem: Tail Latency Compounding</text>
+  <rect x="100" y="180" width="40" height="70" rx="2" fill="#bbdefb"/>
+  <text x="120" y="260" font-size="8" text-anchor="middle" fill="#666666">50-100</text>
   
-  <!-- Sequential calls visualization -->
-  <line x1="100" y1="140" x2="400" y2="140" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="145" y="210" width="40" height="40" rx="2" fill="#bbdefb"/>
+  <text x="165" y="260" font-size="8" text-anchor="middle" fill="#666666">100-200</text>
   
-  <rect x="100" y="125" width="55" height="30" rx="3" fill="#3b82f6"/>
-  <text x="127" y="145" text-anchor="middle" font-size="9" fill="#ffffff">Svc A</text>
-  <text x="127" y="165" text-anchor="middle" font-size="8" fill="#475569">P99: 50ms</text>
+  <rect x="190" y="230" width="40" height="20" rx="2" fill="#bbdefb"/>
+  <text x="210" y="260" font-size="8" text-anchor="middle" fill="#666666">200-500</text>
   
-  <rect x="165" y="125" width="55" height="30" rx="3" fill="#3b82f6"/>
-  <text x="192" y="145" text-anchor="middle" font-size="9" fill="#ffffff">Svc B</text>
-  <text x="192" y="165" text-anchor="middle" font-size="8" fill="#475569">P99: 50ms</text>
+  <rect x="235" y="240" width="40" height="10" rx="2" fill="#ff9800"/>
+  <text x="255" y="260" font-size="8" text-anchor="middle" fill="#666666">500ms-1s</text>
   
-  <rect x="230" y="125" width="55" height="30" rx="3" fill="#3b82f6"/>
-  <text x="257" y="145" text-anchor="middle" font-size="9" fill="#ffffff">Svc C</text>
-  <text x="257" y="165" text-anchor="middle" font-size="8" fill="#475569">P99: 50ms</text>
+  <rect x="280" y="245" width="40" height="5" rx="2" fill="#f44336"/>
+  <text x="300" y="260" font-size="8" text-anchor="middle" fill="#666666">1s+</text>
   
-  <rect x="295" y="125" width="55" height="30" rx="3" fill="#3b82f6"/>
-  <text x="322" y="145" text-anchor="middle" font-size="9" fill="#ffffff">Svc D</text>
-  <text x="322" y="165" text-anchor="middle" font-size="8" fill="#475569">P99: 50ms</text>
+  <text x="210" y="285" font-size="10" text-anchor="middle" fill="#f44336">← P50 is here (bulk) | Tail is here →</text>
   
-  <rect x="360" y="125" width="55" height="30" rx="3" fill="#3b82f6"/>
-  <text x="387" y="145" text-anchor="middle" font-size="9" fill="#ffffff">Svc E</text>
-  <text x="387" y="165" text-anchor="middle" font-size="8" fill="#475569">P99: 50ms</text>
+  <!-- Tail Latency Causes -->
+  <rect x="420" y="70" width="340" height="200" rx="8" fill="#ffebee" stroke="#ef9a9a" stroke-width="2"/>
+  <text x="590" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tail Latency Causes</text>
   
-  <text x="275" y="195" text-anchor="middle" font-size="11" fill="#ef4444" font-weight="bold">Total P99 ≠ 50ms, Total P99 ≈ 250ms+ (compounds!)</text>
+  <rect x="435" y="115" width="310" height="28" rx="4" fill="#ffcdd2"/>
+  <text x="590" y="135" font-size="10" text-anchor="middle" fill="#1a1a1a">GC pauses (Java: 100ms-10s stop-the-world)</text>
   
-  <!-- Solution techniques -->
-  <rect x="520" y="60" width="430" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Optimization Techniques</text>
+  <rect x="435" y="148" width="310" height="28" rx="4" fill="#ffcdd2"/>
+  <text x="590" y="168" font-size="10" text-anchor="middle" fill="#1a1a1a">Cache misses (disk I/O: 1-10ms vs RAM: 100ns)</text>
   
-  <!-- Technique 1: Fastest wins -->
-  <rect x="540" y="110" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Speculative Execution</text>
-  <text x="635" y="155" text-anchor="middle" font-size="9" fill="#475569">Send to 2 replicas, use fastest</text>
-  <text x="635" y="170" text-anchor="middle" font-size="9" fill="#475569">✓ Reduces tail latency</text>
+  <rect x="435" y="181" width="310" height="28" rx="4" fill="#ffcdd2"/>
+  <text x="590" y="201" font-size="10" text-anchor="middle" fill="#1a1a1a">Lock contention (thread waiting for lock)</text>
   
-  <!-- Technique 2: Load shedding -->
-  <rect x="750" y="110" width="180" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Load Shedding</text>
-  <text x="840" y="155" text-anchor="middle" font-size="9" fill="#475569">Reject low-priority requests</text>
-  <text x="840" y="170" text-anchor="middle" font-size="9" fill="#475569">✓ Protects tail latency</text>
+  <rect x="435" y="214" width="310" height="28" rx="4" fill="#ffcdd2"/>
+  <text x="590" y="234" font-size="10" text-anchor="middle" fill="#1a1a1a">Noisy neighbors (shared CPU, network, disk)</text>
   
-  <!-- Technique 3: Queuing -->
-  <rect x="540" y="185" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="210" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Queue Prioritization</text>
-  <text x="635" y="230" text-anchor="middle" font-size="9" fill="#475569">Critical requests first</text>
-  <text x="635" y="245" text-anchor="middle" font-size="9" fill="#475569">✓ Reduces critical P99</text>
+  <rect x="435" y="247" width="310" height="28" rx="4" fill="#ffcdd2"/>
+  <text x="590" y="267" font-size="10" text-anchor="middle" fill="#1a1a1a">Head-of-line blocking (HTTP/1.1, TCP)</text>
   
-  <!-- Technique 4: Caching -->
-  <rect x="750" y="185" width="180" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="840" y="210" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Aggressive Caching</text>
-  <text x="840" y="230" text-anchor="middle" font-size="9" fill="#475569">Cache hot paths</text>
-  <text x="840" y="245" text-anchor="middle" font-size="9" fill="#475569">✓ Eliminates tail for cached</text>
+  <!-- Optimization Techniques -->
+  <rect x="40" y="300" width="720" height="280" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <text x="400" y="330" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Tail Latency Optimization Techniques</text>
   
-  <!-- Tail latency causes -->
-  <rect x="50" y="275" width="900" height="215" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="500" y="300" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Common Causes of Tail Latency</text>
+  <rect x="55" y="345" width="220" height="70" rx="6" fill="#e3f2fd"/>
+  <text x="165" y="365" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Hedged Requests</text>
+  <text x="165" y="385" font-size="9" text-anchor="middle" fill="#666666">Send request to 2 replicas</text>
+  <text x="165" y="400" font-size="9" text-anchor="middle" fill="#666666">Use fastest response, cancel other</text>
+  <text x="165" y="415" font-size="9" text-anchor="middle" fill="#666666">Reduces P99 by 2-10×</text>
   
-  <!-- Causes grid -->
-  <rect x="70" y="320" width="260" height="75" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="200" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">GC Pauses</text>
-  <text x="200" y="365" text-anchor="middle" font-size="9" fill="#475569">Long GC stops (100ms+)</text>
-  <text x="200" y="382" text-anchor="middle" font-size="9" fill="#475569">Fix: Tuned GC, off-heap data</text>
+  <rect x="295" y="345" width="220" height="70" rx="6" fill="#c8e6c9"/>
+  <text x="405" y="365" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Timeout Optimization</text>
+  <text x="405" y="385" font-size="9" text-anchor="middle" fill="#666666">Set timeouts per operation</text>
+  <text x="405" y="400" font-size="9" text-anchor="middle" fill="#666666">Based on P99 + 50% buffer</text>
+  <text x="405" y="415" font-size="9" text-anchor="middle" fill="#666666">Prevents indefinite hangs</text>
   
-  <rect x="350" y="320" width="260" height="75" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="480" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Resource Contention</text>
-  <text x="480" y="365" text-anchor="middle" font-size="9" fill="#475569">Lock waits, thread starvation</text>
-  <text x="480" y="382" text-anchor="middle" font-size="9" fill="#475569">Fix: Lock-free, bulkheads</text>
+  <rect x="535" y="345" width="210" height="70" rx="6" fill="#fff3e0"/>
+  <text x="640" y="365" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Request Prioritization</text>
+  <text x="640" y="385" font-size="9" text-anchor="middle" fill="#666666">Queue high-priority requests first</text>
+  <text x="640" y="400" font-size="9" text-anchor="middle" fill="#666666">Shed low-priority under load</text>
+  <text x="640" y="415" font-size="9" text-anchor="middle" fill="#666666">Protects P99 for critical paths</text>
   
-  <rect x="630" y="320" width="300" height="75" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="780" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Downstream Tail Latency</text>
-  <text x="780" y="365" text-anchor="middle" font-size="9" fill="#475569">Slow dependencies cascade</text>
-  <text x="780" y="382" text-anchor="middle" font-size="9" fill="#475569">Fix: Timeouts, circuit breakers</text>
+  <rect x="55" y="430" width="220" height="70" rx="6" fill="#e1bee7"/>
+  <text x="165" y="450" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Caching Hot Paths</text>
+  <text x="165" y="470" font-size="9" text-anchor="middle" fill="#666666">Cache frequently accessed data</text>
+  <text x="165" y="485" font-size="9" text-anchor="middle" fill="#666666">Eliminates variable I/O latency</text>
+  <text x="165" y="500" font-size="9" text-anchor="middle" fill="#666666">Target: 90%+ cache hit ratio</text>
   
-  <rect x="70" y="410" width="260" height="70" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="200" y="435" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Network Issues</text>
-  <text x="200" y="455" text-anchor="middle" font-size="9" fill="#475569">Packet loss, retransmits</text>
-  <text x="200" y="472" text-anchor="middle" font-size="9" fill="#475569">Fix: Retry with backoff</text>
+  <rect x="295" y="430" width="220" height="70" rx="6" fill="#ffebee"/>
+  <text x="405" y="450" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Connection Pooling</text>
+  <text x="405" y="470" font-size="9" text-anchor="middle" fill="#666666">Reuse connections, avoid setup</text>
+  <text x="405" y="485" font-size="9" text-anchor="middle" fill="#666666">Pool size = expected concurrent</text>
+  <text x="405" y="500" font-size="9" text-anchor="middle" fill="#666666">Prevents connection storms</text>
   
-  <rect x="350" y="410" width="260" height="70" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="480" y="435" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Cold Starts</text>
-  <text x="480" y="455" text-anchor="middle" font-size="9" fill="#475569">Lazy initialization, cache miss</text>
-  <text x="480" y="472" text-anchor="middle" font-size="9" fill="#475569">Fix: Warm instances, prefetch</text>
-  
-  <rect x="630" y="410" width="300" height="70" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="780" y="435" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Queue Buildup</text>
-  <text x="780" y="455" text-anchor="middle" font-size="9" fill="#475569">Requests waiting in queues</text>
-  <text x="780" y="472" text-anchor="middle" font-size="9" fill="#475569">Fix: Load shedding, scaling</text>
+  <rect x="535" y="430" width="210" height="70" rx="6" fill="#e0f2f1"/>
+  <text x="640" y="450" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Asynchronous Processing</text>
+  <text x="640" y="470" font-size="9" text-anchor="middle" fill="#666666">Defer non-critical work</text>
+  <text x="640" y="485" font-size="9" text-anchor="middle" fill="#666666">Queue: analytics, notifications</text>
+  <text x="640" y="500" font-size="9" text-anchor="middle" fill="#666666">Reduces request latency</text>
 </svg>
