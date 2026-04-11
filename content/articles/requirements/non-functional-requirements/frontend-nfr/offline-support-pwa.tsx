@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   subcategory: "nfr",
   slug: "offline-support-pwa",
   version: "extensive",
-  wordCount: 14500,
-  readingTime: 58,
-  lastUpdated: "2026-03-15",
+  wordCount: 5500,
+  readingTime: 22,
+  lastUpdated: "2026-04-11",
   tags: [
     "frontend",
     "nfr",
@@ -36,511 +36,385 @@ export default function OfflineSupportPWAArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
           <strong>Offline Support</strong> refers to a web application&apos;s
-          ability to function without network connectivity.{" "}
+          ability to function without network connectivity, while{" "}
           <strong>Progressive Web Apps (PWA)</strong> are web applications that
-          use modern APIs to provide app-like experiences including offline
-          support, push notifications, and home screen installation.
+          use modern web APIs to provide app-like experiences — offline support,
+          push notifications, home screen installation, and background
+          synchronization. The business impact of offline support is significant
+          and measurable: e-commerce sites with offline cart support see 20%
+          higher conversion rates, news sites with offline reading see 3x more
+          article completions, and productivity apps with offline editing see
+          dramatically higher user retention. For global audiences where 2G/3G
+          connectivity and intermittent networks are common, offline support is
+          not a luxury — it is essential for accessible, inclusive applications.
         </p>
         <p>
-          The business impact is significant. Users abandon sites that
-          don&apos;t work on unreliable connections. E-commerce sites with
-          offline cart support see 20% higher conversion rates. News sites with
-          offline reading see 3x more article completions. For global audiences
-          where 2G/3G is common, offline support isn&apos;t optional—it&apos;s
-          essential.
+          Offline capability exists on a spectrum. Offline-capable applications
+          provide core features without connectivity — reading cached content,
+          viewing previously loaded pages — but do not support data creation or
+          modification offline. Offline-first applications are designed assuming
+          offline is the default state — all data operations target a local
+          database, and synchronization with the server happens in the
+          background when connectivity is available. Full PWAs add installability
+          (home screen icon, standalone window), push notifications, and
+          background sync to the offline foundation. The architectural effort
+          increases with each level — offline-capable can be achieved with
+          simple service worker caching, while offline-first requires a complete
+          data architecture redesign.
         </p>
-        <p>Offline support exists on a spectrum:</p>
-        <ul>
-          <li>
-            <strong>Offline-capable:</strong> Core features work offline
-            (reading cached content)
-          </li>
-          <li>
-            <strong>Offline-first:</strong> App is designed assuming offline is
-            the default state
-          </li>
-          <li>
-            <strong>Full PWA:</strong> Installable, push notifications,
-            background sync
-          </li>
-        </ul>
         <p>
-          For staff engineers, offline architecture decisions affect data
-          models, sync strategies, conflict resolution, and UX patterns. This
-          guide covers the full spectrum from basic caching to CRDTs.
+          For staff engineers, offline architecture decisions affect data models
+          (local versus server as source of truth), sync strategies (push, pull,
+          bi-directional), conflict resolution (what happens when offline changes
+          diverge from server state), and UX patterns (how to communicate
+          connectivity status, queue actions, and resolve conflicts). The Service
+          Worker API is the foundational technology — a programmable network
+          proxy that runs in the background, intercepting network requests and
+          serving responses from cache, network, or a combination of both.
+          Combined with IndexedDB for structured local data storage and the
+          Background Sync API for deferred actions, Service Workers enable
+          sophisticated offline experiences.
         </p>
       </section>
 
       <section>
-        <h2>Service Workers: The Foundation</h2>
+        <h2>Core Concepts</h2>
         <p>
-          <strong>Service Workers</strong> are programmable network proxies that
-          run in the background, enabling offline support, push notifications,
-          and background sync. They intercept network requests and can respond
-          from cache, fetch from network, or combine both.
+          Service Workers are the foundation of offline support. They are
+          JavaScript workers that run independently of the web page, acting as
+          a programmable proxy between the browser and the network. The
+          Service Worker lifecycle consists of registration (the browser
+          downloads the service worker script), installation (the service worker
+          caches essential assets — the app shell), activation (old caches are
+          cleaned up and the service worker takes control of open pages), and
+          fetch interception (all network requests from controlled pages pass
+          through the service worker&apos;s fetch handler). Service workers
+          only work on HTTPS (except localhost) and have their own lifecycle
+          independent of the page — they can continue running after the page
+          closes, enabling background sync and push notifications.
+        </p>
+        <p>
+          Caching strategies determine how the service worker responds to
+          network requests. Cache-first strategy tries the cache first and falls
+          back to the network — ideal for static assets (CSS, JavaScript,
+          images) that are versioned and immutable. Network-first strategy tries
+          the network first and falls back to cache — ideal for dynamic content
+          (API responses, HTML pages) where freshness matters but offline
+          fallback is valuable. Stale-while-revalidate returns the cached
+          response immediately while fetching a fresh version in the background
+          — ideal for content that updates periodically but does not need to be
+          perfectly fresh. Cache-only serves exclusively from cache (for truly
+          static content), and network-only always fetches from the network
+          (for real-time data that should not be cached).
+        </p>
+        <p>
+          Offline-first architecture inverts the traditional data flow. Instead
+          of the server being the source of truth and the browser being a
+          transient viewer, the local database (IndexedDB) becomes the source
+          of truth and the server becomes a synchronization target. The UI
+          always reads from the local database, providing instant access
+          regardless of connectivity. Mutations are written to the local
+          database immediately (optimistic updates) and queued for background
+          synchronization. When connectivity returns, the sync process pushes
+          queued mutations to the server and pulls any server-side changes,
+          resolving conflicts when the same data was modified both offline and
+          on the server.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/offline-service-worker-lifecycle.svg"
           alt="Service Worker Lifecycle"
-          caption="Service Worker lifecycle — registration, installation, activation, and fetch interception phases"
+          caption="Service Worker lifecycle — registration (download script), installation (cache app shell), activation (clean old caches, take control), and fetch interception (handle all network requests)"
         />
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Service Worker Lifecycle
-        </h3>
-        <ol className="space-y-3">
-          <li>
-            <strong>Registration:</strong> Browser downloads service worker
-            script
-          </li>
-          <li>
-            <strong>Installation:</strong> Cache essential assets (app shell)
-          </li>
-          <li>
-            <strong>Activation:</strong> Clean old caches, take control of pages
-          </li>
-          <li>
-            <strong>Fetch Interception:</strong> Handle all network requests
-          </li>
-        </ol>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Caching Strategies</h3>
-        <ul className="space-y-3">
-          <li>
-            <strong>Cache-First:</strong> Try cache, fallback to network. Best
-            for static assets.
-          </li>
-          <li>
-            <strong>Network-First:</strong> Try network, fallback to cache. Best
-            for dynamic content.
-          </li>
-          <li>
-            <strong>Stale-While-Revalidate:</strong> Return cache immediately,
-            update in background.
-          </li>
-          <li>
-            <strong>Cache-Only:</strong> Only serve from cache. For truly static
-            content.
-          </li>
-          <li>
-            <strong>Network-Only:</strong> Always fetch from network. For
-            real-time data.
-          </li>
-        </ul>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight</h3>
-          <p>
-            Service workers only work on HTTPS (except localhost). They have
-            their own lifecycle independent of the page. A service worker can
-            keep running after the page closes, enabling background sync and
-            push notifications.
-          </p>
-        </div>
       </section>
 
       <section>
-        <h2>Offline-First Architecture</h2>
+        <h2>Architecture &amp; Flow</h2>
         <p>
-          <strong>Offline-first</strong> means designing your app assuming users
-          will be offline. Connectivity is a bonus, not a requirement.
+          The offline-first data architecture flows through several layers. The
+          UI layer reads from and writes to a local database (IndexedDB), never
+          directly to the network. The sync layer monitors connectivity and
+          manages the synchronization queue — when online, it pushes queued
+          mutations to the server and pulls server changes into the local
+          database. The conflict resolution layer detects and resolves
+          discrepancies between local and server state — using strategies like
+          last-write-wins for simple data, field-level merging for documents,
+          or CRDTs for collaborative editing. The background sync layer uses
+          the Background Sync API to defer actions until connectivity is
+          available, ensuring that user actions performed offline are
+          eventually synchronized even if the user closes the browser before
+          coming back online.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/offline-first-architecture.svg"
           alt="Offline-First Architecture"
-          caption="Offline-first data flow — local database as source of truth, sync queue for mutations, background reconciliation"
+          caption="Offline-first data flow — UI reads/writes to local IndexedDB, sync queue manages mutations, background sync handles connectivity transitions, and conflict resolution merges divergent state"
         />
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Core Principles</h3>
-        <ul className="space-y-3">
-          <li>
-            <strong>Local database is source of truth:</strong> UI always reads
-            from local storage (IndexedDB)
-          </li>
-          <li>
-            <strong>Optimistic mutations:</strong> Write to local DB
-            immediately, sync to server later
-          </li>
-          <li>
-            <strong>Sync queue:</strong> Queue all mutations for background
-            synchronization
-          </li>
-          <li>
-            <strong>Conflict resolution:</strong> Handle cases where server and
-            local data diverge
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Data Synchronization Patterns
-        </h3>
-        <ul className="space-y-3">
-          <li>
-            <strong>Pull sync:</strong> Periodically fetch changes from server
-          </li>
-          <li>
-            <strong>Push sync:</strong> Queue local changes, push when online
-          </li>
-          <li>
-            <strong>Bi-directional:</strong> Both pull and push, with conflict
-            resolution
-          </li>
-          <li>
-            <strong>Real-time:</strong> WebSocket for live sync (when
-            connectivity allows)
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>PWA Features</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Web App Manifest</h3>
-        <p>JSON file that makes your app installable:</p>
-        <ul className="space-y-2">
-          <li>
-            <code>name</code>: Full app name
-          </li>
-          <li>
-            <code>short_name</code>: Home screen name
-          </li>
-          <li>
-            <code>start_url</code>: Launch URL
-          </li>
-          <li>
-            <code>display</code>: standalone, fullscreen, minimal-ui, browser
-          </li>
-          <li>
-            <code>icons</code>: Home screen icons (multiple sizes)
-          </li>
-          <li>
-            <code>theme_color</code>: Browser UI color
-          </li>
-          <li>
-            <code>background_color</code>: Splash screen color
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Installability Criteria
-        </h3>
-        <ul className="space-y-2">
-          <li>✅ Valid web app manifest</li>
-          <li>✅ Service worker with fetch handler</li>
-          <li>✅ HTTPS (except localhost)</li>
-          <li>✅ Visited at least twice, 5+ minutes apart</li>
-          <li>✅ Engaged (user interaction)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Push Notifications</h3>
-        <p>Enable re-engagement even when app isn&apos;t open:</p>
-        <ul className="space-y-2">
-          <li>Request permission from user</li>
-          <li>Subscribe to push service</li>
-          <li>Send subscription to server</li>
-          <li>Server sends push messages via VAPID</li>
-          <li>Service worker receives and displays notification</li>
-        </ul>
+        <p>
+          PWA features build on the offline foundation to provide app-like
+          experiences. The Web App Manifest (a JSON file linked in the HTML
+          head) provides metadata for installability — app name, short name,
+          start URL, display mode (standalone for full-screen experience),
+          icons for the home screen, theme color, and background color. The
+          installability criteria are: a valid manifest, a service worker with
+          a fetch handler, HTTPS, and user engagement (visited at least twice,
+          5+ minutes apart). Push notifications enable re-engagement even when
+          the app is not open — the service worker receives push events and
+          displays notifications to the user. Background Sync defers actions
+          until connectivity is available — one-time sync for form submissions,
+          periodic sync for content updates.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/pwa-features.svg"
           alt="PWA Features Overview"
-          caption="Progressive Web App features — manifest, service worker, push notifications, background sync, and installability"
+          caption="Progressive Web App features — web app manifest for installability, service worker for offline support, push notifications for re-engagement, background sync for deferred actions"
         />
       </section>
 
       <section>
-        <h2>Background Sync</h2>
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          <strong>Background Sync API</strong> defers actions until the user has
-          stable connectivity.
+          Offline-capable versus offline-first represents a significant
+          architectural investment decision. Offline-capable applications add
+          service worker caching to an existing architecture — the app works
+          online normally, and cached resources are available offline for
+          reading. This is relatively low effort (a few hundred lines of service
+          worker code) and provides immediate value for content consumption
+          scenarios. Offline-first applications require redesigning the data
+          layer — implementing local database schemas, sync queues, conflict
+          resolution, and optimistic UI updates. This is significantly higher
+          effort but provides a qualitatively different user experience — the
+          app works fully offline, not just for reading but for creating and
+          modifying data.
         </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">One-Time Sync</h3>
         <p>
-          Register sync when user submits form. Use
-          <code>registration.sync.register('send-message')</code> after service
-          worker is ready. The service worker's sync event fires when
-          connectivity returns.
+          Service worker caching strategies involve trade-offs between freshness
+          and availability. Cache-first provides the best offline experience but
+          risks serving stale content if cache invalidation is not configured
+          correctly. Network-first provides the freshest content when online but
+          degrades to cached (potentially stale) content when offline.
+          Stale-while-revalidate provides instant response times with eventual
+          freshness but may briefly show outdated content. The recommended
+          approach is to use different strategies for different resource types —
+          cache-first for versioned static assets, network-first for HTML pages
+          and API responses, stale-while-revalidate for periodically updated
+          content like news feeds or product catalogs.
         </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Periodic Sync</h3>
         <p>
-          Register periodic sync for content updates. Use
-          <code>{`registration.periodicSync.register('fetch-news', { minInterval: 86400000 })`}</code>
-          for daily sync (24 hours in milliseconds). Requires user engagement
-          and site added to home screen.
+          PWA installability provides native-app-like experience but introduces
+          platform-specific challenges. On Android, PWA installation is
+          straightforward — the browser prompts the user to add the app to the
+          home screen. On iOS, installation is manual (Share button → Add to
+          Home Screen) and the experience is limited — service workers work but
+          with restrictions, push notifications are not supported until iOS
+          16.4+, and the standalone display mode has quirks. For applications
+          targeting both platforms, the PWA investment should prioritize Android
+          for the full experience and provide graceful degradation on iOS.
         </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Use Cases</h3>
-        <ul className="space-y-2">
-          <li>Sending messages/emails when connectivity returns</li>
-          <li>Syncing form submissions</li>
-          <li>Updating news feeds in background</li>
-          <li>Backing up user data</li>
-        </ul>
       </section>
 
       <section>
-        <h2>Conflict Resolution</h2>
+        <h2>Best Practices</h2>
         <p>
-          When offline changes sync with server, conflicts occur. Resolution
-          strategies:
+          Implement a clear offline UX strategy that communicates connectivity
+          status and available functionality. Show an offline banner when the
+          user loses connectivity, indicating which features remain available
+          (read cached content, draft new content) and which require
+          connectivity (submit forms, sync data). Queue user actions with
+          visible status indicators (&quot;sending...&quot;, &quot;queued —
+          will sync when online&quot;). Use optimistic UI for actions that can
+          be queued — show the result immediately and sync in the background,
+          with rollback capability if the sync fails. Never leave the user
+          wondering whether their action was recorded.
         </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Last-Write-Wins</h3>
         <p>
-          Simplest approach: most recent timestamp wins. Easy to implement but
-          can lose user data.
+          Configure the service worker with a comprehensive caching strategy
+          that covers the app shell (HTML, CSS, JavaScript) and critical
+          resources (fonts, logo, offline fallback page). Use Workbox (a
+          library from Google) to simplify service worker development — it
+          provides pre-built caching strategies, precaching for build-time
+          asset lists, and runtime caching with configurable strategies.
+          Version your cache names so that each service worker update creates a
+          new cache, and clean up old caches during the activation event to
+          prevent storage bloat.
         </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Field-Level Merging</h3>
         <p>
-          Merge changes at field level. If user A changes title and user B
-          changes content, both changes are kept.
+          Design conflict resolution into the data architecture before offline
+          support is needed. When offline changes sync with the server,
+          conflicts are inevitable — the same document modified on two devices,
+          or a record deleted on the server but updated offline. Implement a
+          conflict detection mechanism (version vectors, timestamps, or
+          field-level tracking) and a resolution strategy (automatic for simple
+          cases, user-guided for complex cases). Preserve both versions when
+          in doubt — it is better to have duplicate documents that users can
+          merge than to lose work permanently.
         </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">
-          Operational Transformation (OT)
-        </h3>
-        <p>
-          Transform operations to maintain consistency. Used by Google Docs.
-          Complex but enables real-time collaboration.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">
-          CRDTs (Conflict-Free Replicated Data Types)
-        </h3>
-        <p>
-          Data structures designed for distributed systems. Automatically
-          converge to same state. Best for collaborative apps.
-        </p>
-
-        <ArticleImage
-          src="/diagrams/requirements/nfr/frontend-nfr/offline-conflict-resolution.svg"
-          alt="Conflict Resolution Strategies"
-          caption="Conflict resolution approaches — last-write-wins, field-level merging, operational transformation, and CRDTs"
-        />
       </section>
 
       <section>
-        <h2>UX Patterns for Offline</h2>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Pattern</th>
-              <th className="p-3 text-left">When to Use</th>
-              <th className="p-3 text-left">Example</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
-                <strong>Offline indicator</strong>
-              </td>
-              <td className="p-3">Always show connectivity status</td>
-              <td className="p-3">Gmail offline banner</td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <strong>Optimistic UI</strong>
-              </td>
-              <td className="p-3">Actions that can be queued</td>
-              <td className="p-3">Twitter likes, Instagram posts</td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <strong>Read-only mode</strong>
-              </td>
-              <td className="p-3">Viewing cached content</td>
-              <td className="p-3">Pocket, Instapaper</td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <strong>Queue with status</strong>
-              </td>
-              <td className="p-3">Actions pending sync</td>
-              <td className="p-3">Slack message &quot;sending...&quot;</td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <strong>Retry on reconnect</strong>
-              </td>
-              <td className="p-3">Automatic recovery</td>
-              <td className="p-3">Email apps, messaging apps</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>PWA Deployment Checklist</h2>
+        <h2>Common Pitfalls</h2>
         <p>
-          Before deploying a Progressive Web App to production, verify all
-          requirements for installability and offline functionality.
+          Not testing offline scenarios during development is the most common
+          PWA pitfall. Developers build and test exclusively on fast, reliable
+          networks, missing the UX issues that surface when connectivity is
+          unreliable. The fix is to regularly test with DevTools Network tab
+          set to Offline, verifying that the app handles connectivity loss
+          gracefully — showing cached content, queuing actions, displaying
+          appropriate status indicators, and syncing correctly when
+          connectivity returns. Test on actual mobile devices with throttled
+          networks (3G, slow 3G) because DevTools throttling does not fully
+          replicate mobile network behavior.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Core Requirements</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>HTTPS:</strong> Required for production (localhost exempt
-            for development)
-          </li>
-          <li>
-            <strong>Service Worker:</strong> Registered and active with fetch
-            handler
-          </li>
-          <li>
-            <strong>Web App Manifest:</strong> Valid manifest.json linked in
-            HTML head
-          </li>
-          <li>
-            <strong>Icons:</strong> 192×192 and 512×512 PNG icons in manifest
-          </li>
-          <li>
-            <strong>Start URL:</strong> Valid start_url in manifest (same origin
-            as page)
-          </li>
-          <li>
-            <strong>Name:</strong> Both name and short_name in manifest
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Service Worker Checklist
-        </h3>
-        <ul className="space-y-2">
-          <li>Service worker file served from root (not subdirectory)</li>
-          <li>Scope covers all pages that need offline support</li>
-          <li>
-            Install event caches app shell (HTML, CSS, JS, critical assets)
-          </li>
-          <li>Fetch event intercepts requests and serves from cache</li>
-          <li>Activate event cleans up old caches</li>
-          <li>Offline fallback page configured</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Manifest Checklist</h3>
-        <ul className="space-y-2">
-          <li>
-            Manifest linked with{" "}
-            <code>&lt;link rel="manifest" href="/manifest.json"&gt;</code>
-          </li>
-          <li>display set to standalone, fullscreen, or minimal-ui</li>
-          <li>theme_color and background_color defined</li>
-          <li>Icons in multiple sizes (72×72 to 512×512)</li>
-          <li>
-            Manifest served with correct Content-Type
-            (application/manifest+json)
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Testing Checklist</h3>
-        <ul className="space-y-2">
-          <li>Lighthouse PWA audit passes (score 90+)</li>
-          <li>Chrome DevTools Application panel shows service worker active</li>
-          <li>Offline mode works (DevTools Network tab → Offline)</li>
-          <li>
-            Add to Home Screen prompt appears (Chrome: three-dot menu → Install)
-          </li>
-          <li>App launches from home screen without browser UI</li>
-          <li>Push notifications work (if implemented)</li>
-          <li>Background sync triggers when connectivity returns</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Common Issues</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Service worker not registering:</strong> Check scope, HTTPS,
-            browser support
-          </li>
-          <li>
-            <strong>Install prompt not showing:</strong> Verify manifest
-            validity, user engagement
-          </li>
-          <li>
-            <strong>Offline not working:</strong> Check cache strategy, cached
-            asset URLs
-          </li>
-          <li>
-            <strong>Stale content:</strong> Implement cache invalidation,
-            versioning
-          </li>
-          <li>
-            <strong>iOS issues:</strong> iOS requires additional meta tags,
-            limited service worker support
-          </li>
-        </ul>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">iOS Safari Considerations</h3>
-          <p>
-            iOS Safari has limited PWA support. Service workers work but require
-            HTTPS and user interaction to register. Add to Home Screen is manual
-            (share button → Add to Home Screen). Include iOS-specific meta tags:
-            apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style,
-            apple-touch-icon.
-          </p>
-        </div>
+        <p>
+          Stale content after service worker updates is a frequent production
+          issue. When a new service worker is deployed, it installs in the
+          background and activates only after all tabs using the old service
+          worker are closed. Users may continue seeing cached content from the
+          old version for hours or days. The fix is to implement a service
+          worker update notification — detect the new service worker
+          (via the <code>waiting</code> state) and prompt the user to refresh
+          for the latest version. Alternatively, use <code>skipWaiting()</code>{" "}
+          and <code>clients.claim()</code> to activate the new service worker
+          immediately, but this risks breaking tabs that have the old version
+          loaded.
+        </p>
+        <p>
+          Ignoring iOS Safari limitations leads to broken PWA experiences on
+          iPhones. iOS Safari has limited PWA support — service workers work
+          but require HTTPS and user interaction to register, push
+          notifications were only added in iOS 16.4 and still have limitations,
+          Add to Home Screen is manual (no automatic prompt), and the
+          standalone display mode has viewport and navigation quirks. Include
+          iOS-specific meta tags (<code>apple-mobile-web-app-capable</code>,{" "}
+          <code>apple-mobile-web-app-status-bar-style</code>,{" "}
+          <code>apple-touch-icon</code>) as a fallback, and test the PWA
+          experience on actual iOS devices, not just Chrome DevTools.
+        </p>
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Productivity applications like Google Docs and Notion use offline-first
+          architecture to enable uninterrupted work regardless of connectivity.
+          Users can create, edit, and delete documents offline — all changes are
+          stored in IndexedDB and synchronized when connectivity returns.
+          Conflicts are resolved using operational transformation (Google Docs)
+          or CRDTs (Notion), ensuring that concurrent edits from multiple
+          devices converge correctly. The UX communicates offline status
+          clearly (&quot;You are offline — changes will sync when you are back
+          online&quot;) and shows sync progress when connectivity is restored.
+        </p>
+        <p>
+          News and media applications use offline caching to enable reading
+          without connectivity. The Washington Post and The Guardian PWA
+          implementations cache the latest articles during the user&apos;s last
+          online session, allowing reading during commutes or in areas with
+          poor coverage. Articles are stored with their images (compressed for
+          storage efficiency) and the service worker serves them from cache when
+          offline. New articles are fetched in the background when connectivity
+          returns. The offline reading experience is indistinguishable from the
+          online experience for cached content.
+        </p>
+        <p>
+          E-commerce applications use offline support for cart persistence and
+          browsing. Users can browse product catalogs (cached from previous
+          sessions), add items to cart (stored in IndexedDB), and even begin
+          checkout offline. The checkout submission is queued for background
+          sync — when connectivity returns, the order is submitted
+          automatically. This is particularly valuable in regions with
+          unreliable connectivity, where users may have connectivity at home
+          but lose it during transit. Offline cart support increases conversion
+          rates by 20% because users do not lose their shopping progress when
+          connectivity drops.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions with Detailed Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do service workers enable offline support?
             </p>
             <p className="mt-2 text-sm">
-              A: Service workers intercept network requests. During
-              installation, they cache the app shell. During fetch events, they
-              can respond from cache instead of network. This allows the app to
-              load and function without connectivity. Combined with IndexedDB
-              for data, the entire app can work offline.
+              A: Service workers intercept network requests via their fetch
+              handler. During installation, they cache the app shell (HTML, CSS,
+              JS, critical assets). During fetch events, they can respond from
+              cache instead of the network, allowing the app to load and
+              function without connectivity. Combined with IndexedDB for
+              structured data storage, the entire application — not just static
+              assets — can work offline. The service worker runs independently
+              of the page and can continue running after the page closes,
+              enabling background sync and push notifications.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: What&apos;s the difference between offline-capable and
-              offline-first?
+              Q: What is the difference between offline-capable and offline-first?
             </p>
             <p className="mt-2 text-sm">
-              A: Offline-capable means the app works offline but is designed for
-              online use (graceful degradation). Offline-first means the app is
-              designed assuming offline is the default—local DB is source of
-              truth, sync happens in background. Offline-first requires more
-              architectural changes but provides better UX.
+              A: Offline-capable means the app works offline through cached
+              resources — users can read previously loaded content but cannot
+              create or modify data. It is a graceful degradation approach.
+              Offline-first means the app is designed assuming offline is the
+              default state — the local database (IndexedDB) is the source of
+              truth, the UI always reads from it, and sync with the server
+              happens in the background. Offline-first requires more
+              architectural changes (local database, sync queue, conflict
+              resolution) but provides a much better UX — full functionality
+              offline, not just reading.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you handle data conflicts in offline apps?
             </p>
             <p className="mt-2 text-sm">
-              A: Depends on complexity. Last-write-wins for simple apps.
-              Field-level merging for documents. Operational Transformation or
-              CRDTs for real-time collaboration. The key is detecting conflicts
-              (version vectors, timestamps) and having a resolution strategy
-              before they happen.
+              A: Depends on complexity. Last-write-wins for simple data where
+              conflicts are rare. Field-level merging for documents — merge
+              non-conflicting field changes automatically. Operational
+              Transformation or CRDTs for real-time collaborative editing where
+              concurrent edits must converge automatically. The key is detecting
+              conflicts (version vectors, timestamps, field-level tracking) and
+              having a resolution strategy before they happen. When in doubt,
+              preserve both versions and let the user decide.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What are the PWA installability requirements?
             </p>
             <p className="mt-2 text-sm">
-              A: Valid manifest with name/icons/start_url, service worker with
-              fetch handler, HTTPS, and user engagement (visited twice, 5+ min
-              apart). Chrome also requires the app to be &quot;installable&quot;
-              which means it provides value beyond what a bookmark offers.
+              A: Valid web app manifest with name, short_name, start_url, and
+              icons (192×192 and 512×512). Service worker registered with a
+              fetch handler. HTTPS (localhost exempt for development). User
+              engagement — visited at least twice with 5+ minutes between
+              visits. On iOS, installation is manual (Share → Add to Home
+              Screen) and requires additional meta tags. Chrome on Android
+              provides an automatic install prompt when criteria are met.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle service worker updates?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The new service worker installs alongside the old one and
+              enters a &quot;waiting&quot; state until all tabs using the old
+              service worker are closed. Detect the waiting state and notify
+              the user (&quot;New version available — refresh to update&quot;).
+              On user confirmation, call skipWaiting() to activate the new
+              service worker and clients.claim() to take control immediately.
+              Alternatively, use skipWaiting() and clients.claim() automatically
+              for minor updates, but this risks breaking tabs with the old
+              version loaded — test carefully.
             </p>
           </div>
         </div>
@@ -556,7 +430,7 @@ export default function OfflineSupportPWAArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              web.dev — Progressive Web Apps
+              web.dev — Progressive Web Apps Guide
             </a>
           </li>
           <li>
@@ -576,7 +450,27 @@ export default function OfflineSupportPWAArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Offline First Manifesto
+              Offline First — Resources and Manifesto
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.google.com/web/tools/workbox"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Workbox — Service Worker Library by Google
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/articles/pwa-checklist"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              web.dev — PWA Checklist
             </a>
           </li>
         </ul>

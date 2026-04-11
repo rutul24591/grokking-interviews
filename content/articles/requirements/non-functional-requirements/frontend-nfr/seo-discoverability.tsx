@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   subcategory: "nfr",
   slug: "seo-discoverability",
   version: "extensive",
-  wordCount: 10000,
-  readingTime: 40,
-  lastUpdated: "2026-03-15",
+  wordCount: 5500,
+  readingTime: 22,
+  lastUpdated: "2026-04-11",
   tags: [
     "frontend",
     "nfr",
@@ -36,460 +36,369 @@ export default function SEODiscoverabilityArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
           <strong>SEO (Search Engine Optimization)</strong> encompasses
           techniques to improve a website&apos;s visibility in search engine
-          results. For frontend engineers, SEO involves technical
-          implementation: meta tags, structured data, site architecture,
+          results pages (SERPs). For frontend engineers, SEO involves technical
+          implementation — meta tags, structured data, site architecture,
           performance optimization, and ensuring content is crawlable and
-          indexable.
+          indexable by search engine bots. <strong>Discoverability</strong>
+          extends beyond search engines to social media sharing, link previews,
+          and content syndication. Proper Open Graph tags, Twitter Cards, and
+          structured data ensure content looks compelling when shared on social
+          platforms, driving referral traffic and brand awareness.
         </p>
         <p>
-          <strong>Discoverability</strong> extends beyond search engines to
-          social media sharing, link previews, and content syndication. Proper
-          Open Graph tags, Twitter Cards, and structured data ensure content
-          looks compelling when shared.
+          For staff engineers, SEO is a business-critical non-functional
+          requirement. Organic search drives 40-60% of traffic for content
+          sites, e-commerce, and SaaS companies. Poor SEO directly impacts
+          revenue — lower search ranking means fewer visitors, fewer
+          conversions, and less revenue. Technical SEO decisions (rendering
+          strategy, URL structure, site speed, mobile-friendliness) are often
+          made by frontend teams and have lasting impact on organic traffic.
+          Unlike paid advertising, which stops driving traffic when the budget
+          ends, SEO investment compounds over time — well-optimized content
+          continues attracting visitors for months or years.
         </p>
         <p>
-          For staff engineers, SEO is a business-critical NFR. Organic search
-          drives significant traffic for content sites, e-commerce, and SaaS.
-          Poor SEO directly impacts revenue. Technical SEO decisions (SSR vs
-          CSR, URL structure, site speed) are often made by frontend teams.
+          SEO impact factors span content quality (relevant, keyword-optimized
+          content), technical implementation (crawlability, site speed,
+          mobile-friendliness, HTTPS), user experience signals (bounce rate,
+          dwell time, Core Web Vitals), and domain authority (backlinks,
+          reputation). Frontend engineers directly influence the technical, UX,
+          and performance factors — the rendering strategy determines whether
+          content is visible to crawlers, the site architecture affects how
+          thoroughly bots crawl the site, and performance optimization affects
+          Core Web Vitals which are Google ranking signals.
         </p>
-        <p>
-          <strong>SEO impact factors:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Content:</strong> Quality, relevance, keyword optimization
-          </li>
-          <li>
-            <strong>Technical:</strong> Crawlability, site speed,
-            mobile-friendliness, HTTPS
-          </li>
-          <li>
-            <strong>UX signals:</strong> Bounce rate, dwell time, Core Web
-            Vitals
-          </li>
-          <li>
-            <strong>Authority:</strong> Backlinks, domain reputation
-          </li>
-        </ul>
       </section>
 
       <section>
-        <h2>Meta Tags</h2>
+        <h2>Core Concepts</h2>
         <p>
           Meta tags provide search engines and social platforms with information
-          about your pages.
+          about each page. The title tag (50-60 characters, primary keyword
+          first, unique per page) is the most important on-page SEO factor — it
+          appears as the clickable headline in search results. The meta
+          description (150-160 characters, compelling summary with keywords)
+          appears below the title in search results and influences click-through
+          rate. The canonical URL prevents duplicate content issues by
+          specifying the preferred URL when the same content exists at multiple
+          URLs. The viewport meta tag is required for mobile-friendly ranking.
+          The robots meta tag controls crawling behavior (index/noindex,
+          follow/nofollow) for each page.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Essential Meta Tags</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Title:</strong>{" "}
-            <code>&lt;title&gt;Page Title | Site Name&lt;/title&gt;</code>
-            <br />
-            50-60 characters, primary keyword first, unique per page.
-          </li>
-          <li>
-            <strong>Description:</strong>{" "}
-            <code>
-              &lt;meta name=&quot;description&quot; content=&quot;...&quot;&gt;
-            </code>
-            <br />
-            150-160 characters, compelling summary, includes keywords. Shows in
-            search results.
-          </li>
-          <li>
-            <strong>Canonical:</strong>{" "}
-            <code>
-              &lt;link rel=&quot;canonical&quot; href=&quot;...&quot;&gt;
-            </code>
-            <br />
-            Prevents duplicate content issues. Specifies preferred URL when
-            content exists at multiple URLs.
-          </li>
-          <li>
-            <strong>Viewport:</strong>{" "}
-            <code>
-              &lt;meta name=&quot;viewport&quot;
-              content=&quot;width=device-width, initial-scale=1&quot;&gt;
-            </code>
-            <br />
-            Required for mobile-friendly ranking.
-          </li>
-          <li>
-            <strong>Robots:</strong>{" "}
-            <code>
-              &lt;meta name=&quot;robots&quot; content=&quot;index,
-              follow&quot;&gt;
-            </code>
-            <br />
-            Controls crawling: index/noindex, follow/nofollow.
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Open Graph Tags (Social Sharing)
-        </h3>
         <p>
-          Open Graph tags control how pages appear when shared on Facebook,
-          LinkedIn, and other platforms.
+          Structured data (Schema.org) provides explicit clues about page
+          content to search engines, enabling rich results — enhanced search
+          listings with star ratings, prices, images, FAQs, and event
+          information. JSON-LD is Google&apos;s recommended format, placed in a{" "}
+          <code>&lt;script type=&quot;application/ld+json&quot;&gt;</code> tag
+          that does not affect page rendering. Common schema types include
+          Article (blog posts, news), Product (e-commerce with price,
+          availability, reviews), Recipe (cooking with ingredients, nutrition),
+          Event (dates, locations, tickets), FAQ (questions and answers), and
+          LocalBusiness (address, hours, reviews). Rich results achieve higher
+          click-through rates due to their enhanced appearance and eligibility
+          for special features like carousels and knowledge panels.
         </p>
-        <ul className="space-y-2">
-          <li>
-            <code>og:title</code> — Page title for social sharing
-          </li>
-          <li>
-            <code>og:description</code> — Description for social cards
-          </li>
-          <li>
-            <code>og:image</code> — Preview image (1200×630 recommended)
-          </li>
-          <li>
-            <code>og:url</code> — Canonical URL
-          </li>
-          <li>
-            <code>og:type</code> — Content type (website, article, product)
-          </li>
-          <li>
-            <code>og:site_name</code> — Site name
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Twitter Cards</h3>
-        <p>Twitter-specific tags for enhanced tweets.</p>
-        <ul className="space-y-2">
-          <li>
-            <code>twitter:card</code> — Card type (summary, summary_large_image)
-          </li>
-          <li>
-            <code>twitter:title</code> — Tweet title
-          </li>
-          <li>
-            <code>twitter:description</code> — Tweet description
-          </li>
-          <li>
-            <code>twitter:image</code> — Preview image
-          </li>
-          <li>
-            <code>twitter:site</code> — @username of site
-          </li>
-          <li>
-            <code>twitter:creator</code> — @username of author
-          </li>
-        </ul>
+        <p>
+          Open Graph tags and Twitter Cards control how pages appear when shared
+          on social media. Open Graph (used by Facebook, LinkedIn, and most
+          platforms) requires og:title, og:description, og:image (1200×630
+          recommended), og:url, and og:type. Twitter Cards add
+          twitter:card (summary or summary_large_image), twitter:title,
+          twitter:description, twitter:image, and twitter:site (@username).
+          Proper social sharing tags are essential for content marketing — a
+          compelling link preview with a relevant image dramatically increases
+          click-through rates from social media compared to a plain URL.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/meta-tags-social-preview.svg"
           alt="Meta Tags and Social Preview"
-          caption="How meta tags appear in search results and social media previews — title, description, and image optimization"
+          caption="How meta tags appear in search results and social media previews — title tag, meta description, Open Graph tags, and Twitter Card optimization"
         />
       </section>
 
       <section>
-        <h2>Structured Data (Schema.org)</h2>
+        <h2>Architecture &amp; Flow</h2>
         <p>
-          Structured data provides explicit clues about page content to search
-          engines, enabling rich results (enhanced search listings with stars,
-          prices, images).
+          Technical SEO architecture ensures search engines can discover, crawl,
+          and index all important pages. XML sitemaps list all important URLs
+          with their last modified date, helping search engines discover content
+          that may not be linked from other pages. Sitemaps should exclude
+          noindex pages and duplicates, be submitted to Google Search Console,
+          referenced in robots.txt, and kept under 50,000 URLs per sitemap
+          (split into multiple sitemaps for larger sites). Robots.txt controls
+          which parts of the site crawlers can access — it should block
+          administrative paths (/admin/, /api/) but must not block CSS or
+          JavaScript files because Google needs them to render and evaluate
+          pages.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Common Schema Types</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Article:</strong> Blog posts, news articles
-          </li>
-          <li>
-            <strong>Product:</strong> E-commerce products with price,
-            availability, reviews
-          </li>
-          <li>
-            <strong>Recipe:</strong> Cooking recipes with ingredients, nutrition
-          </li>
-          <li>
-            <strong>Event:</strong> Events with dates, locations, tickets
-          </li>
-          <li>
-            <strong>FAQ:</strong> FAQ pages with questions and answers
-          </li>
-          <li>
-            <strong>LocalBusiness:</strong> Business info with address, hours,
-            reviews
-          </li>
-          <li>
-            <strong>JobPosting:</strong> Job listings with salary, location,
-            requirements
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">JSON-LD Format</h3>
-        <p>JSON-LD is Google&apos;s recommended format for structured data.</p>
-        <ul className="space-y-2">
-          <li>
-            Placed in{" "}
-            <code>&lt;script type=&quot;application/ld+json&quot;&gt;</code> tag
-          </li>
-          <li>Doesn&apos;t affect page rendering</li>
-          <li>Easy to generate dynamically</li>
-          <li>Validated with Google&apos;s Rich Results Test</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Rich Results Benefits
-        </h3>
-        <ul className="space-y-2">
-          <li>Higher click-through rates (enhanced appearance)</li>
-          <li>Better visibility in search results</li>
-          <li>
-            Eligibility for special features (carousels, knowledge panels)
-          </li>
-          <li>Voice search optimization</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Implementation</h3>
-        <ul className="space-y-2">
-          <li>Use schema.org vocabulary</li>
-          <li>Include required properties for your content type</li>
-          <li>Test with Google Rich Results Test</li>
-          <li>Monitor in Google Search Console</li>
-          <li>Keep structured data in sync with visible content</li>
-        </ul>
+        <p>
+          URL structure affects both SEO and user experience. Descriptive,
+          keyword-rich URLs (example.com/products/wireless-headphones) rank
+          better than opaque URLs (example.com/p?id=12345). URLs should be
+          short, readable, use hyphens to separate words, be consistently
+          lowercase, and avoid unnecessary query parameters. When URLs change,
+          implement 301 (permanent) redirects from old URLs to new ones to
+          preserve search ranking and prevent 404 errors. Internal linking
+          creates a logical site hierarchy — link to important pages from the
+          homepage, use descriptive anchor text, implement breadcrumbs, and
+          avoid orphan pages (pages with no incoming links that crawlers cannot
+          discover).
+        </p>
+        <p>
+          Mobile-first indexing means Google primarily uses the mobile version
+          of a site for indexing and ranking. Ensure the mobile and desktop
+          versions have the same content (do not hide important content on
+          mobile), use responsive design rather than separate mobile URLs, test
+          with Google&apos;s Mobile-Friendly Test, and avoid intrusive
+          interstitials (full-screen popups) on mobile that block content.
+          Mobile-friendliness is a ranking factor — sites that are not
+          mobile-friendly rank lower in both mobile and desktop search results.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/structured-data-rich-results.svg"
           alt="Structured Data Rich Results"
-          caption="Examples of rich results enabled by structured data — product cards, recipes, FAQs, and events"
+          caption="Examples of rich results enabled by structured data — product cards with price and ratings, recipes with cooking time, FAQs, and events with dates"
         />
       </section>
 
       <section>
-        <h2>Technical SEO</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">XML Sitemaps</h3>
-        <p>Sitemaps help search engines discover all pages on your site.</p>
-        <ul className="space-y-2">
-          <li>List all important URLs</li>
-          <li>Include lastmod (last modified date)</li>
-          <li>Exclude noindex pages, duplicates</li>
-          <li>Submit to Google Search Console</li>
-          <li>Reference in robots.txt</li>
-          <li>Keep under 50,000 URLs per sitemap (split if larger)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Robots.txt</h3>
-        <p>Controls which parts of your site crawlers can access.</p>
-        <ul className="space-y-2">
-          <li>
-            <code>User-agent: *</code> — Apply to all crawlers
-          </li>
-          <li>
-            <code>Disallow: /admin/</code> — Block specific paths
-          </li>
-          <li>
-            <code>Sitemap: https://example.com/sitemap.xml</code> — Reference
-            sitemap
-          </li>
-          <li>Don&apos;t block CSS/JS (needed for rendering)</li>
-          <li>
-            Use noindex meta tag, not robots.txt, for pages you want out of
-            search
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">URL Structure</h3>
-        <ul className="space-y-2">
-          <li>Use descriptive, keyword-rich URLs</li>
-          <li>Keep URLs short and readable</li>
-          <li>Use hyphens to separate words</li>
-          <li>Avoid parameters when possible</li>
-          <li>Use lowercase consistently</li>
-          <li>Implement proper redirects for URL changes (301)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Internal Linking</h3>
-        <ul className="space-y-2">
-          <li>Link to important pages from homepage</li>
-          <li>Use descriptive anchor text</li>
-          <li>Create logical site hierarchy</li>
-          <li>Implement breadcrumbs</li>
-          <li>Avoid orphan pages (pages with no incoming links)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Mobile-First Indexing
-        </h3>
-        <ul className="space-y-2">
-          <li>Google primarily uses mobile version for indexing</li>
-          <li>Ensure mobile and desktop have same content</li>
-          <li>Responsive design preferred</li>
-          <li>Test with Google&apos;s Mobile-Friendly Test</li>
-          <li>Avoid intrusive interstitials on mobile</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>SEO and Rendering Strategies</h2>
-        <p>How you render pages significantly impacts SEO.</p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Server-Side Rendering (SSR)
-        </h3>
-        <p>Best for SEO — full HTML sent to crawler.</p>
-        <ul className="space-y-2">
-          <li>Content immediately available in HTML</li>
-          <li>No JavaScript execution needed</li>
-          <li>Fastest time to content for crawlers</li>
-          <li>Ideal for: content sites, e-commerce, news</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Static Site Generation (SSG)
-        </h3>
-        <p>Excellent for SEO — pre-rendered HTML.</p>
-        <ul className="space-y-2">
-          <li>HTML generated at build time</li>
-          <li>Fastest delivery (CDN-served)</li>
-          <li>Content must be known at build time</li>
-          <li>Ideal for: blogs, documentation, marketing pages</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Client-Side Rendering (CSR)
-        </h3>
-        <p>Problematic for SEO — content loaded via JavaScript.</p>
-        <ul className="space-y-2">
-          <li>Initial HTML is empty shell</li>
-          <li>Google can execute JavaScript but with delays</li>
-          <li>Other crawlers may not execute JS</li>
-          <li>Social media previews often broken</li>
-          <li>
-            Only use for: authenticated apps, dashboards (where SEO doesn&apos;t
-            matter)
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hybrid Approach</h3>
-        <p>Different pages, different strategies.</p>
-        <ul className="space-y-2">
-          <li>SSG/SSR for public, SEO-critical pages</li>
-          <li>CSR for authenticated, dashboard areas</li>
-          <li>Next.js, Nuxt, SvelteKit support hybrid</li>
-          <li>Configure per-route based on SEO needs</li>
-        </ul>
-
-        <ArticleImage
-          src="/diagrams/requirements/nfr/frontend-nfr/seo-rendering-strategies.svg"
-          alt="SEO and Rendering Strategies"
-          caption="How rendering strategies affect SEO — SSR/SSG provide immediate content, CSR requires JavaScript execution"
-        />
-      </section>
-
-      <section>
-        <h2>Core Web Vitals and SEO</h2>
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          Google uses Core Web Vitals as ranking signals. Poor performance
-          directly impacts search rankings.
+          Rendering strategy is the most impactful SEO decision. Server-Side
+          Rendering sends full HTML to crawlers — content is immediately
+          available without JavaScript execution, providing the best SEO. Static
+          Site Generation is equally good for SEO — pre-rendered HTML served
+          from CDN is ideal for crawlers. Client-Side Rendering is problematic
+          — the initial HTML is an empty shell, and while Google can execute
+          JavaScript, it does so with delays and not all crawlers support it.
+          Social media previews are often broken with CSR because social
+          platforms do not execute JavaScript when generating link previews.
+          The recommendation is SSR/SSG/ISR for all public, SEO-critical pages
+          and CSR only for authenticated areas where SEO does not matter.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Core Web Vitals</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>LCP (Largest Contentful Paint):</strong> Loading
-            performance. Target: &lt;2.5s
-          </li>
-          <li>
-            <strong>INP (Interaction to Next Paint):</strong> Interactivity.
-            Target: &lt;200ms
-          </li>
-          <li>
-            <strong>CLS (Cumulative Layout Shift):</strong> Visual stability.
-            Target: &lt;0.1
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Performance SEO Tips
-        </h3>
-        <ul className="space-y-2">
-          <li>Optimize images (WebP/AVIF, proper sizing, lazy loading)</li>
-          <li>Preload critical resources (fonts, LCP image)</li>
-          <li>Minimize JavaScript (code splitting, tree shaking)</li>
-          <li>Use CDN for static assets</li>
-          <li>Enable compression (Brotli)</li>
-          <li>Implement caching strategies</li>
-          <li>Monitor with PageSpeed Insights, Search Console</li>
-        </ul>
+        <p>
+          Core Web Vitals are confirmed Google ranking signals — poor
+          performance directly impacts search rankings. LCP under 2.5s, INP
+          under 200ms, and CLS under 0.1 are the thresholds for &quot;good&quot;
+          ratings. Pages that exceed these thresholds rank lower than comparable
+          pages with good scores. The performance-SEO connection means that
+          frontend performance optimization is also SEO optimization —
+          optimizing images, minimizing JavaScript, using CDNs, and enabling
+          compression all improve both Core Web Vitals and search ranking.
+          Monitor Core Web Vitals in Google Search Console to identify pages
+          that need performance improvement for SEO.
+        </p>
+        <p>
+          SEO investment must be prioritized by business impact. For content
+          sites and e-commerce, SEO is a primary traffic driver and deserves
+          significant investment — SSR/SSR rendering, structured data, optimized
+          meta tags, XML sitemaps, and performance optimization. For internal
+          tools and dashboards, SEO is irrelevant because the audience is known
+          and authenticated — investment should focus on usability and
+          performance instead. For SaaS marketing sites, SEO is important for
+          lead generation — invest in content creation, blog SEO, landing page
+          optimization, and technical SEO, but the investment level is
+          proportional to the role of organic search in the acquisition funnel.
+        </p>
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
+        <h2>Best Practices</h2>
+        <p>
+          Implement a per-page SEO checklist for every new page or content
+          update. Each page needs a unique title (50-60 characters, keyword
+          first), unique meta description (150-160 characters, compelling
+          summary), canonical URL, proper heading hierarchy (one H1, logical
+          H2-H6 structure), semantic HTML (proper use of article, section, nav,
+          aside), alt text for all images, internal links to related content,
+          structured data if applicable (Article, Product, FAQ), Open Graph
+          tags, Twitter Cards, mobile-friendly responsive design, and fast load
+          time (Core Web Vitals within &quot;good&quot; thresholds). Test each
+          page with Lighthouse SEO audit, validate structured data with Google
+          Rich Results Test, and submit new URLs to Google Search Console for
+          indexing.
+        </p>
+        <p>
+          Optimize images for both performance and SEO. Use descriptive,
+          keyword-rich file names (wireless-headphones-black.jpg, not
+          IMG_1234.jpg). Provide meaningful alt text that describes the image
+          content for accessibility and image search. Use modern formats (WebP,
+          AVIF) with proper sizing — oversized images hurt both performance and
+          Core Web Vitals, which affect ranking. Implement lazy loading for
+          below-the-fold images but do not lazy-load the LCP image (usually the
+          hero or featured image) because it delays the most important
+          performance metric.
+        </p>
+        <p>
+          Monitor SEO health continuously using Google Search Console and
+          automated auditing. Search Console provides data on search queries
+          driving traffic, click-through rates, indexing status, Core Web Vitals
+          by page, mobile usability issues, and structured data errors. Set up
+          automated SEO audits in CI/CD using tools like Lighthouse CI to catch
+          regressions (missing meta tags, broken links, accessibility issues)
+          before deployment. Track organic traffic trends over time and
+          investigate drops — they may indicate technical issues (pages
+          accidentally noindexed, rendering changes that break crawler
+          visibility, performance regressions affecting Core Web Vitals).
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          Using CSR for public-facing content is the most damaging SEO mistake.
+          When search engine crawlers encounter a CSR page, they receive an
+          empty HTML shell with no content. While Google can execute JavaScript
+          to discover content, it does so in a second wave of indexing that may
+          be delayed by days or weeks, and other search engines (Bing, DuckDuckGo,
+          Baidu) may not execute JavaScript at all. Social media platforms
+          definitely do not execute JavaScript, so link previews show nothing.
+          The fix is to use SSR, SSG, or ISR for all public content. If
+          migrating an existing CSR application, prioritize the homepage,
+          landing pages, and high-traffic content pages for server rendering
+          first.
+        </p>
+        <p>
+          Duplicate content across multiple URLs dilutes search ranking. When
+          the same content is accessible at multiple URLs (example.com/products
+          and example.com/products?page=1, or HTTP and HTTPS versions, or www
+          and non-www versions), search engines may split ranking signals across
+          the duplicates, resulting in lower ranking for all versions. The fix
+          is to use canonical URLs to designate the preferred version, implement
+          301 redirects from duplicate URLs to the canonical URL, and ensure
+          internal links consistently point to the canonical URL.
+        </p>
+        <p>
+          Blocking CSS and JavaScript in robots.txt prevents Google from
+          rendering pages correctly. Google needs to execute JavaScript and
+          apply CSS to understand the page layout, identify hidden content, and
+          evaluate Core Web Vitals. If robots.txt blocks these resources, Google
+          sees an unstyled, non-interactive version of the page, which may
+          affect ranking. Ensure robots.txt does not disallow CSS and JS file
+          paths. Use the URL Inspection tool in Google Search Console to verify
+          that Google can render your pages correctly.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          E-commerce platforms invest heavily in SEO because product search is a
+          primary customer acquisition channel. Amazon, Shopify stores, and
+          direct-to-consumer brands optimize product pages with unique titles
+          (product name, brand, key attributes), detailed descriptions with
+          keywords, structured data (Product schema with price, availability,
+          ratings), optimized images with alt text, and fast load times. They
+          also optimize category pages (aggregated product listings) and blog
+          content (buying guides, product comparisons) for long-tail keywords.
+          The result is product pages that rank for both branded searches
+          (specific product names) and unbranded searches (&quot;best wireless
+          headphones under $100&quot;).
+        </p>
+        <p>
+          News and media websites depend on SEO for traffic and revenue. The
+          New York Times, The Guardian, and Bloomberg use SSR for article pages
+          (full HTML for crawlers), structured data (Article and NewsArticle
+          schema), AMP (Accelerated Mobile Pages) for fast mobile loading,
+          Google News sitemaps for rapid indexing of breaking news, and live
+          blog structured data for ongoing events. Their SEO strategy includes
+          optimizing for Google News and Google Discover, which drive
+          significant referral traffic for timely content.
+        </p>
+        <p>
+          SaaS companies use SEO for content marketing and lead generation. The
+          marketing site (SSG for speed) hosts blog posts, case studies,
+          documentation, and landing pages optimized for industry keywords.
+          Structured data (SoftwareApplication, FAQ, HowTo schema) enhances
+          search listings. The product application (CSR) is behind authentication
+          and does not need SEO. Internal linking between blog posts, product
+          pages, and documentation creates a strong site hierarchy that helps
+          crawlers discover and rank all content. The investment in SEO-driven
+          content marketing generates organic leads at a lower cost per
+          acquisition than paid advertising.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions with Detailed Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What meta tags are essential for SEO?
             </p>
             <p className="mt-2 text-sm">
-              A: Title (50-60 chars, keyword first), description (150-160 chars,
-              compelling summary), canonical URL (prevents duplicates), viewport
-              (mobile-friendly), and robots (crawl control). For social sharing:
-              Open Graph tags (og:title, og:description, og:image) and Twitter
-              Cards.
+              A: Title (50-60 characters, primary keyword first, unique per
+              page), meta description (150-160 characters, compelling summary),
+              canonical URL (prevents duplicate content), viewport
+              (mobile-friendly ranking), and robots (crawl control). For social
+              sharing: Open Graph tags (og:title, og:description, og:image at
+              1200×630) and Twitter Cards (twitter:card, twitter:title,
+              twitter:image). Each page needs unique values — duplicate or
+              missing meta tags hurt ranking and social sharing.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How does rendering strategy affect SEO?
             </p>
             <p className="mt-2 text-sm">
-              A: SSR and SSG send full HTML to crawlers — best for SEO. CSR
-              sends empty HTML with JavaScript — Google can execute JS but with
-              delays, other crawlers may not. Social media previews often break
-              with CSR. Use SSR/SSG for public content, CSR for authenticated
-              areas where SEO doesn&apos;t matter.
+              A: SSR and SSG send full HTML to crawlers — content is immediately
+              visible, providing the best SEO. CSR sends empty HTML with
+              JavaScript — Google can execute JS but with delays, and other
+              search engines may not execute it at all. Social media previews
+              are broken with CSR because platforms don&apos;t execute
+              JavaScript. Use SSR/SSG/ISR for public content that needs SEO, CSR
+              only for authenticated areas where SEO doesn&apos;t matter.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What is structured data and why does it matter?
             </p>
             <p className="mt-2 text-sm">
-              A: Structured data (Schema.org) provides explicit content clues to
-              search engines using JSON-LD. Enables rich results — enhanced
-              listings with stars, prices, images. Higher click-through rates,
-              better visibility. Common types: Article, Product, Recipe, Event,
-              FAQ, LocalBusiness. Validate with Google Rich Results Test.
+              A: Structured data (Schema.org) uses JSON-LD to provide explicit
+              content clues to search engines. It enables rich results —
+              enhanced search listings with star ratings, prices, images, FAQs,
+              and event information. Rich results achieve higher click-through
+              rates due to their enhanced appearance. Common types: Article,
+              Product, Recipe, Event, FAQ, LocalBusiness. Validate with
+              Google&apos;s Rich Results Test and monitor in Search Console.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do Core Web Vitals affect SEO?
             </p>
             <p className="mt-2 text-sm">
-              A: Core Web Vitals (LCP, INP, CLS) are Google ranking signals.
-              Poor performance = lower rankings. LCP under 2.5s (loading), INP
-              under 200ms (interactivity), CLS under 0.1 (stability). Optimize
-              images, minimize JS, use CDN, enable compression, implement
-              caching. Monitor in Search Console.
+              A: Core Web Vitals (LCP, INP, CLS) are confirmed Google ranking
+              signals. Poor performance = lower rankings. LCP under 2.5s
+              (loading), INP under 200ms (interactivity), CLS under 0.1
+              (visual stability). Optimize images, minimize JavaScript, use CDN,
+              enable Brotli compression, implement caching. Monitor in Search
+              Console&apos;s Core Web Vitals report to identify pages that need
+              improvement. Performance optimization is SEO optimization.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: What&apos;s your SEO checklist for a new page?
+              Q: What is your SEO checklist for a new page?
             </p>
             <p className="mt-2 text-sm">
-              A: Unique title/description, canonical URL, proper heading
-              hierarchy (H1-H6), semantic HTML, alt text for images, internal
-              links, structured data (if applicable), Open Graph tags,
-              mobile-friendly, fast load time, XML sitemap inclusion, robots.txt
-              allows crawling. Test with Lighthouse, validate structured data,
-              submit to Search Console.
+              A: Unique title and meta description, canonical URL, proper
+              heading hierarchy (one H1, logical H2-H6), semantic HTML, alt
+              text for all images, internal links to related content, structured
+              data if applicable, Open Graph and Twitter Card tags,
+              mobile-friendly responsive design, fast load time (Core Web Vitals
+              in &quot;good&quot; range). Test with Lighthouse SEO audit,
+              validate structured data with Rich Results Test, and submit the
+              URL to Google Search Console for indexing.
             </p>
           </div>
         </div>
@@ -505,7 +414,7 @@ export default function SEODiscoverabilityArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Google Search Central
+              Google Search Central — Documentation and Guidelines
             </a>
           </li>
           <li>
@@ -536,6 +445,16 @@ export default function SEODiscoverabilityArticle() {
               rel="noopener noreferrer"
             >
               Google Rich Results Test
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://moz.com/beginners-guide-to-seo"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Moz — Beginner&apos;s Guide to SEO
             </a>
           </li>
         </ul>

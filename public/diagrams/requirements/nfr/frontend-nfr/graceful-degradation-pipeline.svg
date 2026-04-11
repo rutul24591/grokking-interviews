@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg-light { fill: #f8f9fa; }
+      .bg-dark { fill: #1a1a2e; }
+      .box-light { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
+      .box-dark { fill: #16213e; stroke: #60a5fa; stroke-width: 2; }
+      .title-light { fill: #1e293b; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .title-dark { fill: #f1f5f9; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .label-light { fill: #334155; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .label-dark { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .sub-light { fill: #64748b; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+      .sub-dark { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+      .arrow-light { stroke: #2563eb; stroke-width: 2; fill: none; }
+      .arrow-dark { stroke: #60a5fa; stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+  <g class="light-mode">
+    <rect class="bg-light" width="800" height="420" rx="8"/>
+    <text class="title-light" x="400" y="35" text-anchor="middle">Graceful Degradation Pipeline</text>
+    <rect class="box-light" x="30" y="70" width="170" height="80" rx="6"/>
+    <text class="label-light" x="115" y="100" text-anchor="middle">Modern Browser</text>
+    <text class="sub-light" x="115" y="120" text-anchor="middle">Full feature set</text>
+    <text class="sub-light" x="115" y="135" text-anchor="middle">CSS Grid, ES2022</text>
+    <path class="arrow-light" d="M 200 110 L 240 110"/>
+    <polygon class="arrow-light" points="238,105 248,110 238,115" fill="#2563eb" stroke="none"/>
+    <rect class="box-light" x="250" y="70" width="150" height="80" rx="6"/>
+    <text class="label-light" x="325" y="100" text-anchor="middle">Feature Detection</text>
+    <text class="sub-light" x="325" y="120" text-anchor="middle">Check API support</text>
+    <text class="sub-light" x="325" y="135" text-anchor="middle">@supports, in window</text>
+    <path class="arrow-light" d="M 400 110 L 440 110"/>
+    <polygon class="arrow-light" points="438,105 448,110 438,115" fill="#2563eb" stroke="none"/>
+    <rect class="box-light" x="450" y="70" width="150" height="80" rx="6"/>
+    <text class="label-light" x="525" y="100" text-anchor="middle">Enhanced Path</text>
+    <text class="sub-light" x="525" y="120" text-anchor="middle">Modern features</text>
+    <text class="sub-light" x="525" y="135" text-anchor="middle">Full experience</text>
+    <path class="arrow-light" d="M 600 110 L 640 110"/>
+    <polygon class="arrow-light" points="638,105 648,110 638,115" fill="#2563eb" stroke="none"/>
+    <rect class="box-light" x="650" y="70" width="130" height="80" rx="6"/>
+    <text class="label-light" x="715" y="100" text-anchor="middle">Full UX</text>
+    <text class="sub-light" x="715" y="120" text-anchor="middle">Optimal experience</text>
+    <path class="arrow-light" d="M 325 150 L 325 210"/>
+    <polygon class="arrow-light" points="320,208 325,218 330,208" fill="#2563eb" stroke="none"/>
+    <rect class="box-light" x="250" y="220" width="150" height="80" rx="6"/>
+    <text class="label-light" x="325" y="250" text-anchor="middle">Fallback Path</text>
+    <text class="sub-light" x="325" y="270" text-anchor="middle">Polyfills + alternate</text>
+    <text class="sub-light" x="325" y="285" text-anchor="middle">Flexbox instead of Grid</text>
+    <path class="arrow-light" d="M 325 300 L 325 350"/>
+    <polygon class="arrow-light" points="320,348 325,358 330,348" fill="#2563eb" stroke="none"/>
+    <rect class="box-light" x="250" y="360" width="150" height="50" rx="6"/>
+    <text class="label-light" x="325" y="390" text-anchor="middle">Core functionality</text>
+    <rect class="box-light" x="450" y="220" width="150" height="80" rx="6"/>
+    <text class="label-light" x="525" y="250" text-anchor="middle">Polyfill Load</text>
+    <text class="sub-light" x="525" y="270" text-anchor="middle">Only needed polyfills</text>
+    <text class="sub-light" x="525" y="285" text-anchor="middle">Differential serving</text>
+    <rect class="box-light" x="450" y="320" width="150" height="80" rx="6"/>
+    <text class="label-light" x="525" y="350" text-anchor="middle">Transpiled Code</text>
+    <text class="sub-light" x="525" y="370" text-anchor="middle">ES5 output for legacy</text>
+    <text class="sub-light" x="525" y="385" text-anchor="middle">Babel / SWC</text>
+  </g>
+  <g class="dark-mode">
+    <rect class="bg-dark" width="800" height="420" rx="8"/>
+    <text class="title-dark" x="400" y="35" text-anchor="middle">Graceful Degradation Pipeline</text>
+    <rect class="box-dark" x="30" y="70" width="170" height="80" rx="6"/>
+    <text class="label-dark" x="115" y="100" text-anchor="middle">Modern Browser</text>
+    <text class="sub-dark" x="115" y="120" text-anchor="middle">Full feature set</text>
+    <text class="sub-dark" x="115" y="135" text-anchor="middle">CSS Grid, ES2022</text>
+    <path class="arrow-dark" d="M 200 110 L 240 110"/>
+    <polygon class="arrow-dark" points="238,105 248,110 238,115" fill="#60a5fa" stroke="none"/>
+    <rect class="box-dark" x="250" y="70" width="150" height="80" rx="6"/>
+    <text class="label-dark" x="325" y="100" text-anchor="middle">Feature Detection</text>
+    <text class="sub-dark" x="325" y="120" text-anchor="middle">Check API support</text>
+    <text class="sub-dark" x="325" y="135" text-anchor="middle">@supports, in window</text>
+    <path class="arrow-dark" d="M 400 110 L 440 110"/>
+    <polygon class="arrow-dark" points="438,105 448,110 438,115" fill="#60a5fa" stroke="none"/>
+    <rect class="box-dark" x="450" y="70" width="150" height="80" rx="6"/>
+    <text class="label-dark" x="525" y="100" text-anchor="middle">Enhanced Path</text>
+    <text class="sub-dark" x="525" y="120" text-anchor="middle">Modern features</text>
+    <text class="sub-dark" x="525" y="135" text-anchor="middle">Full experience</text>
+    <path class="arrow-dark" d="M 600 110 L 640 110"/>
+    <polygon class="arrow-dark" points="638,105 648,110 638,115" fill="#60a5fa" stroke="none"/>
+    <rect class="box-dark" x="650" y="70" width="130" height="80" rx="6"/>
+    <text class="label-dark" x="715" y="100" text-anchor="middle">Full UX</text>
+    <text class="sub-dark" x="715" y="120" text-anchor="middle">Optimal experience</text>
+    <path class="arrow-dark" d="M 325 150 L 325 210"/>
+    <polygon class="arrow-dark" points="320,208 325,218 330,208" fill="#60a5fa" stroke="none"/>
+    <rect class="box-dark" x="250" y="220" width="150" height="80" rx="6"/>
+    <text class="label-dark" x="325" y="250" text-anchor="middle">Fallback Path</text>
+    <text class="sub-dark" x="325" y="270" text-anchor="middle">Polyfills + alternate</text>
+    <text class="sub-dark" x="325" y="285" text-anchor="middle">Flexbox instead of Grid</text>
+    <path class="arrow-dark" d="M 325 300 L 325 350"/>
+    <polygon class="arrow-dark" points="320,348 325,358 330,348" fill="#60a5fa" stroke="none"/>
+    <rect class="box-dark" x="250" y="360" width="150" height="50" rx="6"/>
+    <text class="label-dark" x="325" y="390" text-anchor="middle">Core functionality</text>
+    <rect class="box-dark" x="450" y="220" width="150" height="80" rx="6"/>
+    <text class="label-dark" x="525" y="250" text-anchor="middle">Polyfill Load</text>
+    <text class="sub-dark" x="525" y="270" text-anchor="middle">Only needed polyfills</text>
+    <text class="sub-dark" x="525" y="285" text-anchor="middle">Differential serving</text>
+    <rect class="box-dark" x="450" y="320" width="150" height="80" rx="6"/>
+    <text class="label-dark" x="525" y="350" text-anchor="middle">Transpiled Code</text>
+    <text class="sub-dark" x="525" y="370" text-anchor="middle">ES5 output for legacy</text>
+    <text class="sub-dark" x="525" y="385" text-anchor="middle">Babel / SWC</text>
+  </g>
+</svg>

@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg-light { fill: #f8f9fa; }
+      .bg-dark { fill: #1a1a2e; }
+      .box-light { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
+      .box-dark { fill: #16213e; stroke: #60a5fa; stroke-width: 2; }
+      .arrow-light { stroke: #2563eb; stroke-width: 2; fill: none; }
+      .arrow-dark { stroke: #60a5fa; stroke-width: 2; fill: none; }
+      .title-light { fill: #1e293b; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .title-dark { fill: #f1f5f9; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .label-light { fill: #334155; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .label-dark { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .sub-light { fill: #64748b; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+      .sub-dark { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+    </style>
+  </defs>
+
+  <!-- Light Mode -->
+  <g class="light-mode">
+    <rect class="bg-light" width="800" height="420" rx="8"/>
+    <text class="title-light" x="400" y="35" text-anchor="middle">Build Pipeline Architecture</text>
+
+    <!-- Stage 1: Entry -->
+    <rect class="box-light" x="30" y="70" width="140" height="80" rx="6"/>
+    <text class="label-light" x="100" y="100" text-anchor="middle">Entry Point</text>
+    <text class="sub-light" x="100" y="120" text-anchor="middle">index.tsx / main.js</text>
+    <text class="sub-light" x="100" y="135" text-anchor="middle">+ config files</text>
+
+    <!-- Arrow 1 -->
+    <path class="arrow-light" d="M 170 110 L 210 110 L 210 110 L 220 110"/>
+    <polygon class="arrow-light" points="218,105 228,110 218,115" fill="#2563eb" stroke="none"/>
+
+    <!-- Stage 2: Resolution -->
+    <rect class="box-light" x="230" y="70" width="150" height="80" rx="6"/>
+    <text class="label-light" x="305" y="100" text-anchor="middle">Module Resolution</text>
+    <text class="sub-light" x="305" y="120" text-anchor="middle">Import graph traversal</text>
+    <text class="sub-light" x="305" y="135" text-anchor="middle">node_modules resolution</text>
+
+    <!-- Arrow 2 -->
+    <path class="arrow-light" d="M 380 110 L 420 110 L 420 110 L 430 110"/>
+    <polygon class="arrow-light" points="428,105 438,110 428,115" fill="#2563eb" stroke="none"/>
+
+    <!-- Stage 3: Transformation -->
+    <rect class="box-light" x="440" y="70" width="150" height="80" rx="6"/>
+    <text class="label-light" x="515" y="100" text-anchor="middle">Transformation</text>
+    <text class="sub-light" x="515" y="120" text-anchor="middle">TS to JS, JSX transform</text>
+    <text class="sub-light" x="515" y="135" text-anchor="middle">CSS processing, image opt</text>
+
+    <!-- Arrow 3 -->
+    <path class="arrow-light" d="M 590 110 L 620 110 L 620 110 L 630 110"/>
+    <polygon class="arrow-light" points="628,105 638,110 628,115" fill="#2563eb" stroke="none"/>
+
+    <!-- Stage 4: Optimization -->
+    <rect class="box-light" x="640" y="70" width="140" height="80" rx="6"/>
+    <text class="label-light" x="710" y="100" text-anchor="middle">Optimization</text>
+    <text class="sub-light" x="710" y="120" text-anchor="middle">Tree-shaking</text>
+    <text class="sub-light" x="710" y="135" text-anchor="middle">Minification</text>
+
+    <!-- Down arrow to Output -->
+    <path class="arrow-light" d="M 710 150 L 710 200 L 710 200 L 710 210"/>
+    <polygon class="arrow-light" points="705,208 710,218 715,208" fill="#2563eb" stroke="none"/>
+
+    <!-- Stage 5: Output -->
+    <rect class="box-light" x="640" y="220" width="140" height="100" rx="6"/>
+    <text class="label-light" x="710" y="250" text-anchor="middle">Output Generation</text>
+    <text class="sub-light" x="710" y="270" text-anchor="middle">Content-hashed files</text>
+    <text class="sub-light" x="710" y="285" text-anchor="middle">Source maps</text>
+    <text class="sub-light" x="710" y="300" text-anchor="middle">Chunk manifest</text>
+
+    <!-- Bottom section: Additional details -->
+    <rect class="box-light" x="30" y="220" width="350" height="180" rx="6"/>
+    <text class="label-light" x="205" y="250" text-anchor="middle">Code Splitting Output</text>
+
+    <rect class="box-light" x="50" y="270" width="140" height="40" rx="4"/>
+    <text class="label-light" x="120" y="295" text-anchor="middle">Initial Chunk</text>
+
+    <rect class="box-light" x="50" y="320" width="140" height="40" rx="4"/>
+    <text class="label-light" x="120" y="345" text-anchor="middle">Vendor Chunk</text>
+
+    <rect class="box-light" x="220" y="270" width="140" height="40" rx="4"/>
+    <text class="label-light" x="290" y="295" text-anchor="middle">Route Chunks</text>
+
+    <rect class="box-light" x="220" y="320" width="140" height="40" rx="4"/>
+    <text class="label-light" x="290" y="345" text-anchor="middle">Async Chunks</text>
+
+    <!-- Right side: Optimization details -->
+    <rect class="box-light" x="400" y="220" width="210" height="180" rx="6"/>
+    <text class="label-light" x="505" y="250" text-anchor="middle">Optimization Techniques</text>
+
+    <text class="sub-light" x="420" y="280">Tree-shaking: Dead code elimination</text>
+    <text class="sub-light" x="420" y="300">Minification: Whitespace, mangling</text>
+    <text class="sub-light" x="420" y="320">Scope hoisting: Module flattening</text>
+    <text class="sub-light" x="420" y="340">Compression: Brotli, Gzip</text>
+    <text class="sub-light" x="420" y="360">Content hashing: Cache busting</text>
+    <text class="sub-light" x="420" y="380">Source maps: Production debugging</text>
+  </g>
+
+  <!-- Dark Mode -->
+  <g class="dark-mode">
+    <rect class="bg-dark" width="800" height="420" rx="8"/>
+    <text class="title-dark" x="400" y="35" text-anchor="middle">Build Pipeline Architecture</text>
+
+    <!-- Stage 1: Entry -->
+    <rect class="box-dark" x="30" y="70" width="140" height="80" rx="6"/>
+    <text class="label-dark" x="100" y="100" text-anchor="middle">Entry Point</text>
+    <text class="sub-dark" x="100" y="120" text-anchor="middle">index.tsx / main.js</text>
+    <text class="sub-dark" x="100" y="135" text-anchor="middle">+ config files</text>
+
+    <!-- Arrow 1 -->
+    <path class="arrow-dark" d="M 170 110 L 210 110 L 210 110 L 220 110"/>
+    <polygon class="arrow-dark" points="218,105 228,110 218,115" fill="#60a5fa" stroke="none"/>
+
+    <!-- Stage 2: Resolution -->
+    <rect class="box-dark" x="230" y="70" width="150" height="80" rx="6"/>
+    <text class="label-dark" x="305" y="100" text-anchor="middle">Module Resolution</text>
+    <text class="sub-dark" x="305" y="120" text-anchor="middle">Import graph traversal</text>
+    <text class="sub-dark" x="305" y="135" text-anchor="middle">node_modules resolution</text>
+
+    <!-- Arrow 2 -->
+    <path class="arrow-dark" d="M 380 110 L 420 110 L 420 110 L 430 110"/>
+    <polygon class="arrow-dark" points="428,105 438,110 428,115" fill="#60a5fa" stroke="none"/>
+
+    <!-- Stage 3: Transformation -->
+    <rect class="box-dark" x="440" y="70" width="150" height="80" rx="6"/>
+    <text class="label-dark" x="515" y="100" text-anchor="middle">Transformation</text>
+    <text class="sub-dark" x="515" y="120" text-anchor="middle">TS to JS, JSX transform</text>
+    <text class="sub-dark" x="515" y="135" text-anchor="middle">CSS processing, image opt</text>
+
+    <!-- Arrow 3 -->
+    <path class="arrow-dark" d="M 590 110 L 620 110 L 620 110 L 630 110"/>
+    <polygon class="arrow-dark" points="628,105 638,110 628,115" fill="#60a5fa" stroke="none"/>
+
+    <!-- Stage 4: Optimization -->
+    <rect class="box-dark" x="640" y="70" width="140" height="80" rx="6"/>
+    <text class="label-dark" x="710" y="100" text-anchor="middle">Optimization</text>
+    <text class="sub-dark" x="710" y="120" text-anchor="middle">Tree-shaking</text>
+    <text class="sub-dark" x="710" y="135" text-anchor="middle">Minification</text>
+
+    <!-- Down arrow to Output -->
+    <path class="arrow-dark" d="M 710 150 L 710 200 L 710 200 L 710 210"/>
+    <polygon class="arrow-dark" points="705,208 710,218 715,208" fill="#60a5fa" stroke="none"/>
+
+    <!-- Stage 5: Output -->
+    <rect class="box-dark" x="640" y="220" width="140" height="100" rx="6"/>
+    <text class="label-dark" x="710" y="250" text-anchor="middle">Output Generation</text>
+    <text class="sub-dark" x="710" y="270" text-anchor="middle">Content-hashed files</text>
+    <text class="sub-dark" x="710" y="285" text-anchor="middle">Source maps</text>
+    <text class="sub-dark" x="710" y="300" text-anchor="middle">Chunk manifest</text>
+
+    <!-- Bottom section: Additional details -->
+    <rect class="box-dark" x="30" y="220" width="350" height="180" rx="6"/>
+    <text class="label-dark" x="205" y="250" text-anchor="middle">Code Splitting Output</text>
+
+    <rect class="box-dark" x="50" y="270" width="140" height="40" rx="4"/>
+    <text class="label-dark" x="120" y="295" text-anchor="middle">Initial Chunk</text>
+
+    <rect class="box-dark" x="50" y="320" width="140" height="40" rx="4"/>
+    <text class="label-dark" x="120" y="345" text-anchor="middle">Vendor Chunk</text>
+
+    <rect class="box-dark" x="220" y="270" width="140" height="40" rx="4"/>
+    <text class="label-dark" x="290" y="295" text-anchor="middle">Route Chunks</text>
+
+    <rect class="box-dark" x="220" y="320" width="140" height="40" rx="4"/>
+    <text class="label-dark" x="290" y="345" text-anchor="middle">Async Chunks</text>
+
+    <!-- Right side: Optimization details -->
+    <rect class="box-dark" x="400" y="220" width="210" height="180" rx="6"/>
+    <text class="label-dark" x="505" y="250" text-anchor="middle">Optimization Techniques</text>
+
+    <text class="sub-dark" x="420" y="280">Tree-shaking: Dead code elimination</text>
+    <text class="sub-dark" x="420" y="300">Minification: Whitespace, mangling</text>
+    <text class="sub-dark" x="420" y="320">Scope hoisting: Module flattening</text>
+    <text class="sub-dark" x="420" y="340">Compression: Brotli, Gzip</text>
+    <text class="sub-dark" x="420" y="360">Content hashing: Cache busting</text>
+    <text class="sub-dark" x="420" y="380">Source maps: Production debugging</text>
+  </g>
+</svg>

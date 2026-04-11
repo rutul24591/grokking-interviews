@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   subcategory: "nfr",
   slug: "xss-injection-protection",
   version: "extensive",
-  wordCount: 12000,
-  readingTime: 48,
-  lastUpdated: "2026-03-15",
+  wordCount: 5500,
+  readingTime: 22,
+  lastUpdated: "2026-04-11",
   tags: [
     "frontend",
     "nfr",
@@ -36,699 +36,395 @@ export default function XSSInjectionProtectionArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Cross-Site Scripting (XSS)</strong> is a code injection attack
-          where malicious scripts are injected into trusted websites. When users
-          visit the compromised page, the malicious script executes in their
-          browser, potentially stealing cookies, session tokens, credentials, or
-          redirecting to phishing sites.
+          <strong>Cross-Site Scripting (XSS)</strong> is a code injection
+          attack where malicious scripts are injected into trusted websites.
+          When users visit the compromised page, the malicious script executes
+          in their browser within the context of the trusted site, potentially
+          stealing cookies and session tokens, capturing keystrokes and
+          credentials, redirecting to phishing sites, modifying page content,
+          and performing actions on behalf of the victim user. XSS consistently
+          ranks in the OWASP Top 10 web application security risks and is
+          particularly relevant for frontend engineers because modern
+          applications — with server-side rendering, dangerouslySetInnerHTML,
+          third-party integrations, and user-generated content — create numerous
+          XSS vectors.
         </p>
         <p>
-          XSS consistently ranks in the OWASP Top 10 web application security
-          risks. For staff engineers, understanding XSS is critical because
-          frontend frameworks, while providing some protection, cannot prevent
-          all XSS vectors — especially with modern patterns like server-side
-          rendering, dangerouslySetInnerHTML, and third-party integrations.
+          XSS attacks are classified by how the malicious script is delivered
+          and executed. Reflected XSS reflects the malicious script off the web
+          server — the attacker crafts a URL with a malicious script in a query
+          parameter, the victim clicks the link, and the server reflects the
+          input in the response without proper encoding. Stored XSS persists the
+          malicious script on the server (database, comment field, profile) —
+          victims view the infected content through normal browsing, making it
+          more severe because no user action (clicking a link) is required.
+          DOM-based XSS exists entirely in client-side code — the attack
+          payload is delivered via URL fragment or query parameter, read by
+          client-side JavaScript from the DOM (location.hash, location.search),
+          and written back to the DOM using innerHTML or similar. DOM-based XSS
+          is particularly dangerous because server-side defenses (WAF, input
+          validation) cannot detect it — the payload never reaches the server.
         </p>
         <p>
-          <strong>Impact of XSS:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Session hijacking:</strong> Steal authentication cookies and
-            tokens
-          </li>
-          <li>
-            <strong>Credential theft:</strong> Capture keystrokes, fake login
-            forms
-          </li>
-          <li>
-            <strong>Defacement:</strong> Modify page content, display false
-            information
-          </li>
-          <li>
-            <strong>Malware distribution:</strong> Redirect to malware sites,
-            drive-by downloads
-          </li>
-          <li>
-            <strong>Account takeover:</strong> Perform actions as the victim
-            user
-          </li>
-          <li>
-            <strong>Data exfiltration:</strong> Read and transmit sensitive page
-            data
-          </li>
-        </ul>
-        <p>
-          For staff/principal engineer interviews, XSS questions test security
-          awareness, understanding of browser security models, and ability to
-          design secure systems. This guide covers XSS types, prevention
-          strategies, Content Security Policy, and secure coding patterns.
+          For staff and principal engineer interviews, XSS questions test
+          security awareness, understanding of browser security models, and
+          ability to design secure systems. The key principles are defense in
+          depth (multiple layers of protection that work together), output
+          encoding as the primary defense (converting special characters to HTML
+          entities), input validation as a supplementary defense (not sufficient
+          alone), Content Security Policy as a safety net (restricting which
+          scripts can execute), and sanitization when HTML input is required
+          (rich text editors, comments with formatting).
         </p>
       </section>
 
       <section>
-        <h2>XSS Attack Types</h2>
+        <h2>Core Concepts</h2>
         <p>
-          XSS attacks are categorized by how the malicious script is delivered
-          and executed.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Reflected XSS (Non-Persistent)
-        </h3>
-        <p>
-          The malicious script is reflected off the web server in an error
-          message, search result, or any response that includes user input. The
-          attack payload is delivered via a malicious link that the victim
-          clicks.
-        </p>
-        <p>
-          <strong>Attack flow:</strong>
-        </p>
-        <ul className="space-y-2">
-          <li>Attacker crafts URL with malicious script in query parameter</li>
-          <li>Victim clicks the link (via email, social media, etc.)</li>
-          <li>
-            Server reflects the input in the response without proper encoding
-          </li>
-          <li>
-            Script executes in victim&apos;s browser in the context of the
-            trusted site
-          </li>
-        </ul>
-        <p>
-          <strong>Example:</strong> Search page that displays &quot;Results for:
-          [user input]&quot; without HTML encoding. Attacker submits{" "}
-          <code>&lt;script&gt;stealCookies()&lt;/script&gt;</code>
-          as the search query.
+          Output encoding (escaping) is the primary defense against XSS. It
+          converts special characters to their HTML entity equivalents before
+          rendering user input — ampersand to <code>&amp;amp;</code>, less-than
+          to <code>&amp;lt;</code>, greater-than to <code>&amp;gt;</code>,
+          double quote to <code>&amp;quot;</code>, and single quote to{" "}
+          <code>&amp;#x27;</code>. Encoding must be context-aware — the
+          encoding rules differ for HTML body content, HTML attributes,
+          JavaScript context, CSS context, and URL context. Modern frameworks
+          (React, Vue, Angular) automatically encode interpolated values —{" "}
+          <code>{"{userInput}"}</code> in React JSX is automatically escaped.
+          The danger arises when this protection is bypassed —{" "}
+          <code>dangerouslySetInnerHTML</code> in React, <code>v-html</code> in
+          Vue, or <code>innerHTML</code> in vanilla JavaScript — which render
+          raw HTML without encoding.
         </p>
         <p>
-          <strong>Common vectors:</strong> Search forms, error messages, URL
-          parameters, form validation messages.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Stored XSS (Persistent)
-        </h3>
-        <p>
-          The malicious script is permanently stored on the target server
-          (database, message forum, comment field, visitor log). Victims view
-          the infected content through normal browsing.
-        </p>
-        <p>
-          <strong>Attack flow:</strong>
-        </p>
-        <ul className="space-y-2">
-          <li>
-            Attacker submits malicious script via input form (comment, profile,
-            etc.)
-          </li>
-          <li>Server stores the input without sanitization</li>
-          <li>Victim views the page containing the stored script</li>
-          <li>Script executes in victim&apos;s browser when page loads</li>
-        </ul>
-        <p>
-          <strong>Example:</strong> Comment section that stores and displays
-          user comments without sanitization. Attacker posts a comment
-          containing malicious JavaScript.
+          Input validation supplements output encoding by ensuring that user
+          input conforms to expected formats and ranges. Validate type (numbers
+          should be numbers, emails should match email pattern), length (enforce
+          maximum lengths), format (use regex patterns for expected formats like
+          phone numbers), and range (numbers within expected min/max values).
+          Use allowlists (what is allowed) rather than blocklists (what is
+          blocked) — blocklists are always incomplete because attackers find
+          new bypass techniques. Importantly, input validation alone does not
+          prevent XSS — it is a supplementary defense. A determined attacker
+          can craft input that passes validation but still executes as script
+          when rendered without encoding.
         </p>
         <p>
-          <strong>Impact:</strong> More severe than reflected XSS because
-          victims don&apos;t need to click a malicious link — any user viewing
-          the infected page is affected.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">DOM-based XSS</h3>
-        <p>
-          The vulnerability exists in client-side code rather than server-side
-          code. The attack payload is executed by modifying the DOM in the
-          victim&apos;s browser.
-        </p>
-        <p>
-          <strong>Attack flow:</strong>
-        </p>
-        <ul className="space-y-2">
-          <li>
-            Attacker crafts URL with malicious payload in fragment or query
-          </li>
-          <li>Victim visits the URL</li>
-          <li>
-            Client-side JavaScript reads the untrusted data from DOM
-            (location.hash, location.search)
-          </li>
-          <li>
-            JavaScript writes the data back to the DOM using innerHTML or
-            similar
-          </li>
-          <li>Script executes without ever being sent to the server</li>
-        </ul>
-        <p>
-          <strong>Example:</strong> Single-page app that reads{" "}
-          <code>window.location.hash</code> and writes it to{" "}
-          <code>element.innerHTML</code> for dynamic content rendering.
-        </p>
-        <p>
-          <strong>Why it&apos;s dangerous:</strong> Server-side defenses (WAF,
-          input validation) cannot detect or prevent DOM XSS because the
-          malicious payload never reaches the server.
+          Content Security Policy (CSP) provides an additional layer of
+          protection by specifying which sources of content are allowed to load
+          and execute. The <code>script-src</code> directive controls which
+          JavaScript sources can execute — restricting it to{" "}
+          <code>&apos;self&apos;</code> and specific trusted domains prevents
+          unauthorized scripts from running. Nonces (single-use tokens) allow
+          specific inline scripts to execute while blocking all others. The{" "}
+          <code>&apos;unsafe-inline&apos;</code> and{" "}
+          <code>&apos;unsafe-eval&apos;</code> keywords weaken CSP significantly
+          and should be avoided. Start with{" "}
+          <code>Content-Security-Policy-Report-Only</code> to test policies
+          without blocking, monitor violation reports to identify legitimate
+          scripts that need to be allowed, then enforce with{" "}
+          <code>Content-Security-Policy</code>.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/xss-types-comparison.svg"
           alt="XSS Types Comparison"
-          caption="Comparison of Reflected, Stored, and DOM-based XSS attack flows showing where the malicious script originates and executes"
+          caption="Comparison of Reflected XSS (malicious URL, server reflects input), Stored XSS (persistent in database, automatic execution), and DOM-based XSS (client-side only, payload never reaches server)"
         />
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">XSS Comparison</h3>
-        <table className="w-full border-collapse text-sm">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Type</th>
-              <th className="p-3 text-left">Payload Location</th>
-              <th className="p-3 text-left">Requires User Action</th>
-              <th className="p-3 text-left">Server-Side Detectable</th>
-              <th className="p-3 text-left">Severity</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">Reflected</td>
-              <td className="p-3">URL/query parameter</td>
-              <td className="p-3">Yes (click link)</td>
-              <td className="p-3">Yes</td>
-              <td className="p-3">Medium-High</td>
-            </tr>
-            <tr>
-              <td className="p-3">Stored</td>
-              <td className="p-3">Database/server storage</td>
-              <td className="p-3">No (automatic)</td>
-              <td className="p-3">Yes</td>
-              <td className="p-3">Critical</td>
-            </tr>
-            <tr>
-              <td className="p-3">DOM-based</td>
-              <td className="p-3">Client-side DOM</td>
-              <td className="p-3">Yes (visit URL)</td>
-              <td className="p-3">No</td>
-              <td className="p-3">High</td>
-            </tr>
-          </tbody>
-        </table>
       </section>
 
       <section>
-        <h2>XSS Prevention Strategies</h2>
+        <h2>Architecture &amp; Flow</h2>
         <p>
-          Preventing XSS requires defense in depth — multiple layers of
-          protection that work together.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          1. Output Encoding / Escaping
-        </h3>
-        <p>
-          The primary defense against XSS. Convert special characters to their
-          HTML entity equivalents before rendering user input.
-        </p>
-        <p>
-          <strong>Context-aware encoding:</strong>
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>HTML body:</strong> Encode <code>&amp;</code>,{" "}
-            <code>&lt;</code>, <code>&gt;</code>,<code>&quot;</code>,{" "}
-            <code>&apos;</code>
-          </li>
-          <li>
-            <strong>HTML attributes:</strong> Encode attributes and use single
-            or double quotes consistently
-          </li>
-          <li>
-            <strong>JavaScript:</strong> Use JSON.stringify for data, avoid
-            inserting user data into script tags
-          </li>
-          <li>
-            <strong>CSS:</strong> Validate and sanitize CSS values, avoid
-            user-controlled CSS
-          </li>
-          <li>
-            <strong>URLs:</strong> Encode URL parameters, validate URL schemes
-            (block javascript:)
-          </li>
-        </ul>
-        <p>
-          <strong>Framework protection:</strong> React, Vue, and Angular
-          automatically escape interpolated values. <code>{"{userInput}"}</code>{" "}
-          is safe; <code>dangerouslySetInnerHTML</code> bypasses protection.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">2. Input Validation</h3>
-        <p>
-          Validate and sanitize all user input on both client and server. Use
-          allowlists (what&apos;s allowed) rather than blocklists (what&apos;s
-          blocked).
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Validate type:</strong> Numbers should be numbers, emails
-            should match email pattern
-          </li>
-          <li>
-            <strong>Validate length:</strong> Enforce maximum lengths to prevent
-            buffer-related issues
-          </li>
-          <li>
-            <strong>Validate format:</strong> Use regex patterns for expected
-            formats (phone, SSN, etc.)
-          </li>
-          <li>
-            <strong>Validate range:</strong> Numbers should be within expected
-            min/max values
-          </li>
-          <li>
-            <strong>Allowlist characters:</strong> For free text, consider
-            allowing only safe characters
-          </li>
-        </ul>
-        <p>
-          <strong>Important:</strong> Input validation alone does NOT prevent
-          XSS. It&apos;s a supplementary defense. Output encoding is the primary
-          control.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          3. Content Security Policy (CSP)
-        </h3>
-        <p>
-          CSP is an HTTP header that provides an additional layer of protection
-          by specifying which sources of content are allowed to load and
-          execute.
+          The XSS defense architecture follows a defense-in-depth model with
+          four layers. Layer 1 is output encoding — every user input is encoded
+          for its rendering context before being inserted into the DOM.
+          Framework auto-encoding (React JSX escaping) handles the common case,
+          and manual encoding (DOMPurify, encode functions) handles exceptions
+          like dangerouslySetInnerHTML. Layer 2 is input validation — all user
+          input is validated on both client and server against expected formats,
+          types, lengths, and ranges using allowlists. Layer 3 is Content
+          Security Policy — the HTTP header restricts which scripts can execute,
+          blocking any script not from an approved source. Layer 4 is
+          sanitization — when HTML input is required (rich text editors,
+          comments with formatting), sanitization libraries (DOMPurify,
+          sanitize-html) strip dangerous elements and attributes while
+          preserving safe formatting.
         </p>
         <p>
-          <strong>Key CSP directives:</strong>
+          Framework-specific XSS prevention leverages each framework&apos;s
+          built-in protections while avoiding patterns that bypass them. React
+          automatically escapes JSX interpolations — <code>user input in braces</code>
+          is safe. The danger is <code>dangerouslySetInnerHTML</code> — only
+          use it with content sanitized by DOMPurify. URLs in href/src
+          attributes must be validated to block <code>javascript:</code> URLs.
+          Vue automatically escapes text interpolations — <code>template text binding</code> is safe. The danger is <code>v-html</code> — sanitize
+          first. Angular has built-in XSS protection through its templating
+          system and DomSanitizer service — the danger is
+          bypassSecurityTrust* methods that disable sanitization.
         </p>
-        <ul className="space-y-2">
-          <li>
-            <code>default-src</code>: Default policy for all resource types
-          </li>
-          <li>
-            <code>script-src</code>: Allowed JavaScript sources
-          </li>
-          <li>
-            <code>style-src</code>: Allowed CSS sources
-          </li>
-          <li>
-            <code>img-src</code>: Allowed image sources
-          </li>
-          <li>
-            <code>connect-src</code>: Allowed XHR/fetch/WebSocket destinations
-          </li>
-          <li>
-            <code>frame-ancestors</code>: Clickjacking protection (replaces
-            X-Frame-Options)
-          </li>
-        </ul>
-        <p>
-          <strong>Example CSP header:</strong>
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <code>
-              Content-Security-Policy: default-src 'self'; script-src 'self'
-              https://trusted.cdn.com; style-src 'self' 'unsafe-inline'; img-src
-              'self' data: https:;
-            </code>
-          </li>
-        </ul>
-        <p>
-          <strong>CSP keywords:</strong>
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <code>'self'</code>: Allow from same origin
-          </li>
-          <li>
-            <code>'unsafe-inline'</code>: Allow inline scripts/styles (weakens
-            CSP)
-          </li>
-          <li>
-            <code>'unsafe-eval'</code>: Allow eval() and similar (weakens CSP)
-          </li>
-          <li>
-            <code>'nonce-[value]'</code>: Allow scripts with matching nonce
-            attribute
-          </li>
-          <li>
-            <code>'strict-dynamic'</code>: Trust scripts loaded by trusted
-            scripts
-          </li>
-          <li>
-            <code>'report-uri'</code> or <code>'report-to'</code>: Where to send
-            violation reports
-          </li>
-        </ul>
-        <p>
-          <strong>Best practice:</strong> Start with{" "}
-          <code>Content-Security-Policy-Report-Only</code> header to test
-          policies without blocking. Monitor violation reports, then enforce
-          with
-          <code>Content-Security-Policy</code>.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          4. Sanitization Libraries
-        </h3>
-        <p>
-          When you must allow HTML input (rich text editors, comments with
-          formatting), use sanitization libraries to strip dangerous elements
-          and attributes.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>DOMPurify:</strong> Fast, widely-used, framework-agnostic.
-            Recommended for React, Vue, Angular.
-          </li>
-          <li>
-            <strong>sanitize-html:</strong> Node.js library for server-side
-            sanitization.
-          </li>
-          <li>
-            <strong>js-xss:</strong> Another option with configurable
-            allowlists.
-          </li>
-        </ul>
-        <p>
-          <strong>What sanitizers remove:</strong>
-        </p>
-        <ul className="space-y-2">
-          <li>Script tags and event handlers (onclick, onerror, onload)</li>
-          <li>javascript: and data: URLs</li>
-          <li>Dangerous tags (script, iframe, object, embed)</li>
-          <li>CSS expressions and behaviors</li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/xss-defense-layers.svg"
           alt="XSS Defense Layers"
-          caption="Defense in depth for XSS prevention — encoding, validation, CSP, and sanitization working together"
+          caption="Defense in depth for XSS prevention — output encoding (primary), input validation (supplementary), Content Security Policy (safety net), and sanitization (for HTML input) working together"
         />
+
+        <p>
+          Server-Side Rendering introduces additional XSS vectors because
+          content is rendered on the server and sent as HTML to the browser.
+          User input must be sanitized before storing in the database, encoded
+          when rendering on the server, and carefully handled in{" "}
+          <code>getServerSideProps</code> or <code>asyncData</code> that
+          includes user input. CSP should be implemented at the edge (CDN) or
+          server level, not just in the application code. The SSR context means
+          that XSS vulnerabilities affect all users who receive the rendered
+          HTML, not just users who interact with specific client-side code —
+          making server-side XSS prevention even more critical.
+        </p>
       </section>
 
       <section>
-        <h2>Framework-Specific XSS Prevention</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">React</h3>
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          React automatically escapes values in JSX, providing protection
-          against most XSS attacks.
+          CSP strictness versus developer convenience is a fundamental
+          trade-off. A strict CSP (no <code>&apos;unsafe-inline&apos;</code>,
+          no <code>&apos;unsafe-eval&apos;</code>, specific domain allowlist)
+          provides maximum protection but requires refactoring inline scripts,
+          eliminating eval-based patterns, and managing nonces for legitimate
+          inline scripts. A lenient CSP (allowing <code>&apos;unsafe-inline&apos;</code>)
+          is easier to implement but provides minimal protection — any injected
+          inline script can execute. The recommended approach is to start with
+          Report-Only mode, identify all inline scripts and eval usage, refactor
+          them to use external scripts with nonces, then enforce the strict
+          policy. The refactoring effort is significant but provides meaningful
+          XSS protection.
         </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Safe:</strong> <code>{"{userInput}"}</code> in JSX is
-            automatically escaped
-          </li>
-          <li>
-            <strong>Unsafe:</strong> <code>dangerouslySetInnerHTML</code>{" "}
-            bypasses escaping — only use with sanitized content
-          </li>
-          <li>
-            <strong>Unsafe:</strong> Building HTML strings with concatenation
-            and using dangerouslySetInnerHTML
-          </li>
-          <li>
-            <strong>Unsafe:</strong> Using user input in href attributes without
-            validation (javascript: URLs)
-          </li>
-        </ul>
         <p>
-          <strong>Best practices:</strong>
+          Sanitization library selection involves trade-offs between strictness
+          and flexibility. DOMPurify is fast, widely-used, and
+          framework-agnostic — it is the recommended default for most use cases.
+          It strips dangerous elements (script, iframe, object, embed), event
+          handlers (onclick, onerror, onload), javascript: URLs, and CSS
+          expressions while preserving safe HTML formatting. sanitize-html is a
+          Node.js library for server-side sanitization with configurable
+          allowlists — useful when you need fine-grained control over which
+          tags and attributes are allowed. js-xss offers another configurable
+          option. The trade-off is that overly strict sanitization removes
+          legitimate formatting (users cannot bold or italicize text), while
+          overly lenient sanitization may miss dangerous patterns — the
+          allowlist must be carefully curated and regularly updated.
         </p>
-        <ul className="space-y-2">
-          <li>Use DOMPurify before passing HTML to dangerouslySetInnerHTML</li>
-          <li>Validate URLs before using in href/src attributes</li>
-          <li>Avoid eval(), Function constructor, setTimeout with strings</li>
-          <li>
-            Use CSP with nonce or strict-dynamic for additional protection
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Vue.js</h3>
         <p>
-          Vue automatically escapes text interpolations but provides v-html for
-          raw HTML.
+          Framework auto-encoding versus manual sanitization depends on the
+          input type. For plain text input (names, emails, comments), framework
+          auto-encoding is sufficient — the framework escapes all special
+          characters, preventing script execution. For rich text input (formatted
+          comments, blog posts with formatting, email bodies), manual
+          sanitization is required because the HTML tags must be preserved while
+          dangerous elements are stripped. The key insight is that sanitization
+          is only needed when you want to allow some HTML — if you do not need
+          HTML formatting, framework auto-encoding is simpler and more reliable.
         </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Safe:</strong> <code>{"{ { message } }"}</code> text
-            interpolation
-          </li>
-          <li>
-            <strong>Unsafe:</strong> <code>v-html</code> directive renders raw
-            HTML — sanitize first
-          </li>
-          <li>
-            <strong>Unsafe:</strong> Dynamic component names from user input
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Angular</h3>
-        <p>
-          Angular has built-in XSS protection through its templating system and
-          DomSanitizer service.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Safe:</strong> Standard interpolations and bindings are
-            sanitized
-          </li>
-          <li>
-            <strong>Unsafe:</strong> BypassSecurityTrust* methods disable
-            sanitization — avoid unless necessary
-          </li>
-          <li>
-            <strong>Unsafe:</strong> innerHTML bindings without sanitization
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Server-Side Rendering (Next.js, Nuxt)
-        </h3>
-        <p>
-          SSR introduces additional XSS vectors because content is rendered on
-          the server.
-        </p>
-        <ul className="space-y-2">
-          <li>Sanitize user input before storing in database</li>
-          <li>Encode output when rendering on server</li>
-          <li>
-            Be careful with getServerSideProps / asyncData that includes user
-            input
-          </li>
-          <li>Implement CSP at the edge (CDN) or server level</li>
-        </ul>
       </section>
 
       <section>
-        <h2>Other Injection Attacks</h2>
+        <h2>Best Practices</h2>
         <p>
-          XSS is one type of injection attack. Frontend engineers should also be
-          aware of:
+          Use framework auto-encoding as the default defense — never bypass it
+          without a compelling reason. In React, use JSX interpolation
+          (<code>{"{userInput}"}</code>) instead of{" "}
+          <code>dangerouslySetInnerHTML</code>. When dangerouslySetInnerHTML is
+          unavoidable (rendering rich text content from a CMS), always sanitize
+          the content with DOMPurify first:{" "}
+          <code>{`dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}`}</code>.
+          Validate URLs before using them in href/src attributes — block
+          <code>javascript:</code>, <code>data:</code>, and{" "}
+          <code>vbscript:</code> URL schemes, allowing only http:, https:, and
+          relative URLs.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          SQL Injection (via API)
-        </h3>
         <p>
-          While SQL injection is a backend vulnerability, frontend engineers
-          should:
+          Implement Content Security Policy as a safety net that catches any
+          XSS that bypasses encoding and sanitization. Configure script-src to
+          allow only your own origin and specific trusted third-party domains.
+          Use nonces for legitimate inline scripts instead of{" "}
+          <code>&apos;unsafe-inline&apos;</code>. Avoid{" "}
+          <code>&apos;unsafe-eval&apos;</code> — it allows any eval()-like
+          function, which is a common XSS vector. Implement CSP violation
+          reporting to a monitoring endpoint so you are alerted when legitimate
+          scripts are blocked (indicating incomplete CSP configuration) or when
+          unauthorized scripts attempt to execute (indicating a potential attack).
         </p>
-        <ul className="space-y-2">
-          <li>
-            Never construct SQL queries on the client (e.g., in client-side
-            databases)
-          </li>
-          <li>Use parameterized queries in any server-side code you write</li>
-          <li>Validate input format before sending to API</li>
-          <li>
-            Understand that input validation on client is for UX, not security
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Prototype Pollution</h3>
         <p>
-          A JavaScript-specific vulnerability where attackers modify
-          Object.prototype.
+          Avoid dangerous JavaScript patterns that enable XSS. Never use{" "}
+          <code>eval()</code>, <code>Function()</code> constructor, or{" "}
+          <code>setTimeout/setInterval</code> with string arguments — these
+          execute arbitrary code and are XSS vectors if any part of the string
+          comes from user input. Never build HTML strings with user input
+          concatenation and insert them with innerHTML — use DOM APIs
+          (createElement, textContent) or framework templating instead. Never
+          use user input as part of a CSS url() value — CSS can execute
+          JavaScript through <code>expression()</code> in older IE and{" "}
+          <code>url(javascript:...)</code> in some contexts.
         </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Cause:</strong> Unvalidated merge/clone operations on
-            user-controlled objects
-          </li>
-          <li>
-            <strong>Impact:</strong> All objects inherit malicious properties,
-            potential RCE
-          </li>
-          <li>
-            <strong>Prevention:</strong> Use Object.create(null) for maps, avoid
-            recursive merge with user input, use libraries like lodash that
-            patch prototype pollution
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Template Injection</h3>
-        <p>When user input is interpreted as template code rather than data.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Cause:</strong> Passing user input to template engines
-            (Handlebars, Pug, etc.)
-          </li>
-          <li>
-            <strong>Impact:</strong> Arbitrary code execution, data exfiltration
-          </li>
-          <li>
-            <strong>Prevention:</strong> Never pass user input as template
-            source, use sandboxed template execution
-          </li>
-        </ul>
       </section>
 
       <section>
-        <h2>Security Headers for XSS Prevention</h2>
-        <p>In addition to CSP, these headers provide defense in depth:</p>
-
-        <table className="w-full border-collapse text-sm">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Header</th>
-              <th className="p-3 text-left">Purpose</th>
-              <th className="p-3 text-left">Recommended Value</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
-                <code>X-Content-Type-Options</code>
-              </td>
-              <td className="p-3">Prevent MIME sniffing</td>
-              <td className="p-3">
-                <code>nosniff</code>
-              </td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <code>X-Frame-Options</code>
-              </td>
-              <td className="p-3">Prevent clickjacking</td>
-              <td className="p-3">
-                <code>DENY</code> or <code>SAMEORIGIN</code>
-              </td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <code>X-XSS-Protection</code>
-              </td>
-              <td className="p-3">Legacy browser XSS filter (deprecated)</td>
-              <td className="p-3">
-                <code>1; mode=block</code> (legacy only)
-              </td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <code>Referrer-Policy</code>
-              </td>
-              <td className="p-3">Control referrer information</td>
-              <td className="p-3">
-                <code>strict-origin-when-cross-origin</code>
-              </td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <code>Permissions-Policy</code>
-              </td>
-              <td className="p-3">Disable browser features</td>
-              <td className="p-3">
-                <code>geolocation=(), microphone=()</code>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <h2>Common Pitfalls</h2>
+        <p>
+          Using dangerouslySetInnerHTML with unsanitized content is the most
+          common React XSS vulnerability. Developers use it to render HTML
+          content from a CMS, WYSIWYG editor, or API response without realizing
+          that the content may contain malicious scripts. Even if the CMS is
+          trusted, a compromised CMS account or a vulnerable editor can inject
+          malicious HTML. The fix is to always sanitize with DOMPurify before
+          passing HTML to dangerouslySetInnerHTML, and to configure DOMPurify
+          with a strict allowlist of allowed tags and attributes.
+        </p>
+        <p>
+          Prototype pollution is a JavaScript-specific injection vulnerability
+          where attackers modify Object.prototype through unsanified merge or
+          clone operations on user-controlled objects. When an object is merged
+          with user-controlled keys, setting <code>__proto__</code> or{" "}
+          <code>constructor.prototype</code> modifies Object.prototype, causing
+          all objects to inherit the malicious properties. This can lead to
+          remote code execution if the polluted properties affect security
+          checks or code paths. Prevention: use Object.create(null) for maps,
+          avoid recursive merge with user input, and use libraries that patch
+          prototype pollution (lodash 4.17.21+).
+        </p>
+        <p>
+          Relying solely on client-side input validation for security is a
+          fundamental error. Client-side validation (HTML5 form validation,
+          JavaScript regex checks) is for user experience — it provides
+          immediate feedback to users before submitting the form. It provides
+          zero security because attackers can bypass client-side validation
+          entirely (using curl, Postman, or browser DevTools to modify requests
+          directly). All input validation for security must be performed on the
+          server side, where the attacker cannot bypass it. Client-side
+          validation is a convenience feature, not a security control.
+        </p>
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Social media platforms face the highest XSS risk because they render
+          user-generated content (posts, comments, profiles, messages) to other
+          users. Twitter, Facebook, and Reddit use a combination of framework
+          auto-encoding for plain text, DOMPurify sanitization for posts with
+          formatting, strict CSP with nonce-based inline scripts, and
+          server-side encoding for SSR-rendered content. They also implement
+          automated content scanning for known XSS patterns and manually review
+          reported content. The constant arms race between attackers finding
+          new XSS vectors and platforms patching them has led to increasingly
+          strict CSP policies and comprehensive sanitization allowlists.
+        </p>
+        <p>
+          Content management systems (WordPress, Contentful, Sanity) must
+          balance rich text editing capabilities with XSS prevention. They
+          sanitize all HTML content on the server side before storage using
+          configurable allowlists (allowing safe tags like p, strong, em, a,
+          img with sanitized attributes, while blocking script, iframe, object,
+          embed, and event handlers). The sanitization configuration is
+          customizable per tenant — enterprise customers can restrict the
+          allowlist further, while personal blogs may allow more formatting
+          options. The CMS also encodes output on the server side when rendering
+          pages, providing defense in depth even if sanitization misses
+          something.
+        </p>
+        <p>
+          Financial applications implement the strictest XSS prevention because
+          successful XSS in a banking application enables session hijacking,
+          unauthorized transactions, and credential theft. They use strict CSP
+          (no unsafe-inline, no unsafe-eval, specific domain allowlist),
+          comprehensive input validation and encoding on both client and server,
+          DOMPurify sanitization for any HTML content, Trusted Types API to
+          prevent DOM XSS from dangerous API usage, and regular security audits
+          with automated XSS scanning in CI/CD. The defense-in-depth approach
+          ensures that even if one layer fails, other layers provide protection.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions with Detailed Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What are the three types of XSS and how do they differ?
             </p>
             <p className="mt-2 text-sm">
-              A: Reflected XSS reflects malicious input off the server (via
-              links). Stored XSS persists malicious content on the server
-              (comments, profiles). DOM-based XSS executes entirely client-side
-              without server involvement. Stored XSS is most severe because
-              victims don&apos;t need to click anything. DOM XSS is hardest to
-              detect because server-side defenses can&apos;t see the payload.
+              A: Reflected XSS reflects malicious input off the server via URLs
+              — the victim must click a malicious link. Stored XSS persists
+              malicious content on the server (comments, profiles) — victims
+              see it through normal browsing, no click required, making it more
+              severe. DOM-based XSS executes entirely client-side — the payload
+              is read from the DOM (location.hash) and written back via
+              innerHTML, never reaching the server, so server-side defenses
+              cannot detect it. Stored XSS is most severe, DOM XSS is hardest
+              to detect server-side.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How does React protect against XSS? When is it vulnerable?
             </p>
             <p className="mt-2 text-sm">
               A: React automatically escapes values in JSX interpolations,
-              converting special characters to HTML entities. It&apos;s
-              vulnerable when using dangerouslySetInnerHTML with unsanitized
-              content, when building HTML strings via concatenation, or when
-              using user input in href attributes without validating against
-              javascript: URLs.
+              converting special characters to HTML entities. It is vulnerable
+              when using dangerouslySetInnerHTML with unsanitized content, when
+              building HTML strings with user input concatenation, when using
+              user input in href/src attributes without validating URL schemes
+              (blocking javascript: URLs), and when using eval(), Function(), or
+              setTimeout with strings containing user input. Always sanitize
+              with DOMPurify before dangerouslySetInnerHTML.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What is Content Security Policy and how does it prevent XSS?
             </p>
             <p className="mt-2 text-sm">
-              A: CSP is an HTTP header that specifies allowed sources for
-              scripts, styles, images, etc. It prevents XSS by blocking inline
-              scripts (unless explicitly allowed with nonce or hash),
-              restricting script sources to trusted domains, and preventing
-              loading of malicious resources. A strict CSP like &quot;script-src
-              'self'&quot; blocks most XSS attacks even if injection occurs.
+              A: CSP is an HTTP header that specifies which content sources are
+              allowed. script-src restricts which JavaScript sources can
+              execute — setting it to &apos;self&apos; and specific trusted
+              domains blocks unauthorized scripts. Nonces allow specific inline
+              scripts while blocking all others. Avoid unsafe-inline and
+              unsafe-eval. Start with Report-Only mode to test, then enforce.
+              CSP catches XSS that bypasses encoding and sanitization — it is
+              a safety net, not the primary defense.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: When would you use a sanitization library vs output encoding?
+              Q: What is prototype pollution and how do you prevent it?
             </p>
             <p className="mt-2 text-sm">
-              A: Output encoding is the default defense — escape all user input
-              before rendering. Use sanitization libraries only when you need to
-              allow some HTML (rich text editors, formatted comments).
-              Sanitization strips dangerous elements while preserving safe
-              formatting. Never use raw HTML from users without sanitization,
-              even with encoding, because some attacks bypass encoding via event
-              handlers or javascript: URLs.
+              A: Prototype pollution occurs when user-controlled keys are merged
+              into objects unsafely, allowing attackers to set __proto__ or
+              constructor.prototype, modifying Object.prototype. All objects
+              then inherit the malicious properties, which can bypass security
+              checks or cause unexpected behavior. Prevention: use
+              Object.create(null) for maps, avoid recursive merge with user
+              input, use libraries that patch prototype pollution (lodash
+              4.17.21+), and validate object keys before merge operations.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: How would you implement XSS protection in a new web
-              application?
+              Q: What are the security headers for XSS prevention?
             </p>
             <p className="mt-2 text-sm">
-              A: Defense in depth approach: (1) Use a modern framework (React,
-              Vue, Angular) for automatic escaping. (2) Implement strict CSP
-              with nonce or strict-dynamic. (3) Sanitize any HTML input with
-              DOMPurify. (4) Validate all input format and type. (5) Set
-              security headers (X-Content-Type-Options, X-Frame-Options). (6)
-              Use automated security scanning in CI/CD. (7) Conduct regular
-              security audits and penetration testing.
+              A: Content-Security-Policy (primary — restrict script sources,
+              use nonces, avoid unsafe-inline/eval). X-Content-Type-Options:
+              nosniff (prevent MIME sniffing attacks). X-Frame-Options: DENY
+              or SAMEORIGIN (prevent clickjacking via iframes). Referrer-Policy:
+              strict-origin-when-cross-origin (control referrer information).
+              Permissions-Policy: disable unnecessary browser features
+              (geolocation, microphone). Implement all headers for defense in
+              depth — no single header provides complete protection.
             </p>
           </div>
         </div>
@@ -744,7 +440,7 @@ export default function XSSInjectionProtectionArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              OWASP XSS Prevention Cheat Sheet
+              OWASP — Cross-Site Scripting (XSS)
             </a>
           </li>
           <li>
@@ -764,12 +460,22 @@ export default function XSSInjectionProtectionArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              DOMPurify — XSS Sanitization Library
+              DOMPurify — HTML Sanitization Library
             </a>
           </li>
           <li>
             <a
-              href="https://react.dev/reference/react-dom/components/common#dangerouslysetinnerhtml"
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP — XSS Prevention Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"

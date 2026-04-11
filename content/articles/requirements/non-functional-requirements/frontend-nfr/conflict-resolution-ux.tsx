@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   subcategory: "nfr",
   slug: "conflict-resolution-ux",
   version: "extensive",
-  wordCount: 9000,
-  readingTime: 36,
-  lastUpdated: "2026-03-15",
+  wordCount: 5500,
+  readingTime: 22,
+  lastUpdated: "2026-04-11",
   tags: [
     "frontend",
     "nfr",
@@ -32,396 +32,387 @@ export default function ConflictResolutionUXArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
           <strong>Conflict Resolution UX</strong> addresses how applications
           handle situations where the same data has been modified in multiple
-          places — different tabs, different devices, or by different users —
-          and those modifications conflict with each other. Conflicts occur in
-          offline-first apps, collaborative editing, multi-device sync, and
-          distributed systems.
+          places — different browser tabs, different devices, or by different
+          users — and those modifications conflict with each other. Conflicts
+          occur in offline-first applications where users edit data without
+          connectivity, in collaborative editing scenarios where multiple users
+          modify the same document simultaneously, in multi-device sync when
+          changes made on a phone and a tablet diverge, and in queue replay
+          scenarios where queued mutations conflict with current server state
+          after reconnection.
         </p>
         <p>
-          For staff engineers, conflict resolution is both a technical and UX
-          challenge. Technically, you need detection mechanisms and resolution
-          algorithms. From a UX perspective, you need to handle conflicts
-          gracefully without confusing or frustrating users.
+          For staff engineers, conflict resolution is both a technical and user
+          experience challenge. Technically, you need detection mechanisms
+          (version vectors, timestamps, field-level tracking) and resolution
+          algorithms (last-write-wins, field-level merging, operational
+          transformation, CRDTs). From a UX perspective, you need to handle
+          conflicts gracefully without confusing or frustrating users —
+          presenting conflicts clearly, providing intuitive comparison and merge
+          interfaces, and ensuring that user work is never silently lost. The
+          right approach depends on the application domain — a collaborative
+          document editor requires automatic convergence (CRDTs), while a
+          financial transaction system requires manual review of every conflict.
         </p>
         <p>
-          <strong>When conflicts occur:</strong>
+          The cost of poor conflict resolution is severe. Silent data loss
+          destroys user trust and generates support tickets. Overly aggressive
+          conflict prompts interrupt workflow and frustrate users who rarely
+          experience conflicts. The goal is to resolve conflicts automatically
+          when safe and involve the user only when automatic resolution is
+          risky or impossible. This requires sophisticated detection logic,
+          well-designed merge algorithms, and clear, actionable conflict
+          notification UIs.
         </p>
-        <ul>
-          <li>
-            <strong>Offline editing:</strong> User edits document offline, same
-            document edited on another device
-          </li>
-          <li>
-            <strong>Multi-tab editing:</strong> Same form open in multiple tabs,
-            both submitted
-          </li>
-          <li>
-            <strong>Collaborative editing:</strong> Multiple users edit same
-            document simultaneously
-          </li>
-          <li>
-            <strong>Mobile sync:</strong> Phone and tablet both modified contact
-            list while offline
-          </li>
-          <li>
-            <strong>Queue replay:</strong> Queued actions conflict with current
-            server state
-          </li>
-        </ul>
       </section>
 
       <section>
-        <h2>Conflict Detection</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Version Vectors</h3>
-        <ul className="space-y-2">
-          <li>Track version per node (device, user, tab)</li>
-          <li>Each change increments local version</li>
-          <li>Sync includes version vector</li>
-          <li>Conflict if versions are concurrent (neither dominates)</li>
-          <li>Used in: DynamoDB, Riak, distributed databases</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Timestamps</h3>
-        <ul className="space-y-2">
-          <li>Last-write-wins based on timestamp</li>
-          <li>Simple but can lose data</li>
-          <li>Clock skew issues (devices have different times)</li>
-          <li>
-            Use logical timestamps (Lamport clocks) for distributed systems
-          </li>
-          <li>Server timestamp preferred over client timestamp</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Field-Level Tracking
-        </h3>
-        <ul className="space-y-2">
-          <li>Track changes per field, not per document</li>
-          <li>Conflicts only when same field modified</li>
-          <li>Allows automatic merge of non-conflicting changes</li>
-          <li>More complex but better UX</li>
-          <li>Used in: Google Docs, Firebase, modern sync libraries</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Operation Logs</h3>
-        <ul className="space-y-2">
-          <li>Record each operation (not just state)</li>
-          <li>Replay operations to detect conflicts</li>
-          <li>Can transform operations to resolve conflicts</li>
-          <li>Used in: Operational Transformation, CRDTs</li>
-          <li>Enables real-time collaboration</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          Conflict detection is the foundation of any resolution strategy.
+          Version vectors track a version number per node (device, user, or
+          tab), incrementing the local version on each change. When syncing,
+          nodes exchange version vectors — if one vector dominates the other
+          (all version numbers are equal or greater), the dominating version
+          represents the latest state. If neither dominates (each has higher
+          versions for different nodes), the changes are concurrent and a
+          conflict exists. This approach is used in distributed databases like
+          DynamoDB and Riak and provides precise conflict detection without
+          relying on clock accuracy.
+        </p>
+        <p>
+          Timestamps offer a simpler detection mechanism but introduce clock
+          skew challenges. Last-write-wins based on timestamp is straightforward
+          to implement but silently loses data when concurrent modifications
+          occur. Logical timestamps (Lamport clocks) address clock skew by using
+          counters rather than wall-clock time, but they still lose concurrent
+          modification data. Field-level tracking improves granularity by
+          tracking changes per field rather than per document — if User A
+          modifies the title and User B modifies the content, both changes are
+          kept automatically, and a conflict is only raised when the same field
+          is modified by both parties. This is the approach used by Google Docs
+          and Firebase.
+        </p>
+        <p>
+          Operation logs record each mutation as an operation (not just the
+          resulting state), enabling conflict detection at the operation level.
+          By replaying operations from both sources, the system can detect
+          conflicting operations and apply transformation rules to resolve them.
+          This is the foundation of Operational Transformation (OT) and
+          Conflict-Free Replicated Data Types (CRDTs), which enable real-time
+          collaborative editing by transforming operations to maintain
+          consistency across all replicas.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/conflict-detection-methods.svg"
           alt="Conflict Detection Methods"
-          caption="Conflict detection approaches — version vectors, timestamps, field-level tracking, and operation logs"
+          caption="Conflict detection approaches — version vectors, timestamps, field-level tracking, and operation logs with their accuracy and complexity trade-offs"
         />
       </section>
 
       <section>
-        <h2>Resolution Strategies</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Last-Write-Wins (LWW)
-        </h3>
-        <ul className="space-y-2">
-          <li>Most recent timestamp wins</li>
-          <li>Simple to implement</li>
-          <li>Can lose user data silently</li>
-          <li>Use when: Conflicts are rare, data is ephemeral</li>
-          <li>Avoid when: User work is valuable, conflicts are common</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Field-Level Merging</h3>
-        <ul className="space-y-2">
-          <li>Merge changes at field level</li>
-          <li>
-            If user A changes title and user B changes content, both changes
-            kept
-          </li>
-          <li>Only conflict when same field modified</li>
-          <li>Use when: Documents have multiple independent fields</li>
-          <li>Implementation: Track changed fields, merge non-conflicting</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Manual Resolution</h3>
-        <ul className="space-y-2">
-          <li>Show conflicts to user for decision</li>
-          <li>Side-by-side comparison UI</li>
-          <li>User chooses which version or creates hybrid</li>
-          <li>Use when: Data is critical, automatic merge is risky</li>
-          <li>UX challenge: Make comparison clear and actionable</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Operational Transformation (OT)
-        </h3>
-        <ul className="space-y-2">
-          <li>Transform operations to maintain consistency</li>
-          <li>Used by Google Docs</li>
-          <li>Complex algorithm, requires central server</li>
-          <li>Enables real-time collaborative editing</li>
-          <li>Library: ShareDB, ot.js</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          CRDTs (Conflict-Free Replicated Data Types)
-        </h3>
-        <ul className="space-y-2">
-          <li>Data structures designed for automatic convergence</li>
-          <li>No central coordination needed</li>
-          <li>Mathematical guarantee of eventual consistency</li>
-          <li>Types: G-Counter, PN-Counter, LWW-Register, OR-Set</li>
-          <li>Libraries: Yjs, Automerge, CRDTs</li>
-        </ul>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The conflict resolution architecture flows through detection,
+          classification, resolution, and notification stages. When a sync event
+          occurs (coming back online, tab synchronization, or periodic pull),
+          the system first detects conflicts by comparing version vectors,
+          timestamps, or field-level change tracking data between the local and
+          remote states. If no conflict exists (one version dominates or changes
+          are to different fields), the merge proceeds automatically. If a
+          conflict is detected, it is classified by severity — field-level
+          conflicts in non-critical data may be auto-resolved with last-write
+          wins, while conflicts in critical data (financial records, legal
+          documents) require manual user review.
+        </p>
+        <p>
+          The resolution strategy determines how conflicts are handled.
+          Last-write-wins is the simplest approach — the most recent timestamp
+          wins and the older change is discarded. This is appropriate for
+          ephemeral data where conflicts are rare and the cost of data loss is
+          low. Field-level merging keeps non-conflicting changes from both
+          versions and only raises conflicts when the same field is modified by
+          both parties. This automatic merge handles the majority of real-world
+          conflicts without user involvement. Operational Transformation
+          transforms conflicting operations to produce a consistent result — for
+          example, if User A inserts text at position 5 and User B inserts text
+          at position 3, OT adjusts User A&apos;s insertion position to
+          account for User B&apos;s insertion.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/conflict-resolution-strategies.svg"
           alt="Conflict Resolution Strategies"
-          caption="Conflict resolution approaches — LWW, field-level merge, manual resolution, OT, and CRDTs"
+          caption="Conflict resolution approaches — last-write-wins, field-level merge, manual resolution, operational transformation, and CRDTs"
         />
-      </section>
-
-      <section>
-        <h2>UX Patterns for Conflict Resolution</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Conflict Notification
-        </h3>
-        <ul className="space-y-2">
-          <li>Alert user that conflict exists</li>
-          <li>Don&apos;t hide conflicts — users need to know</li>
-          <li>Explain what happened clearly</li>
-          <li>Provide clear next steps</li>
-          <li>
-            Example: &quot;This document was modified on another device. Review
-            changes and choose which to keep.&quot;
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Side-by-Side Comparison
-        </h3>
-        <ul className="space-y-2">
-          <li>Show both versions side by side</li>
-          <li>Highlight differences clearly</li>
-          <li>Allow selecting parts from each version</li>
-          <li>Preview merged result</li>
-          <li>Used by: Git merge tools, Google Docs version history</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Change Attribution</h3>
-        <ul className="space-y-2">
-          <li>Show who made each change</li>
-          <li>Include timestamp for context</li>
-          <li>Color-code by user</li>
-          <li>Helps user make informed decision</li>
-          <li>Used in: Google Docs, Figma, Notion</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Preserve Both Versions
-        </h3>
-        <ul className="space-y-2">
-          <li>When in doubt, don&apos;t delete data</li>
-          <li>Create &quot;Copy (conflicted)&quot; document</li>
-          <li>Let user decide later</li>
-          <li>Better to have duplicate than lost work</li>
-          <li>Dropbox, Google Drive use this pattern</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Automatic Merge with Review
-        </h3>
-        <ul className="space-y-2">
-          <li>Auto-merge non-conflicting changes</li>
-          <li>Highlight merged changes for review</li>
-          <li>User can accept or revert</li>
-          <li>Best of both worlds: automation + control</li>
-          <li>Used in: Modern code editors, collaborative tools</li>
-        </ul>
 
         <ArticleImage
-          src="/diagrams/requirements/nfr/frontend-nfr/conflict-ux-patterns.svg"
-          alt="Conflict UX Patterns"
-          caption="UX patterns for conflict resolution — notification, comparison, attribution, and merge review"
+          src="/diagrams/requirements/nfr/frontend-nfr/crdt-convergence-flow.svg"
+          alt="CRDT Convergence Flow"
+          caption="CRDT convergence — concurrent operations from multiple users are transformed to produce the same final state on all nodes, with mathematical guarantee regardless of operation order"
         />
+
+        <p>
+          CRDTs (Conflict-Free Replicated Data Types) represent the most
+          sophisticated approach — data structures designed with mathematical
+          guarantees that any order of operations produces the same final state.
+          Unlike OT, which requires a central server to transform operations,
+          CRDTs converge automatically in peer-to-peer and offline scenarios.
+          Common CRDT types include G-Counter (grow-only counter), PN-Counter
+          (increment and decrement), LWW-Register (last-write-wins register),
+          OR-Set (observed-remove set for adding and removing elements), and
+          RGA (Replicated Growable Array for text editing). Popular libraries
+          include Yjs (widely used for collaborative editing), Automerge (JSON
+          API for documents), and GunDB (real-time database with built-in
+          CRDTs).
+        </p>
       </section>
 
       <section>
-        <h2>Implementation Considerations</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">When to Resolve</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>On sync:</strong> Detect and resolve when coming back online
-          </li>
-          <li>
-            <strong>On save:</strong> Check for conflicts before committing
-          </li>
-          <li>
-            <strong>On open:</strong> Check for conflicts when opening document
-          </li>
-          <li>
-            <strong>Real-time:</strong> Resolve as changes arrive (collaborative
-            editing)
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Conflict Metadata</h3>
-        <ul className="space-y-2">
-          <li>Store conflict information with data</li>
-          <li>Include: conflicting versions, timestamps, user IDs</li>
-          <li>Track resolution status</li>
-          <li>Enable undo of resolution</li>
-          <li>Log conflicts for debugging</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Testing Conflicts</h3>
-        <ul className="space-y-2">
-          <li>Simulate offline scenarios</li>
-          <li>Test concurrent modifications</li>
-          <li>Verify conflict detection works</li>
-          <li>Test resolution UI thoroughly</li>
-          <li>Edge cases: network flakiness, multiple conflicts</li>
-        </ul>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Resolution strategy selection involves balancing complexity, data
+          safety, and user experience. Last-write-wins is trivially simple to
+          implement and works well for low-conflict scenarios (settings
+          preferences, read markers), but silently discards user work when
+          conflicts occur — an unacceptable outcome for documents, financial
+          data, or any information users invest effort in creating. Field-level
+          merging adds implementation complexity but automatically resolves the
+          majority of conflicts while preserving all non-conflicting changes. It
+          is the sweet spot for most applications with multi-device sync.
+        </p>
+        <p>
+          Operational Transformation enables real-time collaboration with
+          sub-second latency but requires a central coordination server, making
+          it unsuitable for peer-to-peer or fully offline scenarios. Google Docs
+          uses OT with a central server that receives, transforms, and
+          broadcasts operations to all connected clients. The algorithm is
+          complex to implement correctly — Google invested years in developing
+          and refining their OT implementation. CRDTs offer the same real-time
+          collaboration capability without central coordination, converging
+          automatically regardless of operation order. The trade-off is higher
+          memory usage (CRDTs store metadata for each operation) and more
+          complex data structures.
+        </p>
+        <p>
+          The UX approach to conflict presentation also involves trade-offs.
+          Showing a conflict dialog with side-by-side comparison gives users
+          full control but interrupts workflow and requires users to understand
+          the nature of the conflict. Automatic merging with a notification
+          (&quot;We merged your changes with changes from another device&quot;)
+          is less disruptive but may produce unexpected results that users
+          discover later. Preserving both versions as separate documents
+          (Dropbox&apos;s &quot;conflicted copy&quot; approach) is the safest
+          option but creates duplicate content that users must manually
+          reconcile. The right choice depends on the application domain and user
+          technical sophistication.
+        </p>
       </section>
 
       <section>
-        <h2>CRDTs for Automatic Resolution</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">What are CRDTs</h3>
-        <ul className="space-y-2">
-          <li>Conflict-Free Replicated Data Types</li>
-          <li>Data structures with mathematical convergence guarantee</li>
-          <li>Any order of operations produces same result</li>
-          <li>No central coordination needed</li>
-          <li>Perfect for offline-first, peer-to-peer</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Common CRDT Types</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>G-Counter:</strong> Grow-only counter (only increments)
-          </li>
-          <li>
-            <strong>PN-Counter:</strong> Positive-negative counter (increment
-            and decrement)
-          </li>
-          <li>
-            <strong>LWW-Register:</strong> Last-write-wins register
-          </li>
-          <li>
-            <strong>OR-Set:</strong> Observed-remove set (add/remove elements)
-          </li>
-          <li>
-            <strong>RGA:</strong> Replicated Growable Array (for text editing)
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CRDT Libraries</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Yjs:</strong> Popular, well-documented, many bindings
-          </li>
-          <li>
-            <strong>Automerge:</strong> JSON-like API, good for documents
-          </li>
-          <li>
-            <strong>Crdts:</strong> Rust implementation with WASM bindings
-          </li>
-          <li>
-            <strong>GunDB:</strong> Real-time database with CRDTs
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">When to Use CRDTs</h3>
-        <ul className="space-y-2">
-          <li>Real-time collaborative editing</li>
-          <li>Offline-first with complex merge needs</li>
-          <li>Peer-to-peer applications</li>
-          <li>When automatic convergence is critical</li>
-          <li>
-            Avoid when: Simple LWW is sufficient, complexity not justified
-          </li>
-        </ul>
+        <h2>Best Practices</h2>
+        <p>
+          Design conflict detection to be as granular as possible. Field-level
+          tracking is significantly better than document-level tracking because
+          it automatically merges non-conflicting changes and only raises
+          conflicts when the same field is modified. For collaborative text
+          editing, character-level tracking (via CRDTs) is even better, allowing
+          multiple users to edit different parts of the same paragraph
+          simultaneously without any conflict. The granularity of detection
+          directly impacts the frequency of user-facing conflicts — finer
+          granularity means fewer conflicts requiring manual resolution.
+        </p>
+        <p>
+          When manual resolution is required, provide a clear, intuitive
+          comparison interface. Show both versions side by side with differences
+          highlighted using color coding (green for additions, red for
+          deletions, yellow for modifications). Include attribution information
+          showing who made each change and when. Allow users to select
+          individual changes from each version to create a hybrid result, rather
+          than forcing an all-or-nothing choice. Provide a preview of the merged
+          result before confirming. Google Docs&apos;s version history and
+          Git&apos;s merge conflict interface are exemplary models.
+        </p>
+        <p>
+          Never silently lose user data. When in doubt, preserve both versions
+          and let the user decide later. Create a &quot;conflicted copy&quot;
+          document, notify the user of the conflict, and provide a clear path
+          to resolution. This approach, used by Dropbox and Google Drive,
+          prioritizes data safety over convenience — it is better to have
+          duplicate documents that users can merge than to lose work
+          permanently. Log all conflicts with metadata (conflicting versions,
+          timestamps, user IDs) for debugging and audit purposes.
+        </p>
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most dangerous pitfall is relying on wall-clock timestamps for
+          conflict detection without accounting for clock skew. Different
+          devices have different clock times, and even a few seconds of skew can
+          cause the wrong version to win in a last-write-wins scenario. A user
+          edits a document on their phone (clock 30 seconds behind), saves, then
+          edits on their laptop (correct clock) and saves — the phone&apos;s
+          change is incorrectly considered newer and overwrites the laptop&apos;s
+          change. The solution is to use server timestamps (the time the server
+          receives the change) rather than client timestamps, or to use version
+          vectors that do not depend on clock accuracy.
+        </p>
+        <p>
+          Another common error is failing to prevent infinite rebroadcast loops
+          in multi-tab synchronization. When Tab A receives a change from Tab
+          B, it must not rebroadcast that change back to Tab B, which would then
+          rebroadcast it back to Tab A, creating an infinite loop. Each tab must
+          track the source of received messages and avoid echoing them back.
+          Include a source tab ID or message sequence number in the broadcast
+          protocol to detect and discard duplicate messages.
+        </p>
+        <p>
+          Implementing CRDTs without understanding their memory overhead is a
+          frequent mistake. CRDTs store metadata for every operation to enable
+          automatic convergence — a simple text document with 1000 edits may
+          store 1000 operation records, each with vector clock data. This
+          metadata grows unboundedly unless garbage collection is implemented
+          (which requires all nodes to have seen all operations). For
+          long-running collaborative documents, implement periodic compaction
+          that collapses the operation history into a snapshot while preserving
+          the convergence guarantee. Libraries like Yjs handle this
+          automatically, but custom CRDT implementations must address it
+          explicitly.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Collaborative document editing is the canonical conflict resolution
+          use case. Google Docs uses Operational Transformation with a central
+          server that receives every keystroke, transforms it against concurrent
+          operations, and broadcasts the result to all connected clients. This
+          enables sub-second collaborative editing with automatic conflict
+          resolution — users rarely see conflicts because OT handles them
+          transparently. Competing products like Figma (design collaboration)
+          and Notion (workspace collaboration) use CRDTs for the same purpose,
+          enabling offline editing with automatic convergence when connectivity
+          returns. The key insight is that for real-time collaboration, the
+          conflict resolution must be automatic and invisible to users.
+        </p>
+        <p>
+          Mobile-first note-taking applications face different conflict
+          challenges. Users frequently edit notes on their phone while offline,
+          then sync when connectivity returns — potentially after making
+          different edits to the same note on their tablet. Apps like Evernote
+          and Bear use field-level merging for automatic conflict resolution
+          (different sections of the note can be merged) with manual conflict
+          presentation when the same section is edited on both devices. The
+          conflict UI shows both versions side by side with highlighted
+          differences and allows the user to choose one version or create a
+          hybrid.
+        </p>
+        <p>
+          Distributed version control systems like Git handle conflicts at the
+          file level during merge operations. When two branches modify the same
+          lines of the same file, Git marks the conflict with markers
+          (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>,
+          <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>) and requires manual
+          resolution. While this approach is too coarse-grained for real-time
+          collaboration, it is appropriate for code where every change must be
+          intentional and reviewed. The Git merge conflict resolution workflow —
+          showing both versions with highlighted differences, allowing
+          three-way merge with a common ancestor — has influenced conflict UX
+          design across many domains.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions with Detailed Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: How do you detect conflicts in offline-first apps?
+              Q: How do you detect conflicts in offline-first applications?
             </p>
             <p className="mt-2 text-sm">
-              A: Version vectors track version per device — conflict if versions
-              are concurrent. Timestamps for last-write-wins (but can lose
-              data). Field-level tracking detects conflicts only when same field
-              modified. Operation logs record each change for transformation.
-              Choose based on complexity needs — timestamps for simple, CRDTs
-              for collaborative.
+              A: Version vectors track a version number per device — if neither
+              vector dominates the other, the changes are concurrent and a
+              conflict exists. Timestamps provide simpler detection but suffer
+              from clock skew issues. Field-level tracking detects conflicts
+              only when the same field is modified by both parties, allowing
+              automatic merge of non-conflicting changes. Operation logs record
+              each mutation for transformation-based resolution. Choose the
+              approach based on complexity needs — timestamps for simple apps,
+              version vectors for distributed systems, CRDTs for real-time
+              collaboration.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What are CRDTs and when would you use them?
             </p>
             <p className="mt-2 text-sm">
               A: CRDTs (Conflict-Free Replicated Data Types) are data structures
-              with mathematical guarantee that any order of operations produces
-              same result. No central coordination needed. Use for real-time
-              collaborative editing, offline-first with complex merge needs,
-              peer-to-peer apps. Libraries: Yjs, Automerge. Overkill for simple
-              apps where LWW is sufficient.
+              with a mathematical guarantee that any order of operations
+              produces the same final state — they automatically converge
+              without central coordination. Use them for real-time collaborative
+              editing, offline-first applications with complex merge needs, and
+              peer-to-peer synchronization. Popular libraries include Yjs
+              (collaborative editing), Automerge (JSON documents), and GunDB
+              (real-time database). They are overkill for simple apps where
+              last-write-wins or field-level merging is sufficient, and they
+              carry higher memory overhead due to operation metadata storage.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you design UX for conflict resolution?
             </p>
             <p className="mt-2 text-sm">
-              A: Notify user clearly that conflict exists. Show side-by-side
-              comparison with differences highlighted. Include attribution (who
-              changed what, when). Allow selecting parts from each version.
-              Preserve both versions if unsure. Auto-merge non-conflicting
-              changes, ask user about conflicts. Never silently lose user data.
+              A: Notify the user clearly that a conflict exists — never hide
+              conflicts. Show a side-by-side comparison with differences
+              highlighted (additions in green, deletions in red, modifications
+              in yellow). Include attribution showing who made each change and
+              when. Allow the user to select individual changes from each
+              version to create a hybrid result, rather than forcing an
+              all-or-nothing choice. Provide a preview of the merged result
+              before confirming. When in doubt, preserve both versions and let
+              the user decide later — never silently lose user work.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: What&apos;s the difference between OT and CRDTs?
+              Q: What is the difference between OT and CRDTs?
             </p>
             <p className="mt-2 text-sm">
-              A: OT (Operational Transformation) transforms operations to
-              maintain consistency — requires central server, used by Google
-              Docs. CRDTs are data structures that automatically converge — no
-              central coordination needed, better for peer-to-peer. Both enable
-              real-time collaboration. CRDTs are more mathematically elegant, OT
-              is more mature for text editing.
+              A: Operational Transformation (OT) transforms operations to
+              maintain consistency — it requires a central server to receive,
+              transform, and broadcast operations. Used by Google Docs. CRDTs
+              are data structures that automatically converge regardless of
+              operation order — no central coordination needed, better for
+              peer-to-peer and offline scenarios. Both enable real-time
+              collaboration. CRDTs are more mathematically elegant but carry
+              higher memory overhead. OT is more mature for text editing but
+              harder to implement correctly.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: How do you handle conflicts in a multi-tab app?
+              Q: How do you handle conflicts in a multi-tab application?
             </p>
             <p className="mt-2 text-sm">
               A: Use BroadcastChannel or localStorage events for cross-tab
-              communication. Detect conflicts when syncing state. For simple
-              data, last-write-wins with notification. For forms, show conflict
-              dialog before submitting. For collaborative editing, use CRDTs
-              (Yjs) for automatic merge. Always inform user of conflicts — never
-              silently overwrite.
+              communication. Detect conflicts when syncing state between tabs —
+              compare version vectors or timestamps. For simple data, use
+              last-write-wins with a notification to other tabs. For form data,
+              show a conflict dialog before submitting if another tab has
+              modified the same data. For collaborative editing, use CRDTs (Yjs)
+              for automatic merge. Always inform users of conflicts — never
+              silently overwrite another tab&apos;s changes. Prevent infinite
+              rebroadcast loops by tracking message sources.
             </p>
           </div>
         </div>
@@ -437,7 +428,7 @@ export default function ConflictResolutionUXArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              CRDT.tech — CRDT Resources
+              CRDT.tech — CRDT Resources and Research
             </a>
           </li>
           <li>
@@ -447,7 +438,7 @@ export default function ConflictResolutionUXArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Yjs Documentation
+              Yjs Documentation — Collaborative Editing Framework
             </a>
           </li>
           <li>
@@ -457,7 +448,7 @@ export default function ConflictResolutionUXArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Automerge — CRDT Library
+              Automerge — CRDT-Based Document Library
             </a>
           </li>
           <li>
@@ -467,7 +458,17 @@ export default function ConflictResolutionUXArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Martin Kleppmann — CRDTs and OT Research
+              Martin Kleppmann — CRDTs and Operational Transformation Research
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia — Conflict-Free Replicated Data Types
             </a>
           </li>
         </ul>

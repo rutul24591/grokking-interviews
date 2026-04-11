@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg-light { fill: #f8f9fa; }
+      .bg-dark { fill: #1a1a2e; }
+      .box-light { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
+      .box-dark { fill: #16213e; stroke: #60a5fa; stroke-width: 2; }
+      .title-light { fill: #1e293b; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .title-dark { fill: #f1f5f9; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .label-light { fill: #334155; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .label-dark { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .sub-light { fill: #64748b; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+      .sub-dark { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+      .bar-light { fill: #2563eb; }
+      .bar-dark { fill: #60a5fa; }
+    </style>
+  </defs>
+  <g class="light-mode">
+    <rect class="bg-light" width="800" height="420" rx="8"/>
+    <text class="title-light" x="400" y="35" text-anchor="middle">Perceived vs Actual Performance</text>
+    <rect class="box-light" x="30" y="70" width="350" height="320" rx="6"/>
+    <text class="label-light" x="205" y="100" text-anchor="middle">Actual Load Time (ms)</text>
+    <text class="sub-light" x="205" y="120" text-anchor="middle">Without perceived performance techniques</text>
+    <rect class="bar-light" x="60" y="140" width="280" height="30" rx="3"/>
+    <text class="sub-light" x="350" y="160" text-anchor="end">HTML: 800ms</text>
+    <rect class="bar-light" x="60" y="180" width="250" height="30" rx="3"/>
+    <text class="sub-light" x="320" y="200" text-anchor="end">CSS/JS: 1200ms</text>
+    <rect class="bar-light" x="60" y="220" width="220" height="30" rx="3"/>
+    <text class="sub-light" x="290" y="240" text-anchor="end">Images: 1500ms</text>
+    <rect class="bar-light" x="60" y="260" width="180" height="30" rx="3"/>
+    <text class="sub-light" x="250" y="280" text-anchor="end">Interactive: 2000ms</text>
+    <text class="label-light" x="205" y="340" text-anchor="middle">Total: 5500ms to interactive</text>
+    <text class="sub-light" x="205" y="360" text-anchor="middle">User waits 5.5s with blank/empty screen</text>
+    <rect class="box-light" x="420" y="70" width="350" height="320" rx="6"/>
+    <text class="label-light" x="595" y="100" text-anchor="middle">Perceived Load Time (ms)</text>
+    <text class="sub-light" x="595" y="120" text-anchor="middle">With skeleton screens + progressive loading</text>
+    <rect class="bar-light" x="450" y="140" width="60" height="30" rx="3"/>
+    <text class="sub-light" x="520" y="160" text-anchor="end">Skeleton: 200ms</text>
+    <rect class="bar-light" x="450" y="180" width="100" height="30" rx="3"/>
+    <text class="sub-light" x="560" y="200" text-anchor="end">Above fold: 800ms</text>
+    <rect class="bar-light" x="450" y="220" width="160" height="30" rx="3"/>
+    <text class="sub-light" x="620" y="240" text-anchor="end">Below fold: 1500ms</text>
+    <rect class="bar-light" x="450" y="260" width="180" height="30" rx="3"/>
+    <text class="sub-light" x="640" y="280" text-anchor="end">Interactive: 2000ms</text>
+    <text class="label-light" x="595" y="340" text-anchor="middle">Total: 5500ms to interactive (same!)</text>
+    <text class="sub-light" x="595" y="360" text-anchor="middle">User sees content at 200ms, not 5500ms</text>
+  </g>
+  <g class="dark-mode">
+    <rect class="bg-dark" width="800" height="420" rx="8"/>
+    <text class="title-dark" x="400" y="35" text-anchor="middle">Perceived vs Actual Performance</text>
+    <rect class="box-dark" x="30" y="70" width="350" height="320" rx="6"/>
+    <text class="label-dark" x="205" y="100" text-anchor="middle">Actual Load Time (ms)</text>
+    <text class="sub-dark" x="205" y="120" text-anchor="middle">Without perceived performance techniques</text>
+    <rect class="bar-dark" x="60" y="140" width="280" height="30" rx="3"/>
+    <text class="sub-dark" x="350" y="160" text-anchor="end">HTML: 800ms</text>
+    <rect class="bar-dark" x="60" y="180" width="250" height="30" rx="3"/>
+    <text class="sub-dark" x="320" y="200" text-anchor="end">CSS/JS: 1200ms</text>
+    <rect class="bar-dark" x="60" y="220" width="220" height="30" rx="3"/>
+    <text class="sub-dark" x="290" y="240" text-anchor="end">Images: 1500ms</text>
+    <rect class="bar-dark" x="60" y="260" width="180" height="30" rx="3"/>
+    <text class="sub-dark" x="250" y="280" text-anchor="end">Interactive: 2000ms</text>
+    <text class="label-dark" x="205" y="340" text-anchor="middle">Total: 5500ms to interactive</text>
+    <text class="sub-dark" x="205" y="360" text-anchor="middle">User waits 5.5s with blank/empty screen</text>
+    <rect class="box-dark" x="420" y="70" width="350" height="320" rx="6"/>
+    <text class="label-dark" x="595" y="100" text-anchor="middle">Perceived Load Time (ms)</text>
+    <text class="sub-dark" x="595" y="120" text-anchor="middle">With skeleton screens + progressive loading</text>
+    <rect class="bar-dark" x="450" y="140" width="60" height="30" rx="3"/>
+    <text class="sub-dark" x="520" y="160" text-anchor="end">Skeleton: 200ms</text>
+    <rect class="bar-dark" x="450" y="180" width="100" height="30" rx="3"/>
+    <text class="sub-dark" x="560" y="200" text-anchor="end">Above fold: 800ms</text>
+    <rect class="bar-dark" x="450" y="220" width="160" height="30" rx="3"/>
+    <text class="sub-dark" x="620" y="240" text-anchor="end">Below fold: 1500ms</text>
+    <rect class="bar-dark" x="450" y="260" width="180" height="30" rx="3"/>
+    <text class="sub-dark" x="640" y="280" text-anchor="end">Interactive: 2000ms</text>
+    <text class="label-dark" x="595" y="340" text-anchor="middle">Total: 5500ms to interactive (same!)</text>
+    <text class="sub-dark" x="595" y="360" text-anchor="middle">User sees content at 200ms, not 5500ms</text>
+  </g>
+</svg>

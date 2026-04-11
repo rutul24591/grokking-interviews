@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   subcategory: "nfr",
   slug: "network-efficiency",
   version: "extensive",
-  wordCount: 13500,
-  readingTime: 54,
-  lastUpdated: "2026-03-15",
+  wordCount: 5500,
+  readingTime: 22,
+  lastUpdated: "2026-04-11",
   tags: [
     "frontend",
     "nfr",
@@ -37,353 +37,148 @@ export default function NetworkEfficiencyArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Network Efficiency</strong> measures how effectively an
-          application uses network resources. It encompasses protocol selection,
-          request optimization, compression, and connection management.
+          <strong>Network Efficiency</strong> measures how effectively a web
+          application uses network resources to deliver content and functionality
+          to users. It encompasses protocol selection (HTTP/2, HTTP/3), request
+          optimization (batching, deduplication, pagination), compression
+          (Brotli, Gzip, Zstandard), connection management (keep-alive,
+          connection pooling, head-of-line blocking avoidance), and resource
+          hints (preconnect, preload, prefetch, dns-prefetch) that tell the
+          browser to start work early. Network efficiency directly impacts load
+          time (fewer and faster requests equal faster pages), data usage
+          (critical for mobile users on limited plans), battery life (network
+          radio is a major battery drain on mobile devices), and infrastructure
+          costs (reduced bandwidth equals lower CDN and server expenses).
         </p>
-        <p>Network efficiency directly impacts:</p>
-        <ul>
-          <li>
-            <strong>Load time:</strong> Fewer/faster requests = faster pages
-          </li>
-          <li>
-            <strong>Data usage:</strong> Critical for mobile users on limited
-            plans
-          </li>
-          <li>
-            <strong>Battery life:</strong> Network radio is a major battery
-            drain
-          </li>
-          <li>
-            <strong>Cost:</strong> Reduced bandwidth = lower infrastructure
-            costs
-          </li>
-        </ul>
+        <p>
+          For staff engineers, network efficiency is a systems-level
+          optimization that spans frontend architecture, backend API design,
+          and infrastructure configuration. Frontend engineers control request
+          patterns (batching, deduplication, resource hints), compression
+          acceptance, and connection reuse. Backend engineers design API
+          endpoints that support efficient data fetching (GraphQL for precise
+          data selection, REST with field selection, pagination, and
+          compression). Infrastructure engineers configure HTTP protocol
+          support, CDN caching, and connection management. The most effective
+          network optimization requires coordination across all three layers.
+        </p>
+        <p>
+          The evolution of HTTP protocols has dramatically improved network
+          efficiency. HTTP/1.1 required multiple TCP connections (typically 6-8
+          per origin) to achieve parallelism, incurring handshake overhead for
+          each connection. HTTP/2 introduced multiplexing — multiple requests
+          and responses interleaved on a single connection — eliminating the
+          need for multiple connections and reducing head-of-line blocking at
+          the application layer. HTTP/3 (QUIC) moved from TCP to UDP,
+          eliminating TCP-level head-of-line blocking entirely, providing
+          faster handshakes (0-RTT for repeat connections), and enabling
+          connection migration (surviving WiFi-to-cellular transitions without
+          re-establishing the connection).
+        </p>
       </section>
 
       <section>
-        <h2>HTTP/2 & HTTP/3</h2>
+        <h2>Core Concepts</h2>
+        <p>
+          The TCP connection lifecycle is the foundation of network efficiency
+          understanding. Establishing an HTTPS connection requires a 3-way TCP
+          handshake (SYN, SYN-ACK, ACK — 1.5 × RTT before any data is sent),
+          followed by a TLS handshake (1-2 additional RTT for TLS 1.2, 0-1 RTT
+          for TLS 1.3 with session resumption). This means the total overhead
+          before the first byte of application data arrives is 2.5-3.5 RTT on
+          TCP. On a connection with 100ms round-trip time (common for
+          cross-country connections), this is 250-350ms of pure overhead before
+          any useful data is transmitted. This is why connection reuse
+          (keep-alive) is critical — once a connection is established,
+          subsequent requests on the same connection have zero handshake
+          overhead.
+        </p>
+        <p>
+          HTTP/2 multiplexing transforms how requests are transmitted. Instead
+          of opening 6-8 parallel connections in HTTP/1.1 (each with its own
+          handshake overhead and slow start), HTTP/2 multiplexes all requests
+          over a single connection using independent streams. Each stream can
+          send and receive data independently, so a slow response on one stream
+          does not block others (eliminating application-layer head-of-line
+          blocking). Header compression (HPACK) reduces overhead by encoding
+          headers efficiently and maintaining a dynamic table of previously sent
+          header values. Server push allows the server to proactively send
+          resources the client will need (though this feature has been
+          deprecated in favor of resource hints).
+        </p>
+        <p>
+          HTTP/3 (QUIC) addresses the remaining limitation of HTTP/2 — TCP-level
+          head-of-line blocking. In HTTP/2, if a single TCP packet is lost, all
+          streams must wait for retransmission because TCP delivers data in
+          order. HTTP/3 uses QUIC over UDP, where each stream is independently
+          reliable — packet loss on one stream does not block others. QUIC also
+          provides 0-RTT connection resumption (the client can send application
+          data in the first packet for previously connected servers) and
+          connection migration (the connection survives IP address changes, such
+          as switching from WiFi to cellular, because the connection is
+          identified by a connection ID rather than IP/port tuple).
+        </p>
+
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/http-protocols-comparison.svg"
           alt="HTTP Protocols Comparison"
-          caption="HTTP/1.1 vs HTTP/2 vs HTTP/3 — showing multiplexing, head-of-line blocking, and connection efficiency"
+          caption="HTTP/1.1 versus HTTP/2 versus HTTP/3 — showing connection multiplexing, head-of-line blocking elimination, and handshake overhead reduction"
         />
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">HTTP/2 Features</h3>
-        <ul>
-          <li>
-            <strong>Multiplexing:</strong> Multiple requests over single
-            connection
-          </li>
-          <li>
-            <strong>Header compression:</strong> HPACK reduces overhead
-          </li>
-          <li>
-            <strong>Server push:</strong> Proactively send resources
-          </li>
-          <li>
-            <strong>Stream prioritization:</strong> Important resources first
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">HTTP/3 (QUIC)</h3>
-        <ul>
-          <li>
-            <strong>UDP-based:</strong> No TCP head-of-line blocking
-          </li>
-          <li>
-            <strong>Faster handshakes:</strong> 0-RTT for repeat connections
-          </li>
-          <li>
-            <strong>Built-in encryption:</strong> TLS 1.3 mandatory
-          </li>
-          <li>
-            <strong>Connection migration:</strong> Survives network changes
-          </li>
-        </ul>
       </section>
 
       <section>
-        <h2>Request Optimization</h2>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Request optimization architecture minimizes the number and size of
+          network requests. Request batching combines multiple small requests
+          into a single larger request — GraphQL naturally supports this by
+          allowing multiple queries in a single request, while REST APIs can
+          implement a batch endpoint (<code>POST /batch</code> accepting an
+          array of sub-requests). Request deduplication prevents redundant
+          in-flight requests — when multiple components request the same data
+          simultaneously (e.g., user profile fetched by the header, sidebar,
+          and dashboard widgets), the first request&apos;s promise is cached and
+          returned to subsequent requesters, so only one network request is made.
+          Libraries like React Query and SWR handle deduplication automatically.
+        </p>
+        <p>
+          Compression architecture reduces the size of transmitted data. Brotli
+          is the preferred compression algorithm for web content, providing
+          80-90% compression ratio (better than Gzip&apos;s 70-80%) with
+          moderate encoding speed. Brotli is supported by all modern browsers
+          and should be enabled for all text-based content (HTML, CSS,
+          JavaScript, JSON, SVG). For images, modern formats (WebP, AVIF)
+          provide built-in compression that is superior to general-purpose
+          algorithms. For API responses, Gzip remains widely supported and is
+          sufficient for JSON payloads where Brotli&apos;s advantage is modest.
+        </p>
+
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/request-optimization.svg"
           alt="Request Optimization Techniques"
-          caption="Network request optimization — batching, deduplication, compression, and connection reuse"
+          caption="Network request optimization — request batching, deduplication of concurrent requests, connection reuse with keep-alive, and compression pipeline"
         />
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Request Batching</h3>
-        <p>Combine multiple requests into one:</p>
-        <ul>
-          <li>GraphQL naturally batches queries</li>
-          <li>
-            REST: <code>POST /batch</code> with array of requests
-          </li>
-          <li>Reduce round-trips, not total data</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Request Deduplication
-        </h3>
-        <p>Avoid duplicate in-flight requests:</p>
-        <ul>
-          <li>Cache pending promises</li>
-          <li>Return same promise for duplicate requests</li>
-          <li>Libraries: React Query, SWR handle this</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Connection Reuse</h3>
-        <p>Maximize keep-alive:</p>
-        <ul>
-          <li>
-            Use <code>Connection: keep-alive</code>
-          </li>
-          <li>Limit concurrent connections (browser limit: 6/host)</li>
-          <li>Use same origin when possible</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Compression</h2>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Algorithm</th>
-              <th className="p-3 text-left">Ratio</th>
-              <th className="p-3 text-left">Speed</th>
-              <th className="p-3 text-left">Use Case</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">Gzip</td>
-              <td className="p-3">70-80%</td>
-              <td className="p-3">Fast</td>
-              <td className="p-3">Universal support</td>
-            </tr>
-            <tr>
-              <td className="p-3">Brotli</td>
-              <td className="p-3">80-90%</td>
-              <td className="p-3">Medium</td>
-              <td className="p-3">Modern browsers</td>
-            </tr>
-            <tr>
-              <td className="p-3">Zstandard</td>
-              <td className="p-3">80-90%</td>
-              <td className="p-3">Fast</td>
-              <td className="p-3">Emerging support</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>Connection Management</h2>
         <p>
-          Efficient connection management is critical for network efficiency.
-          Each TCP connection carries overhead—handshakes, slow start, and
-          buffer allocation. Proper management reduces latency and improves
-          throughput.
+          Resource hints architecture tells the browser to start work early for
+          resources it will need before it discovers them naturally during HTML
+          parsing. DNS prefetch (<code>rel=&quot;dns-prefetch&quot;</code>)
+          resolves domain names in advance, saving 20-120ms per domain.
+          Preconnect (<code>rel=&quot;preconnect&quot;</code>) performs the full
+          connection setup — DNS resolution, TCP handshake, and TLS negotiation
+          — saving 200-500ms when the resource is later requested. Preload
+          (<code>rel=&quot;preload&quot;</code>) fetches a specific resource
+          immediately with highest priority, used for critical resources like
+          hero images, web fonts, and above-the-fold CSS. Prefetch
+          (<code>rel=&quot;prefetch&quot;</code>) fetches resources for likely
+          future navigations during browser idle time, used for next-page
+          JavaScript bundles. The decision tree is: will you definitely use
+          this resource on the current page — preload; might you navigate to a
+          page using this — prefetch; will you connect to this domain soon —
+          preconnect; just want DNS ready — dns-prefetch.
         </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          TCP Connection Lifecycle
-        </h3>
-        <ul className="space-y-3">
-          <li>
-            <strong>3-Way Handshake:</strong> SYN → SYN-ACK → ACK (1.5 × RTT
-            before any data sent)
-          </li>
-          <li>
-            <strong>TLS Handshake:</strong> Additional 1-2 RTT for TLS 1.2, 0-1
-            RTT for TLS 1.3
-          </li>
-          <li>
-            <strong>Slow Start:</strong> TCP begins with small congestion
-            window, doubles each RTT until loss detected
-          </li>
-          <li>
-            <strong>Connection Close:</strong> FIN → ACK (graceful close) or RST
-            (abort)
-          </li>
-        </ul>
-        <p>
-          <strong>Total overhead:</strong> 2.5-3.5 RTT before first byte for
-          HTTPS on TCP. This is why connection reuse is critical.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Connection Reuse (Keep-Alive)
-        </h3>
-        <p>
-          HTTP keep-alive allows multiple requests over a single TCP connection,
-          amortizing handshake costs:
-        </p>
-        <ul className="space-y-3">
-          <li>
-            <strong>HTTP/1.1:</strong> Keep-alive by default. Browser limit: 6-8
-            connections per origin. Idle timeout: typically 100-120 seconds.
-          </li>
-          <li>
-            <strong>HTTP/2:</strong> Single connection multiplexes all requests.
-            No per-request handshake. Idle timeout: typically 2-5 minutes.
-          </li>
-          <li>
-            <strong>HTTP/3:</strong> Connection migration allows surviving
-            network changes (WiFi → cellular) without new handshake.
-          </li>
-        </ul>
-        <p>
-          <strong>Best practices:</strong>
-        </p>
-        <ul className="space-y-2">
-          <li>
-            Use <code>Connection: keep-alive</code> header (HTTP/1.1)
-          </li>
-          <li>
-            Set appropriate <code>keepaliveTimeout</code> on servers (match
-            browser expectations)
-          </li>
-          <li>Consolidate assets under fewer origins to maximize reuse</li>
-          <li>Avoid unnecessary redirects (each creates new connection)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Connection Pooling</h3>
-        <p>
-          For server-to-server communication (API calls, microservices),
-          connection pooling maintains a cache of reusable connections:
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Pool size:</strong> Typically 10-50 connections per target
-            host
-          </li>
-          <li>
-            <strong>Idle timeout:</strong> Close unused connections after 30-60
-            seconds
-          </li>
-          <li>
-            <strong>Max lifetime:</strong> Force recreation after 5-10 minutes
-            to handle server changes
-          </li>
-          <li>
-            <strong>Queue overflow:</strong> Queue requests when pool exhausted,
-            or fail fast
-          </li>
-        </ul>
-        <p>
-          Node.js: Use <code>http.Agent</code> with <code>keepAlive: true</code>
-          , <code>maxSockets: 50</code>. Fetch APIs: Use libraries like{" "}
-          <code>undici</code> with built-in pooling.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Head-of-Line Blocking
-        </h3>
-        <p>A critical performance issue in HTTP/1.1:</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Problem:</strong> Responses must arrive in order. Slow
-            response blocks all others.
-          </li>
-          <li>
-            <strong>Impact:</strong> One slow resource delays entire page load
-          </li>
-          <li>
-            <strong>Solution:</strong> HTTP/2 multiplexing (multiple streams on
-            single connection)
-          </li>
-          <li>
-            <strong>HTTP/3:</strong> Eliminates TCP-level HOL blocking with QUIC
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Resource Hints</h2>
-        <p>
-          Resource hints tell the browser to start work early—before the
-          resource is discovered naturally during parsing. This can save
-          100-500ms per critical resource.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">DNS Prefetch</h3>
-        <p>
-          Resolve DNS in advance. Saves 20-120ms per domain. Use:
-          <code>{'<link rel="dns-prefetch" href="//cdn.example.com" />'}</code>
-        </p>
-        <p>
-          <strong>Use when:</strong> You know you'll load resources from
-          third-party domains (CDNs, fonts, analytics).
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preconnect</h3>
-        <p>
-          Full connection setup: DNS + TCP handshake + TLS negotiation. Saves
-          200-500ms. Use:
-          <code>
-            {
-              '<link rel="preconnect" href="https://cdn.example.com" crossorigin />'
-            }
-          </code>
-        </p>
-        <p>
-          <strong>Use when:</strong> You'll definitely load resources from this
-          origin soon. Don't overuse—each preconnect consumes resources.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Prefetch</h3>
-        <p>
-          Fetch resource and store in cache for future navigation. Use:
-          <code>{'<link rel="prefetch" href="/next-page.js" />'}</code>
-        </p>
-        <p>
-          <strong>Use when:</strong> User is likely to navigate to a specific
-          page. Lower priority than preload. Fetches during idle time.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Preload</h3>
-        <p>
-          Fetch resource immediately for current page. Highest priority. Use:
-          <code>
-            {
-              '<link rel="preload" href="/critical-font.woff2" as="font" type="font/woff2" crossorigin />'
-            }
-          </code>
-          or
-          <code>
-            {
-              '<link rel="preload" href="/hero-image.webp" as="image" fetchpriority="high" />'
-            }
-          </code>
-        </p>
-        <p>
-          <strong>Use when:</strong> Resource is critical for current page.
-          Common uses: hero images, web fonts, critical CSS/JS. Don't
-          overuse—browser prioritizes preloads above other resources.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Resource Hint Decision Tree
-        </h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Will use from this domain?</strong> →{" "}
-            <code>preconnect</code>
-          </li>
-          <li>
-            <strong>Will use this specific resource on current page?</strong> →{" "}
-            <code>preload</code>
-          </li>
-          <li>
-            <strong>Might navigate to page that uses this?</strong> →{" "}
-            <code>prefetch</code>
-          </li>
-          <li>
-            <strong>Just want DNS ready?</strong> → <code>dns-prefetch</code>
-          </li>
-        </ul>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/resource-hints-timeline.svg"
@@ -393,54 +188,205 @@ export default function NetworkEfficiencyArticle() {
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Resource hint usage involves a trade-off between performance gain and
+          resource waste. Preconnect and preload start work early but consume
+          network bandwidth, CPU, and memory. Overusing preconnect (more than
+          4-6 domains) wastes resources on connections that may never be used.
+          Overusing preload displaces other resources in the browser&apos;s
+          download queue, potentially delaying critical resources. The
+          discipline is to use resource hints sparingly and strategically —
+          preconnect only to domains you will definitely connect to within the
+          next few seconds, preload only resources critical for the current
+          page&apos;s first render, and prefetch only resources for high
+          confidence next navigations.
+        </p>
+        <p>
+          Connection management decisions affect both latency and server
+          capacity. HTTP/2&apos;s single multiplexed connection is efficient
+          for most scenarios but can become a bottleneck under very high
+          request volume — a single connection has limits on concurrent streams
+          (typically 100 by default). For applications with extreme request
+          volume (real-time dashboards with dozens of concurrent API calls),
+          opening a second HTTP/2 connection can increase throughput. Connection
+          pooling for server-to-server communication (API gateways,
+          microservices) maintains a cache of reusable connections, amortizing
+          handshake costs across many requests. The pool size (typically 10-50
+          connections per target host) balances throughput against memory usage
+          per connection.
+        </p>
+        <p>
+          Compression algorithm selection involves trade-offs between
+          compression ratio, encoding speed, and compatibility. Brotli provides
+          the best compression for text content but requires more CPU for
+          encoding than Gzip — for static content, pre-compress at build time
+          to avoid runtime encoding cost. For dynamic content (API responses),
+          Gzip is often preferred because the encoding speed difference
+          matters more than the compression ratio difference. Zstandard offers
+          compression comparable to Brotli with faster encoding but has limited
+          browser support — it is primarily used for server-to-server
+          compression in internal infrastructure.
+        </p>
+      </section>
+
+      <section>
+        <h2>Best Practices</h2>
+        <p>
+          Enable HTTP/2 on all servers and CDNs — it is universally supported
+          and provides immediate performance improvement over HTTP/1.1 without
+          any application changes. Ensure your TLS configuration supports TLS
+          1.3 for faster handshakes (0-RTT resumption for repeat connections).
+          Configure HTTP/3 (QUIC) where supported (Cloudflare, CloudFront, and
+          major CDNs offer it) for additional improvement, particularly for
+          users on unstable networks who benefit from connection migration and
+          eliminated TCP-level head-of-line blocking.
+        </p>
+        <p>
+          Implement request deduplication at the application level using data
+          fetching libraries (React Query, SWR, Apollo Client) that
+          automatically deduplicate concurrent requests for the same data. When
+          multiple components request the same endpoint simultaneously, only
+          one network request is made and the result is shared. Configure stale
+          time and refetch intervals to balance freshness against request
+          volume — data that changes infrequently (user profile, product
+          catalog) can have longer stale times than data that changes frequently
+          (notifications, live scores).
+        </p>
+        <p>
+          Use resource hints strategically for critical resources. Preconnect
+          to your CDN domain and any third-party domains you will connect to
+          immediately (analytics, fonts). Preload the LCP image, critical web
+          fonts, and above-the-fold CSS. Prefetch JavaScript bundles for likely
+          next-page navigations (detected by hover or viewport proximity). Do
+          not overuse resource hints — each preconnect consumes a connection
+          slot, each preload displaces other resources, and each prefetch
+          consumes bandwidth that may never provide value.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          Head-of-line blocking in HTTP/1.1 is a classic performance pitfall.
+          When multiple resources are requested over the same connection, they
+          must be processed in order — a slow resource (large image, delayed
+          API response) blocks all subsequent resources on that connection.
+          Developers worked around this by domain sharding (distributing
+          resources across multiple subdomains to open more parallel
+          connections), but this is counterproductive with HTTP/2 because each
+          additional connection incurs handshake overhead that multiplexing
+          eliminates. If you have migrated to HTTP/2, remove domain sharding.
+        </p>
+        <p>
+          Unnecessary redirects create new connections and add latency. Each
+          redirect (HTTP 301, 302, 307) requires the browser to close the
+          current connection and establish a new one to the redirect target,
+          incurring full handshake overhead (2.5-3.5 RTT). A chain of two
+          redirects adds 5-7 RTT — on a 100ms RTT connection, that is 500-700ms
+          of pure redirect overhead before any content is loaded. Audit your
+          redirect chains and eliminate unnecessary ones. Common culprits are
+          HTTP-to-HTTPS redirects (fixable with HSTS preload), www-to-non-www
+          redirects (fixable with DNS configuration), and trailing-slash
+          redirects (fixable with consistent URL generation).
+        </p>
+        <p>
+          Sending unnecessary data in API responses wastes bandwidth and
+          increases parse time. REST APIs that return complete resource objects
+          when the client only needs a few fields force the client to download
+          and parse data it will discard. GraphQL solves this by allowing
+          clients to request specific fields. For REST APIs, implement field
+          selection (<code>?fields=id,name,price</code>) or sparse fieldsets
+          to reduce response size. Paginate large result sets instead of
+          returning everything in a single response. Compress API responses
+          with Brotli or Gzip.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Social media feeds optimize network efficiency for infinite scroll
+          scenarios. Twitter and Instagram paginate feed data with cursor-based
+          pagination (returning a cursor for the next page rather than page
+          numbers), prefetch the next page when the user scrolls near the
+          bottom of the current page, and deduplicate requests so that rapid
+          scrolling does not trigger duplicate API calls. They use HTTP/2
+          multiplexing to load feed items, user avatars, and media thumbnails
+          in parallel over a single connection, and compress JSON responses
+          with Brotli to reduce payload size.
+        </p>
+        <p>
+          Single-page applications use resource hints to optimize navigation
+          performance. When a user hovers over a navigation link, the
+          application preloads the JavaScript bundle for the target page. When
+          the user clicks, the bundle is already in the browser cache, making
+          navigation near-instant. This pattern, used by Gmail, Google Docs,
+          and many modern SPAs, combines hover detection, dynamic preload
+          injection, and cache management to create the perception of instant
+          navigation without wasting bandwidth on pages the user never visits.
+        </p>
+        <p>
+          Global applications with users across multiple continents optimize
+          network efficiency through CDN-based connection management. Users
+          connect to the nearest CDN edge location (minimizing RTT), the edge
+          maintains persistent connections to the origin server (amortizing
+          handshake costs), and the edge compresses and caches responses for
+          subsequent requests. This architecture reduces the effective RTT from
+          200ms+ (cross-continent) to 20-50ms (edge proximity), dramatically
+          improving TTFB and perceived performance.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions with Detailed Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What are the benefits of HTTP/2 over HTTP/1.1?
             </p>
             <p className="mt-2 text-sm">
-              A: Multiplexing eliminates head-of-line blocking, header
-              compression reduces overhead, server push enables proactive
-              resource delivery, and stream prioritization optimizes resource
-              loading. Single connection vs 6+ connections in HTTP/1.1.
+              A: Multiplexing eliminates head-of-line blocking by interleaving
+              multiple requests and responses on a single connection — no need
+              for 6-8 parallel connections. Header compression (HPACK) reduces
+              overhead by encoding headers efficiently with a dynamic table.
+              Server push enables proactive resource delivery (though deprecated
+              in favor of resource hints). Stream prioritization lets the server
+              send important resources first. Single connection reduces handshake
+              overhead and memory usage compared to HTTP/1.1&apos;s multiple
+              connections.
             </p>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: When would you use request batching?
+              Q: What is the cost of establishing a new HTTPS connection?
             </p>
             <p className="mt-2 text-sm">
-              A: When making multiple small requests in quick succession. Good
-              for: loading related data, dashboard widgets, search suggestions.
-              Not good for: large payloads, time-critical requests, or when
-              responses vary significantly in size.
+              A: TCP 3-way handshake (1.5 RTT) plus TLS handshake (1-2 RTT for
+              TLS 1.2, 0-1 RTT for TLS 1.3 with session resumption). Total:
+              2.5-3.5 RTT before the first byte of application data. On a
+              100ms RTT connection, that&apos;s 250-350ms of pure overhead.
+              This is why connection reuse (keep-alive) is critical — subsequent
+              requests on an established connection have zero handshake
+              overhead. HTTP/3 with QUIC reduces this to 1 RTT for new
+              connections and 0 RTT for repeat connections.
             </p>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: What&apos;s the cost of establishing a new HTTPS connection?
-            </p>
-            <p className="mt-2 text-sm">
-              A: 3-way TCP handshake (1.5 RTT) + TLS handshake (1-2 RTT for TLS
-              1.2, 0-1 RTT for TLS 1.3). Total: 2.5-3.5 RTT before first byte.
-              On a 100ms RTT connection, that&apos;s 250-350ms of pure overhead.
-              This is why connection reuse (keep-alive) is critical.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What&apos;s the difference between preload, prefetch, and
+              Q: What is the difference between preload, prefetch, and
               preconnect?
             </p>
             <p className="mt-2 text-sm">
-              A: <strong>Preload</strong> fetches a specific resource for the
-              current page (highest priority).
-              <strong>Prefetch</strong> fetches resources for likely future
-              navigations (low priority, idle time).
-              <strong>Preconnect</strong> sets up the connection (DNS+TCP+TLS)
-              without fetching anything, saving 200-500ms when the resource is
-              later requested.
+              A: Preload fetches a specific resource for the current page with
+              highest priority — use for critical resources (hero image, web
+              font, above-the-fold CSS). Prefetch fetches resources for likely
+              future navigations at low priority during idle time — use for
+              next-page bundles. Preconnect sets up the full connection (DNS +
+              TCP + TLS) without fetching anything, saving 200-500ms when the
+              resource is later requested — use for domains you will definitely
+              connect to soon. Dns-prefetch only resolves the domain name,
+              saving 20-120ms.
             </p>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -448,14 +394,87 @@ export default function NetworkEfficiencyArticle() {
               Q: How does HTTP/3 solve head-of-line blocking?
             </p>
             <p className="mt-2 text-sm">
-              A: HTTP/3 uses QUIC over UDP instead of TCP. Each request/response
-              is an independent stream. Packet loss on one stream doesn&apos;t
-              block others. Also eliminates TCP slow start per-stream and
-              enables connection migration (WiFi→cellular without new
-              handshake).
+              A: HTTP/3 uses QUIC over UDP instead of TCP. In TCP, packet loss
+              on one stream blocks all streams because TCP delivers data in
+              order. In QUIC, each stream is independently reliable — packet
+              loss on one stream only blocks that stream, not others. QUIC also
+              provides 0-RTT connection resumption for previously connected
+              servers and connection migration (surviving network changes like
+              WiFi to cellular without re-establishing the connection).
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: When would you use request batching?
+            </p>
+            <p className="mt-2 text-sm">
+              A: When making multiple small requests in rapid succession —
+              loading dashboard widgets, fetching related data for a page,
+              or search suggestions. GraphQL naturally supports batching
+              through its query structure. For REST, implement a batch endpoint
+              (POST /batch with an array of sub-requests). Not good for large
+              payloads (defeats the purpose), time-critical requests (waiting
+              for the batch increases latency), or when responses vary
+              significantly in size (one slow response delays the entire batch).
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://http2.explained.horse/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HTTP/2 Explained — Comprehensive Guide
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.cloudflare.com/learning/performance/http3-vs-http2/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cloudflare — HTTP/3 vs HTTP/2
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/articles/preload-prefetch-and-priorities"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              web.dev — Preload, Prefetch, and Resource Priorities
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Compression"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN — HTTP Compression
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://hpbn.co/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              High Performance Browser Networking — Ilya Grigorik
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

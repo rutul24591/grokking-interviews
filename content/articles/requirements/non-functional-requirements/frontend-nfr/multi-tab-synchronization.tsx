@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   subcategory: "nfr",
   slug: "multi-tab-synchronization",
   version: "extensive",
-  wordCount: 9000,
-  readingTime: 36,
-  lastUpdated: "2026-03-15",
+  wordCount: 5500,
+  readingTime: 22,
+  lastUpdated: "2026-04-11",
   tags: [
     "frontend",
     "nfr",
@@ -31,421 +31,379 @@ export default function MultiTabSynchronizationArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
           <strong>Multi-Tab Synchronization</strong> ensures consistent state
           across multiple browser tabs or windows from the same origin. Users
-          often open multiple tabs — viewing the same dashboard, editing related
-          documents, or comparing products. Without synchronization, tabs show
-          stale data, actions in one tab aren&apos;t reflected in others, and
-          users experience confusion or data loss.
+          frequently open multiple tabs — viewing the same dashboard in
+          different filters, editing related documents simultaneously,
+          comparing products side by side, or simply keeping a reference tab
+          open while working in another. Without synchronization, tabs show
+          stale data, actions in one tab are not reflected in others, and users
+          experience confusion, data loss, or conflicting operations. For staff
+          engineers, multi-tab sync is a UX and data consistency challenge that
+          requires selecting the right communication mechanism, designing a
+          message protocol, handling edge cases (tab close, leader departure,
+          concurrent updates), and ensuring the sync infrastructure does not
+          degrade application performance.
         </p>
         <p>
-          For staff engineers, multi-tab sync is a UX and data consistency
-          challenge. Users expect tabs to &quot;know&quot; about each other —
-          logging out in one tab should log out all tabs, cart updates should
-          appear everywhere, and concurrent edits need conflict resolution.
+          The use cases for multi-tab synchronization span many application
+          domains. Authentication sync ensures that logging out in one tab logs
+          out all tabs, and that session expiry in one tab notifies all tabs.
+          Shopping cart sync ensures that adding an item in one tab updates the
+          cart count in the header of all other tabs. Notification sync ensures
+          that marking a notification as read in one tab updates the unread
+          count everywhere. Settings sync ensures that changing a preference
+          (theme, language, layout) applies to all tabs immediately.
+          Collaborative editing requires the most sophisticated sync — changes
+          in one tab must appear in other tabs in near real-time with conflict
+          resolution.
         </p>
         <p>
-          <strong>Multi-tab sync use cases:</strong>
+          Cross-tab communication mechanisms have evolved from workarounds
+          (localStorage events, cookie polling) to purpose-built APIs
+          (BroadcastChannel, SharedWorker). Each mechanism has different
+          browser support, complexity, and capability trade-offs. The
+          BroadcastChannel API is the modern standard — simple, purpose-built
+          for cross-tab messaging, with 95%+ browser support. localStorage
+          events provide a universal fallback that works in all browsers
+          including older ones. SharedWorker enables complex shared state
+          management with a background worker process shared across tabs.
+          Service Worker can coordinate tabs but is primarily designed for
+          network caching and is overkill for simple tab sync.
         </p>
-        <ul>
-          <li>
-            <strong>Authentication:</strong> Logout in one tab → logout all tabs
-          </li>
-          <li>
-            <strong>Shopping cart:</strong> Add item in one tab → update cart
-            count everywhere
-          </li>
-          <li>
-            <strong>Collaborative editing:</strong> Changes in one tab → visible
-            in others
-          </li>
-          <li>
-            <strong>Notifications:</strong> Unread count updates across tabs
-          </li>
-          <li>
-            <strong>Settings:</strong> Preference changes apply to all tabs
-          </li>
-          <li>
-            <strong>Session expiry:</strong> Session timeout in one tab → notify
-            all tabs
-          </li>
-        </ul>
       </section>
 
       <section>
-        <h2>Cross-Tab Communication Mechanisms</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          BroadcastChannel API
-        </h3>
+        <h2>Core Concepts</h2>
         <p>
-          Modern API for cross-tab messaging. Simple, purpose-built for this use
-          case.
+          The BroadcastChannel API provides the simplest and most direct
+          mechanism for cross-tab communication. A channel is created with a
+          name (<code>new BroadcastChannel(&apos;app-sync&apos;)</code>), and
+          all tabs that create a channel with the same name can send and receive
+          messages. Messages are posted with <code>postMessage(data)</code> and
+          received via an <code>onmessage</code> event handler. The data is
+          serialized using the structured clone algorithm, supporting objects,
+          arrays, primitives, and most built-in types (but not functions or
+          DOM elements). Browser support is 95%+ — all modern browsers except
+          Internet Explorer.
         </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>API:</strong> <code>BroadcastChannel(channelName)</code>
-          </li>
-          <li>
-            <strong>Methods:</strong> <code>postMessage()</code>,{" "}
-            <code>onmessage</code>
-          </li>
-          <li>
-            <strong>Scope:</strong> Same origin only
-          </li>
-          <li>
-            <strong>Data:</strong> Structured clone (objects, arrays,
-            primitives)
-          </li>
-          <li>
-            <strong>Browser support:</strong> 90%+ (not IE)
-          </li>
-          <li>
-            <strong>Best for:</strong> Most cross-tab sync needs
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">localStorage Events</h3>
-        <p>Listen for storage events to detect cross-tab changes.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>API:</strong>{" "}
-            <code>window.addEventListener(&apos;storage&apos;, handler)</code>
-          </li>
-          <li>
-            <strong>Trigger:</strong> Fires when localStorage changes in another
-            tab
-          </li>
-          <li>
-            <strong>Scope:</strong> Same origin
-          </li>
-          <li>
-            <strong>Data:</strong> Only key, oldValue, newValue (strings)
-          </li>
-          <li>
-            <strong>Browser support:</strong> Universal
-          </li>
-          <li>
-            <strong>Best for:</strong> Simple sync, fallback for older browsers
-          </li>
-          <li>
-            <strong>Limitation:</strong> Doesn&apos;t fire in tab that made the
-            change
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">SharedWorker</h3>
-        <p>Web Worker shared across tabs from same origin.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>API:</strong> <code>SharedWorker(script)</code>
-          </li>
-          <li>
-            <strong>Scope:</strong> Same origin
-          </li>
-          <li>
-            <strong>Features:</strong> Shared state, complex logic, background
-            processing
-          </li>
-          <li>
-            <strong>Browser support:</strong> Good (not IE, limited mobile)
-          </li>
-          <li>
-            <strong>Best for:</strong> Complex shared state, coordination logic
-          </li>
-          <li>
-            <strong>Overhead:</strong> More complex than BroadcastChannel
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Service Worker</h3>
-        <p>Can coordinate tabs but primarily for network caching.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>API:</strong> <code>clients.matchAll()</code>,{" "}
-            <code>postMessage()</code>
-          </li>
-          <li>
-            <strong>Scope:</strong> Same origin
-          </li>
-          <li>
-            <strong>Best for:</strong> Network-level coordination, push
-            notifications
-          </li>
-          <li>
-            <strong>Overhead:</strong> Complex for simple tab sync
-          </li>
-        </ul>
+        <p>
+          The localStorage event mechanism provides cross-tab communication as
+          a side effect of storage changes. When one tab writes to localStorage
+          (<code>localStorage.setItem(key, value)</code>), all other tabs from
+          the same origin receive a <code>storage</code> event with the key,
+          old value, and new value. This mechanism works universally (all
+          browsers, all versions) but has limitations: data must be strings
+          (requiring JSON serialization), the event does not fire in the tab
+          that made the change, and excessive localStorage writes can impact
+          storage performance. It is best used as a fallback for browsers that
+          do not support BroadcastChannel.
+        </p>
+        <p>
+          SharedWorker provides a more powerful cross-tab coordination
+          mechanism. A SharedWorker is a JavaScript worker that is shared
+          across all tabs from the same origin — unlike regular workers which
+          are per-tab. The worker can maintain shared state, coordinate
+          operations between tabs, and serve as a central message broker. This
+          is useful for complex scenarios like leader election (one tab handles
+          expensive operations), shared WebSocket connections (one connection
+          serves all tabs), and coordinated background sync. The trade-off is
+          increased complexity — SharedWorker has a more involved API than
+          BroadcastChannel and limited mobile browser support.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/cross-tab-communication.svg"
           alt="Cross-Tab Communication Mechanisms"
-          caption="Cross-tab communication options — BroadcastChannel, localStorage events, SharedWorker, and Service Worker"
+          caption="Cross-tab communication options — BroadcastChannel (direct messaging), localStorage events (storage-based), SharedWorker (shared process), and Service Worker (network-level coordination)"
         />
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Mechanism Comparison
-        </h3>
-        <table className="w-full border-collapse text-sm">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Mechanism</th>
-              <th className="p-3 text-left">Complexity</th>
-              <th className="p-3 text-left">Browser Support</th>
-              <th className="p-3 text-left">Best Use Case</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">BroadcastChannel</td>
-              <td className="p-3">Low</td>
-              <td className="p-3">90%+</td>
-              <td className="p-3">Most cross-tab sync</td>
-            </tr>
-            <tr>
-              <td className="p-3">localStorage events</td>
-              <td className="p-3">Low</td>
-              <td className="p-3">Universal</td>
-              <td className="p-3">Simple sync, fallback</td>
-            </tr>
-            <tr>
-              <td className="p-3">SharedWorker</td>
-              <td className="p-3">Medium</td>
-              <td className="p-3">Good</td>
-              <td className="p-3">Complex shared state</td>
-            </tr>
-            <tr>
-              <td className="p-3">Service Worker</td>
-              <td className="p-3">High</td>
-              <td className="p-3">Good</td>
-              <td className="p-3">Network coordination</td>
-            </tr>
-          </tbody>
-        </table>
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          BroadcastChannel Pattern
-        </h3>
-        <ul className="space-y-2">
-          <li>Create channel with app-specific name</li>
-          <li>Post messages on state changes</li>
-          <li>Listen for messages and update local state</li>
-          <li>Handle tab close (cleanup)</li>
-          <li>Include message type for routing</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Message Protocol</h3>
-        <ul className="space-y-2">
-          <li>
-            Define message types (AUTH_CHANGE, CART_UPDATE, SETTINGS_CHANGE)
-          </li>
-          <li>Include timestamp for ordering</li>
-          <li>Include source tab ID (for debugging)</li>
-          <li>Include payload data</li>
-          <li>Handle unknown message types gracefully</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          State Reconciliation
-        </h3>
-        <ul className="space-y-2">
-          <li>On message received, merge with local state</li>
-          <li>Handle concurrent updates (last-write-wins or merge)</li>
-          <li>Detect and handle conflicts</li>
-          <li>
-            Avoid infinite loops (don&apos;t rebroadcast received messages)
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Tab Leadership</h3>
-        <ul className="space-y-2">
-          <li>Elect one tab as &quot;leader&quot; for coordination</li>
-          <li>Leader handles expensive operations (API calls, cleanup)</li>
-          <li>Use BroadcastChannel for leader election</li>
-          <li>Handle leader tab close (elect new leader)</li>
-          <li>
-            Libraries: leader-elect, broadcast-channel with leader pattern
-          </li>
-        </ul>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The cross-tab synchronization architecture follows a publish-subscribe
+          pattern. Each tab subscribes to the BroadcastChannel on initialization
+          and registers a message handler. When a tab performs an action that
+          affects shared state (login, logout, cart update, settings change),
+          it posts a message to the channel with a structured payload containing
+          the message type, timestamp, source tab identifier, and the data
+          relevant to the update. All other tabs receive the message, evaluate
+          whether it applies to their current state, and update accordingly.
+          The source tab ignores its own message to avoid redundant processing.
+        </p>
+        <p>
+          The message protocol defines the structure and semantics of cross-tab
+          communication. Each message includes a type identifier
+          (<code>AUTH_CHANGE</code>, <code>CART_UPDATE</code>,{" "}
+          <code>SETTINGS_CHANGE</code>, <code>TAB_CLOSE</code>) so receivers
+          can route to the appropriate handler. A timestamp enables ordering
+          when messages arrive out of sequence. A source tab ID enables
+          debugging and prevents infinite loops (a tab does not rebroadcast
+          messages it received from another tab). The payload contains the
+          specific data for the message type — for auth changes, the
+          authentication state; for cart updates, the new cart contents or a
+          delta.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/tab-leadership-pattern.svg"
           alt="Tab Leadership Pattern"
-          caption="Tab leadership — electing a leader tab for coordination, handling leader departure, and distributing work"
+          caption="Tab leadership — leader election via BroadcastChannel, leader handles expensive operations (API calls, cleanup), and automatic re-election when leader tab closes"
         />
+
+        <p>
+          Tab leadership coordinates expensive operations across tabs to avoid
+          redundant work. When multiple tabs are open, having every tab
+          independently poll for updates, refresh tokens, or sync data wastes
+          resources and can cause conflicts. The leader election pattern
+          designates one tab as the leader responsible for coordination tasks.
+          When a tab opens, it broadcasts a join message. If no leader exists,
+          it becomes the leader. If a leader already exists, it becomes a
+          follower. When the leader tab closes, it broadcasts a departure
+          message, and the remaining tabs re-elect a new leader (typically the
+          oldest surviving tab). Libraries like broadcast-channel provide
+          built-in leader election, or it can be implemented with simple
+          BroadcastChannel messaging.
+        </p>
       </section>
 
       <section>
-        <h2>Common Use Cases</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Authentication Sync</h3>
-        <ul className="space-y-2">
-          <li>Broadcast logout event to all tabs</li>
-          <li>Clear auth state and redirect to login</li>
-          <li>Handle session expiry (401 in one tab → notify all)</li>
-          <li>Sync token refresh (new token → broadcast to all)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Shopping Cart Sync</h3>
-        <ul className="space-y-2">
-          <li>Broadcast cart changes (add, remove, update quantity)</li>
-          <li>Update cart count in header across all tabs</li>
-          <li>Handle concurrent modifications (merge or last-write-wins)</li>
-          <li>Sync checkout state (prevent double-purchase)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Notification Sync</h3>
-        <ul className="space-y-2">
-          <li>Mark as read in one tab → update count everywhere</li>
-          <li>Broadcast new notification events</li>
-          <li>Sync notification preferences</li>
-          <li>Handle notification dismissal across tabs</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Settings Sync</h3>
-        <ul className="space-y-2">
-          <li>Broadcast preference changes</li>
-          <li>Apply changes immediately in all tabs</li>
-          <li>Handle conflicting changes (last-write-wins usually fine)</li>
-          <li>Persist to server for cross-device sync</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Collaborative Editing
-        </h3>
-        <ul className="space-y-2">
-          <li>Broadcast document changes</li>
-          <li>Handle concurrent edits (CRDTs or operational transform)</li>
-          <li>Show other users&apos; cursors/selections</li>
-          <li>Resolve conflicts gracefully</li>
-        </ul>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Communication mechanism selection involves trade-offs between
+          simplicity, browser support, and capability. BroadcastChannel is the
+          recommended default — it is simple to use (three API calls: create,
+          postMessage, close), supports structured data without serialization,
+          and has 95%+ browser support. Its limitation is that it only works
+          for same-origin tabs and does not support shared state or background
+          processing. localStorage events work as a universal fallback but
+          require JSON serialization, do not fire in the source tab, and can
+          impact storage performance with frequent writes. SharedWorker enables
+          complex shared state management but has a significantly more complex
+          API and limited mobile browser support (not supported on iOS Safari).
+        </p>
+        <p>
+          State reconciliation strategy determines how concurrent updates from
+          multiple tabs are resolved. Last-write-wins is the simplest approach
+          — the most recent message (by timestamp) overwrites previous state.
+          This works well for settings and preferences where conflicts are rare
+          and the cost of losing one change is low. Field-level merging keeps
+          non-conflicting changes from both updates and only conflicts when the
+          same field is modified — appropriate for form data and document
+          editing. CRDTs provide automatic convergence for complex collaborative
+          scenarios but introduce significant implementation complexity and are
+          overkill for most multi-tab sync needs.
+        </p>
+        <p>
+          Real-time sync versus periodic sync presents a performance trade-off.
+          Real-time sync (BroadcastChannel messages posted immediately on every
+          state change) provides the most consistent cross-tab experience but
+          generates the most messages — a user typing in a form field could
+          trigger dozens of messages per minute. Periodic sync (batching changes
+          and posting them at intervals, e.g., every 2 seconds) reduces message
+          volume but introduces a delay between tabs seeing each other&apos;s
+          changes. The pragmatic approach is to debounce frequent updates (form
+          input, scrolling) and post immediately for significant state changes
+          (login, logout, cart modifications, settings changes).
+        </p>
       </section>
 
       <section>
-        <h2>Edge Cases and Considerations</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Tab Close Detection</h3>
-        <ul className="space-y-2">
-          <li>
-            Use <code>beforeunload</code> event
-          </li>
-          <li>Broadcast tab closing message</li>
-          <li>Clean up shared resources</li>
-          <li>Handle leader tab closing (elect new leader)</li>
-          <li>
-            Don&apos;t rely on <code>unload</code> (unreliable)
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Message Ordering</h3>
-        <ul className="space-y-2">
-          <li>Include timestamps in messages</li>
-          <li>Process messages in order</li>
-          <li>Handle out-of-order delivery</li>
-          <li>Use sequence numbers for critical operations</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance</h3>
-        <ul className="space-y-2">
-          <li>Debounce frequent updates (typing, scrolling)</li>
-          <li>Batch multiple changes into single message</li>
-          <li>Limit message payload size</li>
-          <li>Avoid broadcasting large state objects</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security</h3>
-        <ul className="space-y-2">
-          <li>Same-origin only (built-in protection)</li>
-          <li>Validate message structure</li>
-          <li>Don&apos;t trust messages blindly</li>
-          <li>Include message authentication for sensitive operations</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Fallback Strategy</h3>
-        <ul className="space-y-2">
-          <li>Try BroadcastChannel first</li>
-          <li>Fall back to localStorage events if unsupported</li>
-          <li>Graceful degradation (sync may be delayed)</li>
-          <li>Test fallback path</li>
-        </ul>
+        <h2>Best Practices</h2>
+        <p>
+          Define a structured message protocol for all cross-tab communication.
+          Each message should have a type, timestamp, source tab identifier,
+          and payload. The type determines which handler processes the message.
+          The timestamp enables ordering when messages arrive out of sequence.
+          The source tab ID prevents infinite rebroadcast loops — a tab checks
+          whether the message source is itself and skips processing if so. The
+          payload contains the specific data for the message type. Document the
+          protocol so all team members understand the message structure and can
+          add new message types consistently.
+        </p>
+        <p>
+          Implement a fallback strategy for browser compatibility. Try
+          BroadcastChannel first, and if it is not supported (older browsers),
+          fall back to localStorage events. The fallback layer should provide
+          the same message interface to the rest of the application — the
+          application code posts messages through a sync service that internally
+          chooses the appropriate mechanism. This abstraction hides the
+          implementation detail and ensures consistent behavior across browsers.
+          Test the fallback path explicitly because it is the most likely to
+          have subtle bugs.
+        </p>
+        <p>
+          Handle tab close gracefully to maintain system integrity. When a tab
+          closes, it should broadcast a <code>TAB_CLOSE</code> message so other
+          tabs can update their tab count and, if the closing tab was the
+          leader, trigger re-election. Use the <code>beforeunload</code> event
+          to send the close message — it is more reliable than the{" "}
+          <code>unload</code> event, which is not guaranteed to fire. Do not
+          rely on the <code>unload</code> event for critical cleanup because
+          modern browsers may skip it for performance optimization (bfcache).
+        </p>
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
+        <h2>Common Pitfalls</h2>
+        <p>
+          Infinite rebroadcast loops are the most common multi-tab sync bug.
+          When Tab A receives a message from Tab B and rebroadcasts it, Tab B
+          receives it back and rebroadcasts it again, creating an infinite loop
+          that floods the channel with duplicate messages and degrades
+          performance. The fix is to include a source tab ID in every message
+          and check it before processing — if the message source is the current
+          tab, skip processing. Alternatively, include a unique message ID and
+          maintain a set of recently processed message IDs, skipping any
+          duplicates.
+        </p>
+        <p>
+          Message ordering issues occur when messages arrive out of sequence
+          due to varying processing speeds across tabs. If Tab A sends an
+          update at time T1 and Tab B sends an update at time T2, but Tab
+          B&apos;s message arrives at Tab C first (because Tab B had less
+          processing overhead), Tab C may apply the updates in the wrong order.
+          The fix is to include timestamps in all messages and process them in
+          timestamp order. For critical operations where ordering is essential,
+          use sequence numbers (monotonically increasing counters) instead of
+          wall-clock timestamps to avoid clock skew issues.
+        </p>
+        <p>
+          Memory leaks from unclosed BroadcastChannel instances are a subtle
+          issue that accumulates over long browsing sessions. Each
+          BroadcastChannel holds a reference to its message handler, and if the
+          channel is not closed when the tab navigates away or the SPA
+          unmounts, the handler remains in memory. The fix is to close the
+          channel (<code>channel.close()</code>) in the cleanup function of
+          useEffect or the component&apos;s componentWillUnmount. For
+          application-level channels, close them on page unload using the
+          <code>beforeunload</code> event.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Authentication synchronization is the most universally needed
+          multi-tab sync scenario. When a user logs out in one tab, all other
+          tabs must be logged out to prevent orphaned sessions and security
+          risks. The implementation broadcasts an <code>AUTH_LOGOUT</code>{" "}
+          message on logout, and all receiving tabs clear their authentication
+          state (tokens from storage, user info from global state) and redirect
+          to the login page. Similarly, when one tab receives a 401 Unauthorized
+          response (session expired), it broadcasts a session expiry message so
+          all tabs handle the expiry consistently — showing a re-login prompt
+          rather than continuing to make failed API requests.
+        </p>
+        <p>
+          Shopping cart synchronization in e-commerce ensures a consistent
+          experience across tabs. When a user adds a product to cart in one
+          tab, the cart count in the header of all other tabs updates
+          immediately via a <code>CART_UPDATE</code> broadcast. If the user
+          has the cart page open in one tab and a product page in another,
+          both reflect the same cart state. Concurrent modifications (adding
+          the same product in two tabs simultaneously) are handled with
+          last-write-wins for simple quantity updates or field-level merging
+          for complex cart operations. During checkout, the checkout tab
+          becomes the leader and other tabs display a &quot;checkout in
+          progress&quot; indicator to prevent duplicate purchases.
+        </p>
+        <p>
+          Collaborative document editing represents the most sophisticated
+          multi-tab sync use case. Google Docs, Notion, and Figma use CRDTs or
+          Operational Transformation to merge concurrent edits from multiple
+          tabs (and multiple users) automatically. Each edit is captured as an
+          operation (insert text at position X, delete characters from Y to Z),
+          broadcast to all other tabs via WebSocket, and applied with
+          transformation to account for concurrent operations. The result is
+          that all tabs converge to the same document state regardless of
+          operation order. For simpler applications without real-time
+          collaboration requirements, field-level merging with conflict
+          notification provides adequate multi-tab sync with much less
+          complexity.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions with Detailed Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you synchronize state across browser tabs?
             </p>
             <p className="mt-2 text-sm">
-              A: Use BroadcastChannel API for modern browsers — simple
-              postMessage between tabs. Listen for messages and update local
-              state. For older browsers, fall back to localStorage events (fires
-              when localStorage changes in another tab). For complex shared
-              state, use SharedWorker. Include message types, timestamps, and
-              handle tab close gracefully.
+              A: Use the BroadcastChannel API — create a channel with a shared
+              name, post messages with postMessage(data), and receive messages
+              via the onmessage handler. Define a message protocol with type,
+              timestamp, source tab ID, and payload. For older browsers, fall
+              back to localStorage events (which fire across tabs when
+              localStorage changes). For complex shared state, use SharedWorker.
+              Handle tab close with beforeunload to broadcast departure and
+              trigger leader re-election if needed.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you handle logout across multiple tabs?
             </p>
             <p className="mt-2 text-sm">
-              A: When user logs out in one tab, broadcast AUTH_LOGOUT message
-              via BroadcastChannel. All tabs receive message, clear auth state,
-              and redirect to login. Also handle session expiry — if one tab
-              gets 401, broadcast to all tabs. Clear tokens from all storage
-              (localStorage, cookies) in all tabs.
+              A: When the user logs out in one tab, broadcast an AUTH_LOGOUT
+              message via BroadcastChannel. All tabs receive the message, clear
+              authentication state (tokens from localStorage/cookies, user info
+              from global state), and redirect to the login page. Also handle
+              session expiry — if one tab receives a 401 response, broadcast a
+              SESSION_EXPIRED message so all tabs handle it consistently. Clear
+              tokens from all storage mechanisms in all tabs.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What is tab leadership and when would you use it?
             </p>
             <p className="mt-2 text-sm">
-              A: Tab leadership elects one tab as &quot;leader&quot; for
-              coordination. Leader handles expensive operations (API calls,
-              cleanup, background sync). Other tabs are followers. Use when you
-              want to avoid duplicate work (all tabs calling same API) or need
-              centralized coordination. Handle leader tab closing by electing
-              new leader.
+              A: Tab leadership elects one tab as the &quot;leader&quot;
+              responsible for coordination tasks — periodic API polling, token
+              refresh, background sync, and cleanup. Other tabs are followers
+              that receive updates from the leader. Use it to avoid redundant
+              work (all tabs independently polling the same API) or when you
+              need centralized coordination (shared WebSocket connection).
+              Handle leader tab closing by broadcasting a departure message and
+              re-electing from surviving tabs.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do you handle concurrent updates across tabs?
             </p>
             <p className="mt-2 text-sm">
-              A: Include timestamps in messages for ordering. Use
-              last-write-wins for simple cases. For complex data, use merge
-              strategies or CRDTs. Avoid infinite loops — don&apos;t rebroadcast
-              received messages. For collaborative editing, use operational
-              transform or CRDT libraries. Test concurrent update scenarios
-              thoroughly.
+              A: Include timestamps in messages for ordering. Use last-write
+              wins for simple cases (settings, preferences). For complex data,
+              use field-level merge — merge non-conflicting field changes
+              automatically and only raise conflicts when the same field is
+              modified. Avoid infinite loops by not rebroadcasting received
+              messages (check source tab ID). For collaborative editing, use
+              CRDT libraries like Yjs for automatic convergence. Test
+              concurrent update scenarios thoroughly.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: What&apos;s the difference between BroadcastChannel and
-              localStorage events?
+              Q: What is the difference between BroadcastChannel and localStorage
+              events?
             </p>
             <p className="mt-2 text-sm">
               A: BroadcastChannel is purpose-built for cross-tab messaging —
-              postMessage directly, receive in onmessage handler. localStorage
-              events fire when localStorage changes in another tab — indirect,
-              only string data, doesn&apos;t fire in tab that made change.
-              BroadcastChannel is simpler and more flexible. localStorage events
-              work in older browsers as fallback.
+              post any structured data directly, receive it via onmessage
+              handler, works in the source tab too. localStorage events fire
+              indirectly — when one tab writes to localStorage, other tabs
+              receive a storage event with the key and values. localStorage only
+              stores strings (requires JSON serialization), does not fire in the
+              source tab, and can impact storage performance. BroadcastChannel
+              is simpler and more capable; localStorage events work as a
+              fallback for older browsers.
             </p>
           </div>
         </div>
@@ -471,7 +429,7 @@ export default function MultiTabSynchronizationArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              MDN — Storage Event
+              MDN — Storage Event for Cross-Tab Communication
             </a>
           </li>
           <li>
@@ -481,7 +439,7 @@ export default function MultiTabSynchronizationArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              MDN — SharedWorker
+              MDN — SharedWorker API
             </a>
           </li>
           <li>
@@ -492,6 +450,16 @@ export default function MultiTabSynchronizationArticle() {
               rel="noopener noreferrer"
             >
               broadcast-channel — Leader Election Library
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://html.spec.whatwg.org/multipage/web-messaging.html#broadcasting-to-other-browsing-contexts"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HTML Spec — BroadcastChannel Specification
             </a>
           </li>
         </ul>

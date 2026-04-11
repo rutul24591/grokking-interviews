@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg-light { fill: #f8f9fa; }
+      .bg-dark { fill: #1a1a2e; }
+      .box-light { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
+      .box-dark { fill: #16213e; stroke: #60a5fa; stroke-width: 2; }
+      .title-light { fill: #1e293b; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .title-dark { fill: #f1f5f9; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .label-light { fill: #334155; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .label-dark { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+      .sub-light { fill: #64748b; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+      .sub-dark { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; font-weight: 400; }
+      .arrow-light { stroke: #2563eb; stroke-width: 2; fill: none; }
+      .arrow-dark { stroke: #60a5fa; stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+
+  <!-- Light Mode -->
+  <g class="light-mode">
+    <rect class="bg-light" width="800" height="420" rx="8"/>
+    <text class="title-light" x="400" y="35" text-anchor="middle">CI/CD Pipeline Architecture for DX</text>
+
+    <!-- Pipeline Stages -->
+    <rect class="box-light" x="30" y="60" width="140" height="80" rx="6"/>
+    <text class="label-light" x="100" y="90" text-anchor="middle">Commit Hook</text>
+    <text class="sub-light" x="100" y="110" text-anchor="middle">Lint + Type-check</text>
+    <text class="sub-light" x="100" y="125" text-anchor="middle">Staged files only</text>
+
+    <path class="arrow-light" d="M 170 100 L 210 100"/>
+    <polygon class="arrow-light" points="208,95 218,100 208,105" fill="#2563eb" stroke="none"/>
+
+    <rect class="box-light" x="220" y="60" width="140" height="80" rx="6"/>
+    <text class="label-light" x="290" y="90" text-anchor="middle">CI Pipeline</text>
+    <text class="sub-light" x="290" y="110" text-anchor="middle">Unit + Integration</text>
+    <text class="sub-light" x="290" y="125" text-anchor="middle">Parallel jobs</text>
+
+    <path class="arrow-light" d="M 360 100 L 400 100"/>
+    <polygon class="arrow-light" points="398,95 408,100 398,105" fill="#2563eb" stroke="none"/>
+
+    <rect class="box-light" x="410" y="60" width="140" height="80" rx="6"/>
+    <text class="label-light" x="480" y="90" text-anchor="middle">Build</text>
+    <text class="sub-light" x="480" y="110" text-anchor="middle">Production output</text>
+    <text class="sub-light" x="480" y="125" text-anchor="middle">Cached deps</text>
+
+    <path class="arrow-light" d="M 550 100 L 590 100"/>
+    <polygon class="arrow-light" points="588,95 598,100 588,105" fill="#2563eb" stroke="none"/>
+
+    <rect class="box-light" x="600" y="60" width="170" height="80" rx="6"/>
+    <text class="label-light" x="685" y="90" text-anchor="middle">Staging Deploy</text>
+    <text class="sub-light" x="685" y="110" text-anchor="middle">E2E + Smoke tests</text>
+    <text class="sub-light" x="685" y="125" text-anchor="middle">Preview URL</text>
+
+    <!-- Parallel paths below -->
+    <path class="arrow-light" d="M 290 140 L 290 180"/>
+    <polygon class="arrow-light" points="285,178 290,188 295,178" fill="#2563eb" stroke="none"/>
+
+    <rect class="box-light" x="220" y="190" width="140" height="80" rx="6"/>
+    <text class="label-light" x="290" y="220" text-anchor="middle">Security Scan</text>
+    <text class="sub-light" x="290" y="240" text-anchor="middle">Dep vulnerabilities</text>
+    <text class="sub-light" x="290" y="255" text-anchor="middle">CSP audit</text>
+
+    <path class="arrow-light" d="M 480 140 L 480 180"/>
+    <polygon class="arrow-light" points="475,178 480,188 485,178" fill="#2563eb" stroke="none"/>
+
+    <rect class="box-light" x="410" y="190" width="140" height="80" rx="6"/>
+    <text class="label-light" x="480" y="220" text-anchor="middle">Bundle Analysis</text>
+    <text class="sub-light" x="480" y="240" text-anchor="middle">Size budgets</text>
+    <text class="sub-light" x="480" y="255" text-anchor="middle">Tree-shake check</text>
+
+    <!-- Feedback metrics -->
+    <rect class="box-light" x="30" y="300" width="740" height="100" rx="6"/>
+    <text class="label-light" x="400" y="330" text-anchor="middle">DX Metrics Dashboard</text>
+    <text class="sub-light" x="120" y="360" text-anchor="middle">Build time: &lt;5s</text>
+    <text class="sub-light" x="300" y="360" text-anchor="middle">CI duration: &lt;10min</text>
+    <text class="sub-light" x="500" y="360" text-anchor="middle">Flaky tests: 0</text>
+    <text class="sub-light" x="680" y="360" text-anchor="middle">PR cycle: &lt;4hrs</text>
+    <text class="sub-light" x="120" y="380" text-anchor="middle">HMR: &lt;1s</text>
+    <text class="sub-light" x="300" y="380" text-anchor="middle">Test pass rate: 98%+</text>
+    <text class="sub-light" x="500" y="380" text-anchor="middle">Deploy freq: daily</text>
+    <text class="sub-light" x="680" y="380" text-anchor="middle">Satisfaction: 8/10</text>
+  </g>
+
+  <!-- Dark Mode -->
+  <g class="dark-mode">
+    <rect class="bg-dark" width="800" height="420" rx="8"/>
+    <text class="title-dark" x="400" y="35" text-anchor="middle">CI/CD Pipeline Architecture for DX</text>
+
+    <rect class="box-dark" x="30" y="60" width="140" height="80" rx="6"/>
+    <text class="label-dark" x="100" y="90" text-anchor="middle">Commit Hook</text>
+    <text class="sub-dark" x="100" y="110" text-anchor="middle">Lint + Type-check</text>
+    <text class="sub-dark" x="100" y="125" text-anchor="middle">Staged files only</text>
+
+    <path class="arrow-dark" d="M 170 100 L 210 100"/>
+    <polygon class="arrow-dark" points="208,95 218,100 208,105" fill="#60a5fa" stroke="none"/>
+
+    <rect class="box-dark" x="220" y="60" width="140" height="80" rx="6"/>
+    <text class="label-dark" x="290" y="90" text-anchor="middle">CI Pipeline</text>
+    <text class="sub-dark" x="290" y="110" text-anchor="middle">Unit + Integration</text>
+    <text class="sub-dark" x="290" y="125" text-anchor="middle">Parallel jobs</text>
+
+    <path class="arrow-dark" d="M 360 100 L 400 100"/>
+    <polygon class="arrow-dark" points="398,95 408,100 398,105" fill="#60a5fa" stroke="none"/>
+
+    <rect class="box-dark" x="410" y="60" width="140" height="80" rx="6"/>
+    <text class="label-dark" x="480" y="90" text-anchor="middle">Build</text>
+    <text class="sub-dark" x="480" y="110" text-anchor="middle">Production output</text>
+    <text class="sub-dark" x="480" y="125" text-anchor="middle">Cached deps</text>
+
+    <path class="arrow-dark" d="M 550 100 L 590 100"/>
+    <polygon class="arrow-dark" points="588,95 598,100 588,105" fill="#60a5fa" stroke="none"/>
+
+    <rect class="box-dark" x="600" y="60" width="170" height="80" rx="6"/>
+    <text class="label-dark" x="685" y="90" text-anchor="middle">Staging Deploy</text>
+    <text class="sub-dark" x="685" y="110" text-anchor="middle">E2E + Smoke tests</text>
+    <text class="sub-dark" x="685" y="125" text-anchor="middle">Preview URL</text>
+
+    <path class="arrow-dark" d="M 290 140 L 290 180"/>
+    <polygon class="arrow-dark" points="285,178 290,188 295,178" fill="#60a5fa" stroke="none"/>
+
+    <rect class="box-dark" x="220" y="190" width="140" height="80" rx="6"/>
+    <text class="label-dark" x="290" y="220" text-anchor="middle">Security Scan</text>
+    <text class="sub-dark" x="290" y="240" text-anchor="middle">Dep vulnerabilities</text>
+    <text class="sub-dark" x="290" y="255" text-anchor="middle">CSP audit</text>
+
+    <path class="arrow-dark" d="M 480 140 L 480 180"/>
+    <polygon class="arrow-dark" points="475,178 480,188 485,178" fill="#60a5fa" stroke="none"/>
+
+    <rect class="box-dark" x="410" y="190" width="140" height="80" rx="6"/>
+    <text class="label-dark" x="480" y="220" text-anchor="middle">Bundle Analysis</text>
+    <text class="sub-dark" x="480" y="240" text-anchor="middle">Size budgets</text>
+    <text class="sub-dark" x="480" y="255" text-anchor="middle">Tree-shake check</text>
+
+    <rect class="box-dark" x="30" y="300" width="740" height="100" rx="6"/>
+    <text class="label-dark" x="400" y="330" text-anchor="middle">DX Metrics Dashboard</text>
+    <text class="sub-dark" x="120" y="360" text-anchor="middle">Build time: &lt;5s</text>
+    <text class="sub-dark" x="300" y="360" text-anchor="middle">CI duration: &lt;10min</text>
+    <text class="sub-dark" x="500" y="360" text-anchor="middle">Flaky tests: 0</text>
+    <text class="sub-dark" x="680" y="360" text-anchor="middle">PR cycle: &lt;4hrs</text>
+    <text class="sub-dark" x="120" y="380" text-anchor="middle">HMR: &lt;1s</text>
+    <text class="sub-dark" x="300" y="380" text-anchor="middle">Test pass rate: 98%+</text>
+    <text class="sub-dark" x="500" y="380" text-anchor="middle">Deploy freq: daily</text>
+    <text class="sub-dark" x="680" y="380" text-anchor="middle">Satisfaction: 8/10</text>
+  </g>
+</svg>

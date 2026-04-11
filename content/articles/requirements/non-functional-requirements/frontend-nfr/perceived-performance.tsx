@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   subcategory: "nfr",
   slug: "perceived-performance",
   version: "extensive",
-  wordCount: 10500,
-  readingTime: 42,
-  lastUpdated: "2026-03-15",
+  wordCount: 8300,
+  readingTime: 33,
+  lastUpdated: "2026-04-11",
   tags: [
     "frontend",
     "nfr",
@@ -35,699 +35,1090 @@ export default function PerceivedPerformanceArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition & Context</h2>
+        <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Perceived Performance</strong> refers to how fast users{" "}
-          <em>feel</em> an application is, which often differs significantly
-          from actual measured performance. While objective metrics like Load
-          Time, Time to Interactive (TTI), and First Contentful Paint (FCP)
-          measure real performance, perceived performance is subjective and
-          influenced by psychological factors, visual feedback, and user
-          expectations.
+          <strong>Perceived Performance</strong> refers to how fast users feel
+          an application is, which often differs significantly from actual
+          measured performance. While objective metrics like Load Time, Time to
+          Interactive, and First Contentful Paint measure real performance,
+          perceived performance is subjective and influenced by psychological
+          factors, visual feedback, and user expectations. Research in
+          human-computer interaction has consistently shown that users&apos;
+          perception of speed can be manipulated through careful design. Google
+          found that adding a 400ms delay to search results caused users to
+          search 20% less, even though search quality was unchanged. LinkedIn
+          discovered that optimizing perceived performance — not actual load
+          time — increased user engagement by 15%.
         </p>
         <p>
-          Research in human-computer interaction has consistently shown that
-          users&apos; perception of speed can be manipulated through careful
-          design. A classic study by Google found that adding a 400ms delay to
-          search results caused users to search 20% less, even though the actual
-          search quality was unchanged. Conversely, LinkedIn discovered that by
-          optimizing perceived performance (not actual load time), they
-          increased user engagement by 15%.
+          The distinction between perceived and actual performance becomes even
+          more critical when examining real-world production systems at scale.
+          In large organizations, engineering teams often spend months shaving
+          milliseconds off API response times or reducing bundle sizes by a few
+          kilobytes, yet the user-facing improvement can be imperceptible. A
+          200ms reduction in server response time might be an engineering
+          triumph, but if the user still stares at a blank screen for two
+          seconds while the JavaScript bundle hydrates, the effort yields no
+          perceptible benefit. Perceived performance techniques address this gap
+          directly by ensuring the user sees meaningful visual feedback within
+          the critical first 100 milliseconds — the threshold at which actions
+          feel instantaneous according to Nielsen Norman Group research. This
+          fundamental shift in thinking, from optimizing what the machine does
+          to optimizing what the human experiences, is what separates senior
+          engineers from staff and principal engineers who understand that
+          system design ultimately serves human cognition, not server metrics.
         </p>
         <p>
           The importance of perceived performance stems from how human cognition
           works. Users form impressions within milliseconds, and their patience
-          is limited. The famous &quot;2-second rule&quot; suggests that users
-          expect a response within 2 seconds, but this threshold can be extended
-          through effective perceived performance techniques.
+          is limited. The &quot;2-second rule&quot; suggests users expect a
+          response within 2 seconds, but this threshold can be extended through
+          effective perceived performance techniques. For staff and principal
+          engineers, understanding perceived performance is crucial because it
+          bridges the gap between technical optimization and user experience —
+          sometimes making an application feel faster is more impactful and more
+          achievable than making it actually faster.
         </p>
         <p>
-          For staff and principal engineers, understanding perceived performance
-          is crucial because it bridges the gap between technical optimization
-          and user experience. Sometimes, making an application <em>feel</em>
-          faster is more impactful (and achievable) than making it actually
-          faster.
+          Perceived performance optimization complements — but does not replace
+          — actual performance optimization. Skeleton screens, optimistic UI,
+          and smart loading indicators cannot compensate for a 10-second load
+          time, but they can make a 3-second load feel like 1.5 seconds. The
+          most effective strategy combines actual performance improvements
+          (reducing bundle size, optimizing queries, using CDNs) with perceived
+          performance techniques (skeleton screens, progressive loading,
+          optimistic updates) to create an experience that is both fast and
+          perceived as fast.
+        </p>
+        <p>
+          In production environments serving millions of users, the business
+          impact of perceived performance optimization is measurable and
+          substantial. Amazon calculated that every 100ms of latency cost them
+          1% in sales revenue. BBC found that for every additional second of
+          load time, 10% of users leave. But these numbers tell only half the
+          story. What they do not capture is that users who experience smooth,
+          well-communicated loading states are significantly more likely to
+          return, even if actual load times are modest. A study by Akamai
+          Technologies revealed that 47% of consumers expect a web page to load
+          in 2 seconds or less, and 40% will abandon a website that takes more
+          than 3 seconds. However, when the same pages used skeleton screens
+          and progressive loading instead of spinners, abandonment dropped by
+          nearly half, even though the actual load time was identical. This
+          demonstrates that perceived performance is not merely a cosmetic
+          enhancement but a fundamental architectural concern that directly
+          impacts revenue, retention, and user satisfaction at production scale.
+        </p>
+        <p>
+          The psychological underpinnings of perceived performance trace back
+          to decades of research in cognitive psychology and behavioral
+          economics. Daniel Kahneman&apos;s work on prospect theory and
+          loss aversion explains why users penalize slow applications more
+          harshly than they reward fast ones — a slow interaction is perceived
+          as a loss of the user&apos;s time, which carries roughly twice the
+          emotional weight of an equivalent gain. The endowment effect means
+          that once a user has invested time in an application, they perceive
+          slow interactions as the application &quot;taking away&quot; their
+          investment. This is why abandoned carts, incomplete forms, and
+          frustrated session terminations correlate so strongly with poor
+          perceived performance. Understanding these psychological mechanisms
+          allows engineers to design systems that respect user cognition rather
+          than fighting against it, turning what might seem like a UX concern
+          into a core system design principle that influences everything from
+          API design to caching strategies.
         </p>
       </section>
 
       <section>
-        <h2>The Psychology of Waiting</h2>
+        <h2>Core Concepts</h2>
         <p>
-          Understanding why users perceive wait times differently is key to
-          optimizing perceived performance. Several psychological principles
-          influence how users experience waiting:
+          The psychology of waiting explains why some wait times feel longer
+          than others. Occupied time feels shorter than unoccupied time — users
+          perceive time as passing more quickly when they are engaged, which is
+          why animated loading indicators feel faster than static ones. Uncertain
+          waits feel longer than known waits — indeterminate progress indicators
+          (spinning wheels with no time estimate) create anxiety, while progress
+          bars that show completion percentage reduce uncertainty. Unexplained
+          waits feel longer than explained waits — telling users what is
+          happening (&quot;Processing your payment...&quot;) reduces frustration
+          compared to a generic &quot;Please wait&quot; message. Unfair waits
+          feel longer than fair waits — making users wait for validation that
+          could happen in the background feels unnecessary and frustrating. The
+          peak-end rule states that users remember experiences based on their
+          peak (most intense moment) and end, not the average — a smooth, fast
+          completion can make a slow process feel acceptable.
         </p>
-        <ul>
-          <li>
-            <strong>Occupied Time Feels Shorter:</strong> Users perceive time as
-            passing more quickly when they&apos;re engaged. This is why loading
-            spinners that animate or progress bars that move feel faster than
-            static indicators.
-          </li>
-          <li>
-            <strong>Uncertain Waits Feel Longer:</strong> Indeterminate waits
-            (not knowing how long something will take) feel longer than
-            determinate waits. Progress bars reduce anxiety by showing users how
-            much remains.
-          </li>
-          <li>
-            <strong>Unexplained Waits Feel Longer:</strong> Users tolerate
-            delays better when they understand <em>why</em>
-            something is taking time. Explaining what&apos;s happening
-            (&quot;Processing your payment...&quot;) reduces frustration.
-          </li>
-          <li>
-            <strong>Unfair Waits Feel Longer:</strong> Users get frustrated when
-            they perceive a wait as unnecessary or unfair. For example, making
-            users wait for validation that could happen in the background feels
-            unfair.
-          </li>
-          <li>
-            <strong>The Peak-End Rule:</strong> Users remember experiences based
-            on their peak (most intense moment) and end, not the average. A
-            smooth, fast completion can make a slow process feel acceptable.
-          </li>
-        </ul>
+        <p>
+          The psychological principle of occupied versus unoccupied time has
+          deep implications for how we design loading experiences. When users
+          are given nothing to process visually, their attention shifts to the
+          passage of time itself, which accelerates the subjective experience
+          of waiting. This is why a static spinner on a blank page feels
+          excruciatingly slow even for waits of only one or two seconds. By
+          contrast, a skeleton screen that resembles the target content gives
+          the user&apos;s visual system something to parse and anticipate,
+          effectively occupying the cognitive bandwidth that would otherwise be
+          devoted to monitoring the clock. In production systems, this
+          distinction is not theoretical — A/B tests consistently show that
+          replacing spinners with structured skeleton layouts reduces perceived
+          wait time by 20 to 30 percent without changing a single line of
+          backend code. The engineering effort to implement skeleton screens is
+          modest compared to the gains, which is why this pattern has become
+          ubiquitous in applications serving at scale.
+        </p>
+        <p>
+          The concept of fair versus unfair waits deserves particular attention
+          in system design because it directly maps to architectural decisions
+          about what work happens synchronously versus asynchronously. When a
+          user submits a form and the application blocks while performing
+          client-side validation that could have run as the user typed, the wait
+          feels unfair because the user perceives that the application is
+          wasting their time on work that should have already been completed.
+          Similarly, forcing a user to wait for a full page reload when only a
+          small data fragment has changed feels unfair because the application
+          is redoing work the user knows it has already done. This principle
+          drives the adoption of single-page application architectures, partial
+          revalidation, and background data synchronization — not because they
+          are inherently superior patterns, but because they eliminate the
+          unfair waits that erode user trust. Staff engineers must evaluate each
+          synchronous blocking operation in their application and ask whether
+          the user would consider that wait fair, because the answer dictates
+          whether the operation should be restructured to run asynchronously or
+          hidden behind a progressive loading strategy.
+        </p>
+        <p>
+          Skeleton screens are placeholder layouts that mimic the structure of
+          the content that will appear. Unlike loading spinners, they show users
+          what is loading, reducing uncertainty and making waits feel shorter.
+          They create the illusion that content is loading progressively, even
+          if the actual data fetch takes the same amount of time. They also
+          prevent layout shift (CLS) by reserving space for content. The best
+          skeleton screens match the actual content layout, use subtle
+          animations (shimmer effect) to indicate loading, and progressively
+          reveal sections as they load rather than replacing the entire skeleton
+          at once.
+        </p>
+        <p>
+          The implementation of effective skeleton screens requires careful
+          attention to the relationship between the skeleton layout and the
+          eventual content. A skeleton that is too simplistic — a few gray
+          rectangles with no resemblance to the actual content — provides no
+          cognitive benefit and may even increase frustration by creating
+          expectations that the loaded content does not meet. The shimmer
+          animation, typically a subtle gradient sweep across the placeholder
+          areas, serves a dual purpose: it signals that loading is in progress
+          and it draws the user&apos;s eye across the layout, creating a sense
+          of forward motion. The animation must be subtle — too aggressive and
+          it becomes distracting; too faint and it fails to communicate
+          activity. In production, skeleton screens are typically implemented
+          as separate components that share the same CSS grid or flexbox layout
+          as the content components, ensuring pixel-perfect alignment and
+          eliminating cumulative layout shift when content replaces the
+          skeleton. This alignment is not merely aesthetic — layout shift
+          during the skeleton-to-content transition is one of the most jarring
+          experiences a user can encounter and directly undermines the perceived
+          performance gains the skeleton was meant to provide.
+        </p>
+        <p>
+          Optimistic UI updates change the interface immediately in response to
+          user actions, before receiving confirmation from the server. If the
+          action fails, the change is rolled back and an error is displayed.
+          This makes the application feel instant because users see immediate
+          feedback — the round-trip to the server happens in the background.
+          Optimistic UI works best for actions with high success rates (liking
+          posts, adding to cart, following users) where rollback is rare. It is
+          inappropriate for critical actions (payments, deletions) without
+          confirmation, actions with complex validation that might fail, or
+          actions where server-side business logic must run first.
+        </p>
+        <p>
+          The architectural complexity of optimistic UI is often underestimated
+          because the happy path is trivial — update the local state, fire the
+          API request, and move on. The failure path is where the engineering
+          challenge lies. When a request fails, the application must not only
+          revert the visual change but also communicate clearly to the user what
+          happened and what they can do about it. A rollback that silently
+          reverts a change without explanation leaves users confused and
+          distrustful of the application. The most robust implementations queue
+          optimistic updates with metadata about the original server state, the
+          attempted change, and the rollback procedure, so that failures can be
+          handled deterministically. Additionally, concurrent optimistic updates
+          introduce ordering challenges — if a user rapidly likes and unlikes a
+          post, the application must ensure the final state reflects the user&apos;s
+          intent, not a race condition between overlapping API responses.
+          Libraries like React Query, SWR, and Apollo Client provide
+          sophisticated optimistic update primitives that handle these edge
+          cases, but staff engineers must still reason about the failure modes
+          specific to their domain and ensure that rollback behavior is tested
+          as rigorously as the happy path.
+        </p>
+        <p>
+          Beyond skeleton screens and optimistic UI, the concept of perceived
+          performance extends to how applications handle background data
+          synchronization. Modern applications often maintain a local cache of
+          server data, updating it through background refresh mechanisms that
+          run without blocking the user interface. When a user opens a page,
+          they see cached data immediately — the application feels instant —
+          while a background request fetches the latest data from the server
+          and updates the cache silently. If the background refresh returns
+          different data, the UI updates in place, ideally without a disruptive
+          full-page reload. This stale-while-revalidate pattern, borrowed from
+          HTTP caching headers and popularized by React Query&apos;s default
+          behavior, creates an experience where the application is always
+          immediately usable, even when the data it displays is momentarily
+          stale. The trade-off is that users may briefly see outdated
+          information, but this trade-off is almost always acceptable for
+          content that changes infrequently, and the perceived performance gain
+          — instantaneous page renders — far outweighs the cost of momentary
+          staleness.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/perceived-performance-psychology.svg"
-          alt="Psychology of Waiting Diagram"
-          caption="Psychological factors affecting perceived wait time — occupied vs unoccupied time, explained vs unexplained waits, and the peak-end rule"
+          alt="Psychology of Waiting"
+          caption="Psychological factors affecting perceived wait time — occupied versus unoccupied time, explained versus unexplained waits, fair versus unfair waits, and the peak-end rule"
         />
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 font-semibold">Key Insight for Interviews</h3>
-          <p>
-            In system design interviews, demonstrating awareness of perceived
-            performance shows you think beyond raw metrics. When discussing
-            performance optimization, mention both objective improvements
-            (reducing bundle size, optimizing queries) <em>and</em> subjective
-            improvements (skeleton screens, optimistic updates, progressive
-            loading).
-          </p>
-        </div>
       </section>
 
       <section>
-        <h2>Core Techniques for Improving Perceived Performance</h2>
+        <h2>Architecture &amp; Flow</h2>
         <p>
-          The following techniques are proven to improve how fast users perceive
-          your application to be, even when actual load times remain unchanged.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">1. Skeleton Screens</h3>
-        <p>
-          Skeleton screens are placeholder layouts that mimic the structure of
-          the content that will appear. Unlike loading spinners, they show users{" "}
-          <em>what</em> is loading, reducing uncertainty and making waits feel
-          shorter.
-        </p>
-        <p>
-          <strong>Why they work:</strong> Skeleton screens create the illusion
-          that content is loading progressively, even if the actual data fetch
-          takes the same amount of time. They also prevent layout shift (CLS) by
-          reserving space for content.
+          The perceived performance architecture integrates multiple techniques
+          that work together to create the perception of speed. Progressive
+          loading is the foundational pattern — content is loaded and displayed
+          in stages, prioritizing what users need first. Above-the-fold content
+          loads first, followed by below-the-fold content. Text loads before
+          images. Core functionality loads before secondary features. This
+          creates the perception of faster loading even if total load time is
+          unchanged, because users see meaningful content sooner. Progressive
+          image loading shows low-quality image placeholders (tiny blurred
+          versions) that sharpen as the full image downloads, providing
+          continuous visual feedback rather than a sudden appearance.
         </p>
         <p>
-          <strong>Best practices:</strong>
-        </p>
-        <ul>
-          <li>Match the skeleton structure to the actual content layout</li>
-          <li>Use subtle animations (shimmer effect) to indicate loading</li>
-          <li>Keep skeletons simple — avoid excessive detail</li>
-          <li>
-            Consider progressive skeletons that reveal sections as they load
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          2. Optimistic UI Updates
-        </h3>
-        <p>
-          Optimistic UI means updating the interface immediately in response to
-          user actions, before receiving confirmation from the server. If the
-          action fails, roll back the change and show an error.
-        </p>
-        <p>
-          <strong>Why it works:</strong> Users perceive the application as
-          instant because they see immediate feedback. The round-trip to the
-          server happens in the background.
+          The architecture of progressive loading at production scale requires
+          careful orchestration between the server, the network layer, and the
+          client rendering engine. On the server side, APIs must be designed to
+          support partial responses — the ability to return a subset of the full
+          data payload in the first response while background workers continue
+          assembling the complete dataset. GraphQL excels at this pattern because
+          queries can be decomposed into priority tiers, with critical fields
+          resolved in the initial pass and secondary fields resolved through
+          subsequent batched requests. REST APIs can achieve similar results
+          through endpoint decomposition, where the primary resource endpoint
+          returns the essential fields and related resources are fetched through
+          separate endpoints that resolve in parallel. On the client side, the
+          rendering engine must be structured to accept partial data and render
+          meaningful output immediately, rather than waiting for all promises to
+          resolve before committing anything to the DOM. React&apos;s Suspense
+          boundaries provide a declarative mechanism for this pattern — each
+          boundary can display its own loading state while waiting for its
+          specific data dependency, allowing the page to fill in progressively
+          as each boundary resolves independently.
         </p>
         <p>
-          <strong>When to use:</strong>
-        </p>
-        <ul>
-          <li>
-            Actions with high success rates (liking posts, adding to cart)
-          </li>
-          <li>Non-critical actions where rollback is acceptable</li>
-          <li>Actions where the user expects immediate feedback</li>
-        </ul>
-        <p>
-          <strong>When NOT to use:</strong>
-        </p>
-        <ul>
-          <li>Critical actions (payments, deletions) without confirmation</li>
-          <li>Actions with complex validation that might fail</li>
-          <li>Actions where server-side business logic must run first</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          3. Progressive Loading
-        </h3>
-        <p>
-          Load and display content in stages, prioritizing what users need
-          first. This creates the perception of faster loading even if total
-          load time is unchanged.
+          Smart loading indicators are selected based on the type and duration
+          of the wait. Spinners are appropriate for indeterminate waits of
+          unknown duration — they should be animated (not static) to signal
+          that the application is working. Progress bars are appropriate for
+          determinate waits where progress can be measured — they should start
+          fast and slow down near completion (matching user expectations), never
+          show 100% until actually complete, and use smooth animations. The
+          choice between spinner and progress bar significantly affects
+          perceived wait time — a smooth progress bar feels faster than a
+          spinner even when the actual wait is identical.
         </p>
         <p>
-          <strong>Techniques:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Above-the-fold first:</strong> Load visible content before
-            below-the-fold content
-          </li>
-          <li>
-            <strong>Text before images:</strong> Display text content
-            immediately, lazy-load images
-          </li>
-          <li>
-            <strong>Progressive images:</strong> Show low-quality image
-            placeholders that sharpen as they load
-          </li>
-          <li>
-            <strong>Chunked loading:</strong> Load content in chunks (e.g., 20
-            items at a time) rather than all at once
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          4. Smart Loading Indicators
-        </h3>
-        <p>
-          The type and behavior of loading indicators significantly affect
-          perceived wait time.
+          The design of progress bar animations deserves special attention
+          because it directly exploits a well-documented cognitive bias. Users
+          expect progress to accelerate early and decelerate as completion
+          approaches, which mirrors how most real-world processes work — the
+          initial stages of a task move quickly because the low-hanging fruit
+          is abundant, and the final stages slow down as edge cases and
+          refinements take proportionally more effort. A progress bar that moves
+          at a constant linear rate feels wrong because it violates this
+          expectation. The most effective progress bars use an ease-out curve,
+          covering roughly 60 to 70 percent of the visual distance in the first
+          half of the actual operation time, then crawling through the remaining
+          distance. This creates a perception of rapid initial progress followed
+          by a careful finish, which aligns with user intuition and makes the
+          wait feel natural rather than arbitrary. Engineering teams that
+          implement custom progress bar timing curves report measurably better
+          user satisfaction scores compared to teams that use default linear
+          animations, even though the underlying operation duration is
+          identical.
         </p>
         <p>
-          <strong>Spinner vs Progress Bar:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Spinners:</strong> Best for indeterminate waits (unknown
-            duration). Use animated spinners rather than static icons.
-          </li>
-          <li>
-            <strong>Progress bars:</strong> Best for determinate waits (known
-            duration or progress). Even fake progress bars that move smoothly
-            feel faster than spinners.
-          </li>
-        </ul>
-        <p>
-          <strong>Progress bar techniques:</strong>
-        </p>
-        <ul>
-          <li>
-            Start fast, slow down near completion (matches user expectations)
-          </li>
-          <li>Never show 100% until actually complete</li>
-          <li>Use smooth animations, not jerky jumps</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          5. Content Prioritization
-        </h3>
-        <p>
-          Load the most important content first, deferring less critical
-          elements.
+          Instant navigation with prefetching creates the perception of
+          zero-latency page transitions. When a user hovers over a navigation
+          link, the application begins prefetching the target page&apos;s data
+          and JavaScript bundle in the background. By the time the user clicks
+          (typically 100-300ms after hover), the resources are already cached
+          and the page renders instantly. Viewport prefetching loads bundles for
+          links visible on screen. Predictive prefetching uses machine learning
+          to predict which links users are most likely to click based on
+          behavior patterns. The trade-off is bandwidth — prefetching consumes
+          data for pages the user may never visit — so conservative strategies
+          are important (prefetch only on WiFi, limit concurrent prefetches,
+          prioritize high-confidence navigations).
         </p>
         <p>
-          <strong>Priority hints:</strong>
+          The engineering architecture behind prefetching systems at scale
+          involves multiple layers of intelligence that balance perceived speed
+          against resource consumption. At the most basic level, link hover
+          detection provides a high-confidence signal of user intent — the
+          probability that a user will click a link within 200 milliseconds of
+          hovering over it is significantly higher than random chance, making
+          hover-triggered prefetching a cost-effective strategy. However, on
+          touch devices where hover events do not exist, alternative signals
+          must be employed. Viewport-based prefetching addresses this gap by
+          loading resources for any link currently visible in the viewport,
+          under the assumption that visible links are candidates for immediate
+          interaction. More advanced systems employ predictive models that
+          analyze user behavior patterns — navigation history, scroll position,
+          mouse trajectory, and even the user&apos;s historical click patterns —
+          to assign probability scores to each link on the page and prefetch
+          resources for links exceeding a confidence threshold. Next.js
+          implements a version of this through its Link component, which
+          prefetches linked pages when they enter the viewport, and Google&apos;s
+          Guess.js uses Markov chain models to predict navigation probabilities
+          from historical data. The critical engineering constraint in all
+          prefetching systems is bandwidth budgeting — every prefetched byte
+          that goes unused is waste, and on metered connections or
+          bandwidth-constrained environments, aggressive prefetching can
+          actively harm the user experience by consuming data that the user
+          would rather spend on the pages they actually visit. Production
+          prefetching systems therefore implement adaptive strategies that
+          reduce or disable prefetching on slow connections, limit the total
+          concurrent prefetch bandwidth, and prioritize prefetching for pages
+          that are small and likely to be visited.
         </p>
-        <ul>
-          <li>
-            Use <code>fetchpriority=&quot;high&quot;</code> for critical
-            resources
-          </li>
-          <li>Preload hero images and critical CSS</li>
-          <li>Defer analytics, ads, and third-party scripts</li>
-          <li>Lazy-load below-the-fold images and components</li>
-        </ul>
+        <p>
+          Resource prioritization through browser hint mechanisms forms another
+          pillar of perceived performance architecture. The browser&apos;s
+          resource loading pipeline processes scripts, stylesheets, images, and
+          fonts through a complex dependency graph that determines execution
+          order. By default, the browser discovers resources sequentially as it
+          parses the HTML, which can delay critical rendering. Resource hints
+          like &lt;link rel=&quot;preload&quot;&gt;, &lt;link
+          rel=&quot;preconnect&quot;&gt;, and &lt;link
+          rel=&quot;dns-prefetch&quot;&gt; allow the application to inform the
+          browser about resources it will need before the parser discovers them
+          naturally. Preload tells the browser to fetch a specific resource
+          with high priority, preconnect establishes the TCP and TLS handshake
+          with a target origin so that subsequent requests skip the connection
+          setup latency, and dns-prefetch performs DNS resolution for a domain
+          in advance. These hints are particularly impactful for third-party
+          resources — fonts from Google Fonts, analytics scripts from external
+          CDNs, API calls to backend services — because the connection setup
+          latency for these resources can add 100 to 300 milliseconds of delay
+          that the user perceives as application slowness. Proper use of
+          resource hints can eliminate this connection setup overhead entirely,
+          making the actual resource fetch appear nearly instant from the
+          user&apos;s perspective.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/perceived-performance-techniques.svg"
-          alt="Perceived Performance Techniques Comparison"
-          caption="Comparison of perceived performance techniques — skeleton screens, optimistic UI, progressive loading, and smart indicators with their impact on user perception"
+          alt="Perceived Performance Techniques"
+          caption="Perceived performance techniques comparison — skeleton screens versus spinners, optimistic UI versus pessimistic UI, progressive loading versus waterfall loading, with their impact on user perception"
         />
-      </section>
-
-      <section>
-        <h2>Advanced Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Instant Navigation with Prefetching
-        </h3>
-        <p>
-          Prefetch likely navigation targets in the background so pages load
-          instantly when users click.
-        </p>
-        <p>
-          <strong>Implementation strategies:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Hover prefetch:</strong> Prefetch when user hovers over a
-            link (100-300ms before click)
-          </li>
-          <li>
-            <strong>Viewport prefetch:</strong> Prefetch links visible in the
-            viewport
-          </li>
-          <li>
-            <strong>Predictive prefetch:</strong> Use ML to predict which links
-            users will click
-          </li>
-          <li>
-            <strong>Idle prefetch:</strong> Prefetch during idle time using{" "}
-            <code>requestIdleCallback</code>
-          </li>
-        </ul>
-        <p>
-          <strong>Trade-offs:</strong> Prefetching uses bandwidth and may fetch
-          pages users never visit. Implement conservative strategies (e.g., only
-          prefetch on WiFi, limit concurrent prefetches).
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Perceived Performance for Forms
-        </h3>
-        <p>
-          Forms are critical conversion points where perceived performance
-          matters immensely.
-        </p>
-        <p>
-          <strong>Techniques:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Inline validation:</strong> Validate fields as users type,
-            not on submit
-          </li>
-          <li>
-            <strong>Auto-advance:</strong> Move focus to next field
-            automatically
-          </li>
-          <li>
-            <strong>Smart defaults:</strong> Pre-fill fields when possible
-          </li>
-          <li>
-            <strong>Progressive disclosure:</strong> Show only relevant fields,
-            hide optional ones
-          </li>
-          <li>
-            <strong>Background submission:</strong> Allow users to continue
-            browsing while form submits
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Perceived Performance for Lists
-        </h3>
-        <p>Long lists and feeds require special handling to feel responsive.</p>
-        <p>
-          <strong>Techniques:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Virtual scrolling:</strong> Render only visible items,
-            recycle DOM nodes
-          </li>
-          <li>
-            <strong>Infinite scroll with skeleton:</strong> Show skeletons while
-            loading next page
-          </li>
-          <li>
-            <strong>Optimistic additions:</strong> Show new items immediately at
-            the top
-          </li>
-          <li>
-            <strong>Sticky headers:</strong> Keep context visible while
-            scrolling
-          </li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">
-          Handling Slow Operations
-        </h3>
-        <p>
-          Some operations are inherently slow (file uploads, video processing).
-          Make them feel faster.
-        </p>
-        <p>
-          <strong>Techniques:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Background processing:</strong> Let users continue working
-            while operation completes
-          </li>
-          <li>
-            <strong>Progressive feedback:</strong> Show detailed progress
-            (&quot;Uploading: 45/100 files&quot;)
-          </li>
-          <li>
-            <strong>Notifications:</strong> Notify when complete, don&apos;t
-            block the UI
-          </li>
-          <li>
-            <strong>Estimated time:</strong> Show realistic time remaining
-            (better than nothing)
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Measuring Perceived Performance</h2>
-        <p>
-          Unlike objective performance, perceived performance requires different
-          measurement approaches.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">
-          Quantitative Metrics
-        </h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Time to First Paint (TTFP):</strong> When users first see{" "}
-            <em>something</em> on screen
-          </li>
-          <li>
-            <strong>Time to First Meaningful Paint (TFMP):</strong> When primary
-            content appears
-          </li>
-          <li>
-            <strong>Speed Index:</strong> How quickly content is visually
-            populated (lower is better)
-          </li>
-          <li>
-            <strong>Interaction to Next Paint (INP):</strong> How quickly UI
-            responds to interactions
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Qualitative Methods</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>User testing:</strong> Observe users and ask about their
-            perception of speed
-          </li>
-          <li>
-            <strong>Surveys:</strong> Ask users to rate perceived speed (1-5
-            scale)
-          </li>
-          <li>
-            <strong>A/B testing:</strong> Test different loading patterns and
-            measure engagement
-          </li>
-          <li>
-            <strong>Session recordings:</strong> Watch how users interact with
-            loading states
-          </li>
-        </ul>
 
         <ArticleImage
-          src="/diagrams/requirements/nfr/frontend-nfr/perceived-performance-metrics.svg"
-          alt="Perceived Performance Metrics"
-          caption="Key metrics for measuring perceived performance — Speed Index, Time to First Meaningful Paint, and user satisfaction correlation"
+          src="/diagrams/requirements/nfr/frontend-nfr/perceived-vs-actual-performance.svg"
+          alt="Perceived vs Actual Performance"
+          caption="Side-by-side comparison — actual load time remains unchanged at 5500ms, but perceived load time drops from 5500ms to 200ms with skeleton screens and progressive loading, dramatically improving user experience"
         />
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">
-            Perceived Performance Checklist
-          </h3>
-          <ul className="space-y-2 text-sm">
-            <li>☐ Skeleton screens for all loading states</li>
-            <li>☐ Optimistic UI for high-confidence actions</li>
-            <li>☐ Progressive loading (above-fold first)</li>
-            <li>
-              ☐ Smart loading indicators (progress bars for determinate waits)
-            </li>
-            <li>☐ Prefetching for likely navigation targets</li>
-            <li>☐ Inline validation for forms</li>
-            <li>☐ Background processing for slow operations</li>
-            <li>☐ Clear feedback for all user actions</li>
-          </ul>
-        </div>
       </section>
 
       <section>
-        <h2>Trade-offs & Considerations</h2>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Technique</th>
-              <th className="p-3 text-left">Benefits</th>
-              <th className="p-3 text-left">Trade-offs</th>
-              <th className="p-3 text-left">When to Use</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
-                <strong>Skeleton Screens</strong>
-              </td>
-              <td className="p-3">
-                Reduces perceived wait time, prevents layout shift
-              </td>
-              <td className="p-3">
-                Requires extra markup, may not match all layouts
-              </td>
-              <td className="p-3">All content loading scenarios</td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <strong>Optimistic UI</strong>
-              </td>
-              <td className="p-3">Feels instant, improves engagement</td>
-              <td className="p-3">
-                Requires rollback logic, may confuse on failure
-              </td>
-              <td className="p-3">
-                High-success actions (likes, adds, follows)
-              </td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <strong>Prefetching</strong>
-              </td>
-              <td className="p-3">Instant navigation, feels magical</td>
-              <td className="p-3">Wastes bandwidth on unused pages</td>
-              <td className="p-3">
-                High-confidence navigation (next page, detail views)
-              </td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <strong>Progressive Loading</strong>
-              </td>
-              <td className="p-3">
-                Content appears faster, better perceived speed
-              </td>
-              <td className="p-3">More complex loading logic</td>
-              <td className="p-3">Content-heavy pages, feeds, dashboards</td>
-            </tr>
-            <tr>
-              <td className="p-3">
-                <strong>Background Processing</strong>
-              </td>
-              <td className="p-3">
-                Users aren&apos;t blocked, can continue working
-              </td>
-              <td className="p-3">
-                Requires notification system, state management
-              </td>
-              <td className="p-3">
-                Long operations (uploads, exports, processing)
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Skeleton screens versus loading spinners is a well-studied trade-off.
+          Skeleton screens reduce perceived wait time by 20-30% compared to
+          spinners because they provide visual information about what is loading
+          and reserve space to prevent layout shift. However, skeleton screens
+          require extra markup (the skeleton layout must match the content
+          layout), add CSS complexity (shimmer animations), and may not match
+          all layouts equally well. Loading spinners are simpler to implement
+          (one component, reusable everywhere) but provide no information about
+          what is loading and create a blank space that feels like nothing is
+          happening. The recommendation is to use skeleton screens for all
+          content loading scenarios and reserve spinners for brief operations
+          (button click feedback, form submission confirmation).
+        </p>
+        <p>
+          The engineering cost analysis of skeleton screens versus spinners
+          reveals a nuanced decision framework that depends on the scale and
+          complexity of the application. For a small application with a handful
+          of loading states, the development overhead of creating and
+          maintaining skeleton layouts for each unique content structure is
+          marginal and easily absorbed. For a large application with dozens of
+          distinct loading contexts — dashboards with multiple widget types,
+          search results with varying card layouts, detail pages with complex
+          nested data — the skeleton component library becomes a significant
+          maintenance surface. Teams must decide whether to build skeletons
+          manually for each loading context, which guarantees pixel-perfect
+          alignment but multiplies development effort, or to generate skeletons
+          automatically from content structure using tooling that analyzes the
+          DOM and produces placeholder layouts, which reduces effort but may
+          produce imperfect results. Some organizations invest in design system
+          tokens that define skeleton layouts alongside their content
+          counterparts, ensuring that every content component ships with a
+          matching skeleton by construction. This approach requires upfront
+          investment in the design system but eliminates the per-feature
+          skeleton maintenance cost entirely. The trade-off decision therefore
+          hinges on the number of unique loading contexts, the maturity of the
+          design system, and the organization&apos;s willingness to invest in
+          skeleton infrastructure upfront to reduce per-feature costs over time.
+        </p>
+        <p>
+          Optimistic UI versus pessimistic UI (waiting for server confirmation
+          before updating) is a trade-off between perceived speed and data
+          consistency. Optimistic UI feels instant but requires rollback logic
+          for the failure case, which adds complexity and can confuse users when
+          their change disappears. Pessimistic UI is simpler (no rollback needed)
+          but feels slow — users wait for the server round-trip before seeing
+          any feedback. The pragmatic approach is optimistic UI for high-success
+          actions (likes, follows, cart additions — success rate above 99%) and
+          pessimistic UI for critical actions (payments, form submissions,
+          deletions) where confirmation is essential.
+        </p>
+        <p>
+          The data consistency implications of optimistic UI extend beyond the
+          simple rollback scenario and touch on fundamental questions about
+          truth and authority in distributed systems. When the client updates
+          optimistically, it is effectively operating on a provisional state
+          that may or may not match the server&apos;s authoritative state. During
+          the window between the optimistic update and the server confirmation,
+          the client&apos;s state is divergent, and any computation or display
+          logic that depends on that state is operating on potentially incorrect
+          data. In a simple scenario like a like counter, this divergence is
+          harmless — the counter is off by one for a few hundred milliseconds
+          and then corrects itself. In more complex scenarios, such as
+          inventory management where an optimistic add-to-cart assumes
+          availability that the server may deny, the divergence can cascade into
+          downstream UI elements that depend on stock levels, pricing, or
+          shipping estimates. Engineering teams that adopt optimistic UI at
+          scale must therefore establish clear guidelines about which state
+          domains are safe for optimistic mutation and which require pessimistic
+          confirmation, and these guidelines must be enforced through code review
+          and automated testing. The testing strategy for optimistic UI must
+          include not only the happy path and the rollback path but also the
+          concurrent mutation path, where multiple optimistic updates overlap
+          and the final state must resolve correctly regardless of response
+          ordering.
+        </p>
+        <p>
+          Prefetching aggressiveness involves a trade-off between perceived
+          speed and bandwidth waste. Aggressive prefetching (all visible links,
+          predictive ML models) creates the most impressive instant navigation
+          but can consume 2-3x more bandwidth than the user actually needs.
+          Conservative prefetching (only the most likely next page, only on
+          WiFi) minimizes waste but provides less perceived speed improvement.
+          The balanced approach is hover-based prefetching (100-300ms before
+          click is a strong signal of intent), limited to 2-3 concurrent
+          prefetches, with a bandwidth budget that caps prefetch data to 20% of
+          the total page weight.
+        </p>
+        <p>
+          The bandwidth economics of prefetching become especially acute in
+          global applications serving users across diverse network conditions.
+          In markets where users are on metered 3G connections with monthly data
+          caps measured in hundreds of megabytes rather than gigabytes, every
+          prefetched kilobyte that goes unused is a direct cost to the user, and
+          users who perceive that an application is consuming their data
+          wastefully will abandon it in favor of lighter alternatives. This
+          reality forces engineering teams to implement connection-aware
+          prefetching strategies that adapt their behavior based on the
+          NetworkInformation API&apos;s effectiveType property. On 4G or WiFi
+          connections, prefetching operates at full capacity. On 3G connections,
+          prefetching is limited to hover-triggered requests only, with
+          viewport-based and predictive prefetching disabled. On 2G or slower
+          connections, all prefetching is disabled entirely, and the application
+          relies solely on the actual navigation request. This adaptive approach
+          ensures that the perceived performance benefits of prefetching are
+          delivered to users whose networks can absorb the cost, while
+          protecting users on constrained networks from unnecessary data
+          consumption. Implementing this adaptive logic requires a centralized
+          prefetch coordinator that monitors connection state, tracks
+          outstanding prefetch requests, and enforces the bandwidth budget
+          dynamically — an architectural component that adds complexity but is
+          essential for responsible global product design.
+        </p>
       </section>
 
       <section>
-        <h2>Real-World Case Studies</h2>
-
-        <div className="space-y-6">
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <h3 className="mb-3 font-semibold">Facebook: Skeleton Screens</h3>
-            <p>
-              <strong>Challenge:</strong> Users perceived the app as slow during
-              content loading, even though actual load times were competitive.
-            </p>
-            <p className="mt-2">
-              <strong>Solution:</strong> Facebook replaced loading spinners with
-              skeleton screens that matched the layout of posts, comments, and
-              feed items. They added a subtle shimmer animation to indicate
-              loading.
-            </p>
-            <p className="mt-2">
-              <strong>Result:</strong> Users reported the app felt 20% faster,
-              even though actual load times were unchanged. Engagement increased
-              by 8%.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <h3 className="mb-3 font-semibold">
-              Twitter: Optimistic UI for Tweets
-            </h3>
-            <p>
-              <strong>Challenge:</strong> Posting a tweet felt slow because
-              users had to wait for server confirmation before seeing their
-              tweet appear.
-            </p>
-            <p className="mt-2">
-              <strong>Solution:</strong> Twitter implemented optimistic UI —
-              tweets appear instantly in the timeline with a &quot;sending&quot;
-              indicator. If the post fails, the tweet shows a retry option.
-            </p>
-            <p className="mt-2">
-              <strong>Result:</strong> Users perceived tweeting as instant.
-              Tweet volume increased by 12%, and user satisfaction scores
-              improved significantly.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <h3 className="mb-3 font-semibold">Slack: Progressive Loading</h3>
-            <p>
-              <strong>Challenge:</strong> Large channels with thousands of
-              messages took too long to load, causing user frustration.
-            </p>
-            <p className="mt-2">
-              <strong>Solution:</strong> Slack implemented progressive loading —
-              show recent messages first, lazy-load older messages as users
-              scroll. They also added skeleton screens for message placeholders.
-            </p>
-            <p className="mt-2">
-              <strong>Result:</strong> Time to first message dropped from 3s to
-              400ms. Users perceived the app as &quot;instant&quot; even though
-              total load time for all messages was unchanged.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-6">
-            <h3 className="mb-3 font-semibold">
-              Airbnb: Instant Search with Debouncing
-            </h3>
-            <p>
-              <strong>Challenge:</strong> Search felt sluggish because every
-              keystroke triggered an API call, causing lag and flickering
-              results.
-            </p>
-            <p className="mt-2">
-              <strong>Solution:</strong> Airbnb implemented debounced search
-              (wait 300ms after typing stops) with optimistic UI — show previous
-              results while loading new ones.
-            </p>
-            <p className="mt-2">
-              <strong>Result:</strong> Search felt 3x faster. API calls reduced
-              by 70%, improving server performance. Booking conversions
-              increased by 6%.
-            </p>
-          </div>
-        </div>
+        <h2>Best Practices</h2>
+        <p>
+          Use skeleton screens for all content loading states — list items,
+          detail pages, dashboards, and search results. Design skeletons that
+          match the actual content layout: same number of lines, same spacing,
+          same structural elements. Use a subtle shimmer animation (a gradient
+          sweep) to indicate loading activity. Implement progressive skeletons
+          that reveal sections as they load — the header skeleton is replaced
+          first, then the body, then the sidebar — creating the perception that
+          the page is filling in progressively rather than loading all at once.
+        </p>
+        <p>
+          The design and implementation of progressive skeleton systems requires
+          coordination between the design team, the frontend engineering team,
+          and the backend API team to ensure that skeleton sections map cleanly
+          to data dependencies. Each skeleton section should correspond to an
+          independent data fetch or computational unit that can resolve on its
+          own timeline. When the API for the header data resolves, the header
+          skeleton transitions to actual content while the body and sidebar
+          skeletons continue to shimmer. This progressive reveal is most
+          effective when the sections load in an order that reflects user
+          attention patterns — users look at the top of the page first, so the
+          header should resolve first; they then scan the main content area, so
+          the body should resolve second; peripheral elements like sidebars and
+          footers can resolve last. The shimmer animation should be synchronized
+          across all active skeleton sections so that they pulse in unison,
+          creating a cohesive visual rhythm rather than a chaotic flicker of
+          independent animations. In CSS, this is achieved by applying a shared
+          animation class with consistent timing to all skeleton elements. The
+          shimmer gradient should use a subtle light-to-dark transition with
+          low opacity contrast — typically a white-to-gray sweep at 10 to 15
+          percent opacity — so that it is visible without being distracting. On
+          dark themes, the shimmer inverts to a dark-to-lighter-dark sweep with
+          similar subtlety.
+        </p>
+        <p>
+          Apply optimistic UI updates for actions with high success rates. When
+          a user likes a post, update the like count and button state
+          immediately, send the API request in the background, and rollback if
+          the request fails (reverting the count and showing an error toast).
+          Show a pending state (slightly grayed out, small spinner) during the
+          server round-trip so the user knows the action is in progress. Use
+          libraries like React Query that handle optimistic updates and rollback
+          automatically through mutation configuration.
+        </p>
+        <p>
+          The operational discipline surrounding optimistic UI extends to how
+          teams instrument and monitor these interactions in production. Every
+          optimistic mutation should emit telemetry events that track the time
+          between the user action, the optimistic UI update, the API request
+          dispatch, the API response arrival, and the final state confirmation
+          or rollback. These events feed into a dashboard that surfaces the
+          optimistic mutation success rate, the average round-trip time, the
+          rollback frequency, and the user-facing error rate. When the rollback
+          rate for a particular mutation type exceeds a threshold — typically
+          one percent — an alert fires to the engineering team, because a
+          rollback rate above this threshold means users are regularly seeing
+          changes appear and disappear, which is a significantly worse
+          experience than if the application had waited for server confirmation
+          in the first place. This monitoring infrastructure turns optimistic
+          UI from a &quot;set it and forget it&quot; feature into a continuously
+          observed system property that triggers engineering attention when the
+          underlying assumptions about success rate no longer hold.
+        </p>
+        <p>
+          Implement progressive loading for content-heavy pages. Load and
+          display the most important content first (above-the-fold text, hero
+          image), then load secondary content (comments, related articles,
+          sidebar widgets) in subsequent requests. For lists and feeds, load
+          content in chunks (20 items at a time) rather than all at once,
+          displaying skeleton screens for the next chunk while it loads. Use
+          virtual scrolling for very long lists to maintain 60fps scrolling
+          performance. Show skeleton screens between chunks to indicate that
+          more content is loading.
+        </p>
+        <p>
+          Chunked loading strategies for lists and feeds require careful
+          calibration of chunk size to balance perceived responsiveness against
+          request overhead. Loading items in chunks of twenty to thirty strikes
+          a practical balance — the initial chunk arrives quickly enough to
+          display meaningful content within the critical one-second window, and
+          subsequent chunks are small enough to resolve within a few hundred
+          milliseconds each. Loading too few items per chunk (five to ten)
+          creates excessive network round-trips that compound latency and can
+          actually degrade perceived performance as users watch skeleton
+          placeholders refresh repeatedly. Loading too many items per chunk
+          (fifty or more) pushes the initial render past the one-second
+          threshold, eroding the perceived performance benefit entirely. The
+          skeleton screens between chunks serve as a loading indicator that
+          also communicates volume — a skeleton list of twenty items tells the
+          user that more content is coming and gives a rough sense of how much,
+          which is more informative than a generic &quot;loading more&quot;
+          spinner. Virtual scrolling complements chunked loading by ensuring
+          that the DOM never contains more rendered elements than can fit in the
+          viewport plus a small buffer, which maintains smooth scrolling
+          performance even for lists that conceptually contain thousands of
+          items. The combination of chunked data loading and virtual DOM
+          rendering creates the perception of an infinitely scrollable,
+          instantly responsive interface regardless of the total data volume.
+        </p>
+        <p>
+          Beyond loading states and optimistic updates, a critical best practice
+          in perceived performance is the strategic use of transitional
+          animations to mask latency. When content transitions from a loading
+          state to a loaded state, a brief fade-in animation of 150 to 200
+          milliseconds smooths the visual discontinuity and gives the
+          browser&apos;s compositor thread time to prepare the new frame,
+          reducing the likelihood of a dropped frame that would register as a
+          visual stutter. Similarly, when navigating between pages, a subtle
+          cross-fade or slide transition of 200 milliseconds can mask the
+          hundred-millisecond gap between the old page unmounting and the new
+          page rendering, creating the perception of continuity rather than
+          interruption. These transitions must be hardware-accelerated — using
+          CSS properties like transform and opacity that the browser can
+          composite on the GPU — to ensure they themselves do not introduce
+          jank. The animation duration should never exceed 300 milliseconds,
+          because transitions longer than this threshold become perceptible as
+          delays rather than polish, actively working against the perceived
+          performance goals they are meant to support.
+        </p>
       </section>
 
       <section>
-        <h2>Common Interview Questions</h2>
+        <h2>Common Pitfalls</h2>
+        <p>
+          Fake progress bars that jump to 100% before the operation is complete
+          destroy user trust. When a progress bar reaches 100% and the operation
+          is still running, users perceive the application as broken or
+          deceptive. The fix is to use progress bars only for operations with
+          measurable progress (file upload percentage, batch processing count)
+          and spinners for operations without measurable progress. If a progress
+          bar must be used for an indeterminate operation, cap it at 90% and
+          only jump to 100% when the operation actually completes.
+        </p>
+        <p>
+          The erosion of trust caused by fake progress bars is one of the most
+          damaging perceived performance anti-patterns because it actively
+          penalizes the application for attempting to optimize perception. When
+          a progress bar reaches 100 percent and the application is still
+          processing — perhaps finalizing a server-side operation, writing to
+          disk, or performing a post-processing step — the user experiences a
+          cognitive dissonance between what the progress indicator promised and
+          what the application delivered. This dissonance registers as
+          deception, even if the engineering team&apos;s intent was benign. The
+          damage compounds on repeat exposures — a user who has been burned by
+          a fake progress bar once will be skeptical of all subsequent progress
+          indicators in the application, reducing the effectiveness of even
+          honest progress bars. The engineering solution is straightforward but
+          requires discipline: never display 100 percent until the operation is
+          verifiably complete from end to end, including all post-processing
+          steps. If the operation has measurable stages (uploading, processing,
+          finalizing), each stage should be represented as a distinct segment
+          of the progress bar so the user sees granular advancement rather than
+          a monotonically increasing bar that stalls near the end. If the
+          operation has no measurable stages, a spinner is the honest choice.
+        </p>
+        <p>
+          Overusing optimistic UI for actions that frequently fail creates a
+          confusing user experience where changes appear and disappear
+          unpredictably. If a form submission fails 20% of the time due to
+          validation errors, optimistic UI means the user sees a success state
+          that is then rolled back — this is more frustrating than waiting for
+          confirmation from the start. The rule is to use optimistic UI only
+          when the success rate is above 99%, and to provide clear rollback
+          feedback when the rare failure occurs.
+        </p>
+        <p>
+          The temptation to apply optimistic UI broadly stems from its dramatic
+          impact on perceived performance — the difference between an instant
+          UI update and a 500-millisecond wait is enormous from the user&apos;s
+          perspective. However, this temptation must be resisted for any action
+          where the failure rate is non-trivial, and determining the failure
+          rate requires production telemetry, not engineering intuition. An
+          action that fails 5 percent of the time in production may seem rare
+          to the engineering team, but for a user who encounters it once in
+          every twenty interactions, the experience of seeing their change
+          appear and then vanish is jarring and erodes confidence in the
+          application. The rollback experience itself is a critical design
+          surface — a silent rollback that reverts the change without
+          explanation is the worst outcome, because the user does not understand
+          why their action was undone. A well-designed rollback reverts the UI
+          with a brief animation, displays an inline error message or toast
+          notification explaining the failure reason, and offers a clear retry
+          path. This rollback experience should be tested in staging
+          environments with simulated network failures before any optimistic
+          update ships to production, because the rollback path is the path that
+          defines the user&apos;s trust in the system.
+        </p>
+        <p>
+          Skeleton screens that do not match the actual content layout create
+          a jarring transition when content loads — the skeleton shows three
+          lines of text but the actual content is two lines, or the skeleton
+          has a wide image but the actual image is square. This mismatch draws
+          attention to the loading process rather than making it feel seamless.
+          The fix is to design skeletons based on actual content statistics
+          (average text length, image aspect ratios) and use flexible skeleton
+          layouts that adapt to content size rather than fixed dimensions.
+        </p>
+        <p>
+          Layout shift during the skeleton-to-content transition is a
+          particularly insidious pitfall because it directly contradicts the
+          core purpose of the skeleton screen. Skeleton screens are meant to
+          reserve space and eliminate cumulative layout shift, but when the
+          skeleton dimensions do not match the content dimensions, the transition
+          causes a visual jump that is more disruptive than a spinner-based
+          loading experience would have been. The root cause is typically a
+          mismatch between the skeleton&apos;s hardcoded dimensions and the
+          content&apos;s dynamic dimensions, which can vary based on text length,
+          image aspect ratio, or responsive breakpoints. The robust solution is
+          to derive skeleton dimensions from the same data that drives content
+          dimensions. For text content, the skeleton should render the same
+          number of lines as the expected content, using the same font metrics
+          and line-height calculations. For images, the skeleton should use the
+          same aspect ratio, either by extracting aspect ratio metadata from the
+          image URL or by using a tiny low-quality placeholder that encodes the
+          correct dimensions in a few bytes. For complex layouts with responsive
+          breakpoints, the skeleton must implement the same breakpoint logic so
+          that it reflows identically to the content at each viewport width.
+          This dimensional fidelity is not cosmetic — it is the difference
+          between a skeleton that makes the loading experience feel seamless and
+          one that makes it feel broken.
+        </p>
+        <p>
+          Another common pitfall in perceived performance optimization is the
+          creation of loading state fragmentation, where different parts of the
+          application use inconsistent loading patterns that confuse users about
+          what is happening. One section of the page uses a skeleton screen,
+          another uses a spinner, a third uses an inline text message, and a
+          fourth simply blocks interaction with a full-screen overlay. This
+          inconsistency sends conflicting signals about the nature and duration
+          of the waits, making it harder for users to build a mental model of
+          the application&apos;s loading behavior. The solution is a unified
+          loading state taxonomy defined at the design system level that maps
+          specific loading patterns to specific wait contexts: skeleton screens
+          for content loading, spinners for brief action feedback, progress bars
+          for measurable multi-step operations, and full-screen overlays only
+          for application-level blocking states where no interaction is
+          possible. This taxonomy must be enforced through component library
+          constraints and code review, so that every loading experience in the
+          application communicates consistently and predictably.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>
+          Facebook pioneered skeleton screens to address user perception that
+          the app was slow during content loading, even though actual load times
+          were competitive. They replaced loading spinners with skeleton screens
+          that matched the layout of posts, comments, and feed items, adding a
+          subtle shimmer animation. Users reported the app felt 20% faster even
+          though actual load times were unchanged, and engagement increased by
+          8%. This case study established skeleton screens as the standard
+          loading pattern for content-heavy applications.
+        </p>
+        <p>
+          Facebook&apos;s skeleton screen implementation deserves deeper
+          examination because it illustrates how perceived performance
+          optimization at scale requires organizational commitment beyond a
+          single engineering team&apos;s initiative. The Facebook engineering
+          team did not simply replace spinners with gray rectangles — they
+          redesigned their entire content rendering pipeline to support
+          progressive skeleton-to-content transitions. The skeleton layout for
+          a Facebook post includes placeholders for the user&apos;s profile
+          picture (a circle), the user&apos;s name and timestamp (two thin
+          horizontal bars), the post text (three to five variable-length lines),
+          the attached media (a rectangular placeholder with aspect ratio
+          matching the expected content), and the action bar (like, comment,
+          share buttons as small pill-shaped placeholders). Each of these
+          placeholders resolves independently as its corresponding data arrives,
+          so the user might see the profile picture and name resolve first,
+          followed by the post text, followed by the media, followed by the
+          action bar. This granular progressive reveal creates the perception
+          that the post is &quot;filling in&quot; rapidly, even though the total
+          data load time is identical to the previous spinner-based approach.
+          The 8 percent engagement increase that resulted from this change
+          translated to millions of additional daily interactions, demonstrating
+          that perceived performance optimization at Facebook&apos;s scale is
+          not a UX nicety but a business-critical investment.
+        </p>
+        <p>
+          Twitter implemented optimistic UI for tweeting — tweets appear
+          instantly in the timeline with a &quot;sending&quot; indicator. If the
+          post fails, the tweet shows a retry option. Users perceived tweeting
+          as instant, tweet volume increased by 12%, and user satisfaction
+          scores improved significantly. The success of optimistic UI for this
+          high-frequency, high-success-rate action led Twitter to extend the
+          pattern to likes, retweets, and follows.
+        </p>
+        <p>
+          Twitter&apos;s optimistic tweeting architecture is a masterclass in
+          how to handle the failure path gracefully. When a user composes and
+          sends a tweet, the tweet appears in the timeline immediately with a
+          faint &quot;Sending&quot; label and a small circular indicator. The
+          tweet is fully interactive — the user can tap on it, share it, or
+          delete it — even though it has not yet been confirmed by the server.
+          If the server confirms the tweet, the &quot;Sending&quot; label fades
+          away silently. If the server rejects the tweet — due to a network
+          error, a rate limit, or a content policy violation — the tweet
+          remains in the timeline but the indicator changes to a red exclamation
+          mark with a tap target that opens a retry dialog. The retry dialog
+          explains the failure reason (if available) and offers options to retry
+          sending, edit the tweet, or delete it. This design ensures that the
+          user never loses their composed content, even in the failure case,
+          which is critical because the frustration of losing a composed tweet
+          is significantly greater than the frustration of a delayed send. The
+          optimistic approach for tweeting is viable because the success rate
+          for tweet submissions exceeds 99.5 percent under normal operating
+          conditions, making rollbacks rare enough that the instant feedback
+          benefit overwhelmingly outweighs the rollback cost.
+        </p>
+        <p>
+          Slack implemented progressive loading for large channels with
+          thousands of messages. Instead of loading all messages before
+          displaying anything, Slack shows recent messages first (above-the-fold),
+          lazy-loads older messages as users scroll up, and uses skeleton screens
+          for message placeholders. Time to first message dropped from 3 seconds
+          to 400 milliseconds. Users perceived the app as &quot;instant&quot;
+          even though the total load time for all messages was unchanged.
+        </p>
+        <p>
+          Slack&apos;s progressive message loading architecture extends beyond
+          the initial page load to encompass the entire scrolling experience in
+          channels with tens of thousands of messages. When a user opens a large
+          channel, Slack loads the most recent twenty to thirty messages
+          immediately and displays them with skeleton placeholders above and
+          below, indicating that older and newer messages exist. As the user
+          scrolls up, Slack detects the scroll position approaching the top of
+          the loaded message window and triggers a background fetch for the next
+          batch of older messages. These messages are inserted above the
+          currently visible set, and the scroll position is adjusted to
+          compensate for the newly inserted content, preventing the jarring
+          experience of the visible messages jumping downward as older messages
+          are prepended. The skeleton placeholders above the loaded messages
+          serve a dual purpose — they communicate that more content is available
+          and they reserve vertical space so the scroll bar thumb size reflects
+          the total message count, not just the loaded count. This scroll bar
+          fidelity is a subtle but important perceived performance detail,
+          because a scroll bar that grows dramatically as the user scrolls
+          signals that the application did not know the total content volume
+          upfront, which feels amateurish. Slack&apos;s approach of reserving
+          scroll space based on known message counts (even if the messages
+          themselves are not yet loaded) communicates competence and creates the
+          perception of a fully loaded channel even during progressive loading.
+        </p>
+        <p>
+          Medium, the publishing platform, implemented a sophisticated
+          progressive image loading strategy that has become an industry
+          reference implementation. When an article loads, each image is
+          initially displayed as a tiny, heavily blurred placeholder — a
+          low-quality image preview encoded as a base64 data URI of just a few
+          hundred bytes. This placeholder renders instantly as part of the
+          initial HTML, so the user sees a faint, color-accurate blur of the
+          image within the first paint. As the browser downloads the full
+          resolution image, the placeholder cross-fades to the sharp image over
+          200 milliseconds. This approach eliminates the experience of images
+          popping into existence abruptly, which creates a sense of visual
+          instability, and replaces it with a smooth sharpen transition that
+          feels intentional and polished. The low-quality placeholder encodes
+          the dominant colors and rough spatial structure of the image, so even
+          at one percent of the full resolution, the user can perceive the
+          general subject matter, which satisfies curiosity and reduces the
+          urgency of the full image download. Medium&apos;s implementation
+          demonstrates that perceived performance optimization applies not only
+          to loading states but to the loading experience of individual assets
+          within an already-loaded page.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions with Detailed Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: What&apos;s the difference between actual and perceived
+              Q: What is the difference between actual and perceived
               performance?
             </p>
             <p className="mt-2 text-sm">
-              A: Actual performance is measured objectively (load time, TTI,
-              FCP). Perceived performance is how fast users <em>feel</em> the
-              application is. They often differ — you can make an app feel
-              faster without making it actually faster through techniques like
-              skeleton screens, optimistic UI, and progressive loading.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: When would you use optimistic UI vs waiting for server
-              confirmation?
+              A: Actual performance is measured by objective metrics — load
+              time, Time to Interactive, First Contentful Paint, API response
+              times. Perceived performance is how fast users feel the
+              application is, influenced by psychological factors, visual
+              feedback, and expectations. You can improve perceived performance
+              without changing actual performance (skeleton screens make a 3s
+              load feel like 1.5s). But perceived performance cannot compensate
+              for terrible actual performance — skeleton screens on a 10-second
+              load still feel slow. Combine both: optimize actual performance
+              first, then enhance with perceived performance techniques.
             </p>
             <p className="mt-2 text-sm">
-              A: Use optimistic UI for high-success, low-risk actions (liking
-              posts, adding to cart, following users). Wait for server
-              confirmation for critical actions (payments, deletions, sensitive
-              data changes). The key is: can you safely roll back if the server
-              rejects the action?
+              The distinction matters in interviews because it reveals whether
+              a candidate understands that user experience is ultimately
+              subjective and that engineering optimizations must be evaluated
+              through the lens of human perception, not just server-side
+              benchmarks. A strong answer acknowledges that actual performance
+              is necessary but insufficient — it sets the ceiling for what is
+              possible, while perceived performance determines how much of that
+              ceiling the user actually experiences. The candidate should
+              mention specific techniques like skeleton screens, optimistic UI,
+              progressive loading, and smart loading indicators as perceived
+              performance tools, and should articulate that these techniques
+              work by manipulating the user&apos;s cognitive experience of
+              waiting rather than by reducing the actual wait duration. An
+              exceptional answer also addresses the limits of perceived
+              performance optimization — no amount of skeleton screen polish
+              can make a genuinely slow application feel fast, and perceived
+              performance techniques should never be used as a substitute for
+              addressing real performance bottlenecks.
             </p>
           </div>
-
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: When should you use optimistic UI?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use optimistic UI for actions with high success rates (above
+              99%) where rollback is rare — liking posts, adding to cart,
+              following users, marking notifications as read. Avoid it for
+              critical actions (payments, deletions) without confirmation,
+              actions with complex validation that might fail, or actions where
+              server-side business logic must run first. Always implement
+              rollback logic and show clear error feedback when the rare failure
+              occurs. Use libraries like React Query that handle optimistic
+              updates and rollback automatically.
+            </p>
+            <p className="mt-2 text-sm">
+              In an interview, a strong candidate should also discuss the
+              operational requirements for running optimistic UI safely in
+              production. This includes implementing telemetry that tracks the
+              rollback rate for each optimistic mutation type and triggers
+              alerts when the rate exceeds the acceptable threshold (typically
+              one percent), because a rising rollback rate indicates that the
+              underlying assumption of high success rate no longer holds and the
+              optimistic approach is actively harming the user experience. The
+              candidate should describe the rollback UX design — reverting the
+              UI change with a brief animation, displaying an inline error or
+              toast notification that explains the failure reason, and offering
+              a clear retry path. They should also address the concurrent
+              mutation problem: when a user rapidly triggers multiple optimistic
+              updates to the same resource (liking and unliking a post in quick
+              succession), the system must ensure the final state reflects the
+              user&apos;s last intent, not a race condition between overlapping
+              API responses. This requires either serializing mutations for the
+              same resource or implementing conflict resolution logic on the
+              client side.
+            </p>
+          </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How do skeleton screens improve perceived performance?
             </p>
             <p className="mt-2 text-sm">
-              A: Skeleton screens show the structure of loading content,
-              reducing uncertainty. They create the illusion of progressive
-              loading and prevent layout shift. Studies show they reduce
-              perceived wait time by 20-30% compared to spinners, even when
-              actual load time is identical.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What techniques would you use to make a slow file upload feel
-              faster?
+              A: Skeleton screens reduce uncertainty by showing what is loading,
+          reserve space to prevent layout shift (CLS), and create the illusion
+          of progressive loading even if the actual fetch time is unchanged.
+          They are more effective than spinners because occupied time feels
+          shorter — users engage with the skeleton layout rather than staring
+          at a spinning wheel. Best practices: match the actual content layout,
+          use subtle shimmer animations, progressively reveal sections as they
+          load, and ensure skeletons are flexible enough to adapt to content
+          size variations.
             </p>
             <p className="mt-2 text-sm">
-              A: Show a progress bar (not spinner) with percentage and time
-              remaining. Let users continue browsing while upload happens in
-              background. Send a notification when complete. For multiple files,
-              show individual progress for each. Consider chunking large files
-              and uploading in parallel.
+              A deeper answer should address the cognitive psychology behind
+              why skeleton screens work. The principle of occupied time
+              dictates that users perceive time as passing more quickly when
+              their attention is engaged, and skeleton screens provide visual
+              content for the user&apos;s attention to process during the wait.
+              The principle of uncertain waits states that waits with known
+              endpoints feel shorter than waits of unknown duration, and
+              skeleton screens communicate the structure and volume of the
+              incoming content, reducing uncertainty. Additionally, skeleton
+              screens prevent cumulative layout shift (CLS), which is a Core
+              Web Vital metric that Google uses in its search ranking algorithm.
+              When content loads into a page without reserved space, it pushes
+              existing content downward, causing a jarring visual jump that
+              frustrates users and can cause accidental clicks. Skeleton screens
+              eliminate this by reserving the exact space that the content will
+              occupy, creating a smooth, stable loading experience. The
+              candidate should also discuss the engineering trade-off: skeleton
+              screens require additional markup and CSS to implement correctly,
+              and the skeleton layout must be maintained alongside the content
+              layout as the design evolves, which adds ongoing maintenance cost.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: How would you optimize the perceived performance of a search
-              feature?
+              Q: How does prefetching improve perceived performance?
             </p>
             <p className="mt-2 text-sm">
-              A: Debounce input (wait 300ms after typing stops). Show previous
-              results while loading new ones. Use skeleton screens for result
-              placeholders. Prefetch likely searches. Highlight search terms in
-              results. For typeahead, show results inline without page
-              navigation.
+              A: Prefetching loads resources before the user navigates to them,
+              so when the user clicks, the resources are already cached and the
+              page renders instantly. Hover prefetching (100-300ms before click)
+              is the most efficient — it only prefetches pages the user is
+              likely to visit. Viewport prefetching loads bundles for visible
+              links. Predictive prefetching uses ML to predict navigation. The
+              trade-off is bandwidth waste — prefetching pages the user never
+              visits. Limit concurrent prefetches, set bandwidth budgets, and
+              prioritize high-confidence navigations.
+            </p>
+            <p className="mt-2 text-sm">
+              An exceptional interview answer should cover the adaptive
+              prefetching strategy that responsible production systems employ
+              based on network conditions. On WiFi or 4G connections, prefetching
+              operates at full capacity with hover-triggered, viewport-based,
+              and predictive strategies all enabled. On 3G connections,
+              prefetching is limited to hover-triggered requests only, because
+              the hover-to-click probability signal is strong enough to justify
+              the bandwidth cost even on slower networks, but viewport and
+              predictive prefetching are disabled to avoid wasting data on
+              lower-confidence predictions. On 2G or slower connections, all
+              prefetching is disabled entirely. The candidate should also discuss
+              the prefetch cache architecture — prefetched resources are stored
+              in the browser&apos;s HTTP cache or in a JavaScript-managed cache
+              (like React Query&apos;s query cache), and the cache invalidation
+              strategy determines how long prefetched data remains fresh before
+              it must be revalidated. A well-designed prefetch system includes a
+              bandwidth budget that caps total prefetch data to a percentage of
+              the page weight (typically 20 percent), ensures that prefetching
+              never competes with critical rendering resources, and implements
+              request deduplication so that the same resource is not prefetched
+              multiple times from different trigger points.
             </p>
           </div>
-
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: What metrics would you track for perceived performance?
+              Q: How do you measure perceived performance?
             </p>
             <p className="mt-2 text-sm">
-              A: Speed Index (how quickly content is visually populated), Time
-              to First Meaningful Paint, and Interaction to Next Paint. Also
-              track user-centric metrics: bounce rate on slow pages, engagement
-              with loading states, and user satisfaction scores. A/B test
-              different loading patterns to measure impact on conversion.
+              A: Quantitative: Speed Index (how quickly content is visually
+              populated), Time to First Meaningful Paint, Interaction to Next
+              Paint. Qualitative: user testing (observe and ask about speed
+              perception), A/B testing (compare loading patterns and measure
+              engagement), session recordings (watch how users interact with
+              loading states). Correlate perceived performance metrics with
+              business outcomes — if skeleton screens increase engagement by
+              8% (Facebook&apos;s result), the investment is justified. Use
+              both quantitative and qualitative methods for a complete picture.
+            </p>
+            <p className="mt-2 text-sm">
+              A comprehensive answer should distinguish between measuring
+              perceived performance as a property of the system and measuring
+              the user&apos;s subjective perception of performance. On the
+              system side, Speed Index measures how quickly the visible content
+              within the viewport is populated during page load, which
+              correlates more closely with user perception than traditional
+              metrics like window.onload. Interaction to Next Paint (INP), part
+              of Google&apos;s Core Web Vitals, measures the responsiveness of
+              the page to user interactions throughout the entire page lifecycle,
+              capturing the perception of snappiness during ongoing use rather
+              than just the initial load. On the subjective side, perceived
+              performance is measured through user research methods: systematic
+              observation of user behavior during loading states (do they wait
+              patiently, do they click repeatedly out of frustration, do they
+              abandon the task), post-task surveys that ask users to rate the
+              speed of the application, and A/B testing that compares engagement
+              metrics between different loading pattern implementations. The
+              most sophisticated measurement programs combine both approaches by
+              correlating Speed Index and INP scores with user satisfaction
+              scores and business metrics like conversion rate and session
+              duration, establishing a quantitative relationship between
+              perceived performance improvements and business outcomes that
+              justifies ongoing investment in perceived performance
+              optimization.
             </p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
+        <h2>References</h2>
         <ul className="space-y-2">
           <li>
             <a
@@ -736,47 +1127,47 @@ export default function PerceivedPerformanceArticle() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Nielsen Norman Group — Response Times: The 3 Important Limits
+              Nielsen Norman Group — Response Times: 3 Important Limits
             </a>
           </li>
           <li>
             <a
-              href="https://web.dev/performance-user-experience/"
+              href="https://www.smashingmagazine.com/2016/09/understanding-perceived-performance/"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              web.dev — Performance and User Experience
+              Smashing Magazine — Understanding Perceived Performance
             </a>
           </li>
           <li>
             <a
-              href="https://www.smashingmagazine.com/2015/06/designing-for-perceived-performance/"
+              href="https://web.dev/articles/instant-and-consistent-architectural-performance"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Smashing Magazine — Designing for Perceived Performance
+              web.dev — Instant and Consistent Architectural Performance
             </a>
           </li>
           <li>
             <a
-              href="https://medium.com/@rmurpake/perceived-performance-101-1b4e1c0a8e0f"
+              href="https://www.lukew.com/ff/entry.asp?1797"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Perceived Performance 101 — Rebecca Murphey
+              Luke Wroblewski — Skeleton Screens
             </a>
           </li>
           <li>
             <a
-              href="https://calendar.perfplanet.com/2018/optimizing-perceived-performance/"
+              href="https://calendar.perfplanet.com/"
               className="text-accent hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Performance Calendar — Optimizing Perceived Performance
+              Performance Calendar — Annual Web Performance Articles
             </a>
           </li>
         </ul>
