@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-super { stroke: #7c3aed; }
+    .dark .s-super { fill: #2e1065; stroke: #a78bfa; }
+    .s-spec { stroke: #059669; }
+    .dark .s-spec { fill: #064e3b; stroke: #34d399; }
+    .s-judge { stroke: #d97706; }
+    .dark .s-judge { fill: #451a03; stroke: #fbbf24; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Multi-Agent Coordination Flow</text>
+
+  <!-- Supervisor -->
+  <rect class="box s-super" x="350" y="65" width="200" height="55"/>
+  <text class="label" x="450" y="97" text-anchor="middle">Supervisor Agent</text>
+  <rect class="detail-box" x="365" y="90" width="170" height="20"/>
+  <text class="sublabel" x="375" y="104">Receives user request</text>
+
+  <path class="arrow" d="M450 120 L450 165"/>
+  <polygon points="450,165 445,155 455,155" fill="#6366f1"/>
+
+  <!-- Specialists row -->
+  <rect class="box s-spec" x="30" y="170" width="160" height="80"/>
+  <text class="label" x="110" y="195" text-anchor="middle">Research Agent</text>
+  <rect class="detail-box" x="45" y="205" width="130" height="35"/>
+  <text class="sublabel" x="55" y="223">Web search, retrieval</text>
+  <text class="sublabel" x="55" y="238">Document analysis</text>
+
+  <rect class="box s-spec" x="220" y="170" width="160" height="80"/>
+  <text class="label" x="300" y="195" text-anchor="middle">Coding Agent</text>
+  <rect class="detail-box" x="235" y="205" width="130" height="35"/>
+  <text class="sublabel" x="245" y="223">File system, edit</text>
+  <text class="sublabel" x="245" y="238">Code execution, tests</text>
+
+  <rect class="box s-spec" x="410" y="170" width="160" height="80"/>
+  <text class="label" x="490" y="195" text-anchor="middle">Analysis Agent</text>
+  <rect class="detail-box" x="425" y="205" width="130" height="35"/>
+  <text class="sublabel" x="435" y="223">Data analysis, viz</text>
+  <text class="sublabel" x="435" y="238">Trend identification</text>
+
+  <rect class="box s-spec" x="600" y="170" width="160" height="80"/>
+  <text class="label" x="680" y="195" text-anchor="middle">Review Agent</text>
+  <rect class="detail-box" x="615" y="205" width="130" height="35"/>
+  <text class="sublabel" x="625" y="223">Quality check, review</text>
+  <text class="sublabel" x="625" y="238">Security, correctness</text>
+
+  <!-- Arrows from supervisors to specialists -->
+  <path d="M400 120 L200 170" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M420 120 L350 170" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M480 120 L530 170" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M500 120 L650 170" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+
+  <!-- Results flowing to judge -->
+  <path d="M110 250 L110 310 L450 310" fill="none" stroke="#059669" stroke-width="1.5"/>
+  <path d="M300 250 L300 290 L450 290" fill="none" stroke="#059669" stroke-width="1.5"/>
+  <path d="M490 250 L490 290 L450 290" fill="none" stroke="#059669" stroke-width="1.5"/>
+  <path d="M680 250 L680 310 L450 310" fill="none" stroke="#059669" stroke-width="1.5"/>
+
+  <!-- Judge -->
+  <rect class="box s-judge" x="350" y="320" width="200" height="55"/>
+  <text class="label" x="450" y="345" text-anchor="middle">Judge / Synthesis</text>
+  <rect class="detail-box" x="365" y="340" width="170" height="25"/>
+  <text class="sublabel" x="375" y="357">Combines &amp; validates results</text>
+
+  <path class="arrow" d="M450 375 L450 410"/>
+  <polygon points="450,410 445,400 455,400" fill="#6366f1"/>
+
+  <!-- Output -->
+  <rect x="350" y="415" width="200" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text class="label" x="450" y="435" text-anchor="middle">Final Output</text>
+  <text class="sublabel" x="365" y="455">Validated, synthesized response</text>
+
+  <!-- Annotations -->
+  <text class="sublabel" x="450" y="490" text-anchor="middle">Parallel execution of independent specialists → results collected and validated → synthesized into final output</text>
+</svg>

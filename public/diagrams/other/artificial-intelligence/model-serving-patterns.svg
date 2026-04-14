@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-realtime { stroke: #7c3aed; }
+    .c-batch { stroke: #2563eb; }
+    .c-edge { stroke: #059669; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Model Serving Patterns</text>
+
+  <!-- Real-time -->
+  <rect class="box c-realtime" x="30" y="80" width="260" height="200"/>
+  <text class="label" x="160" y="105" text-anchor="middle" fill="#7c3aed">Real-Time Serving</text>
+  <rect class="detail-box" x="45" y="115" width="230" height="150"/>
+  <text class="sublabel" x="55" y="135"><tspan font-weight="700">Latency:</tspan> 100ms-5s per request</text>
+  <text class="sublabel" x="55" y="155"><tspan font-weight="700">Throughput:</tspan> 10-100 req/sec</text>
+  <text class="sublabel" x="55" y="175"><tspan font-weight="700">Infrastructure:</tspan> GPU servers</text>
+  <text class="sublabel" x="55" y="195"><tspan font-weight="700">Optimization:</tspan> Continuous batching</text>
+  <text class="sublabel" x="55" y="215"><tspan font-weight="700">Frameworks:</tspan> vLLM, TGI, Triton</text>
+  <text class="sublabel" x="55" y="235"><tspan font-weight="700">Best for:</tspan> Chat, assistants, APIs</text>
+  <text class="sublabel" x="55" y="255" fill="#7c3aed">★ Most common for production LLMs</text>
+
+  <!-- Batch -->
+  <rect class="box c-batch" x="320" y="80" width="260" height="200"/>
+  <text class="label" x="450" y="105" text-anchor="middle" fill="#2563eb">Batch Serving</text>
+  <rect class="detail-box" x="335" y="115" width="230" height="150"/>
+  <text class="sublabel" x="345" y="135"><tspan font-weight="700">Latency:</tspan> Minutes to hours</text>
+  <text class="sublabel" x="345" y="155"><tspan font-weight="700">Throughput:</tspan> 1000s req/batch</text>
+  <text class="sublabel" x="345" y="175"><tspan font-weight="700">Infrastructure:</tspan> GPU clusters</text>
+  <text class="sublabel" x="345" y="195"><tspan font-weight="700">Optimization:</tspan> Large batch sizes</text>
+  <text class="sublabel" x="345" y="215"><tspan font-weight="700">Frameworks:</tspan> Spark, Ray, custom</text>
+  <text class="sublabel" x="345" y="235"><tspan font-weight="700">Best for:</tspan> Document processing, ETL</text>
+  <text class="sublabel" x="345" y="255" fill="#2563eb">★ Highest throughput per GPU</text>
+
+  <!-- Edge -->
+  <rect class="box c-edge" x="610" y="80" width="260" height="200"/>
+  <text class="label" x="740" y="105" text-anchor="middle" fill="#059669">Edge Serving</text>
+  <rect class="detail-box" x="625" y="115" width="230" height="150"/>
+  <text class="sublabel" x="635" y="135"><tspan font-weight="700">Latency:</tspan> 10-100ms (on-device)</text>
+  <text class="sublabel" x="635" y="155"><tspan font-weight="700">Throughput:</tspan> Limited by device</text>
+  <text class="sublabel" x="635" y="175"><tspan font-weight="700">Infrastructure:</tspan> Edge devices, CDN</text>
+  <text class="sublabel" x="635" y="195"><tspan font-weight="700">Optimization:</tspan> Quantization, pruning</text>
+  <text class="sublabel" x="635" y="215"><tspan font-weight="700">Frameworks:</tspan> Ollama, MLX, CoreML</text>
+  <text class="sublabel" x="635" y="235"><tspan font-weight="700">Best for:</tspan> Privacy, offline, mobile</text>
+  <text class="sublabel" x="635" y="255" fill="#059669">★ Zero data leaves device</text>
+
+  <!-- Comparison table -->
+  <rect x="30" y="310" width="840" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="335" text-anchor="middle">Serving Pattern Comparison</text>
+
+  <text class="sublabel" x="50" y="360"><tspan font-weight="700">Real-Time</tspan></text>
+  <text class="sublabel" x="250" y="360">GPU cluster, continuous batching, low latency</text>
+  <text class="sublabel" x="500" y="360">$$/request | High complexity | Best UX</text>
+
+  <text class="sublabel" x="50" y="390"><tspan font-weight="700">Batch</tspan></text>
+  <text class="sublabel" x="250" y="390">GPU cluster, large batches, high throughput</text>
+  <text class="sublabel" x="500" y="390">$/request | Medium complexity | Delayed UX</text>
+
+  <text class="sublabel" x="50" y="420"><tspan font-weight="700">Edge</tspan></text>
+  <text class="sublabel" x="250" y="420">On-device, quantized models, offline capable</text>
+  <text class="sublabel" x="500" y="420">Fixed cost | Low complexity | Limited capability</text>
+
+  <text class="sublabel" x="50" y="465" font-weight="700">Recommendation:</text>
+  <text class="sublabel" x="180" y="465">Use real-time for interactive applications, batch for offline processing, edge for privacy-sensitive or offline use cases.</text>
+</svg>

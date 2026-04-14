@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Prompt Engineering Iteration Cycle</text>
+
+  <!-- Iteration cycle -->
+  <text class="label" x="450" y="85" text-anchor="middle">Prompt Development Lifecycle</text>
+
+  <!-- Circular flow -->
+  <path d="M450 120 A 140 140 0 1 1 449 120" fill="none" stroke="#6366f1" stroke-width="3" stroke-dasharray="8,4"/>
+
+  <!-- Stage 1: Draft -->
+  <rect class="box" x="370" y="105" width="160" height="55" stroke="#7c3aed"/>
+  <text class="label" x="450" y="125" text-anchor="middle" fill="#7c3aed">1. Draft Prompt</text>
+  <rect class="detail-box" x="385" y="130" width="130" height="22"/>
+  <text class="sublabel" x="395" y="145" text-anchor="middle">Initial version</text>
+
+  <!-- Stage 2: Test -->
+  <rect class="box" x="545" y="180" width="130" height="55" stroke="#2563eb"/>
+  <text class="label" x="610" y="200" text-anchor="middle" fill="#2563eb">2. Test</text>
+  <rect class="detail-box" x="555" y="205" width="110" height="22"/>
+  <text class="sublabel" x="565" y="220" text-anchor="middle">Run on examples</text>
+
+  <!-- Stage 3: Evaluate -->
+  <rect class="box" x="580" y="290" width="140" height="55" stroke="#059669"/>
+  <text class="label" x="650" y="310" text-anchor="middle" fill="#059669">3. Evaluate</text>
+  <rect class="detail-box" x="595" y="315" width="110" height="22"/>
+  <text class="sublabel" x="605" y="330" text-anchor="middle">Score outputs</text>
+
+  <!-- Stage 4: Analyze -->
+  <rect class="box" x="450" y="370" width="160" height="55" stroke="#d97706"/>
+  <text class="label" x="530" y="390" text-anchor="middle" fill="#d97706">4. Analyze Failures</text>
+  <rect class="detail-box" x="465" y="395" width="130" height="22"/>
+  <text class="sublabel" x="475" y="410" text-anchor="middle">Identify patterns</text>
+
+  <!-- Stage 5: Refine -->
+  <rect class="box" x="280" y="370" width="140" height="55" stroke="#ec4899"/>
+  <text class="label" x="350" y="390" text-anchor="middle" fill="#ec4899">5. Refine</text>
+  <rect class="detail-box" x="295" y="395" width="110" height="22"/>
+  <text class="sublabel" x="305" y="410" text-anchor="middle">Rewrite, add examples</text>
+
+  <!-- Stage 6: Version -->
+  <rect class="box" x="190" y="290" width="140" height="55" stroke="#f59e0b"/>
+  <text class="label" x="260" y="310" text-anchor="middle" fill="#f59e0b">6. Version &amp; Deploy</text>
+  <rect class="detail-box" x="205" y="315" width="110" height="22"/>
+  <text class="sublabel" x="215" y="330" text-anchor="middle">Git commit, release</text>
+
+  <!-- Back to draft -->
+  <path d="M220 290 L220 180 L370 180" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,3"/>
+
+  <!-- Best practices panel -->
+  <rect x="30" y="60" width="300" height="410" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="180" y="85" text-anchor="middle">Iteration Best Practices</text>
+  <text class="sublabel" x="50" y="110">• Use version control for all prompts</text>
+  <text class="sublabel" x="50" y="130">• Test on diverse example set (50+ examples)</text>
+  <text class="sublabel" x="50" y="150">• Track metrics: accuracy, format compliance</text>
+  <text class="sublabel" x="50" y="170">• Document changes with each iteration</text>
+  <text class="sublabel" x="50" y="190">• Use A/B testing for major changes</text>
+  <text class="sublabel" x="50" y="215"><tspan font-weight="700">Common Iteration Patterns:</tspan></text>
+  <text class="sublabel" x="50" y="235">• Add missing constraints → test → repeat</text>
+  <text class="sublabel" x="50" y="255">• Add few-shot examples for edge cases</text>
+  <text class="sublabel" x="50" y="275">• Restructure for clarity (headings, sections)</text>
+  <text class="sublabel" x="50" y="295">• Add negative examples (what NOT to do)</text>
+  <text class="sublabel" x="50" y="320"><tspan font-weight="700">Quality Gates:</tspan></text>
+  <text class="sublabel" x="50" y="340">• Accuracy ≥ 90% on test set</text>
+  <text class="sublabel" x="50" y="360">• Format compliance ≥ 95%</text>
+  <text class="sublabel" x="50" y="380">• No regression on previous examples</text>
+  <text class="sublabel" x="50" y="400">• Token count within budget</text>
+  <text class="sublabel" x="50" y="420">• Safety checks pass (content filter)</text>
+  <text class="sublabel" x="50" y="445" font-weight="700">Typical: 5-15 iterations to reach production quality</text>
+</svg>

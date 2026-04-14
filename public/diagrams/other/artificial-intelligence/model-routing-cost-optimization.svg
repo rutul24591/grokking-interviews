@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-simple { stroke: #7c3aed; }
+    .c-moderate { stroke: #2563eb; }
+    .c-complex { stroke: #d97706; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Model Routing for Cost Optimization</text>
+
+  <!-- Input -->
+  <rect class="box" x="350" y="60" width="200" height="50"/>
+  <text class="label" x="450" y="90" text-anchor="middle">Incoming Request</text>
+
+  <path class="arrow" d="M450 110 L450 145"/>
+
+  <!-- Classifier -->
+  <rect class="box" x="330" y="150" width="240" height="60"/>
+  <text class="label" x="450" y="175" text-anchor="middle">Complexity Classifier</text>
+  <rect class="detail-box" x="345" y="182" width="210" height="20"/>
+  <text class="sublabel" x="355" y="196">Rule-based or ML-based complexity detection</text>
+
+  <!-- Three routing paths -->
+  <path d="M380 210 L130 270" fill="none" stroke="#7c3aed" stroke-width="2"/>
+  <path d="M450 210 L450 270" fill="none" stroke="#2563eb" stroke-width="2"/>
+  <path d="M520 210 L770 270" fill="none" stroke="#d97706" stroke-width="2"/>
+
+  <!-- Small model -->
+  <rect class="box c-simple" x="30" y="275" width="200" height="110"/>
+  <text class="label" x="130" y="300" text-anchor="middle" fill="#7c3aed">Small Model (7B-13B)</text>
+  <rect class="detail-box" x="45" y="310" width="170" height="60"/>
+  <text class="sublabel" x="55" y="328">Tasks: Classification, extraction</text>
+  <text class="sublabel" x="55" y="343">Cost: $0.0001-0.0005/request</text>
+  <text class="sublabel" x="55" y="358">Latency: 100-300ms</text>
+  <text class="sublabel" x="55" y="373">Handles: ~60% of requests</text>
+
+  <!-- Medium model -->
+  <rect class="box c-moderate" x="350" y="275" width="200" height="110"/>
+  <text class="label" x="450" y="300" text-anchor="middle" fill="#2563eb">Medium Model (70B)</text>
+  <rect class="detail-box" x="365" y="310" width="170" height="60"/>
+  <text class="sublabel" x="375" y="328">Tasks: Analysis, summarization</text>
+  <text class="sublabel" x="375" y="343">Cost: $0.003-0.01/request</text>
+  <text class="sublabel" x="375" y="358">Latency: 500-1500ms</text>
+  <text class="sublabel" x="375" y="373">Handles: ~30% of requests</text>
+
+  <!-- Frontier model -->
+  <rect class="box c-complex" x="670" y="275" width="200" height="110"/>
+  <text class="label" x="770" y="300" text-anchor="middle" fill="#d97706">Frontier Model (GPT-4)</text>
+  <rect class="detail-box" x="685" y="310" width="170" height="60"/>
+  <text class="sublabel" x="695" y="328">Tasks: Complex reasoning, creativity</text>
+  <text class="sublabel" x="695" y="343">Cost: $0.03-0.10/request</text>
+  <text class="sublabel" x="695" y="358">Latency: 1000-5000ms</text>
+  <text class="sublabel" x="695" y="373">Handles: ~10% of requests</text>
+
+  <!-- Escalation -->
+  <path d="M130 385 L130 420 L450 420 L450 385" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <path d="M770 385 L770 420 L450 420" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text class="sublabel" x="450" y="440" text-anchor="middle" fill="#dc2626" font-weight="700">Escalation: Low confidence → route to next tier up</text>
+
+  <!-- Cost comparison -->
+  <rect x="30" y="455" width="840" height="30" rx="4" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="sublabel" x="450" y="475" text-anchor="middle" font-weight="700">Avg cost with routing: $0.002/request vs $0.05/request (all frontier) = 96% cost reduction</text>
+</svg>

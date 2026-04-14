@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-hnsw { stroke: #7c3aed; }
+    .dark .c-hnsw { fill: #2e1065; stroke: #a78bfa; }
+    .c-ivf { stroke: #2563eb; }
+    .dark .c-ivf { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-pq { stroke: #059669; }
+    .dark .c-pq { fill: #064e3b; stroke: #34d399; }
+    .c-flat { stroke: #d97706; }
+    .dark .c-flat { fill: #451a03; stroke: #fbbf24; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Vector Database Indexing Algorithms</text>
+
+  <!-- HNSW -->
+  <text class="label" x="112" y="75" text-anchor="middle" fill="#7c3aed">HNSW (Graph-based)</text>
+  <!-- Layer 3 (top) -->
+  <circle cx="80" cy="120" r="6" fill="#7c3aed" opacity="0.3"/>
+  <circle cx="140" cy="110" r="6" fill="#7c3aed" opacity="0.3"/>
+  <line x1="80" y1="120" x2="140" y2="110" stroke="#7c3aed" stroke-width="1" opacity="0.3"/>
+  <!-- Layer 2 -->
+  <circle cx="60" cy="160" r="5" fill="#7c3aed" opacity="0.5"/>
+  <circle cx="110" cy="155" r="5" fill="#7c3aed" opacity="0.5"/>
+  <circle cx="160" cy="165" r="5" fill="#7c3aed" opacity="0.5"/>
+  <line x1="60" y1="160" x2="110" y2="155" stroke="#7c3aed" stroke-width="1" opacity="0.5"/>
+  <line x1="110" y1="155" x2="160" y2="165" stroke="#7c3aed" stroke-width="1" opacity="0.5"/>
+  <!-- Layer 1 -->
+  <circle cx="50" cy="200" r="4" fill="#7c3aed" opacity="0.7"/>
+  <circle cx="85" cy="195" r="4" fill="#7c3aed" opacity="0.7"/>
+  <circle cx="120" cy="200" r="4" fill="#7c3aed" opacity="0.7"/>
+  <circle cx="155" cy="195" r="4" fill="#7c3aed" opacity="0.7"/>
+  <circle cx="190" cy="200" r="4" fill="#7c3aed" opacity="0.7"/>
+  <line x1="50" y1="200" x2="85" y2="195" stroke="#7c3aed" stroke-width="1" opacity="0.7"/>
+  <line x1="85" y1="195" x2="120" y2="200" stroke="#7c3aed" stroke-width="1" opacity="0.7"/>
+  <line x1="120" y1="200" x2="155" y2="195" stroke="#7c3aed" stroke-width="1" opacity="0.7"/>
+  <line x1="155" y1="195" x2="190" y2="200" stroke="#7c3aed" stroke-width="1" opacity="0.7"/>
+  <!-- Layer 0 (bottom, all nodes) -->
+  <circle cx="40" cy="240" r="3" fill="#7c3aed"/>
+  <circle cx="65" cy="235" r="3" fill="#7c3aed"/>
+  <circle cx="90" cy="240" r="3" fill="#7c3aed"/>
+  <circle cx="115" cy="235" r="3" fill="#7c3aed"/>
+  <circle cx="140" cy="240" r="3" fill="#7c3aed"/>
+  <circle cx="165" cy="235" r="3" fill="#7c3aed"/>
+  <circle cx="190" cy="240" r="3" fill="#7c3aed"/>
+  <text class="sublabel" x="112" y="265" text-anchor="middle">O(log n) search, 95-99% recall</text>
+  <text class="sublabel" x="112" y="280" text-anchor="middle">High memory, best quality</text>
+
+  <!-- IVF -->
+  <text class="label" x="337" y="75" text-anchor="middle" fill="#2563eb">IVF (Cluster-based)</text>
+  <!-- Cluster 1 -->
+  <circle cx="280" cy="140" r="50" fill="none" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="270" cy="130" r="3" fill="#2563eb"/>
+  <circle cx="290" cy="125" r="3" fill="#2563eb"/>
+  <circle cx="285" cy="145" r="3" fill="#2563eb"/>
+  <circle cx="275" cy="150" r="3" fill="#2563eb"/>
+  <circle cx="280" cy="135" r="6" fill="#dc2626"/>
+  <!-- Cluster 2 -->
+  <circle cx="370" cy="160" r="50" fill="none" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="360" cy="150" r="3" fill="#2563eb"/>
+  <circle cx="380" cy="155" r="3" fill="#2563eb"/>
+  <circle cx="375" cy="170" r="3" fill="#2563eb"/>
+  <circle cx="370" cy="160" r="6" fill="#dc2626"/>
+  <!-- Cluster 3 -->
+  <circle cx="310" cy="220" r="50" fill="none" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="300" cy="210" r="3" fill="#2563eb"/>
+  <circle cx="320" cy="215" r="3" fill="#2563eb"/>
+  <circle cx="315" cy="230" r="3" fill="#2563eb"/>
+  <circle cx="310" cy="220" r="6" fill="#dc2626"/>
+  <!-- Query arrow -->
+  <circle cx="340" cy="140" r="5" fill="#d97706"/>
+  <text class="sublabel" x="337" y="265" text-anchor="middle">Search nlist clusters, then brute-force</text>
+  <text class="sublabel" x="337" y="280" text-anchor="middle">Faster build, medium recall</text>
+
+  <!-- Product Quantization -->
+  <text class="label" x="562" y="75" text-anchor="middle" fill="#059669">Product Quantization</text>
+  <!-- Original vector -->
+  <rect x="470" y="100" width="180" height="25" rx="3" fill="#059669" opacity="0.2" stroke="#059669"/>
+  <text class="sublabel" x="560" y="117" text-anchor="middle">Original: 1536-dim float32 (6144 bytes)</text>
+  <path d="M560 125 L560 150" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <!-- Split into subvectors -->
+  <rect x="470" y="155" width="45" height="25" rx="2" fill="#059669" opacity="0.3"/>
+  <rect x="515" y="155" width="45" height="25" rx="2" fill="#059669" opacity="0.4"/>
+  <rect x="560" y="155" width="45" height="25" rx="2" fill="#059669" opacity="0.5"/>
+  <rect x="605" y="155" width="45" height="25" rx="2" fill="#059669" opacity="0.6"/>
+  <text class="sublabel" x="492" y="172" text-anchor="middle">Sub-1</text>
+  <text class="sublabel" x="537" y="172" text-anchor="middle">Sub-2</text>
+  <text class="sublabel" x="582" y="172" text-anchor="middle">Sub-3</text>
+  <text class="sublabel" x="627" y="172" text-anchor="middle">Sub-4</text>
+  <path d="M560 180 L560 205" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <!-- Compressed -->
+  <rect x="490" y="210" width="140" height="25" rx="3" fill="#059669" opacity="0.3" stroke="#059669"/>
+  <text class="sublabel" x="560" y="227" text-anchor="middle">Compressed: 48-96 bytes (60-100x)</text>
+  <text class="sublabel" x="562" y="265" text-anchor="middle">Massive memory savings</text>
+  <text class="sublabel" x="562" y="280" text-anchor="middle">1-5% recall loss</text>
+
+  <!-- Flat -->
+  <text class="label" x="787" y="75" text-anchor="middle" fill="#d97706">Flat (Brute Force)</text>
+  <!-- All vectors -->
+  <circle cx="740" cy="130" r="3" fill="#d97706"/>
+  <circle cx="760" cy="120" r="3" fill="#d97706"/>
+  <circle cx="780" cy="135" r="3" fill="#d97706"/>
+  <circle cx="800" cy="125" r="3" fill="#d97706"/>
+  <circle cx="820" cy="140" r="3" fill="#d97706"/>
+  <circle cx="750" cy="160" r="3" fill="#d97706"/>
+  <circle cx="770" cy="155" r="3" fill="#d97706"/>
+  <circle cx="790" cy="165" r="3" fill="#d97706"/>
+  <circle cx="810" cy="155" r="3" fill="#d97706"/>
+  <circle cx="830" cy="160" r="3" fill="#d97706"/>
+  <circle cx="745" cy="190" r="3" fill="#d97706"/>
+  <circle cx="765" cy="185" r="3" fill="#d97706"/>
+  <circle cx="785" cy="195" r="3" fill="#d97706"/>
+  <circle cx="805" cy="185" r="3" fill="#d97706"/>
+  <circle cx="825" cy="190" r="3" fill="#d97706"/>
+  <!-- Query -->
+  <circle cx="787" cy="145" r="6" fill="#dc2626"/>
+  <text class="sublabel" x="787" y="220" text-anchor="middle">Compare query to EVERY vector</text>
+  <text class="sublabel" x="787" y="235" text-anchor="middle">O(n) per query, 100% recall</text>
+  <text class="sublabel" x="787" y="250" text-anchor="middle">Only for small datasets</text>
+
+  <!-- Bottom comparison -->
+  <rect x="20" y="310" width="860" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="335" text-anchor="middle">Algorithm Comparison</text>
+
+  <text class="sublabel" x="40" y="360"><tspan font-weight="700">Algorithm</tspan></text>
+  <text class="sublabel" x="200" y="360"><tspan font-weight="700">Search Time</tspan></text>
+  <text class="sublabel" x="360" y="360"><tspan font-weight="700">Recall</tspan></text>
+  <text class="sublabel" x="500" y="360"><tspan font-weight="700">Memory</tspan></text>
+  <text class="sublabel" x="640" y="360"><tspan font-weight="700">Build Time</tspan></text>
+  <text class="sublabel" x="780" y="360"><tspan font-weight="700">Best For</tspan></text>
+
+  <line x1="40" y1="370" x2="860" y2="370" stroke="#dee2e6" stroke-width="0.5"/>
+
+  <text class="sublabel" x="40" y="390">HNSW</text>
+  <text class="sublabel" x="200" y="390">O(log n)</text>
+  <text class="sublabel" x="360" y="390">95-99%</text>
+  <text class="sublabel" x="500" y="390">High</text>
+  <text class="sublabel" x="640" y="390">Slow</text>
+  <text class="sublabel" x="780" y="390">Production default</text>
+
+  <text class="sublabel" x="40" y="415">IVF</text>
+  <text class="sublabel" x="200" y="415">O(n/nlist)</text>
+  <text class="sublabel" x="360" y="415">85-95%</text>
+  <text class="sublabel" x="500" y="415">Medium</text>
+  <text class="sublabel" x="640" y="415">Fast</text>
+  <text class="sublabel" x="780" y="415">Fast indexing</text>
+
+  <text class="sublabel" x="40" y="440">PQ</text>
+  <text class="sublabel" x="200" y="440">O(log n)</text>
+  <text class="sublabel" x="360" y="440">90-98%</text>
+  <text class="sublabel" x="500" y="440">Very Low</text>
+  <text class="sublabel" x="640" y="440">Medium</text>
+  <text class="sublabel" x="780" y="440">Billion-scale datasets</text>
+
+  <text class="sublabel" x="40" y="465">Flat</text>
+  <text class="sublabel" x="200" y="465">O(n)</text>
+  <text class="sublabel" x="360" y="465">100%</text>
+  <text class="sublabel" x="500" y="465">Low</text>
+  <text class="sublabel" x="640" y="465">Instant</text>
+  <text class="sublabel" x="780" y="465">Small datasets, benchmark</text>
+</svg>

@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .strategy-box { fill: #ffffff; stroke-width: 2; rx: 8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-zero { stroke: #7c3aed; }
+    .dark .s-zero { fill: #2e1065; stroke: #a78bfa; }
+    .s-few { stroke: #2563eb; }
+    .dark .s-few { fill: #1e3a5f; stroke: #60a5fa; }
+    .s-cot { stroke: #059669; }
+    .dark .s-cot { fill: #064e3b; stroke: #34d399; }
+    .meter-bg { fill: #e5e7eb; rx: 3; }
+    .dark .meter-bg { fill: #333355; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Prompting Strategies Comparison</text>
+
+  <!-- Zero-Shot -->
+  <rect class="strategy-box s-zero" x="20" y="70" width="270" height="400"/>
+  <text class="label" x="155" y="100" text-anchor="middle">Zero-Shot</text>
+
+  <rect class="detail-box" x="35" y="115" width="240" height="60"/>
+  <text class="sublabel" x="45" y="135">Input: Only instruction + user input</text>
+  <text class="sublabel" x="45" y="155">No examples provided</text>
+  <text class="sublabel" x="45" y="175">Relies on model's pre-training</text>
+
+  <text class="label" x="155" y="200" text-anchor="middle">Quality Metrics</text>
+  <rect class="meter-bg" x="45" y="215" width="220" height="12"/>
+  <rect x="45" y="215" width="130" height="12" rx="3" fill="#7c3aed"/>
+  <text class="sublabel" x="270" y="225">Quality: Medium</text>
+
+  <rect class="meter-bg" x="45" y="240" width="220" height="12"/>
+  <rect x="45" y="240" width="190" height="12" rx="3" fill="#7c3aed"/>
+  <text class="sublabel" x="270" y="250">Cost: Low</text>
+
+  <rect class="meter-bg" x="45" y="265" width="220" height="12"/>
+  <rect x="45" y="265" width="190" height="12" rx="3" fill="#7c3aed"/>
+  <text class="sublabel" x="270" y="275">Speed: Fast</text>
+
+  <text class="label" x="155" y="310" text-anchor="middle">Best For</text>
+  <text class="sublabel" x="35" y="330">Summarization, translation</text>
+  <text class="sublabel" x="35" y="350">Common classification tasks</text>
+  <text class="sublabel" x="35" y="370">Simple extraction</text>
+  <text class="sublabel" x="35" y="390">Brainstorming, ideation</text>
+
+  <text class="label" x="155" y="430" text-anchor="middle" fill="#7c3aed">~100-300 tokens</text>
+
+  <!-- Few-Shot -->
+  <rect class="strategy-box s-few" x="315" y="70" width="270" height="400"/>
+  <text class="label" x="450" y="100" text-anchor="middle">Few-Shot</text>
+
+  <rect class="detail-box" x="330" y="115" width="240" height="60"/>
+  <text class="sublabel" x="340" y="135">Input: Instruction + 2-5 examples</text>
+  <text class="sublabel" x="340" y="155">+ user input</text>
+  <text class="sublabel" x="340" y="175">Leverages in-context learning</text>
+
+  <text class="label" x="450" y="200" text-anchor="middle">Quality Metrics</text>
+  <rect class="meter-bg" x="340" y="215" width="220" height="12"/>
+  <rect x="340" y="215" width="175" height="12" rx="3" fill="#2563eb"/>
+  <text class="sublabel" x="565" y="225">Quality: High</text>
+
+  <rect class="meter-bg" x="340" y="240" width="220" height="12"/>
+  <rect x="340" y="240" width="130" height="12" rx="3" fill="#2563eb"/>
+  <text class="sublabel" x="565" y="250">Cost: Medium</text>
+
+  <rect class="meter-bg" x="340" y="265" width="220" height="12"/>
+  <rect x="340" y="265" width="155" height="12" rx="3" fill="#2563eb"/>
+  <text class="sublabel" x="565" y="275">Speed: Medium</text>
+
+  <text class="label" x="450" y="310" text-anchor="middle">Best For</text>
+  <text class="sublabel" x="330" y="330">Format-specific output</text>
+  <text class="sublabel" x="330" y="350">Domain-specific classification</text>
+  <text class="sublabel" x="330" y="370">Style transfer, tone matching</text>
+  <text class="sublabel" x="330" y="390">Novel task patterns</text>
+
+  <text class="label" x="450" y="430" text-anchor="middle" fill="#2563eb">~500-2000 tokens</text>
+
+  <!-- Chain-of-Thought -->
+  <rect class="strategy-box s-cot" x="610" y="70" width="270" height="400"/>
+  <text class="label" x="745" y="100" text-anchor="middle">Chain-of-Thought</text>
+
+  <rect class="detail-box" x="625" y="115" width="240" height="60"/>
+  <text class="sublabel" x="635" y="135">Input: "Think step by step"</text>
+  <text class="sublabel" x="635" y="155">+ reasoning examples</text>
+  <text class="sublabel" x="635" y="175">Multi-step computation</text>
+
+  <text class="label" x="745" y="200" text-anchor="middle">Quality Metrics</text>
+  <rect class="meter-bg" x="635" y="215" width="220" height="12"/>
+  <rect x="635" y="215" width="200" height="12" rx="3" fill="#059669"/>
+  <text class="sublabel" x="860" y="225">Quality: Very High</text>
+
+  <rect class="meter-bg" x="635" y="240" width="220" height="12"/>
+  <rect x="635" y="240" width="175" height="12" rx="3" fill="#059669"/>
+  <text class="sublabel" x="860" y="250">Cost: High</text>
+
+  <rect class="meter-bg" x="635" y="265" width="220" height="12"/>
+  <rect x="635" y="265" width="100" height="12" rx="3" fill="#059669"/>
+  <text class="sublabel" x="860" y="275">Speed: Slow</text>
+
+  <text class="label" x="745" y="310" text-anchor="middle">Best For</text>
+  <text class="sublabel" x="625" y="330">Mathematical reasoning</text>
+  <text class="sublabel" x="625" y="350">Multi-step logic problems</text>
+  <text class="sublabel" x="625" y="370">Code debugging &amp; analysis</text>
+  <text class="sublabel" x="625" y="390">Complex decision making</text>
+
+  <text class="label" x="745" y="430" text-anchor="middle" fill="#059669">~800-5000 tokens</text>
+</svg>

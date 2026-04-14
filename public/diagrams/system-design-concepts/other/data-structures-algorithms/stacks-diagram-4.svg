@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" fill="none" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .dark-bg { fill: #1a1a2e; }
+      .box { fill: #e8f0fe; stroke: #4a6cf7; stroke-width: 2; }
+      .dark-box { fill: #252545; stroke: #6b8aff; stroke-width: 2; }
+      .box-green { fill: #e6fffa; stroke: #38a169; stroke-width: 2; }
+      .dark-box-green { fill: #1e3a2f; stroke: #48bb78; stroke-width: 2; }
+      .box-orange { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .dark-box-orange { fill: #3e3520; stroke: #ecc94b; stroke-width: 2; }
+      .box-purple { fill: #f0e6ff; stroke: #805ad5; stroke-width: 2; }
+      .dark-box-purple { fill: #2d2045; stroke: #9f7aea; stroke-width: 2; }
+      .title { font-size: 18px; font-weight: 700; fill: #1a1a2e; }
+      .dark-title { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .label { font-size: 13px; font-weight: 600; fill: #2d3748; }
+      .dark-label { font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .sublabel { font-size: 11px; font-weight: 400; fill: #718096; }
+      .dark-sublabel { font-size: 11px; font-weight: 400; fill: #a0aec0; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dark-arrow { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead); }
+      .ptr { stroke: #805ad5; stroke-width: 1.5; fill: none; stroke-dasharray: 4 3; marker-end: url(#arrowPurple); }
+      .dark-ptr { stroke: #9f7aea; stroke-width: 1.5; fill: none; stroke-dasharray: 4 3; marker-end: url(#dark-arrowPurple); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+    <marker id="dark-arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0" />
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#805ad5" />
+    </marker>
+    <marker id="dark-arrowPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9f7aea" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="900" height="520" rx="8" />
+  <rect class="dark-bg" width="900" height="520" rx="8" style="display:none" />
+
+  <text class="title" x="450" y="32" text-anchor="middle">Array-Based vs. Linked-List-Based Stack</text>
+  <text class="dark-title" x="450" y="32" text-anchor="middle">Array-Based vs. Linked-List-Based Stack</text>
+
+  <!-- LEFT: Array-Based Stack -->
+  <text class="label" x="220" y="68" text-anchor="middle" font-size="15">Array-Based Stack (Contiguous Memory)</text>
+  <text class="dark-label" x="220" y="68" text-anchor="middle" font-size="15" style="display:none">Array-Based Stack (Contiguous Memory)</text>
+
+  <!-- Array blocks -->
+  <rect class="box" x="40" y="90" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="40" y="90" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="80" y="107" text-anchor="middle" font-size="10">index 0</text>
+  <text class="dark-sublabel" x="80" y="107" text-anchor="middle" font-size="10" style="display:none">index 0</text>
+  <text class="label" x="80" y="122" text-anchor="middle">10</text>
+  <text class="dark-label" x="80" y="122" text-anchor="middle" style="display:none">10</text>
+
+  <rect class="box" x="125" y="90" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="125" y="90" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="165" y="107" text-anchor="middle" font-size="10">index 1</text>
+  <text class="dark-sublabel" x="165" y="107" text-anchor="middle" font-size="10" style="display:none">index 1</text>
+  <text class="label" x="165" y="122" text-anchor="middle">20</text>
+  <text class="dark-label" x="165" y="122" text-anchor="middle" style="display:none">20</text>
+
+  <rect class="box" x="210" y="90" width="80" height="40" rx="4" />
+  <rect class="dark-box" x="210" y="90" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="250" y="107" text-anchor="middle" font-size="10">index 2</text>
+  <text class="dark-sublabel" x="250" y="107" text-anchor="middle" font-size="10" style="display:none">index 2</text>
+  <text class="label" x="250" y="122" text-anchor="middle">30</text>
+  <text class="dark-label" x="250" y="122" text-anchor="middle" style="display:none">30</text>
+
+  <!-- top pointer -->
+  <rect class="box-orange" x="295" y="90" width="80" height="40" rx="4" />
+  <rect class="dark-box-orange" x="295" y="90" width="80" height="40" rx="4" style="display:none" />
+  <text class="sublabel" x="335" y="107" text-anchor="middle" font-size="10">index 3</text>
+  <text class="dark-sublabel" x="335" y="107" text-anchor="middle" font-size="10" style="display:none">index 3</text>
+  <text class="label" x="335" y="122" text-anchor="middle">50</text>
+  <text class="dark-label" x="335" y="122" text-anchor="middle" style="display:none">50</text>
+  <text class="sublabel" x="335" y="142" text-anchor="middle" font-size="10">&#8593; top</text>
+  <text class="dark-sublabel" x="335" y="142" text-anchor="middle" font-size="10" style="display:none">&#8593; top</text>
+
+  <!-- Empty slots -->
+  <rect class="box" x="40" y="140" width="80" height="40" rx="4" fill="#f7fafc" stroke="#cbd5e0" />
+  <rect class="dark-box" x="40" y="140" width="80" height="40" rx="4" fill="#1a202c" stroke="#4a5568" style="display:none" />
+  <text class="sublabel" x="80" y="165" text-anchor="middle" font-size="10">empty</text>
+  <text class="dark-sublabel" x="80" y="165" text-anchor="middle" font-size="10" style="display:none">empty</text>
+
+  <rect class="box" x="125" y="140" width="80" height="40" rx="4" fill="#f7fafc" stroke="#cbd5e0" />
+  <rect class="dark-box" x="125" y="140" width="80" height="40" rx="4" fill="#1a202c" stroke="#4a5568" style="display:none" />
+  <text class="sublabel" x="165" y="165" text-anchor="middle" font-size="10">empty</text>
+  <text class="dark-sublabel" x="165" y="165" text-anchor="middle" font-size="10" style="display:none">empty</text>
+
+  <rect class="box" x="210" y="140" width="80" height="40" rx="4" fill="#f7fafc" stroke="#cbd5e0" />
+  <rect class="dark-box" x="210" y="140" width="80" height="40" rx="4" fill="#1a202c" stroke="#4a5568" style="display:none" />
+  <text class="sublabel" x="250" y="165" text-anchor="middle" font-size="10">empty</text>
+  <text class="dark-sublabel" x="250" y="165" text-anchor="middle" font-size="10" style="display:none">empty</text>
+
+  <rect class="box" x="295" y="140" width="80" height="40" rx="4" fill="#f7fafc" stroke="#cbd5e0" />
+  <rect class="dark-box" x="295" y="140" width="80" height="40" rx="4" fill="#1a202c" stroke="#4a5568" style="display:none" />
+  <text class="sublabel" x="335" y="165" text-anchor="middle" font-size="10">empty</text>
+  <text class="dark-sublabel" x="335" y="165" text-anchor="middle" font-size="10" style="display:none">empty</text>
+
+  <!-- Capacity annotation -->
+  <text class="sublabel" x="220" y="210" text-anchor="middle">Fixed capacity (resize on overflow)</text>
+  <text class="dark-sublabel" x="220" y="210" text-anchor="middle" style="display:none">Fixed capacity (resize on overflow)</text>
+
+  <!-- Array properties -->
+  <rect class="box-green" x="40" y="230" width="360" height="120" rx="8" />
+  <rect class="dark-box-green" x="40" y="230" width="360" height="120" rx="8" style="display:none" />
+  <text class="label" x="220" y="258" text-anchor="middle">Array Stack Properties</text>
+  <text class="dark-label" x="220" y="258" text-anchor="middle" style="display:none">Array Stack Properties</text>
+  <text class="sublabel" x="60" y="280" font-size="10">&#8226; Contiguous memory allocation</text>
+  <text class="dark-sublabel" x="60" y="280" font-size="10" style="display:none">&#8226; Contiguous memory allocation</text>
+  <text class="sublabel" x="60" y="298" font-size="10">&#8226; O(1) push/pop (amortized O(1) with resize)</text>
+  <text class="dark-sublabel" x="60" y="298" font-size="10" style="display:none">&#8226; O(1) push/pop (amortized O(1) with resize)</text>
+  <text class="sublabel" x="60" y="316" font-size="10">&#8226; Excellent cache locality (sequential access)</text>
+  <text class="dark-sublabel" x="60" y="316" font-size="10" style="display:none">&#8226; Excellent cache locality (sequential access)</text>
+  <text class="sublabel" x="60" y="334" font-size="10">&#8226; No per-element pointer overhead</text>
+  <text class="dark-sublabel" x="60" y="334" font-size="10" style="display:none">&#8226; No per-element pointer overhead</text>
+
+  <!-- RIGHT: Linked-List-Based Stack -->
+  <text class="label" x="680" y="68" text-anchor="middle" font-size="15">Linked-List-Based Stack (Dynamic)</text>
+  <text class="dark-label" x="680" y="68" text-anchor="middle" font-size="15" style="display:none">Linked-List-Based Stack (Dynamic)</text>
+
+  <!-- Node 1 (top) -->
+  <rect class="box-purple" x="520" y="90" width="120" height="40" rx="4" />
+  <rect class="dark-box-purple" x="520" y="90" width="120" height="40" rx="4" style="display:none" />
+  <text class="label" x="560" y="115" text-anchor="middle" font-size="12">data: 50</text>
+  <text class="dark-label" x="560" y="115" text-anchor="middle" font-size="12" style="display:none">data: 50</text>
+  <text class="label" x="620" y="115" text-anchor="middle" font-size="10">next</text>
+  <text class="dark-label" x="620" y="115" text-anchor="middle" font-size="10" style="display:none">next</text>
+
+  <!-- Pointer from node 1 to node 2 -->
+  <path class="ptr" d="M 640 110 L 660 110 L 660 155 L 640 155" />
+  <path class="dark-ptr" d="M 640 110 L 660 110 L 660 155 L 640 155" style="display:none" />
+
+  <!-- Node 2 -->
+  <rect class="box-purple" x="520" y="140" width="120" height="40" rx="4" />
+  <rect class="dark-box-purple" x="520" y="140" width="120" height="40" rx="4" style="display:none" />
+  <text class="label" x="560" y="165" text-anchor="middle" font-size="12">data: 30</text>
+  <text class="dark-label" x="560" y="165" text-anchor="middle" font-size="12" style="display:none">data: 30</text>
+  <text class="label" x="620" y="165" text-anchor="middle" font-size="10">next</text>
+  <text class="dark-label" x="620" y="165" text-anchor="middle" font-size="10" style="display:none">next</text>
+
+  <!-- Pointer from node 2 to node 3 -->
+  <path class="ptr" d="M 640 160 L 660 160 L 660 205 L 640 205" />
+  <path class="dark-ptr" d="M 640 160 L 660 160 L 660 205 L 640 205" style="display:none" />
+
+  <!-- Node 3 -->
+  <rect class="box-purple" x="520" y="190" width="120" height="40" rx="4" />
+  <rect class="dark-box-purple" x="520" y="190" width="120" height="40" rx="4" style="display:none" />
+  <text class="label" x="560" y="215" text-anchor="middle" font-size="12">data: 20</text>
+  <text class="dark-label" x="560" y="215" text-anchor="middle" font-size="12" style="display:none">data: 20</text>
+  <text class="label" x="620" y="215" text-anchor="middle" font-size="10">next</text>
+  <text class="dark-label" x="620" y="215" text-anchor="middle" font-size="10" style="display:none">next</text>
+
+  <!-- Pointer from node 3 to node 4 -->
+  <path class="ptr" d="M 640 210 L 660 210 L 660 255 L 640 255" />
+  <path class="dark-ptr" d="M 640 210 L 660 210 L 660 255 L 640 255" style="display:none" />
+
+  <!-- Node 4 (bottom) -->
+  <rect class="box-purple" x="520" y="240" width="120" height="40" rx="4" />
+  <rect class="dark-box-purple" x="520" y="240" width="120" height="40" rx="4" style="display:none" />
+  <text class="label" x="560" y="265" text-anchor="middle" font-size="12">data: 10</text>
+  <text class="dark-label" x="560" y="265" text-anchor="middle" font-size="12" style="display:none">data: 10</text>
+  <text class="label" x="620" y="265" text-anchor="middle" font-size="10">null</text>
+  <text class="dark-label" x="620" y="265" text-anchor="middle" font-size="10" style="display:none">null</text>
+
+  <!-- Top pointer label -->
+  <text class="sublabel" x="500" y="115" text-anchor="end" font-size="11">top &#8594;</text>
+  <text class="dark-sublabel" x="500" y="115" text-anchor="end" font-size="11" style="display:none">top &#8594;</text>
+
+  <!-- Null label -->
+  <text class="sublabel" x="660" y="280" text-anchor="middle" font-size="10">&#8595; null</text>
+  <text class="dark-sublabel" x="660" y="280" text-anchor="middle" font-size="10" style="display:none">&#8595; null</text>
+
+  <!-- Dynamic annotation -->
+  <text class="sublabel" x="680" y="315" text-anchor="middle">Unbounded — grows/shrinks dynamically</text>
+  <text class="dark-sublabel" x="680" y="315" text-anchor="middle" style="display:none">Unbounded — grows/shrinks dynamically</text>
+
+  <!-- LL properties -->
+  <rect class="box-orange" x="500" y="330" width="360" height="120" rx="8" />
+  <rect class="dark-box-orange" x="500" y="330" width="360" height="120" rx="8" style="display:none" />
+  <text class="label" x="680" y="358" text-anchor="middle">Linked-List Stack Properties</text>
+  <text class="dark-label" x="680" y="358" text-anchor="middle" style="display:none">Linked-List Stack Properties</text>
+  <text class="sublabel" x="520" y="380" font-size="10">&#8226; Non-contiguous, heap-allocated nodes</text>
+  <text class="dark-sublabel" x="520" y="380" font-size="10" style="display:none">&#8226; Non-contiguous, heap-allocated nodes</text>
+  <text class="sublabel" x="520" y="398" font-size="10">&#8226; O(1) push/pop (no resize needed)</text>
+  <text class="dark-sublabel" x="520" y="398" font-size="10" style="display:none">&#8226; O(1) push/pop (no resize needed)</text>
+  <text class="sublabel" x="520" y="416" font-size="10">&#8226; Poor cache locality (pointer chasing)</text>
+  <text class="dark-sublabel" x="520" y="416" font-size="10" style="display:none">&#8226; Poor cache locality (pointer chasing)</text>
+  <text class="sublabel" x="520" y="434" font-size="10">&#8226; Per-node overhead (data + pointer)</text>
+  <text class="dark-sublabel" x="520" y="434" font-size="10" style="display:none">&#8226; Per-node overhead (data + pointer)</text>
+
+  <!-- Bottom comparison bar -->
+  <rect class="box" x="40" y="470" width="820" height="40" rx="8" />
+  <rect class="dark-box" x="40" y="470" width="820" height="40" rx="8" style="display:none" />
+  <text class="label" x="100" y="495" text-anchor="middle">Array: Better for performance</text>
+  <text class="dark-label" x="100" y="495" text-anchor="middle" style="display:none">Array: Better for performance</text>
+  <text class="label" x="300" y="495" text-anchor="middle">Linked-List: Better for flexibility</text>
+  <text class="dark-label" x="300" y="495" text-anchor="middle" style="display:none">Linked-List: Better for flexibility</text>
+  <text class="label" x="520" y="495" text-anchor="middle">Both: O(1) push, O(1) pop, O(1) peek</text>
+  <text class="dark-label" x="520" y="495" text-anchor="middle" style="display:none">Both: O(1) push, O(1) pop, O(1) peek</text>
+  <text class="label" x="760" y="495" text-anchor="middle">Choice: workload-dependent</text>
+  <text class="dark-label" x="760" y="495" text-anchor="middle" style="display:none">Choice: workload-dependent</text>
+
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .bg { display: none; }
+      .dark-bg { display: block; }
+      .box { display: none; }
+      .dark-box { display: block; }
+      .box-green { display: none; }
+      .dark-box-green { display: block; }
+      .box-orange { display: none; }
+      .dark-box-orange { display: block; }
+      .box-purple { display: none; }
+      .dark-box-purple { display: block; }
+      .title { display: none; }
+      .dark-title { display: block; }
+      .label { display: none; }
+      .dark-label { display: block; }
+      .sublabel { display: none; }
+      .dark-sublabel { display: block; }
+      .arrow { display: none; }
+      .dark-arrow { display: block; }
+      .ptr { display: none; }
+      .dark-ptr { display: block; }
+    }
+  </style>
+</svg>

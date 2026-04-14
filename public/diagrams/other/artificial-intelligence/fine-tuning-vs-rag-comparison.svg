@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-ft { stroke: #7c3aed; }
+    .dark .c-ft { fill: #2e1065; stroke: #a78bfa; }
+    .c-rag { stroke: #2563eb; }
+    .dark .c-rag { fill: #1e3a5f; stroke: #60a5fa; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Fine-Tuning vs RAG Comparison</text>
+
+  <!-- Fine-Tuning side -->
+  <text class="label" x="225" y="75" text-anchor="middle" fill="#7c3aed">Fine-Tuning</text>
+  <rect class="box c-ft" x="30" y="90" width="390" height="180"/>
+  <text class="label" x="225" y="115" text-anchor="middle">Modifies Model Weights</text>
+  <rect class="detail-box" x="45" y="125" width="360" height="130"/>
+  <text class="sublabel" x="55" y="145"><tspan font-weight="700">Knowledge type:</tspan> Internalized in model parameters</text>
+  <text class="sublabel" x="55" y="163"><tspan font-weight="700">Update frequency:</tspan> Requires retraining (hours/days)</text>
+  <text class="sublabel" x="55" y="181"><tspan font-weight="700">Source attribution:</tspan> Cannot cite sources</text>
+  <text class="sublabel" x="55" y="199"><tspan font-weight="700">Access control:</tspan> Knowledge baked into model</text>
+  <text class="sublabel" x="55" y="217"><tspan font-weight="700">Best for:</tspan> Behavior, format, tone, reasoning patterns</text>
+  <text class="sublabel" x="55" y="235"><tspan font-weight="700">Cost:</tspan> High upfront, low per-request</text>
+  <text class="sublabel" x="55" y="253"><tspan font-weight="700">Methods:</tspan> Full fine-tuning, LoRA, QLoRA</text>
+
+  <!-- RAG side -->
+  <text class="label" x="675" y="75" text-anchor="middle" fill="#2563eb">RAG</text>
+  <rect class="box c-rag" x="480" y="90" width="390" height="180"/>
+  <text class="label" x="675" y="115" text-anchor="middle">Provides External Context</text>
+  <rect class="detail-box" x="495" y="125" width="360" height="130"/>
+  <text class="sublabel" x="505" y="145"><tspan font-weight="700">Knowledge type:</tspan> External documents at query time</text>
+  <text class="sublabel" x="505" y="163"><tspan font-weight="700">Update frequency:</tspan> Immediate (update index)</text>
+  <text class="sublabel" x="505" y="181"><tspan font-weight="700">Source attribution:</tspan> Can cite specific sources</text>
+  <text class="sublabel" x="505" y="199"><tspan font-weight="700">Access control:</tspan> Per-user document filtering</text>
+  <text class="sublabel" x="505" y="217"><tspan font-weight="700">Best for:</tspan> Facts, current info, confidential data</text>
+  <text class="sublabel" x="505" y="235"><tspan font-weight="700">Cost:</tspan> Low upfront, higher per-request</text>
+  <text class="sublabel" x="505" y="253"><tspan font-weight="700">Methods:</tspan> Naive RAG, Advanced RAG, Modular RAG</text>
+
+  <!-- Decision framework -->
+  <rect x="30" y="300" width="840" height="180" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="325" text-anchor="middle">Decision Framework</text>
+
+  <text class="sublabel" x="50" y="350"><tspan font-weight="700">Choose RAG when:</tspan></text>
+  <text class="sublabel" x="70" y="368">• Knowledge changes frequently (daily/weekly updates needed)</text>
+  <text class="sublabel" x="70" y="386">• Users need to see source documents (legal, medical, compliance)</text>
+  <text class="sublabel" x="70" y="404">• Different users see different information (access control)</text>
+  <text class="sublabel" x="70" y="422">• More knowledge than fits in model weights (large knowledge base)</text>
+  <text class="sublabel" x="70" y="440">• Need to track which information was used (audit trail)</text>
+
+  <text class="sublabel" x="470" y="350"><tspan font-weight="700">Choose Fine-Tuning when:</tspan></text>
+  <text class="sublabel" x="490" y="368">• Model needs specific behavior/format (consistent response style)</text>
+  <text class="sublabel" x="490" y="386">• Domain-specific reasoning patterns (legal analysis, code review)</text>
+  <text class="sublabel" x="490" y="404">• Per-request RAG cost is prohibitive at scale</text>
+  <text class="sublabel" x="490" y="422">• Knowledge is stable (does not change frequently)</text>
+  <text class="sublabel" x="490" y="440">• Need to reduce prompt size (no retrieval context needed)</text>
+
+  <text class="sublabel" x="50" y="470" font-weight="700">Hybrid:</text>
+  <text class="sublabel" x="120" y="470">Fine-tune for behavior + RAG for knowledge = best of both worlds</text>
+</svg>

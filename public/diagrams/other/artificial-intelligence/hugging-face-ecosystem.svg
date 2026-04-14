@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-hub { stroke: #fbbf24; }
+    .dark .c-hub { fill: #451a03; stroke: #fbbf24; }
+    .c-ds { stroke: #2563eb; }
+    .dark .c-ds { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-tf { stroke: #7c3aed; }
+    .dark .c-tf { fill: #2e1065; stroke: #a78bfa; }
+    .c-inf { stroke: #059669; }
+    .dark .c-inf { fill: #064e3b; stroke: #34d399; }
+    .c-sp { stroke: #ec4899; }
+    .dark .c-sp { fill: #500724; stroke: #f472b6; }
+    .c-at { stroke: #f97316; }
+    .dark .c-at { fill: #431407; stroke: #fb923c; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Hugging Face Ecosystem</text>
+
+  <!-- Center: Hugging Face -->
+  <circle cx="450" cy="250" r="50" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text class="label" x="450" y="245" text-anchor="middle">Hugging</text>
+  <text class="label" x="450" y="265" text-anchor="middle">Face</text>
+
+  <!-- Model Hub -->
+  <rect class="box c-hub" x="30" y="60" width="160" height="80"/>
+  <text class="label" x="110" y="90" text-anchor="middle">Model Hub</text>
+  <rect class="detail-box" x="45" y="100" width="130" height="25"/>
+  <text class="sublabel" x="55" y="117">1M+ pre-trained models</text>
+  <path class="arrow" d="M110 140 L110 200 L400 250" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+
+  <!-- Datasets -->
+  <rect class="box c-ds" x="260" y="60" width="160" height="80"/>
+  <text class="label" x="340" y="90" text-anchor="middle">Datasets</text>
+  <rect class="detail-box" x="275" y="100" width="130" height="25"/>
+  <text class="sublabel" x="285" y="117">200K+ datasets</text>
+  <path class="arrow" d="M340 140 L340 200 L450 250" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+
+  <!-- Transformers -->
+  <rect class="box c-tf" x="490" y="60" width="160" height="80"/>
+  <text class="label" x="570" y="90" text-anchor="middle">Transformers</text>
+  <rect class="detail-box" x="505" y="100" width="130" height="25"/>
+  <text class="sublabel" x="515" y="117">Unified model API</text>
+  <path class="arrow" d="M570 140 L570 200 L500 250" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+
+  <!-- Inference API -->
+  <rect class="box c-inf" x="710" y="60" width="160" height="80"/>
+  <text class="label" x="790" y="90" text-anchor="middle">Inference API</text>
+  <rect class="detail-box" x="725" y="100" width="130" height="25"/>
+  <text class="sublabel" x="735" y="117">Serverless inference</text>
+  <path class="arrow" d="M790 140 L790 200 L500 250" fill="none" stroke="#059669" stroke-width="1.5"/>
+
+  <!-- Spaces -->
+  <rect class="box c-sp" x="110" y="380" width="160" height="80"/>
+  <text class="label" x="190" y="410" text-anchor="middle">Spaces</text>
+  <rect class="detail-box" x="125" y="420" width="130" height="25"/>
+  <text class="sublabel" x="135" y="437">App hosting platform</text>
+  <path class="arrow" d="M190 380 L190 300 L400 250" fill="none" stroke="#ec4899" stroke-width="1.5"/>
+
+  <!-- AutoTrain -->
+  <rect class="box c-at" x="380" y="380" width="160" height="80"/>
+  <text class="label" x="460" y="410" text-anchor="middle">AutoTrain</text>
+  <rect class="detail-box" x="395" y="420" width="130" height="25"/>
+  <text class="sublabel" x="405" y="437">No-code fine-tuning</text>
+  <path class="arrow" d="M460 380 L460 300 L450 250" fill="none" stroke="#f97316" stroke-width="1.5"/>
+
+  <!-- Community -->
+  <rect class="box" x="640" y="380" width="160" height="80" stroke="#6366f1"/>
+  <text class="label" x="720" y="410" text-anchor="middle">Community</text>
+  <rect class="detail-box" x="655" y="420" width="130" height="25"/>
+  <text class="sublabel" x="665" y="437">Discussions &amp; papers</text>
+  <path class="arrow" d="M720 380 L720 300 L500 250" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <!-- Annotations -->
+  <rect x="30" y="180" width="100" height="140" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="80" y="205" text-anchor="middle">Core Pillars</text>
+  <text class="sublabel" x="40" y="225">Model Hub</text>
+  <text class="sublabel" x="40" y="243">Datasets</text>
+  <text class="sublabel" x="40" y="261">Transformers</text>
+  <text class="sublabel" x="40" y="279">+ Inference, Spaces,</text>
+  <text class="sublabel" x="40" y="297">AutoTrain, Community</text>
+  <text class="sublabel" x="40" y="315">All connected and</text>
+</svg>

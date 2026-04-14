@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-word { stroke: #7c3aed; }
+    .dark .c-word { fill: #2e1065; stroke: #a78bfa; }
+    .c-subword { stroke: #2563eb; }
+    .dark .c-subword { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-byte { stroke: #059669; }
+    .dark .c-byte { fill: #064e3b; stroke: #34d399; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Token Boundary Visualization — How Different Text Gets Tokenized</text>
+
+  <!-- English example -->
+  <text class="label" x="150" y="85" text-anchor="middle" fill="#7c3aed">English: "unbelievable"</text>
+  <rect x="30" y="100" width="240" height="80" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <rect x="45" y="115" width="70" height="50" rx="4" class="box" stroke="#7c3aed"/>
+  <text class="sublabel" x="80" y="145" text-anchor="middle">"un"</text>
+  <rect x="120" y="115" width="70" height="50" rx="4" class="box" stroke="#7c3aed"/>
+  <text class="sublabel" x="155" y="145" text-anchor="middle">"believ"</text>
+  <rect x="195" y="115" width="60" height="50" rx="4" class="box" stroke="#7c3aed"/>
+  <text class="sublabel" x="225" y="145" text-anchor="middle">"able"</text>
+  <text class="sublabel" x="150" y="175" text-anchor="middle">3 tokens (BPE tokenizer)</text>
+
+  <!-- Code example -->
+  <text class="label" x="450" y="85" text-anchor="middle" fill="#2563eb">Code: "userAuthenticationHandler"</text>
+  <rect x="330" y="100" width="240" height="80" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <rect x="340" y="115" width="40" height="50" rx="4" class="box" stroke="#2563eb"/>
+  <text class="sublabel" x="360" y="145" text-anchor="middle">"user"</text>
+  <rect x="385" y="115" width="35" height="50" rx="4" class="box" stroke="#2563eb"/>
+  <text class="sublabel" x="402" y="145" text-anchor="middle">"Auth"</text>
+  <rect x="425" y="115" width="35" height="50" rx="4" class="box" stroke="#2563eb"/>
+  <text class="sublabel" x="442" y="145" text-anchor="middle">"entic"</text>
+  <rect x="465" y="115" width="35" height="50" rx="4" class="box" stroke="#2563eb"/>
+  <text class="sublabel" x="482" y="145" text-anchor="middle">"ation"</text>
+  <rect x="505" y="115" width="55" height="50" rx="4" class="box" stroke="#2563eb"/>
+  <text class="sublabel" x="532" y="145" text-anchor="middle">"Handler"</text>
+  <text class="sublabel" x="450" y="175" text-anchor="middle">5 tokens (code-aware tokenizer)</text>
+
+  <!-- Chinese example -->
+  <text class="label" x="750" y="85" text-anchor="middle" fill="#059669">Chinese: "机器学习"</text>
+  <rect x="630" y="100" width="240" height="80" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <rect x="645" y="115" width="50" height="50" rx="4" class="box" stroke="#059669"/>
+  <text class="sublabel" x="670" y="145" text-anchor="middle">"机"</text>
+  <rect x="700" y="115" width="50" height="50" rx="4" class="box" stroke="#059669"/>
+  <text class="sublabel" x="725" y="145" text-anchor="middle">"器"</text>
+  <rect x="755" y="115" width="50" height="50" rx="4" class="box" stroke="#059669"/>
+  <text class="sublabel" x="780" y="145" text-anchor="middle">"学"</text>
+  <rect x="810" y="115" width="50" height="50" rx="4" class="box" stroke="#059669"/>
+  <text class="sublabel" x="835" y="145" text-anchor="middle">"习"</text>
+  <text class="sublabel" x="750" y="175" text-anchor="middle">4 tokens (byte-level tokenizer)</text>
+
+  <!-- Token efficiency comparison -->
+  <rect x="30" y="220" width="840" height="260" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="245" text-anchor="middle">Token Efficiency Comparison by Language</text>
+
+  <!-- Bar chart -->
+  <text class="sublabel" x="50" y="275" font-weight="700">Language</text>
+  <text class="sublabel" x="200" y="275" font-weight="700">Chars/Token</text>
+  <text class="sublabel" x="350" y="275" font-weight="700">Relative Cost</text>
+  <text class="sublabel" x="500" y="275" font-weight="700">Vocab Coverage</text>
+  <text class="sublabel" x="700" y="275" font-weight="700">Tokenization Type</text>
+
+  <!-- English bar -->
+  <text class="sublabel" x="50" y="305">English</text>
+  <rect x="200" y="292" width="100" height="20" rx="3" fill="#7c3aed"/>
+  <text class="sublabel" x="250" y="306" text-anchor="middle" fill="white" font-weight="700">~4.0</text>
+  <rect x="350" y="292" width="40" height="20" rx="3" fill="#7c3aed"/>
+  <text class="sublabel" x="370" y="306" text-anchor="middle" fill="white" font-weight="700">1.0x</text>
+  <rect x="500" y="292" width="150" height="20" rx="3" fill="#d1fae5"/>
+  <text class="sublabel" x="575" y="306" text-anchor="middle">95% single-token words</text>
+  <text class="sublabel" x="700" y="305">BPE / byte-level</text>
+
+  <!-- Chinese bar -->
+  <text class="sublabel" x="50" y="335">Chinese</text>
+  <rect x="200" y="322" width="50" height="20" rx="3" fill="#2563eb"/>
+  <text class="sublabel" x="225" y="336" text-anchor="middle" fill="white" font-weight="700">~1.5</text>
+  <rect x="350" y="322" width="100" height="20" rx="3" fill="#2563eb"/>
+  <text class="sublabel" x="400" y="336" text-anchor="middle" fill="white" font-weight="700">2.7x</text>
+  <rect x="500" y="322" width="80" height="20" rx="3" fill="#fee2e2"/>
+  <text class="sublabel" x="540" y="336" text-anchor="middle">30% coverage</text>
+  <text class="sublabel" x="700" y="335">byte-level</text>
+
+  <!-- Arabic bar -->
+  <text class="sublabel" x="50" y="365">Arabic</text>
+  <rect x="200" y="352" width="60" height="20" rx="3" fill="#d97706"/>
+  <text class="sublabel" x="230" y="366" text-anchor="middle" fill="white" font-weight="700">~1.8</text>
+  <rect x="350" y="352" width="80" height="20" rx="3" fill="#d97706"/>
+  <text class="sublabel" x="390" y="366" text-anchor="middle" fill="white" font-weight="700">2.2x</text>
+  <rect x="500" y="352" width="100" height="20" rx="3" fill="#fef3c7"/>
+  <text class="sublabel" x="550" y="366" text-anchor="middle">50% coverage</text>
+  <text class="sublabel" x="700" y="365">byte-level</text>
+
+  <!-- Code bar -->
+  <text class="sublabel" x="50" y="395">Code (Python)</text>
+  <rect x="200" y="382" width="70" height="20" rx="3" fill="#ec4899"/>
+  <text class="sublabel" x="235" y="396" text-anchor="middle" fill="white" font-weight="700">~2.0</text>
+  <rect x="350" y="382" width="70" height="20" rx="3" fill="#ec4899"/>
+  <text class="sublabel" x="385" y="396" text-anchor="middle" fill="white" font-weight="700">2.0x</text>
+  <rect x="500" y="382" width="120" height="20" rx="3" fill="#dbeafe"/>
+  <text class="sublabel" x="560" y="396" text-anchor="middle">70% (code-trained)</text>
+  <text class="sublabel" x="700" y="395">BPE (code vocab)</text>
+
+  <!-- Japanese bar -->
+  <text class="sublabel" x="50" y="425">Japanese</text>
+  <rect x="200" y="412" width="45" height="20" rx="3" fill="#059669"/>
+  <text class="sublabel" x="222" y="426" text-anchor="middle" fill="white" font-weight="700">~1.3</text>
+  <rect x="350" y="412" width="110" height="20" rx="3" fill="#059669"/>
+  <text class="sublabel" x="405" y="426" text-anchor="middle" fill="white" font-weight="700">3.1x</text>
+  <rect x="500" y="412" width="70" height="20" rx="3" fill="#fee2e2"/>
+  <text class="sublabel" x="535" y="426" text-anchor="middle">25% coverage</text>
+  <text class="sublabel" x="700" y="425">byte-level</text>
+
+  <text class="sublabel" x="450" y="470" text-anchor="middle">Key: Lower chars/token = more tokens per text = higher cost. English tokenizes most efficiently; CJK languages require 2-3x more tokens.</text>
+</svg>

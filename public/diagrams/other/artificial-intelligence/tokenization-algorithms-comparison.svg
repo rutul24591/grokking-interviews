@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .header { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #1a1a2e; }
+    .dark .header { fill: #e0e0e0; }
+    .cell { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 400; fill: #333333; }
+    .dark .cell { fill: #cccccc; }
+    .row-label { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 700; fill: #1a1a2e; }
+    .dark .row-label { fill: #e0e0e0; }
+    .grid-line { stroke: #e0e0e0; stroke-width: 0.5; }
+    .dark .grid-line { stroke: #444466; }
+    .box-char { fill: #ede9fe; stroke: #7c3aed; stroke-width: 1; rx: 4; }
+    .dark .box-char { fill: #2e1065; stroke: #a78bfa; }
+    .box-word { fill: #fee2e2; stroke: #dc2626; stroke-width: 1; rx: 4; }
+    .dark .box-word { fill: #450a0a; stroke: #f87171; }
+    .box-subword { fill: #d1fae5; stroke: #059669; stroke-width: 1; rx: 4; }
+    .dark .box-subword { fill: #064e3b; stroke: #34d399; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Tokenization Algorithms Comparison</text>
+
+  <!-- Example text: "unbelievable" -->
+  <rect x="30" y="65" width="840" height="40" rx="6" fill="#f0f0f0" stroke="#ccc" stroke-width="1"/>
+  <text class="header" x="450" y="90" text-anchor="middle">Example: &quot;unbelievable&quot; tokenized differently by each approach</text>
+
+  <!-- Character-level -->
+  <rect class="box-char" x="30" y="125" width="840" height="50"/>
+  <text class="row-label" x="40" y="145">Character</text>
+  <text class="cell" x="140" y="145" font-family="monospace" font-size="13">u | n | b | e | l | i | e | v | a | b | l | e</text>
+  <text class="cell" x="140" y="163">12 tokens — Too granular, wastes model capacity</text>
+
+  <!-- Word-level -->
+  <rect class="box-word" x="30" y="195" width="840" height="50"/>
+  <text class="row-label" x="40" y="215">Word-level</text>
+  <text class="cell" x="140" y="215" font-family="monospace" font-size="13">unbelievable</text>
+  <text class="cell" x="300" y="215">1 token — Fails on unknown/OOV words entirely</text>
+
+  <!-- BPE -->
+  <rect class="box-subword" x="30" y="265" width="840" height="50"/>
+  <text class="row-label" x="40" y="285">BPE (GPT)</text>
+  <text class="cell" x="140" y="285" font-family="monospace" font-size="13">un | believ | able</text>
+  <text class="cell" x="350" y="285">3 tokens — Merges frequent byte pairs</text>
+
+  <!-- WordPiece -->
+  <rect class="box-subword" x="30" y="335" width="840" height="50"/>
+  <text class="row-label" x="40" y="355">WordPiece (BERT)</text>
+  <text class="cell" x="140" y="355" font-family="monospace" font-size="13">un | ##believ | ##able</text>
+  <text class="cell" x="380" y="355">3 tokens — Maximizes training data likelihood</text>
+
+  <!-- SentencePiece -->
+  <rect class="box-subword" x="30" y="405" width="840" height="50"/>
+  <text class="row-label" x="40" y="425">SentencePiece</text>
+  <text class="cell" x="140" y="425" font-family="monospace" font-size="13">▁un | believ | able</text>
+  <text class="cell" x="370" y="425">3 tokens — No pre-tokenization needed, handles all languages</text>
+
+  <!-- Right side summary -->
+  <rect x="650" y="65" width="220" height="40" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="header" x="760" y="90" text-anchor="middle">Key Trade-offs</text>
+</svg>

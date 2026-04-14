@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-base { stroke: #7c3aed; }
+    .dark .c-base { fill: #2e1065; stroke: #a78bfa; }
+    .c-lora { stroke: #2563eb; }
+    .dark .c-lora { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-combined { stroke: #059669; }
+    .dark .c-combined { fill: #064e3b; stroke: #34d399; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">LoRA Fine-Tuning Architecture</text>
+
+  <!-- Training phase -->
+  <text class="label" x="225" y="75" text-anchor="middle" fill="#7c3aed">Training Phase</text>
+
+  <!-- Frozen base model -->
+  <rect class="box c-base" x="30" y="90" width="200" height="120"/>
+  <text class="label" x="130" y="115" text-anchor="middle">Frozen Base Model</text>
+  <rect class="detail-box" x="45" y="125" width="170" height="70"/>
+  <text class="sublabel" x="55" y="143">All original weights frozen</text>
+  <text class="sublabel" x="55" y="161">No gradient computation</text>
+  <text class="sublabel" x="55" y="179">7B parameters untouched</text>
+  <text class="sublabel" x="55" y="197">Quantized to 4-bit (QLoRA)</text>
+
+  <!-- LoRA adapters -->
+  <rect class="box c-lora" x="30" y="230" width="200" height="100"/>
+  <text class="label" x="130" y="255" text-anchor="middle">LoRA Adapters (Trainable)</text>
+  <rect class="detail-box" x="45" y="265" width="170" height="50"/>
+  <text class="sublabel" x="55" y="283">Low-rank matrices A × B</text>
+  <text class="sublabel" x="55" y="301">Rank r = 8-64 per layer</text>
+  <text class="sublabel" x="55" y="319">Only ~1M trainable params</text>
+
+  <!-- Inference phase -->
+  <text class="label" x="675" y="75" text-anchor="middle" fill="#059669">Inference Phase</text>
+
+  <!-- Combined model -->
+  <rect class="box c-combined" x="500" y="90" width="370" height="140"/>
+  <text class="label" x="685" y="115" text-anchor="middle">Combined Model at Inference</text>
+  <rect class="detail-box" x="515" y="125" width="340" height="90"/>
+  <text class="sublabel" x="525" y="145">W_combined = W_frozen + (A × B) × scaling</text>
+  <text class="sublabel" x="525" y="163"></text>
+  <text class="sublabel" x="525" y="163">W_frozen: Original model weights (frozen, 7B params)</text>
+  <text class="sublabel" x="525" y="181">A × B: Low-rank adapter (trainable, ~1M params)</text>
+  <text class="sublabel" x="525" y="199">Scaling: Alpha/rank multiplier for adaptation strength</text>
+  <text class="sublabel" x="525" y="217">Result: Full model quality with adapter-size storage</text>
+
+  <!-- Benefits -->
+  <rect x="30" y="370" width="840" height="110" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="395" text-anchor="middle">LoRA Benefits Over Full Fine-Tuning</text>
+
+  <text class="sublabel" x="50" y="420"><tspan font-weight="700">10,000x fewer params:</tspan> Millions instead of billions</text>
+  <text class="sublabel" x="50" y="440"><tspan font-weight="700">Adapter size:</tspan> Megabytes instead of gigabytes</text>
+  <text class="sublabel" x="50" y="460"><tspan font-weight="700">Swap at runtime:</tspan> Different adapters for different tasks</text>
+  <text class="sublabel" x="500" y="420"><tspan font-weight="700">No base model degradation:</tspan> Original capabilities preserved</text>
+  <text class="sublabel" x="500" y="440"><tspan font-weight="700">QLoRA:</tspan> 4-bit base model + LoRA = 65B model on single GPU</text>
+  <text class="sublabel" x="500" y="460"><tspan font-weight="700">Comparable quality:</tspan> Near full fine-tuning performance</text>
+</svg>

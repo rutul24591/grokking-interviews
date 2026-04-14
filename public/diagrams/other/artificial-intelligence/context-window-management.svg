@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-sliding { stroke: #7c3aed; }
+    .dark .s-sliding { fill: #2e1065; stroke: #a78bfa; }
+    .s-summarize { stroke: #2563eb; }
+    .dark .s-summarize { fill: #1e3a5f; stroke: #60a5fa; }
+    .s-selective { stroke: #059669; }
+    .dark .s-selective { fill: #064e3b; stroke: #34d399; }
+    .s-priority { stroke: #d97706; }
+    .dark .s-priority { fill: #451a03; stroke: #fbbf24; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Context Window Management Strategies</text>
+
+  <!-- Before -->
+  <text class="label" x="225" y="75" text-anchor="middle" fill="#dc2626">Before: Unmanaged Context</text>
+  <rect x="30" y="95" width="390" height="30" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="sublabel" x="45" y="115">System(200) + History(50K) + Context(60K) + Query(200) = 110,400 tokens → near limit</text>
+
+  <rect x="30" y="140" width="390" height="80" rx="4" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="45" y="160">❌ Old conversation turns consume 50K tokens</text>
+  <text class="sublabel" x="45" y="178">❌ All retrieved documents included (many irrelevant)</text>
+  <text class="sublabel" x="45" y="196">❌ Critical info buried in middle of context</text>
+  <text class="sublabel" x="45" y="214">❌ Response budget: only 17,600 tokens remaining</text>
+
+  <!-- Arrow -->
+  <path d="M420 180 L460 180" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <polygon points="460,180 452,175 452,185" fill="#6366f1"/>
+  <text class="sublabel" x="440" y="170" fill="#6366f1" font-weight="700">Apply strategies</text>
+
+  <!-- After -->
+  <text class="label" x="675" y="75" text-anchor="middle" fill="#059669">After: Managed Context</text>
+  <rect x="470" y="95" width="400" height="30" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="485" y="115">System(200) + Summary(2K) + Context(8K) + Query(200) = 10,400 tokens → 91% reduction</text>
+
+  <rect x="470" y="140" width="400" height="80" rx="4" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="485" y="160">✓ Old turns summarized (2K vs 50K)</text>
+  <text class="sublabel" x="485" y="178">✓ Only relevant passages selected (8K vs 60K)</text>
+  <text class="sublabel" x="485" y="196">✓ Key info at beginning and end</text>
+  <text class="sublabel" x="485" y="214">✓ Response budget: 117,600 tokens remaining</text>
+
+  <!-- Strategy boxes at bottom -->
+  <text class="label" x="450" y="260" text-anchor="middle">Four Management Strategies</text>
+
+  <!-- Sliding Window -->
+  <rect class="box s-sliding" x="20" y="280" width="200" height="200"/>
+  <text class="label" x="120" y="305" text-anchor="middle">Sliding Window</text>
+  <rect class="detail-box" x="35" y="315" width="170" height="55"/>
+  <text class="sublabel" x="45" y="333">Keep recent N turns verbatim</text>
+  <text class="sublabel" x="45" y="351">Drop oldest turns</text>
+  <text class="sublabel" x="45" y="369">Simple, lossy</text>
+
+  <!-- Summarization -->
+  <rect class="box s-summarize" x="240" y="280" width="200" height="200"/>
+  <text class="label" x="340" y="305" text-anchor="middle">Summarization</text>
+  <rect class="detail-box" x="255" y="315" width="170" height="55"/>
+  <text class="sublabel" x="265" y="333">Summarize old turns/docs</text>
+  <text class="sublabel" x="265" y="351">Keep key facts, drop noise</text>
+  <text class="sublabel" x="265" y="369">Preserves facts, costs extra LLM call</text>
+
+  <!-- Selective Retention -->
+  <rect class="box s-selective" x="460" y="280" width="200" height="200"/>
+  <text class="label" x="560" y="305" text-anchor="middle">Selective Retention</text>
+  <rect class="detail-box" x="475" y="315" width="170" height="55"/>
+  <text class="sublabel" x="485" y="333">Score each piece by relevance</text>
+  <text class="sublabel" x="485" y="351">Include until budget full</text>
+  <text class="sublabel" x="485" y="369">Optimal, requires scoring</text>
+
+  <!-- Priority-based Truncation -->
+  <rect class="box s-priority" x="680" y="280" width="200" height="200"/>
+  <text class="label" x="780" y="305" text-anchor="middle">Priority Truncation</text>
+  <rect class="detail-box" x="695" y="315" width="170" height="55"/>
+  <text class="sublabel" x="705" y="333">Priority: System > User > Recent</text>
+  <text class="sublabel" x="705" y="351">Truncate lowest priority first</text>
+  <text class="sublabel" x="705" y="369">Safety net, never drops critical</text>
+
+  <!-- Recommendation -->
+  <rect x="20" y="460" width="860" height="30" rx="6" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="sublabel" x="450" y="480" text-anchor="middle" font-weight="700">Production: Combine summarization (for old content) + selective retention (for retrieved docs) + priority truncation (as safety net)</text>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">MCP Security and Permission Model</text>
+
+  <!-- Permission layers -->
+  <text class="label" x="225" y="85" text-anchor="middle">Permission Layers</text>
+
+  <!-- Layer 1: Transport security -->
+  <rect class="box" x="30" y="100" width="390" height="80" stroke="#7c3aed"/>
+  <text class="label" x="225" y="125" text-anchor="middle" fill="#7c3aed">Layer 1: Transport Security</text>
+  <rect class="detail-box" x="45" y="135" width="360" height="35"/>
+  <text class="sublabel" x="55" y="153">stdio: process isolation, no network exposure</text>
+  <text class="sublabel" x="55" y="168">HTTP/SSE: TLS encryption, auth tokens, rate limiting</text>
+
+  <!-- Layer 2: Tool permissions -->
+  <rect class="box" x="30" y="195" width="390" height="80" stroke="#2563eb"/>
+  <text class="label" x="225" y="220" text-anchor="middle" fill="#2563eb">Layer 2: Tool-Level Permissions</text>
+  <rect class="detail-box" x="45" y="230" width="360" height="35"/>
+  <text class="sublabel" x="55" y="248">Read-only vs read-write per tool</text>
+  <text class="sublabel" x="55" y="263">Argument validation before execution</text>
+
+  <!-- Layer 3: User approval -->
+  <rect class="box" x="30" y="290" width="390" height="80" stroke="#059669"/>
+  <text class="label" x="225" y="315" text-anchor="middle" fill="#059669">Layer 3: User Approval Gates</text>
+  <rect class="detail-box" x="45" y="325" width="360" height="35"/>
+  <text class="sublabel" x="55" y="343">High-risk tools require explicit user approval</text>
+  <text class="sublabel" x="55" y="358">Audit log of all approvals and denials</text>
+
+  <!-- Layer 4: Output filtering -->
+  <rect class="box" x="30" y="385" width="390" height="80" stroke="#d97706"/>
+  <text class="label" x="225" y="410" text-anchor="middle" fill="#d97706">Layer 4: Output Filtering</text>
+  <rect class="detail-box" x="45" y="420" width="360" height="35"/>
+  <text class="sublabel" x="55" y="438">Sanitize tool responses before returning to LLM</text>
+  <text class="sublabel" x="55" y="453">Prevent data leakage across permission boundaries</text>
+
+  <!-- Threat model -->
+  <rect x="460" y="100" width="410" height="370" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="label" x="665" y="125" text-anchor="middle" fill="#dc2626">Threat Model &amp; Mitigations</text>
+
+  <text class="sublabel" x="480" y="150"><tspan font-weight="700">Threat 1: Malicious Tool Implementation</tspan></text>
+  <text class="sublabel" x="480" y="168">Risk: Tool executes arbitrary code</text>
+  <text class="sublabel" x="480" y="186">Mitigation: Sandboxed execution, resource limits</text>
+
+  <text class="sublabel" x="480" y="210"><tspan font-weight="700">Threat 2: Prompt Injection via Tool Output</tspan></text>
+  <text class="sublabel" x="480" y="228">Risk: Tool returns malicious instructions to LLM</text>
+  <text class="sublabel" x="480" y="246">Mitigation: Output sanitization, role separation</text>
+
+  <text class="sublabel" x="480" y="270"><tspan font-weight="700">Threat 3: Privilege Escalation</tspan></text>
+  <text class="sublabel" x="480" y="288">Risk: Tool accesses data beyond its permission</text>
+  <text class="sublabel" x="480" y="306">Mitigation: Per-tool access control, audit logging</text>
+
+  <text class="sublabel" x="480" y="330"><tspan font-weight="700">Threat 4: Data Exfiltration</tspan></text>
+  <text class="sublabel" x="480" y="348">Risk: Tool leaks sensitive data via output</text>
+  <text class="sublabel" x="480" y="366">Mitigation: Output filtering, DLP scanning</text>
+
+  <text class="sublabel" x="480" y="390"><tspan font-weight="700">Threat 5: Denial of Service</tspan></text>
+  <text class="sublabel" x="480" y="408">Risk: Tool consumes excessive resources</text>
+  <text class="sublabel" x="480" y="426">Mitigation: Rate limits, timeouts, quotas</text>
+
+  <text class="sublabel" x="480" y="450" font-weight="700">Principle: Defense in depth — no single layer is sufficient</text>
+</svg>

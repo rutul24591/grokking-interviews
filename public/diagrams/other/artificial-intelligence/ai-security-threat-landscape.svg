@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-attack { stroke: #dc2626; }
+    .dark .c-attack { fill: #450a0a; stroke: #f87171; }
+    .c-defense { stroke: #059669; }
+    .dark .c-defense { fill: #064e3b; stroke: #34d399; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">AI Security Threat Landscape</text>
+
+  <!-- Threats left column -->
+  <text class="label" x="225" y="75" text-anchor="middle" fill="#dc2626">Threats</text>
+
+  <rect class="box c-attack" x="30" y="90" width="390" height="55"/>
+  <text class="label" x="225" y="110" text-anchor="middle">Prompt Injection</text>
+  <text class="sublabel" x="45" y="135">Direct: &quot;Ignore previous instructions&quot; | Indirect: malicious content in retrieved documents</text>
+
+  <rect class="box c-attack" x="30" y="160" width="390" height="55"/>
+  <text class="label" x="225" y="180" text-anchor="middle">Jailbreak Attacks</text>
+  <text class="sublabel" x="45" y="205">Role-playing, encoding, multi-turn manipulation, adversarial prompts</text>
+
+  <rect class="box c-attack" x="30" y="230" width="390" height="55"/>
+  <text class="label" x="225" y="250" text-anchor="middle">Data Leakage</text>
+  <text class="sublabel" x="45" y="275">PII exposure, system prompt leakage, training data extraction, confidential info</text>
+
+  <rect class="box c-attack" x="30" y="300" width="390" height="55"/>
+  <text class="label" x="225" y="320" text-anchor="middle">Adversarial Attacks</text>
+  <text class="sublabel" x="45" y="345">Token-level perturbations, gradient-based attacks, model inversion, membership inference</text>
+
+  <!-- Defenses right column -->
+  <text class="label" x="675" y="75" text-anchor="middle" fill="#059669">Defenses</text>
+
+  <rect class="box c-defense" x="480" y="90" width="390" height="55"/>
+  <text class="label" x="675" y="110" text-anchor="middle">Input Sanitization</text>
+  <text class="sublabel" x="495" y="135">Pattern matching, embedding anomaly detection, content classification, PII redaction</text>
+
+  <rect class="box c-defense" x="480" y="160" width="390" height="55"/>
+  <text class="label" x="675" y="180" text-anchor="middle">Structural Separation</text>
+  <text class="sublabel" x="495" y="205">System vs user message roles, API-level isolation, input delimiters, context boundaries</text>
+
+  <rect class="box c-defense" x="480" y="230" width="390" height="55"/>
+  <text class="label" x="675" y="250" text-anchor="middle">Output Filtering</text>
+  <text class="sublabel" x="495" y="275">Content moderation, DLP scanning, fact checking, format validation, policy compliance</text>
+
+  <rect class="box c-defense" x="480" y="300" width="390" height="55"/>
+  <text class="label" x="675" y="320" text-anchor="middle">Monitoring &amp; Response</text>
+  <text class="sublabel" x="495" y="345">Real-time metrics, anomaly alerts, audit logs, incident response, regular audits</text>
+
+  <!-- Bottom: Defense in depth -->
+  <rect x="30" y="390" width="840" height="90" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="450" y="415" text-anchor="middle">Defense in Depth Strategy</text>
+  <text class="sublabel" x="50" y="440">Layer 1: Input Sanitization → Layer 2: Structural Separation → Layer 3: Output Filtering → Layer 4: Permission Enforcement → Layer 5: Monitoring &amp; Response</text>
+  <text class="sublabel" x="50" y="460">Each layer catches attacks that bypass others. No single defense is sufficient — depth is essential.</text>
+</svg>

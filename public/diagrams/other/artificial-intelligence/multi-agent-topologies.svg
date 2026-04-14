@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-hier { stroke: #7c3aed; }
+    .dark .s-hier { fill: #2e1065; stroke: #a78bfa; }
+    .s-seq { stroke: #2563eb; }
+    .dark .s-seq { fill: #1e3a5f; stroke: #60a5fa; }
+    .s-p2p { stroke: #059669; }
+    .dark .s-p2p { fill: #064e3b; stroke: #34d399; }
+    .s-debate { stroke: #d97706; }
+    .dark .s-debate { fill: #451a03; stroke: #fbbf24; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="35" text-anchor="middle">Multi-Agent Topologies</text>
+
+  <!-- Hierarchical -->
+  <text class="label" x="112" y="65" text-anchor="middle" fill="#7c3aed">Hierarchical</text>
+  <rect class="box s-hier" x="72" y="80" width="80" height="30"/>
+  <text class="sublabel" x="112" y="100" text-anchor="middle">Supervisor</text>
+  <path d="M112 110 L112 140 L52 140" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M112 110 L112 140" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M112 110 L112 140 L172 140" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <rect class="box s-hier" x="12" y="145" width="80" height="30"/>
+  <text class="sublabel" x="52" y="165" text-anchor="middle">Agent A</text>
+  <rect class="box s-hier" x="72" y="145" width="80" height="30"/>
+  <text class="sublabel" x="112" y="165" text-anchor="middle">Agent B</text>
+  <rect class="box s-hier" x="132" y="145" width="80" height="30"/>
+  <text class="sublabel" x="172" y="165" text-anchor="middle">Agent C</text>
+  <text class="sublabel" x="112" y="200" text-anchor="middle">Supervisor delegates,</text>
+  <text class="sublabel" x="112" y="215" text-anchor="middle">agents report back</text>
+
+  <!-- Sequential -->
+  <text class="label" x="337" y="65" text-anchor="middle" fill="#2563eb">Sequential</text>
+  <rect class="box s-seq" x="262" y="80" width="75" height="30"/>
+  <text class="sublabel" x="300" y="100" text-anchor="middle">Agent A</text>
+  <path class="arrow" d="M337 110 L337 145"/>
+  <rect class="box s-seq" x="262" y="145" width="75" height="30"/>
+  <text class="sublabel" x="300" y="165" text-anchor="middle">Agent B</text>
+  <path class="arrow" d="M337 175 L337 210"/>
+  <rect class="box s-seq" x="262" y="210" width="75" height="30"/>
+  <text class="sublabel" x="300" y="230" text-anchor="middle">Agent C</text>
+  <text class="sublabel" x="337" y="265" text-anchor="middle">Pipeline: A→B→C,</text>
+  <text class="sublabel" x="337" y="280" text-anchor="middle">each depends on prev</text>
+
+  <!-- Peer-to-Peer -->
+  <text class="label" x="562" y="65" text-anchor="middle" fill="#059669">Peer-to-Peer</text>
+  <rect class="box s-p2p" x="502" y="80" width="70" height="28"/>
+  <text class="sublabel" x="537" y="99" text-anchor="middle">Agent A</text>
+  <rect class="box s-p2p" x="602" y="110" width="70" height="28"/>
+  <text class="sublabel" x="637" y="129" text-anchor="middle">Agent B</text>
+  <rect class="box s-p2p" x="482" y="150" width="70" height="28"/>
+  <text class="sublabel" x="517" y="169" text-anchor="middle">Agent C</text>
+  <rect class="box s-p2p" x="582" y="170" width="70" height="28"/>
+  <text class="sublabel" x="617" y="189" text-anchor="middle">Agent D</text>
+  <path d="M537 108 L602 124" fill="none" stroke="#059669" stroke-width="1"/>
+  <path d="M537 108 L517 150" fill="none" stroke="#059669" stroke-width="1"/>
+  <path d="M537 108 L617 184" fill="none" stroke="#059669" stroke-width="1"/>
+  <path d="M637 138 L552 150" fill="none" stroke="#059669" stroke-width="1"/>
+  <path d="M637 138 L617 170" fill="none" stroke="#059669" stroke-width="1"/>
+  <path d="M517 178 L582 184" fill="none" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="562" y="220" text-anchor="middle">Direct communication,</text>
+  <text class="sublabel" x="562" y="235" text-anchor="middle">all-to-all connections</text>
+
+  <!-- Debate -->
+  <text class="label" x="787" y="65" text-anchor="middle" fill="#d97706">Debate</text>
+  <rect class="box s-debate" x="747" y="80" width="80" height="28"/>
+  <text class="sublabel" x="787" y="99" text-anchor="middle">Task</text>
+  <path d="M767 108 L727 140" fill="none" stroke="#d97706" stroke-width="1"/>
+  <path d="M787 108 L787 140" fill="none" stroke="#d97706" stroke-width="1"/>
+  <path d="M807 108 L847 140" fill="none" stroke="#d97706" stroke-width="1"/>
+  <rect class="box s-debate" x="697" y="140" width="60" height="28"/>
+  <text class="sublabel" x="727" y="159" text-anchor="middle">Agent 1</text>
+  <rect class="box s-debate" x="757" y="140" width="60" height="28"/>
+  <text class="sublabel" x="787" y="159" text-anchor="middle">Agent 2</text>
+  <rect class="box s-debate" x="817" y="140" width="60" height="28"/>
+  <text class="sublabel" x="847" y="159" text-anchor="middle">Agent 3</text>
+  <path d="M727 168 L777 200" fill="none" stroke="#d97706" stroke-width="1"/>
+  <path d="M787 168 L787 200" fill="none" stroke="#d97706" stroke-width="1"/>
+  <path d="M847 168 L797 200" fill="none" stroke="#d97706" stroke-width="1"/>
+  <rect class="box s-debate" x="747" y="200" width="80" height="28"/>
+  <text class="sublabel" x="787" y="219" text-anchor="middle">Judge</text>
+  <text class="sublabel" x="787" y="250" text-anchor="middle">Independent analysis,</text>
+  <text class="sublabel" x="787" y="265" text-anchor="middle">judge compares results</text>
+
+  <!-- Bottom summary -->
+  <rect x="20" y="310" width="860" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="335" text-anchor="middle">Topology Selection Guide</text>
+
+  <rect x="40" y="350" width="390" height="22" rx="3" fill="#ede9fe"/>
+  <text class="sublabel" x="50" y="365"><tspan font-weight="700">Hierarchical:</tspan> Best for general-purpose tasks with diverse sub-tasks. Scales to 10+ agents. Centralized control.</text>
+  <rect x="440" y="350" width="420" height="22" rx="3" fill="#dbeafe"/>
+  <text class="sublabel" x="450" y="365"><tspan font-weight="700">Sequential:</tspan> Best for pipeline tasks (research→analyze→write). Simple but fragile — one failure breaks all.</text>
+  <rect x="40" y="385" width="390" height="22" rx="3" fill="#d1fae5"/>
+  <text class="sublabel" x="50" y="400"><tspan font-weight="700">Peer-to-Peer:</tspan> Best for collaborative tasks where agents share findings. Complex coordination, risk of loops.</text>
+  <rect x="440" y="385" width="420" height="22" rx="3" fill="#fef3c7"/>
+  <text class="sublabel" x="450" y="400"><tspan font-weight="700">Debate:</tspan> Best for quality-critical tasks (fact-checking, code review). 2-3x cost, catches single-agent errors.</text>
+
+  <text class="sublabel" x="450" y="445" text-anchor="middle" font-weight="700">Most production systems use hierarchical topology with debate for critical sub-tasks</text>
+  <text class="sublabel" x="450" y="465" text-anchor="middle">Example: supervisor → (research agent, coding agent) → debate(review agent, security agent) → final output</text>
+</svg>

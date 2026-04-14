@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-top { stroke: #7c3aed; }
+    .dark .c-top { fill: #2e1065; stroke: #a78bfa; }
+    .c-mid { stroke: #2563eb; }
+    .dark .c-mid { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-leaf { stroke: #059669; }
+    .dark .c-leaf { fill: #064e3b; stroke: #34d399; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+    .result-arrow { fill: none; stroke: #f59e0b; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Hierarchical Planning Pattern</text>
+
+  <!-- Top Level: Goal -->
+  <text class="label" x="450" y="75" text-anchor="middle" fill="#7c3aed">Level 1: Goal Decomposition</text>
+  <rect class="box c-top" x="350" y="90" width="200" height="45"/>
+  <text class="label" x="450" y="118" text-anchor="middle">Goal: Write Market Report</text>
+
+  <!-- Arrows to sub-goals -->
+  <path d="M400 135 L200 185" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M450 135 L450 185" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M500 135 L700 185" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+
+  <!-- Level 2: Sub-goals -->
+  <text class="label" x="450" y="170" text-anchor="middle" fill="#2563eb">Level 2: Sub-Goal Decomposition</text>
+  <rect class="box c-mid" x="120" y="190" width="160" height="40"/>
+  <text class="label" x="200" y="215" text-anchor="middle">Research Market</text>
+
+  <rect class="box c-mid" x="370" y="190" width="160" height="40"/>
+  <text class="label" x="450" y="215" text-anchor="middle">Analyze Competitors</text>
+
+  <rect class="box c-mid" x="620" y="190" width="160" height="40"/>
+  <text class="label" x="700" y="215" text-anchor="middle">Write Report</text>
+
+  <!-- Arrows to tasks -->
+  <path d="M170 230 L120 280" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M230 230 L280 280" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M420 230 L370 280" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M480 230 L530 280" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M700 230 L700 280" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+
+  <!-- Level 3: Tasks -->
+  <text class="label" x="450" y="265" text-anchor="middle" fill="#059669">Level 3: Executable Tasks</text>
+  <rect class="box c-leaf" x="70" y="285" width="100" height="35"/>
+  <text class="sublabel" x="120" y="307" text-anchor="middle">Gather data</text>
+
+  <rect class="box c-leaf" x="230" y="285" width="100" height="35"/>
+  <text class="sublabel" x="280" y="307" text-anchor="middle">Interview SMEs</text>
+
+  <rect class="box c-leaf" x="320" y="285" width="100" height="35"/>
+  <text class="sublabel" x="370" y="307" text-anchor="middle">Identify rivals</text>
+
+  <rect class="box c-leaf" x="480" y="285" width="100" height="35"/>
+  <text class="sublabel" x="530" y="307" text-anchor="middle">Compare metrics</text>
+
+  <rect class="box c-leaf" x="650" y="285" width="100" height="35"/>
+  <text class="sublabel" x="700" y="307" text-anchor="middle">Draft sections</text>
+
+  <!-- Results flowing back up -->
+  <text class="label" x="450" y="355" text-anchor="middle" fill="#f59e0b">Results Flow Up the Hierarchy</text>
+
+  <path d="M120 320 L120 380 L200 380 L200 360" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+  <path d="M280 320 L280 370 L200 370 L200 360" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+  <path d="M370 320 L370 370 L450 370 L450 360" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+  <path d="M530 320 L530 370 L450 370 L450 360" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+  <path d="M700 320 L700 380 L450 380 L450 360" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+
+  <!-- Combined results at each level -->
+  <rect class="box c-mid" x="120" y="385" width="160" height="35"/>
+  <text class="sublabel" x="200" y="407" text-anchor="middle">Research results combined</text>
+
+  <rect class="box c-mid" x="370" y="385" width="160" height="35"/>
+  <text class="sublabel" x="450" y="407" text-anchor="middle">Analysis results combined</text>
+
+  <rect class="box c-leaf" x="620" y="385" width="160" height="35"/>
+  <text class="sublabel" x="700" y="407" text-anchor="middle">Report sections combined</text>
+
+  <!-- Final synthesis -->
+  <path d="M200 420 L200 455 L450 455" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M450 420 L450 455" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M700 420 L700 455 L450 455" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+
+  <rect x="350" y="460" width="200" height="30" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text class="label" x="450" y="480" text-anchor="middle">Final Report</text>
+</svg>

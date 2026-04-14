@@ -1,0 +1,247 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" fill="none" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .dark-bg { fill: #1a1a2e; }
+      .box { fill: #e8f0fe; stroke: #4a6cf7; stroke-width: 2; }
+      .dark-box { fill: #252545; stroke: #6b8aff; stroke-width: 2; }
+      .box-highlight { fill: #4a6cf7; }
+      .dark-box-highlight { fill: #6b8aff; }
+      .box-top { fill: #d4e4fc; stroke: #4a6cf7; stroke-width: 2; }
+      .dark-box-top { fill: #1e3a5f; stroke: #6b8aff; stroke-width: 2; }
+      .title { font-size: 18px; font-weight: 700; fill: #1a1a2e; }
+      .dark-title { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .label { font-size: 13px; font-weight: 600; fill: #2d3748; }
+      .dark-label { font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .sublabel { font-size: 11px; font-weight: 400; fill: #718096; }
+      .dark-sublabel { font-size: 11px; font-weight: 400; fill: #a0aec0; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dark-arrow { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead); }
+      .arrow-green { stroke: #38a169; stroke-width: 2.5; fill: none; marker-end: url(#arrowGreen); }
+      .dark-arrow-green { stroke: #48bb78; stroke-width: 2.5; fill: none; marker-end: url(#dark-arrowGreen); }
+      .arrow-red { stroke: #e53e3e; stroke-width: 2.5; fill: none; marker-end: url(#arrowRed); }
+      .dark-arrow-red { stroke: #fc8181; stroke-width: 2.5; fill: none; marker-end: url(#dark-arrowRed); }
+      .op-label { font-size: 12px; font-weight: 700; fill: #38a169; }
+      .dark-op-label { font-size: 12px; font-weight: 700; fill: #48bb78; }
+      .op-label-red { font-size: 12px; font-weight: 700; fill: #e53e3e; }
+      .dark-op-label-red { font-size: 12px; font-weight: 700; fill: #fc8181; }
+      .op-label-blue { font-size: 12px; font-weight: 700; fill: #4a6cf7; }
+      .dark-op-label-blue { font-size: 12px; font-weight: 700; fill: #6b8aff; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+    <marker id="dark-arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0" />
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#38a169" />
+    </marker>
+    <marker id="dark-arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#48bb78" />
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e53e3e" />
+    </marker>
+    <marker id="dark-arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#fc8181" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="900" height="520" rx="8" />
+  <rect class="dark-bg" width="900" height="520" rx="8" style="display:none" />
+
+  <text class="title" x="450" y="32" text-anchor="middle">Stack Operations: Push, Pop, Peek (LIFO)</text>
+  <text class="dark-title" x="450" y="32" text-anchor="middle">Stack Operations: Push, Pop, Peek (LIFO)</text>
+
+  <!-- PUSH Section (left) -->
+  <rect class="box" x="30" y="55" width="260" height="440" rx="8" />
+  <rect class="dark-box" x="30" y="55" width="260" height="440" rx="8" style="display:none" />
+  <text class="op-label" x="160" y="82" text-anchor="middle">PUSH(50)</text>
+  <text class="dark-op-label" x="160" y="82" text-anchor="middle" style="display:none">PUSH(50)</text>
+
+  <!-- Stack before push -->
+  <text class="sublabel" x="160" y="110" text-anchor="middle">Before</text>
+  <text class="dark-sublabel" x="160" y="110" text-anchor="middle" style="display:none">Before</text>
+  <rect class="box-top" x="90" y="120" width="140" height="36" rx="4" />
+  <rect class="dark-box-top" x="90" y="120" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="160" y="144" text-anchor="middle">30</text>
+  <text class="dark-label" x="160" y="144" text-anchor="middle" style="display:none">30</text>
+  <rect class="box" x="90" y="156" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="90" y="156" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="160" y="180" text-anchor="middle">20</text>
+  <text class="dark-label" x="160" y="180" text-anchor="middle" style="display:none">20</text>
+  <rect class="box" x="90" y="192" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="90" y="192" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="160" y="216" text-anchor="middle">10</text>
+  <text class="dark-label" x="160" y="216" text-anchor="middle" style="display:none">10</text>
+  <text class="sublabel" x="160" y="248" text-anchor="middle">top &#8593;</text>
+  <text class="dark-sublabel" x="160" y="248" text-anchor="middle" style="display:none">top &#8593;</text>
+
+  <!-- Arrow -->
+  <path class="arrow-green" d="M 160 265 L 160 290" />
+  <path class="dark-arrow-green" d="M 160 265 L 160 290" style="display:none" />
+
+  <!-- Stack after push -->
+  <text class="sublabel" x="160" y="318" text-anchor="middle">After</text>
+  <text class="dark-sublabel" x="160" y="318" text-anchor="middle" style="display:none">After</text>
+  <rect class="box-highlight" x="90" y="328" width="140" height="36" rx="4" />
+  <rect class="dark-box-highlight" x="90" y="328" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="160" y="352" text-anchor="middle" fill="#ffffff">50 (new top)</text>
+  <text class="dark-label" x="160" y="352" text-anchor="middle" fill="#ffffff" style="display:none">50 (new top)</text>
+  <rect class="box-top" x="90" y="364" width="140" height="36" rx="4" />
+  <rect class="dark-box-top" x="90" y="364" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="160" y="388" text-anchor="middle">30</text>
+  <text class="dark-label" x="160" y="388" text-anchor="middle" style="display:none">30</text>
+  <rect class="box" x="90" y="400" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="90" y="400" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="160" y="424" text-anchor="middle">20</text>
+  <text class="dark-label" x="160" y="424" text-anchor="middle" style="display:none">20</text>
+  <rect class="box" x="90" y="436" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="90" y="436" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="160" y="460" text-anchor="middle">10</text>
+  <text class="dark-label" x="160" y="460" text-anchor="middle" style="display:none">10</text>
+  <text class="sublabel" x="160" y="488" text-anchor="middle">top &#8593;</text>
+  <text class="dark-sublabel" x="160" y="488" text-anchor="middle" style="display:none">top &#8593;</text>
+
+  <!-- POP Section (center) -->
+  <rect class="box" x="320" y="55" width="260" height="440" rx="8" />
+  <rect class="dark-box" x="320" y="55" width="260" height="440" rx="8" style="display:none" />
+  <text class="op-label-red" x="450" y="82" text-anchor="middle">POP()</text>
+  <text class="dark-op-label-red" x="450" y="82" text-anchor="middle" style="display:none">POP()</text>
+
+  <!-- Stack before pop -->
+  <text class="sublabel" x="450" y="110" text-anchor="middle">Before</text>
+  <text class="dark-sublabel" x="450" y="110" text-anchor="middle" style="display:none">Before</text>
+  <rect class="box-highlight" x="380" y="120" width="140" height="36" rx="4" />
+  <rect class="dark-box-highlight" x="380" y="120" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="450" y="144" text-anchor="middle" fill="#ffffff">50 (removing)</text>
+  <text class="dark-label" x="450" y="144" text-anchor="middle" fill="#ffffff" style="display:none">50 (removing)</text>
+  <rect class="box-top" x="380" y="156" width="140" height="36" rx="4" />
+  <rect class="dark-box-top" x="380" y="156" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="450" y="180" text-anchor="middle">30</text>
+  <text class="dark-label" x="450" y="180" text-anchor="middle" style="display:none">30</text>
+  <rect class="box" x="380" y="192" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="380" y="192" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="450" y="216" text-anchor="middle">20</text>
+  <text class="dark-label" x="450" y="216" text-anchor="middle" style="display:none">20</text>
+  <rect class="box" x="380" y="228" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="380" y="228" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="450" y="252" text-anchor="middle">10</text>
+  <text class="dark-label" x="450" y="252" text-anchor="middle" style="display:none">10</text>
+
+  <!-- Arrow with return value -->
+  <path class="arrow-red" d="M 450 275 L 450 300" />
+  <path class="dark-arrow-red" d="M 450 275 L 450 300" style="display:none" />
+  <text class="sublabel" x="450" y="295" text-anchor="middle" font-size="10">returns 50</text>
+  <text class="dark-sublabel" x="450" y="295" text-anchor="middle" font-size="10" style="display:none">returns 50</text>
+
+  <!-- Stack after pop -->
+  <text class="sublabel" x="450" y="325" text-anchor="middle">After</text>
+  <text class="dark-sublabel" x="450" y="325" text-anchor="middle" style="display:none">After</text>
+  <rect class="box-top" x="380" y="335" width="140" height="36" rx="4" />
+  <rect class="dark-box-top" x="380" y="335" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="450" y="359" text-anchor="middle">30 (new top)</text>
+  <text class="dark-label" x="450" y="359" text-anchor="middle" style="display:none">30 (new top)</text>
+  <rect class="box" x="380" y="371" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="380" y="371" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="450" y="395" text-anchor="middle">20</text>
+  <text class="dark-label" x="450" y="395" text-anchor="middle" style="display:none">20</text>
+  <rect class="box" x="380" y="407" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="380" y="407" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="450" y="431" text-anchor="middle">10</text>
+  <text class="dark-label" x="450" y="431" text-anchor="middle" style="display:none">10</text>
+  <text class="sublabel" x="450" y="465" text-anchor="middle">top &#8593;</text>
+  <text class="dark-sublabel" x="450" y="465" text-anchor="middle" style="display:none">top &#8593;</text>
+
+  <!-- PEEK Section (right) -->
+  <rect class="box" x="610" y="55" width="260" height="440" rx="8" />
+  <rect class="dark-box" x="610" y="55" width="260" height="440" rx="8" style="display:none" />
+  <text class="op-label-blue" x="740" y="82" text-anchor="middle">PEEK()</text>
+  <text class="dark-op-label-blue" x="740" y="82" text-anchor="middle" style="display:none">PEEK()</text>
+
+  <!-- Stack with peek -->
+  <text class="sublabel" x="740" y="110" text-anchor="middle">Read-only, no mutation</text>
+  <text class="dark-sublabel" x="740" y="110" text-anchor="middle" style="display:none">Read-only, no mutation</text>
+  <rect class="box-highlight" x="670" y="125" width="140" height="36" rx="4" />
+  <rect class="dark-box-highlight" x="670" y="125" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="740" y="149" text-anchor="middle" fill="#ffffff">50 (peeked)</text>
+  <text class="dark-label" x="740" y="149" text-anchor="middle" fill="#ffffff" style="display:none">50 (peeked)</text>
+  <rect class="box-top" x="670" y="161" width="140" height="36" rx="4" />
+  <rect class="dark-box-top" x="670" y="161" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="740" y="185" text-anchor="middle">30</text>
+  <text class="dark-label" x="740" y="185" text-anchor="middle" style="display:none">30</text>
+  <rect class="box" x="670" y="197" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="670" y="197" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="740" y="221" text-anchor="middle">20</text>
+  <text class="dark-label" x="740" y="221" text-anchor="middle" style="display:none">20</text>
+  <rect class="box" x="670" y="233" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="670" y="233" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="740" y="257" text-anchor="middle">10</text>
+  <text class="dark-label" x="740" y="257" text-anchor="middle" style="display:none">10</text>
+
+  <!-- Peek annotation -->
+  <text class="sublabel" x="740" y="295" text-anchor="middle">Returns top element</text>
+  <text class="dark-sublabel" x="740" y="295" text-anchor="middle" style="display:none">Returns top element</text>
+  <text class="sublabel" x="740" y="315" text-anchor="middle">Stack unchanged</text>
+  <text class="dark-sublabel" x="740" y="315" text-anchor="middle" style="display:none">Stack unchanged</text>
+
+  <!-- Same stack shown again -->
+  <text class="sublabel" x="740" y="355" text-anchor="middle">After PEEK</text>
+  <text class="dark-sublabel" x="740" y="355" text-anchor="middle" style="display:none">After PEEK</text>
+  <rect class="box-highlight" x="670" y="365" width="140" height="36" rx="4" />
+  <rect class="dark-box-highlight" x="670" y="365" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="740" y="389" text-anchor="middle" fill="#ffffff">50</text>
+  <text class="dark-label" x="740" y="389" text-anchor="middle" fill="#ffffff" style="display:none">50</text>
+  <rect class="box-top" x="670" y="401" width="140" height="36" rx="4" />
+  <rect class="dark-box-top" x="670" y="401" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="740" y="425" text-anchor="middle">30</text>
+  <text class="dark-label" x="740" y="425" text-anchor="middle" style="display:none">30</text>
+  <rect class="box" x="670" y="437" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="670" y="437" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="740" y="461" text-anchor="middle">20</text>
+  <text class="dark-label" x="740" y="461" text-anchor="middle" style="display:none">20</text>
+  <rect class="box" x="670" y="473" width="140" height="36" rx="4" />
+  <rect class="dark-box" x="670" y="473" width="140" height="36" rx="4" style="display:none" />
+  <text class="label" x="740" y="497" text-anchor="middle">10</text>
+  <text class="dark-label" x="740" y="497" text-anchor="middle" style="display:none">10</text>
+
+  <!-- Bottom annotations -->
+  <text class="sublabel" x="160" y="510" text-anchor="middle" font-size="10">O(1) time</text>
+  <text class="dark-sublabel" x="160" y="510" text-anchor="middle" font-size="10" style="display:none">O(1) time</text>
+  <text class="sublabel" x="450" y="510" text-anchor="middle" font-size="10">O(1) time</text>
+  <text class="dark-sublabel" x="450" y="510" text-anchor="middle" font-size="10" style="display:none">O(1) time</text>
+  <text class="sublabel" x="740" y="510" text-anchor="middle" font-size="10">O(1) time</text>
+  <text class="dark-sublabel" x="740" y="510" text-anchor="middle" font-size="10" style="display:none">O(1) time</text>
+
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .bg { display: none; }
+      .dark-bg { display: block; }
+      .box { display: none; }
+      .dark-box { display: block; }
+      .box-highlight { display: none; }
+      .dark-box-highlight { display: block; }
+      .box-top { display: none; }
+      .dark-box-top { display: block; }
+      .title { display: none; }
+      .dark-title { display: block; }
+      .label { display: none; }
+      .dark-label { display: block; }
+      .sublabel { display: none; }
+      .dark-sublabel { display: block; }
+      .arrow { display: none; }
+      .dark-arrow { display: block; }
+      .arrow-green { display: none; }
+      .dark-arrow-green { display: block; }
+      .arrow-red { display: none; }
+      .dark-arrow-red { display: block; }
+      .op-label { display: none; }
+      .dark-op-label { display: block; }
+      .op-label-red { display: none; }
+      .dark-op-label-red { display: block; }
+      .op-label-blue { display: none; }
+      .dark-op-label-blue { display: block; }
+    }
+  </style>
+</svg>

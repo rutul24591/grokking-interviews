@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box-system { fill: #ede9fe; stroke: #7c3aed; stroke-width: 2; rx: 6; }
+    .dark .box-system { fill: #2e1065; stroke: #a78bfa; }
+    .box-context { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; rx: 6; }
+    .dark .box-context { fill: #1e3a5f; stroke: #60a5fa; }
+    .box-examples { fill: #fef3c7; stroke: #d97706; stroke-width: 2; rx: 6; }
+    .dark .box-examples { fill: #451a03; stroke: #fbbf24; }
+    .box-instruction { fill: #d1fae5; stroke: #059669; stroke-width: 2; rx: 6; }
+    .dark .box-instruction { fill: #064e3b; stroke: #34d399; }
+    .box-format { fill: #fce7f3; stroke: #db2777; stroke-width: 2; rx: 6; }
+    .dark .box-format { fill: #500724; stroke: #f472b6; }
+    .box-output { fill: #f0f9ff; stroke: #0284c7; stroke-width: 2; rx: 6; }
+    .dark .box-output { fill: #0c4a6e; stroke: #38bdf8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .brace { fill: none; stroke: #999; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Anatomy of a Production Prompt</text>
+
+  <!-- Stacked components forming a prompt -->
+  <!-- System Prompt -->
+  <rect class="box-system" x="100" y="70" width="700" height="60"/>
+  <text class="label" x="120" y="95">1. System Prompt</text>
+  <rect class="detail-box" x="280" y="80" width="500" height="40"/>
+  <text class="sublabel" x="290" y="97">Role, constraints, safety guidelines, output format requirements</text>
+  <text class="sublabel" x="290" y="112">"You are a senior code reviewer. Focus on security, performance, and readability."</text>
+
+  <!-- Retrieved Context -->
+  <rect class="box-context" x="100" y="145" width="700" height="60"/>
+  <text class="label" x="120" y="170">2. Retrieved Context</text>
+  <rect class="detail-box" x="280" y="155" width="500" height="40"/>
+  <text class="sublabel" x="290" y="172">Relevant documents, code snippets, knowledge base articles</text>
+  <text class="sublabel" x="290" y="187">[Project coding standards, previous review patterns, security checklist]</text>
+
+  <!-- Few-Shot Examples -->
+  <rect class="box-examples" x="100" y="220" width="700" height="60"/>
+  <text class="label" x="120" y="245">3. Few-Shot Examples (Optional)</text>
+  <rect class="detail-box" x="280" y="230" width="500" height="40"/>
+  <text class="sublabel" x="290" y="247">2-5 input-output examples demonstrating the expected pattern</text>
+  <text class="sublabel" x="290" y="262">Input: [code] -> Output: {severity: "high", issue: "SQL injection", fix: "..."} </text>
+
+  <!-- User Instruction -->
+  <rect class="box-instruction" x="100" y="295" width="700" height="50"/>
+  <text class="label" x="120" y="315">4. User Instruction</text>
+  <rect class="detail-box" x="280" y="305" width="500" height="30"/>
+  <text class="sublabel" x="290" y="325">The specific task: "Review this pull request diff and identify issues."</text>
+
+  <!-- Output Format Spec -->
+  <rect class="box-format" x="100" y="360" width="700" height="50"/>
+  <text class="label" x="120" y="380">5. Output Format Specification</text>
+  <rect class="detail-box" x="280" y="370" width="500" height="30"/>
+  <text class="sublabel" x="290" y="390">"Respond in JSON: {findings: [{severity, line, description, suggestion}]}"</text>
+
+  <!-- Arrow to output -->
+  <path class="arrow" d="M450 410 L450 430"/>
+  <polygon points="450,430 445,420 455,420" fill="#6366f1"/>
+
+  <!-- Model Output -->
+  <rect class="box-output" x="100" y="435" width="700" height="45"/>
+  <text class="label" x="450" y="463" text-anchor="middle">Model generates structured output following all constraints above</text>
+
+  <!-- Left side: Token budget annotation -->
+  <text class="label" x="30" y="100" font-size="11" fill="#7c3aed">~200 tokens</text>
+  <text class="label" x="30" y="175" font-size="11" fill="#2563eb">~500-2000 tokens</text>
+  <text class="label" x="30" y="250" font-size="11" fill="#d97706">~300-800 tokens</text>
+  <text class="label" x="30" y="320" font-size="11" fill="#059669">~50-200 tokens</text>
+  <text class="label" x="30" y="385" font-size="11" fill="#db2777">~30-100 tokens</text>
+</svg>

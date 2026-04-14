@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Training Data Pipeline</text>
+
+  <!-- Step 1: Collection -->
+  <rect class="box" x="30" y="80" width="150" height="90"/>
+  <text class="label" x="105" y="105" text-anchor="middle">1. Collection</text>
+  <rect class="detail-box" x="40" y="115" width="130" height="40"/>
+  <text class="sublabel" x="50" y="133">Web crawls, books, code</text>
+  <text class="sublabel" x="50" y="148">APIs, files, databases</text>
+
+  <path class="arrow" d="M180 125 L210 125"/>
+
+  <!-- Step 2: Cleaning -->
+  <rect class="box" x="220" y="80" width="150" height="90"/>
+  <text class="label" x="295" y="105" text-anchor="middle">2. Cleaning</text>
+  <rect class="detail-box" x="230" y="115" width="130" height="40"/>
+  <text class="sublabel" x="240" y="133">Remove spam, toxic, PII</text>
+  <text class="sublabel" x="240" y="148">Language detection, normalize</text>
+
+  <path class="arrow" d="M370 125 L400 125"/>
+
+  <!-- Step 3: Deduplication -->
+  <rect class="box" x="410" y="80" width="150" height="90"/>
+  <text class="label" x="485" y="105" text-anchor="middle">3. Deduplication</text>
+  <rect class="detail-box" x="420" y="115" width="130" height="40"/>
+  <text class="sublabel" x="430" y="133">Exact match + semantic</text>
+  <text class="sublabel" x="430" y="148">Near-duplicate removal</text>
+
+  <path class="arrow" d="M560 125 L590 125"/>
+
+  <!-- Step 4: Quality Filtering -->
+  <rect class="box" x="600" y="80" width="150" height="90"/>
+  <text class="label" x="675" y="105" text-anchor="middle">4. Quality Filter</text>
+  <rect class="detail-box" x="610" y="115" width="130" height="40"/>
+  <text class="sublabel" x="620" y="133">Heuristic rules + LLM score</text>
+  <text class="sublabel" x="620" y="148">Readability, diversity</text>
+
+  <path class="arrow" d="M750 125 L780 125"/>
+
+  <!-- Step 5: Tokenization -->
+  <rect class="box" x="790" y="80" width="90" height="90"/>
+  <text class="label" x="835" y="110" text-anchor="middle">5. Tokenize</text>
+  <rect class="detail-box" x="800" y="120" width="70" height="35"/>
+  <text class="sublabel" x="810" y="138">Model tokenizer</text>
+  <text class="sublabel" x="810" y="152">Token counting</text>
+
+  <!-- Volume reduction -->
+  <rect x="30" y="200" width="850" height="100" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="225" text-anchor="middle">Data Volume Reduction Through Pipeline</text>
+
+  <rect x="50" y="240" width="160" height="45" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="sublabel" x="130" y="268" text-anchor="middle" font-weight="700">Raw: 10TB</text>
+
+  <rect x="220" y="240" width="140" height="45" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text class="sublabel" x="290" y="268" text-anchor="middle" font-weight="700">Cleaned: 6TB</text>
+
+  <rect x="370" y="240" width="140" height="45" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="440" y="268" text-anchor="middle" font-weight="700">Deduped: 3TB</text>
+
+  <rect x="520" y="240" width="140" height="45" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text class="sublabel" x="590" y="268" text-anchor="middle" font-weight="700">Filtered: 1TB</text>
+
+  <rect x="670" y="240" width="190" height="45" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="sublabel" x="765" y="268" text-anchor="middle" font-weight="700">Training Dataset: 500B tokens</text>
+
+  <!-- Quality metrics -->
+  <rect x="30" y="330" width="410" height="150" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="235" y="355" text-anchor="middle">Quality Metrics Tracked</text>
+  <text class="sublabel" x="50" y="380">• Language distribution (% per language)</text>
+  <text class="sublabel" x="50" y="398">• Topic distribution (coverage across domains)</text>
+  <text class="sublabel" x="50" y="416">• Quality score distribution (mean, std, percentiles)</text>
+  <text class="sublabel" x="50" y="434">• Deduplication rate (% duplicates removed)</text>
+  <text class="sublabel" x="50" y="452">• Token count and cost estimate</text>
+  <text class="sublabel" x="50" y="470">• PII detection rate (% documents with PII)</text>
+
+  <rect x="460" y="330" width="410" height="150" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="665" y="355" text-anchor="middle">Versioning &amp; Provenance</text>
+  <text class="sublabel" x="480" y="380">• Dataset version hash (content + pipeline config)</text>
+  <text class="sublabel" x="480" y="398">• Source URLs and collection dates</text>
+  <text class="sublabel" x="480" y="416">• Processing rules and parameters</text>
+  <text class="sublabel" x="480" y="434">• Quality metrics snapshot per version</text>
+  <text class="sublabel" x="480" y="452">• Model version → dataset version mapping</text>
+  <text class="sublabel" x="480" y="470">• License and usage rights tracking</text>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-vector { stroke: #2563eb; }
+    .c-keyword { stroke: #d97706; }
+    .c-fusion { stroke: #059669; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Hybrid Search — Vector + Keyword Fusion Flow</text>
+
+  <!-- Query input -->
+  <rect class="box" x="350" y="60" width="200" height="45"/>
+  <text class="label" x="450" y="88" text-anchor="middle">User Query</text>
+
+  <path d="M420 105 L280 140" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <path d="M480 105 L620 140" fill="none" stroke="#6366f1" stroke-width="2"/>
+
+  <!-- Vector search path -->
+  <rect class="box" x="30" y="145" width="250" height="120" stroke="#2563eb"/>
+  <text class="label" x="155" y="170" text-anchor="middle" fill="#2563eb">Vector Search (Semantic)</text>
+  <rect class="detail-box" x="45" y="180" width="220" height="70"/>
+  <text class="sublabel" x="55" y="198">Query → embedding model</text>
+  <text class="sublabel" x="55" y="216">HNSW index search</text>
+  <text class="sublabel" x="55" y="234">Top-50 by cosine similarity</text>
+  <text class="sublabel" x="55" y="252">Strengths: semantic match</text>
+
+  <!-- Keyword search path -->
+  <rect class="box" x="620" y="145" width="250" height="120" stroke="#d97706"/>
+  <text class="label" x="745" y="170" text-anchor="middle" fill="#d97706">Keyword Search (BM25)</text>
+  <rect class="detail-box" x="635" y="180" width="220" height="70"/>
+  <text class="sublabel" x="645" y="198">Query → tokenized terms</text>
+  <text class="sublabel" x="645" y="216">Inverted index lookup</text>
+  <text class="sublabel" x="645" y="234">Top-50 by BM25 score</text>
+  <text class="sublabel" x="645" y="252">Strengths: exact term match</text>
+
+  <!-- Results flowing to fusion -->
+  <path d="M155 265 L155 310 L450 310" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M745 265 L745 310 L450 310" fill="none" stroke="#d97706" stroke-width="1.5"/>
+
+  <!-- RRF Fusion -->
+  <rect class="box" x="300" y="315" width="300" height="80" stroke="#059669"/>
+  <text class="label" x="450" y="340" text-anchor="middle" fill="#059669">Reciprocal Rank Fusion (RRF)</text>
+  <rect class="detail-box" x="315" y="350" width="270" height="35"/>
+  <text class="sublabel" x="325" y="368">score = 1/(k+rank_vec) + 1/(k+rank_bm25)</text>
+  <text class="sublabel" x="325" y="383">k=60 (default), combined ranking</text>
+
+  <path class="arrow" d="M450 395 L450 430"/>
+
+  <!-- Final results -->
+  <rect class="box" x="300" y="435" width="300" height="50" stroke="#059669"/>
+  <text class="label" x="450" y="465" text-anchor="middle" fill="#059669">Top-10 Final Results</text>
+
+  <!-- Benefits callout -->
+  <rect x="30" y="315" width="240" height="170" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="150" y="340" text-anchor="middle">Why Hybrid?</text>
+  <text class="sublabel" x="45" y="365"><tspan font-weight="700">Vector catches:</tspan></text>
+  <text class="sublabel" x="45" y="383">• Synonyms ("car" vs "automobile")</text>
+  <text class="sublabel" x="45" y="401">• Paraphrased queries</text>
+  <text class="sublabel" x="45" y="419">• Semantic concepts</text>
+  <text class="sublabel" x="45" y="440"><tspan font-weight="700">Keyword catches:</tspan></text>
+  <text class="sublabel" x="45" y="458">• Product codes ("SKU-12345")</text>
+  <text class="sublabel" x="45" y="476">• Names, IDs, error codes</text>
+
+  <!-- RRF explanation -->
+  <rect x="630" y="315" width="240" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="750" y="340" text-anchor="middle">RRF Example</text>
+  <text class="sublabel" x="645" y="365">Doc A: vec_rank=3, bm25_rank=1</text>
+  <text class="sublabel" x="645" y="383">  RRF = 1/63 + 1/61 = 0.0323</text>
+  <text class="sublabel" x="645" y="401">Doc B: vec_rank=1, bm25_rank=50</text>
+  <text class="sublabel" x="645" y="419">  RRF = 1/61 + 1/110 = 0.0255</text>
+  <text class="sublabel" x="645" y="440" font-weight="700">Doc A ranks higher despite</text>
+  <text class="sublabel" x="645" y="458" font-weight="700">lower vector rank — balanced</text>
+  <text class="sublabel" x="645" y="476">by strong keyword match</text>
+</svg>

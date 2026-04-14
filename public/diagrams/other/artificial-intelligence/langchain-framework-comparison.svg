@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .check { fill: #059669; }
+    .cross { fill: #dc2626; }
+    .partial { fill: #d97706; }
+    .c-lang { stroke: #7c3aed; }
+    .dark .c-lang { fill: #2e1065; stroke: #a78bfa; }
+    .c-llama { stroke: #2563eb; }
+    .dark .c-llama { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-hay { stroke: #059669; }
+    .dark .c-hay { fill: #064e3b; stroke: #34d399; }
+    .c-custom { stroke: #d97706; }
+    .dark .c-custom { fill: #451a03; stroke: #fbbf24; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">LLM Framework Comparison</text>
+
+  <!-- Headers -->
+  <text class="sublabel" x="180" y="70" text-anchor="middle" font-weight="700" fill="#7c3aed">LangChain</text>
+  <text class="sublabel" x="380" y="70" text-anchor="middle" font-weight="700" fill="#2563eb">LlamaIndex</text>
+  <text class="sublabel" x="580" y="70" text-anchor="middle" font-weight="700" fill="#059669">Haystack</text>
+  <text class="sublabel" x="780" y="70" text-anchor="middle" font-weight="700" fill="#d97706">Custom</text>
+
+  <!-- Row 1: RAG -->
+  <text class="sublabel" x="50" y="105">RAG Pipeline</text>
+  <text x="180" y="105" text-anchor="middle" class="check">✓✓</text>
+  <text x="380" y="105" text-anchor="middle" class="check">✓✓✓</text>
+  <text x="580" y="105" text-anchor="middle" class="check">✓✓</text>
+  <text x="780" y="105" text-anchor="middle" class="partial">Manual</text>
+
+  <!-- Row 2: Agents -->
+  <text class="sublabel" x="50" y="135">Agents &amp; Tools</text>
+  <text x="180" y="135" text-anchor="middle" class="check">✓✓✓</text>
+  <text x="380" y="135" text-anchor="middle" class="partial">Limited</text>
+  <text x="580" y="135" text-anchor="middle" class="partial">Basic</text>
+  <text x="780" y="135" text-anchor="middle" class="partial">Manual</text>
+
+  <!-- Row 3: Model Support -->
+  <text class="sublabel" x="50" y="165">Model Integrations</text>
+  <text x="180" y="165" text-anchor="middle" class="check">✓✓✓</text>
+  <text x="380" y="165" text-anchor="middle" class="check">✓✓</text>
+  <text x="580" y="165" text-anchor="middle" class="check">✓✓</text>
+  <text x="780" y="165" text-anchor="middle" class="partial">Per model</text>
+
+  <!-- Row 4: Learning Curve -->
+  <text class="sublabel" x="50" y="195">Ease of Use</text>
+  <text x="180" y="195" text-anchor="middle" class="partial">Medium</text>
+  <text x="380" y="195" text-anchor="middle" class="check">Easy</text>
+  <text x="580" y="195" text-anchor="middle" class="check">Easy</text>
+  <text x="780" y="195" text-anchor="middle" class="cross">Hard</text>
+
+  <!-- Row 5: Flexibility -->
+  <text class="sublabel" x="50" y="225">Flexibility</text>
+  <text x="180" y="225" text-anchor="middle" class="check">High</text>
+  <text x="380" y="225" text-anchor="middle" class="partial">Medium</text>
+  <text x="580" y="225" text-anchor="middle" class="partial">Medium</text>
+  <text x="780" y="225" text-anchor="middle" class="check">Full</text>
+
+  <!-- Row 6: Community -->
+  <text class="sublabel" x="50" y="255">Community</text>
+  <text x="180" y="255" text-anchor="middle" class="check">Largest</text>
+  <text x="380" y="255" text-anchor="middle" class="check">Large</text>
+  <text x="580" y="255" text-anchor="middle" class="partial">Medium</text>
+  <text x="780" y="255" text-anchor="middle" class="cross">None</text>
+
+  <!-- Row 7: Production Ready -->
+  <text class="sublabel" x="50" y="285">Production Ready</text>
+  <text x="180" y="285" text-anchor="middle" class="check">Yes</text>
+  <text x="380" y="285" text-anchor="middle" class="check">Yes</text>
+  <text x="580" y="285" text-anchor="middle" class="check">Yes</text>
+  <text x="780" y="285" text-anchor="middle" class="partial">Depends</text>
+
+  <!-- Bottom recommendation -->
+  <rect x="30" y="320" width="840" height="160" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="345" text-anchor="middle">Framework Selection Guide</text>
+
+  <rect x="50" y="360" width="390" height="45" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="sublabel" x="65" y="378"><tspan font-weight="700">LangChain:</tspan> General-purpose LLM apps with agents, tools, chains</text>
+  <text class="sublabel" x="65" y="395">Choose for: Multi-step workflows, agent systems, diverse LLM providers</text>
+
+  <rect x="460" y="360" width="390" height="45" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text class="sublabel" x="475" y="378"><tspan font-weight="700">LlamaIndex:</tspan> RAG-focused, superior document processing and retrieval</text>
+  <text class="sublabel" x="475" y="395">Choose for: Pure RAG apps, complex document indexing, retrieval optimization</text>
+
+  <rect x="50" y="415" width="390" height="45" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="65" y="433"><tspan font-weight="700">Haystack:</tspan> Production search pipelines, enterprise-focused</text>
+  <text class="sublabel" x="65" y="450">Choose for: Search-heavy apps, enterprise deployments, German engineering</text>
+
+  <rect x="460" y="415" width="390" height="45" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text class="sublabel" x="475" y="433"><tspan font-weight="700">Custom:</tspan> Full control, no abstraction overhead</text>
+  <text class="sublabel" x="475" y="450">Choose for: Unique requirements, performance-critical, simple apps</text>
+</svg>

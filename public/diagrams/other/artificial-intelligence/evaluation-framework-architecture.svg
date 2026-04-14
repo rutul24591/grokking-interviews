@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Evaluation Framework Architecture</text>
+
+  <!-- Dataset Management -->
+  <rect class="box" x="30" y="80" width="260" height="130" stroke="#7c3aed"/>
+  <text class="label" x="160" y="105" text-anchor="middle" fill="#7c3aed">Dataset Management</text>
+  <rect class="detail-box" x="45" y="115" width="230" height="80"/>
+  <text class="sublabel" x="55" y="133">• Golden dataset curation &amp; versioning</text>
+  <text class="sublabel" x="55" y="151">• Production sample collection</text>
+  <text class="sublabel" x="55" y="169">• Edge case discovery &amp; inclusion</text>
+  <text class="sublabel" x="55" y="187">• Stratified split (dev/val/test)</text>
+
+  <path class="arrow" d="M290 145 L330 145"/>
+
+  <!-- Evaluation Execution -->
+  <rect class="box" x="340" y="80" width="260" height="130" stroke="#2563eb"/>
+  <text class="label" x="470" y="105" text-anchor="middle" fill="#2563eb">Evaluation Execution</text>
+  <rect class="detail-box" x="355" y="115" width="230" height="80"/>
+  <text class="sublabel" x="365" y="133">• Run each example through AI system</text>
+  <text class="sublabel" x="365" y="151">• LLM-as-a-judge scoring</text>
+  <text class="sublabel" x="365" y="169">• Rule-based checks (format, safety)</text>
+  <text class="sublabel" x="365" y="187">• Multiple runs per example (statistical)</text>
+
+  <path class="arrow" d="M600 145 L640 145"/>
+
+  <!-- Scoring & Comparison -->
+  <rect class="box" x="650" y="80" width="220" height="130" stroke="#059669"/>
+  <text class="label" x="760" y="105" text-anchor="middle" fill="#059669">Scoring &amp; Comparison</text>
+  <rect class="detail-box" x="665" y="115" width="190" height="80"/>
+  <text class="sublabel" x="675" y="133">• Aggregate scores by metric</text>
+  <text class="sublabel" x="675" y="151">• Compare vs baseline scores</text>
+  <text class="sublabel" x="675" y="169">• Statistical significance testing</text>
+  <text class="sublabel" x="675" y="187">• Regression detection</text>
+
+  <!-- Feedback loop -->
+  <path d="M760 210 L760 270 L160 270 L160 210" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+  <!-- Reporting -->
+  <rect x="30" y="290" width="410" height="180" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="235" y="315" text-anchor="middle">Quality Reports &amp; Dashboards</text>
+  <text class="sublabel" x="50" y="340">• Per-metric scores with trend lines</text>
+  <text class="sublabel" x="50" y="358">• Per-category breakdown (type, difficulty)</text>
+  <text class="sublabel" x="50" y="376">• Regression alerts with affected examples</text>
+  <text class="sublabel" x="50" y="394">• Before/after comparison for each change</text>
+  <text class="sublabel" x="50" y="412">• Pass/fail verdict for CI/CD gate</text>
+  <text class="sublabel" x="50" y="430">• Export: JSON, CSV, dashboard embed</text>
+  <text class="sublabel" x="50" y="448">• Integration: Slack, PagerDuty, Jira</text>
+
+  <!-- Continuous evaluation -->
+  <rect x="460" y="290" width="410" height="180" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="665" y="315" text-anchor="middle">Continuous Production Evaluation</text>
+  <text class="sublabel" x="480" y="340">• Sample production outputs hourly</text>
+  <text class="sublabel" x="480" y="358">• Score with LLM-as-a-judge</text>
+  <text class="sublabel" x="480" y="376">• Correlate with user feedback signals</text>
+  <text class="sublabel" x="480" y="394">• Detect quality drift over time</text>
+  <text class="sublabel" x="480" y="412">• Augment golden dataset with new cases</text>
+  <text class="sublabel" x="480" y="430">• Trigger re-evaluation on model updates</text>
+  <text class="sublabel" x="480" y="448">• Alert when production quality drops</text>
+</svg>

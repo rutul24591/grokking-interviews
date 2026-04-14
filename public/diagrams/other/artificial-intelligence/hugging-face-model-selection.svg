@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-filter { stroke: #7c3aed; }
+    .dark .c-filter { fill: #2e1065; stroke: #a78bfa; }
+    .c-bench { stroke: #2563eb; }
+    .dark .c-bench { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-eval { stroke: #059669; }
+    .dark .c-eval { fill: #064e3b; stroke: #34d399; }
+    .c-select { stroke: #d97706; }
+    .dark .c-select { fill: #451a03; stroke: #fbbf24; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Hugging Face Model Selection Framework</text>
+
+  <!-- Step 1: Filter -->
+  <rect class="box c-filter" x="30" y="80" width="200" height="110"/>
+  <text class="label" x="130" y="105" text-anchor="middle">1. Filter Candidates</text>
+  <rect class="detail-box" x="45" y="115" width="170" height="60"/>
+  <text class="sublabel" x="55" y="135">By task: text-gen, embedding</text>
+  <text class="sublabel" x="55" y="153">By size: 7B, 13B, 70B</text>
+  <text class="sublabel" x="55" y="171">By license: Apache, MIT</text>
+
+  <path class="arrow" d="M230 135 L290 135"/>
+  <polygon points="290,135 282,130 282,140" fill="#6366f1"/>
+
+  <!-- Step 2: Benchmark -->
+  <rect class="box c-bench" x="300" y="80" width="200" height="110"/>
+  <text class="label" x="400" y="105" text-anchor="middle">2. Check Leaderboard</text>
+  <rect class="detail-box" x="315" y="115" width="170" height="60"/>
+  <text class="sublabel" x="325" y="135">Open LLM Leaderboard</text>
+  <text class="sublabel" x="325" y="153">MMLU, HellaSwag, etc.</text>
+  <text class="sublabel" x="325" y="171">General capability ranking</text>
+
+  <path class="arrow" d="M500 135 L560 135"/>
+  <polygon points="560,135 552,130 552,140" fill="#6366f1"/>
+
+  <!-- Step 3: Evaluate -->
+  <rect class="box c-eval" x="570" y="80" width="200" height="110"/>
+  <text class="label" x="670" y="105" text-anchor="middle">3. Evaluate on Your Task</text>
+  <rect class="detail-box" x="585" y="115" width="170" height="60"/>
+  <text class="sublabel" x="595" y="135">Your data, your metrics</text>
+  <text class="sublabel" x="595" y="153">Domain-specific tests</text>
+  <text class="sublabel" x="595" y="171">Not general benchmarks</text>
+
+  <path class="arrow" d="M770 135 L830 135"/>
+  <polygon points="830,135 822,130 822,140" fill="#6366f1"/>
+
+  <!-- Step 4: Select -->
+  <rect class="box c-select" x="30" y="250" width="200" height="110"/>
+  <text class="label" x="130" y="275" text-anchor="middle">4. Multi-Factor Decision</text>
+  <rect class="detail-box" x="45" y="285" width="170" height="60"/>
+  <text class="sublabel" x="55" y="305">Task accuracy (highest weight)</text>
+  <text class="sublabel" x="55" y="323">Latency &amp; throughput</text>
+  <text class="sublabel" x="55" y="341">Memory footprint, license</text>
+
+  <!-- Decision matrix table -->
+  <rect x="280" y="230" width="580" height="240" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="570" y="255" text-anchor="middle">Selection Decision Matrix</text>
+
+  <text class="sublabel" x="300" y="280" font-weight="700">Model</text>
+  <text class="sublabel" x="420" y="280" font-weight="700">Task Acc</text>
+  <text class="sublabel" x="530" y="280" font-weight="700">Latency</text>
+  <text class="sublabel" x="640" y="280" font-weight="700">Memory</text>
+  <text class="sublabel" x="750" y="280" font-weight="700">License</text>
+  <text class="sublabel" x="830" y="280" font-weight="700">Score</text>
+
+  <line x1="300" y1="290" x2="840" y2="290" stroke="#dee2e6" stroke-width="0.5"/>
+
+  <text class="sublabel" x="300" y="310">LLaMA-3-8B</text>
+  <text class="sublabel" x="420" y="310">87%</text>
+  <text class="sublabel" x="530" y="310">45ms</text>
+  <text class="sublabel" x="640" y="310">16 GB</text>
+  <text class="sublabel" x="750" y="310">Community</text>
+  <text class="sublabel" x="830" y="310" font-weight="700">0.85</text>
+
+  <text class="sublabel" x="300" y="335">Mistral-7B</text>
+  <text class="sublabel" x="420" y="335">82%</text>
+  <text class="sublabel" x="530" y="335">30ms</text>
+  <text class="sublabel" x="640" y="335">14 GB</text>
+  <text class="sublabel" x="750" y="335">Apache 2.0</text>
+  <text class="sublabel" x="830" y="335" font-weight="700">0.80</text>
+
+  <text class="sublabel" x="300" y="360">Qwen-14B</text>
+  <text class="sublabel" x="420" y="360">89%</text>
+  <text class="sublabel" x="530" y="360">60ms</text>
+  <text class="sublabel" x="640" y="360">28 GB</text>
+  <text class="sublabel" x="750" y="360">Apache 2.0</text>
+  <text class="sublabel" x="830" y="360" font-weight="700">0.83</text>
+
+  <text class="sublabel" x="300" y="385">Gemma-7B</text>
+  <text class="sublabel" x="420" y="385">79%</text>
+  <text class="sublabel" x="530" y="385">35ms</text>
+  <text class="sublabel" x="640" y="385">14 GB</text>
+  <text class="sublabel" x="750" y="385">Custom</text>
+  <text class="sublabel" x="830" y="385" font-weight="700">0.72</text>
+
+  <text class="sublabel" x="300" y="410" font-weight="700" fill="#059669">Selected: LLaMA-3-8B</text>
+  <text class="sublabel" x="500" y="410" fill="#059669">Best task accuracy with acceptable latency</text>
+
+  <!-- Recommendation -->
+  <rect x="30" y="400" width="200" height="80" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="label" x="130" y="425" text-anchor="middle">Recommended Approach</text>
+  <text class="sublabel" x="45" y="445">Narrow to 3-5 candidates</text>
+  <text class="sublabel" x="45" y="463">Test on YOUR data</text>
+  <text class="sublabel" x="45" y="481">Pick best task fit, not</text>
+</svg>

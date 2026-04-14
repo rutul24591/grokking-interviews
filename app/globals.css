@@ -100,7 +100,6 @@ body {
 /* Article Content Styling */
 .prose {
   color: var(--color-text);
-  max-width: 65ch;
 }
 
 .prose p {
@@ -132,7 +131,8 @@ body {
   color: var(--color-heading);
 }
 
-.prose ul, .prose ol {
+.prose ul,
+.prose ol {
   margin-top: 1.25em;
   margin-bottom: 1.25em;
   padding-left: 1.625em;
@@ -262,28 +262,32 @@ body {
 }
 
 /* Article Highlight Styles */
+.highlight-crucial,
 .prose .highlight-crucial {
-  background-color: rgba(168, 85, 247, 0.2);
-  border-left: 3px solid rgba(168, 85, 247, 0.6);
-  padding: 0.1em 0.4em;
+  background-color: rgba(168, 85, 247, 0.15);
+  border-left: 3px solid rgba(168, 85, 247, 0.5);
+  padding: 0.25em 0.5em;
   border-radius: 0.25rem;
   transition: background-color 0.2s ease;
 }
 
+[data-theme="dark"] .highlight-crucial,
 [data-theme="dark"] .prose .highlight-crucial {
-  background-color: rgba(168, 85, 247, 0.3);
-  border-left-color: rgba(192, 132, 252, 0.6);
+  background-color: rgba(168, 85, 247, 0.25);
+  border-left-color: rgba(192, 132, 252, 0.5);
 }
 
+.highlight-important,
 .prose .highlight-important {
-  background-color: rgba(251, 191, 36, 0.2);
-  border-left: 3px solid rgba(245, 158, 11, 0.6);
-  padding: 0.1em 0.4em;
+  background-color: rgba(251, 191, 36, 0.15);
+  border-left: 3px solid rgba(245, 158, 11, 0.5);
+  padding: 0.25em 0.5em;
   border-radius: 0.25rem;
   transition: background-color 0.2s ease;
 }
 
+[data-theme="dark"] .highlight-important,
 [data-theme="dark"] .prose .highlight-important {
-  background-color: rgba(251, 191, 36, 0.3);
-  border-left-color: rgba(251, 191, 36, 0.6);
+  background-color: rgba(251, 191, 36, 0.25);
+  border-left-color: rgba(251, 191, 36, 0.5);
 }

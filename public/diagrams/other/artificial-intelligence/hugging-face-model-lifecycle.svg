@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-disc { stroke: #fbbf24; }
+    .dark .c-disc { fill: #451a03; stroke: #fbbf24; }
+    .c-down { stroke: #2563eb; }
+    .dark .c-down { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-fine { stroke: #7c3aed; }
+    .dark .c-fine { fill: #2e1065; stroke: #a78bfa; }
+    .c-eval { stroke: #059669; }
+    .dark .c-eval { fill: #064e3b; stroke: #34d399; }
+    .c-deploy { stroke: #ec4899; }
+    .dark .c-deploy { fill: #500724; stroke: #f472b6; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Hugging Face Model Lifecycle</text>
+
+  <!-- Step 1: Discover -->
+  <rect class="box c-disc" x="30" y="80" width="160" height="90"/>
+  <text class="label" x="110" y="105" text-anchor="middle">1. Discover</text>
+  <rect class="detail-box" x="45" y="115" width="130" height="40"/>
+  <text class="sublabel" x="55" y="133">Search Hub, Leaderboard</text>
+  <text class="sublabel" x="55" y="150">Filter by task, size, license</text>
+
+  <path class="arrow" d="M190 125 L240 125"/>
+  <polygon points="240,125 232,120 232,130" fill="#6366f1"/>
+
+  <!-- Step 2: Download -->
+  <rect class="box c-down" x="250" y="80" width="160" height="90"/>
+  <text class="label" x="330" y="105" text-anchor="middle">2. Download</text>
+  <rect class="detail-box" x="265" y="115" width="130" height="40"/>
+  <text class="sublabel" x="275" y="133">from_pretrained()</text>
+  <text class="sublabel" x="275" y="150">Auto-download + cache</text>
+
+  <path class="arrow" d="M410 125 L460 125"/>
+  <polygon points="460,125 452,120 452,130" fill="#6366f1"/>
+
+  <!-- Step 3: Fine-tune -->
+  <rect class="box c-fine" x="470" y="80" width="160" height="90"/>
+  <text class="label" x="550" y="105" text-anchor="middle">3. Fine-tune</text>
+  <rect class="detail-box" x="485" y="115" width="130" height="40"/>
+  <text class="sublabel" x="495" y="133">Datasets + Trainers</text>
+  <text class="sublabel" x="495" y="150">TRL, Axolotl, custom</text>
+
+  <path class="arrow" d="M630 125 L680 125"/>
+  <polygon points="680,125 672,120 672,130" fill="#6366f1"/>
+
+  <!-- Step 4: Evaluate -->
+  <rect class="box c-eval" x="690" y="80" width="160" height="90"/>
+  <text class="label" x="770" y="105" text-anchor="middle">4. Evaluate</text>
+  <rect class="detail-box" x="705" y="115" width="130" height="40"/>
+  <text class="sublabel" x="715" y="133">Benchmark tests</text>
+  <text class="sublabel" x="715" y="150">Domain-specific eval</text>
+
+  <!-- Arrow down -->
+  <path class="arrow" d="M770 170 L770 230"/>
+  <polygon points="770,230 765,220 775,220" fill="#6366f1"/>
+
+  <!-- Step 5: Deploy (3 options) -->
+  <rect class="box c-deploy" x="30" y="250" width="260" height="100"/>
+  <text class="label" x="160" y="275" text-anchor="middle">5a. Self-Hosted</text>
+  <rect class="detail-box" x="45" y="285" width="230" height="50"/>
+  <text class="sublabel" x="55" y="303">vLLM, TGI, Transformers</text>
+  <text class="sublabel" x="55" y="320">Full control, GPU required</text>
+
+  <rect class="box c-deploy" x="320" y="250" width="260" height="100"/>
+  <text class="label" x="450" y="275" text-anchor="middle">5b. Inference API</text>
+  <rect class="detail-box" x="335" y="285" width="230" height="50"/>
+  <text class="sublabel" x="345" y="303">Serverless, HTTP API</text>
+  <text class="sublabel" x="345" y="320">Zero ops, per-request cost</text>
+
+  <rect class="box c-deploy" x="610" y="250" width="260" height="100"/>
+  <text class="label" x="740" y="275" text-anchor="middle">5c. Spaces</text>
+  <rect class="detail-box" x="625" y="285" width="230" height="50"/>
+  <text class="sublabel" x="635" y="303">Gradio, Streamlit, Docker</text>
+  <text class="sublabel" x="635" y="320">Demos, interactive apps</text>
+
+  <!-- Push back to Hub -->
+  <path class="arrow" d="M770 350 L770 420 L110 420 L110 170"/>
+  <polygon points="110,170 105,180 115,180" fill="#6366f1"/>
+
+  <rect x="600" y="380" width="270" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="label" x="735" y="400" text-anchor="middle">Push to Hub</text>
+  <text class="sublabel" x="615" y="418">Fine-tuned models pushed back for version tracking</text>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-sync { stroke: #7c3aed; }
+    .c-async { stroke: #2563eb; }
+    .c-hybrid { stroke: #059669; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">AI Application Integration Patterns</text>
+
+  <!-- Sync with Streaming -->
+  <text class="label" x="150" y="80" text-anchor="middle" fill="#7c3aed">Sync + Streaming</text>
+  <rect x="30" y="95" width="240" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="45" y="115">User → App → Model (stream)</text>
+  <text class="sublabel" x="45" y="133">Tokens streamed incrementally</text>
+  <text class="sublabel" x="45" y="151">User sees response as generated</text>
+  <text class="sublabel" x="45" y="169"></text>
+  <text class="sublabel" x="45" y="169"><tspan font-weight="700">TTFT:</tspan> 500ms-2s (first token)</text>
+  <text class="sublabel" x="45" y="187"><tspan font-weight="700">Total:</tspan> 3-15s (complete)</text>
+  <text class="sublabel" x="45" y="205"><tspan font-weight="700">Best for:</tspan> Chat, Q&amp;A, assistants</text>
+  <text class="sublabel" x="45" y="223"><tspan font-weight="700">UX:</tspan> Responsive, engaging</text>
+  <text class="sublabel" x="45" y="241"><tspan font-weight="700">Complexity:</tspan> Medium (stream handling)</text>
+  <text class="sublabel" x="45" y="259"><tspan font-weight="700">Failure:</tspan> Partial response OK</text>
+
+  <!-- Async with Callbacks -->
+  <text class="label" x="450" y="80" text-anchor="middle" fill="#2563eb">Async + Callbacks</text>
+  <rect x="330" y="95" width="240" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="345" y="115">User → App → Queue → Model</text>
+  <text class="sublabel" x="345" y="133">Task queued, processed in background</text>
+  <text class="sublabel" x="345" y="151">User notified when complete</text>
+  <text class="sublabel" x="345" y="169"></text>
+  <text class="sublabel" x="345" y="169"><tspan font-weight="700">Latency:</tspan> Seconds to minutes</text>
+  <text class="sublabel" x="345" y="187"><tspan font-weight="700">Throughput:</tspan> High (batch processing)</text>
+  <text class="sublabel" x="345" y="205"><tspan font-weight="700">Best for:</tspan> Document processing, reports</text>
+  <text class="sublabel" x="345" y="223"><tspan font-weight="700">UX:</tspan> Submit now, receive later</text>
+  <text class="sublabel" x="345" y="241"><tspan font-weight="700">Complexity:</tspan> High (queue, state, notify)</text>
+  <text class="sublabel" x="345" y="259"><tspan font-weight="700">Failure:</tspan> Retry automatically</text>
+
+  <!-- Hybrid Progressive -->
+  <text class="label" x="750" y="80" text-anchor="middle" fill="#059669">Hybrid Progressive</text>
+  <rect x="630" y="95" width="240" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="645" y="115">Instant baseline + AI enhancement</text>
+  <text class="sublabel" x="645" y="133">Show baseline immediately</text>
+  <text class="sublabel" x="645" y="151">Enhance with AI in background</text>
+  <text class="sublabel" x="645" y="169"></text>
+  <text class="sublabel" x="645" y="169"><tspan font-weight="700">TTFT:</tspan> Instant (baseline content)</text>
+  <text class="sublabel" x="645" y="187"><tspan font-weight="700">Enhance:</tspan> 2-10s (AI improves it)</text>
+  <text class="sublabel" x="645" y="205"><tspan font-weight="700">Best for:</tspan> Search, autocomplete</text>
+  <text class="sublabel" x="645" y="223"><tspan font-weight="700">UX:</tspan> Instant response, gets better</text>
+  <text class="sublabel" x="645" y="241"><tspan font-weight="700">Complexity:</tspan> High (two result paths)</text>
+  <text class="sublabel" x="645" y="259"><tspan font-weight="700">Failure:</tspan> Baseline always available</text>
+
+  <!-- Latency breakdown -->
+  <rect x="30" y="300" width="840" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="450" y="325" text-anchor="middle">Latency Breakdown for AI Requests</text>
+
+  <text class="sublabel" x="50" y="350" font-weight="700">Phase 1: Network Round-Trip</text>
+  <rect class="meter-bg" x="50" y="358" width="800" height="16" fill="#e5e7eb" rx="3"/>
+  <rect class="bar" x="50" y="358" width="40" height="16" fill="#7c3aed" rx="3"/>
+  <text class="sublabel" x="100" y="370">50-100ms</text>
+
+  <text class="sublabel" x="50" y="385" font-weight="700">Phase 2: Prefill (Process Input Context)</text>
+  <rect class="meter-bg" x="50" y="393" width="800" height="16" fill="#e5e7eb" rx="3"/>
+  <rect class="bar" x="50" y="393" width="400" height="16" fill="#2563eb" rx="3"/>
+  <text class="sublabel" x="460" y="405">200ms-5s (depends on context length)</text>
+
+  <text class="sublabel" x="50" y="420" font-weight="700">Phase 3: Decode (Generate Output Tokens)</text>
+  <rect class="meter-bg" x="50" y="428" width="800" height="16" fill="#e5e7eb" rx="3"/>
+  <rect class="bar" x="50" y="428" width="300" height="16" fill="#059669" rx="3"/>
+  <text class="sublabel" x="360" y="440">500ms-10s (depends on output length)</text>
+
+  <text class="sublabel" x="50" y="460" font-weight="700">Optimization targets:</text>
+  <text class="sublabel" x="200" y="460">Compress context → faster prefill | Limit output → faster decode | Stream → lower perceived latency</text>
+</svg>

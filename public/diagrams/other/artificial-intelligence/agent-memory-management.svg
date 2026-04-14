@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-short { stroke: #7c3aed; }
+    .c-medium { stroke: #2563eb; }
+    .c-long { stroke: #059669; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Agent Memory Management Architecture</text>
+
+  <!-- Three-tier memory -->
+  <text class="label" x="150" y="85" text-anchor="middle" fill="#7c3aed">Short-Term Memory</text>
+  <rect x="30" y="100" width="240" height="160" rx="8" fill="#f8f9fa" stroke="#7c3aed" stroke-width="1.5"/>
+  <rect x="45" y="115" width="210" height="30" rx="4" class="box" stroke="#7c3aed"/>
+  <text class="sublabel" x="150" y="135" text-anchor="middle">Recent conversation turns (N=5)</text>
+  <rect x="45" y="155" width="210" height="30" rx="4" class="box" stroke="#7c3aed"/>
+  <text class="sublabel" x="150" y="175" text-anchor="middle">Active sub-goals</text>
+  <rect x="45" y="195" width="210" height="30" rx="4" class="box" stroke="#7c3aed"/>
+  <text class="sublabel" x="150" y="215" text-anchor="middle">Tool call results</text>
+  <rect x="45" y="235" width="210" height="20" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="sublabel" x="150" y="249" text-anchor="middle">Capacity: ~4000 tokens</text>
+
+  <text class="label" x="450" y="85" text-anchor="middle" fill="#2563eb">Working Memory</text>
+  <rect x="330" y="100" width="240" height="160" rx="8" fill="#f8f9fa" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="345" y="115" width="210" height="30" rx="4" class="box" stroke="#2563eb"/>
+  <text class="sublabel" x="450" y="135" text-anchor="middle">Current reasoning trace</text>
+  <rect x="345" y="155" width="210" height="30" rx="4" class="box" stroke="#2563eb"/>
+  <text class="sublabel" x="450" y="175" text-anchor="middle">Intermediate calculations</text>
+  <rect x="345" y="195" width="210" height="30" rx="4" class="box" stroke="#2563eb"/>
+  <text class="sublabel" x="450" y="215" text-anchor="middle">Variable bindings</text>
+  <rect x="345" y="235" width="210" height="20" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text class="sublabel" x="450" y="249" text-anchor="middle">Capacity: ~2000 tokens</text>
+
+  <text class="label" x="750" y="85" text-anchor="middle" fill="#059669">Long-Term Memory</text>
+  <rect x="630" y="100" width="240" height="160" rx="8" fill="#f8f9fa" stroke="#059669" stroke-width="1.5"/>
+  <rect x="645" y="115" width="210" height="30" rx="4" class="box" stroke="#059669"/>
+  <text class="sublabel" x="750" y="135" text-anchor="middle">User preferences &amp; facts</text>
+  <rect x="645" y="155" width="210" height="30" rx="4" class="box" stroke="#059669"/>
+  <text class="sublabel" x="750" y="175" text-anchor="middle">Learned knowledge</text>
+  <rect x="645" y="195" width="210" height="30" rx="4" class="box" stroke="#059669"/>
+  <text class="sublabel" x="750" y="215" text-anchor="middle">Past conversation summaries</text>
+  <rect x="645" y="235" width="210" height="20" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="750" y="249" text-anchor="middle">Capacity: Vector DB (unlimited)</text>
+
+  <!-- Memory flow arrows -->
+  <path d="M270 180 L320 180" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <polygon points="320,180 312,175 312,185" fill="#6366f1"/>
+  <path d="M570 180 L620 180" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <polygon points="620,180 612,175 612,185" fill="#6366f1"/>
+
+  <!-- Memory management strategies -->
+  <rect x="30" y="300" width="840" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="450" y="325" text-anchor="middle">Memory Management Strategies</text>
+
+  <!-- Strategy 1: Sliding window -->
+  <rect x="50" y="340" width="240" height="120" rx="6" fill="white" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="65" y="360" font-weight="700">Sliding Window</text>
+  <text class="sublabel" x="65" y="380">Keep most recent N turns</text>
+  <text class="sublabel" x="65" y="398">Drop oldest when full</text>
+  <text class="sublabel" x="65" y="416">Simple, lossy</text>
+  <text class="sublabel" x="65" y="434">Best for: Short conversations</text>
+  <rect x="65" y="444" width="210" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="65" y="444" width="150" height="8" rx="4" fill="#7c3aed"/>
+
+  <!-- Strategy 2: Summarization -->
+  <rect x="330" y="340" width="240" height="120" rx="6" fill="white" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="345" y="360" font-weight="700">Summarization</text>
+  <text class="sublabel" x="345" y="380">Summarize old turns via LLM</text>
+  <text class="sublabel" x="345" y="398">Keep key facts, drop noise</text>
+  <text class="sublabel" x="345" y="416">Costs extra LLM call</text>
+  <text class="sublabel" x="345" y="434">Best for: Medium conversations</text>
+  <rect x="345" y="444" width="210" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="345" y="444" width="120" height="8" rx="4" fill="#2563eb"/>
+
+  <!-- Strategy 3: Vector retrieval -->
+  <rect x="610" y="340" width="240" height="120" rx="6" fill="white" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="625" y="360" font-weight="700">Vector Retrieval</text>
+  <text class="sublabel" x="625" y="380">Store turns in vector DB</text>
+  <text class="sublabel" x="625" y="398">Retrieve relevant by similarity</text>
+  <text class="sublabel" x="625" y="416">Unlimited capacity</text>
+  <text class="sublabel" x="625" y="434">Best for: Long conversations</text>
+  <rect x="625" y="444" width="210" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="625" y="444" width="180" height="8" rx="4" fill="#059669"/>
+</svg>

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .custom-box { fill: #ffffff; stroke-width: 2; rx: 8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-custom { stroke: #dc2626; }
+    .dark .s-custom { fill: #450a0a; stroke: #f87171; }
+    .s-mcp { stroke: #059669; }
+    .dark .s-mcp { fill: #064e3b; stroke: #34d399; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">MCP vs Custom Integration</text>
+
+  <!-- LEFT: Custom (N x M) -->
+  <text class="label" x="225" y="80" text-anchor="middle" fill="#dc2626">Custom Integration: N x M = 12 integrations</text>
+
+  <!-- Apps -->
+  <rect class="custom-box s-custom" x="30" y="110" width="140" height="35"/>
+  <text class="label" x="100" y="133" text-anchor="middle">App A (Chatbot)</text>
+  <rect class="custom-box s-custom" x="30" y="160" width="140" height="35"/>
+  <text class="label" x="100" y="183" text-anchor="middle">App B (IDE)</text>
+  <rect class="custom-box s-custom" x="30" y="210" width="140" height="35"/>
+  <text class="label" x="100" y="233" text-anchor="middle">App C (Agent)</text>
+  <rect class="custom-box s-custom" x="30" y="260" width="140" height="35"/>
+  <text class="label" x="100" y="283" text-anchor="middle">App D (Desktop)</text>
+
+  <!-- Data sources -->
+  <rect class="custom-box s-custom" x="300" y="110" width="140" height="35"/>
+  <text class="label" x="370" y="133" text-anchor="middle">Database</text>
+  <rect class="custom-box s-custom" x="300" y="160" width="140" height="35"/>
+  <text class="label" x="370" y="183" text-anchor="middle">File System</text>
+  <rect class="custom-box s-custom" x="300" y="210" width="140" height="35"/>
+  <text class="label" x="370" y="233" text-anchor="middle">Web Search</text>
+
+  <!-- Connection lines -->
+  <line x1="170" y1="127" x2="300" y2="127" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="127" x2="300" y2="177" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="127" x2="300" y2="227" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="177" x2="300" y2="127" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="177" x2="300" y2="177" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="177" x2="300" y2="227" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="227" x2="300" y2="127" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="227" x2="300" y2="177" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="227" x2="300" y2="227" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="277" x2="300" y2="127" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="277" x2="300" y2="177" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+  <line x1="170" y1="277" x2="300" y2="227" stroke="#dc2626" stroke-width="1" opacity="0.3"/>
+
+  <text class="sublabel" x="235" y="330" text-anchor="middle" fill="#dc2626" font-weight="700">4 apps x 3 sources = 12 integrations</text>
+
+  <!-- RIGHT: MCP (N + M) -->
+  <text class="label" x="675" y="80" text-anchor="middle" fill="#059669">MCP: N + M = 7 connections</text>
+
+  <!-- Hosts -->
+  <rect class="custom-box s-mcp" x="540" y="110" width="120" height="35"/>
+  <text class="label" x="600" y="133" text-anchor="middle">Host A</text>
+  <rect class="custom-box s-mcp" x="540" y="160" width="120" height="35"/>
+  <text class="label" x="600" y="183" text-anchor="middle">Host B</text>
+  <rect class="custom-box s-mcp" x="540" y="210" width="120" height="35"/>
+  <text class="label" x="600" y="233" text-anchor="middle">Host C</text>
+  <rect class="custom-box s-mcp" x="540" y="260" width="120" height="35"/>
+  <text class="label" x="600" y="283" text-anchor="middle">Host D</text>
+
+  <!-- MCP Protocol bus -->
+  <rect x="680" y="130" width="10" height="190" rx="5" fill="#059669" opacity="0.5"/>
+
+  <!-- Servers -->
+  <rect class="custom-box s-mcp" x="720" y="110" width="140" height="35"/>
+  <text class="label" x="790" y="133" text-anchor="middle">DB Server</text>
+  <rect class="custom-box s-mcp" x="720" y="160" width="140" height="35"/>
+  <text class="label" x="790" y="183" text-anchor="middle">FS Server</text>
+  <rect class="custom-box s-mcp" x="720" y="210" width="140" height="35"/>
+  <text class="label" x="790" y="233" text-anchor="middle">Search Server</text>
+
+  <!-- Connection lines to bus -->
+  <line x1="660" y1="127" x2="680" y2="127" stroke="#059669" stroke-width="1.5"/>
+  <line x1="660" y1="177" x2="680" y2="177" stroke="#059669" stroke-width="1.5"/>
+  <line x1="660" y1="227" x2="680" y2="227" stroke="#059669" stroke-width="1.5"/>
+  <line x1="660" y1="277" x2="680" y2="277" stroke="#059669" stroke-width="1.5"/>
+  <line x1="690" y1="127" x2="720" y2="127" stroke="#059669" stroke-width="1.5"/>
+  <line x1="690" y1="177" x2="720" y2="177" stroke="#059669" stroke-width="1.5"/>
+  <line x1="690" y1="227" x2="720" y2="227" stroke="#059669" stroke-width="1.5"/>
+
+  <text class="sublabel" x="675" y="330" text-anchor="middle" fill="#059669" font-weight="700">4 hosts + 3 servers = 7 connections</text>
+
+  <!-- Bottom comparison -->
+  <rect x="30" y="380" width="840" height="100" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="405" text-anchor="middle">Integration Effort Comparison</text>
+  <text class="sublabel" x="225" y="430" text-anchor="middle" fill="#dc2626">Custom: Adding 1 new app = 3 new integrations</text>
+  <text class="sublabel" x="225" y="450" text-anchor="middle" fill="#dc2626">Adding 1 new source = 4 new integrations</text>
+  <text class="sublabel" x="675" y="430" text-anchor="middle" fill="#059669">MCP: Adding 1 new host = 1 connection (configure servers)</text>
+  <text class="sublabel" x="675" y="450" text-anchor="middle" fill="#059669">Adding 1 new server = N hosts auto-discover it</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-plugin { stroke: #059669; }
+    .dark .c-plugin { fill: #064e3b; stroke: #34d399; }
+    .c-sandbox { stroke: #dc2626; }
+    .dark .c-sandbox { fill: #450a0a; stroke: #f87171; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .block { fill: none; stroke: #dc2626; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Plug-In Sandbox Security</text>
+
+  <!-- Outer sandbox boundary -->
+  <rect x="100" y="80" width="700" height="380" rx="16" fill="none" stroke="#dc2626" stroke-width="3" stroke-dasharray="8,4"/>
+  <text class="label" x="450" y="75" text-anchor="middle" fill="#dc2626">Sandbox Boundary</text>
+
+  <!-- Inside sandbox: plug-in execution -->
+  <rect class="box c-plugin" x="300" y="120" width="300" height="100"/>
+  <text class="label" x="450" y="145" text-anchor="middle">Plug-In Execution</text>
+  <rect class="detail-box" x="315" y="155" width="270" height="50"/>
+  <text class="sublabel" x="325" y="173">Tool implementation runs in isolated process</text>
+  <text class="sublabel" x="325" y="191">Container / sandbox process with restricted access</text>
+
+  <!-- Resource limits -->
+  <rect x="130" y="120" width="140" height="100" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="200" y="145" text-anchor="middle">Resource Limits</text>
+  <text class="sublabel" x="145" y="165">CPU: max 2 seconds</text>
+  <text class="sublabel" x="145" y="183">Memory: max 256 MB</text>
+  <text class="sublabel" x="145" y="201">Disk: read-only</text>
+  <text class="sublabel" x="145" y="219">Network: allowlist only</text>
+
+  <!-- Permission checks -->
+  <rect x="630" y="120" width="140" height="100" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="700" y="145" text-anchor="middle">Permission Checks</text>
+  <text class="sublabel" x="645" y="165">Read DB: granted</text>
+  <text class="sublabel" x="645" y="183">Write DB: denied</text>
+  <text class="sublabel" x="645" y="201">Send email: granted</text>
+  <text class="sublabel" x="645" y="219">Execute code: denied</text>
+
+  <!-- Validation layers -->
+  <rect class="box" x="150" y="260" width="270" height="80" stroke="#2563eb"/>
+  <text class="label" x="285" y="285" text-anchor="middle" fill="#2563eb">Input Validation</text>
+  <rect class="detail-box" x="165" y="295" width="240" height="35"/>
+  <text class="sublabel" x="175" y="313">LLM tool call validated against tool schema</text>
+  <text class="sublabel" x="175" y="330">Malformed arguments rejected with error</text>
+
+  <rect class="box" x="480" y="260" width="270" height="80" stroke="#2563eb"/>
+  <text class="label" x="615" y="285" text-anchor="middle" fill="#2563eb">Output Validation</text>
+  <rect class="detail-box" x="495" y="295" width="240" height="35"/>
+  <text class="sublabel" x="505" y="313">Plug-in output validated against output schema</text>
+  <text class="sublabel" x="505" y="330">Invalid output blocked, error returned to LLM</text>
+
+  <!-- Arrows -->
+  <path class="arrow" d="M285 340 L285 380 L450 380 L450 220"/>
+  <polygon points="450,220 445,230 455,230" fill="#6366f1"/>
+  <text class="sublabel" x="280" y="370" fill="#6366f1" font-weight="700">Validated call →</text>
+
+  <path class="arrow" d="M615 340 L615 380 L450 380 L450 220"/>
+  <polygon points="450,220 445,230 455,230" fill="#6366f1"/>
+  <text class="sublabel" x="620" y="370" fill="#6366f1" font-weight="700">← Validated result</text>
+
+  <!-- Blocked operations -->
+  <path class="block" d="M450 170 L630 170"/>
+  <text x="640" y="175" fill="#dc2626" font-weight="700" font-size="14">✗</text>
+  <text class="sublabel" x="540" y="160" text-anchor="middle" fill="#dc2626">Unauthorized access blocked</text>
+
+  <!-- Bottom: Defense in depth -->
+  <rect x="100" y="420" width="700" height="50" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="sublabel" x="450" y="440" text-anchor="middle" font-weight="700">Defense in Depth: OS isolation → Resource limits → Permission checks → Input validation → Output validation</text>
+  <text class="sublabel" x="450" y="458" text-anchor="middle">Each layer provides independent protection — if one fails, others still enforce security</text>
+</svg>

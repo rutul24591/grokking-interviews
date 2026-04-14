@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">LangChain Expression Language (LCEL) Pipeline</text>
+
+  <!-- LCEL pipe syntax visualization -->
+  <text class="label" x="450" y="85" text-anchor="middle">LCEL Pipeline: prompt | model | parser | memory</text>
+
+  <!-- Pipeline stages -->
+  <rect class="box" x="30" y="110" width="160" height="80" stroke="#7c3aed"/>
+  <text class="label" x="110" y="135" text-anchor="middle" fill="#7c3aed">Prompt Template</text>
+  <rect class="detail-box" x="45" y="145" width="130" height="35"/>
+  <text class="sublabel" x="55" y="163">ChatPromptTemplate</text>
+  <text class="sublabel" x="55" y="178">Variables: {topic}</text>
+
+  <!-- Pipe symbol -->
+  <text x="205" y="155" text-anchor="middle" font-size="28" font-weight="700" fill="#6366f1">|</text>
+
+  <!-- Model -->
+  <rect class="box" x="220" y="110" width="160" height="80" stroke="#2563eb"/>
+  <text class="label" x="300" y="135" text-anchor="middle" fill="#2563eb">Chat Model</text>
+  <rect class="detail-box" x="235" y="145" width="130" height="35"/>
+  <text class="sublabel" x="245" y="163">ChatOpenAI / ChatAnthropic</text>
+  <text class="sublabel" x="245" y="178">streaming=True</text>
+
+  <!-- Pipe symbol -->
+  <text x="395" y="155" text-anchor="middle" font-size="28" font-weight="700" fill="#6366f1">|</text>
+
+  <!-- Output Parser -->
+  <rect class="box" x="410" y="110" width="160" height="80" stroke="#059669"/>
+  <text class="label" x="490" y="135" text-anchor="middle" fill="#059669">Output Parser</text>
+  <rect class="detail-box" x="425" y="145" width="130" height="35"/>
+  <text class="sublabel" x="435" y="163">PydanticOutputParser</text>
+  <text class="sublabel" x="435" y="178">JSON Schema validation</text>
+
+  <!-- Pipe symbol -->
+  <text x="585" y="155" text-anchor="middle" font-size="28" font-weight="700" fill="#6366f1">|</text>
+
+  <!-- Memory -->
+  <rect class="box" x="600" y="110" width="160" height="80" stroke="#d97706"/>
+  <text class="label" x="680" y="135" text-anchor="middle" fill="#d97706">Memory</text>
+  <rect class="detail-box" x="615" y="145" width="130" height="35"/>
+  <text class="sublabel" x="625" y="163">ConversationBuffer</text>
+  <text class="sublabel" x="625" y="178">or VectorStoreRetriever</text>
+
+  <!-- Arrow to output -->
+  <path class="arrow" d="M680 190 L680 240"/>
+
+  <!-- Output -->
+  <rect class="box" x="560" y="245" width="240" height="50"/>
+  <text class="label" x="680" y="275" text-anchor="middle">Structured Output (Pydantic)</text>
+
+  <!-- Execution flow detail -->
+  <rect x="30" y="320" width="400" height="160" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="230" y="345" text-anchor="middle">LCEL Features</text>
+  <text class="sublabel" x="50" y="370"><tspan font-weight="700">Streaming:</tspan> Output streams token-by-token</text>
+  <text class="sublabel" x="50" y="390"><tspan font-weight="700">Async:</tspan> Native async/await support</text>
+  <text class="sublabel" x="50" y="410"><tspan font-weight="700">Batching:</tspan> Parallel execution for lists</text>
+  <text class="sublabel" x="50" y="430"><tspan font-weight="700">Fallbacks:</tspan> with_fallbacks() for resilience</text>
+  <text class="sublabel" x="50" y="450"><tspan font-weight="700">Parallel:</tspan> RunnableParallel for concurrent steps</text>
+  <text class="sublabel" x="50" y="470"><tspan font-weight="700">Type safety:</tspan> Full TypeScript/Python type hints</text>
+
+  <!-- Comparison with legacy -->
+  <rect x="460" y="320" width="410" height="160" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="665" y="345" text-anchor="middle">LCEL vs Legacy Chains</text>
+
+  <text class="sublabel" x="480" y="370"><tspan font-weight="700">Legacy (LLMChain, SequentialChain):</tspan></text>
+  <text class="sublabel" x="480" y="390">• Verbose, object-oriented API</text>
+  <text class="sublabel" x="480" y="408">• No streaming support</text>
+  <text class="sublabel" x="480" y="426">• Limited composition flexibility</text>
+  <text class="sublabel" x="480" y="444">• Deprecated for new development</text>
+
+  <text class="sublabel" x="480" y="465"><tspan font-weight="700">LCEL (Runnables):</tspan></text>
+  <text class="sublabel" x="480" y="465"><tspan font-weight="700">LCEL (Runnables with | pipe):</tspan></text>
+</svg>

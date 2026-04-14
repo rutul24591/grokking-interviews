@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+    .plug { fill: #059669; }
+    .socket { fill: #7c3aed; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">AI Plug-In Architecture — Plugin-Host Contract</text>
+
+  <!-- Plugin manifest -->
+  <text class="label" x="225" y="85" text-anchor="middle">Plug-In Manifest</text>
+  <rect class="box" x="30" y="100" width="390" height="200"/>
+  <rect class="detail-box" x="45" y="110" width="360" height="180"/>
+  <text class="sublabel" x="60" y="130" font-weight="700">{</text>
+  <text class="sublabel" x="60" y="150">  "name": "weather-service",</text>
+  <text class="sublabel" x="60" y="168">  "version": "2.1.0",</text>
+  <text class="sublabel" x="60" y="186">  "description": "Get current weather data",</text>
+  <text class="sublabel" x="60" y="204">  "tools": [</text>
+  <text class="sublabel" x="80" y="222">{</text>
+  <text class="sublabel" x="100" y="240">"name": "get_weather",</text>
+  <text class="sublabel" x="100" y="258">"description": "Get weather for a city",</text>
+  <text class="sublabel" x="100" y="276">"parameters": { "city": "string" }</text>
+  <text class="sublabel" x="80" y="290">}</text>
+  <text class="sublabel" x="60" y="308">],</text>
+  <text class="sublabel" x="60" y="326">"permissions": ["network:api.weather.com"],</text>
+  <text class="sublabel" x="60" y="344">"host_compatibility": ">=3.0.0"</text>
+  <text class="sublabel" x="60" y="362" font-weight="700">}</text>
+
+  <!-- Arrow to host -->
+  <path class="arrow" d="M420 200 L480 200"/>
+  <text class="sublabel" x="450" y="190" text-anchor="middle" font-weight="700">Install</text>
+
+  <!-- Host system -->
+  <text class="label" x="675" y="85" text-anchor="middle">Host AI System</text>
+  <rect class="box" x="490" y="100" width="380" height="200"/>
+
+  <!-- Host components -->
+  <rect class="box" x="510" y="115" width="160" height="40" stroke="#2563eb"/>
+  <text class="sublabel" x="590" y="140" text-anchor="middle" font-weight="700" fill="#2563eb">Plugin Registry</text>
+
+  <rect class="box" x="690" y="115" width="160" height="40" stroke="#059669"/>
+  <text class="sublabel" x="770" y="140" text-anchor="middle" font-weight="700" fill="#059669">Tool Catalog</text>
+
+  <path d="M670 135 L690 135" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <!-- Plugin sandbox -->
+  <rect class="box" x="510" y="170" width="340" height="50" stroke="#d97706"/>
+  <text class="sublabel" x="680" y="200" text-anchor="middle" font-weight="700" fill="#d97706">Plugin Sandbox (isolated execution)</text>
+
+  <!-- LLM integration -->
+  <rect class="box" x="510" y="235" width="340" height="50" stroke="#7c3aed"/>
+  <text class="sublabel" x="680" y="265" text-anchor="middle" font-weight="700" fill="#7c3aed">LLM Tool Interface (exposed to model)</text>
+
+  <path d="M680 170 L680 170" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path d="M680 220 L680 235" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <!-- Lifecycle -->
+  <rect x="30" y="330" width="400" height="150" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="230" y="355" text-anchor="middle">Plugin Lifecycle</text>
+  <text class="sublabel" x="50" y="380"><tspan font-weight="700">1. Discovery:</tspan> Scan plugin directory or registry</text>
+  <text class="sublabel" x="50" y="400"><tspan font-weight="700">2. Validation:</tspan> Check manifest, compatibility, permissions</text>
+  <text class="sublabel" x="50" y="420"><tspan font-weight="700">3. Installation:</tspan> Register tools, create sandbox</text>
+  <text class="sublabel" x="50" y="440"><tspan font-weight="700">4. Activation:</tspan> Add tools to LLM tool catalog</text>
+  <text class="sublabel" x="50" y="460"><tspan font-weight="700">5. Deactivation:</tspan> Remove tools, cleanup sandbox</text>
+  <text class="sublabel" x="50" y="475" font-weight="700">Hot-swap supported: update without restart</text>
+
+  <!-- Security model -->
+  <rect x="460" y="330" width="410" height="150" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="label" x="665" y="355" text-anchor="middle" fill="#dc2626">Security Model</text>
+  <text class="sublabel" x="480" y="380"><tspan font-weight="700">Capability-based permissions:</tspan> network, filesystem, exec</text>
+  <text class="sublabel" x="480" y="400"><tspan font-weight="700">Sandbox isolation:</tspan> process, filesystem, network namespaces</text>
+  <text class="sublabel" x="480" y="420"><tspan font-weight="700">Resource limits:</tspan> CPU, memory, timeout per tool call</text>
+  <text class="sublabel" x="480" y="440"><tspan font-weight="700">Audit logging:</tspan> All tool calls logged with arguments and results</text>
+  <text class="sublabel" x="480" y="460"><tspan font-weight="700">User approval:</tspan> Sensitive tools require explicit user consent</text>
+  <text class="sublabel" x="480" y="475" font-weight="700">Principle: Least privilege by default</text>
+</svg>

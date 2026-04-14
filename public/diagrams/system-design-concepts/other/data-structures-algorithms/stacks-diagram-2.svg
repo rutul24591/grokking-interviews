@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" fill="none" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .dark-bg { fill: #1a1a2e; }
+      .frame { fill: #e8f0fe; stroke: #4a6cf7; stroke-width: 2; }
+      .dark-frame { fill: #252545; stroke: #6b8aff; stroke-width: 2; }
+      .frame-active { fill: #4a6cf7; }
+      .dark-frame-active { fill: #6b8aff; }
+      .frame-return { fill: #fef3c7; stroke: #d69e2e; stroke-width: 2; }
+      .dark-frame-return { fill: #3e3520; stroke: #ecc94b; stroke-width: 2; }
+      .title { font-size: 18px; font-weight: 700; fill: #1a1a2e; }
+      .dark-title { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .label { font-size: 13px; font-weight: 600; fill: #2d3748; }
+      .dark-label { font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .sublabel { font-size: 11px; font-weight: 400; fill: #718096; }
+      .dark-sublabel { font-size: 11px; font-weight: 400; fill: #a0aec0; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dark-arrow { stroke: #a0aec0; stroke-width: 2; fill: none; marker-end: url(#dark-arrowhead); }
+      .arrow-red { stroke: #e53e3e; stroke-width: 2.5; fill: none; marker-end: url(#arrowRed); }
+      .dark-arrow-red { stroke: #fc8181; stroke-width: 2.5; fill: none; marker-end: url(#dark-arrowRed); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+    <marker id="dark-arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a0aec0" />
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e53e3e" />
+    </marker>
+    <marker id="dark-arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#fc8181" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="900" height="520" rx="8" />
+  <rect class="dark-bg" width="900" height="520" rx="8" style="display:none" />
+
+  <text class="title" x="450" y="32" text-anchor="middle">Call Stack: Function Frames &amp; Return Addresses</text>
+  <text class="dark-title" x="450" y="32" text-anchor="middle">Call Stack: Function Frames &amp; Return Addresses</text>
+
+  <!-- Left: Growing call stack -->
+  <text class="label" x="200" y="65" text-anchor="middle">Call Stack Growth</text>
+  <text class="dark-label" x="200" y="65" text-anchor="middle" style="display:none">Call Stack Growth</text>
+
+  <!-- main() frame -->
+  <rect class="frame" x="80" y="80" width="240" height="56" rx="4" />
+  <rect class="dark-frame" x="80" y="80" width="240" height="56" rx="4" style="display:none" />
+  <text class="label" x="100" y="100" font-size="12">main()</text>
+  <text class="dark-label" x="100" y="100" font-size="12" style="display:none">main()</text>
+  <text class="sublabel" x="100" y="120" font-size="10">ret: 0x0040 (program entry)</text>
+  <text class="dark-sublabel" x="100" y="120" font-size="10" style="display:none">ret: 0x0040 (program entry)</text>
+
+  <!-- compute() frame -->
+  <rect class="frame" x="80" y="140" width="240" height="56" rx="4" />
+  <rect class="dark-frame" x="80" y="140" width="240" height="56" rx="4" style="display:none" />
+  <text class="label" x="100" y="160" font-size="12">compute(n=5)</text>
+  <text class="dark-label" x="100" y="160" font-size="12" style="display:none">compute(n=5)</text>
+  <text class="sublabel" x="100" y="180" font-size="10">ret: main()+0x14 | locals: n</text>
+  <text class="dark-sublabel" x="100" y="180" font-size="10" style="display:none">ret: main()+0x14 | locals: n</text>
+
+  <!-- helper() frame -->
+  <rect class="frame" x="80" y="200" width="240" height="56" rx="4" />
+  <rect class="dark-frame" x="80" y="200" width="240" height="56" rx="4" style="display:none" />
+  <text class="label" x="100" y="220" font-size="12">helper(a, b)</text>
+  <text class="dark-label" x="100" y="220" font-size="12" style="display:none">helper(a, b)</text>
+  <text class="sublabel" x="100" y="240" font-size="10">ret: compute()+0x28 | locals: a,b</text>
+  <text class="dark-sublabel" x="100" y="240" font-size="10" style="display:none">ret: compute()+0x28 | locals: a,b</text>
+
+  <!-- validate() frame (active) -->
+  <rect class="frame-active" x="80" y="260" width="240" height="56" rx="4" />
+  <rect class="dark-frame-active" x="80" y="260" width="240" height="56" rx="4" style="display:none" />
+  <text class="label" x="100" y="280" font-size="12" fill="#ffffff">validate(x) &#8592; ACTIVE</text>
+  <text class="dark-label" x="100" y="280" font-size="12" fill="#ffffff" style="display:none">validate(x) &#8592; ACTIVE</text>
+  <text class="sublabel" x="100" y="300" font-size="10" fill="#e2e8f0">ret: helper()+0x0c | locals: x</text>
+  <text class="dark-sublabel" x="100" y="300" font-size="10" fill="#e2e8f0" style="display:none">ret: helper()+0x0c | locals: x</text>
+
+  <!-- Stack pointer arrow -->
+  <path class="arrow-red" d="M 340 288 L 370 288" />
+  <path class="dark-arrow-red" d="M 340 288 L 370 288" style="display:none" />
+  <text class="sublabel" x="410" y="285" font-size="11">stack pointer</text>
+  <text class="dark-sublabel" x="410" y="285" font-size="11" style="display:none">stack pointer</text>
+  <text class="sublabel" x="410" y="302" font-size="11">(top of stack)</text>
+  <text class="dark-sublabel" x="410" y="302" font-size="11" style="display:none">(top of stack)</text>
+
+  <!-- Growth direction arrow -->
+  <path class="arrow" d="M 200 340 L 200 370" />
+  <path class="dark-arrow" d="M 200 340 L 200 370" style="display:none" />
+  <text class="sublabel" x="200" y="390" text-anchor="middle">grows downward</text>
+  <text class="dark-sublabel" x="200" y="390" text-anchor="middle" style="display:none">grows downward</text>
+
+  <!-- Right: Frame anatomy -->
+  <text class="label" x="680" y="65" text-anchor="middle">Stack Frame Anatomy</text>
+  <text class="dark-label" x="680" y="65" text-anchor="middle" style="display:none">Stack Frame Anatomy</text>
+
+  <!-- Detailed frame breakdown -->
+  <rect class="frame-return" x="540" y="85" width="280" height="44" rx="4" />
+  <rect class="dark-frame-return" x="540" y="85" width="280" height="44" rx="4" style="display:none" />
+  <text class="label" x="560" y="112" font-size="12">Return Address</text>
+  <text class="dark-label" x="560" y="112" font-size="12" style="display:none">Return Address</text>
+  <text class="sublabel" x="700" y="112" text-anchor="end" font-size="10">Where to resume after call</text>
+  <text class="dark-sublabel" x="700" y="112" text-anchor="end" font-size="10" style="display:none">Where to resume after call</text>
+
+  <rect class="frame" x="540" y="135" width="280" height="44" rx="4" />
+  <rect class="dark-frame" x="540" y="135" width="280" height="44" rx="4" style="display:none" />
+  <text class="label" x="560" y="162" font-size="12">Saved Frame Pointer</text>
+  <text class="dark-label" x="560" y="162" font-size="12" style="display:none">Saved Frame Pointer</text>
+  <text class="sublabel" x="700" y="162" text-anchor="end" font-size="10">Previous frame base pointer</text>
+  <text class="dark-sublabel" x="700" y="162" text-anchor="end" font-size="10" style="display:none">Previous frame base pointer</text>
+
+  <rect class="frame" x="540" y="185" width="280" height="44" rx="4" />
+  <rect class="dark-frame" x="540" y="185" width="280" height="44" rx="4" style="display:none" />
+  <text class="label" x="560" y="212" font-size="12">Function Parameters</text>
+  <text class="dark-label" x="560" y="212" font-size="12" style="display:none">Function Parameters</text>
+  <text class="sublabel" x="700" y="212" text-anchor="end" font-size="10">Arguments passed by caller</text>
+  <text class="dark-sublabel" x="700" y="212" text-anchor="end" font-size="10" style="display:none">Arguments passed by caller</text>
+
+  <rect class="frame" x="540" y="235" width="280" height="44" rx="4" />
+  <rect class="dark-frame" x="540" y="235" width="280" height="44" rx="4" style="display:none" />
+  <text class="label" x="560" y="262" font-size="12">Local Variables</text>
+  <text class="dark-label" x="560" y="262" font-size="12" style="display:none">Local Variables</text>
+  <text class="sublabel" x="700" y="262" text-anchor="end" font-size="10">Autos, temporaries, spills</text>
+  <text class="dark-sublabel" x="700" y="262" text-anchor="end" font-size="10" style="display:none">Autos, temporaries, spills</text>
+
+  <rect class="frame" x="540" y="285" width="280" height="44" rx="4" />
+  <rect class="dark-frame" x="540" y="285" width="280" height="44" rx="4" style="display:none" />
+  <text class="label" x="560" y="312" font-size="12">Saved Registers</text>
+  <text class="dark-label" x="560" y="312" font-size="12" style="display:none">Saved Registers</text>
+  <text class="sublabel" x="700" y="312" text-anchor="end" font-size="10">Callee-saved (RBX, RBP, R12-R15)</text>
+  <text class="dark-sublabel" x="700" y="312" text-anchor="end" font-size="10" style="display:none">Callee-saved (RBX, RBP, R12-R15)</text>
+
+  <!-- Bottom: Stack overflow illustration -->
+  <rect class="frame" x="80" y="420" width="240" height="80" rx="6" fill="#fff5f5" stroke="#e53e3e" stroke-width="2" />
+  <rect class="dark-frame" x="80" y="420" width="240" height="80" rx="6" fill="#3e2020" stroke="#fc8181" stroke-width="2" style="display:none" />
+  <text class="label" x="200" y="448" text-anchor="middle" fill="#e53e3e" font-size="14">Stack Overflow!</text>
+  <text class="dark-label" x="200" y="448" text-anchor="middle" fill="#fc8181" font-size="14" style="display:none">Stack Overflow!</text>
+  <text class="sublabel" x="200" y="468" text-anchor="middle">Exceeds stack limit (e.g., 8MB)</text>
+  <text class="dark-sublabel" x="200" y="468" text-anchor="middle" style="display:none">Exceeds stack limit (e.g., 8MB)</text>
+  <text class="sublabel" x="200" y="486" text-anchor="middle">Infinite recursion, deep nesting</text>
+  <text class="dark-sublabel" x="200" y="486" text-anchor="middle" style="display:none">Infinite recursion, deep nesting</text>
+
+  <!-- Annotations on right -->
+  <text class="sublabel" x="680" y="370" text-anchor="middle" font-size="12">Each frame pushed on call,</text>
+  <text class="dark-sublabel" x="680" y="370" text-anchor="middle" font-size="12" style="display:none">Each frame pushed on call,</text>
+  <text class="sublabel" x="680" y="388" text-anchor="middle" font-size="12">popped on return (LIFO)</text>
+  <text class="dark-sublabel" x="680" y="388" text-anchor="middle" font-size="12" style="display:none">popped on return (LIFO)</text>
+
+  <text class="sublabel" x="680" y="420" text-anchor="middle" font-size="11">Stack canary protects</text>
+  <text class="dark-sublabel" x="680" y="420" text-anchor="middle" font-size="11" style="display:none">Stack canary protects</text>
+  <text class="sublabel" x="680" y="438" text-anchor="middle" font-size="11">against buffer overflow</text>
+  <text class="dark-sublabel" x="680" y="438" text-anchor="middle" font-size="11" style="display:none">against buffer overflow</text>
+  <text class="sublabel" x="680" y="456" text-anchor="middle" font-size="11">attacks by detecting</text>
+  <text class="dark-sublabel" x="680" y="456" text-anchor="middle" font-size="11" style="display:none">attacks by detecting</text>
+  <text class="sublabel" x="680" y="474" text-anchor="middle" font-size="11">corrupted return addresses</text>
+  <text class="dark-sublabel" x="680" y="474" text-anchor="middle" font-size="11" style="display:none">corrupted return addresses</text>
+
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .bg { display: none; }
+      .dark-bg { display: block; }
+      .frame { display: none; }
+      .dark-frame { display: block; }
+      .frame-active { display: none; }
+      .dark-frame-active { display: block; }
+      .frame-return { display: none; }
+      .dark-frame-return { display: block; }
+      .title { display: none; }
+      .dark-title { display: block; }
+      .label { display: none; }
+      .dark-label { display: block; }
+      .sublabel { display: none; }
+      .dark-sublabel { display: block; }
+      .arrow { display: none; }
+      .dark-arrow { display: block; }
+      .arrow-red { display: none; }
+      .dark-arrow-red { display: block; }
+    }
+  </style>
+</svg>

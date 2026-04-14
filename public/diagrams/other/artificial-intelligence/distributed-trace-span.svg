@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Distributed Trace Span Construction for AI Workflows</text>
+
+  <!-- Root span -->
+  <rect class="box" x="30" y="70" width="840" height="40" stroke="#7c3aed"/>
+  <text class="label" x="60" y="95" text-anchor="start" fill="#7c3aed">User Request: "Summarize this document"</text>
+  <rect x="60" y="80" width="790" height="20" rx="3" fill="#ede9fe"/>
+  <text class="sublabel" x="850" y="94" text-anchor="end">0ms — 3200ms</text>
+
+  <!-- Span 1: Prompt construction -->
+  <rect class="box" x="60" y="120" width="180" height="35" stroke="#2563eb"/>
+  <text class="sublabel" x="75" y="142" fill="#2563eb">Prompt Construction</text>
+  <rect x="60" y="125" width="180" height="8" rx="3" fill="#dbeafe"/>
+  <text class="sublabel" x="245" y="142">0-120ms</text>
+
+  <!-- Span 2: Retrieval -->
+  <rect class="box" x="60" y="165" width="280" height="35" stroke="#059669"/>
+  <text class="sublabel" x="75" y="187" fill="#059669">Document Retrieval (RAG)</text>
+  <rect x="60" y="170" width="280" height="8" rx="3" fill="#d1fae5"/>
+  <text class="sublabel" x="345" y="187">120-520ms</text>
+
+  <!-- Nested span: Vector search -->
+  <rect class="box" x="90" y="210" width="180" height="30" stroke="#d97706"/>
+  <text class="sublabel" x="105" y="229" fill="#d97706">Vector DB Search</text>
+  <rect x="90" y="213" width="180" height="6" rx="3" fill="#fef3c7"/>
+  <text class="sublabel" x="275" y="229">120-340ms</text>
+
+  <!-- Nested span: Reranking -->
+  <rect class="box" x="90" y="250" width="120" height="30" stroke="#ec4899"/>
+  <text class="sublabel" x="105" y="269" fill="#ec4899">Reranking</text>
+  <rect x="90" y="253" width="120" height="6" rx="3" fill="#fce7f3"/>
+  <text class="sublabel" x="215" y="269">340-520ms</text>
+
+  <!-- Span 3: LLM call -->
+  <rect class="box" x="60" y="295" width="500" height="35" stroke="#dc2626"/>
+  <text class="sublabel" x="75" y="317" fill="#dc2626">LLM API Call (GPT-4)</text>
+  <rect x="60" y="300" width="500" height="8" rx="3" fill="#fee2e2"/>
+  <text class="sublabel" x="565" y="317">520-2800ms</text>
+
+  <!-- Nested span: Prefill -->
+  <rect class="box" x="90" y="340" width="100" height="28" stroke="#f59e0b"/>
+  <text class="sublabel" x="105" y="358" fill="#f59e0b">Prefill</text>
+  <rect x="90" y="342" width="100" height="6" rx="3" fill="#fef3c7"/>
+  <text class="sublabel" x="195" y="358">520-820ms</text>
+
+  <!-- Nested span: Decode -->
+  <rect class="box" x="195" y="340" width="350" height="28" stroke="#f59e0b"/>
+  <text class="sublabel" x="210" y="358" fill="#f59e0b">Token Generation (streaming)</text>
+  <rect x="195" y="342" width="350" height="6" rx="3" fill="#fef3c7"/>
+  <text class="sublabel" x="550" y="358">820-2800ms</text>
+
+  <!-- Span 4: Output validation -->
+  <rect class="box" x="60" y="380" width="120" height="30" stroke="#6366f1"/>
+  <text class="sublabel" x="75" y="399" fill="#6366f1">Output Validation</text>
+  <rect x="60" y="383" width="120" height="6" rx="3" fill="#ede9fe"/>
+  <text class="sublabel" x="185" y="399">2800-2850ms</text>
+
+  <!-- Span 5: Response delivery -->
+  <rect class="box" x="60" y="420" width="100" height="30" stroke="#6366f1"/>
+  <text class="sublabel" x="75" y="439" fill="#6366f1">Response</text>
+  <rect x="60" y="423" width="100" height="6" rx="3" fill="#ede9fe"/>
+  <text class="sublabel" x="165" y="439">2850-3200ms</text>
+
+  <!-- Metadata panel -->
+  <rect x="600" y="200" width="270" height="270" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="735" y="225" text-anchor="middle">Trace Metadata</text>
+  <text class="sublabel" x="620" y="250">Trace ID: abc-123-def</text>
+  <text class="sublabel" x="620" y="268">User ID: user-456</text>
+  <text class="sublabel" x="620" y="286">Feature: document_summary</text>
+  <text class="sublabel" x="620" y="304">Model: gpt-4</text>
+  <text class="sublabel" x="620" y="322">Input tokens: 2,847</text>
+  <text class="sublabel" x="620" y="340">Output tokens: 312</text>
+  <text class="sublabel" x="620" y="358">Cost: $0.0102</text>
+  <text class="sublabel" x="620" y="376">Quality score: 0.87</text>
+  <text class="sublabel" x="620" y="394">Cache hit: false</text>
+  <text class="sublabel" x="620" y="412">Retrieved docs: 5</text>
+  <text class="sublabel" x="620" y="430">Validation: pass</text>
+  <text class="sublabel" x="620" y="448">Error: none</text>
+  <text class="sublabel" x="620" y="466">Status: 200</text>
+</svg>

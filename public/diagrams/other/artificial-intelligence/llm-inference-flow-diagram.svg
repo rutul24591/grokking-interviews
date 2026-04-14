@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .box-tokenize { fill: #ede9fe; stroke: #7c3aed; stroke-width: 2; rx: 8; }
+    .dark .box-tokenize { fill: #2e1065; stroke: #a78bfa; }
+    .box-embed { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; rx: 8; }
+    .dark .box-embed { fill: #1e3a5f; stroke: #60a5fa; }
+    .box-transformer { fill: #fce7f3; stroke: #db2777; stroke-width: 2; rx: 8; }
+    .dark .box-transformer { fill: #500724; stroke: #f472b6; }
+    .box-logits { fill: #d1fae5; stroke: #059669; stroke-width: 2; rx: 8; }
+    .dark .box-logits { fill: #064e3b; stroke: #34d399; }
+    .box-sample { fill: #fef3c7; stroke: #d97706; stroke-width: 2; rx: 8; }
+    .dark .box-sample { fill: #451a03; stroke: #fbbf24; }
+    .box-detokenize { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 8; }
+    .dark .box-detokenize { fill: #450a0a; stroke: #f87171; }
+    .box-cache { fill: #f0f9ff; stroke: #0284c7; stroke-width: 2; rx: 8; }
+    .dark .box-cache { fill: #0c4a6e; stroke: #38bdf8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .loop-arrow { fill: none; stroke: #f59e0b; stroke-width: 2; stroke-dasharray: 5,3; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">LLM Inference Flow</text>
+
+  <!-- Step 1: Tokenization -->
+  <rect class="box-tokenize" x="20" y="70" width="130" height="80"/>
+  <text class="label" x="85" y="100" text-anchor="middle">1. Tokenize</text>
+  <text class="sublabel" x="85" y="118" text-anchor="middle">Text to token IDs</text>
+  <text class="sublabel" x="85" y="133" text-anchor="middle">BPE / SentencePiece</text>
+
+  <!-- Arrow -->
+  <path class="arrow" d="M150 110 L180 110"/>
+  <polygon points="180,110 172,105 172,115" fill="#6366f1"/>
+
+  <!-- Step 2: Embedding -->
+  <rect class="box-embed" x="190" y="70" width="130" height="80"/>
+  <text class="label" x="255" y="100" text-anchor="middle">2. Embed</text>
+  <text class="sublabel" x="255" y="118" text-anchor="middle">Token IDs to vectors</text>
+  <text class="sublabel" x="255" y="133" text-anchor="middle">d_model = 4096+</text>
+
+  <!-- Arrow -->
+  <path class="arrow" d="M320 110 L350 110"/>
+  <polygon points="350,110 342,105 342,115" fill="#6366f1"/>
+
+  <!-- Step 3: Transformer Layers -->
+  <rect class="box-transformer" x="360" y="70" width="160" height="200"/>
+  <text class="label" x="440" y="100" text-anchor="middle">3. Transformer Layers</text>
+  <rect class="detail-box" x="375" y="115" width="130" height="140"/>
+  <text class="sublabel" x="385" y="135">Multi-Head Self-Attention</text>
+  <text class="sublabel" x="385" y="155">Feed-Forward Network</text>
+  <text class="sublabel" x="385" y="175">Residual Connections</text>
+  <text class="sublabel" x="385" y="195">Layer Normalization</text>
+  <text class="sublabel" x="385" y="215">Causal Masking</text>
+  <text class="sublabel" x="385" y="235">x N layers (32-128)</text>
+
+  <!-- KV Cache attached to Transformer -->
+  <rect class="box-cache" x="530" y="110" width="120" height="80"/>
+  <text class="label" x="590" y="135" text-anchor="middle">KV Cache</text>
+  <text class="sublabel" x="590" y="155" text-anchor="middle">Stores K,V vectors</text>
+  <text class="sublabel" x="590" y="170" text-anchor="middle">O(n) -&gt; O(1) per step</text>
+  <text class="sublabel" x="590" y="185" text-anchor="middle">Grows with context</text>
+  <path class="arrow" d="M520 150 L530 150"/>
+  <polygon points="530,150 522,145 522,155" fill="#6366f1"/>
+
+  <!-- Arrow -->
+  <path class="arrow" d="M520 170 L730 170 L730 110"/>
+  <polygon points="730,110 725,120 735,120" fill="#6366f1"/>
+
+  <!-- Step 4: Logits -->
+  <rect class="box-logits" x="740" y="70" width="140" height="80"/>
+  <text class="label" x="810" y="100" text-anchor="middle">4. Logits</text>
+  <text class="sublabel" x="810" y="118" text-anchor="middle">Vocab-sized output</text>
+  <text class="sublabel" x="810" y="133" text-anchor="middle">~150K dimensions</text>
+
+  <!-- Arrow down -->
+  <path class="arrow" d="M810 150 L810 190"/>
+  <polygon points="810,190 805,180 815,180" fill="#6366f1"/>
+
+  <!-- Step 5: Sampling -->
+  <rect class="box-sample" x="740" y="200" width="140" height="80"/>
+  <text class="label" x="810" y="230" text-anchor="middle">5. Sample</text>
+  <text class="sublabel" x="810" y="248" text-anchor="middle">Greedy / Top-k / Top-p</text>
+  <text class="sublabel" x="810" y="263" text-anchor="middle">Temperature scaling</text>
+
+  <!-- Arrow left -->
+  <path class="arrow" d="M740 240 L560 240 L560 270"/>
+  <polygon points="560,270 555,260 565,260" fill="#6366f1"/>
+
+  <!-- Loop label -->
+  <text class="sublabel" x="650" y="235" text-anchor="middle" fill="#f59e0b" font-weight="700">Loop: autoregressive</text>
+
+  <!-- Step 6: Detokenize -->
+  <rect class="box-detokenize" x="20" y="200" width="130" height="80"/>
+  <text class="label" x="85" y="230" text-anchor="middle">6. Detokenize</text>
+  <text class="sublabel" x="85" y="248" text-anchor="middle">Token ID to text</text>
+  <text class="sublabel" x="85" y="263" text-anchor="middle">Streaming output</text>
+
+  <!-- Arrow from transformer down to detokenize -->
+  <path class="arrow" d="M85 150 L85 200"/>
+  <polygon points="85,200 80,190 90,190" fill="#6366f1"/>
+
+  <!-- Output box -->
+  <rect class="box-tokenize" x="190" y="200" width="130" height="80"/>
+  <text class="label" x="255" y="230" text-anchor="middle">Generated Text</text>
+  <text class="sublabel" x="255" y="248" text-anchor="middle">Token-by-token</text>
+  <text class="sublabel" x="255" y="263" text-anchor="middle">Real-time streaming</text>
+  <path class="arrow" d="M150 240 L190 240"/>
+  <polygon points="190,240 182,235 182,245" fill="#6366f1"/>
+
+  <!-- Bottom annotation -->
+  <rect class="detail-box" x="100" y="320" width="700" height="160"/>
+  <text class="label" x="450" y="345" text-anchor="middle">Key Performance Considerations</text>
+  <text class="sublabel" x="130" y="370">Prefill Phase: Process entire prompt in parallel — compute-bound, benefits from GPU parallelism</text>
+  <text class="sublabel" x="130" y="395">Decode Phase: Generate one token at a time — memory-bound, limited by KV cache bandwidth</text>
+  <text class="sublabel" x="130" y="420">Time to First Token (TTFT): Latency from request to first output token — user-perceived responsiveness</text>
+  <text class="sublabel" x="130" y="445">Tokens Per Second (TPS): Generation throughput — determines how many concurrent requests a GPU can handle</text>
+  <text class="sublabel" x="130" y="470">KV Cache Memory: ~2 bytes x num_layers x num_heads x head_dim x seq_len — major bottleneck for long contexts</text>
+</svg>

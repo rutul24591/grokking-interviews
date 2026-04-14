@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Data Labeling Strategies</text>
+
+  <!-- Expert Labeling -->
+  <rect class="box" x="30" y="80" width="200" height="130" stroke="#7c3aed"/>
+  <text class="label" x="130" y="105" text-anchor="middle" fill="#7c3aed">Expert Labeling</text>
+  <rect class="detail-box" x="45" y="115" width="170" height="80"/>
+  <text class="sublabel" x="55" y="133"><tspan font-weight="700">Quality:</tspan> Highest</text>
+  <text class="sublabel" x="55" y="151"><tspan font-weight="700">Cost:</tspan> $50-200/hour</text>
+  <text class="sublabel" x="55" y="169"><tspan font-weight="700">Speed:</tspan> 10-50 examples/hour</text>
+  <text class="sublabel" x="55" y="187"><tspan font-weight="700">Best for:</tspan> Complex domain tasks</text>
+
+  <!-- Crowdsourced -->
+  <rect class="box" x="260" y="80" width="200" height="130" stroke="#2563eb"/>
+  <text class="label" x="360" y="105" text-anchor="middle" fill="#2563eb">Crowdsourced Labeling</text>
+  <rect class="detail-box" x="275" y="115" width="170" height="80"/>
+  <text class="sublabel" x="285" y="133"><tspan font-weight="700">Quality:</tspan> Medium (needs QC)</text>
+  <text class="sublabel" x="285" y="151"><tspan font-weight="700">Cost:</tspan> $5-20/hour</text>
+  <text class="sublabel" x="285" y="169"><tspan font-weight="700">Speed:</tspan> 100-500 examples/hour</text>
+  <text class="sublabel" x="285" y="187"><tspan font-weight="700">Best for:</tspan> Simple classification</text>
+
+  <!-- LLM-Assisted -->
+  <rect class="box" x="490" y="80" width="200" height="130" stroke="#059669"/>
+  <text class="label" x="590" y="105" text-anchor="middle" fill="#059669">LLM-Assisted Labeling</text>
+  <rect class="detail-box" x="505" y="115" width="170" height="80"/>
+  <text class="sublabel" x="515" y="133"><tspan font-weight="700">Quality:</tspan> High (with review)</text>
+  <text class="sublabel" x="515" y="151"><tspan font-weight="700">Cost:</tspan> $0.001-0.01/example</text>
+  <text class="sublabel" x="515" y="169"><tspan font-weight="700">Speed:</tspan> 1000s examples/hour</text>
+  <text class="sublabel" x="515" y="187"><tspan font-weight="700">Best for:</tspan> Bulk labeling + review</text>
+
+  <!-- Synthetic -->
+  <rect class="box" x="720" y="80" width="150" height="130" stroke="#d97706"/>
+  <text class="label" x="795" y="105" text-anchor="middle" fill="#d97706">Synthetic Data</text>
+  <rect class="detail-box" x="735" y="115" width="120" height="80"/>
+  <text class="sublabel" x="745" y="133"><tspan font-weight="700">Quality:</tspan> Variable</text>
+  <text class="sublabel" x="745" y="151"><tspan font-weight="700">Cost:</tspan> $0.01-0.10/example</text>
+  <text class="sublabel" x="745" y="169"><tspan font-weight="700">Speed:</tspan> Unlimited</text>
+  <text class="sublabel" x="745" y="187"><tspan font-weight="700">Best for:</tspan> Edge cases</text>
+
+  <!-- Hybrid approach -->
+  <rect x="30" y="250" width="840" height="230" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="450" y="275" text-anchor="middle">Recommended Hybrid Approach</text>
+
+  <rect x="50" y="290" width="390" height="170" rx="6" fill="#ffffff" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="70" y="315" font-weight="700">Pipeline: LLM-Assisted + Human Review</text>
+  <text class="sublabel" x="70" y="338">1. LLM generates draft labels for all examples (fast, cheap)</text>
+  <text class="sublabel" x="70" y="356">2. Automated quality checks filter uncertain labels</text>
+  <text class="sublabel" x="70" y="374">3. Human experts review uncertain labels (10-20% of total)</text>
+  <text class="sublabel" x="70" y="392">4. Calibrate LLM labels against expert labels</text>
+  <text class="sublabel" x="70" y="410">5. Iterate: improve LLM prompt, re-label, re-review</text>
+  <text class="sublabel" x="70" y="430" font-weight="700" fill="#059669">Result: 80-90% of expert quality at 10-20% of the cost</text>
+
+  <rect x="470" y="290" width="380" height="170" rx="6" fill="#ffffff" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="490" y="315" font-weight="700">When to Use Each Strategy</text>
+  <text class="sublabel" x="490" y="338"><tspan font-weight="700">Expert:</tspan> Gold standard evaluation set (500-1000 examples)</text>
+  <text class="sublabel" x="490" y="356"><tspan font-weight="700">Crowdsourced:</tspan> Simple classification at scale (10K+ examples)</text>
+  <text class="sublabel" x="490" y="374"><tspan font-weight="700">LLM-Assisted:</tspan> Bulk training data generation (100K+ examples)</text>
+  <text class="sublabel" x="490" y="392"><tspan font-weight="700">Synthetic:</tspan> Rare edge cases, privacy-sensitive domains</text>
+  <text class="sublabel" x="490" y="410" font-weight="700">Key: Always validate against expert-labeled hold-out set</text>
+  <text class="sublabel" x="490" y="430">Track inter-annotator agreement to measure label quality</text>
+</svg>

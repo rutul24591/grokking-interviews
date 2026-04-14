@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-vector { stroke: #7c3aed; }
+    .dark .s-vector { fill: #2e1065; stroke: #a78bfa; }
+    .s-keyword { stroke: #2563eb; }
+    .dark .s-keyword { fill: #1e3a5f; stroke: #60a5fa; }
+    .s-rerank { stroke: #059669; }
+    .dark .s-rerank { fill: #064e3b; stroke: #34d399; }
+    .s-compress { stroke: #d97706; }
+    .dark .s-compress { fill: #451a03; stroke: #fbbf24; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">RAG Retrieval Optimization</text>
+
+  <!-- Step 1: Vector Search -->
+  <rect class="box s-vector" x="30" y="80" width="200" height="100"/>
+  <text class="label" x="130" y="105" text-anchor="middle">1. Vector Search</text>
+  <rect class="detail-box" x="45" y="115" width="170" height="55"/>
+  <text class="sublabel" x="55" y="133">Bi-encoder embedding model</text>
+  <text class="sublabel" x="55" y="150">Query → embedding → similarity</text>
+  <text class="sublabel" x="55" y="167">Returns top-50 candidates</text>
+
+  <path class="arrow" d="M230 130 L270 130"/>
+  <polygon points="270,130 262,125 262,135" fill="#6366f1"/>
+
+  <!-- Step 2: Keyword Search -->
+  <rect class="box s-keyword" x="280" y="80" width="200" height="100"/>
+  <text class="label" x="380" y="105" text-anchor="middle">2. Keyword Search (BM25)</text>
+  <rect class="detail-box" x="295" y="115" width="170" height="55"/>
+  <text class="sublabel" x="305" y="133">Exact term matching</text>
+  <text class="sublabel" x="305" y="150">Catches product names, IDs</text>
+  <text class="sublabel" x="305" y="167">Returns top-50 candidates</text>
+
+  <path class="arrow" d="M480 130 L520 130"/>
+  <polygon points="520,130 512,125 512,135" fill="#6366f1"/>
+
+  <!-- Step 3: Hybrid Fusion -->
+  <rect class="box s-rerank" x="530" y="80" width="170" height="100"/>
+  <text class="label" x="615" y="105" text-anchor="middle">3. Hybrid Fusion</text>
+  <rect class="detail-box" x="545" y="115" width="140" height="55"/>
+  <text class="sublabel" x="555" y="133">Reciprocal Rank Fusion</text>
+  <text class="sublabel" x="555" y="150">Combined score = 1/(k+r1)</text>
+  <text class="sublabel" x="555" y="167">+ 1/(k+r2)</text>
+
+  <path class="arrow" d="M700 130 L740 130"/>
+  <polygon points="740,130 732,125 732,135" fill="#6366f1"/>
+
+  <!-- Step 4: Reranking -->
+  <rect class="box s-rerank" x="750" y="80" width="130" height="100"/>
+  <text class="label" x="815" y="105" text-anchor="middle">4. Rerank</text>
+  <rect class="detail-box" x="760" y="115" width="110" height="55"/>
+  <text class="sublabel" x="770" y="133">Cross-encoder model</text>
+  <text class="sublabel" x="770" y="150">Query × doc pairwise</text>
+  <text class="sublabel" x="770" y="167">top-50 → top-10</text>
+
+  <!-- Arrow down to compression -->
+  <path class="arrow" d="M815 180 L815 240"/>
+  <polygon points="815,240 810,230 820,230" fill="#6366f1"/>
+
+  <!-- Step 5: Compression -->
+  <rect class="box s-compress" x="715" y="245" width="200" height="80"/>
+  <text class="label" x="815" y="270" text-anchor="middle">5. Context Compression</text>
+  <rect class="detail-box" x="730" y="285" width="170" height="30"/>
+  <text class="sublabel" x="740" y="305">Extract relevant sentences only</text>
+
+  <path class="arrow" d="M715 285 L530 285"/>
+  <polygon points="530,285 538,280 538,290" fill="#6366f1"/>
+
+  <!-- Bottom: Before vs After -->
+  <rect x="30" y="220" width="480" height="140" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="270" y="245" text-anchor="middle">Optimization Impact</text>
+
+  <rect x="50" y="260" width="200" height="85" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="label" x="150" y="280" text-anchor="middle">Before Optimization</text>
+  <text class="sublabel" x="65" y="300">Vector search only</text>
+  <text class="sublabel" x="65" y="318">Recall: 65%, Precision: 40%</text>
+  <text class="sublabel" x="65" y="336">Context: 5000 tokens</text>
+
+  <rect x="280" y="260" width="200" height="85" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="label" x="380" y="280" text-anchor="middle">After Optimization</text>
+  <text class="sublabel" x="295" y="300">Hybrid + Rerank + Compress</text>
+  <text class="sublabel" x="295" y="318">Recall: 85%, Precision: 75%</text>
+  <text class="sublabel" x="295" y="336">Context: 1500 tokens (-70%)</text>
+
+  <!-- Key metrics -->
+  <rect x="30" y="390" width="840" height="90" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="450" y="415" text-anchor="middle">Key Metrics to Track</text>
+  <text class="sublabel" x="50" y="438"><tspan font-weight="700">Recall@k:</tspan> What fraction of relevant docs are in top-k retrieved? Target: >80%</text>
+  <text class="sublabel" x="50" y="458"><tspan font-weight="700">Precision@k:</tspan> What fraction of top-k are actually relevant? Target: >60%</text>
+  <text class="sublabel" x="50" y="478"><tspan font-weight="700">Context Efficiency:</tspan> Relevant tokens / Total context tokens. Target: >50%</text>
+</svg>

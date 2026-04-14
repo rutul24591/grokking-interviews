@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .box-agent { fill: #ede9fe; stroke: #7c3aed; stroke-width: 2; rx: 8; }
+    .dark .box-agent { fill: #2e1065; stroke: #a78bfa; }
+    .box-registry { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; rx: 8; }
+    .dark .box-registry { fill: #1e3a5f; stroke: #60a5fa; }
+    .box-exec { fill: #d1fae5; stroke: #059669; stroke-width: 2; rx: 8; }
+    .dark .box-exec { fill: #064e3b; stroke: #34d399; }
+    .box-observe { fill: #fef3c7; stroke: #d97706; stroke-width: 2; rx: 8; }
+    .dark .box-observe { fill: #451a03; stroke: #fbbf24; }
+    .box-guard { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 8; }
+    .dark .box-guard { fill: #450a0a; stroke: #f87171; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Agent Tool Use Architecture</text>
+
+  <!-- Agent LLM -->
+  <rect class="box-agent" x="350" y="70" width="200" height="80"/>
+  <text class="label" x="450" y="100" text-anchor="middle">Agent LLM</text>
+  <rect class="detail-box" x="365" y="115" width="170" height="25"/>
+  <text class="sublabel" x="375" y="132">Reasoning + Tool Selection</text>
+
+  <path class="arrow" d="M450 150 L450 195"/>
+  <polygon points="450,195 445,185 455,185" fill="#6366f1"/>
+
+  <!-- Tool Registry -->
+  <rect class="box-registry" x="30" y="200" width="200" height="100"/>
+  <text class="label" x="130" y="225" text-anchor="middle">Tool Registry</text>
+  <rect class="detail-box" x="45" y="240" width="170" height="45"/>
+  <text class="sublabel" x="55" y="258">search_knowledge_base()</text>
+  <text class="sublabel" x="55" y="276">query_database()</text>
+
+  <!-- Arrow from registry to agent -->
+  <path class="arrow" d="M230 250 L340 250 L340 120 L350 120"/>
+  <polygon points="350,120 342,115 342,125" fill="#6366f1"/>
+  <text class="sublabel" x="280" y="105">Available tools</text>
+
+  <!-- Tool Call Request -->
+  <path class="arrow" d="M450 150 L560 150 L560 210"/>
+  <polygon points="560,210 555,200 565,200" fill="#6366f1"/>
+  <text class="sublabel" x="570" y="185">Tool call: name + args</text>
+
+  <!-- Safety Guardrails -->
+  <rect class="box-guard" x="580" y="215" width="180" height="70"/>
+  <text class="label" x="670" y="240" text-anchor="middle">Safety Guardrails</text>
+  <rect class="detail-box" x="595" y="250" width="150" height="25"/>
+  <text class="sublabel" x="605" y="267">Validate args, check perms</text>
+
+  <path class="arrow" d="M670 285 L670 330"/>
+  <polygon points="670,330 665,320 675,320" fill="#6366f1"/>
+
+  <!-- Execution Engine -->
+  <rect class="box-exec" x="570" y="335" width="200" height="80"/>
+  <text class="label" x="670" y="360" text-anchor="middle">Execution Engine</text>
+  <rect class="detail-box" x="585" y="375" width="170" height="30"/>
+  <text class="sublabel" x="595" y="393">Run tool, handle errors</text>
+  <text class="sublabel" x="595" y="408">Retry, fallback</text>
+
+  <!-- Observation -->
+  <path class="arrow" d="M570 375 L450 375 L450 430"/>
+  <polygon points="450,430 445,420 455,420" fill="#6366f1"/>
+  <text class="sublabel" x="500" y="395">Formatted result</text>
+
+  <rect class="box-observe" x="350" y="435" width="200" height="50"/>
+  <text class="label" x="450" y="465" text-anchor="middle">Observation</text>
+
+  <!-- Loop back -->
+  <path class="arrow" d="M350 460 L300 460 L300 350 L340 350 L340 150 L350 150"/>
+  <polygon points="350,150 342,145 342,155" fill="#f59e0b"/>
+  <text class="sublabel" x="285" y="350" fill="#f59e0b" font-weight="700">Loop</text>
+
+  <!-- Right annotation -->
+  <rect x="780" y="200" width="100" height="220" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="830" y="225" text-anchor="middle">External</text>
+  <text class="label" x="830" y="245" text-anchor="middle">Tools</text>
+  <text class="sublabel" x="790" y="270">Web search API</text>
+  <text class="sublabel" x="790" y="290">Database</text>
+  <text class="sublabel" x="790" y="310">Code executor</text>
+  <text class="sublabel" x="790" y="330">File system</text>
+  <text class="sublabel" x="790" y="350">Email service</text>
+  <text class="sublabel" x="790" y="370">Payment API</text>
+  <text class="sublabel" x="790" y="390">Custom tools...</text>
+
+  <!-- Arrow from execution to external tools -->
+  <path class="arrow" d="M770 375 L780 375"/>
+  <polygon points="780,375 772,370 772,380" fill="#6366f1"/>
+</svg>

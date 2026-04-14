@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .box-before { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 8; }
+    .dark .box-before { fill: #450a0a; stroke: #f87171; }
+    .box-after { fill: #d1fae5; stroke: #059669; stroke-width: 2; rx: 8; }
+    .dark .box-after { fill: #064e3b; stroke: #34d399; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .pct { font-family: system-ui, -apple-system, sans-serif; font-size: 28px; font-weight: 700; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Token Cost Optimization Strategies</text>
+
+  <!-- BEFORE -->
+  <rect class="box-before" x="30" y="70" width="400" height="400"/>
+  <text class="label" x="230" y="100" text-anchor="middle">Before Optimization</text>
+
+  <rect class="detail-box" x="50" y="120" width="360" height="50"/>
+  <text class="sublabel" x="65" y="140">Full document in prompt without summarization</text>
+  <text class="sublabel" x="65" y="158">Redundant system prompt repeated per request</text>
+
+  <rect class="detail-box" x="50" y="190" width="360" height="50"/>
+  <text class="sublabel" x="65" y="210">No response length limits</text>
+  <text class="sublabel" x="65" y="228">Model generates verbose, unfocused output</text>
+
+  <rect class="detail-box" x="50" y="260" width="360" height="50"/>
+  <text class="sublabel" x="65" y="280">Always using largest model (GPT-4)</text>
+  <text class="sublabel" x="65" y="298">Even for simple classification tasks</text>
+
+  <rect class="detail-box" x="50" y="330" width="360" height="50"/>
+  <text class="sublabel" x="65" y="350">No response caching</text>
+  <text class="sublabel" x="65" y="368">Identical queries re-processed every time</text>
+
+  <text class="pct" x="230" y="440" text-anchor="middle" fill="#dc2626">$$$</text>
+  <text class="sublabel" x="230" y="460" text-anchor="middle">High cost, inefficient</text>
+
+  <!-- AFTER -->
+  <rect class="box-after" x="470" y="70" width="400" height="400"/>
+  <text class="label" x="670" y="100" text-anchor="middle">After Optimization</text>
+
+  <rect class="detail-box" x="490" y="120" width="360" height="50"/>
+  <text class="sublabel" x="505" y="140">Embedding-based retrieval, only relevant chunks</text>
+  <text class="sublabel" x="505" y="158">System prompt cached/prefixed (where supported)</text>
+
+  <rect class="detail-box" x="490" y="190" width="360" height="50"/>
+  <text class="sublabel" x="505" y="210">max_tokens set per task type</text>
+  <text class="sublabel" x="505" y="228">Structured output format (JSON schema)</text>
+
+  <rect class="detail-box" x="490" y="260" width="360" height="50"/>
+  <text class="sublabel" x="505" y="280">Model routing: small for simple, large for complex</text>
+  <text class="sublabel" x="505" y="298">60% of requests handled by cheaper models</text>
+
+  <rect class="detail-box" x="490" y="330" width="360" height="50"/>
+  <text class="sublabel" x="505" y="350">Semantic response caching</text>
+  <text class="sublabel" x="505" y="368">25% of queries served from cache</text>
+
+  <text class="pct" x="670" y="440" text-anchor="middle" fill="#059669">-40-60%</text>
+  <text class="sublabel" x="670" y="460" text-anchor="middle">Cost reduction achieved</text>
+
+  <!-- Arrow between -->
+  <path d="M435 270 L465 270" fill="none" stroke="#6366f1" stroke-width="3"/>
+  <polygon points="465,270 455,264 455,276" fill="#6366f1"/>
+</svg>

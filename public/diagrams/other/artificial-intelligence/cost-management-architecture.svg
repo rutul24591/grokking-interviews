@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-track { stroke: #7c3aed; }
+    .c-optimize { stroke: #2563eb; }
+    .c-budget { stroke: #059669; }
+    .c-monitor { stroke: #d97706; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Cost Management Architecture</text>
+
+  <!-- Layer 1: Tracking -->
+  <rect class="box" x="30" y="80" width="200" height="140" stroke="#7c3aed" stroke-width="2"/>
+  <text class="label" x="130" y="105" text-anchor="middle" fill="#7c3aed">1. Cost Tracking</text>
+  <rect class="detail-box" x="45" y="115" width="170" height="90"/>
+  <text class="sublabel" x="55" y="133">Per-request token counting</text>
+  <text class="sublabel" x="55" y="150">Input/output token split</text>
+  <text class="sublabel" x="55" y="167">Model + pricing lookup</text>
+  <text class="sublabel" x="55" y="184">Feature/user tagging</text>
+  <text class="sublabel" x="55" y="201">Timestamp + session ID</text>
+
+  <path class="arrow" d="M230 150 L260 150"/>
+
+  <!-- Layer 2: Optimization -->
+  <rect class="box" x="270" y="80" width="200" height="140" stroke="#2563eb" stroke-width="2"/>
+  <text class="label" x="370" y="105" text-anchor="middle" fill="#2563eb">2. Optimization</text>
+  <rect class="detail-box" x="285" y="115" width="170" height="90"/>
+  <text class="sublabel" x="295" y="133">Model routing (tier selection)</text>
+  <text class="sublabel" x="295" y="150">Response caching (exact+semantic)</text>
+  <text class="sublabel" x="295" y="167">Prompt compression</text>
+  <text class="sublabel" x="295" y="184">Output length limits</text>
+  <text class="sublabel" x="295" y="201">Batch processing</text>
+
+  <path class="arrow" d="M470 150 L500 150"/>
+
+  <!-- Layer 3: Budget -->
+  <rect class="box" x="510" y="80" width="200" height="140" stroke="#059669" stroke-width="2"/>
+  <text class="label" x="610" y="105" text-anchor="middle" fill="#059669">3. Budget Enforcement</text>
+  <rect class="detail-box" x="525" y="115" width="170" height="90"/>
+  <text class="sublabel" x="535" y="133">Per-request token budget</text>
+  <text class="sublabel" x="535" y="150">Per-user rate limits</text>
+  <text class="sublabel" x="535" y="167">Monthly cost caps</text>
+  <text class="sublabel" x="535" y="184">Soft/hard limits</text>
+  <text class="sublabel" x="535" y="201">Auto-shutdown on exhaustion</text>
+
+  <path class="arrow" d="M710 150 L740 150"/>
+
+  <!-- Layer 4: Monitoring -->
+  <rect class="box" x="750" y="80" width="130" height="140" stroke="#d97706" stroke-width="2"/>
+  <text class="label" x="815" y="105" text-anchor="middle" fill="#d97706">4. Monitor</text>
+  <rect class="detail-box" x="760" y="115" width="110" height="90"/>
+  <text class="sublabel" x="770" y="133">Real-time dashboards</text>
+  <text class="sublabel" x="770" y="150">Anomaly alerts</text>
+  <text class="sublabel" x="770" y="167">Trend analysis</text>
+  <text class="sublabel" x="770" y="184">Cost attribution</text>
+
+  <!-- Bottom: Feedback loop -->
+  <path d="M815 220 L815 300 L130 300 L130 220" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="6,3"/>
+
+  <rect x="300" y="260" width="300" height="60" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="label" x="450" y="285" text-anchor="middle">Feedback Loop</text>
+  <text class="sublabel" x="315" y="305">Monitor → Identify waste → Optimize → Track improvement</text>
+
+  <!-- Cost breakdown by feature -->
+  <rect x="30" y="350" width="410" height="130" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="235" y="375" text-anchor="middle">Cost Attribution Dashboard</text>
+  <text class="sublabel" x="50" y="398">Feature A (Support): $42/day (65%) ← Optimizing...</text>
+  <text class="sublabel" x="50" y="418">Feature B (Code Assist): $15/day (23%) ← Within budget</text>
+  <text class="sublabel" x="50" y="438">Feature C (Analysis): $8/day (12%) ← New feature</text>
+  <text class="sublabel" x="50" y="458" font-weight="700">Total: $65/day | Budget: $100/day | 65% utilized</text>
+
+  <!-- Optimization recommendations -->
+  <rect x="460" y="350" width="410" height="130" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="label" x="665" y="375" text-anchor="middle">Automated Recommendations</text>
+  <text class="sublabel" x="480" y="398">1. Feature A: Route 40% of simple queries to smaller model → save $12/day</text>
+  <text class="sublabel" x="480" y="418">2. Feature A: Enable caching for top 20 FAQs → save $8/day</text>
+  <text class="sublabel" x="480" y="438">3. Feature B: Compress code context by 50% → save $5/day</text>
+  <text class="sublabel" x="480" y="458" font-weight="700">Potential savings: $25/day (38% reduction)</text>
+</svg>

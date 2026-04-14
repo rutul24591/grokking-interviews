@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 4; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-sys { stroke: #7c3aed; }
+    .dark .c-sys { fill: #2e1065; stroke: #a78bfa; }
+    .c-ctx { stroke: #2563eb; }
+    .dark .c-ctx { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-conv { stroke: #059669; }
+    .dark .c-conv { fill: #064e3b; stroke: #34d399; }
+    .c-user { stroke: #d97706; }
+    .dark .c-user { fill: #451a03; stroke: #fbbf24; }
+    .c-resp { stroke: #dc2626; }
+    .dark .c-resp { fill: #450a0a; stroke: #f87171; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Context Window Architecture</text>
+
+  <!-- Full context bar -->
+  <text class="label" x="450" y="75" text-anchor="middle">Full Context Window (128K tokens)</text>
+
+  <!-- System Prompt -->
+  <rect class="box c-sys" x="30" y="100" width="120" height="80"/>
+  <text class="label" x="90" y="130" text-anchor="middle">System</text>
+  <text class="label" x="90" y="150" text-anchor="middle">Prompt</text>
+  <rect class="detail-box" x="40" y="160" width="100" height="15"/>
+  <text class="sublabel" x="50" y="172">~200-500 tokens</text>
+  <text class="sublabel" x="45" y="200" text-anchor="middle" font-weight="700" font-size="10">PRIMACY</text>
+  <text class="sublabel" x="45" y="215" text-anchor="middle" font-size="9">Most reliably used</text>
+
+  <!-- Retrieved Context -->
+  <rect class="box c-ctx" x="155" y="100" width="200" height="80"/>
+  <text class="label" x="255" y="130" text-anchor="middle">Retrieved Context</text>
+  <rect class="detail-box" x="165" y="145" width="180" height="30"/>
+  <text class="sublabel" x="175" y="160">Top docs at beginning (most relevant)</text>
+  <text class="sublabel" x="175" y="175">Less relevant docs in middle</text>
+
+  <!-- Conversation History -->
+  <rect class="box c-conv" x="360" y="100" width="200" height="80"/>
+  <text class="label" x="460" y="130" text-anchor="middle">Conversation History</text>
+  <rect class="detail-box" x="370" y="145" width="180" height="30"/>
+  <text class="sublabel" x="380" y="160">Recent turns verbatim</text>
+  <text class="sublabel" x="380" y="175">Older turns summarized</text>
+
+  <!-- User Input -->
+  <rect class="box c-user" x="565" y="100" width="150" height="80"/>
+  <text class="label" x="640" y="130" text-anchor="middle">User Input</text>
+  <rect class="detail-box" x="575" y="145" width="130" height="15"/>
+  <text class="sublabel" x="585" y="157">~50-500 tokens</text>
+  <text class="sublabel" x="580" y="200" text-anchor="middle" font-weight="700" font-size="10">RECENCY</text>
+  <text class="sublabel" x="580" y="215" text-anchor="middle" font-size="9">Also reliably used</text>
+
+  <!-- Response Budget -->
+  <rect class="box c-resp" x="720" y="100" width="150" height="80"/>
+  <text class="label" x="795" y="130" text-anchor="middle">Response</text>
+  <text class="label" x="795" y="150" text-anchor="middle">Budget</text>
+  <rect class="detail-box" x="730" y="160" width="130" height="15"/>
+  <text class="sublabel" x="740" y="172">~500-4000 tokens</text>
+
+  <!-- Arrow showing attention quality U-shape -->
+  <path d="M90 260 Q460 350 795 260" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <text class="sublabel" x="450" y="340" text-anchor="middle" fill="#6366f1" font-weight="700">Attention Quality (U-shaped)</text>
+
+  <!-- Annotations -->
+  <rect x="30" y="370" width="420" height="110" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="label" x="240" y="395" text-anchor="middle" fill="#dc2626">Common Mistakes</text>
+  <text class="sublabel" x="45" y="418">❌ Putting critical info in the middle</text>
+  <text class="sublabel" x="45" y="436">❌ Unbounded conversation history</text>
+  <text class="sublabel" x="45" y="454">❌ Not accounting for output tokens</text>
+  <text class="sublabel" x="45" y="472">❌ Assuming all context is used equally</text>
+
+  <rect x="460" y="370" width="410" height="110" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="label" x="665" y="395" text-anchor="middle" fill="#059669">Best Practices</text>
+  <text class="sublabel" x="475" y="418">✓ System instructions at the start</text>
+  <text class="sublabel" x="475" y="436">✓ Most relevant docs at edges</text>
+  <text class="sublabel" x="475" y="454">✓ Summarize old conversation turns</text>
+  <text class="sublabel" x="475" y="472">✓ Calculate: input + output ≤ context</text>
+</svg>

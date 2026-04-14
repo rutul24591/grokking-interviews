@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-ingest { stroke: #7c3aed; }
+    .dark .s-ingest { fill: #2e1065; stroke: #a78bfa; }
+    .s-embed { stroke: #2563eb; }
+    .dark .s-embed { fill: #1e3a5f; stroke: #60a5fa; }
+    .s-store { stroke: #059669; }
+    .dark .s-store { fill: #064e3b; stroke: #34d399; }
+    .s-retrieve { stroke: #d97706; }
+    .dark .s-retrieve { fill: #451a03; stroke: #fbbf24; }
+    .s-generate { stroke: #dc2626; }
+    .dark .s-generate { fill: #450a0a; stroke: #f87171; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .dashed { stroke-dasharray: 5,3; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">RAG Pipeline Architecture</text>
+
+  <!-- Indexing Phase -->
+  <text class="label" x="225" y="75" text-anchor="middle" fill="#7c3aed" font-size="14">INDEXING PHASE</text>
+  <line x1="50" y1="85" x2="400" y2="85" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <rect class="box s-ingest" x="30" y="100" width="110" height="55"/>
+  <text class="label" x="85" y="120" text-anchor="middle">Documents</text>
+  <text class="sublabel" x="85" y="138" text-anchor="middle">PDF, HTML, DB</text>
+
+  <path class="arrow" d="M140 127 L175 127"/>
+  <rect class="box s-ingest" x="175" y="100" width="100" height="55"/>
+  <text class="label" x="225" y="120" text-anchor="middle">Chunk</text>
+  <text class="sublabel" x="225" y="138" text-anchor="middle">Split + overlap</text>
+
+  <path class="arrow" d="M275 127 L310 127"/>
+  <rect class="box s-embed" x="310" y="100" width="100" height="55"/>
+  <text class="label" x="360" y="120" text-anchor="middle">Embed</text>
+  <text class="sublabel" x="360" y="138" text-anchor="middle">Vector encoding</text>
+
+  <path class="arrow" d="M410 127 L445 127"/>
+  <rect class="box s-store" x="445" y="100" width="110" height="55"/>
+  <text class="label" x="500" y="120" text-anchor="middle">Vector Store</text>
+  <text class="sublabel" x="500" y="138" text-anchor="middle">Indexed vectors</text>
+
+  <!-- Retrieval Phase -->
+  <text class="label" x="225" y="200" text-anchor="middle" fill="#059669" font-size="14">RETRIEVAL PHASE</text>
+  <line x1="50" y1="210" x2="400" y2="210" stroke="#059669" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <rect class="box s-retrieve" x="30" y="225" width="110" height="55"/>
+  <text class="label" x="85" y="245" text-anchor="middle">User Query</text>
+  <text class="sublabel" x="85" y="263" text-anchor="middle">Natural language</text>
+
+  <path class="arrow" d="M140 252 L175 252"/>
+  <rect class="box s-embed" x="175" y="225" width="100" height="55"/>
+  <text class="label" x="225" y="245" text-anchor="middle">Query Embed</text>
+  <text class="sublabel" x="225" y="263" text-anchor="middle">Same model</text>
+
+  <path class="arrow" d="M275 252 L310 252"/>
+  <rect class="box s-retrieve" x="310" y="225" width="100" height="55"/>
+  <text class="label" x="360" y="245" text-anchor="middle">Vector Search</text>
+  <text class="sublabel" x="360" y="263" text-anchor="middle">Top-k similar</text>
+
+  <path class="arrow" d="M410 252 L445 252"/>
+  <rect class="box s-retrieve" x="445" y="225" width="110" height="55"/>
+  <text class="label" x="500" y="245" text-anchor="middle">Rerank + Filter</text>
+  <text class="sublabel" x="500" y="263" text-anchor="middle">Access control</text>
+
+  <!-- Generation Phase -->
+  <text class="label" x="225" y="325" text-anchor="middle" fill="#dc2626" font-size="14">GENERATION PHASE</text>
+  <line x1="50" y1="335" x2="400" y2="335" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <rect class="box s-generate" x="30" y="350" width="150" height="55"/>
+  <text class="label" x="105" y="370" text-anchor="middle">Prompt Construction</text>
+  <text class="sublabel" x="105" y="388" text-anchor="middle">Context + Query</text>
+
+  <path class="arrow" d="M180 377 L235 377"/>
+  <rect class="box s-generate" x="235" y="350" width="120" height="55"/>
+  <text class="label" x="295" y="370" text-anchor="middle">LLM Generation</text>
+  <text class="sublabel" x="295" y="388" text-anchor="middle">Grounded response</text>
+
+  <path class="arrow" d="M355 377 L410 377"/>
+  <rect class="box s-generate" x="410" y="350" width="145" height="55"/>
+  <text class="label" x="482" y="370" text-anchor="middle">Validation + Output</text>
+  <text class="sublabel" x="482" y="388" text-anchor="middle">Faithfulness check</text>
+
+  <!-- Cross-phase arrows -->
+  <path class="arrow dashed" d="M500 155 L500 225"/>
+  <text class="sublabel" x="510" y="195" fill="#6366f1">Vector DB</text>
+  <path class="arrow dashed" d="M500 280 L295 350"/>
+  <text class="sublabel" x="420" y="320" fill="#6366f1">Retrieved chunks</text>
+
+  <!-- Right side annotations -->
+  <rect x="600" y="100" width="270" height="300" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="735" y="125" text-anchor="middle">Key Design Decisions</text>
+
+  <text class="sublabel" x="620" y="150"><tspan font-weight="700">Chunk Size:</tspan> 200-1000 tokens with 10-20% overlap</text>
+  <text class="sublabel" x="620" y="170"><tspan font-weight="700">Embedding Model:</tspan> text-embedding-3-small/large</text>
+  <text class="sublabel" x="620" y="190"><tspan font-weight="700">Top-k:</tspan> 3-10 chunks per query</text>
+  <text class="sublabel" x="620" y="210"><tspan font-weight="700">Hybrid Search:</tspan> Vector + BM25 with RRF fusion</text>
+  <text class="sublabel" x="620" y="230"><tspan font-weight="700">Reranking:</tspan> Cross-encoder for top-20 → top-5</text>
+  <text class="sublabel" x="620" y="250"><tspan font-weight="700">Compression:</tspan> Extract relevant sentences only</text>
+  <text class="sublabel" x="620" y="270"><tspan font-weight="700">Access Control:</tspan> Filter by permissions before prompt</text>
+  <text class="sublabel" x="620" y="290"><tspan font-weight="700">Freshness:</tspan> Prefer recent documents</text>
+  <text class="sublabel" x="620" y="310"><tspan font-weight="700">Validation:</tspan> Check answer against context</text>
+  <text class="sublabel" x="620" y="330"><tspan font-weight="700">Index Updates:</tspan> Triggered by document changes</text>
+  <text class="sublabel" x="620" y="350"><tspan font-weight="700">Query Rewriting:</tspan> Expand + decompose sub-queries</text>
+  <text class="sublabel" x="620" y="370"><tspan font-weight="700">Evaluation:</tspan> RAGAS for faithfulness + relevance</text>
+  <text class="sublabel" x="620" y="390"><tspan font-weight="700">Monitoring:</tspan> Track latency, satisfaction, re-query rate</text>
+</svg>

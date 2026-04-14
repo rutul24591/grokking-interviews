@@ -17,9 +17,7 @@ import {
   ArticleExampleToggle,
   useArticleViewMode,
 } from "@/components/articles/ArticleExampleToggle";
-import {
-  HighlightsProvider,
-} from "@/components/articles/HighlightsContext";
+import { HighlightsProvider } from "@/components/articles/HighlightsContext";
 import { classNames } from "@/lib/classNames";
 import type { ExampleGroup } from "@/types/examples";
 
@@ -78,7 +76,8 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
     const tables = article.querySelectorAll("table");
     tables.forEach((table) => {
       // Skip if already wrapped
-      if (table.parentElement?.classList.contains("table-scroll-wrapper")) return;
+      if (table.parentElement?.classList.contains("table-scroll-wrapper"))
+        return;
 
       const wrapper = document.createElement("div");
       wrapper.className = "table-scroll-wrapper";
@@ -95,14 +94,35 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
     async function loadExamplesForArticle() {
       try {
         // Build the manifest key from metadata
-        const manifestCategory = metadata.category.replace("-concepts", "");
-        const manifestKey = `${manifestCategory}/${metadata.subcategory}/${metadata.slug}`;
+        let manifestKey: string;
+        if (
+          metadata.category === "frontend" &&
+          metadata.subcategory === "nfr"
+        ) {
+          manifestKey = `non-functional-requirements/frontend-nfr/${metadata.slug}`;
+        } else if (
+          metadata.category === "backend" &&
+          metadata.subcategory === "nfr"
+        ) {
+          manifestKey = `non-functional-requirements/backend-nfr/${metadata.slug}`;
+        } else if (metadata.category === "shared-cross-cutting-nfr") {
+          manifestKey = `non-functional-requirements/shared-cross-cutting-nfr/${metadata.slug}`;
+        } else if (metadata.category === "advanced-topics") {
+          manifestKey = `non-functional-requirements/advanced-bonus/${metadata.slug}`;
+        } else {
+          const manifestCategory = metadata.category.replace("-concepts", "");
+          manifestKey = `${manifestCategory}/${metadata.subcategory}/${metadata.slug}`;
+        }
 
         // Import manifest dynamically
-        const manifest = await import("@/content/examples-manifest.json");
-        const rawData =
-          (manifest.default as Record<string, unknown>)[manifestKey];
-        
+        const manifestModule = await import("@/content/examples-manifest.json");
+        // The manifest is the module itself (JSON files don't have a default export in this setup)
+        const manifest = (manifestModule.default ?? manifestModule) as Record<
+          string,
+          unknown
+        >;
+        const rawData = manifest[manifestKey];
+
         // Normalize the data to match ExampleGroup type
         const articleExamples: ExampleGroup[] = Array.isArray(rawData)
           ? rawData.map((item: unknown) => {
@@ -243,7 +263,7 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
 
         {/* Article Content */}
         <HighlightsProvider value={{ highlightsOn, setHighlightsOn }}>
-          <article className="prose max-w-none">
+          <article className="prose">
             {view === "example" ? (
               <ExampleViewer
                 key={activeExample?.id ?? "no-example"}

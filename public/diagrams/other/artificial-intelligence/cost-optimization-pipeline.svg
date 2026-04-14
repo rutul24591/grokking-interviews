@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Cost Optimization Pipeline for AI Systems</text>
+
+  <!-- Input -->
+  <rect class="box" x="350" y="60" width="200" height="45"/>
+  <text class="label" x="450" y="88" text-anchor="middle">Incoming LLM Request</text>
+
+  <path class="arrow" d="M450 105 L450 135"/>
+
+  <!-- Stage 1: Cache check -->
+  <rect class="box" x="30" y="140" width="250" height="80" stroke="#7c3aed"/>
+  <text class="label" x="155" y="165" text-anchor="middle" fill="#7c3aed">1. Cache Check</text>
+  <rect class="detail-box" x="45" y="175" width="220" height="35"/>
+  <text class="sublabel" x="55" y="193">Exact match → return cached (free)</text>
+  <text class="sublabel" x="55" y="208">Semantic match → return if high conf</text>
+
+  <path d="M280 180 L320 180" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <text class="sublabel" x="300" y="175" fill="#059669" font-weight="700">Hit</text>
+
+  <!-- Stage 2: Model routing -->
+  <rect class="box" x="330" y="140" width="250" height="80" stroke="#2563eb"/>
+  <text class="label" x="455" y="165" text-anchor="middle" fill="#2563eb">2. Model Routing</text>
+  <rect class="detail-box" x="345" y="175" width="220" height="35"/>
+  <text class="sublabel" x="355" y="193">Classify complexity → select tier</text>
+  <text class="sublabel" x="355" y="208">Small/Medium/Large model</text>
+
+  <path class="arrow" d="M580 180 L620 180"/>
+
+  <!-- Stage 3: Prompt optimization -->
+  <rect class="box" x="630" y="140" width="240" height="80" stroke="#059669"/>
+  <text class="label" x="750" y="165" text-anchor="middle" fill="#059669">3. Prompt Optimization</text>
+  <rect class="detail-box" x="645" y="175" width="210" height="35"/>
+  <text class="sublabel" x="655" y="193">Remove redundancy, compress context</text>
+  <text class="sublabel" x="655" y="208">Apply output length limits</text>
+
+  <!-- Flow to LLM -->
+  <path class="arrow" d="M750 220 L750 270"/>
+
+  <!-- LLM call -->
+  <rect class="box" x="630" y="275" width="240" height="60" stroke="#d97706"/>
+  <text class="label" x="750" y="300" text-anchor="middle" fill="#d97706">LLM API Call</text>
+  <rect class="detail-box" x="645" y="305" width="210" height="20"/>
+  <text class="sublabel" x="655" y="319">Optimized prompt → response</text>
+
+  <!-- Response flow back -->
+  <path d="M630 305 L580 305 L580 350 L330 350" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <!-- Stage 4: Cache storage -->
+  <rect class="box" x="30" y="320" width="250" height="80" stroke="#ec4899"/>
+  <text class="label" x="155" y="345" text-anchor="middle" fill="#ec4899">4. Cache Response</text>
+  <rect class="detail-box" x="45" y="355" width="220" height="35"/>
+  <text class="sublabel" x="55" y="373">Store in exact + semantic cache</text>
+  <text class="sublabel" x="55" y="388">TTL based on content freshness</text>
+
+  <!-- Stage 5: Cost tracking -->
+  <rect class="box" x="330" y="360" width="250" height="80" stroke="#f59e0b"/>
+  <text class="label" x="455" y="385" text-anchor="middle" fill="#f59e0b">5. Cost Tracking &amp; Alerting</text>
+  <rect class="detail-box" x="345" y="395" width="220" height="35"/>
+  <text class="sublabel" x="355" y="413">Log tokens, cost, model, latency</text>
+  <text class="sublabel" x="355" y="428">Alert on anomalies</text>
+
+  <!-- Savings summary -->
+  <rect x="30" y="455" width="840" height="30" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="450" y="475" text-anchor="middle" font-weight="700">Combined savings: Cache (20-35%) + Routing (60-80%) + Prompt opt (30-50%) = 60-75% total cost reduction</text>
+</svg>

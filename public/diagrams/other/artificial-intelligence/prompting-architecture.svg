@@ -1,0 +1,118 @@
+<svg viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="900" height="580" rx="8" fill="#f9fafb"/>
+
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#111827">Production Prompt Engineering Pipeline</text>
+  <text x="450" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#6b7280">Input to Response — six-stage architecture with validation at each boundary</text>
+
+  <!-- Stage 1: Input Processing -->
+  <rect x="30" y="80" width="140" height="100" rx="10" fill="#6366f1" fill-opacity="0.12" stroke="#6366f1" stroke-width="2"/>
+  <text x="100" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#6366f1">Input Processing</text>
+  <text x="100" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">User request</text>
+  <text x="100" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Normalization</text>
+  <text x="100" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Sanitization</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="170" y1="130" x2="220" y2="130" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 2: Context Enrichment -->
+  <rect x="220" y="80" width="140" height="100" rx="10" fill="#0ea5e9" fill-opacity="0.12" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="290" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#0ea5e9">Context Enrichment</text>
+  <text x="290" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Vector DB lookup</text>
+  <text x="290" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Relevance ranking</text>
+  <text x="290" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Context ordering</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="360" y1="130" x2="410" y2="130" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 3: Prompt Assembly -->
+  <rect x="410" y="80" width="140" height="100" rx="10" fill="#f59e0b" fill-opacity="0.12" stroke="#f59e0b" stroke-width="2"/>
+  <text x="480" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#f59e0b">Prompt Assembly</text>
+  <text x="480" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Template merge</text>
+  <text x="480" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">System prompt</text>
+  <text x="480" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Few-shot demos</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="550" y1="130" x2="600" y2="130" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 4: Model Inference -->
+  <rect x="600" y="80" width="140" height="100" rx="10" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#8b5cf6">Model Inference</text>
+  <text x="670" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">LLM API call</text>
+  <text x="670" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Temperature / top-p</text>
+  <text x="670" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Token generation</text>
+
+  <!-- Arrow 4->5 -->
+  <line x1="740" y1="130" x2="790" y2="130" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Stage 5: Output Validation -->
+  <rect x="600" y="220" width="140" height="100" rx="10" fill="#ef4444" fill-opacity="0.12" stroke="#ef4444" stroke-width="2"/>
+  <text x="670" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#ef4444">Output Validation</text>
+  <text x="670" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Schema check</text>
+  <text x="670" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Content policy</text>
+  <text x="670" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Retry on failure</text>
+
+  <!-- Arrow 4->5 (down) -->
+  <line x1="670" y1="180" x2="670" y2="220" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowdown)"/>
+
+  <!-- Arrow 5->6 -->
+  <line x1="600" y1="270" x2="540" y2="270" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowleft)"/>
+
+  <!-- Stage 6: Response Delivery -->
+  <rect x="410" y="220" width="140" height="100" rx="10" fill="#10b981" fill-opacity="0.12" stroke="#10b981" stroke-width="2"/>
+  <text x="480" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#10b981">Response Delivery</text>
+  <text x="480" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Format response</text>
+  <text x="480" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Log metrics</text>
+  <text x="480" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#374151">Return to user</text>
+
+  <!-- Feedback loop arrow -->
+  <line x1="480" y1="320" x2="480" y2="360" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrowdown)"/>
+  <text x="500" y="345" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Metrics loop</text>
+
+  <!-- Bottom section: Key Parameters -->
+  <rect x="30" y="370" width="840" height="195" rx="10" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="450" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#111827">Generation Parameters (Configured per Prompt Version)</text>
+
+  <!-- Parameter boxes -->
+  <rect x="50" y="415" width="170" height="60" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="135" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#111827">Temperature</text>
+  <text x="135" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Controls randomness</text>
+  <text x="135" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Range: 0.0 (deterministic) to 1.0</text>
+
+  <rect x="240" y="415" width="170" height="60" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="325" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#111827">Top-p (Nucleus)</text>
+  <text x="325" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Cumulative probability cutoff</text>
+  <text x="325" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Truncates unlikely tokens</text>
+
+  <rect x="430" y="415" width="170" height="60" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="515" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#111827">Max Tokens</text>
+  <text x="515" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Output length limit</text>
+  <text x="515" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Prevents runaway generation</text>
+
+  <rect x="620" y="415" width="230" height="60" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="735" y="437" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#111827">JSON Schema (Constrained Decoding)</text>
+  <text x="735" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Guarantees output format validity</text>
+  <text x="735" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Token-level constraint during generation</text>
+
+  <rect x="50" y="490" width="380" height="60" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="240" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#111827">Stop Sequences</text>
+  <text x="240" y="530" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Tokens that terminate generation early</text>
+  <text x="240" y="543" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Useful for multi-stage prompts and format control</text>
+
+  <rect x="450" y="490" width="400" height="60" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="650" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#111827">Context Window Budget</text>
+  <text x="650" y="530" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Total tokens (input + output) must fit within model limit</text>
+  <text x="650" y="543" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Optimize: minimize input, maximize signal-to-noise ratio</text>
+
+  <!-- Arrow marker definitions -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowdown" markerWidth="10" markerHeight="7" refX="5" refY="7" orient="auto">
+      <polygon points="0 0, 5 7, 10 0" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowleft" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#9ca3af"/>
+    </marker>
+  </defs>
+</svg>

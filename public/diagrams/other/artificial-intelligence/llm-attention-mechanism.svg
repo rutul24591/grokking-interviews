@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">LLM Attention Mechanism — Multi-Head Self-Attention</text>
+
+  <!-- Input tokens -->
+  <text class="label" x="100" y="85" text-anchor="middle">Input Tokens</text>
+  <rect class="box" x="30" y="95" width="60" height="35" stroke="#7c3aed"/>
+  <text class="sublabel" x="60" y="117" text-anchor="middle">"The"</text>
+  <rect class="box" x="100" y="95" width="60" height="35" stroke="#7c3aed"/>
+  <text class="sublabel" x="130" y="117" text-anchor="middle">"cat"</text>
+  <rect class="box" x="170" y="95" width="60" height="35" stroke="#7c3aed"/>
+  <text class="sublabel" x="200" y="117" text-anchor="middle">"sat"</text>
+
+  <!-- Q, K, V projections -->
+  <path d="M230 112 L270 112" fill="none" stroke="#6366f1" stroke-width="2"/>
+
+  <rect class="box" x="275" y="75" width="120" height="75" stroke="#2563eb"/>
+  <text class="label" x="335" y="95" text-anchor="middle" fill="#2563eb">Q/K/V Projections</text>
+  <rect class="detail-box" x="285" y="105" width="100" height="35"/>
+  <text class="sublabel" x="295" y="122">W_Q, W_K, W_V matrices</text>
+  <text class="sublabel" x="295" y="137">d_model → d_head</text>
+
+  <!-- Split into heads -->
+  <path d="M395 112 L430 112" fill="none" stroke="#6366f1" stroke-width="2"/>
+
+  <text class="label" x="560" y="75" text-anchor="middle" fill="#059669">Attention Heads</text>
+
+  <!-- Head 1: Syntactic -->
+  <rect class="box" x="440" y="85" width="110" height="55" stroke="#059669"/>
+  <text class="label" x="495" y="103" text-anchor="middle" fill="#059669">Head 1</text>
+  <rect class="detail-box" x="450" y="108" width="90" height="22"/>
+  <text class="sublabel" x="455" y="122" text-anchor="middle">Syntactic patterns</text>
+
+  <!-- Head 2: Coreference -->
+  <rect class="box" x="440" y="150" width="110" height="55" stroke="#d97706"/>
+  <text class="label" x="495" y="168" text-anchor="middle" fill="#d97706">Head 2</text>
+  <rect class="detail-box" x="450" y="173" width="90" height="22"/>
+  <text class="sublabel" x="455" y="187" text-anchor="middle">Coreference resolution</text>
+
+  <!-- Head 3: Semantic -->
+  <rect class="box" x="440" y="215" width="110" height="55" stroke="#ec4899"/>
+  <text class="label" x="495" y="233" text-anchor="middle" fill="#ec4899">Head 3</text>
+  <rect class="detail-box" x="450" y="238" width="90" height="22"/>
+  <text class="sublabel" x="455" y="252" text-anchor="middle">Semantic similarity</text>
+
+  <!-- Attention scores visualization -->
+  <rect x="580" y="85" width="290" height="185" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="725" y="105" text-anchor="middle">Attention Weights (Head 1: Syntactic)</text>
+
+  <!-- Attention matrix -->
+  <rect x="595" y="115" width="260" height="140" rx="4" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+
+  <!-- Row labels -->
+  <text class="sublabel" x="605" y="140">"The" →</text>
+  <text class="sublabel" x="605" y="170">"cat" →</text>
+  <text class="sublabel" x="605" y="200">"sat" →</text>
+
+  <!-- Column labels -->
+  <text class="sublabel" x="665" y="132">"The"</text>
+  <text class="sublabel" x="720" y="132">"cat"</text>
+  <text class="sublabel" x="775" y="132">"sat"</text>
+
+  <!-- Attention weights (colored cells) -->
+  <rect x="650" y="148" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.8"/>
+  <rect x="705" y="148" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.1"/>
+  <rect x="760" y="148" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.1"/>
+  <text class="sublabel" x="675" y="162" text-anchor="middle" fill="white" font-weight="700" font-size="9">0.8</text>
+  <text class="sublabel" x="730" y="162" text-anchor="middle" font-size="9">0.1</text>
+  <text class="sublabel" x="785" y="162" text-anchor="middle" font-size="9">0.1</text>
+
+  <rect x="650" y="178" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.15"/>
+  <rect x="705" y="178" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.7"/>
+  <rect x="760" y="178" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.15"/>
+  <text class="sublabel" x="675" y="192" text-anchor="middle" font-size="9">0.15</text>
+  <text class="sublabel" x="730" y="192" text-anchor="middle" fill="white" font-weight="700" font-size="9">0.7</text>
+  <text class="sublabel" x="785" y="192" text-anchor="middle" font-size="9">0.15</text>
+
+  <rect x="650" y="208" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.1"/>
+  <rect x="705" y="208" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.2"/>
+  <rect x="760" y="208" width="50" height="20" rx="2" fill="#7c3aed" opacity="0.7"/>
+  <text class="sublabel" x="675" y="222" text-anchor="middle" font-size="9">0.1</text>
+  <text class="sublabel" x="730" y="222" text-anchor="middle" font-size="9">0.2</text>
+  <text class="sublabel" x="785" y="222" text-anchor="middle" fill="white" font-weight="700" font-size="9">0.7</text>
+
+  <!-- Concat and output -->
+  <path d="M550 140 L570 140" fill="none" stroke="#059669" stroke-width="1.5"/>
+  <path d="M550 177 L570 177" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <path d="M550 242 L570 242" fill="none" stroke="#ec4899" stroke-width="1.5"/>
+
+  <path d="M870 177 L870 300 L450 300 L450 280" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Output projection -->
+  <rect class="box" x="30" y="280" width="200" height="75" stroke="#2563eb"/>
+  <text class="label" x="130" y="300" text-anchor="middle" fill="#2563eb">Output Projection</text>
+  <rect class="detail-box" x="45" y="310" width="170" height="35"/>
+  <text class="sublabel" x="55" y="327">Concat all head outputs</text>
+  <text class="sublabel" x="55" y="342">W_O: d_model × d_model</text>
+
+  <!-- O(n²) complexity callout -->
+  <rect x="30" y="390" width="400" height="90" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="label" x="230" y="415" text-anchor="middle" fill="#dc2626">Attention Complexity: O(n²)</text>
+  <text class="sublabel" x="45" y="438">• Every token attends to every other token</text>
+  <text class="sublabel" x="45" y="456">• 1K tokens → 1M attention scores</text>
+  <text class="sublabel" x="45" y="474">• 128K tokens → 16B scores (FlashAttention needed)</text>
+
+  <!-- FlashAttention callout -->
+  <rect x="460" y="390" width="410" height="90" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="label" x="665" y="415" text-anchor="middle" fill="#059669">FlashAttention: O(n²) but IO-Aware</text>
+  <text class="sublabel" x="475" y="438">• Tiled on-chip computation (SRAM vs HBM)</text>
+  <text class="sublabel" x="475" y="456">• 2-4x speedup, 3x memory reduction</text>
+  <text class="sublabel" x="475" y="474">• No intermediate materialization in HBM</text>
+</svg>

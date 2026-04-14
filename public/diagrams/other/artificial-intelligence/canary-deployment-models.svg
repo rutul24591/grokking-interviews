@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Canary Deployment for AI Models</text>
+
+  <!-- Traffic router -->
+  <rect class="box" x="350" y="50" width="200" height="50"/>
+  <text class="label" x="450" y="80" text-anchor="middle">Traffic Router</text>
+
+  <!-- Split paths -->
+  <path d="M400 100 L180 160" fill="none" stroke="#7c3aed" stroke-width="3"/>
+  <path d="M500 100 L720 160" fill="none" stroke="#2563eb" stroke-width="1"/>
+
+  <!-- Current model (95%) -->
+  <rect class="box" x="50" y="165" width="260" height="100" stroke="#7c3aed" stroke-width="2"/>
+  <text class="label" x="180" y="190" text-anchor="middle" fill="#7c3aed">Current Model (95% traffic)</text>
+  <rect class="detail-box" x="65" y="200" width="230" height="50"/>
+  <text class="sublabel" x="75" y="218">Model: GPT-4 v2.3 | Stable</text>
+  <text class="sublabel" x="75" y="236">Quality: 92% | Latency: 1.2s</text>
+
+  <!-- New model (5%) -->
+  <rect class="box" x="590" y="165" width="260" height="100" stroke="#2563eb" stroke-width="2"/>
+  <text class="label" x="720" y="190" text-anchor="middle" fill="#2563eb">New Model (5% traffic)</text>
+  <rect class="detail-box" x="605" y="200" width="230" height="50"/>
+  <text class="sublabel" x="615" y="218">Model: Claude 3.5 v1.0 | Canary</text>
+  <text class="sublabel" x="615" y="236">Monitoring quality &amp; latency</text>
+
+  <!-- Monitoring -->
+  <path d="M180 265 L180 310 L450 310" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path d="M720 265 L720 310 L450 310" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <rect x="300" y="315" width="300" height="60" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="label" x="450" y="340" text-anchor="middle">Quality Monitoring</text>
+  <text class="sublabel" x="315" y="360">Compare metrics: quality, latency, error rate, cost</text>
+
+  <!-- Decision -->
+  <path class="arrow" d="M450 375 L450 420"/>
+
+  <!-- Two outcomes -->
+  <rect x="80" y="425" width="340" height="55" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text class="label" x="250" y="445" text-anchor="middle" fill="#059669">Quality OK → Increase to 25%</text>
+  <text class="sublabel" x="95" y="465">Gradually: 5% → 25% → 50% → 100%</text>
+
+  <rect x="480" y="425" width="340" height="55" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text class="label" x="650" y="445" text-anchor="middle" fill="#dc2626">Quality Drop → Rollback to 0%</text>
+  <text class="sublabel" x="495" y="465">Instant rollback, investigate, fix, retry</text>
+</svg>

@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-greedy { stroke: #7c3aed; }
+    .dark .s-greedy { fill: #2e1065; stroke: #a78bfa; }
+    .s-strategic { stroke: #2563eb; }
+    .dark .s-strategic { fill: #1e3a5f; stroke: #60a5fa; }
+    .s-reflective { stroke: #059669; }
+    .dark .s-reflective { fill: #064e3b; stroke: #34d399; }
+    .s-tree { stroke: #d97706; }
+    .dark .s-tree { fill: #451a03; stroke: #fbbf24; }
+    .node { fill: #e5e7eb; stroke: #999; stroke-width: 1; rx: 4; }
+    .dark .node { fill: #333355; stroke: #666; }
+    .active { fill: #7c3aed; }
+    .dark .active { fill: #a78bfa; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Agent Planning Strategies</text>
+
+  <!-- Greedy -->
+  <rect class="box s-greedy" x="20" y="70" width="200" height="400"/>
+  <text class="label" x="120" y="95" text-anchor="middle">Greedy (One Step)</text>
+  <rect class="detail-box" x="30" y="110" width="180" height="50"/>
+  <text class="sublabel" x="40" y="128">Decide only the next action</text>
+  <text class="sublabel" x="40" y="146">Based on current state only</text>
+
+  <text class="label" x="120" y="185" text-anchor="middle">Flow</text>
+  <rect class="node" x="60" y="200" width="120" height="25"/>
+  <text class="sublabel" x="120" y="217" text-anchor="middle">State: S0</text>
+  <path class="arrow" d="M120 225 L120 245"/>
+  <rect class="node" x="60" y="245" width="120" height="25"/>
+  <text class="sublabel" x="120" y="262" text-anchor="middle">Action: A1 (best now)</text>
+  <path class="arrow" d="M120 270 L120 290"/>
+  <rect class="node" x="60" y="290" width="120" height="25"/>
+  <text class="sublabel" x="120" y="307" text-anchor="middle">State: S1</text>
+  <path class="arrow" d="M120 315 L120 335"/>
+  <rect class="node" x="60" y="335" width="120" height="25"/>
+  <text class="sublabel" x="120" y="352" text-anchor="middle">Action: A2 (best now)</text>
+  <path class="arrow" d="M120 360 L120 380"/>
+  <rect class="node" x="60" y="380" width="120" height="25"/>
+  <text class="sublabel" x="120" y="397" text-anchor="middle">State: S2</text>
+
+  <text class="sublabel" x="120" y="440" text-anchor="middle" fill="#7c3aed">Fast, myopic, no plan</text>
+
+  <!-- Strategic -->
+  <rect class="box s-strategic" x="240" y="70" width="200" height="400"/>
+  <text class="label" x="340" y="95" text-anchor="middle">Strategic (Multi-Step)</text>
+  <rect class="detail-box" x="250" y="110" width="180" height="50"/>
+  <text class="sublabel" x="260" y="128">Plan full sequence upfront</text>
+  <text class="sublabel" x="260" y="146">Execute step by step</text>
+
+  <text class="label" x="340" y="185" text-anchor="middle">Flow</text>
+  <rect class="node" x="280" y="200" width="120" height="25"/>
+  <text class="sublabel" x="340" y="217" text-anchor="middle">PLAN: A1->A2->A3</text>
+  <path class="arrow" d="M340 225 L340 245"/>
+  <rect class="active" x="280" y="245" width="120" height="25"/>
+  <text class="sublabel" x="340" y="262" text-anchor="middle" fill="white">Execute A1</text>
+  <path class="arrow" d="M340 270 L340 290"/>
+  <rect class="node" x="280" y="290" width="120" height="25"/>
+  <text class="sublabel" x="340" y="307" text-anchor="middle">Execute A2</text>
+  <path class="arrow" d="M340 315 L340 335"/>
+  <rect class="node" x="280" y="335" width="120" height="25"/>
+  <text class="sublabel" x="340" y="352" text-anchor="middle">Execute A3</text>
+  <path class="arrow" d="M340 360 L340 380"/>
+  <rect class="node" x="280" y="380" width="120" height="25"/>
+  <text class="sublabel" x="340" y="397" text-anchor="middle">Done</text>
+
+  <text class="sublabel" x="340" y="440" text-anchor="middle" fill="#2563eb">Planned, rigid, fragile</text>
+
+  <!-- Self-Reflective -->
+  <rect class="box s-reflective" x="460" y="70" width="200" height="400"/>
+  <text class="label" x="560" y="95" text-anchor="middle">Self-Reflective</text>
+  <rect class="detail-box" x="470" y="110" width="180" height="50"/>
+  <text class="sublabel" x="480" y="128">Evaluate progress each step</text>
+  <text class="sublabel" x="480" y="146">Revise plan if stuck</text>
+
+  <text class="label" x="560" y="185" text-anchor="middle">Flow</text>
+  <rect class="node" x="500" y="200" width="120" height="25"/>
+  <text class="sublabel" x="560" y="217" text-anchor="middle">Execute A1</text>
+  <path class="arrow" d="M560 225 L560 245"/>
+  <rect class="node" x="500" y="245" width="120" height="25"/>
+  <text class="sublabel" x="560" y="262" text-anchor="middle">Evaluate: Making progress?</text>
+  <path class="arrow" d="M500 257 L470 257 L470 235 L500 235" fill="none" stroke="#059669" stroke-width="1.5"/>
+  <text class="sublabel" x="468" y="250" fill="#059669" font-size="9">No: revise</text>
+  <path class="arrow" d="M560 270 L560 290"/>
+  <rect class="active" x="500" y="290" width="120" height="25"/>
+  <text class="sublabel" x="560" y="307" text-anchor="middle" fill="white">Execute A2 (or A2')</text>
+  <path class="arrow" d="M560 315 L560 335"/>
+  <rect class="node" x="500" y="335" width="120" height="25"/>
+  <text class="sublabel" x="560" y="352" text-anchor="middle">Evaluate again</text>
+  <path class="arrow" d="M560 360 L560 380"/>
+  <rect class="node" x="500" y="380" width="120" height="25"/>
+  <text class="sublabel" x="560" y="397" text-anchor="middle">Continue or stop</text>
+
+  <text class="sublabel" x="560" y="440" text-anchor="middle" fill="#059669">Adaptive, slower, robust</text>
+
+  <!-- Tree of Thought -->
+  <rect class="box s-tree" x="680" y="70" width="200" height="400"/>
+  <text class="label" x="780" y="95" text-anchor="middle">Tree of Thought</text>
+  <rect class="detail-box" x="690" y="110" width="180" height="50"/>
+  <text class="sublabel" x="700" y="128">Explore multiple paths</text>
+  <text class="sublabel" x="700" y="146">Select most promising</text>
+
+  <text class="label" x="780" y="185" text-anchor="middle">Flow</text>
+  <!-- Tree structure -->
+  <rect class="node" x="740" y="200" width="80" height="22"/>
+  <text class="sublabel" x="780" y="215" text-anchor="middle">Root</text>
+  <path d="M780 222 L740 250" fill="none" stroke="#999" stroke-width="1"/>
+  <path d="M780 222 L780 250" fill="none" stroke="#999" stroke-width="1"/>
+  <path d="M780 222 L820 250" fill="none" stroke="#999" stroke-width="1"/>
+  <rect class="node" x="710" y="250" width="60" height="22"/>
+  <text class="sublabel" x="740" y="265" text-anchor="middle">A1 (0.3)</text>
+  <rect class="active" x="750" y="250" width="60" height="22"/>
+  <text class="sublabel" x="780" y="265" text-anchor="middle" fill="white">A2 (0.8)</text>
+  <rect class="node" x="790" y="250" width="60" height="22"/>
+  <text class="sublabel" x="820" y="265" text-anchor="middle">A3 (0.5)</text>
+  <path d="M780 272 L780 295" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <rect class="node" x="735" y="295" width="40" height="22"/>
+  <text class="sublabel" x="755" y="310" text-anchor="middle">B1</text>
+  <rect class="active" x="765" y="295" width="40" height="22"/>
+  <text class="sublabel" x="785" y="310" text-anchor="middle" fill="white">B2</text>
+  <path d="M780 317 L780 340" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <rect class="node" x="750" y="340" width="60" height="22"/>
+  <text class="sublabel" x="780" y="355" text-anchor="middle">Selected</text>
+  <path d="M780 362 L780 385" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <rect class="node" x="750" y="385" width="60" height="22"/>
+  <text class="sublabel" x="780" y="400" text-anchor="middle">Execute</text>
+
+  <text class="sublabel" x="780" y="440" text-anchor="middle" fill="#d97706">Thorough, expensive, best</text>
+</svg>

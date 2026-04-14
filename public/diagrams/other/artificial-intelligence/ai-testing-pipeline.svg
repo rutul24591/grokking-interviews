@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-dataset { stroke: #7c3aed; }
+    .c-eval { stroke: #2563eb; }
+    .c-compare { stroke: #059669; }
+    .c-report { stroke: #d97706; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .pass { fill: #059669; }
+    .fail { fill: #dc2626; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">AI Testing Pipeline</text>
+
+  <!-- Step 1: Golden Dataset -->
+  <rect class="box c-dataset" x="30" y="80" width="200" height="100"/>
+  <text class="label" x="130" y="105" text-anchor="middle">1. Golden Dataset</text>
+  <rect class="detail-box" x="45" y="115" width="170" height="50"/>
+  <text class="sublabel" x="55" y="133">500-1000 examples</text>
+  <text class="sublabel" x="55" y="150">Stratified by type/difficulty</text>
+  <text class="sublabel" x="55" y="167">Versioned, held-out test set</text>
+
+  <path class="arrow" d="M230 130 L270 130"/>
+
+  <!-- Step 2: Run Evaluation -->
+  <rect class="box c-eval" x="280" y="80" width="200" height="100"/>
+  <text class="label" x="380" y="105" text-anchor="middle">2. Run Evaluation</text>
+  <rect class="detail-box" x="295" y="115" width="170" height="50"/>
+  <text class="sublabel" x="305" y="133">Run each example through AI system</text>
+  <text class="sublabel" x="305" y="150">Score: faithfulness, relevance, safety</text>
+
+  <path class="arrow" d="M480 130 L520 130"/>
+
+  <!-- Step 3: Compare -->
+  <rect class="box c-compare" x="530" y="80" width="200" height="100"/>
+  <text class="label" x="630" y="105" text-anchor="middle">3. Compare vs Baseline</text>
+  <rect class="detail-box" x="545" y="115" width="170" height="50"/>
+  <text class="sublabel" x="555" y="133">Δ scores vs previous run</text>
+  <text class="sublabel" x="555" y="150">Detect regressions &amp; improvements</text>
+
+  <path class="arrow" d="M730 130 L770 130"/>
+
+  <!-- Step 4: Report -->
+  <rect class="box c-report" x="780" y="80" width="100" height="100"/>
+  <text class="label" x="830" y="110" text-anchor="middle">4. Report</text>
+  <rect class="detail-box" x="790" y="120" width="80" height="50"/>
+  <text class="sublabel" x="800" y="138">Pass/Fail</text>
+  <text class="sublabel" x="800" y="153">Dashboard</text>
+  <text class="sublabel" x="800" y="168">Alerts</text>
+
+  <!-- Results visualization -->
+  <rect x="30" y="220" width="840" height="260" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="245" text-anchor="middle">Evaluation Results</text>
+
+  <!-- Score bars -->
+  <text class="sublabel" x="50" y="275"><tspan font-weight="700">Faithfulness:</tspan></text>
+  <rect class="meter-bg" x="180" y="263" width="300" height="18" fill="#e5e7eb" rx="3"/>
+  <rect x="180" y="263" width="270" height="18" class="pass" rx="3"/>
+  <text class="sublabel" x="490" y="276" font-weight="700">90% ↑ (baseline: 88%)</text>
+
+  <text class="sublabel" x="50" y="305"><tspan font-weight="700">Answer Relevance:</tspan></text>
+  <rect class="meter-bg" x="180" y="293" width="300" height="18" fill="#e5e7eb" rx="3"/>
+  <rect x="180" y="293" width="255" height="18" class="pass" rx="3"/>
+  <text class="sublabel" x="490" y="306" font-weight="700">85% → (baseline: 85%)</text>
+
+  <text class="sublabel" x="50" y="335"><tspan font-weight="700">Safety:</tspan></text>
+  <rect class="meter-bg" x="180" y="323" width="300" height="18" fill="#e5e7eb" rx="3"/>
+  <rect x="180" y="323" width="294" height="18" class="pass" rx="3"/>
+  <text class="sublabel" x="490" y="336" font-weight="700">98% ↑ (baseline: 97%)</text>
+
+  <text class="sublabel" x="50" y="365"><tspan font-weight="700">Completeness:</tspan></text>
+  <rect class="meter-bg" x="180" y="353" width="300" height="18" fill="#e5e7eb" rx="3"/>
+  <rect x="180" y="353" width="240" height="18" fill="#dc2626" rx="3"/>
+  <text class="sublabel" x="490" y="366" font-weight="700" fill="#dc2626">80% ↓ (baseline: 83%) REGRESSION</text>
+
+  <!-- Overall verdict -->
+  <rect x="550" y="260" width="300" height="120" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="label" x="700" y="285" text-anchor="middle" fill="#dc2626">VERDICT: REGRESSION DETECTED</text>
+  <text class="sublabel" x="570" y="310">Completeness dropped 3% below threshold</text>
+  <text class="sublabel" x="570" y="328">12 examples regressed from pass to fail</text>
+  <text class="sublabel" x="570" y="346">Action: Block deployment, investigate</text>
+  <text class="sublabel" x="570" y="364">Affected categories: analysis, comparison</text>
+</svg>

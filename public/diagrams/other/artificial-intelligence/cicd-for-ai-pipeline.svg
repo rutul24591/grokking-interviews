@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-ci { stroke: #7c3aed; }
+    .dark .c-ci { fill: #2e1065; stroke: #a78bfa; }
+    .c-cd { stroke: #2563eb; }
+    .dark .c-cd { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-mon { stroke: #059669; }
+    .dark .c-mon { fill: #064e3b; stroke: #34d399; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .rb { fill: none; stroke: #dc2626; stroke-width: 2; stroke-dasharray: 6,3; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">CI/CD for AI Systems</text>
+
+  <!-- CI Section -->
+  <text class="label" x="225" y="80" text-anchor="middle" fill="#7c3aed">Continuous Integration</text>
+  
+  <rect class="box c-ci" x="30" y="100" width="180" height="70"/>
+  <text class="label" x="120" y="125" text-anchor="middle">1. Prompt Testing</text>
+  <rect class="detail-box" x="45" y="135" width="150" height="25"/>
+  <text class="sublabel" x="55" y="152">Benchmark on every change</text>
+
+  <path class="arrow" d="M210 135 L240 135"/>
+  <rect class="box c-ci" x="250" y="100" width="180" height="70"/>
+  <text class="label" x="340" y="125" text-anchor="middle">2. Model Evaluation</text>
+  <rect class="detail-box" x="265" y="135" width="150" height="25"/>
+  <text class="sublabel" x="275" y="152">Quality vs expected results</text>
+
+  <path class="arrow" d="M430 135 L460 135"/>
+  <rect class="box c-ci" x="470" y="100" width="180" height="70"/>
+  <text class="label" x="560" y="125" text-anchor="middle">3. Safety Testing</text>
+  <rect class="detail-box" x="485" y="135" width="150" height="25"/>
+  <text class="sublabel" x="495" y="152">Harmful output detection</text>
+
+  <!-- CD Section -->
+  <text class="label" x="225" y="220" text-anchor="middle" fill="#2563eb">Continuous Deployment</text>
+
+  <rect class="box c-cd" x="30" y="240" width="180" height="70"/>
+  <text class="label" x="120" y="265" text-anchor="middle">4. Canary Release</text>
+  <rect class="detail-box" x="45" y="275" width="150" height="25"/>
+  <text class="sublabel" x="55" y="292">5% traffic first</text>
+
+  <path class="arrow" d="M210 275 L240 275"/>
+  <rect class="box c-cd" x="250" y="240" width="180" height="70"/>
+  <text class="label" x="340" y="265" text-anchor="middle">5. A/B Testing</text>
+  <rect class="detail-box" x="265" y="275" width="150" height="25"/>
+  <text class="sublabel" x="275" y="292">Compare variants</text>
+
+  <path class="arrow" d="M430 275 L460 275"/>
+  <rect class="box c-cd" x="470" y="240" width="180" height="70"/>
+  <text class="label" x="560" y="265" text-anchor="middle">6. Gradual Rollout</text>
+  <rect class="detail-box" x="485" y="275" width="150" height="25"/>
+  <text class="sublabel" x="495" y="292">5% → 25% → 50% → 100%</text>
+
+  <!-- Monitoring and Rollback -->
+  <text class="label" x="780" y="80" text-anchor="middle" fill="#059669">Monitoring &amp; Rollback</text>
+
+  <rect class="box c-mon" x="680" y="100" width="180" height="70"/>
+  <text class="label" x="770" y="125" text-anchor="middle">Quality Monitoring</text>
+  <rect class="detail-box" x="695" y="135" width="150" height="25"/>
+  <text class="sublabel" x="705" y="152">Real-time quality metrics</text>
+
+  <path class="arrow" d="M770 170 L770 210"/>
+  <rect class="box c-mon" x="680" y="220" width="180" height="70"/>
+  <text class="label" x="770" y="245" text-anchor="middle">Auto Rollback</text>
+  <rect class="detail-box" x="695" y="255" width="150" height="25"/>
+  <text class="sublabel" x="705" y="272">Revert on quality drop</text>
+
+  <!-- Rollback path -->
+  <path class="rb" d="M680 255 L650 255 L650 300"/>
+  <polygon points="650,300 645,290 655,290" fill="#dc2626"/>
+  <text class="sublabel" x="590" y="280" fill="#dc2626" font-weight="700">Revert</text>
+
+  <!-- Version tracking -->
+  <rect x="30" y="350" width="840" height="130" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="375" text-anchor="middle">What Gets Versioned in AI CI/CD</text>
+
+  <rect x="50" y="390" width="190" height="75" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="sublabel" x="65" y="410" font-weight="700">Prompt Templates</text>
+  <text class="sublabel" x="65" y="428">Semantic versioning</text>
+  <text class="sublabel" x="65" y="443">Change descriptions</text>
+  <text class="sublabel" x="65" y="458">Git-tracked files</text>
+
+  <rect x="260" y="390" width="190" height="75" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text class="sublabel" x="275" y="410" font-weight="700">Model Versions</text>
+  <text class="sublabel" x="275" y="428">Model ID + revision hash</text>
+  <text class="sublabel" x="275" y="443">Pinned to specific commit</text>
+  <text class="sublabel" x="275" y="458">Never use &quot;latest&quot; in prod</text>
+
+  <rect x="470" y="390" width="190" height="75" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="485" y="410" font-weight="700">Evaluation Datasets</text>
+  <text class="sublabel" x="485" y="428">Versioned with changes</text>
+  <text class="sublabel" x="485" y="443">Track additions/corrections</text>
+  <text class="sublabel" x="485" y="458">Stratified samples preserved</text>
+
+  <rect x="680" y="390" width="170" height="75" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text class="sublabel" x="695" y="410" font-weight="700">Config &amp; Parameters</text>
+  <text class="sublabel" x="695" y="428">Temperature, top_p, max_tokens</text>
+  <text class="sublabel" x="695" y="443">Retry policies, timeouts</text>
+  <text class="sublabel" x="695" y="458">Feature flags for experiments</text>
+</svg>

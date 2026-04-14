@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-prompt { stroke: #7c3aed; }
+    .dark .c-prompt { fill: #2e1065; stroke: #a78bfa; }
+    .c-route { stroke: #2563eb; }
+    .dark .c-route { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-cache { stroke: #059669; }
+    .dark .c-cache { fill: #064e3b; stroke: #34d399; }
+    .c-output { stroke: #d97706; }
+    .dark .c-output { fill: #451a03; stroke: #fbbf24; }
+    .c-batch { stroke: #dc2626; }
+    .dark .c-batch { fill: #450a0a; stroke: #f87171; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Token Cost Optimization Strategies</text>
+
+  <!-- Strategy 1: Prompt Compression -->
+  <rect class="box c-prompt" x="30" y="80" width="160" height="100"/>
+  <text class="label" x="110" y="105" text-anchor="middle">Prompt Compression</text>
+  <rect class="detail-box" x="45" y="115" width="130" height="50"/>
+  <text class="sublabel" x="55" y="133">Remove whitespace</text>
+  <text class="sublabel" x="55" y="148">Concise instructions</text>
+  <text class="sublabel" x="55" y="163">Compress context</text>
+  <text class="sublabel" x="55" y="178">Save: 30-50%</text>
+
+  <!-- Strategy 2: Model Routing -->
+  <rect class="box c-route" x="220" y="80" width="160" height="100"/>
+  <text class="label" x="300" y="105" text-anchor="middle">Model Routing</text>
+  <rect class="detail-box" x="235" y="115" width="130" height="50"/>
+  <text class="sublabel" x="245" y="133">Small → Medium → Large</text>
+  <text class="sublabel" x="245" y="148">Route by complexity</text>
+  <text class="sublabel" x="245" y="163">Escalate on failure</text>
+  <text class="sublabel" x="245" y="178">Save: 60-80%</text>
+
+  <!-- Strategy 3: Response Caching -->
+  <rect class="box c-cache" x="410" y="80" width="160" height="100"/>
+  <text class="label" x="490" y="105" text-anchor="middle">Response Caching</text>
+  <rect class="detail-box" x="425" y="115" width="130" height="50"/>
+  <text class="sublabel" x="435" y="133">Exact + semantic</text>
+  <text class="sublabel" x="435" y="148">TTL management</text>
+  <text class="sublabel" x="435" y="163">Hit rate: 20-35%</text>
+  <text class="sublabel" x="435" y="178">Save: 20-35%</text>
+
+  <!-- Strategy 4: Output Limits -->
+  <rect class="box c-output" x="600" y="80" width="160" height="100"/>
+  <text class="label" x="680" y="105" text-anchor="middle">Output Length Limits</text>
+  <rect class="detail-box" x="615" y="115" width="130" height="50"/>
+  <text class="sublabel" x="625" y="133">max_tokens setting</text>
+  <text class="sublabel" x="625" y="148">Structured output</text>
+  <text class="sublabel" x="625" y="163">Concise prompting</text>
+  <text class="sublabel" x="625" y="178">Save: 20-40%</text>
+
+  <!-- Strategy 5: Batch Processing -->
+  <rect class="box c-batch" x="30" y="220" width="160" height="100"/>
+  <text class="label" x="110" y="245" text-anchor="middle">Batch Processing</text>
+  <rect class="detail-box" x="45" y="255" width="130" height="50"/>
+  <text class="sublabel" x="55" y="273">Group similar requests</text>
+  <text class="sublabel" x="55" y="288">Volume discounts</text>
+  <text class="sublabel" x="55" y="303">Async processing</text>
+  <text class="sublabel" x="55" y="318">Save: 10-30%</text>
+
+  <!-- Combined impact -->
+  <rect x="220" y="220" width="540" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="490" y="245" text-anchor="middle">Combined Optimization Impact</text>
+
+  <text class="sublabel" x="240" y="270">Before: 100K requests/day × avg 3000 tokens × $0.003/1K = $900/day = $328,500/year</text>
+  <text class="sublabel" x="240" y="290">After:  100K × avg 1200 tokens × $0.001/1K = $120/day = $43,800/year</text>
+  <text class="sublabel" x="240" y="310" font-weight="700" fill="#059669">Total savings: 87% → $284,700/year</text>
+
+  <!-- Before/After bar chart -->
+  <text class="label" x="490" y="360" text-anchor="middle">Cost Per Request (Before vs After)</text>
+  <rect x="280" y="380" width="420" height="30" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="sublabel" x="490" y="400" text-anchor="middle" fill="#dc2626" font-weight="700">Before: $0.009 per request</text>
+  <rect x="280" y="420" width="84" height="30" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="322" y="440" text-anchor="middle" fill="#059669" font-weight="700">$0.0012</text>
+  <text class="sublabel" x="490" y="440" text-anchor="middle" fill="#059669">After: $0.0012 per request (87% reduction)</text>
+
+  <text class="sublabel" x="490" y="480" text-anchor="middle">Key: Combine all strategies for maximum impact. Each strategy compounds with others.</text>
+</svg>

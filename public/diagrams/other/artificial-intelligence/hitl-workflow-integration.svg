@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+    .check { fill: #059669; }
+    .cross { fill: #dc2626; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">AI Workflow — Human-in-the-Loop Integration Points</text>
+
+  <!-- Main workflow -->
+  <text class="label" x="225" y="85" text-anchor="middle">AI Workflow with HITL Checkpoints</text>
+
+  <!-- Stage 1: AI generates draft -->
+  <rect class="box" x="30" y="100" width="180" height="70"/>
+  <text class="label" x="120" y="125" text-anchor="middle">AI Draft Generation</text>
+  <rect class="detail-box" x="45" y="135" width="150" height="25"/>
+  <text class="sublabel" x="55" y="152">LLM produces initial output</text>
+
+  <path class="arrow" d="M210 135 L250 135"/>
+
+  <!-- Stage 2: Quality check -->
+  <rect class="box" x="260" y="100" width="160" height="70" stroke="#d97706"/>
+  <text class="label" x="340" y="125" text-anchor="middle" fill="#d97706">Quality Gate</text>
+  <rect class="detail-box" x="275" y="135" width="130" height="25"/>
+  <text class="sublabel" x="285" y="152">Automated scoring</text>
+
+  <!-- Decision diamond -->
+  <path d="M420 135 L450 100 L480 135 L450 170 Z" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text class="sublabel" x="450" y="140" text-anchor="middle" font-weight="700">Score</text>
+
+  <!-- Pass path -->
+  <path d="M480 135 L520 135" fill="none" stroke="#059669" stroke-width="2"/>
+  <text class="sublabel" x="500" y="128" fill="#059669" font-weight="700">≥0.8</text>
+
+  <!-- Review path -->
+  <path d="M450 170 L450 210" fill="none" stroke="#d97706" stroke-width="2"/>
+  <text class="sublabel" x="465" y="195" fill="#d97706" font-weight="700">0.5-0.8</text>
+
+  <!-- Fail path -->
+  <path d="M420 135 L380 135 L380 210" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <text class="sublabel" x="365" y="195" fill="#dc2626" font-weight="700">&lt;0.5</text>
+
+  <!-- Pass → Direct delivery -->
+  <rect class="box" x="530" y="100" width="160" height="70" stroke="#059669"/>
+  <text class="label" x="610" y="125" text-anchor="middle" fill="#059669">Auto-Deliver</text>
+  <rect class="detail-box" x="545" y="135" width="130" height="25"/>
+  <text class="sublabel" x="555" y="152">High confidence output</text>
+
+  <!-- Review → Human review -->
+  <rect class="box" x="350" y="215" width="200" height="80" stroke="#2563eb"/>
+  <text class="label" x="450" y="240" text-anchor="middle" fill="#2563eb">Human Review Queue</text>
+  <rect class="detail-box" x="365" y="250" width="170" height="35"/>
+  <text class="sublabel" x="375" y="268">Human reviews, edits, approves</text>
+  <text class="sublabel" x="375" y="283">Avg review time: 2-5 minutes</text>
+
+  <!-- Reject → AI regenerate -->
+  <rect class="box" x="280" y="215" width="160" height="80" stroke="#dc2626"/>
+  <text class="label" x="360" y="240" text-anchor="middle" fill="#dc2626">AI Regenerate</text>
+  <rect class="detail-box" x="295" y="250" width="130" height="35"/>
+  <text class="sublabel" x="305" y="268">Retry with different params</text>
+  <text class="sublabel" x="305" y="283">Max 2 retries → escalate</text>
+
+  <!-- Human review → delivery -->
+  <path d="M550 255 L610 255 L610 135" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <!-- Statistics panel -->
+  <rect x="30" y="330" width="400" height="150" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="230" y="355" text-anchor="middle">Throughput Statistics</text>
+  <text class="sublabel" x="50" y="380">Auto-delivered (≥0.8): <tspan font-weight="700">65%</tspan> — zero human cost</text>
+  <text class="sublabel" x="50" y="400">Human reviewed (0.5-0.8): <tspan font-weight="700">25%</tspan> — 3 min avg review</text>
+  <text class="sublabel" x="50" y="420">AI regenerated (&lt;0.5): <tspan font-weight="700">8%</tspan> — 60% pass on retry</text>
+  <text class="sublabel" x="50" y="440">Escalated (fail after retry): <tspan font-weight="700">2%</tspan> — human expert</text>
+  <text class="sublabel" x="50" y="465" font-weight="700">Effective human effort: 25% × 3min + 2% × 15min = 1.05 min/request</text>
+
+  <!-- HITL patterns -->
+  <rect x="460" y="330" width="410" height="150" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="665" y="355" text-anchor="middle">HITL Integration Patterns</text>
+  <text class="sublabel" x="480" y="380"><tspan font-weight="700">Approval Gate:</tspan> Human approves before action (high-risk operations)</text>
+  <text class="sublabel" x="480" y="400"><tspan font-weight="700">Review Queue:</tspan> AI drafts, human reviews (content generation)</text>
+  <text class="sublabel" x="480" y="420"><tspan font-weight="700">Escalation Path:</tspan> AI handles routine, escalates complex (support)</text>
+  <text class="sublabel" x="480" y="440"><tspan font-weight="700">Feedback Loop:</tspan> Human corrections train future AI behavior</text>
+  <text class="sublabel" x="480" y="465" font-weight="700">Design principle: Minimize human effort while maintaining quality</text>
+</svg>

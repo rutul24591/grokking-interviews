@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .box { fill: #ede9fe; stroke: #7c3aed; stroke-width: 2; rx: 8; }
+    .dark .box { fill: #2e1065; stroke: #a78bfa; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .step-num { font-family: system-ui, -apple-system, sans-serif; font-size: 16px; font-weight: 700; fill: #7c3aed; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Production Prompt Construction Pipeline</text>
+
+  <!-- Step 1 -->
+  <rect class="box" x="20" y="70" width="160" height="90"/>
+  <text class="step-num" x="40" y="95">1</text>
+  <text class="label" x="100" y="115" text-anchor="middle">Task Classification</text>
+  <rect class="detail-box" x="30" y="125" width="140" height="25"/>
+  <text class="sublabel" x="40" y="142">Identify task type</text>
+
+  <path class="arrow" d="M180 115 L210 115"/>
+  <polygon points="210,115 202,110 202,120" fill="#6366f1"/>
+
+  <!-- Step 2 -->
+  <rect class="box" x="220" y="70" width="160" height="90"/>
+  <text class="step-num" x="240" y="95">2</text>
+  <text class="label" x="300" y="115" text-anchor="middle">Template Selection</text>
+  <rect class="detail-box" x="230" y="125" width="140" height="25"/>
+  <text class="sublabel" x="240" y="142">Pick prompt template</text>
+
+  <path class="arrow" d="M380 115 L410 115"/>
+  <polygon points="410,115 402,110 402,120" fill="#6366f1"/>
+
+  <!-- Step 3 -->
+  <rect class="box" x="420" y="70" width="160" height="90"/>
+  <text class="step-num" x="440" y="95">3</text>
+  <text class="label" x="500" y="115" text-anchor="middle">Context Retrieval</text>
+  <rect class="detail-box" x="430" y="125" width="140" height="25"/>
+  <text class="sublabel" x="440" y="142">Vector DB / API / Cache</text>
+
+  <path class="arrow" d="M580 115 L610 115"/>
+  <polygon points="610,115 602,110 602,120" fill="#6366f1"/>
+
+  <!-- Step 4 -->
+  <rect class="box" x="620" y="70" width="160" height="90"/>
+  <text class="step-num" x="640" y="95">4</text>
+  <text class="label" x="700" y="115" text-anchor="middle">Parameter Injection</text>
+  <rect class="detail-box" x="630" y="125" width="140" height="25"/>
+  <text class="sublabel" x="640" y="142">Fill template vars</text>
+
+  <!-- Arrow down -->
+  <path class="arrow" d="M700 160 L700 210"/>
+  <polygon points="700,210 695,200 705,200" fill="#6366f1"/>
+
+  <!-- Step 5 -->
+  <rect class="box" x="620" y="220" width="160" height="90"/>
+  <text class="step-num" x="640" y="245">5</text>
+  <text class="label" x="700" y="265" text-anchor="middle">Token Validation</text>
+  <rect class="detail-box" x="630" y="275" width="140" height="25"/>
+  <text class="sublabel" x="640" y="292">Check context window</text>
+
+  <path class="arrow" d="M620 265 L590 265"/>
+  <polygon points="590,265 598,260 598,270" fill="#6366f1"/>
+
+  <!-- Step 6 -->
+  <rect class="box" x="420" y="220" width="160" height="90"/>
+  <text class="step-num" x="440" y="245">6</text>
+  <text class="label" x="500" y="265" text-anchor="middle">API Call</text>
+  <rect class="detail-box" x="430" y="275" width="140" height="25"/>
+  <text class="sublabel" x="440" y="292">LLM provider request</text>
+
+  <path class="arrow" d="M420 265 L390 265"/>
+  <polygon points="390,265 398,260 398,270" fill="#6366f1"/>
+
+  <!-- Step 7 -->
+  <rect class="box" x="220" y="220" width="160" height="90"/>
+  <text class="step-num" x="240" y="245">7</text>
+  <text class="label" x="300" y="265" text-anchor="middle">Output Validation</text>
+  <rect class="detail-box" x="230" y="275" width="140" height="25"/>
+  <text class="sublabel" x="240" y="292">Schema / quality check</text>
+
+  <path class="arrow" d="M220 265 L190 265"/>
+  <polygon points="190,265 198,260 198,270" fill="#6366f1"/>
+
+  <!-- Step 8 -->
+  <rect class="box" x="20" y="220" width="160" height="90"/>
+  <text class="step-num" x="40" y="245">8</text>
+  <text class="label" x="100" y="265" text-anchor="middle">Response / Retry</text>
+  <rect class="detail-box" x="30" y="275" width="140" height="25"/>
+  <text class="sublabel" x="40" y="292">Return or re-prompt</text>
+
+  <!-- Bottom: Detailed flow with annotations -->
+  <rect x="20" y="350" width="860" height="130" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="375" text-anchor="middle">Key Pipeline Design Decisions</text>
+
+  <text class="sublabel" x="50" y="400">Template Registry: Centralized store of prompt templates with version tracking, A/B test flags, and deployment status</text>
+  <text class="sublabel" x="50" y="422">Context Budget: Allocate context window tokens across system prompt, context, examples, and user input — enforce limits per component</text>
+  <text class="sublabel" x="50" y="444">Fallback Chain: If validation fails, retry with corrected prompt, escalate to larger model, or return graceful error to user</text>
+  <text class="sublabel" x="50" y="466">Observability: Log prompt version, token counts, latency, cost, and validation results for every request — essential for debugging</text>
+</svg>

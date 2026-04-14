@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .cycle { fill: none; stroke: #7c3aed; stroke-width: 3; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">AI Governance Framework</text>
+
+  <!-- Cycle arrows -->
+  <path class="cycle" d="M450 100 A 160 160 0 1 1 449 100" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="8,4"/>
+
+  <!-- Policy -->
+  <rect class="box" x="370" y="80" width="160" height="70" stroke="#7c3aed"/>
+  <text class="label" x="450" y="105" text-anchor="middle" fill="#7c3aed">1. Policy Definition</text>
+  <rect class="detail-box" x="385" y="115" width="130" height="25"/>
+  <text class="sublabel" x="395" y="132">Safety guidelines</text>
+
+  <!-- Review -->
+  <rect class="box" x="590" y="200" width="160" height="70" stroke="#2563eb"/>
+  <text class="label" x="670" y="225" text-anchor="middle" fill="#2563eb">2. Safety Review</text>
+  <rect class="detail-box" x="605" y="235" width="130" height="25"/>
+  <text class="sublabel" x="615" y="252">Pre-deployment audit</text>
+
+  <!-- Deploy -->
+  <rect class="box" x="590" y="360" width="160" height="70" stroke="#059669"/>
+  <text class="label" x="670" y="385" text-anchor="middle" fill="#059669">3. Deployment</text>
+  <rect class="detail-box" x="605" y="395" width="130" height="25"/>
+  <text class="sublabel" x="615" y="412">Canary + monitoring</text>
+
+  <!-- Monitor -->
+  <rect class="box" x="370" y="410" width="160" height="70" stroke="#d97706"/>
+  <text class="label" x="450" y="435" text-anchor="middle" fill="#d97706">4. Monitoring</text>
+  <rect class="detail-box" x="385" y="445" width="130" height="25"/>
+  <text class="sublabel" x="395" y="462">Real-time metrics</text>
+
+  <!-- Incident -->
+  <rect class="box" x="150" y="360" width="160" height="70" stroke="#dc2626"/>
+  <text class="label" x="230" y="385" text-anchor="middle" fill="#dc2626">5. Incident Response</text>
+  <rect class="detail-box" x="165" y="395" width="130" height="25"/>
+  <text class="sublabel" x="175" y="412">Detect, contain, fix</text>
+
+  <!-- Update -->
+  <rect class="box" x="150" y="200" width="160" height="70" stroke="#ec4899"/>
+  <text class="label" x="230" y="225" text-anchor="middle" fill="#ec4899">6. Policy Update</text>
+  <rect class="detail-box" x="165" y="235" width="130" height="25"/>
+  <text class="sublabel" x="175" y="252">Learn + improve</text>
+
+  <!-- Flow arrows between boxes -->
+  <path class="arrow" d="M530 115 L590 200" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path class="arrow" d="M670 270 L670 360" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path class="arrow" d="M590 430 L530 430" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path class="arrow" d="M370 430 L310 430" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path class="arrow" d="M230 360 L230 270" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path class="arrow" d="M310 235 L370 150" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <!-- Compliance section -->
+  <rect x="30" y="30" width="280" height="140" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="170" y="55" text-anchor="middle">Regulatory Compliance</text>
+  <text class="sublabel" x="45" y="78">EU AI Act — risk classification</text>
+  <text class="sublabel" x="45" y="96">US Executive Order — safety testing</text>
+  <text class="sublabel" x="45" y="114">NIST AI RMF — governance framework</text>
+  <text class="sublabel" x="45" y="132">GDPR — data protection, right to explanation</text>
+  <text class="sublabel" x="45" y="150">SOC 2 — security controls, audit logging</text>
+  <text class="sublabel" x="45" y="168">HIPAA — PHI protection for healthcare AI</text>
+</svg>

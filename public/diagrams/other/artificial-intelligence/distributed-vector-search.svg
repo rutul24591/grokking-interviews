@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Distributed Vector Search Architecture</text>
+
+  <!-- Query node -->
+  <rect class="box" x="350" y="60" width="200" height="50"/>
+  <text class="label" x="450" y="90" text-anchor="middle">Query Node</text>
+
+  <!-- Fan out to shards -->
+  <path d="M400 110 L150 170" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <path d="M450 110 L450 170" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <path d="M500 110 L750 170" fill="none" stroke="#6366f1" stroke-width="2"/>
+
+  <!-- Shard 1 -->
+  <rect class="box" x="30" y="175" width="240" height="120" stroke="#7c3aed"/>
+  <text class="label" x="150" y="200" text-anchor="middle" fill="#7c3aed">Shard 1 (Vectors 0-33M)</text>
+  <rect class="detail-box" x="45" y="210" width="210" height="70"/>
+  <text class="sublabel" x="55" y="228">Local HNSW index search</text>
+  <text class="sublabel" x="55" y="246">Top-20 local results</text>
+  <text class="sublabel" x="55" y="264">Node: GPU server A</text>
+  <text class="sublabel" x="55" y="282">Memory: 32 GB HNSW index</text>
+
+  <!-- Shard 2 -->
+  <rect class="box" x="330" y="175" width="240" height="120" stroke="#2563eb"/>
+  <text class="label" x="450" y="200" text-anchor="middle" fill="#2563eb">Shard 2 (Vectors 33M-66M)</text>
+  <rect class="detail-box" x="345" y="210" width="210" height="70"/>
+  <text class="sublabel" x="355" y="228">Local HNSW index search</text>
+  <text class="sublabel" x="355" y="246">Top-20 local results</text>
+  <text class="sublabel" x="355" y="264">Node: GPU server B</text>
+  <text class="sublabel" x="355" y="282">Memory: 32 GB HNSW index</text>
+
+  <!-- Shard 3 -->
+  <rect class="box" x="630" y="175" width="240" height="120" stroke="#059669"/>
+  <text class="label" x="750" y="200" text-anchor="middle" fill="#059669">Shard 3 (Vectors 66M-100M)</text>
+  <rect class="detail-box" x="645" y="210" width="210" height="70"/>
+  <text class="sublabel" x="655" y="228">Local HNSW index search</text>
+  <text class="sublabel" x="655" y="246">Top-20 local results</text>
+  <text class="sublabel" x="655" y="264">Node: GPU server C</text>
+  <text class="sublabel" x="655" y="282">Memory: 32 GB HNSW index</text>
+
+  <!-- Results fan in -->
+  <path d="M150 295 L150 340 L450 340" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path d="M450 295 L450 340" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path d="M750 295 L750 340 L450 340" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <!-- Aggregator -->
+  <rect class="box" x="300" y="345" width="300" height="70" stroke="#d97706"/>
+  <text class="label" x="450" y="370" text-anchor="middle" fill="#d97706">Result Aggregator</text>
+  <rect class="detail-box" x="315" y="380" width="270" height="25"/>
+  <text class="sublabel" x="325" y="397">Merge 60 results → rerank → Top-10 final</text>
+
+  <!-- Scaling characteristics -->
+  <rect x="30" y="60" width="290" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="sublabel" x="45" y="85"><tspan font-weight="700">Horizontal Scaling:</tspan></text>
+  <text class="sublabel" x="45" y="103">• Add shards → handle more vectors</text>
+  <text class="sublabel" x="45" y="121">• Linear throughput increase</text>
+  <text class="sublabel" x="45" y="139">• Network latency between shards</text>
+
+  <!-- Replication -->
+  <rect x="630" y="60" width="240" height="80" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="645" y="85"><tspan font-weight="700">Replication for HA:</tspan></text>
+  <text class="sublabel" x="645" y="103">• Each shard replicated 2-3x</text>
+  <text class="sublabel" x="645" y="121">• Read from any replica</text>
+  <text class="sublabel" x="645" y="139">• Write to all replicas</text>
+
+  <!-- Bottom: scaling comparison -->
+  <rect x="30" y="440" width="840" height="45" rx="6" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="450" y="468" text-anchor="middle" font-weight="700">Single node: 100M vectors → OOM | 3 shards: 33M each → fits in memory | 10 shards: 10M each → 10x throughput</text>
+</svg>

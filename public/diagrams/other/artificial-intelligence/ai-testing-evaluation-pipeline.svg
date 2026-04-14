@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">AI Testing — Continuous Evaluation Pipeline</text>
+
+  <!-- Pipeline stages -->
+  <text class="label" x="450" y="85" text-anchor="middle">CI/CD Integration for AI Quality</text>
+
+  <!-- Stage 1: Code/Prompt Change -->
+  <rect class="box" x="30" y="110" width="160" height="70"/>
+  <text class="label" x="110" y="135" text-anchor="middle">Prompt/Model Change</text>
+  <rect class="detail-box" x="45" y="145" width="130" height="25"/>
+  <text class="sublabel" x="55" y="162">Git commit triggers CI</text>
+
+  <path class="arrow" d="M190 145 L220 145"/>
+
+  <!-- Stage 2: Smoke Test -->
+  <rect class="box" x="230" y="110" width="140" height="70" stroke="#d97706"/>
+  <text class="label" x="300" y="135" text-anchor="middle" fill="#d97706">Smoke Test</text>
+  <rect class="detail-box" x="245" y="145" width="110" height="25"/>
+  <text class="sublabel" x="255" y="162">Quick sanity check</text>
+
+  <path class="arrow" d="M370 145 L400 145"/>
+
+  <!-- Stage 3: Full Evaluation -->
+  <rect class="box" x="410" y="110" width="170" height="70" stroke="#2563eb"/>
+  <text class="label" x="495" y="135" text-anchor="middle" fill="#2563eb">Full Evaluation</text>
+  <rect class="detail-box" x="425" y="145" width="140" height="25"/>
+  <text class="sublabel" x="435" y="162">Golden dataset test</text>
+
+  <path class="arrow" d="M580 145 L610 145"/>
+
+  <!-- Stage 4: Regression Check -->
+  <rect class="box" x="620" y="110" width="140" height="70" stroke="#dc2626"/>
+  <text class="label" x="690" y="135" text-anchor="middle" fill="#dc2626">Regression Check</text>
+  <rect class="detail-box" x="635" y="145" width="110" height="25"/>
+  <text class="sublabel" x="645" y="162">Compare vs baseline</text>
+
+  <path class="arrow" d="M760 145 L790 145"/>
+
+  <!-- Decision -->
+  <path d="M790 145 L820 110 L850 145 L820 180 Z" fill="#f8f9fa" stroke="#6366f1" stroke-width="2"/>
+  <text class="sublabel" x="820" y="150" text-anchor="middle" font-weight="700">Pass?</text>
+
+  <!-- Pass → Deploy -->
+  <path d="M850 145 L870 145" fill="none" stroke="#059669" stroke-width="2"/>
+  <rect class="box" x="870" y="110" width="0" height="70" stroke="#059669"/>
+  <text class="sublabel" x="860" y="135" fill="#059669" font-weight="700">Yes → Deploy</text>
+
+  <!-- Fail → Block -->
+  <path d="M820 180 L820 220" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <rect class="box" x="720" y="225" width="200" height="50" stroke="#dc2626"/>
+  <text class="label" x="820" y="255" text-anchor="middle" fill="#dc2626">Block PR, Report Diff</text>
+
+  <!-- Evaluation details -->
+  <rect x="30" y="300" width="400" height="180" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="230" y="325" text-anchor="middle">Evaluation Metrics Tracked</text>
+  <text class="sublabel" x="50" y="350"><tspan font-weight="700">Accuracy:</tspan> Correct answers / total examples</text>
+  <text class="sublabel" x="50" y="370"><tspan font-weight="700">Format Compliance:</tspan> Valid JSON, expected structure</text>
+  <text class="sublabel" x="50" y="390"><tspan font-weight="700">Safety Score:</tspan> No harmful/biased content</text>
+  <text class="sublabel" x="50" y="410"><tspan font-weight="700">Helpfulness:</tspan> LLM-as-a-judge rating (1-5)</text>
+  <text class="sublabel" x="50" y="430"><tspan font-weight="700">Token Efficiency:</tspan> Output tokens / expected tokens</text>
+  <text class="sublabel" x="50" y="455" font-weight="700">Per-metric regression thresholds configured</text>
+  <text class="sublabel" x="50" y="475" font-weight="700">Composite score: weighted average of all metrics</text>
+
+  <!-- PR comment example -->
+  <rect x="460" y="300" width="410" height="180" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="665" y="325" text-anchor="middle">Automated PR Comment</text>
+
+  <rect x="480" y="340" width="370" height="125" rx="4" fill="white" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="495" y="360" font-weight="700">🤖 AI Evaluation Results</text>
+  <text class="sublabel" x="495" y="380"><tspan class="check">✓</tspan> Accuracy: 92.3% (baseline: 91.8%, Δ +0.5%)</text>
+  <text class="sublabel" x="495" y="398"><tspan class="check">✓</tspan> Format: 98.1% (baseline: 97.5%, Δ +0.6%)</text>
+  <text class="sublabel" x="495" y="416"><tspan class="check">✓</tspan> Safety: 99.9% (baseline: 99.8%, Δ +0.1%)</text>
+  <text class="sublabel" x="495" y="434"><tspan class="cross">✗</tspan> Helpfulness: 3.8/5 (baseline: 4.1/5, <tspan font-weight="700">Δ -0.3</tspan>)</text>
+  <text class="sublabel" x="495" y="455" font-weight="700">Status: <tspan fill="#d97706">WARNING</tspan> — Helpfulness dropped below threshold</text>
+</svg>

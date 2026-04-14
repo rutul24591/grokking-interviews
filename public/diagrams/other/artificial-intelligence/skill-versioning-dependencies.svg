@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Skill Versioning and Dependency Management</text>
+
+  <!-- Version timeline -->
+  <text class="label" x="450" y="85" text-anchor="middle">Skill Version Timeline</text>
+  <line x1="100" y1="105" x2="800" y2="105" stroke="#6366f1" stroke-width="2"/>
+
+  <!-- v1.0 -->
+  <circle cx="180" cy="105" r="18" fill="#7c3aed"/>
+  <text class="sublabel" x="180" y="110" text-anchor="middle" fill="white" font-weight="700">v1.0</text>
+  <text class="sublabel" x="180" y="135" text-anchor="middle">Initial release</text>
+  <text class="sublabel" x="180" y="150" text-anchor="middle">3 tools, basic</text>
+
+  <!-- v1.1 -->
+  <circle cx="300" cy="105" r="18" fill="#2563eb"/>
+  <text class="sublabel" x="300" y="110" text-anchor="middle" fill="white" font-weight="700">v1.1</text>
+  <text class="sublabel" x="300" y="135" text-anchor="middle">Bug fixes</text>
+  <text class="sublabel" x="300" y="150" text-anchor="middle">Backward compatible</text>
+
+  <!-- v2.0 (breaking) -->
+  <circle cx="450" cy="105" r="18" fill="#d97706"/>
+  <text class="sublabel" x="450" y="110" text-anchor="middle" fill="white" font-weight="700">v2.0</text>
+  <text class="sublabel" x="450" y="135" text-anchor="middle">Breaking changes</text>
+  <text class="sublabel" x="450" y="150" text-anchor="middle">New tool signatures</text>
+
+  <!-- v2.1 -->
+  <circle cx="580" cy="105" r="18" fill="#059669"/>
+  <text class="sublabel" x="580" y="110" text-anchor="middle" fill="white" font-weight="700">v2.1</text>
+  <text class="sublabel" x="580" y="135" text-anchor="middle">Performance fix</text>
+  <text class="sublabel" x="580" y="150" text-anchor="middle">Compatible with v2.0</text>
+
+  <!-- v3.0 (current) -->
+  <circle cx="720" cy="105" r="22" fill="#dc2626"/>
+  <text class="sublabel" x="720" y="110" text-anchor="middle" fill="white" font-weight="700">v3.0</text>
+  <text class="sublabel" x="720" y="140" text-anchor="middle">Current</text>
+  <text class="sublabel" x="720" y="155" text-anchor="middle">8 tools, advanced</text>
+
+  <!-- Dependency graph -->
+  <rect x="30" y="190" width="400" height="280" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="230" y="215" text-anchor="middle">Skill Dependency Graph</text>
+
+  <!-- Core skill -->
+  <rect x="130" y="230" width="200" height="45" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text class="sublabel" x="230" y="258" text-anchor="middle" font-weight="700">core-search (v3.0)</text>
+
+  <!-- Dependencies from core -->
+  <path d="M180 275 L100 320" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path d="M230 275 L230 320" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+  <path d="M280 275 L360 320" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+
+  <!-- Child skills -->
+  <rect x="30" y="325" width="140" height="35" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text class="sublabel" x="100" y="347" text-anchor="middle">db-query (v2.1)</text>
+
+  <rect x="160" y="325" width="140" height="35" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text class="sublabel" x="230" y="347" text-anchor="middle">web-search (v1.5)</text>
+
+  <rect x="290" y="325" width="140" height="35" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text class="sublabel" x="360" y="347" text-anchor="middle">cache-lookup (v1.0)</text>
+
+  <!-- Transitive dependencies -->
+  <path d="M100 360 L100 400" fill="none" stroke="#6366f1" stroke-width="1" stroke-dasharray="3,2"/>
+  <path d="M230 360 L230 400" fill="none" stroke="#6366f1" stroke-width="1" stroke-dasharray="3,2"/>
+  <path d="M360 360 L360 400" fill="none" stroke="#6366f1" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <rect x="30" y="405" width="140" height="30" rx="4" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="100" y="424" text-anchor="middle">postgres-conn (v4.0)</text>
+
+  <rect x="160" y="405" width="140" height="30" rx="4" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="230" y="424" text-anchor="middle">http-client (v2.0)</text>
+
+  <rect x="290" y="405" width="140" height="30" rx="4" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="sublabel" x="360" y="424" text-anchor="middle">redis-conn (v1.2)</text>
+
+  <!-- Conflict resolution -->
+  <rect x="460" y="190" width="410" height="280" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="665" y="215" text-anchor="middle">Version Conflict Resolution</text>
+
+  <text class="sublabel" x="480" y="240"><tspan font-weight="700">Scenario:</tspan></text>
+  <text class="sublabel" x="480" y="258">Skill A requires db-query ^v2.0</text>
+  <text class="sublabel" x="480" y="276">Skill B requires db-query ^v3.0</text>
+
+  <text class="sublabel" x="480" y="305"><tspan font-weight="700">Resolution Strategies:</tspan></text>
+  <text class="sublabel" x="480" y="325">1. <tspan font-weight="700">Upgrade all:</tspan> Migrate Skill A to v3.0</text>
+  <text class="sublabel" x="480" y="343">2. <tspan font-weight="700">Side-by-side:</tspan> Load both v2 and v3</text>
+  <text class="sublabel" x="480" y="361">3. <tspan font-weight="700">Version pin:</tspan> Lock to compatible version</text>
+  <text class="sublabel" x="480" y="379">4. <tspan font-weight="700">Fail install:</tspan> Reject incompatible deps</text>
+
+  <text class="sublabel" x="480" y="405"><tspan font-weight="700">Best Practice:</tspan></text>
+  <text class="sublabel" x="480" y="423">Use semantic versioning (MAJOR.MINOR.PATCH)</text>
+  <text class="sublabel" x="480" y="441">Bump MAJOR for breaking API changes</text>
+  <text class="sublabel" x="480" y="459">Declare version ranges in skill manifests</text>
+</svg>

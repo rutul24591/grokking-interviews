@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-models { stroke: #7c3aed; }
+    .dark .c-models { fill: #2e1065; stroke: #a78bfa; }
+    .c-chains { stroke: #2563eb; }
+    .dark .c-chains { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-memory { stroke: #059669; }
+    .dark .c-memory { fill: #064e3b; stroke: #34d399; }
+    .c-tools { stroke: #d97706; }
+    .dark .c-tools { fill: #451a03; stroke: #fbbf24; }
+    .c-agents { stroke: #ec4899; }
+    .dark .c-agents { fill: #500724; stroke: #f472b6; }
+    .c-eval { stroke: #dc2626; }
+    .dark .c-eval { fill: #450a0a; stroke: #f87171; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">LangChain Architecture</text>
+
+  <!-- Models -->
+  <rect class="box c-models" x="30" y="80" width="130" height="80"/>
+  <text class="label" x="95" y="105" text-anchor="middle">Models</text>
+  <rect class="detail-box" x="40" y="115" width="110" height="35"/>
+  <text class="sublabel" x="50" y="133">ChatModel interface</text>
+  <text class="sublabel" x="50" y="148">OpenAI, Anthropic, etc.</text>
+
+  <!-- Chains -->
+  <rect class="box c-chains" x="190" y="80" width="130" height="80"/>
+  <text class="label" x="255" y="105" text-anchor="middle">Chains</text>
+  <rect class="detail-box" x="200" y="115" width="110" height="35"/>
+  <text class="sublabel" x="210" y="133">LCEL pipe syntax</text>
+  <text class="sublabel" x="210" y="148">Composable pipelines</text>
+
+  <!-- Memory -->
+  <rect class="box c-memory" x="350" y="80" width="130" height="80"/>
+  <text class="label" x="415" y="105" text-anchor="middle">Memory</text>
+  <rect class="detail-box" x="360" y="115" width="110" height="35"/>
+  <text class="sublabel" x="370" y="133">Buffer, summary</text>
+  <text class="sublabel" x="370" y="148">Vector retriever</text>
+
+  <!-- Tools -->
+  <rect class="box c-tools" x="510" y="80" width="130" height="80"/>
+  <text class="label" x="575" y="105" text-anchor="middle">Tools</text>
+  <rect class="detail-box" x="520" y="115" width="110" height="35"/>
+  <text class="sublabel" x="530" y="133">Search, calculator</text>
+  <text class="sublabel" x="530" y="148">API calls, code exec</text>
+
+  <!-- Agents -->
+  <rect class="box c-agents" x="670" y="80" width="130" height="80"/>
+  <text class="label" x="735" y="105" text-anchor="middle">Agents</text>
+  <rect class="detail-box" x="680" y="115" width="110" height="35"/>
+  <text class="sublabel" x="690" y="133">ReAct, Plan-and-execute</text>
+  <text class="sublabel" x="690" y="148">Tool selection loop</text>
+
+  <!-- Evaluation -->
+  <rect class="box c-eval" x="380" y="200" width="140" height="80"/>
+  <text class="label" x="450" y="225" text-anchor="middle">Evaluation</text>
+  <rect class="detail-box" x="390" y="235" width="120" height="35"/>
+  <text class="sublabel" x="400" y="253">LangSmith traces</text>
+  <text class="sublabel" x="400" y="268">Custom evaluators</text>
+
+  <!-- Callbacks -->
+  <rect class="box" x="670" y="200" width="130" height="80" stroke="#6366f1"/>
+  <text class="label" x="735" y="225" text-anchor="middle">Callbacks</text>
+  <rect class="detail-box" x="680" y="235" width="110" height="35"/>
+  <text class="sublabel" x="690" y="253">Observability hooks</text>
+  <text class="sublabel" x="690" y="268">Logging, monitoring</text>
+
+  <!-- Connections -->
+  <path class="arrow" d="M160 120 L190 120"/>
+  <path class="arrow" d="M320 120 L350 120"/>
+  <path class="arrow" d="M480 120 L510 120"/>
+  <path class="arrow" d="M640 120 L670 120"/>
+
+  <!-- Flow arrows down -->
+  <path class="arrow" d="M255 160 L255 240 L380 240"/>
+  <path class="arrow" d="M575 160 L575 240 L670 240"/>
+
+  <!-- Bottom: LCEL -->
+  <rect x="30" y="320" width="840" height="160" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="345" text-anchor="middle">LangChain Expression Language (LCEL)</text>
+
+  <text class="sublabel" x="50" y="370">LCEL Pipeline Composition:</text>
+  <rect x="50" y="385" width="800" height="40" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="sublabel" x="70" y="410" font-family="monospace" font-size="12" fill="#7c3aed">
+    prompt_template | chat_model | output_parser | memory.save_context | (tools if agent)
+  </text>
+
+  <text class="sublabel" x="50" y="445"><tspan font-weight="700">Benefits:</tspan> Streaming support, parallel execution, async/await, type safety, built-in retries, composable pipelines</text>
+  <text class="sublabel" x="50" y="465"><tspan font-weight="700">Migration:</tspan> Legacy chains (LLMChain, SequentialChain) are deprecated. All new code should use LCEL.</text>
+</svg>

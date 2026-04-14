@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-input { stroke: #7c3aed; }
+    .dark .c-input { fill: #2e1065; stroke: #a78bfa; }
+    .c-ai { stroke: #2563eb; }
+    .dark .c-ai { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-eval { stroke: #059669; }
+    .dark .c-eval { fill: #064e3b; stroke: #34d399; }
+    .c-out { stroke: #ec4899; }
+    .dark .c-out { fill: #500724; stroke: #f472b6; }
+    .c-feedback { stroke: #f59e0b; }
+    .dark .c-feedback { fill: #451a03; stroke: #fbbf24; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .loop-arrow { fill: none; stroke: #f59e0b; stroke-width: 2; stroke-dasharray: 6,3; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">AI Workflow Pipeline</text>
+
+  <!-- Main flow -->
+  <rect class="box c-input" x="30" y="100" width="150" height="80"/>
+  <text class="label" x="105" y="130" text-anchor="middle">Input Processing</text>
+  <rect class="detail-box" x="45" y="140" width="120" height="30"/>
+  <text class="sublabel" x="55" y="158">Validate, normalize</text>
+
+  <path class="arrow" d="M180 140 L220 140"/>
+  <polygon points="220,140 212,135 212,145" fill="#6366f1"/>
+
+  <rect class="box c-ai" x="230" y="100" width="180" height="80"/>
+  <text class="label" x="320" y="125" text-anchor="middle">AI Processing</text>
+  <rect class="detail-box" x="245" y="135" width="150" height="35"/>
+  <text class="sublabel" x="255" y="153">Prompt → Model → Parse</text>
+
+  <path class="arrow" d="M410 140 L450 140"/>
+  <polygon points="450,140 442,135 442,145" fill="#6366f1"/>
+
+  <rect class="box c-eval" x="460" y="100" width="160" height="80"/>
+  <text class="label" x="540" y="125" text-anchor="middle">Evaluation</text>
+  <rect class="detail-box" x="475" y="135" width="130" height="35"/>
+  <text class="sublabel" x="485" y="153">Validate, score, filter</text>
+
+  <path class="arrow" d="M620 140 L660 140"/>
+  <polygon points="660,140 652,135 652,145" fill="#6366f1"/>
+
+  <rect class="box c-out" x="670" y="100" width="150" height="80"/>
+  <text class="label" x="745" y="125" text-anchor="middle">Output Delivery</text>
+  <rect class="detail-box" x="685" y="135" width="120" height="35"/>
+  <text class="sublabel" x="695" y="153">Format, deliver</text>
+
+  <!-- Feedback loop -->
+  <path class="loop-arrow" d="M745 180 L745 260 L105 260 L105 180"/>
+  <polygon points="105,180 100,190 110,190" fill="#f59e0b"/>
+
+  <rect class="box c-feedback" x="300" y="230" width="300" height="60"/>
+  <text class="label" x="450" y="255" text-anchor="middle">Feedback Collection</text>
+  <rect class="detail-box" x="315" y="262" width="270" height="20"/>
+  <text class="sublabel" x="325" y="276">User feedback, metrics, production samples</text>
+
+  <!-- Evaluation Loop section -->
+  <text class="label" x="450" y="330" text-anchor="middle" fill="#059669">Evaluation Loop Components</text>
+
+  <rect x="30" y="350" width="260" height="130" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="160" y="375" text-anchor="middle">Pre-Output Checks</text>
+  <text class="sublabel" x="45" y="395">Format validation (JSON schema)</text>
+  <text class="sublabel" x="45" y="413">Safety checks (content filtering)</text>
+  <text class="sublabel" x="45" y="431">Factual verification (RAG cross-check)</text>
+  <text class="sublabel" x="45" y="449">Completeness check (all fields present)</text>
+  <text class="sublabel" x="45" y="467">Latency: &lt;100ms per check</text>
+
+  <rect x="320" y="350" width="260" height="130" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="375" text-anchor="middle">Post-Output Monitoring</text>
+  <text class="sublabel" x="335" y="395">User satisfaction (thumbs up/down)</text>
+  <text class="sublabel" x="335" y="413">Re-query rate (immediate follow-up)</text>
+  <text class="sublabel" x="335" y="431">Edit distance (human corrections)</text>
+  <text class="sublabel" x="335" y="449">Escalation rate (human takeover)</text>
+  <text class="sublabel" x="335" y="467">Frequency: Continuous, aggregated hourly</text>
+
+  <rect x="610" y="350" width="260" height="130" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="740" y="375" text-anchor="middle">Continuous Optimization</text>
+  <text class="sublabel" x="625" y="395">Benchmark testing on every change</text>
+  <text class="sublabel" x="625" y="413">Prompt versioning and A/B testing</text>
+  <text class="sublabel" x="625" y="431">Dataset augmentation from edge cases</text>
+  <text class="sublabel" x="625" y="449">Model selection optimization</text>
+  <text class="sublabel" x="625" y="467">Frequency: Weekly evaluation cycles</text>
+</svg>

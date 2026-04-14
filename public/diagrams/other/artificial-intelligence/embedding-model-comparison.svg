@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Embedding Model Comparison</text>
+
+  <!-- Model cards -->
+  <rect class="box" x="30" y="80" width="260" height="160" stroke="#7c3aed"/>
+  <text class="label" x="160" y="105" text-anchor="middle" fill="#7c3aed">text-embedding-3-large</text>
+  <rect class="detail-box" x="45" y="115" width="230" height="110"/>
+  <text class="sublabel" x="55" y="133"><tspan font-weight="700">Provider:</tspan> OpenAI (API)</text>
+  <text class="sublabel" x="55" y="151"><tspan font-weight="700">Dimensions:</tspan> 3072 (configurable)</text>
+  <text class="sublabel" x="55" y="169"><tspan font-weight="700">MTEB Score:</tspan> 64.6</text>
+  <text class="sublabel" x="55" y="187"><tspan font-weight="700">Multilingual:</tspan> Yes (100+ languages)</text>
+  <text class="sublabel" x="55" y="205"><tspan font-weight="700">Cost:</tspan> $0.00013/1K tokens</text>
+  <text class="sublabel" x="55" y="223"><tspan font-weight="700">Best for:</tspan> Highest quality, English + multi</text>
+
+  <rect class="box" x="320" y="80" width="260" height="160" stroke="#2563eb"/>
+  <text class="label" x="450" y="105" text-anchor="middle" fill="#2563eb">text-embedding-3-small</text>
+  <rect class="detail-box" x="335" y="115" width="230" height="110"/>
+  <text class="sublabel" x="345" y="133"><tspan font-weight="700">Provider:</tspan> OpenAI (API)</text>
+  <text class="sublabel" x="345" y="151"><tspan font-weight="700">Dimensions:</tspan> 1536</text>
+  <text class="sublabel" x="345" y="169"><tspan font-weight="700">MTEB Score:</tspan> 62.3</text>
+  <text class="sublabel" x="345" y="187"><tspan font-weight="700">Multilingual:</tspan> Yes</text>
+  <text class="sublabel" x="345" y="205"><tspan font-weight="700">Cost:</tspan> $0.00002/1K tokens</text>
+  <text class="sublabel" x="345" y="223"><tspan font-weight="700">Best for:</tspan> Cost-effective, good quality</text>
+
+  <rect class="box" x="610" y="80" width="260" height="160" stroke="#059669"/>
+  <text class="label" x="740" y="105" text-anchor="middle" fill="#059669">embed-multilingual-v3</text>
+  <rect class="detail-box" x="625" y="115" width="230" height="110"/>
+  <text class="sublabel" x="635" y="133"><tspan font-weight="700">Provider:</tspan> Cohere (API)</text>
+  <text class="sublabel" x="635" y="151"><tspan font-weight="700">Dimensions:</tspan> 1024</text>
+  <text class="sublabel" x="635" y="169"><tspan font-weight="700">MTEB Score:</tspan> 59.5</text>
+  <text class="sublabel" x="635" y="187"><tspan font-weight="700">Multilingual:</tspan> Yes (100+ languages)</text>
+  <text class="sublabel" x="635" y="205"><tspan font-weight="700">Cost:</tspan> $0.0001/1K tokens</text>
+  <text class="sublabel" x="635" y="223"><tspan font-weight="700">Best for:</tspan> Strong multilingual support</text>
+
+  <!-- Open source models -->
+  <rect class="box" x="30" y="270" width="410" height="100" stroke="#d97706"/>
+  <text class="label" x="235" y="295" text-anchor="middle" fill="#d97706">Open Source: BGE / E5 / sentence-transformers</text>
+  <rect class="detail-box" x="45" y="305" width="380" height="50"/>
+  <text class="sublabel" x="55" y="323"><tspan font-weight="700">Self-hosted</tspan> | Dimensions: 384-1024 | MTEB: 55-64</text>
+  <text class="sublabel" x="55" y="341">Free per embedding, no rate limits, data stays on-premise</text>
+  <text class="sublabel" x="55" y="359">Requires GPU infrastructure, ML ops expertise</text>
+
+  <rect class="box" x="470" y="270" width="400" height="100" stroke="#ec4899"/>
+  <text class="label" x="670" y="295" text-anchor="middle" fill="#ec4899">Multimodal: CLIP / SigLIP</text>
+  <rect class="detail-box" x="485" y="305" width="370" height="50"/>
+  <text class="sublabel" x="495" y="323"><tspan font-weight="700">Text + Image</tspan> embeddings in shared space</text>
+  <text class="sublabel" x="495" y="341">Cross-modal retrieval: search images by text, text by image</text>
+  <text class="sublabel" x="495" y="359">Multimodal RAG: retrieve relevant images + text</text>
+
+  <!-- Decision guide -->
+  <rect x="30" y="400" width="840" height="80" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="450" y="425" text-anchor="middle">Model Selection Guide</text>
+  <text class="sublabel" x="50" y="448"><tspan font-weight="700">English-only, best quality:</tspan> text-embedding-3-large | <tspan font-weight="700">English, cost-effective:</tspan> text-embedding-3-small</text>
+  <text class="sublabel" x="50" y="468"><tspan font-weight="700">Multilingual:</tspan> Cohere embed-v3 or text-embedding-3-large | <tspan font-weight="700">Self-hosted:</tspan> BGE-large-en-v1.5</text>
+</svg>

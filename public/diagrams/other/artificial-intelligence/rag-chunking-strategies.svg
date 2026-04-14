@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 9px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .chunk { fill: #ffffff; stroke-width: 1.5; rx: 3; }
+    .overlap { fill: #e5e7eb; }
+    .dark .overlap { fill: #444466; }
+    .c-fixed { stroke: #7c3aed; }
+    .dark .c-fixed { fill: #2e1065; stroke: #a78bfa; }
+    .c-semantic { stroke: #2563eb; }
+    .dark .c-semantic { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-structural { stroke: #059669; }
+    .dark .c-structural { fill: #064e3b; stroke: #34d399; }
+    .c-agentic { stroke: #d97706; }
+    .dark .c-agentic { fill: #451a03; stroke: #fbbf24; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="35" text-anchor="middle">Document Chunking Strategies</text>
+
+  <!-- Fixed-Size -->
+  <text class="label" x="112" y="65" text-anchor="middle" fill="#7c3aed">Fixed-Size (with overlap)</text>
+  <rect class="chunk c-fixed" x="20" y="80" width="180" height="30"/>
+  <rect class="chunk c-fixed overlap" x="160" y="80" width="40" height="30" opacity="0.5"/>
+  <rect class="chunk c-fixed" x="20" y="115" width="180" height="30"/>
+  <rect class="chunk c-fixed overlap" x="160" y="115" width="40" height="30" opacity="0.5"/>
+  <rect class="chunk c-fixed" x="20" y="150" width="180" height="30"/>
+  <text class="sublabel" x="30" y="100">Chunk 1: 500 tokens</text>
+  <text class="sublabel" x="30" y="135">Chunk 2: 500 tokens</text>
+  <text class="sublabel" x="30" y="170">Chunk 3: 500 tokens</text>
+  <text class="sublabel" x="30" y="200">Overlap: 50 tokens (10%)</text>
+  <text class="sublabel" x="30" y="218" font-style="italic">Ignores doc structure</text>
+
+  <!-- Semantic -->
+  <text class="label" x="337" y="65" text-anchor="middle" fill="#2563eb">Semantic Boundaries</text>
+  <rect class="chunk c-semantic" x="240" y="80" width="195" height="40"/>
+  <rect class="chunk c-semantic" x="240" y="125" width="195" height="55"/>
+  <rect class="chunk c-semantic" x="240" y="185" width="195" height="30"/>
+  <text class="sublabel" x="250" y="100">Topic A (coherent)</text>
+  <text class="sublabel" x="250" y="155">Topic B (coherent, longer)</text>
+  <text class="sublabel" x="250" y="205">Topic C (short)</text>
+  <text class="sublabel" x="250" y="230">Splits at topic boundaries</text>
+  <text class="sublabel" x="250" y="248" font-style="italic">Variable sizes, needs embedding model</text>
+
+  <!-- Structural -->
+  <text class="label" x="562" y="65" text-anchor="middle" fill="#059669">Structural (headings)</text>
+  <rect class="chunk c-structural" x="465" y="80" width="195" height="25"/>
+  <text class="sublabel" x="475" y="97" font-weight="700">## Introduction</text>
+  <rect class="chunk c-structural" x="465" y="110" width="195" height="45"/>
+  <text class="sublabel" x="475" y="135">Paragraph content under heading</text>
+  <rect class="chunk c-structural" x="465" y="160" width="195" height="25"/>
+  <text class="sublabel" x="475" y="177" font-weight="700">## Methodology</text>
+  <rect class="chunk c-structural" x="465" y="190" width="195" height="45"/>
+  <text class="sublabel" x="475" y="215">Paragraph content under heading</text>
+  <text class="sublabel" x="475" y="250">Preserves heading→content relationship</text>
+
+  <!-- Agentic -->
+  <text class="label" x="787" y="65" text-anchor="middle" fill="#d97706">Agentic (LLM-split)</text>
+  <rect class="chunk c-agentic" x="690" y="80" width="195" height="35"/>
+  <text class="sublabel" x="700" y="100">LLM identifies key concept 1</text>
+  <text class="sublabel" x="700" y="112">and extracts summary</text>
+  <rect class="chunk c-agentic" x="690" y="120" width="195" height="35"/>
+  <text class="sublabel" x="700" y="140">LLM identifies key concept 2</text>
+  <text class="sublabel" x="700" y="152">and extracts summary</text>
+  <rect class="chunk c-agentic" x="690" y="160" width="195" height="35"/>
+  <text class="sublabel" x="700" y="180">LLM identifies key concept 3</text>
+  <text class="sublabel" x="700" y="192">and extracts summary</text>
+  <text class="sublabel" x="700" y="215">Highest quality, most expensive</text>
+
+  <!-- Comparison table -->
+  <rect x="20" y="280" width="860" height="200" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="305" text-anchor="middle">Strategy Comparison</text>
+
+  <text class="sublabel" x="40" y="330" x="40" font-weight="700">Strategy</text>
+  <text class="sublabel" x="200" y="330" font-weight="700">Chunk Size</text>
+  <text class="sublabel" x="360" y="330" font-weight="700">Cost</text>
+  <text class="sublabel" x="500" y="330" font-weight="700">Quality</text>
+  <text class="sublabel" x="660" y="330" font-weight="700">Best For</text>
+
+  <line x1="40" y1="340" x2="860" y2="340" stroke="#dee2e6" stroke-width="0.5"/>
+
+  <text class="sublabel" x="40" y="360">Fixed-size</text>
+  <text class="sublabel" x="200" y="360">Uniform</text>
+  <text class="sublabel" x="360" y="360">$</text>
+  <text class="sublabel" x="500" y="360">Low-Medium</text>
+  <text class="sublabel" x="660" y="360">Quick prototyping, uniform docs</text>
+
+  <text class="sublabel" x="40" y="385">Semantic</text>
+  <text class="sublabel" x="200" y="385">Variable</text>
+  <text class="sublabel" x="360" y="385">$$</text>
+  <text class="sublabel" x="500" y="385">Medium-High</text>
+  <text class="sublabel" x="660" y="385">Long articles, research papers</text>
+
+  <text class="sublabel" x="40" y="410">Structural</text>
+  <text class="sublabel" x="200" y="410">Semi-uniform</text>
+  <text class="sublabel" x="360" y="410">$</text>
+  <text class="sublabel" x="500" y="410">High</text>
+  <text class="sublabel" x="660" y="410">Documentation, wikis, manuals</text>
+
+  <text class="sublabel" x="40" y="435">Agentic</text>
+  <text class="sublabel" x="200" y="435">Intelligent</text>
+  <text class="sublabel" x="360" y="435">$$$$</text>
+  <text class="sublabel" x="500" y="435">Very High</text>
+  <text class="sublabel" x="660" y="435">Critical knowledge, legal docs</text>
+
+  <text class="sublabel" x="40" y="465" font-weight="700">Recommendation:</text>
+  <text class="sublabel" x="180" y="465">Start with structural chunking. Use fixed-size for quick setup. Upgrade to agentic for critical domains.</text>
+</svg>

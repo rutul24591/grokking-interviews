@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+    .check { fill: #059669; }
+    .cross { fill: #dc2626; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Data Quality Pipeline — Automated Checks and Remediation</text>
+
+  <!-- Input data -->
+  <rect class="box" x="350" y="50" width="200" height="40"/>
+  <text class="label" x="450" y="75" text-anchor="middle">Raw Data Ingestion</text>
+
+  <path class="arrow" d="M450 90 L450 120"/>
+
+  <!-- Stage 1: Schema validation -->
+  <rect class="box" x="30" y="125" width="250" height="70" stroke="#7c3aed"/>
+  <text class="label" x="155" y="150" text-anchor="middle" fill="#7c3aed">1. Schema Validation</text>
+  <rect class="detail-box" x="45" y="158" width="220" height="25"/>
+  <text class="sublabel" x="55" y="175">Required fields, types, ranges</text>
+
+  <path class="arrow" d="M280 160 L310 160"/>
+
+  <!-- Stage 2: Duplicate detection -->
+  <rect class="box" x="320" y="125" width="250" height="70" stroke="#2563eb"/>
+  <text class="label" x="445" y="150" text-anchor="middle" fill="#2563eb">2. Duplicate Detection</text>
+  <rect class="detail-box" x="335" y="158" width="220" height="25"/>
+  <text class="sublabel" x="345" y="175">MinHash + exact match dedup</text>
+
+  <path class="arrow" d="M570 160 L600 160"/>
+
+  <!-- Stage 3: Quality scoring -->
+  <rect class="box" x="610" y="125" width="260" height="70" stroke="#059669"/>
+  <text class="label" x="740" y="150" text-anchor="middle" fill="#059669">3. Quality Scoring</text>
+  <rect class="detail-box" x="625" y="158" width="230" height="25"/>
+  <text class="sublabel" x="635" y="175">Language detection, toxicity, readability</text>
+
+  <!-- Decision point -->
+  <path d="M740 195 L740 240 L450 240 L450 270" fill="none" stroke="#6366f1" stroke-width="2"/>
+
+  <!-- Pass path -->
+  <rect class="box" x="300" y="275" width="300" height="70" stroke="#059669"/>
+  <text class="label" x="450" y="300" text-anchor="middle" fill="#059669">Quality Score ≥ Threshold</text>
+  <rect class="detail-box" x="315" y="308" width="270" height="25"/>
+  <text class="sublabel" x="325" y="325">→ Approved for training dataset</text>
+
+  <!-- Fail path -->
+  <rect class="box" x="300" y="360" width="300" height="70" stroke="#dc2626"/>
+  <text class="label" x="450" y="385" text-anchor="middle" fill="#dc2626">Quality Score &lt; Threshold</text>
+  <rect class="detail-box" x="315" y="393" width="270" height="25"/>
+  <text class="sublabel" x="325" y="410">→ Remediation queue or discard</text>
+
+  <!-- Alerting dashboard -->
+  <rect x="30" y="275" width="240" height="200" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="150" y="300" text-anchor="middle">Quality Dashboard</text>
+
+  <text class="sublabel" x="50" y="325"><tspan font-weight="700">Today's Ingestion:</tspan></text>
+  <text class="sublabel" x="50" y="343">Total records: 2.1M</text>
+  <text class="sublabel" x="50" y="361"><tspan class="check" font-weight="700">✓</tspan> Passed: 1.85M (88%)</text>
+  <text class="sublabel" x="50" y="379"><tspan class="cross" font-weight="700">✗</tspan> Duplicates: 180K (8.5%)</text>
+  <text class="sublabel" x="50" y="397"><tspan class="cross" font-weight="700">✗</tspan> Low quality: 45K (2.1%)</text>
+  <text class="sublabel" x="50" y="415"><tspan class="cross" font-weight="700">✗</tspan> Schema errors: 25K (1.2%)</text>
+  <text class="sublabel" x="50" y="438"><tspan font-weight="700">Alert:</tspan> Duplicate rate up 2.3% vs yesterday</text>
+  <text class="sublabel" x="50" y="456">Action: Investigate data source #3</text>
+
+  <!-- Alert thresholds -->
+  <rect x="630" y="275" width="240" height="200" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="750" y="300" text-anchor="middle">Alert Thresholds</text>
+
+  <text class="sublabel" x="650" y="325"><tspan font-weight="700">Duplicate Rate:</tspan></text>
+  <text class="sublabel" x="650" y="343">Warning: &gt;5% | Critical: &gt;10%</text>
+
+  <text class="sublabel" x="650" y="365"><tspan font-weight="700">Schema Errors:</tspan></text>
+  <text class="sublabel" x="650" y="383">Warning: &gt;2% | Critical: &gt;5%</text>
+
+  <text class="sublabel" x="650" y="405"><tspan font-weight="700">Toxicity Rate:</tspan></text>
+  <text class="sublabel" x="650" y="423">Warning: &gt;0.5% | Critical: &gt;2%</text>
+
+  <text class="sublabel" x="650" y="445"><tspan font-weight="700">Language Mix:</tspan></text>
+  <text class="sublabel" x="650" y="463">Alert if target lang &lt;80%</text>
+</svg>

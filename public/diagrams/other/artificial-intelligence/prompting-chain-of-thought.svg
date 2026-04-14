@@ -1,0 +1,81 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="900" height="500" rx="8" fill="#f9fafb"/>
+
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#111827">Chain-of-Thought Reasoning Flow</text>
+  <text x="450" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#6b7280">Decomposing complex problems into sequential reasoning steps</text>
+
+  <!-- Question box at top -->
+  <rect x="280" y="80" width="340" height="65" rx="10" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-width="2"/>
+  <text x="450" y="102" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#6366f1">Complex Question</text>
+  <text x="450" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#374151">&quot;If a train travels 120km in 2hrs, then slows</text>
+  <text x="450" y="137" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#374151">by 25%, how long for the next 90km?&quot;</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="145" x2="450" y2="175" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowdown)"/>
+  <text x="470" y="165" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">CoT prompt triggers</text>
+
+  <!-- Reasoning Step 1 -->
+  <rect x="40" y="185" width="200" height="75" rx="10" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-width="2"/>
+  <text x="140" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#f59e0b">Step 1: Compute Speed</text>
+  <text x="140" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#374151">Initial speed = 120km / 2hrs</text>
+  <text x="140" y="246" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#374151">= 60 km/hr</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="240" y1="222" x2="320" y2="222" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowright)"/>
+  <text x="280" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b7280">feeds into</text>
+
+  <!-- Reasoning Step 2 -->
+  <rect x="320" y="185" width="260" height="75" rx="10" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#f59e0b">Step 2: Apply Reduction</text>
+  <text x="450" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#374151">Reduced speed = 60 km/hr x (1 - 0.25)</text>
+  <text x="450" y="246" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#374151">= 60 x 0.75 = 45 km/hr</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="580" y1="222" x2="660" y2="222" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowright)"/>
+  <text x="620" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6b7280">feeds into</text>
+
+  <!-- Reasoning Step 3 -->
+  <rect x="660" y="185" width="210" height="75" rx="10" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-width="2"/>
+  <text x="765" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#f59e0b">Step 3: Calculate Time</text>
+  <text x="765" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#374151">Time = 90km / 45 km/hr</text>
+  <text x="765" y="246" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#374151">= 2 hours</text>
+
+  <!-- Arrows from steps down to answer -->
+  <line x1="140" y1="260" x2="140" y2="310" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="450" y1="260" x2="450" y2="310" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="765" y1="260" x2="765" y2="310" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Converging arrows to answer -->
+  <line x1="140" y1="310" x2="450" y2="340" stroke="#10b981" stroke-width="2" marker-end="url(#arrowdown)"/>
+  <line x1="450" y1="310" x2="450" y2="340" stroke="#10b981" stroke-width="2" marker-end="url(#arrowdown)"/>
+  <line x1="765" y1="310" x2="450" y2="340" stroke="#10b981" stroke-width="2" marker-end="url(#arrowdown)"/>
+
+  <!-- Answer box -->
+  <rect x="300" y="350" width="300" height="70" rx="10" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#10b981">Final Answer</text>
+  <text x="450" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#111827">2 hours</text>
+
+  <!-- Comparison section below -->
+  <rect x="30" y="445" width="410" height="45" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="45" y="463" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">Without CoT:</text>
+  <text x="135" y="463" font-family="system-ui, sans-serif" font-size="11" fill="#374151">Model guesses — high error rate on multi-step math</text>
+  <text x="45" y="480" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Single forward pass, no decomposition</text>
+
+  <rect x="460" y="445" width="410" height="45" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="475" y="463" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">With CoT:</text>
+  <text x="555" y="463" font-family="system-ui, sans-serif" font-size="11" fill="#374151">Model decomposes — each step conditions the next</text>
+  <text x="475" y="480" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Sequential reasoning, 3-10x more tokens</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowdown" markerWidth="10" markerHeight="7" refX="5" refY="7" orient="auto">
+      <polygon points="0 0, 5 7, 10 0" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowright" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9ca3af"/>
+    </marker>
+    <marker id="arrowdown-green" markerWidth="10" markerHeight="7" refX="5" refY="7" orient="auto">
+      <polygon points="0 0, 5 7, 10 0" fill="#10b981"/>
+    </marker>
+  </defs>
+</svg>

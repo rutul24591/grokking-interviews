@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 1.5; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-pinecone { stroke: #7c3aed; }
+    .dark .c-pinecone { fill: #2e1065; stroke: #a78bfa; }
+    .c-weaviate { stroke: #2563eb; }
+    .dark .c-weaviate { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-milvus { stroke: #059669; }
+    .dark .c-milvus { fill: #064e3b; stroke: #34d399; }
+    .c-qdrant { stroke: #d97706; }
+    .dark .c-qdrant { fill: #451a03; stroke: #fbbf24; }
+    .c-chroma { stroke: #dc2626; }
+    .dark .c-chroma { fill: #450a0a; stroke: #f87171; }
+    .c-pgvector { stroke: #0284c7; }
+    .dark .c-pgvector { fill: #0c4a6e; stroke: #38bdf8; }
+    .check { fill: #059669; }
+    .cross { fill: #dc2626; }
+    .partial { fill: #d97706; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Vector Database Product Comparison</text>
+
+  <!-- Headers -->
+  <text class="sublabel" x="140" y="70" text-anchor="middle" font-weight="700">Pinecone</text>
+  <text class="sublabel" x="290" y="70" text-anchor="middle" font-weight="700">Weaviate</text>
+  <text class="sublabel" x="440" y="70" text-anchor="middle" font-weight="700">Milvus</text>
+  <text class="sublabel" x="590" y="70" text-anchor="middle" font-weight="700">Qdrant</text>
+  <text class="sublabel" x="740" y="70" text-anchor="middle" font-weight="700">Chroma</text>
+  <text class="sublabel" x="860" y="70" text-anchor="middle" font-weight="700">pgvector</text>
+
+  <!-- Row 1: Managed -->
+  <text class="sublabel" x="30" y="100">Fully Managed</text>
+  <text x="140" y="100" text-anchor="middle" class="check">✓</text>
+  <text x="290" y="100" text-anchor="middle" class="partial">~</text>
+  <text x="440" y="100" text-anchor="middle" class="partial">~</text>
+  <text x="590" y="100" text-anchor="middle" class="partial">~</text>
+  <text x="740" y="100" text-anchor="middle" class="cross">✗</text>
+  <text x="860" y="100" text-anchor="middle" class="cross">✗</text>
+
+  <!-- Row 2: HNSW -->
+  <text class="sublabel" x="30" y="130">HNSW Index</text>
+  <text x="140" y="130" text-anchor="middle" class="check">✓</text>
+  <text x="290" y="130" text-anchor="middle" class="check">✓</text>
+  <text x="440" y="130" text-anchor="middle" class="check">✓</text>
+  <text x="590" y="130" text-anchor="middle" class="check">✓</text>
+  <text x="740" y="130" text-anchor="middle" class="check">✓</text>
+  <text x="860" y="130" text-anchor="middle" class="partial">~</text>
+
+  <!-- Row 3: Hybrid Search -->
+  <text class="sublabel" x="30" y="160">Hybrid Search</text>
+  <text x="140" y="160" text-anchor="middle" class="check">✓</text>
+  <text x="290" y="160" text-anchor="middle" class="check">✓</text>
+  <text x="440" y="160" text-anchor="middle" class="check">✓</text>
+  <text x="590" y="160" text-anchor="middle" class="check">✓</text>
+  <text x="740" y="160" text-anchor="middle" class="cross">✗</text>
+  <text x="860" y="160" text-anchor="middle" class="partial">~</text>
+
+  <!-- Row 4: Metadata Filter -->
+  <text class="sublabel" x="30" y="190">Metadata Filter</text>
+  <text x="140" y="190" text-anchor="middle" class="check">✓</text>
+  <text x="290" y="190" text-anchor="middle" class="check">✓</text>
+  <text x="440" y="190" text-anchor="middle" class="check">✓</text>
+  <text x="590" y="190" text-anchor="middle" class="check">✓</text>
+  <text x="740" y="190" text-anchor="middle" class="check">✓</text>
+  <text x="860" y="190" text-anchor="middle" class="check">✓</text>
+
+  <!-- Row 5: Scale -->
+  <text class="sublabel" x="30" y="220">Max Scale</text>
+  <text x="140" y="220" text-anchor="middle">Billions</text>
+  <text x="290" y="220" text-anchor="middle">Billions</text>
+  <text x="440" y="220" text-anchor="middle">Billions</text>
+  <text x="590" y="220" text-anchor="middle">Billions</text>
+  <text x="740" y="220" text-anchor="middle">Millions</text>
+  <text x="860" y="220" text-anchor="middle">10s Millions</text>
+
+  <!-- Row 6: Open Source -->
+  <text class="sublabel" x="30" y="250">Open Source</text>
+  <text x="140" y="250" text-anchor="middle" class="cross">✗</text>
+  <text x="290" y="250" text-anchor="middle" class="check">✓</text>
+  <text x="440" y="250" text-anchor="middle" class="check">✓</text>
+  <text x="590" y="250" text-anchor="middle" class="check">✓</text>
+  <text x="740" y="250" text-anchor="middle" class="check">✓</text>
+  <text x="860" y="250" text-anchor="middle" class="check">✓</text>
+
+  <!-- Row 7: Pricing -->
+  <text class="sublabel" x="30" y="280">Pricing Model</text>
+  <text x="140" y="280" text-anchor="middle">Per unit</text>
+  <text x="290" y="280" text-anchor="middle">Per unit</text>
+  <text x="440" y="280" text-anchor="middle">Self-host</text>
+  <text x="590" y="280" text-anchor="middle">Self-host</text>
+  <text x="740" y="280" text-anchor="middle">Free</text>
+  <text x="860" y="280" text-anchor="middle">Free (PG)</text>
+
+  <!-- Bottom: Recommendation -->
+  <rect x="30" y="320" width="840" height="160" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="450" y="345" text-anchor="middle">Selection Guide</text>
+
+  <rect x="50" y="360" width="260" height="45" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text class="sublabel" x="65" y="378"><tspan font-weight="700">Pinecone:</tspan> Zero ops, highest cost, vendor lock-in</text>
+  <text class="sublabel" x="65" y="395">Choose when operational simplicity is paramount</text>
+
+  <rect x="320" y="360" width="260" height="45" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
+  <text class="sublabel" x="335" y="378"><tspan font-weight="700">Weaviate:</tspan> Rich ecosystem, hybrid search</text>
+  <text class="sublabel" x="335" y="395">Choose for modules and hybrid search needs</text>
+
+  <rect x="590" y="360" width="260" height="45" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+  <text class="sublabel" x="605" y="378"><tspan font-weight="700">Milvus/Qdrant:</tspan> Scale, open-source</text>
+  <text class="sublabel" x="605" y="395">Choose for large-scale, self-managed deployments</text>
+
+  <rect x="50" y="415" width="260" height="45" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text class="sublabel" x="65" y="433"><tspan font-weight="700">Chroma:</tspan> Simple, embedded, developer-friendly</text>
+  <text class="sublabel" x="65" y="450">Choose for prototyping and small-scale apps</text>
+
+  <rect x="320" y="415" width="260" height="45" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="sublabel" x="335" y="433"><tspan font-weight="700">pgvector:</tspan> PostgreSQL extension, familiar</text>
+  <text class="sublabel" x="335" y="450">Choose when already using PostgreSQL</text>
+
+  <rect x="590" y="415" width="260" height="45" rx="4" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="sublabel" x="605" y="433"><tspan font-weight="700">Start with:</tspan> Chroma (dev) → Pinecone/Qdrant (prod)</text>
+  <text class="sublabel" x="605" y="450">Scale up as dataset and traffic grow</text>
+</svg>

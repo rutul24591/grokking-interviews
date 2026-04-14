@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-cos { stroke: #7c3aed; }
+    .dark .c-cos { fill: #2e1065; stroke: #a78bfa; }
+    .c-euc { stroke: #2563eb; }
+    .dark .c-euc { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-dot { stroke: #059669; }
+    .dark .c-dot { fill: #064e3b; stroke: #34d399; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Vector Similarity Metrics</text>
+
+  <!-- Cosine Similarity -->
+  <text class="label" x="150" y="80" text-anchor="middle" fill="#7c3aed">Cosine Similarity</text>
+  <!-- 2D visualization -->
+  <line x1="80" y1="250" x2="220" y2="250" stroke="#ccc" stroke-width="0.5"/>
+  <line x1="150" y1="110" x2="150" y2="250" stroke="#ccc" stroke-width="0.5"/>
+  <!-- Vector A -->
+  <line x1="150" y1="250" x2="200" y2="130" stroke="#7c3aed" stroke-width="2"/>
+  <text class="sublabel" x="210" y="130" fill="#7c3aed" font-weight="700">A</text>
+  <!-- Vector B (same direction, shorter) -->
+  <line x1="150" y1="250" x2="180" y2="180" stroke="#7c3aed" stroke-width="2" opacity="0.6"/>
+  <text class="sublabel" x="190" y="180" fill="#7c3aed">B (shorter)</text>
+  <!-- Angle arc -->
+  <path d="M165 250 A 15 15 0 0 0 160 238" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <text class="sublabel" x="170" y="245" fill="#7c3aed">θ</text>
+  <text class="sublabel" x="150" y="280" text-anchor="middle">cos(θ) = A·B / (|A|·|B|)</text>
+  <text class="sublabel" x="150" y="298" text-anchor="middle">Ignores magnitude, measures angle</text>
+  <text class="sublabel" x="150" y="316" text-anchor="middle">Default for text embeddings</text>
+
+  <!-- Euclidean Distance -->
+  <text class="label" x="450" y="80" text-anchor="middle" fill="#2563eb">Euclidean Distance (L2)</text>
+  <line x1="380" y1="250" x2="520" y2="250" stroke="#ccc" stroke-width="0.5"/>
+  <line x1="450" y1="110" x2="450" y2="250" stroke="#ccc" stroke-width="0.5"/>
+  <!-- Vector A -->
+  <line x1="450" y1="250" x2="500" y2="130" stroke="#2563eb" stroke-width="2"/>
+  <text class="sublabel" x="510" y="130" fill="#2563eb" font-weight="700">A</text>
+  <!-- Vector B -->
+  <line x1="450" y1="250" x2="420" y2="180" stroke="#2563eb" stroke-width="2" opacity="0.6"/>
+  <text class="sublabel" x="395" y="175" fill="#2563eb">B</text>
+  <!-- Distance line -->
+  <line x1="500" y1="130" x2="420" y2="180" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/>
+  <text class="sublabel" x="470" y="145" fill="#dc2626" font-weight="700">d(A,B)</text>
+  <text class="sublabel" x="450" y="280" text-anchor="middle">d = √Σ(Ai - Bi)²</text>
+  <text class="sublabel" x="450" y="298" text-anchor="middle">Sensitive to magnitude AND direction</text>
+  <text class="sublabel" x="450" y="316" text-anchor="middle">Used when magnitude matters</text>
+
+  <!-- Dot Product -->
+  <text class="label" x="750" y="80" text-anchor="middle" fill="#059669">Dot Product</text>
+  <line x1="680" y1="250" x2="820" y2="250" stroke="#ccc" stroke-width="0.5"/>
+  <line x1="750" y1="110" x2="750" y2="250" stroke="#ccc" stroke-width="0.5"/>
+  <!-- Vector A -->
+  <line x1="750" y1="250" x2="800" y2="130" stroke="#059669" stroke-width="2"/>
+  <text class="sublabel" x="810" y="130" fill="#059669" font-weight="700">A</text>
+  <!-- Vector B projection -->
+  <line x1="750" y1="250" x2="780" y2="180" stroke="#059669" stroke-width="2" opacity="0.6"/>
+  <text class="sublabel" x="790" y="180" fill="#059669">B</text>
+  <!-- Projection line -->
+  <line x1="780" y1="180" x2="795" y2="155" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text class="sublabel" x="800" y="160" fill="#d97706">projection</text>
+  <text class="sublabel" x="750" y="280" text-anchor="middle">A·B = Σ(Ai × Bi)</text>
+  <text class="sublabel" x="750" y="298" text-anchor="middle">Combines direction AND magnitude</text>
+  <text class="sublabel" x="750" y="316" text-anchor="middle">Equals cosine when normalized</text>
+
+  <!-- Comparison table -->
+  <rect x="30" y="340" width="840" height="140" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="365" text-anchor="middle">Metric Selection Guide</text>
+
+  <text class="sublabel" x="50" y="390"><tspan font-weight="700">Cosine</tspan></text>
+  <text class="sublabel" x="200" y="390">Angle only</text>
+  <text class="sublabel" x="360" y="390">[0, 1] (similar) / [-1, 1] (opposite)</text>
+  <text class="sublabel" x="620" y="390">Text embeddings, semantic search</text>
+
+  <text class="sublabel" x="50" y="415"><tspan font-weight="700">Euclidean</tspan></text>
+  <text class="sublabel" x="200" y="415">Distance (lower = closer)</text>
+  <text class="sublabel" x="360" y="415">[0, ∞)</text>
+  <text class="sublabel" x="620" y="415">Image features, when magnitude matters</text>
+
+  <text class="sublabel" x="50" y="440"><tspan font-weight="700">Dot Product</tspan></text>
+  <text class="sublabel" x="200" y="440">Projection (higher = closer)</text>
+  <text class="sublabel" x="360" y="440">(-∞, ∞)</text>
+  <text class="sublabel" x="620" y="440">Normalized vectors (equals cosine), recommendation</text>
+
+  <text class="sublabel" x="50" y="465" font-weight="700">Rule of thumb:</text>
+  <text class="sublabel" x="200" y="465">Use cosine for text. Use Euclidean for images/features. Use dot product for pre-normalized vectors.</text>
+</svg>

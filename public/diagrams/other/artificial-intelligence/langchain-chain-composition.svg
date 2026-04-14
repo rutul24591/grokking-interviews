@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-input { stroke: #7c3aed; }
+    .dark .c-input { fill: #2e1065; stroke: #a78bfa; }
+    .c-prompt { stroke: #2563eb; }
+    .dark .c-prompt { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-model { stroke: #059669; }
+    .dark .c-model { fill: #064e3b; stroke: #34d399; }
+    .c-parser { stroke: #d97706; }
+    .dark .c-parser { fill: #451a03; stroke: #fbbf24; }
+    .c-output { stroke: #ec4899; }
+    .dark .c-output { fill: #500724; stroke: #f472b6; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .pipe { fill: none; stroke: #6366f1; stroke-width: 3; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">LangChain Chain Composition (LCEL)</text>
+
+  <!-- LCEL Flow -->
+  <text class="label" x="450" y="80" text-anchor="middle">LCEL Pipe Syntax</text>
+
+  <!-- Input -->
+  <rect class="box c-input" x="30" y="110" width="120" height="70"/>
+  <text class="label" x="90" y="135" text-anchor="middle">Input</text>
+  <rect class="detail-box" x="40" y="145" width="100" height="25"/>
+  <text class="sublabel" x="50" y="162">{"question": "..."}</text>
+
+  <!-- Pipe -->
+  <text x="170" y="150" text-anchor="middle" font-size="24" font-weight="700" fill="#6366f1">|</text>
+
+  <!-- Prompt -->
+  <rect class="box c-prompt" x="195" y="110" width="140" height="70"/>
+  <text class="label" x="265" y="135" text-anchor="middle">Prompt Template</text>
+  <rect class="detail-box" x="205" y="145" width="120" height="25"/>
+  <text class="sublabel" x="215" y="162">ChatPromptTemplate</text>
+
+  <!-- Pipe -->
+  <text x="355" y="150" text-anchor="middle" font-size="24" font-weight="700" fill="#6366f1">|</text>
+
+  <!-- Model -->
+  <rect class="box c-model" x="380" y="110" width="140" height="70"/>
+  <text class="label" x="450" y="135" text-anchor="middle">Chat Model</text>
+  <rect class="detail-box" x="390" y="145" width="120" height="25"/>
+  <text class="sublabel" x="400" y="162">ChatOpenAI, ChatAnthropic</text>
+
+  <!-- Pipe -->
+  <text x="540" y="150" text-anchor="middle" font-size="24" font-weight="700" fill="#6366f1">|</text>
+
+  <!-- Parser -->
+  <rect class="box c-parser" x="565" y="110" width="140" height="70"/>
+  <text class="label" x="635" y="135" text-anchor="middle">Output Parser</text>
+  <rect class="detail-box" x="575" y="145" width="120" height="25"/>
+  <text class="sublabel" x="585" y="162">Pydantic, JSON</text>
+
+  <!-- Pipe -->
+  <text x="725" y="150" text-anchor="middle" font-size="24" font-weight="700" fill="#6366f1">|</text>
+
+  <!-- Output -->
+  <rect class="box c-output" x="750" y="110" width="120" height="70"/>
+  <text class="label" x="810" y="135" text-anchor="middle">Output</text>
+  <rect class="detail-box" x="760" y="145" width="100" height="25"/>
+  <text class="sublabel" x="770" y="162">Structured result</text>
+
+  <!-- Detailed flow below -->
+  <text class="label" x="450" y="220" text-anchor="middle">Detailed Execution Flow</text>
+
+  <!-- Step 1 -->
+  <rect class="box c-input" x="30" y="250" width="260" height="200"/>
+  <text class="label" x="160" y="275" text-anchor="middle">1. Prompt Construction</text>
+  <rect class="detail-box" x="45" y="290" width="230" height="145"/>
+  <text class="sublabel" x="55" y="310">System: "You are a helpful assistant"</text>
+  <text class="sublabel" x="55" y="330">Human: "{question}"</text>
+  <text class="sublabel" x="55" y="350">Variables filled from input dict</text>
+  <text class="sublabel" x="55" y="370">Output: List of messages</text>
+  <text class="sublabel" x="55" y="390">[SystemMessage, HumanMessage]</text>
+  <text class="sublabel" x="55" y="410">Formatted for the chat model API</text>
+  <text class="sublabel" x="55" y="430">Includes few-shot examples if any</text>
+
+  <!-- Arrow -->
+  <path class="arrow" d="M290 350 L320 350"/>
+  <polygon points="320,350 312,345 312,355" fill="#6366f1"/>
+
+  <!-- Step 2 -->
+  <rect class="box c-model" x="330" y="250" width="260" height="200"/>
+  <text class="label" x="460" y="275" text-anchor="middle">2. Model Inference</text>
+  <rect class="detail-box" x="345" y="290" width="230" height="145"/>
+  <text class="sublabel" x="355" y="310">Messages sent to LLM API</text>
+  <text class="sublabel" x="355" y="330">Streaming or batch mode</text>
+  <text class="sublabel" x="355" y="350">Temperature, top_p, max_tokens</text>
+  <text class="sublabel" x="355" y="370">Response: AIMessage(content=...)</text>
+  <text class="sublabel" x="355" y="390">Token usage tracked</text>
+  <text class="sublabel" x="355" y="410">Retry on rate limit / timeout</text>
+  <text class="sublabel" x="355" y="430">Callbacks fire at start/end</text>
+
+  <!-- Arrow -->
+  <path class="arrow" d="M590 350 L620 350"/>
+  <polygon points="620,350 612,345 612,355" fill="#6366f1"/>
+
+  <!-- Step 3 -->
+  <rect class="box c-parser" x="630" y="250" width="240" height="200"/>
+  <text class="label" x="750" y="275" text-anchor="middle">3. Output Parsing</text>
+  <rect class="detail-box" x="645" y="290" width="210" height="145"/>
+  <text class="sublabel" x="655" y="310">Raw text parsed to structured output</text>
+  <text class="sublabel" x="655" y="330">JSON parsing with validation</text>
+  <text class="sublabel" x="655" y="350">Pydantic model validation</text>
+  <text class="sublabel" x="655" y="370">Retry on parse failure</text>
+  <text class="sublabel" x="655" y="390">Output: typed Python object</text>
+  <text class="sublabel" x="655" y="410">Ready for application logic</text>
+  <text class="sublabel" x="655" y="430">Type-safe downstream use</text>
+</svg>

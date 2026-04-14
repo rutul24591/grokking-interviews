@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 8; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .s-register { stroke: #7c3aed; }
+    .dark .s-register { fill: #2e1065; stroke: #a78bfa; }
+    .s-catalog { stroke: #2563eb; }
+    .dark .s-catalog { fill: #1e3a5f; stroke: #60a5fa; }
+    .s-discover { stroke: #059669; }
+    .dark .s-discover { fill: #064e3b; stroke: #34d399; }
+    .s-invoke { stroke: #d97706; }
+    .dark .s-invoke { fill: #451a03; stroke: #fbbf24; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Skill Registration and Discovery</text>
+
+  <!-- Step 1: Registration -->
+  <rect class="box s-register" x="30" y="80" width="200" height="100"/>
+  <text class="label" x="130" y="105" text-anchor="middle">1. Registration</text>
+  <rect class="detail-box" x="45" y="115" width="170" height="50"/>
+  <text class="sublabel" x="55" y="133">Name, description, schemas</text>
+  <text class="sublabel" x="55" y="150">Implementation, metadata</text>
+
+  <path class="arrow" d="M230 130 L270 130"/>
+  <polygon points="270,130 262,125 262,135" fill="#6366f1"/>
+
+  <!-- Step 2: Catalog -->
+  <rect class="box s-catalog" x="280" y="80" width="200" height="100"/>
+  <text class="label" x="380" y="105" text-anchor="middle">2. Skill Catalog</text>
+  <rect class="detail-box" x="295" y="115" width="170" height="50"/>
+  <text class="sublabel" x="305" y="133">Central registry</text>
+  <text class="sublabel" x="305" y="150">Version tracking, deps</text>
+
+  <path class="arrow" d="M480 130 L520 130"/>
+  <polygon points="520,130 512,125 512,135" fill="#6366f1"/>
+
+  <!-- Step 3: Discovery -->
+  <rect class="box s-discover" x="530" y="80" width="200" height="100"/>
+  <text class="label" x="630" y="105" text-anchor="middle">3. Discovery</text>
+  <rect class="detail-box" x="545" y="115" width="170" height="50"/>
+  <text class="sublabel" x="555" y="133">LLM reads skill catalog</text>
+  <text class="sublabel" x="555" y="150">Via system prompt</text>
+
+  <path class="arrow" d="M730 130 L770 130"/>
+  <polygon points="770,130 762,125 762,135" fill="#6366f1"/>
+
+  <!-- Step 4: Invocation -->
+  <rect class="box s-invoke" x="780" y="80" width="100" height="100"/>
+  <text class="label" x="830" y="115" text-anchor="middle">4. Invoke</text>
+  <rect class="detail-box" x="790" y="125" width="80" height="45"/>
+  <text class="sublabel" x="795" y="143">Execute skill</text>
+  <text class="sublabel" x="795" y="160">Return result</text>
+
+  <!-- Arrow back to catalog (result) -->
+  <path class="arrow" d="M830 180 L830 300 L450 300 L450 180"/>
+  <polygon points="450,180 445,190 455,190" fill="#f59e0b"/>
+
+  <!-- Result -->
+  <rect x="350" y="310" width="200" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text class="label" x="450" y="335" text-anchor="middle">Result / Error</text>
+  <text class="sublabel" x="365" y="355">Structured output with status</text>
+
+  <!-- Dynamic registration path -->
+  <rect x="30" y="220" width="840" height="100" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="1"/>
+  <text class="label" x="450" y="245" text-anchor="middle">Dynamic Skill Registration</text>
+
+  <text class="sublabel" x="50" y="268">Context: Agent opens a Python project → reads pyproject.toml → discovers Python-specific skills</text>
+  <text class="sublabel" x="50" y="286">Action: Register skills dynamically based on project type, available tools, and user preferences</text>
+  <text class="sublabel" x="50" y="304">Result: Agent now has project-relevant skills without restart or manual configuration</text>
+
+  <!-- Skill components at bottom -->
+  <rect x="30" y="400" width="260" height="80" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="160" y="420" text-anchor="middle">Skill Attributes</text>
+  <text class="sublabel" x="45" y="440">Name, description, version</text>
+  <text class="sublabel" x="45" y="455">Input/Output schemas</text>
+  <text class="sublabel" x="45" y="470">Tags, cost, latency estimates</text>
+
+  <rect x="320" y="400" width="260" height="80" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="420" text-anchor="middle">Skill Metadata</text>
+  <text class="sublabel" x="335" y="440">Author, creation date</text>
+  <text class="sublabel" x="335" y="455">Dependencies, preconditions</text>
+  <text class="sublabel" x="335" y="470">Usage statistics, health</text>
+
+  <rect x="610" y="400" width="260" height="80" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="740" y="420" text-anchor="middle">Skill Implementation</text>
+  <text class="sublabel" x="625" y="440">Single function call</text>
+  <text class="sublabel" x="625" y="455">Multi-step workflow</text>
+  <text class="sublabel" x="625" y="470">Composed sub-skills</text>
+</svg>

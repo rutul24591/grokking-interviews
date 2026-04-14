@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 2; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 2; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="40" text-anchor="middle">Embedding Pipeline Architecture</text>
+
+  <!-- Indexing phase -->
+  <text class="label" x="225" y="80" text-anchor="middle" fill="#7c3aed">Indexing Phase</text>
+
+  <rect class="box" x="30" y="100" width="120" height="70"/>
+  <text class="label" x="90" y="125" text-anchor="middle">Raw Text</text>
+  <rect class="detail-box" x="40" y="135" width="100" height="25"/>
+  <text class="sublabel" x="50" y="152">Documents, pages</text>
+
+  <path class="arrow" d="M150 135 L175 135"/>
+
+  <rect class="box" x="185" y="100" width="120" height="70"/>
+  <text class="label" x="245" y="125" text-anchor="middle">Chunking</text>
+  <rect class="detail-box" x="195" y="135" width="100" height="25"/>
+  <text class="sublabel" x="205" y="152">Semantic boundaries</text>
+
+  <path class="arrow" d="M305 135 L330 135"/>
+
+  <rect class="box" x="340" y="100" width="120" height="70"/>
+  <text class="label" x="400" y="125" text-anchor="middle">Embedding</text>
+  <rect class="detail-box" x="350" y="135" width="100" height="25"/>
+  <text class="sublabel" x="360" y="152">text → vector (1536d)</text>
+
+  <path class="arrow" d="M460 135 L485 135"/>
+
+  <rect class="box" x="495" y="100" width="120" height="70"/>
+  <text class="label" x="555" y="125" text-anchor="middle">Vector Store</text>
+  <rect class="detail-box" x="505" y="135" width="100" height="25"/>
+  <text class="sublabel" x="515" y="152">HNSW index + metadata</text>
+
+  <!-- Query phase -->
+  <text class="label" x="225" y="220" text-anchor="middle" fill="#2563eb">Query Phase</text>
+
+  <rect class="box" x="30" y="240" width="120" height="70"/>
+  <text class="label" x="90" y="265" text-anchor="middle">User Query</text>
+  <rect class="detail-box" x="40" y="275" width="100" height="25"/>
+  <text class="sublabel" x="50" y="292">Natural language</text>
+
+  <path class="arrow" d="M150 275 L175 275"/>
+
+  <rect class="box" x="185" y="240" width="120" height="70"/>
+  <text class="label" x="245" y="265" text-anchor="middle">Query Embed</text>
+  <rect class="detail-box" x="195" y="275" width="100" height="25"/>
+  <text class="sublabel" x="205" y="292">Same embedding model</text>
+
+  <path class="arrow" d="M305 275 L330 275"/>
+
+  <rect class="box" x="340" y="240" width="120" height="70"/>
+  <text class="label" x="400" y="265" text-anchor="middle">Similarity Search</text>
+  <rect class="detail-box" x="350" y="275" width="100" height="25"/>
+  <text class="sublabel" x="360" y="292">Top-k by cosine sim</text>
+
+  <path class="arrow" d="M460 275 L485 275"/>
+
+  <rect class="box" x="495" y="240" width="120" height="70"/>
+  <text class="label" x="555" y="265" text-anchor="middle">Results</text>
+  <rect class="detail-box" x="505" y="275" width="100" height="25"/>
+  <text class="sublabel" x="515" y="292">Ranked chunks + scores</text>
+
+  <!-- Connection between phases -->
+  <path d="M555 170 L555 210 L555 240" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Critical rules -->
+  <rect x="30" y="350" width="600" height="130" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text class="label" x="330" y="375" text-anchor="middle" fill="#dc2626">Critical Rules</text>
+  <text class="sublabel" x="50" y="400">1. Use the SAME embedding model for indexing AND querying (different models = incompatible vector spaces)</text>
+  <text class="sublabel" x="50" y="418">2. Normalize embeddings before similarity computation (unless the model produces pre-normalized vectors)</text>
+  <text class="sublabel" x="50" y="436">3. Rebuild the entire index when changing embedding models (old and new embeddings cannot be mixed)</text>
+  <text class="sublabel" x="50" y="454">4. Pin the embedding model version (model updates change embeddings, breaking existing indexes)</text>
+  <text class="sublabel" x="50" y="472">5. Chunk at semantic boundaries, not fixed token counts (semantic chunks produce meaningful embeddings)</text>
+
+  <!-- Metadata -->
+  <rect x="660" y="350" width="210" height="130" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="765" y="375" text-anchor="middle">Stored with Each Embedding</text>
+  <text class="sublabel" x="675" y="395">• Document source URL</text>
+  <text class="sublabel" x="675" y="410">• Chunk position/offset</text>
+  <text class="sublabel" x="675" y="425">• Access permissions</text>
+  <text class="sublabel" x="675" y="440">• Content preview (first 200 chars)</text>
+  <text class="sublabel" x="675" y="455">• Embedding model version</text>
+  <text class="sublabel" x="675" y="470">• Created/updated timestamps</text>
+</svg>

@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="100%" height="100%">
+  <style>
+    .bg { fill: #ffffff; }
+    .dark .bg { fill: #1a1a2e; }
+    .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #1a1a2e; }
+    .dark .title { fill: #e0e0e0; }
+    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 700; fill: #1a1a2e; }
+    .dark .label { fill: #e0e0e0; }
+    .sublabel { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; font-weight: 400; fill: #555555; }
+    .dark .sublabel { fill: #aaaaaa; }
+    .box { fill: #ffffff; stroke-width: 1.5; rx: 6; }
+    .detail-box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 1; rx: 4; }
+    .dark .detail-box { fill: #2a2a3e; stroke: #444466; }
+    .c-super { stroke: #7c3aed; }
+    .dark .c-super { fill: #2e1065; stroke: #a78bfa; }
+    .c-router { stroke: #2563eb; }
+    .dark .c-router { fill: #1e3a5f; stroke: #60a5fa; }
+    .c-hier { stroke: #059669; }
+    .dark .c-hier { fill: #064e3b; stroke: #34d399; }
+    .c-crew { stroke: #d97706; }
+    .dark .c-crew { fill: #451a03; stroke: #fbbf24; }
+    .arrow { fill: none; stroke: #6366f1; stroke-width: 1.5; }
+  </style>
+  <rect class="bg" width="900" height="500"/>
+  <text class="title" x="450" y="35" text-anchor="middle">Agent Orchestration Patterns</text>
+
+  <!-- Supervisor -->
+  <text class="label" x="112" y="65" text-anchor="middle" fill="#7c3aed">Supervisor Pattern</text>
+  <rect class="box c-super" x="62" y="80" width="100" height="35"/>
+  <text class="sublabel" x="112" y="102" text-anchor="middle">Supervisor</text>
+  <path d="M80 115 L40 155" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M112 115 L112 155" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M144 115 L184 155" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <rect class="box c-super" x="15" y="160" width="55" height="30"/>
+  <text class="sublabel" x="42" y="180" text-anchor="middle">Agent A</text>
+  <rect class="box c-super" x="85" y="160" width="55" height="30"/>
+  <text class="sublabel" x="112" y="180" text-anchor="middle">Agent B</text>
+  <rect class="box c-super" x="155" y="160" width="55" height="30"/>
+  <text class="sublabel" x="182" y="180" text-anchor="middle">Agent C</text>
+  <path d="M42 190 L42 220 L112 220" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M112 190 L112 220" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M182 190 L182 220 L112 220" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <rect class="box c-super" x="62" y="225" width="100" height="25"/>
+  <text class="sublabel" x="112" y="242" text-anchor="middle">Synthesize</text>
+  <text class="sublabel" x="112" y="265" text-anchor="middle">Best for: Multi-step tasks</text>
+
+  <!-- Router -->
+  <text class="label" x="337" y="65" text-anchor="middle" fill="#2563eb">Router Pattern</text>
+  <rect class="box c-router" x="287" y="80" width="100" height="35"/>
+  <text class="sublabel" x="337" y="102" text-anchor="middle">Classifier</text>
+  <path d="M310 115 L290 160" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M337 115 L337 160" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M364 115 L384 160" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <rect class="box c-router" x="260" y="165" width="60" height="30"/>
+  <text class="sublabel" x="290" y="185" text-anchor="middle">Agent A</text>
+  <rect class="box c-router" x="307" y="165" width="60" height="30"/>
+  <text class="sublabel" x="337" y="185" text-anchor="middle">Agent B</text>
+  <rect class="box c-router" x="354" y="165" width="60" height="30"/>
+  <text class="sublabel" x="384" y="185" text-anchor="middle">Agent C</text>
+  <text class="sublabel" x="337" y="225" text-anchor="middle">One agent handles entire request</text>
+  <text class="sublabel" x="337" y="245" text-anchor="middle">Best for: Self-contained requests</text>
+  <text class="sublabel" x="337" y="265" text-anchor="middle">Fast, cheap, but limited scope</text>
+
+  <!-- Hierarchical -->
+  <text class="label" x="562" y="65" text-anchor="middle" fill="#059669">Hierarchical Planning</text>
+  <rect class="box c-hier" x="522" y="80" width="80" height="30"/>
+  <text class="sublabel" x="562" y="100" text-anchor="middle">Planner</text>
+  <path d="M542 110 L510 140" fill="none" stroke="#059669" stroke-width="1.5"/>
+  <path d="M582 110 L614 140" fill="none" stroke="#059669" stroke-width="1.5"/>
+  <rect class="box c-hier" x="470" y="145" width="80" height="25"/>
+  <text class="sublabel" x="510" y="162" text-anchor="middle">Sub-planner 1</text>
+  <rect class="box c-hier" x="574" y="145" width="80" height="25"/>
+  <text class="sublabel" x="614" y="162" text-anchor="middle">Sub-planner 2</text>
+  <path d="M490 170 L470 195" fill="none" stroke="#059669" stroke-width="1"/>
+  <path d="M530 170 L550 195" fill="none" stroke="#059669" stroke-width="1"/>
+  <path d="M594 170 L574 195" fill="none" stroke="#059669" stroke-width="1"/>
+  <path d="M634 170 L654 195" fill="none" stroke="#059669" stroke-width="1"/>
+  <rect class="box c-hier" x="445" y="200" width="50" height="22"/>
+  <text class="sublabel" x="470" y="215" text-anchor="middle">Task 1</text>
+  <rect class="box c-hier" x="520" y="200" width="50" height="22"/>
+  <text class="sublabel" x="545" y="215" text-anchor="middle">Task 2</text>
+  <rect class="box c-hier" x="549" y="200" width="50" height="22"/>
+  <text class="sublabel" x="574" y="215" text-anchor="middle">Task 3</text>
+  <rect class="box c-hier" x="624" y="200" width="50" height="22"/>
+  <text class="sublabel" x="649" y="215" text-anchor="middle">Task 4</text>
+  <text class="sublabel" x="562" y="245" text-anchor="middle">Recursive decomposition</text>
+  <text class="sublabel" x="562" y="265" text-anchor="middle">Best for: Complex multi-domain goals</text>
+
+  <!-- Crew -->
+  <text class="label" x="787" y="65" text-anchor="middle" fill="#d97706">Crew Pattern</text>
+  <rect class="box c-crew" x="737" y="80" width="55" height="30"/>
+  <text class="sublabel" x="764" y="100" text-anchor="middle">Role 1</text>
+  <rect class="box c-crew" x="800" y="80" width="55" height="30"/>
+  <text class="sublabel" x="827" y="100" text-anchor="middle">Role 2</text>
+  <path d="M792 95 L800 95" fill="none" stroke="#d97706" stroke-width="1"/>
+  <path d="M764 110 L740 155" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <path d="M827 110 L851 155" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <rect class="box c-crew" x="710" y="160" width="60" height="30"/>
+  <text class="sublabel" x="740" y="180" text-anchor="middle">Output 1</text>
+  <rect class="box c-crew" x="821" y="160" width="60" height="30"/>
+  <text class="sublabel" x="851" y="180" text-anchor="middle">Output 2</text>
+  <path d="M740 190 L740 220 L787 220" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <path d="M851 190 L851 220 L787 220" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <rect class="box c-crew" x="737" y="225" width="100" height="25"/>
+  <text class="sublabel" x="787" y="242" text-anchor="middle">Combine</text>
+  <text class="sublabel" x="787" y="265" text-anchor="middle">Best for: Role-based collaboration</text>
+
+  <!-- Bottom comparison -->
+  <rect x="20" y="310" width="860" height="170" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text class="label" x="450" y="335" text-anchor="middle">Pattern Selection Guide</text>
+
+  <text class="sublabel" x="40" y="360"><tspan font-weight="700">Pattern</tspan></text>
+  <text class="sublabel" x="200" y="360"><tspan font-weight="700">Complexity</tspan></text>
+  <text class="sublabel" x="380" y="360"><tspan font-weight="700">Cost</tspan></text>
+  <text class="sublabel" x="520" y="360"><tspan font-weight="700">Latency</tspan></text>
+  <text class="sublabel" x="680" y="360"><tspan font-weight="700">Best Use Case</tspan></text>
+
+  <line x1="40" y1="370" x2="860" y2="370" stroke="#dee2e6" stroke-width="0.5"/>
+
+  <text class="sublabel" x="40" y="390">Supervisor</text>
+  <text class="sublabel" x="200" y="390">Medium</text>
+  <text class="sublabel" x="380" y="390">High (N+1 calls)</text>
+  <text class="sublabel" x="520" y="390">Medium</text>
+  <text class="sublabel" x="680" y="390">Multi-step tasks requiring synthesis</text>
+
+  <text class="sublabel" x="40" y="415">Router</text>
+  <text class="sublabel" x="200" y="415">Low</text>
+  <text class="sublabel" x="380" y="415">Low (1 call)</text>
+  <text class="sublabel" x="520" y="415">Low</text>
+  <text class="sublabel" x="680" y="415">Classification-based routing</text>
+
+  <text class="sublabel" x="40" y="440">Hierarchical</text>
+  <text class="sublabel" x="200" y="440">High</text>
+  <text class="sublabel" x="380" y="440">Very High</text>
+  <text class="sublabel" x="520" y="440">High</text>
+  <text class="sublabel" x="680" y="440">Complex goals spanning multiple domains</text>
+
+  <text class="sublabel" x="40" y="465">Crew</text>
+  <text class="sublabel" x="200" y="465">Medium</text>
+  <text class="sublabel" x="380" y="465">Medium</text>
+  <text class="sublabel" x="520" y="465">Low (parallel)</text>
+  <text class="sublabel" x="680" y="465">Role-based collaboration with defined outputs</text>
+</svg>
