@@ -5,803 +5,696 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-other-data-structures-arrays",
+  id: "arrays",
   title: "Arrays",
   description:
-    "Comprehensive guide to arrays: memory layout, access patterns, multidimensional arrays, dynamic arrays, cache-line behavior, and production-scale trade-offs for staff and principal engineer interviews.",
+    "Staff-level deep dive into arrays — contiguous memory layout, dynamic resizing with amortized analysis, cache behavior, V8 elements kinds, TypedArrays, and real-world trade-offs against linked and hash-based alternatives.",
   category: "other",
-  subcategory: "data-structures-algorithms/data-structures",
+  subcategory: "data-structures",
   slug: "arrays",
-  wordCount: 5500,
-  readingTime: 22,
-  lastUpdated: "2026-04-14",
-  tags: ["data-structures", "arrays", "memory-layout", "performance"],
-  relatedTopics: ["hash-tables", "strings", "heaps-priority-queues"],
+  wordCount: 4600,
+  readingTime: 19,
+  lastUpdated: "2026-04-17",
+  tags: [
+    "arrays",
+    "data-structures",
+    "memory-layout",
+    "cache",
+    "amortized-analysis",
+    "typed-arrays",
+    "v8",
+  ],
+  relatedTopics: [
+    "singly-linked-lists",
+    "hash-tables",
+    "strings",
+    "bit-manipulation",
+  ],
 };
 
-const arrayMemoryLayoutSVG = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="100%" height="100%">
-  <defs>
-    <style>
-      .bg-light { fill: #ffffff; }
-      .bg-dark { fill: #1e293b; }
-      .box-light { fill: #e2e8f0; stroke: #475569; stroke-width: 2; }
-      .box-dark { fill: #334155; stroke: #94a3b8; stroke-width: 2; }
-      .accent-light { fill: #3b82f6; }
-      .accent-dark { fill: #60a5fa; }
-      .text-light { fill: #1e293b; }
-      .text-dark { fill: #f1f5f9; }
-      .subtext-light { fill: #475569; }
-      .subtext-dark { fill: #94a3b8; }
-      .arrow-light { stroke: #475569; stroke-width: 2; fill: none; marker-end: url(#arrowhead-light); }
-      .arrow-dark { stroke: #94a3b8; stroke-width: 2; fill: none; marker-end: url(#arrowhead-dark); }
-      .line-light { stroke: #94a3b8; stroke-width: 1; stroke-dasharray: 4,4; }
-      .line-dark { stroke: #64748b; stroke-width: 1; stroke-dasharray: 4,4; }
-    </style>
-    <marker id="arrowhead-light" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
-    </marker>
-    <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
-    </marker>
-  </defs>
-  <rect class="bg-light" width="800" height="320" rx="8" style="display:none;"/>
-  <rect class="bg-dark" width="800" height="320" rx="8" style="display:none;"/>
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" class="text-light">Array Memory Layout — Contiguous Allocation</text>
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" class="text-dark" style="display:none;">Array Memory Layout — Contiguous Allocation</text>
-  <text x="400" y="50" text-anchor="middle" font-size="12" class="subtext-light">Base address + (index × element size) = O(1) random access</text>
-  <text x="400" y="50" text-anchor="middle" font-size="12" class="subtext-dark" style="display:none;">Base address + (index × element size) = O(1) random access</text>
-  <g transform="translate(100, 80)">
-    <rect x="0" y="0" width="80" height="60" class="box-light"/>
-    <rect x="0" y="0" width="80" height="60" class="box-dark" style="display:none;"/>
-    <text x="40" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-light">arr[0]</text>
-    <text x="40" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-dark" style="display:none;">arr[0]</text>
-    <text x="40" y="45" text-anchor="middle" font-size="11" class="subtext-light">0x1000</text>
-    <text x="40" y="45" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">0x1000</text>
-    <rect x="80" y="0" width="80" height="60" class="box-light"/>
-    <rect x="80" y="0" width="80" height="60" class="box-dark" style="display:none;"/>
-    <text x="120" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-light">arr[1]</text>
-    <text x="120" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-dark" style="display:none;">arr[1]</text>
-    <text x="120" y="45" text-anchor="middle" font-size="11" class="subtext-light">0x1008</text>
-    <text x="120" y="45" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">0x1008</text>
-    <rect x="160" y="0" width="80" height="60" class="box-light"/>
-    <rect x="160" y="0" width="80" height="60" class="box-dark" style="display:none;"/>
-    <text x="200" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-light">arr[2]</text>
-    <text x="200" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-dark" style="display:none;">arr[2]</text>
-    <text x="200" y="45" text-anchor="middle" font-size="11" class="subtext-light">0x1010</text>
-    <text x="200" y="45" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">0x1010</text>
-    <rect x="240" y="0" width="80" height="60" class="box-light"/>
-    <rect x="240" y="0" width="80" height="60" class="box-dark" style="display:none;"/>
-    <text x="280" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-light">arr[3]</text>
-    <text x="280" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-dark" style="display:none;">arr[3]</text>
-    <text x="280" y="45" text-anchor="middle" font-size="11" class="subtext-light">0x1018</text>
-    <text x="280" y="45" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">0x1018</text>
-    <rect x="320" y="0" width="80" height="60" class="box-light"/>
-    <rect x="320" y="0" width="80" height="60" class="box-dark" style="display:none;"/>
-    <text x="360" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-light">arr[4]</text>
-    <text x="360" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-dark" style="display:none;">arr[4]</text>
-    <text x="360" y="45" text-anchor="middle" font-size="11" class="subtext-light">0x1020</text>
-    <text x="360" y="45" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">0x1020</text>
-    <rect x="400" y="0" width="80" height="60" class="box-light"/>
-    <rect x="400" y="0" width="80" height="60" class="box-dark" style="display:none;"/>
-    <text x="440" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-light">arr[5]</text>
-    <text x="440" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-dark" style="display:none;">arr[5]</text>
-    <text x="440" y="45" text-anchor="middle" font-size="11" class="subtext-light">0x1028</text>
-    <text x="440" y="45" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">0x1028</text>
-    <rect x="480" y="0" width="80" height="60" class="box-light"/>
-    <rect x="480" y="0" width="80" height="60" class="box-dark" style="display:none;"/>
-    <text x="520" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-light">arr[6]</text>
-    <text x="520" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-dark" style="display:none;">arr[6]</text>
-    <text x="520" y="45" text-anchor="middle" font-size="11" class="subtext-light">0x1030</text>
-    <text x="520" y="45" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">0x1030</text>
-    <rect x="560" y="0" width="80" height="60" class="box-light"/>
-    <rect x="560" y="0" width="80" height="60" class="box-dark" style="display:none;"/>
-    <text x="600" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-light">arr[7]</text>
-    <text x="600" y="25" text-anchor="middle" font-size="14" font-weight="bold" class="text-dark" style="display:none;">arr[7]</text>
-    <text x="600" y="45" text-anchor="middle" font-size="11" class="subtext-light">0x1038</text>
-    <text x="600" y="45" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">0x1038</text>
-  </g>
-  <line x1="100" y1="200" x2="700" y2="200" class="line-light"/>
-  <line x1="100" y1="200" x2="700" y2="200" class="line-dark" style="display:none;"/>
-  <text x="400" y="230" text-anchor="middle" font-size="13" font-weight="bold" class="text-light">Cache Line Boundaries (64 bytes)</text>
-  <text x="400" y="230" text-anchor="middle" font-size="13" font-weight="bold" class="text-dark" style="display:none;">Cache Line Boundaries (64 bytes)</text>
-  <rect x="100" y="250" width="160" height="40" rx="4" class="accent-light" opacity="0.3"/>
-  <rect x="100" y="250" width="160" height="40" rx="4" class="accent-dark" opacity="0.3" style="display:none;"/>
-  <text x="180" y="275" text-anchor="middle" font-size="12" class="subtext-light">Cache Line 0: arr[0]–arr[7]</text>
-  <text x="180" y="275" text-anchor="middle" font-size="12" class="subtext-dark" style="display:none;">Cache Line 0: arr[0]–arr[7]</text>
-  <rect x="260" y="250" width="160" height="40" rx="4" class="accent-light" opacity="0.15"/>
-  <rect x="260" y="250" width="160" height="40" rx="4" class="accent-dark" opacity="0.15" style="display:none;"/>
-  <text x="340" y="275" text-anchor="middle" font-size="12" class="subtext-light">Cache Line 1: next 8 elements</text>
-  <text x="340" y="275" text-anchor="middle" font-size="12" class="subtext-dark" style="display:none;">Cache Line 1: next 8 elements</text>
-  <text x="400" y="310" text-anchor="middle" font-size="11" class="subtext-light">Spatial locality: sequential access prefetches adjacent elements automatically</text>
-  <text x="400" y="310" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Spatial locality: sequential access prefetches adjacent elements automatically</text>
-</svg>
-`;
-
-const dynamicArrayGrowthSVG = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="100%" height="100%">
-  <defs>
-    <style>
-      .bg-light { fill: #ffffff; }
-      .bg-dark { fill: #1e293b; }
-      .box-light { fill: #e2e8f0; stroke: #475569; stroke-width: 2; }
-      .box-dark { fill: #334155; stroke: #94a3b8; stroke-width: 2; }
-      .new-light { fill: #86efac; stroke: #16a34a; stroke-width: 2; }
-      .new-dark { fill: #166534; stroke: #4ade80; stroke-width: 2; }
-      .text-light { fill: #1e293b; }
-      .text-dark { fill: #f1f5f9; }
-      .subtext-light { fill: #475569; }
-      .subtext-dark { fill: #94a3b8; }
-      .arrow-light { stroke: #dc2626; stroke-width: 2; fill: none; marker-end: url(#arrow-red-light); }
-      .arrow-dark { stroke: #f87171; stroke-width: 2; fill: none; marker-end: url(#arrow-red-dark); }
-      .copy-light { stroke: #3b82f6; stroke-width: 2; stroke-dasharray: 6,4; fill: none; marker-end: url(#arrow-blue-light); }
-      .copy-dark { stroke: #60a5fa; stroke-width: 2; stroke-dasharray: 6,4; fill: none; marker-end: url(#arrow-blue-dark); }
-    </style>
-    <marker id="arrow-red-light" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
-    </marker>
-    <marker id="arrow-red-dark" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#f87171"/>
-    </marker>
-    <marker id="arrow-blue-light" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
-    </marker>
-    <marker id="arrow-blue-dark" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#60a5fa"/>
-    </marker>
-  </defs>
-  <rect class="bg-light" width="800" height="380" rx="8" style="display:none;"/>
-  <rect class="bg-dark" width="800" height="380" rx="8" style="display:none;"/>
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" class="text-light">Dynamic Array Resizing — Amortized O(1) Append</text>
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" class="text-dark" style="display:none;">Dynamic Array Resizing — Amortized O(1) Append</text>
-  <text x="400" y="50" text-anchor="middle" font-size="12" class="subtext-light">Capacity doubles: 4 → 8 → 16; old array deallocated after copy</text>
-  <text x="400" y="50" text-anchor="middle" font-size="12" class="subtext-dark" style="display:none;">Capacity doubles: 4 → 8 → 16; old array deallocated after copy</text>
-  <text x="120" y="90" text-anchor="middle" font-size="13" font-weight="bold" class="text-light">Phase 1: Capacity 4 (full)</text>
-  <text x="120" y="90" text-anchor="middle" font-size="13" font-weight="bold" class="text-dark" style="display:none;">Phase 1: Capacity 4 (full)</text>
-  <g transform="translate(40, 100)">
-    <rect x="0" y="0" width="40" height="40" class="box-light"/>
-    <rect x="0" y="0" width="40" height="40" class="box-dark" style="display:none;"/>
-    <text x="20" y="25" text-anchor="middle" font-size="12" class="text-light">A</text>
-    <text x="20" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">A</text>
-    <rect x="40" y="0" width="40" height="40" class="box-light"/>
-    <rect x="40" y="0" width="40" height="40" class="box-dark" style="display:none;"/>
-    <text x="60" y="25" text-anchor="middle" font-size="12" class="text-light">B</text>
-    <text x="60" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">B</text>
-    <rect x="80" y="0" width="40" height="40" class="box-light"/>
-    <rect x="80" y="0" width="40" height="40" class="box-dark" style="display:none;"/>
-    <text x="100" y="25" text-anchor="middle" font-size="12" class="text-light">C</text>
-    <text x="100" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">C</text>
-    <rect x="120" y="0" width="40" height="40" class="box-light"/>
-    <rect x="120" y="0" width="40" height="40" class="box-dark" style="display:none;"/>
-    <text x="140" y="25" text-anchor="middle" font-size="12" class="text-light">D</text>
-    <text x="140" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">D</text>
-  </g>
-  <path d="M 220 120 Q 260 100 280 120" class="arrow-light"/>
-  <path d="M 220 120 Q 260 100 280 120" class="arrow-dark" style="display:none;"/>
-  <text x="250" y="95" text-anchor="middle" font-size="11" font-weight="bold" class="subtext-light">Push E</text>
-  <text x="250" y="95" text-anchor="middle" font-size="11" font-weight="bold" class="subtext-dark" style="display:none;">Push E</text>
-  <text x="400" y="90" text-anchor="middle" font-size="13" font-weight="bold" class="text-light">Phase 2: Allocate capacity 8, copy elements</text>
-  <text x="400" y="90" text-anchor="middle" font-size="13" font-weight="bold" class="text-dark" style="display:none;">Phase 2: Allocate capacity 8, copy elements</text>
-  <g transform="translate(300, 100)">
-    <rect x="0" y="0" width="40" height="40" class="new-light"/>
-    <rect x="0" y="0" width="40" height="40" class="new-dark" style="display:none;"/>
-    <text x="20" y="25" text-anchor="middle" font-size="12" class="text-light">A</text>
-    <text x="20" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">A</text>
-    <rect x="40" y="0" width="40" height="40" class="new-light"/>
-    <rect x="40" y="0" width="40" height="40" class="new-dark" style="display:none;"/>
-    <text x="60" y="25" text-anchor="middle" font-size="12" class="text-light">B</text>
-    <text x="60" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">B</text>
-    <rect x="80" y="0" width="40" height="40" class="new-light"/>
-    <rect x="80" y="0" width="40" height="40" class="new-dark" style="display:none;"/>
-    <text x="100" y="25" text-anchor="middle" font-size="12" class="text-light">C</text>
-    <text x="100" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">C</text>
-    <rect x="120" y="0" width="40" height="40" class="new-light"/>
-    <rect x="120" y="0" width="40" height="40" class="new-dark" style="display:none;"/>
-    <text x="140" y="25" text-anchor="middle" font-size="12" class="text-light">D</text>
-    <text x="140" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">D</text>
-    <rect x="160" y="0" width="40" height="40" class="new-light" opacity="0.6"/>
-    <rect x="160" y="0" width="40" height="40" class="new-dark" opacity="0.6" style="display:none;"/>
-    <text x="180" y="25" text-anchor="middle" font-size="12" class="text-light">E</text>
-    <text x="180" y="25" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">E</text>
-    <rect x="200" y="0" width="40" height="40" class="new-light" opacity="0.3"/>
-    <rect x="200" y="0" width="40" height="40" class="new-dark" opacity="0.3" style="display:none;"/>
-    <rect x="240" y="0" width="40" height="40" class="new-light" opacity="0.3"/>
-    <rect x="240" y="0" width="40" height="40" class="new-dark" opacity="0.3" style="display:none;"/>
-    <rect x="280" y="0" width="40" height="40" class="new-light" opacity="0.3"/>
-    <rect x="280" y="0" width="40" height="40" class="new-dark" opacity="0.3" style="display:none;"/>
-  </g>
-  <path d="M 160 150 Q 200 170 300 150" class="copy-light"/>
-  <path d="M 160 150 Q 200 170 300 150" class="copy-dark" style="display:none;"/>
-  <text x="230" y="175" text-anchor="middle" font-size="11" class="subtext-light">Copy 4 elements (O(n) operation)</text>
-  <text x="230" y="175" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Copy 4 elements (O(n) operation)</text>
-  <text x="400" y="230" text-anchor="middle" font-size="13" font-weight="bold" class="text-light">Amortized Cost Analysis</text>
-  <text x="400" y="230" text-anchor="middle" font-size="13" font-weight="bold" class="text-dark" style="display:none;">Amortized Cost Analysis</text>
-  <g transform="translate(100, 250)">
-    <rect x="0" y="0" width="600" height="110" rx="6" class="box-light"/>
-    <rect x="0" y="0" width="600" height="110" rx="6" class="box-dark" style="display:none;"/>
-    <text x="300" y="25" text-anchor="middle" font-size="12" font-weight="bold" class="text-light">Insertion costs: 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 9 ...</text>
-    <text x="300" y="25" text-anchor="middle" font-size="12" font-weight="bold" class="text-dark" style="display:none;">Insertion costs: 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 9 ...</text>
-    <text x="300" y="50" text-anchor="middle" font-size="12" class="subtext-light">Most insertions cost 1. Resizing at powers of 2 costs n.</text>
-    <text x="300" y="50" text-anchor="middle" font-size="12" class="subtext-dark" style="display:none;">Most insertions cost 1. Resizing at powers of 2 costs n.</text>
-    <text x="300" y="75" text-anchor="middle" font-size="12" font-weight="bold" class="text-light">Total cost for n insertions: O(n), therefore amortized O(1) per insertion</text>
-    <text x="300" y="75" text-anchor="middle" font-size="12" font-weight="bold" class="text-dark" style="display:none;">Total cost for n insertions: O(n), therefore amortized O(1) per insertion</text>
-    <text x="300" y="100" text-anchor="middle" font-size="11" class="subtext-light">Worst-case single insertion: O(n) when resize occurs. Average over sequence: O(1).</text>
-    <text x="300" y="100" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Worst-case single insertion: O(n) when resize occurs. Average over sequence: O(1).</text>
-  </g>
-</svg>
-`;
-
-const arrayTradeoffsSVG = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
-  <defs>
-    <style>
-      .bg-light { fill: #ffffff; }
-      .bg-dark { fill: #1e293b; }
-      .box-light { fill: #e2e8f0; stroke: #475569; stroke-width: 2; }
-      .box-dark { fill: #334155; stroke: #94a3b8; stroke-width: 2; }
-      .good-light { fill: #dcfce7; stroke: #16a34a; stroke-width: 2; }
-      .good-dark { fill: #14532d; stroke: #4ade80; stroke-width: 2; }
-      .bad-light { fill: #fef2f2; stroke: #dc2626; stroke-width: 2; }
-      .bad-dark { fill: #450a0a; stroke: #f87171; stroke-width: 2; }
-      .neutral-light { fill: #fefce8; stroke: #ca8a04; stroke-width: 2; }
-      .neutral-dark { fill: #422006; stroke: #facc15; stroke-width: 2; }
-      .text-light { fill: #1e293b; }
-      .text-dark { fill: #f1f5f9; }
-      .subtext-light { fill: #475569; }
-      .subtext-dark { fill: #94a3b8; }
-      .heading-light { fill: #1e293b; font-weight: bold; }
-      .heading-dark { fill: #f1f5f9; font-weight: bold; }
-    </style>
-  </defs>
-  <rect class="bg-light" width="800" height="420" rx="8" style="display:none;"/>
-  <rect class="bg-dark" width="800" height="420" rx="8" style="display:none;"/>
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" class="text-light">Array Operation Complexity &amp; Trade-offs</text>
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" class="text-dark" style="display:none;">Array Operation Complexity &amp; Trade-offs</text>
-  <g transform="translate(50, 60)">
-    <rect x="0" y="0" width="170" height="40" class="box-light"/>
-    <rect x="0" y="0" width="170" height="40" class="box-dark" style="display:none;"/>
-    <text x="85" y="25" text-anchor="middle" font-size="13" class="text-light">Operation</text>
-    <text x="85" y="25" text-anchor="middle" font-size="13" class="text-dark" style="display:none;">Operation</text>
-    <rect x="170" y="0" width="120" height="40" class="box-light"/>
-    <rect x="170" y="0" width="120" height="40" class="box-dark" style="display:none;"/>
-    <text x="230" y="25" text-anchor="middle" font-size="13" class="text-light">Time</text>
-    <text x="230" y="25" text-anchor="middle" font-size="13" class="text-dark" style="display:none;">Time</text>
-    <rect x="290" y="0" width="120" height="40" class="box-light"/>
-    <rect x="290" y="0" width="120" height="40" class="box-dark" style="display:none;"/>
-    <text x="350" y="25" text-anchor="middle" font-size="13" class="text-light">Space</text>
-    <text x="350" y="25" text-anchor="middle" font-size="13" class="text-dark" style="display:none;">Space</text>
-    <rect x="410" y="0" width="290" height="40" class="box-light"/>
-    <rect x="410" y="0" width="290" height="40" class="box-dark" style="display:none;"/>
-    <text x="555" y="25" text-anchor="middle" font-size="13" class="text-light">Trade-off Notes</text>
-    <text x="555" y="25" text-anchor="middle" font-size="13" class="text-dark" style="display:none;">Trade-off Notes</text>
-  </g>
-  <g transform="translate(50, 100)">
-    <rect x="0" y="0" width="170" height="35" class="good-light"/>
-    <rect x="0" y="0" width="170" height="35" class="good-dark" style="display:none;"/>
-    <text x="85" y="22" text-anchor="middle" font-size="12" class="text-light">Access by Index</text>
-    <text x="85" y="22" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">Access by Index</text>
-    <rect x="170" y="0" width="120" height="35" class="good-light"/>
-    <rect x="170" y="0" width="120" height="35" class="good-dark" style="display:none;"/>
-    <text x="230" y="22" text-anchor="middle" font-size="12" class="text-light">O(1)</text>
-    <text x="230" y="22" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(1)</text>
-    <rect x="290" y="0" width="120" height="35" class="good-light"/>
-    <rect x="290" y="0" width="120" height="35" class="good-dark" style="display:none;"/>
-    <text x="350" y="22" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="350" y="22" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="410" y="0" width="290" height="35" class="good-light"/>
-    <rect x="410" y="0" width="290" height="35" class="good-dark" style="display:none;"/>
-    <text x="555" y="22" text-anchor="middle" font-size="11" class="subtext-light">Contiguous memory enables direct address calculation</text>
-    <text x="555" y="22" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Contiguous memory enables direct address calculation</text>
-    <rect x="0" y="35" width="170" height="35" class="good-light"/>
-    <rect x="0" y="35" width="170" height="35" class="good-dark" style="display:none;"/>
-    <text x="85" y="57" text-anchor="middle" font-size="12" class="text-light">Search (sorted, binary)</text>
-    <text x="85" y="57" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">Search (sorted, binary)</text>
-    <rect x="170" y="35" width="120" height="35" class="good-light"/>
-    <rect x="170" y="35" width="120" height="35" class="good-dark" style="display:none;"/>
-    <text x="230" y="57" text-anchor="middle" font-size="12" class="text-light">O(log n)</text>
-    <text x="230" y="57" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(log n)</text>
-    <rect x="290" y="35" width="120" height="35" class="good-light"/>
-    <rect x="290" y="35" width="120" height="35" class="good-dark" style="display:none;"/>
-    <text x="350" y="57" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="350" y="57" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="410" y="35" width="290" height="35" class="good-light"/>
-    <rect x="410" y="35" width="290" height="35" class="good-dark" style="display:none;"/>
-    <text x="555" y="57" text-anchor="middle" font-size="11" class="subtext-light">Requires sorted invariant; random access is key</text>
-    <text x="555" y="57" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Requires sorted invariant; random access is key</text>
-    <rect x="0" y="70" width="170" height="35" class="bad-light"/>
-    <rect x="0" y="70" width="170" height="35" class="bad-dark" style="display:none;"/>
-    <text x="85" y="92" text-anchor="middle" font-size="12" class="text-light">Insert at Front</text>
-    <text x="85" y="92" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">Insert at Front</text>
-    <rect x="170" y="70" width="120" height="35" class="bad-light"/>
-    <rect x="170" y="70" width="120" height="35" class="bad-dark" style="display:none;"/>
-    <text x="230" y="92" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="230" y="92" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="290" y="70" width="120" height="35" class="bad-light"/>
-    <rect x="290" y="70" width="120" height="35" class="bad-dark" style="display:none;"/>
-    <text x="350" y="92" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="350" y="92" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="410" y="70" width="290" height="35" class="bad-light"/>
-    <rect x="410" y="70" width="290" height="35" class="bad-dark" style="display:none;"/>
-    <text x="555" y="92" text-anchor="middle" font-size="11" class="subtext-light">All elements must shift right; cache line invalidation</text>
-    <text x="555" y="92" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">All elements must shift right; cache line invalidation</text>
-    <rect x="0" y="105" width="170" height="35" class="bad-light"/>
-    <rect x="0" y="105" width="170" height="35" class="bad-dark" style="display:none;"/>
-    <text x="85" y="127" text-anchor="middle" font-size="12" class="text-light">Delete at Front</text>
-    <text x="85" y="127" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">Delete at Front</text>
-    <rect x="170" y="105" width="120" height="35" class="bad-light"/>
-    <rect x="170" y="105" width="120" height="35" class="bad-dark" style="display:none;"/>
-    <text x="230" y="127" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="230" y="127" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="290" y="105" width="120" height="35" class="bad-light"/>
-    <rect x="290" y="105" width="120" height="35" class="bad-dark" style="display:none;"/>
-    <text x="350" y="127" text-anchor="middle" font-size="12" class="text-light">O(1)*</text>
-    <text x="350" y="127" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(1)*</text>
-    <rect x="410" y="105" width="290" height="35" class="bad-light"/>
-    <rect x="410" y="105" width="290" height="35" class="bad-dark" style="display:none;"/>
-    <text x="555" y="127" text-anchor="middle" font-size="11" class="subtext-light">Shift left; space stays allocated (*lazy delete)</text>
-    <text x="555" y="127" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Shift left; space stays allocated (*lazy delete)</text>
-    <rect x="0" y="140" width="170" height="35" class="neutral-light"/>
-    <rect x="0" y="140" width="170" height="35" class="neutral-dark" style="display:none;"/>
-    <text x="85" y="162" text-anchor="middle" font-size="12" class="text-light">Append (dynamic)</text>
-    <text x="85" y="162" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">Append (dynamic)</text>
-    <rect x="170" y="140" width="120" height="35" class="neutral-light"/>
-    <rect x="170" y="140" width="120" height="35" class="neutral-dark" style="display:none;"/>
-    <text x="230" y="162" text-anchor="middle" font-size="12" class="text-light">O(1)* amortized</text>
-    <text x="230" y="162" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(1)* amortized</text>
-    <rect x="290" y="140" width="120" height="35" class="neutral-light"/>
-    <rect x="290" y="140" width="120" height="35" class="neutral-dark" style="display:none;"/>
-    <text x="350" y="162" text-anchor="middle" font-size="12" class="text-light">O(n) worst</text>
-    <text x="350" y="162" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n) worst</text>
-    <rect x="410" y="140" width="290" height="35" class="neutral-light"/>
-    <rect x="410" y="140" width="290" height="35" class="neutral-dark" style="display:none;"/>
-    <text x="555" y="162" text-anchor="middle" font-size="11" class="subtext-light">Capacity doubling; occasional O(n) resize spike</text>
-    <text x="555" y="162" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Capacity doubling; occasional O(n) resize spike</text>
-    <rect x="0" y="175" width="170" height="35" class="good-light"/>
-    <rect x="0" y="175" width="170" height="35" class="good-dark" style="display:none;"/>
-    <text x="85" y="197" text-anchor="middle" font-size="12" class="text-light">Sequential Iteration</text>
-    <text x="85" y="197" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">Sequential Iteration</text>
-    <rect x="170" y="175" width="120" height="35" class="good-light"/>
-    <rect x="170" y="175" width="120" height="35" class="good-dark" style="display:none;"/>
-    <text x="230" y="197" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="230" y="197" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="290" y="175" width="120" height="35" class="good-light"/>
-    <rect x="290" y="175" width="120" height="35" class="good-dark" style="display:none;"/>
-    <text x="350" y="197" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="350" y="197" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="410" y="175" width="290" height="35" class="good-light"/>
-    <rect x="410" y="175" width="290" height="35" class="good-dark" style="display:none;"/>
-    <text x="555" y="197" text-anchor="middle" font-size="11" class="subtext-light">Optimal cache-line utilization; hardware prefetcher friendly</text>
-    <text x="555" y="197" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Optimal cache-line utilization; hardware prefetcher friendly</text>
-    <rect x="0" y="210" width="170" height="35" class="bad-light"/>
-    <rect x="0" y="210" width="170" height="35" class="bad-dark" style="display:none;"/>
-    <text x="85" y="232" text-anchor="middle" font-size="12" class="text-light">Search (unsorted)</text>
-    <text x="85" y="232" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">Search (unsorted)</text>
-    <rect x="170" y="210" width="120" height="35" class="bad-light"/>
-    <rect x="170" y="210" width="120" height="35" class="bad-dark" style="display:none;"/>
-    <text x="230" y="232" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="230" y="232" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="290" y="210" width="120" height="35" class="bad-light"/>
-    <rect x="290" y="210" width="120" height="35" class="bad-dark" style="display:none;"/>
-    <text x="350" y="232" text-anchor="middle" font-size="12" class="text-light">O(n)</text>
-    <text x="350" y="232" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n)</text>
-    <rect x="410" y="210" width="290" height="35" class="bad-light"/>
-    <rect x="410" y="210" width="290" height="35" class="bad-dark" style="display:none;"/>
-    <text x="555" y="232" text-anchor="middle" font-size="11" class="subtext-light">Linear scan required; no structural advantage</text>
-    <text x="555" y="232" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Linear scan required; no structural advantage</text>
-    <rect x="0" y="245" width="170" height="35" class="neutral-light"/>
-    <rect x="0" y="245" width="170" height="35" class="neutral-dark" style="display:none;"/>
-    <text x="85" y="267" text-anchor="middle" font-size="12" class="text-light">Memory Footprint</text>
-    <text x="85" y="267" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">Memory Footprint</text>
-    <rect x="170" y="245" width="120" height="35" class="neutral-light"/>
-    <rect x="170" y="245" width="120" height="35" class="neutral-dark" style="display:none;"/>
-    <text x="230" y="267" text-anchor="middle" font-size="12" class="text-light">O(n) fixed</text>
-    <text x="230" y="267" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n) fixed</text>
-    <rect x="290" y="245" width="120" height="35" class="neutral-light"/>
-    <rect x="290" y="245" width="120" height="35" class="neutral-dark" style="display:none;"/>
-    <text x="350" y="267" text-anchor="middle" font-size="12" class="text-light">O(n) worst</text>
-    <text x="350" y="267" text-anchor="middle" font-size="12" class="text-dark" style="display:none;">O(n) worst</text>
-    <rect x="410" y="245" width="290" height="35" class="neutral-light"/>
-    <rect x="410" y="245" width="290" height="35" class="neutral-dark" style="display:none;"/>
-    <text x="555" y="267" text-anchor="middle" font-size="11" class="subtext-light">No per-element overhead; but capacity may waste space</text>
-    <text x="555" y="267" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">No per-element overhead; but capacity may waste space</text>
-  </g>
-  <text x="400" y="385" text-anchor="middle" font-size="11" class="subtext-light">Key insight: arrays excel at read-heavy, index-accessed, or sequentially-processed workloads. They struggle with frequent insertions/deletions at arbitrary positions.</text>
-  <text x="400" y="385" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Key insight: arrays excel at read-heavy, index-accessed, or sequentially-processed workloads. They struggle with frequent insertions/deletions at arbitrary positions.</text>
-  <text x="400" y="410" text-anchor="middle" font-size="11" class="subtext-light">When write frequency at arbitrary positions is high, linked structures or hash-based approaches become preferable despite higher per-element overhead.</text>
-  <text x="400" y="410" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">When write frequency at arbitrary positions is high, linked structures or hash-based approaches become preferable despite higher per-element overhead.</text>
-</svg>
-`;
-
-const multidimensionalArraysSVG = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="100%" height="100%">
-  <defs>
-    <style>
-      .bg-light { fill: #ffffff; }
-      .bg-dark { fill: #1e293b; }
-      .box-light { fill: #e2e8f0; stroke: #475569; stroke-width: 2; }
-      .box-dark { fill: #334155; stroke: #94a3b8; stroke-width: 2; }
-      .row-light { fill: #dbeafe; stroke: #3b82f6; stroke-width: 2; }
-      .row-dark { fill: #1e3a5f; stroke: #60a5fa; stroke-width: 2; }
-      .text-light { fill: #1e293b; }
-      .text-dark { fill: #f1f5f9; }
-      .subtext-light { fill: #475569; }
-      .subtext-dark { fill: #94a3b8; }
-      .arrow-light { stroke: #475569; stroke-width: 2; fill: none; marker-end: url(#arrow-light); }
-      .arrow-dark { stroke: #94a3b8; stroke-width: 2; fill: none; marker-end: url(#arrow-dark); }
-    </style>
-    <marker id="arrow-light" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
-    </marker>
-    <marker id="arrow-dark" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
-    </marker>
-  </defs>
-  <rect class="bg-light" width="800" height="340" rx="8" style="display:none;"/>
-  <rect class="bg-dark" width="800" height="340" rx="8" style="display:none;"/>
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" class="text-light">Multidimensional Arrays — Layout Strategies</text>
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" class="text-dark" style="display:none;">Multidimensional Arrays — Layout Strategies</text>
-  <text x="200" y="70" text-anchor="middle" font-size="13" font-weight="bold" class="text-light">Row-Major Order (C, C++)</text>
-  <text x="200" y="70" text-anchor="middle" font-size="13" font-weight="bold" class="text-dark" style="display:none;">Row-Major Order (C, C++)</text>
-  <text x="600" y="70" text-anchor="middle" font-size="13" font-weight="bold" class="text-light">Column-Major Order (Fortran, MATLAB)</text>
-  <text x="600" y="70" text-anchor="middle" font-size="13" font-weight="bold" class="text-dark" style="display:none;">Column-Major Order (Fortran, MATLAB)</text>
-  <g transform="translate(60, 90)">
-    <rect x="0" y="0" width="280" height="120" rx="4" class="box-light"/>
-    <rect x="0" y="0" width="280" height="120" rx="4" class="box-dark" style="display:none;"/>
-    <rect x="10" y="10" width="35" height="35" class="row-light"/>
-    <rect x="10" y="10" width="35" height="35" class="row-dark" style="display:none;"/>
-    <text x="27" y="32" text-anchor="middle" font-size="11" class="text-light">0,0</text>
-    <text x="27" y="32" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,0</text>
-    <rect x="45" y="10" width="35" height="35" class="row-light"/>
-    <rect x="45" y="10" width="35" height="35" class="row-dark" style="display:none;"/>
-    <text x="62" y="32" text-anchor="middle" font-size="11" class="text-light">0,1</text>
-    <text x="62" y="32" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,1</text>
-    <rect x="80" y="10" width="35" height="35" class="row-light"/>
-    <rect x="80" y="10" width="35" height="35" class="row-dark" style="display:none;"/>
-    <text x="97" y="32" text-anchor="middle" font-size="11" class="text-light">0,2</text>
-    <text x="97" y="32" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,2</text>
-    <rect x="115" y="10" width="35" height="35" class="row-light"/>
-    <rect x="115" y="10" width="35" height="35" class="row-dark" style="display:none;"/>
-    <text x="132" y="32" text-anchor="middle" font-size="11" class="text-light">0,3</text>
-    <text x="132" y="32" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,3</text>
-    <rect x="10" y="45" width="35" height="35" class="row-light" opacity="0.6"/>
-    <rect x="10" y="45" width="35" height="35" class="row-dark" opacity="0.6" style="display:none;"/>
-    <text x="27" y="67" text-anchor="middle" font-size="11" class="text-light">1,0</text>
-    <text x="27" y="67" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,0</text>
-    <rect x="45" y="45" width="35" height="35" class="row-light" opacity="0.6"/>
-    <rect x="45" y="45" width="35" height="35" class="row-dark" opacity="0.6" style="display:none;"/>
-    <text x="62" y="67" text-anchor="middle" font-size="11" class="text-light">1,1</text>
-    <text x="62" y="67" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,1</text>
-    <rect x="80" y="45" width="35" height="35" class="row-light" opacity="0.6"/>
-    <rect x="80" y="45" width="35" height="35" class="row-dark" opacity="0.6" style="display:none;"/>
-    <text x="97" y="67" text-anchor="middle" font-size="11" class="text-light">1,2</text>
-    <text x="97" y="67" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,2</text>
-    <rect x="115" y="45" width="35" height="35" class="row-light" opacity="0.6"/>
-    <rect x="115" y="45" width="35" height="35" class="row-dark" opacity="0.6" style="display:none;"/>
-    <text x="132" y="67" text-anchor="middle" font-size="11" class="text-light">1,3</text>
-    <text x="132" y="67" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,3</text>
-    <rect x="10" y="80" width="35" height="35" class="row-light" opacity="0.3"/>
-    <rect x="10" y="80" width="35" height="35" class="row-dark" opacity="0.3" style="display:none;"/>
-    <text x="27" y="102" text-anchor="middle" font-size="11" class="text-light">2,0</text>
-    <text x="27" y="102" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">2,0</text>
-    <rect x="45" y="80" width="35" height="35" class="row-light" opacity="0.3"/>
-    <rect x="45" y="80" width="35" height="35" class="row-dark" opacity="0.3" style="display:none;"/>
-    <text x="62" y="102" text-anchor="middle" font-size="11" class="text-light">2,1</text>
-    <text x="62" y="102" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">2,1</text>
-    <rect x="80" y="80" width="35" height="35" class="row-light" opacity="0.3"/>
-    <rect x="80" y="80" width="35" height="35" class="row-dark" opacity="0.3" style="display:none;"/>
-    <text x="97" y="102" text-anchor="middle" font-size="11" class="text-light">2,2</text>
-    <text x="97" y="102" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">2,2</text>
-    <rect x="115" y="80" width="35" height="35" class="row-light" opacity="0.3"/>
-    <rect x="115" y="80" width="35" height="35" class="row-dark" opacity="0.3" style="display:none;"/>
-    <text x="132" y="102" text-anchor="middle" font-size="11" class="text-light">2,3</text>
-    <text x="132" y="102" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">2,3</text>
-    <text x="200" y="115" text-anchor="middle" font-size="10" class="subtext-light">Traversal order: left to right, top to bottom</text>
-    <text x="200" y="115" text-anchor="middle" font-size="10" class="subtext-dark" style="display:none;">Traversal order: left to right, top to bottom</text>
-  </g>
-  <g transform="translate(460, 90)">
-    <rect x="0" y="0" width="280" height="120" rx="4" class="box-light"/>
-    <rect x="0" y="0" width="280" height="120" rx="4" class="box-dark" style="display:none;"/>
-    <rect x="10" y="10" width="35" height="35" class="row-light"/>
-    <rect x="10" y="10" width="35" height="35" class="row-dark" style="display:none;"/>
-    <text x="27" y="32" text-anchor="middle" font-size="11" class="text-light">0,0</text>
-    <text x="27" y="32" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,0</text>
-    <rect x="45" y="10" width="35" height="35" class="row-light" opacity="0.6"/>
-    <rect x="45" y="10" width="35" height="35" class="row-dark" opacity="0.6" style="display:none;"/>
-    <text x="62" y="32" text-anchor="middle" font-size="11" class="text-light">1,0</text>
-    <text x="62" y="32" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,0</text>
-    <rect x="80" y="10" width="35" height="35" class="row-light" opacity="0.3"/>
-    <rect x="80" y="10" width="35" height="35" class="row-dark" opacity="0.3" style="display:none;"/>
-    <text x="97" y="32" text-anchor="middle" font-size="11" class="text-light">2,0</text>
-    <text x="97" y="32" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">2,0</text>
-    <rect x="10" y="45" width="35" height="35" class="row-light"/>
-    <rect x="10" y="45" width="35" height="35" class="row-dark" style="display:none;"/>
-    <text x="27" y="67" text-anchor="middle" font-size="11" class="text-light">0,1</text>
-    <text x="27" y="67" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,1</text>
-    <rect x="45" y="45" width="35" height="35" class="row-light" opacity="0.6"/>
-    <rect x="45" y="45" width="35" height="35" class="row-dark" opacity="0.6" style="display:none;"/>
-    <text x="62" y="67" text-anchor="middle" font-size="11" class="text-light">1,1</text>
-    <text x="62" y="67" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,1</text>
-    <rect x="80" y="45" width="35" height="35" class="row-light" opacity="0.3"/>
-    <rect x="80" y="45" width="35" height="35" class="row-dark" opacity="0.3" style="display:none;"/>
-    <text x="97" y="67" text-anchor="middle" font-size="11" class="text-light">2,1</text>
-    <text x="97" y="67" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">2,1</text>
-    <text x="140" y="85" text-anchor="middle" font-size="10" class="subtext-light">Traversal order: top to bottom, left to right</text>
-    <text x="140" y="85" text-anchor="middle" font-size="10" class="subtext-dark" style="display:none;">Traversal order: top to bottom, left to right</text>
-  </g>
-  <text x="400" y="240" text-anchor="middle" font-size="13" font-weight="bold" class="text-light">Flattened 1D Representation (Row-Major)</text>
-  <text x="400" y="240" text-anchor="middle" font-size="13" font-weight="bold" class="text-dark" style="display:none;">Flattened 1D Representation (Row-Major)</text>
-  <g transform="translate(100, 260)">
-    <rect x="0" y="0" width="50" height="40" class="box-light"/>
-    <rect x="0" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="25" y="25" text-anchor="middle" font-size="11" class="text-light">0,0</text>
-    <text x="25" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,0</text>
-    <rect x="50" y="0" width="50" height="40" class="box-light"/>
-    <rect x="50" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="75" y="25" text-anchor="middle" font-size="11" class="text-light">0,1</text>
-    <text x="75" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,1</text>
-    <rect x="100" y="0" width="50" height="40" class="box-light"/>
-    <rect x="100" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="125" y="25" text-anchor="middle" font-size="11" class="text-light">0,2</text>
-    <text x="125" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,2</text>
-    <rect x="150" y="0" width="50" height="40" class="box-light"/>
-    <rect x="150" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="175" y="25" text-anchor="middle" font-size="11" class="text-light">0,3</text>
-    <text x="175" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">0,3</text>
-    <rect x="200" y="0" width="50" height="40" class="box-light"/>
-    <rect x="200" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="225" y="25" text-anchor="middle" font-size="11" class="text-light">1,0</text>
-    <text x="225" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,0</text>
-    <rect x="250" y="0" width="50" height="40" class="box-light"/>
-    <rect x="250" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="275" y="25" text-anchor="middle" font-size="11" class="text-light">1,1</text>
-    <text x="275" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,1</text>
-    <rect x="300" y="0" width="50" height="40" class="box-light"/>
-    <rect x="300" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="325" y="25" text-anchor="middle" font-size="11" class="text-light">1,2</text>
-    <text x="325" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,2</text>
-    <rect x="350" y="0" width="50" height="40" class="box-light"/>
-    <rect x="350" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="375" y="25" text-anchor="middle" font-size="11" class="text-light">1,3</text>
-    <text x="375" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">1,3</text>
-    <rect x="400" y="0" width="50" height="40" class="box-light"/>
-    <rect x="400" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="425" y="25" text-anchor="middle" font-size="11" class="text-light">2,0</text>
-    <text x="425" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">2,0</text>
-    <rect x="450" y="0" width="50" height="40" class="box-light"/>
-    <rect x="450" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="475" y="25" text-anchor="middle" font-size="11" class="text-light">...</text>
-    <text x="475" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">...</text>
-    <rect x="500" y="0" width="50" height="40" class="box-light"/>
-    <rect x="500" y="0" width="50" height="40" class="box-dark" style="display:none;"/>
-    <text x="525" y="25" text-anchor="middle" font-size="11" class="text-light">2,3</text>
-    <text x="525" y="25" text-anchor="middle" font-size="11" class="text-dark" style="display:none;">2,3</text>
-  </g>
-  <text x="400" y="330" text-anchor="middle" font-size="11" class="subtext-light">Address formula (row-major): base + (row × numCols + col) × elementSize. Choice of layout affects cache performance for matrix traversal patterns.</text>
-  <text x="400" y="330" text-anchor="middle" font-size="11" class="subtext-dark" style="display:none;">Address formula (row-major): base + (row × numCols + col) × elementSize. Choice of layout affects cache performance for matrix traversal patterns.</text>
-</svg>
-`;
-
-export default function ArticlePage() {
+export default function ArraysArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Definition &amp; Context</h2>
+      {/* ============================================================
+          SECTION 1: Definition & Context
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">Definition &amp; Context</h2>
         <p>
-          An <strong>array</strong> is a fundamental linear data structure that stores a fixed-size sequential collection of elements of the same type in contiguous memory locations. Each element is accessed by its index — a non-negative integer representing its offset from the array&apos;s starting address. The defining characteristic of arrays is <strong>constant-time random access</strong>: given an index <em>i</em>, the memory address of the <em>i</em>-th element is computed in O(1) time via the formula <code>address = baseAddress + (i × elementSize)</code>.
+          An <strong>array</strong> is an ordered collection of elements stored
+          in a contiguous block of memory, indexed by a zero-based integer. The
+          defining property is not the API surface — every modern language ships
+          something called &quot;array&quot; — but the underlying memory model:
+          a base pointer plus a constant-time index-to-address mapping. That
+          single invariant is responsible for nearly every performance
+          characteristic that follows: O(1) random access, cache-line
+          friendliness, predictable iteration, and the friction associated with
+          growth, insertion, and deletion.
         </p>
         <p>
-          Arrays are the foundation upon which nearly all other data structures are built. Operating systems allocate arrays as memory blocks, CPUs optimize their cache hierarchies around array-like access patterns, and database storage engines use arrays as the underlying representation for pages and buffers. For staff and principal engineers, understanding arrays extends far beyond basic indexing — it requires deep knowledge of memory layout, cache-line behavior, multidimensional array representations, dynamic resizing strategies, and the trade-offs that determine when arrays are the optimal choice versus when linked structures or hash-based alternatives are preferable.
+          Arrays predate almost every other software data structure. Fortran I
+          (1957) shipped with fixed-size, statically-dimensioned arrays designed
+          around the column-major memory layout of the IBM 704. C formalized the
+          base-plus-offset address arithmetic that still underlies most
+          compiled-language arrays today. The distinction between
+          <strong> static arrays</strong> (size fixed at allocation) and
+          <strong> dynamic arrays</strong> (capacity grows on demand) emerged
+          later, with languages like C++ (<code>std::vector</code>), Java
+          (<code>ArrayList</code>), Python (<code>list</code>), Go
+          (<code>slice</code>), and JavaScript (<code>Array</code>) each
+          offering their own flavor of the same amortized-growth pattern.
         </p>
         <p>
-          In production systems, arrays serve as the backbone of column-oriented databases (Apache Parquet, ClickHouse), numerical computing libraries (NumPy, BLAS), real-time analytics pipelines, and any workload where sequential scan throughput or indexed access latency is the primary bottleneck. The decision to use arrays versus alternative structures is often the single most impactful performance decision in a system&apos;s architecture.
-        </p>
-      </section>
-
-      <section>
-        <h2>Core Concepts</h2>
-
-        <h3>Contiguous Memory Allocation</h3>
-        <p>
-          Arrays occupy a single, unbroken block of memory. This contiguous allocation is the source of their greatest advantage: it enables direct address calculation for any element without traversing intermediate nodes or following pointers. When an array is allocated, the runtime reserves a block of <code>n × elementSize</code> bytes, and every element sits at a deterministic offset from the base address. This property eliminates the per-element pointer overhead that linked structures require — a 64-bit pointer on a 64-bit system adds 8 bytes per element, which for a billion-element array translates to roughly 8 GB of memory wasted on pointers alone.
-        </p>
-        <p>
-          The contiguous layout also means that arrays benefit from <strong>spatial locality</strong>. When a CPU accesses an element, the entire cache line (typically 64 bytes on modern x86 and ARM processors) is loaded from main memory into the L1 cache. Subsequent accesses to adjacent elements hit in the L1 cache rather than incurring main memory latency. For an array of 8-byte integers, a single 64-byte cache line brings 8 elements into cache simultaneously. Sequential iteration over an array therefore achieves near-optimal memory bandwidth utilization — the hardware prefetcher detects the stride pattern and pre-loads the next cache line before the program even requests it.
-        </p>
-
-        <h3>Fixed Size versus Dynamic Arrays</h3>
-        <p>
-          Static arrays have a size determined at allocation time and cannot grow or shrink. This is a constraint in languages like C, where <code>int arr[100]</code> reserves exactly 400 bytes (assuming 4-byte integers) for the lifetime of the scope. Dynamic arrays, found in virtually every higher-level language (Java&apos;s <code>ArrayList</code>, Python&apos;s <code>list</code>, JavaScript&apos;s native <code>Array</code>, C++&apos;s <code>std::vector</code>), overcome this limitation by allocating a larger underlying buffer than currently needed and tracking a separate <code>size</code> counter alongside the <code>capacity</code>.
+          Within the JavaScript ecosystem, the word &quot;array&quot; is
+          overloaded. The core <code>Array</code> is a heterogeneous,
+          sparse-capable, dynamic object that V8 internally represents through
+          one of roughly a dozen <em>elements kinds</em> ranging from packed
+          small integers to dictionary-mode hash storage. In contrast, the
+          <code> TypedArray</code> family (<code>Int32Array</code>,
+          <code> Float64Array</code>, <code>Uint8ClampedArray</code>, and
+          friends) wraps an <code>ArrayBuffer</code> — a fixed-length,
+          homogeneous, densely packed chunk of binary memory that behaves like a
+          C array. Staff-level engineering work routinely requires picking
+          between these two representations based on the workload, and the
+          choice is often the difference between 60fps and a jank-prone UI in
+          hot graphics, audio, or data-processing loops.
         </p>
         <p>
-          When the size reaches capacity, the dynamic array allocates a new buffer — typically double the previous capacity — copies all existing elements to the new buffer, inserts the new element, and deallocates the old buffer. This resize operation costs O(n) time, but because it occurs infrequently (only when capacity is exceeded, and capacity grows exponentially), the <strong>amortized cost</strong> of appending remains O(1). The geometric growth strategy (multiplying capacity by a factor of 1.5 or 2) ensures that the total work for <em>n</em> append operations is bounded by O(n), even though individual appends occasionally trigger expensive resizes.
-        </p>
-
-        <h3>Cache-Line Alignment and False Sharing</h3>
-        <p>
-          In multithreaded systems, arrays introduce a subtle performance hazard called <strong>false sharing</strong>. When two threads modify different array elements that happen to reside on the same cache line, the cache coherency protocol forces the cache line to bounce between CPU cores, degrading performance to near-serial speeds despite the threads operating on logically independent data. Mitigation strategies include padding elements to cache-line boundaries (64 bytes), partitioning the array so that each thread owns distinct cache lines, or using array-of-structures-to-structure-of-arrays transformations that separate frequently-co-accessed fields.
-        </p>
-
-        <h3>Multidimensional Arrays</h3>
-        <p>
-          Multidimensional arrays are logically organized as grids or tensors but physically stored as linear 1D arrays. The mapping from logical coordinates to a linear index follows either <strong>row-major order</strong> (used by C, C++, and most mainstream languages) or <strong>column-major order</strong> (used by Fortran, MATLAB, and numerical computing libraries). In row-major order, elements of the same row are stored adjacently; in column-major order, elements of the same column are stored adjacently. The choice of layout has significant performance implications for matrix traversal algorithms: iterating in the native order achieves optimal cache performance, while iterating in the opposite order causes cache-line thrashing because each access potentially lands in a different cache line.
-        </p>
-
-        <ArticleImage svgContent={arrayMemoryLayoutSVG} caption="Array memory layout showing contiguous allocation and cache-line boundaries" />
-      </section>
-
-      <section>
-        <h2>Architecture &amp; Flow</h2>
-
-        <h3>Dynamic Array Growth Strategy</h3>
-        <p>
-          The architecture of a dynamic array involves three internal components: a pointer to the allocated buffer, a size counter tracking the number of logically present elements, and a capacity counter tracking the total buffer size. Appending an element when size is less than capacity simply writes the element at index <code>size</code> and increments the counter — a true O(1) operation. When size equals capacity, the growth procedure allocates a new buffer (typically 2× the current capacity), copies all existing elements via <code>memcpy</code> or an equivalent block transfer, places the new element, and frees the old buffer.
-        </p>
-        <p>
-          This growth procedure creates a characteristic cost pattern: a sequence of cheap O(1) insertions punctuated by occasional O(n) resize operations. The mathematical proof of amortized O(1) uses aggregate analysis: inserting <em>n</em> elements into an empty dynamic array with doubling costs at most 3n - 2 element assignments (each element is copied at most log₂ n times, and the sum of the geometric series converges to less than 2n). Therefore, the average cost per insertion is constant even though the worst-case single-operation cost is linear.
-        </p>
-
-        <h3>Memory Allocator Interaction</h3>
-        <p>
-          Arrays interact with the system&apos;s memory allocator in ways that affect their real-world performance. The allocator must find a contiguous free block of sufficient size, which becomes increasingly difficult as the heap fragments over time. Large array allocations may require the operating system to map new pages via <code>mmap</code> on Unix or <code>VirtualAlloc</code> on Windows, rather than using the heap allocator. Memory allocators like jemalloc and tcmalloc implement size-class segregation that handles array allocations efficiently, but extremely large arrays (gigabytes) can trigger page faults and transparent huge page allocations that introduce latency spikes.
-        </p>
-
-        <ArticleImage svgContent={dynamicArrayGrowthSVG} caption="Dynamic array resizing shows allocation, copying, and amortized cost analysis" />
-      </section>
-
-      <section>
-        <h2>Trade-offs &amp; Comparison</h2>
-
-        <h3>Arrays versus Linked Lists</h3>
-        <p>
-          The choice between arrays and linked lists represents one of the most fundamental trade-offs in system design. Arrays provide O(1) random access and optimal cache-line utilization but require O(n) time to insert or delete at arbitrary positions because elements must be shifted. Linked lists provide O(1) insertion and deletion given a pointer to the position but require O(n) traversal to reach that position and incur per-element pointer overhead (8-16 bytes per element on 64-bit systems, more if the allocator adds metadata). More critically, linked lists exhibit poor cache performance: nodes are scattered across the heap, and traversing a linked list causes a cache miss for nearly every element, making real-world traversal 10-50× slower than array iteration even when the algorithmic complexity is identical.
-        </p>
-
-        <h3>Arrays versus Hash Tables</h3>
-        <p>
-          When the access pattern is key-based rather than index-based, hash tables become the natural comparison point. Arrays provide O(1) access only for integer indices within bounds; hash tables provide O(1) average access for arbitrary keys at the cost of additional memory for the hash function, buckets, and load-factor management. Arrays are preferable when the key space is dense and maps cleanly to integer indices; hash tables are preferable when keys are sparse, non-integer, or when the key space is significantly larger than the active dataset.
-        </p>
-
-        <h3>Arrays versus Trees</h3>
-        <p>
-          For sorted data, arrays support binary search in O(log n) time but require O(n) insertion to maintain the sorted order. Binary search trees (BSTs) and balanced variants (AVL, Red-Black, B-trees) support O(log n) search, insertion, and deletion, making them preferable for workloads with frequent ordered insertions. However, trees incur O(n) space for pointers and suffer worse cache performance due to pointer chasing. Arrays are the right choice when the dataset is static or append-only with periodic batch sorts; trees are better when ordered mutations are continuous.
-        </p>
-
-        <ArticleImage svgContent={arrayTradeoffsSVG} caption="Array operation complexity and trade-off analysis across common operations" />
-      </section>
-
-      <section>
-        <h2>Best Practices</h2>
-        <p>
-          Use arrays when your workload is read-heavy with index-based or sequential access patterns. Pre-allocate capacity when the approximate size is known to avoid resizing overhead and memory fragmentation. For multidimensional arrays, choose row-major or column-major layout to match your traversal pattern — traverse rows in the inner loop for row-major arrays, columns for column-major arrays. When building column-oriented databases or analytics engines, store data in arrays of primitive types (structure-of-arrays layout) rather than arrays of objects to maximize vectorization and cache efficiency.
-        </p>
-        <p>
-          For multithreaded access, pad array elements or partition the array to avoid false sharing — ensure that elements modified by different threads fall on different cache lines. Use memory-mapped arrays (via <code>mmap</code> or language-specific equivalents) for datasets larger than available RAM, letting the operating system manage paging. When implementing circular buffers or ring buffers on top of arrays, use power-of-two sizes and bitwise AND for index wrapping to avoid expensive modulo operations.
-        </p>
-        <p>
-          In garbage-collected languages, be aware that arrays of references create GC pressure proportional to array size; consider using primitive arrays or off-heap storage for large datasets. When serializing arrays, prefer binary formats (Protocol Buffers, MessagePack, flat buffers) over text formats (JSON) to avoid parsing overhead and maintain the compactness advantage of the in-memory representation.
-        </p>
-
-        <ArticleImage svgContent={multidimensionalArraysSVG} caption="Row-major versus column-major multidimensional array layout strategies" />
-      </section>
-
-      <section>
-        <h2>Common Pitfalls</h2>
-        <p>
-          The most common pitfall with arrays is <strong>off-by-one errors</strong> and boundary condition mistakes. Arrays are zero-indexed in virtually all modern languages, and accessing index <code>n</code> in an array of size <code>n</code> is an out-of-bounds error that in C/C++ causes undefined behavior (potential security vulnerabilities via buffer overflow) and in managed languages throws a runtime exception. Always validate indices against the array bounds, and prefer range-based or iterator-based traversal patterns that eliminate manual index management.
-        </p>
-        <p>
-          <strong>Unintended quadratic behavior</strong> is another frequent mistake. Appending to an array by creating a new array and copying all elements on every append (a pattern sometimes seen in functional programming or in languages with immutable data structures) results in O(n²) total time for <em>n</em> appends. Use a dynamic array with geometric growth, or accumulate elements in a mutable buffer and convert to an immutable structure once.
-        </p>
-        <p>
-          <strong>Memory waste from over-allocation</strong> occurs when dynamic arrays grow to handle peak load but the working set subsequently shrinks. The array retains its peak capacity, potentially wasting gigabytes of memory. Implement a shrink-to-fit operation or manually reduce capacity when the size falls significantly below capacity (e.g., below 25% utilization). Similarly, pre-allocating an excessively large static array &quot;just in case&quot; wastes memory and can cause allocation failures for very large sizes on memory-constrained systems.
-        </p>
-        <p>
-          <strong>Cache-line false sharing</strong> in concurrent programs is a subtle performance bug that is extremely difficult to diagnose because the program produces correct results but runs orders of magnitude slower than expected. When profiling multithreaded array-processing code and observing unexpectedly poor scaling with core count, investigate whether different threads are writing to elements on the same cache line.
-        </p>
-        <p>
-          <strong>Integer overflow in address calculation</strong> for very large arrays can cause security vulnerabilities. The formula <code>baseAddress + (index × elementSize)</code> can overflow a 32-bit integer when the array is large enough, causing the computed address to wrap around and point to an unrelated memory region. This class of vulnerability has been exploited in numerous real-world security incidents. Always use 64-bit arithmetic for address calculations and validate that the resulting index is within bounds.
+          Arrays matter because they are the substrate on top of which nearly
+          every other mainstream data structure is built. Hash tables use
+          backing arrays for bucket storage. Heaps use arrays to encode an
+          implicit binary tree. Queues, stacks, and deques are routinely
+          implemented as ring buffers over arrays. Columnar databases,
+          tensor-backed machine-learning frameworks, and GPU shaders all assume
+          contiguous, index-addressable memory. Understanding arrays deeply
+          means understanding the memory model of the machine — and that
+          understanding transfers to every higher-level abstraction you will
+          touch.
         </p>
       </section>
 
-      <section>
-        <h2>Real-World Use Cases</h2>
+      {/* ============================================================
+          SECTION 2: Core Concepts
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">Core Concepts</h2>
         <p>
-          <strong>Column-oriented databases</strong> like Apache Parquet, ClickHouse, and Amazon Redshift store each column as a compressed array. This structure enables vectorized query execution where a single CPU instruction processes multiple array elements simultaneously (SIMD), achieving scan throughput of billions of rows per second. The array representation is essential for this performance: it allows the query engine to process an entire cache line of column values in a tight loop without pointer chasing.
+          The foundational property of an array is its{" "}
+          <strong>address arithmetic</strong>. Given a base address{" "}
+          <code>b</code>, an element size <code>s</code>, and an index{" "}
+          <code>i</code>, the address of element <code>i</code> is{" "}
+          <code>b + i * s</code>. This computation costs a single multiply and
+          add — constant time, independent of array length. Every other
+          guarantee of the data structure flows from this identity. Iteration
+          in order means walking adjacent memory locations; random access means
+          jumping directly; bounds-checking means comparing <code>i</code> to
+          the stored length.
         </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Spatial locality and cache lines
+        </h3>
         <p>
-          <strong>Numerical computing and machine learning</strong> frameworks (NumPy, TensorFlow, PyTorch) represent tensors as multidimensional arrays with strides. The array layout determines whether matrix multiplication, convolution, and other linear algebra operations achieve peak floating-point throughput. BLAS libraries are hand-tuned to exploit array memory layouts, using cache-blocking and loop-unrolling techniques that are only possible because the underlying data is in contiguous arrays.
+          Modern CPUs do not read individual bytes from DRAM. They read{" "}
+          <strong>cache lines</strong> — typically 64 bytes on x86-64 and
+          ARM64 — and buffer them in a hierarchy of L1, L2, and L3 caches. When
+          an array element is accessed, the surrounding elements are pulled
+          into L1 essentially for free. A tight loop over a
+          <code> Float64Array</code> therefore amortizes a single memory
+          transaction across eight elements (64 bytes / 8 bytes per double).
+          The CPU&apos;s hardware prefetcher further detects sequential access
+          patterns and begins loading future cache lines before the code
+          requests them. The net effect is that sequential array traversal is
+          typically one to two orders of magnitude faster than pointer-chasing
+          through equivalent data stored in a linked structure.
         </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Homogeneous vs heterogeneous representations
+        </h3>
         <p>
-          <strong>Real-time analytics dashboards</strong> use circular buffer arrays to maintain sliding windows of metrics (request rates, error rates, latency percentiles) over fixed time windows. The array&apos;s O(1) append and index-based access enable constant-time updates and lookups regardless of window size. When the buffer fills, the write pointer wraps around, overwriting the oldest data — a pattern that requires zero memory allocation during steady-state operation.
+          A C array or a TypedArray is <em>homogeneous</em> — every element has
+          the same size and type, so address arithmetic works directly on raw
+          bytes. A JavaScript <code>Array</code> is nominally heterogeneous: it
+          can hold a mix of numbers, strings, objects, and holes. V8 optimizes
+          the common case by tracking an &quot;elements kind&quot; on every
+          array and specializing its internal storage. A freshly-created{" "}
+          <code>[1, 2, 3]</code> is stored as
+          <code> PACKED_SMI_ELEMENTS</code> — a densely packed array of small
+          integers that V8 can iterate with tight, branch-free native code.
+          Push a string into that array and the kind transitions to{" "}
+          <code>PACKED_ELEMENTS</code>, which holds boxed pointers; tight
+          integer fast paths are lost. Delete an index without{" "}
+          <code>splice</code> and the kind becomes{" "}
+          <code>HOLEY_ELEMENTS</code>, forcing holes checks on every read. In
+          the worst case, arrays with enough sparsity or extreme indices
+          transition to <code>DICTIONARY_ELEMENTS</code> — a hash map
+          masquerading as an array. Staff engineers writing hot paths keep a
+          mental model of these transitions and avoid the operations that
+          trigger them.
         </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          TypedArrays and ArrayBuffers
+        </h3>
         <p>
-          <strong>Network packet buffers</strong> in operating systems and high-performance networking frameworks (DPDK, XDP) use pre-allocated arrays of packet buffers to achieve line-rate processing. The array approach eliminates allocation latency during packet processing and enables batch operations on contiguous buffer regions that can be passed to DMA engines for direct memory access.
+          TypedArrays are a thin view over a raw{" "}
+          <code>ArrayBuffer</code>. Multiple views of different types (a{" "}
+          <code>Uint8Array</code> and a <code>Float32Array</code>, for example)
+          can share the same buffer, enabling zero-copy reinterpretation of
+          bytes. They are the correct choice for numerically intensive
+          workloads, WebGL vertex/index buffers, audio sample streams, image
+          pixel manipulation, binary protocol parsing, and any scenario where
+          predictable memory layout matters. Combined with{" "}
+          <code>SharedArrayBuffer</code>, they also enable lock-based and
+          atomic-based concurrency across Web Workers with wait/notify
+          primitives modeled on futexes.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/other/data-structures-algorithms/data-structures/arrays-diagram-1.svg"
+          alt="Array contiguous memory layout showing cache-line boundaries and how sequential access amortizes DRAM reads"
+          caption="Figure 1: Contiguous array memory layout — each 64-byte cache line holds multiple elements, giving sequential access strong spatial locality."
+        />
+      </section>
+
+      {/* ============================================================
+          SECTION 3: Architecture & Flow
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">Architecture &amp; Flow</h2>
+        <p>
+          A dynamic array is really two numbers and a buffer. The two numbers
+          are <strong>length</strong> (how many elements are logically present)
+          and <strong>capacity</strong> (how many slots the backing buffer can
+          hold). The buffer is a contiguous block whose size matches the
+          capacity. Insertions at the end are O(1) when <code>length</code>
+          {" < "}
+          <code>capacity</code>. When the buffer is full, a new larger buffer
+          is allocated, existing elements are copied over, and the old buffer
+          is released. The expensive copy-on-grow step is the part that
+          demands an amortized-analysis lens.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Amortized O(1) append
+        </h3>
+        <p>
+          The standard trick is geometric growth: every time capacity is
+          exhausted, multiply it by a constant factor — typically 2 (Java
+          <code> ArrayList</code>, Python <code>list</code> for small sizes),
+          1.5 (C++ <code>std::vector</code> in MSVC, Go slice growth above a
+          threshold), or 1.25 (Rust <code>Vec</code> in some cases). Geometric
+          growth ensures that across <em>n</em> appends, the total cost of
+          copies is bounded by a constant multiple of <em>n</em>, yielding an
+          amortized cost per append of O(1). A factor of 2 is simplest but
+          prevents reuse of previously-freed buffers by the allocator: the
+          sum of all prior capacities is always strictly less than the new
+          capacity. A factor of 1.5 makes that sum exceed the new capacity
+          after a few grows, letting allocators like <code>jemalloc</code> or
+          <code> tcmalloc</code> recycle buddy blocks. The trade-off is more
+          frequent copies for better memory locality — a classic
+          time-vs-space balance point.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Insert and delete in the middle
+        </h3>
+        <p>
+          Middle insertion and deletion both require shifting{" "}
+          <code>O(n - i)</code> elements to make or close a gap. In tight
+          loops that call <code>Array.prototype.splice</code> repeatedly inside
+          a larger loop, total runtime degrades to O(n²) quickly. The
+          engineering workaround is almost always to reframe the problem:
+          collect deletions into a set and compact in one pass, use a doubly
+          linked list if arbitrary mid-position mutation dominates, or use a
+          gap buffer for text-editor-style workloads where edits cluster around
+          a cursor.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Copy semantics and memory pressure
+        </h3>
+        <p>
+          Every geometric-growth event produces a burst of memory allocation
+          and a short copy spike. For latency-sensitive systems — game engines,
+          trading systems, request handlers with P99 SLAs — this copy burst can
+          be the difference between meeting and missing a deadline. The fix is
+          pre-allocation: when the upper bound of size is known, construct the
+          array with that capacity up front (<code>new Array(n)</code> in JS,{" "}
+          <code>make([]T, 0, n)</code> in Go, <code>Vec::with_capacity(n)</code>
+          in Rust). This eliminates all intermediate resizes and keeps the
+          allocator quiet during the hot path.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/other/data-structures-algorithms/data-structures/arrays-diagram-2.svg"
+          alt="Dynamic array geometric growth showing capacity doubling, copy bursts, and amortized cost distribution across appends"
+          caption="Figure 2: Dynamic array growth — geometric capacity expansion amortizes O(n) copy bursts across many O(1) appends."
+        />
+      </section>
+
+      {/* ============================================================
+          SECTION 4: Trade-offs & Comparisons
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">
+          Trade-offs &amp; Comparisons
+        </h2>
+        <p>
+          The complexity table is well-known, but the constants behind each
+          Big-O entry tell the real story. &quot;O(n) shift&quot; for insertion
+          in the middle is cheap when the shift fits in L1 cache and is painful
+          when it spills to DRAM. Comparisons between arrays and alternatives
+          should always carry these constants in mind.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Operation complexity
+        </h3>
+        <ul className="list-disc space-y-2 pl-6">
+          <li>
+            <strong>Access by index</strong>: O(1) worst-case — a multiply and
+            add on the base pointer.
+          </li>
+          <li>
+            <strong>Append at end</strong>: amortized O(1), worst-case O(n) on
+            the grow event.
+          </li>
+          <li>
+            <strong>Insert at index i</strong>: O(n - i) — all later elements
+            shift right.
+          </li>
+          <li>
+            <strong>Delete at index i</strong>: O(n - i) — all later elements
+            shift left.
+          </li>
+          <li>
+            <strong>Search (unsorted)</strong>: O(n) — linear scan, though the
+            small constant makes it often faster than tree alternatives for
+            sizes below a few hundred.
+          </li>
+          <li>
+            <strong>Search (sorted)</strong>: O(log n) with binary search,
+            practical for arrays that rarely mutate.
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Arrays vs linked lists
+        </h3>
+        <p>
+          Linked lists offer O(1) insertion and deletion given a node
+          reference, but they pay for that flexibility with cache hostility
+          (every node is a random memory hop), higher per-element overhead
+          (two pointers plus object header versus one slot), and the constant
+          allocator pressure of per-node heap allocations. Benchmark studies
+          from Bjarne Stroustrup and others consistently show that for any
+          insertion-heavy workload <em>with search</em>, arrays outperform
+          linked lists until collection sizes run into the tens of thousands,
+          because the O(log n) binary search on a sorted array beats the
+          linked-list traversal&apos;s cache misses.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Arrays vs hash tables
+        </h3>
+        <p>
+          Hash tables give O(1) average-case lookup by key but at the cost of
+          unpredictable memory layout, hash-function overhead, and
+          collision-handling complexity. For small, known key domains — say,
+          hour-of-day bins, HTTP status codes, or a dense integer enumeration —
+          a plain array indexed directly by the key is faster, simpler, and
+          more cache-friendly than a hash map. Staff-level design review often
+          surfaces unnecessary <code>Map</code> usage where a fixed-size array
+          would do.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          JavaScript Array vs TypedArray
+        </h3>
+        <p>
+          Use a plain <code>Array</code> for heterogeneous data, for
+          collections whose size is unknown up front by more than an order of
+          magnitude, and for code that benefits from built-in methods like{" "}
+          <code>map</code>/<code>filter</code>/<code>reduce</code>. Use a
+          TypedArray for homogeneous numeric data, for hot numeric loops where
+          V8&apos;s SIMD-style optimizations matter, for interop with{" "}
+          <code>WebGL</code>, <code>WebAudio</code>, <code>Canvas</code>, or{" "}
+          <code>WebAssembly</code>, and anywhere that sharing memory between
+          workers via <code>SharedArrayBuffer</code> is on the table.
         </p>
       </section>
 
-      <section>
-        <h2>Common Interview Questions with Detailed Answers</h2>
-
-        <h3>1. Explain why dynamic array append is amortized O(1) despite occasional O(n) resize operations. Walk through the mathematical proof.</h3>
-        <p>
-          The key insight is that amortized analysis considers the <em>total cost of a sequence of operations</em> divided by the number of operations, rather than the worst-case cost of any single operation. For a dynamic array that doubles its capacity when full, let us analyze the total cost of inserting <em>n</em> elements starting from an empty array with capacity 1.
-        </p>
-        <p>
-          The first insertion costs 1 (simple write). The second insertion triggers a resize: we allocate a new array of capacity 2, copy 1 element, and write the new element — total cost 2. The third insertion triggers another resize to capacity 4: we copy 2 elements and write 1 — total cost 3. In general, the <em>i</em>-th resize occurs when the array is full at capacity 2<sup>(i-1)</sup>, and the resize copies 2<sup>(i-1)</sup> elements before writing the new element.
-        </p>
-        <p>
-          The total cost for <em>n</em> insertions is the sum of all individual insertion costs. Most insertions cost 1. The expensive resizes occur at insertions 2, 4, 8, 16, ..., up to the largest power of 2 less than <em>n</em>. The total copy cost is 1 + 2 + 4 + 8 + ... + 2<sup>k</sup> where 2<sup>k</sup> &lt; n, which sums to 2<sup>(k+1)</sup> - 1 &lt; 2n. Adding the n simple writes, the total cost is at most 3n. Dividing by n operations gives an amortized cost of at most 3 per operation, which is O(1).
-        </p>
-        <p>
-          An interviewer will often follow up by asking why we double rather than add a constant amount. If we added a fixed constant (say, 10 elements) on each resize, the total cost for <em>n</em> insertions would be O(n²) because we would resize O(n) times, each copying an increasing number of elements. Geometric growth is essential to achieving amortized O(1).
-        </p>
-
-        <h3>2. How does cache-line size affect array performance? What happens when you iterate over an array of structs versus an array of primitive values?</h3>
-        <p>
-          Cache lines are the unit of data transfer between main memory and CPU caches, typically 64 bytes on modern processors. When the CPU reads any byte from main memory, it loads the entire 64-byte cache line containing that byte. For an array of 8-byte integers, one cache line contains 8 integers. Iterating sequentially, the CPU incurs one cache miss every 8 elements, achieving 8× fewer main memory accesses than if each element required its own cache line.
-        </p>
-        <p>
-          For an array of structs (structure-of-arrays versus array-of-structures), the impact is more nuanced. In an array-of-structures layout (e.g., <code>struct { int x; int y; int z; }</code>), each element might be 12 bytes (plus padding to 16 bytes for alignment). A 64-byte cache line holds 4 elements. If the algorithm only accesses the <code>x</code> field, it still loads <code>y</code> and <code>z</code> into cache — wasting 75% of the cache-line bandwidth on unused data. In a structure-of-arrays layout (three separate arrays: <code>x[]</code>, <code>y[]</code>, <code>z[]</code>), the <code>x[]</code> array packs only <code>x</code> values, fitting 16 values per cache line and achieving 4× better cache utilization for <code>x</code>-only workloads.
-        </p>
-        <p>
-          This is why column-oriented databases and SIMD-optimized libraries use structure-of-arrays: they process one field across many records, and the array layout ensures every cache line contains only the relevant field. In an interview, discussing this distinction demonstrates deep understanding of how data structure layout interacts with hardware architecture.
-        </p>
-
-        <h3>3. When would you choose a linked list over an array? Are there any scenarios where linked lists actually outperform arrays in practice?</h3>
-        <p>
-          The textbook answer is &quot;when you need frequent insertions and deletions at arbitrary positions.&quot; While technically correct, the practical answer is more nuanced. Linked lists outperform arrays only when: (a) the insertion/deletion position is already known (you have a pointer to the node), so no traversal cost is incurred; (b) the list is large enough that shifting array elements is significantly more expensive than following a few pointers; and (c) the access pattern is truly random rather than sequential.
-        </p>
-        <p>
-          In practice, there are specific scenarios where linked lists are genuinely better. When implementing a memory allocator&apos;s free list, the nodes already exist at scattered addresses, and insertion/removal is frequent. When maintaining an LRU cache with a hash map plus doubly linked list, the linked list provides O(1) move-to-front and move-to-back operations that arrays cannot match without shifting. When building a browser&apos;s history stack or a text editor&apos;s undo history where elements are complex objects and insertions occur primarily at the head or tail, a linked structure avoids copying large objects.
-        </p>
-        <p>
-          However, for most workloads, arrays or array-based structures (circular buffers, gap buffers, B-trees) outperform linked lists due to cache effects. A well-known result in systems engineering is that even a binary search on a sorted array is often faster than traversing a binary search tree of the same size, because the array&apos;s cache-line utilization more than compensates for the algorithmic advantage of the tree&apos;s O(log n) pointer-based navigation. An answer that acknowledges this reality — that linked lists are rarely the best choice despite their theoretical advantages — demonstrates senior-level engineering judgment.
-        </p>
-
-        <h3>4. How would you design a thread-safe array that supports concurrent reads and writes without locking the entire structure?</h3>
-        <p>
-          A production-grade concurrent array requires different strategies depending on the access pattern. For append-only workloads (e.g., event logs, time-series data), a lock-free ring buffer or a sharded array works well. The array is partitioned into segments (e.g., one segment per CPU core), and each segment has its own fine-grained lock or uses atomic compare-and-swap (CAS) operations. Writers append to their assigned segment, and readers scan across all segments. This eliminates contention entirely for writes and limits read contention to segment boundary checks.
-        </p>
-        <p>
-          For general concurrent reads and writes at arbitrary positions, a <strong>copy-on-write (COW) array</strong> is appropriate when reads vastly outnumber writes. Each write creates a new copy of the array (or the affected segment) and atomically swaps the pointer. Readers always access the current pointer without locking. This is the approach used by Java&apos;s <code>CopyOnWriteArrayList</code> and is ideal for configuration arrays or routing tables that are updated infrequently but read by thousands of concurrent threads.
-        </p>
-        <p>
-          For high-write-concurrency scenarios, a <strong>lock-free array using hazard pointers or epoch-based reclamation</strong> manages memory safely without garbage collection. Each writer uses CAS to update an element, and the system tracks which array elements are being accessed by which threads to defer deallocation until no thread holds a reference. This is the approach used by high-performance concurrent hash tables (like those in Folly or Crossbeam). The key insight to articulate in an interview is that the challenge is not the concurrent access itself — CAS handles that — but the safe memory reclamation in a language without automatic garbage collection.
-        </p>
-
-        <h3>5. Explain the false sharing problem in arrays and how you would detect and mitigate it in a production system.</h3>
-        <p>
-          False sharing occurs when two or more threads modify different variables that reside on the same cache line. The cache coherency protocol (MESI — Modified, Exclusive, Shared, Invalidated) operates at cache-line granularity, not variable granularity. When Thread A on Core 0 modifies <code>arr[0]</code> and Thread B on Core 1 modifies <code>arr[1]</code>, and both elements sit on the same 64-byte cache line, the cache line continuously transitions between Modified and Invalidated states as the cores compete for ownership. The result is that each write requires a round-trip to main memory or the other core&apos;s cache, degrading performance from nanoseconds to hundreds of nanoseconds per write.
-        </p>
-        <p>
-          Detection in production uses hardware performance counters: the <code>mem_load_retired.l3_hit_miss</code> and <code>lock_cycles</code> events on Intel processors, or the <code>L1D_CACHE_LD_FD</code> event on ARM. Tools like Intel VTune, Linux <code>perf c2c</code> (cache-to-cache), and Valgrind&apos;s DRD can identify false sharing hot spots by tracking cache-line transitions. In a production monitoring context, unexpectedly poor scaling when adding CPU cores to an array-processing workload is a strong indicator of false sharing.
-        </p>
-        <p>
-          Mitigation strategies include padding: declaring each element as a struct with 64 bytes of padding ensures each element occupies its own cache line. In C, this is <code>struct { int64_t value; char padding[56]; }</code> (assuming the element is 8 bytes). In Java, the <code>@sun.misc.Contended</code> annotation (or manual padding with unused fields) achieves the same effect. Another approach is <strong>array partitioning</strong>: dividing the array into chunks aligned to cache-line boundaries and assigning each chunk to a single thread, eliminating cross-thread cache-line sharing entirely. A third approach is <strong>data layout transformation</strong>: converting from array-of-structures to structure-of-arrays so that fields modified by different threads live in separate arrays that never share cache lines.
-        </p>
-
-        <h3>6. How do multidimensional array layout choices (row-major vs. column-major) affect the performance of matrix multiplication and image processing?</h3>
-        <p>
-          Matrix multiplication C = A × B involves computing each element C[i][j] as the dot product of row i of A and column j of B. In row-major layout, accessing row i of A is sequential (optimal), but accessing column j of B is strided — each element of column j is separated by the row width in memory, causing a cache miss for every element of B accessed. This makes the naive algorithm cache-inefficient for large matrices that do not fit in cache.
-        </p>
-        <p>
-          The solution is <strong>cache-oblivious or cache-aware tiling</strong>: divide the matrices into sub-blocks (tiles) that fit in L1 or L2 cache, and compute the multiplication tile by tile. This ensures that each tile of A and B is loaded into cache once and reused for all computations within that tile, dramatically reducing cache misses. BLAS libraries use this technique with hand-tuned tile sizes for each cache level. The optimal tile size is typically determined empirically for each CPU architecture.
-        </p>
-        <p>
-          For image processing, images are typically stored in row-major order (scan lines from top to bottom, pixels left to right within each row). Operations that process pixels row by row (e.g., horizontal blur, row-wise normalization) achieve optimal cache performance. Operations that process column by column (e.g., vertical blur, column-wise statistics) suffer from strided access. Production image processing libraries handle this by transposing the image (or processing it in column-major blocks) when column-oriented operations dominate, or by using blocked algorithms that process small rectangular regions that fit in cache regardless of the operation direction. In an interview, discussing tiling and blocked algorithms demonstrates understanding of how to bridge the gap between algorithmic design and hardware reality.
-        </p>
+      {/* ============================================================
+          SECTION 5: Best Practices
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">Best Practices</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          <li>
+            <strong>Pre-allocate when size is known.</strong> Passing a
+            capacity hint (<code>new Array(n)</code>, <code>Vec::with_capacity</code>,{" "}
+            <code>make([]T, 0, n)</code>) eliminates intermediate resizes and
+            keeps tail latency predictable.
+          </li>
+          <li>
+            <strong>Keep element kinds stable in JavaScript.</strong> Avoid
+            mixing types within a single array. A numeric-only array that
+            later accepts a string silently deoptimizes every subsequent
+            read. If you need heterogeneous storage, prefer an explicit object
+            shape.
+          </li>
+          <li>
+            <strong>Reach for TypedArrays in hot numeric code.</strong>{" "}
+            <code>Float64Array</code> and <code>Int32Array</code> give you
+            packed, unboxed numbers and enable V8 to generate tighter machine
+            code than any variant of a plain <code>Array</code>.
+          </li>
+          <li>
+            <strong>Prefer bulk operations over index-by-index loops.</strong>
+            {" "}<code>copyWithin</code>, <code>set</code>, and{" "}
+            <code>subarray</code> compile to <code>memcpy</code>-style copies
+            inside V8 — often 3–5× faster than hand-written loops.
+          </li>
+          <li>
+            <strong>Reuse buffers across frames.</strong> In render loops,
+            game engines, and audio callbacks, allocate your work buffers once
+            at startup and clear them in place each frame. Buffer churn is one
+            of the most common causes of garbage-collection-induced jank.
+          </li>
+          <li>
+            <strong>Batch deletions.</strong> Collect indices to remove, then
+            compact with a single linear pass. A loop that calls{" "}
+            <code>splice</code> inside <code>forEach</code> is quietly O(n²).
+          </li>
+          <li>
+            <strong>Use binary search on sorted arrays instead of sets.</strong>{" "}
+            For mostly-read, rarely-mutated collections below a few thousand
+            elements, a sorted array with binary search beats a{" "}
+            <code>Set</code> on both memory and lookup latency.
+          </li>
+        </ul>
       </section>
 
-      <section>
-        <h2>References</h2>
-        <ul>
-          <li>Knuth, D.E. — &quot;The Art of Computer Programming, Volume 1: Fundamental Algorithms&quot; — Addison-Wesley, 3rd Edition</li>
-          <li>Cormen, T.H., Leiserson, C.E., Rivest, R.L., Stein, C. — &quot;Introduction to Algorithms&quot; — MIT Press, 4th Edition, Chapters 10-11</li>
-          <li>Drepper, U. — &quot;What Every Programmer Should Know About Memory&quot; — Red Hat, Inc., 2007</li>
-          <li>Intel Corporation — &quot;Intel 64 and IA-32 Architectures Optimization Reference Manual&quot; — Section 2.3: Cache-Line and False Sharing</li>
-          <li>Graefe, G. — &quot;Modern B-Tree Techniques&quot; — Foundations and Trends in Databases, Vol. 3, No. 4, 2011</li>
-          <li>Abadi, D.J., Boncz, P., Harizopoulos, S. — &quot;The Design and Implementation of Modern Column-Oriented Database Systems&quot; — Foundations and Trends in Databases, 2013</li>
-          <li>Herlihy, M., Shavit, N. — &quot;The Art of Multiprocessor Programming&quot; — Morgan Kaufmann, Revised Edition, Chapters 3-5 (Lock-Free Arrays and Concurrent Data Structures)</li>
+      {/* ============================================================
+          SECTION 6: Common Pitfalls
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">Common Pitfalls</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          <li>
+            <strong>Iterator invalidation.</strong> Mutating an array during
+            iteration — pushing, splicing, or reassigning indices — produces
+            skipped elements, infinite loops, or runtime errors depending on
+            the language. Always iterate a copy or use a two-pass pattern.
+          </li>
+          <li>
+            <strong>Holey arrays in JavaScript.</strong> Using{" "}
+            <code>delete arr[i]</code> leaves a hole that transitions the
+            array to <code>HOLEY_ELEMENTS</code>, disabling fast paths on every
+            subsequent read for the array&apos;s lifetime. Use{" "}
+            <code>splice</code> or overwrite with a sentinel value instead.
+          </li>
+          <li>
+            <strong>Unbounded growth.</strong> Doubling capacity with no upper
+            bound can quietly consume memory. Pair growth with explicit size
+            caps in log processors, event buffers, and anywhere the producer
+            runs without backpressure.
+          </li>
+          <li>
+            <strong>Copying on resize during a hot path.</strong> A single
+            unexpected resize during a frame budget can cost 5–20ms. In
+            real-time systems, size arrays at initialization and assert on
+            overflow rather than growing.
+          </li>
+          <li>
+            <strong>Cross-worker aliasing without synchronization.</strong>{" "}
+            Sharing a <code>SharedArrayBuffer</code>-backed TypedArray between
+            workers requires <code>Atomics</code> operations to avoid torn
+            reads and lost writes. Plain assignment is unsafe across threads.
+          </li>
+          <li>
+            <strong>Accidental O(n²) from naive <code>includes</code>{" "}
+            loops.</strong> Computing set-membership with{" "}
+            <code>arr.includes(x)</code> inside an <code>arr.filter</code> is a
+            classic quadratic bug; convert to a <code>Set</code> or
+            pre-sort-and-binary-search for any sizeable input.
+          </li>
+          <li>
+            <strong>Assuming stable iteration order after delete.</strong>{" "}
+            Packed arrays maintain insertion order, but dictionary-mode arrays
+            in V8 iterate in hash order. Relying on order after deleting extreme
+            indices is a subtle source of non-determinism.
+          </li>
+        </ul>
+      </section>
+
+      {/* ============================================================
+          SECTION 7: Real-World Use Cases
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">Real-World Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          V8 internal elements kinds
+        </h3>
+        <p>
+          V8&apos;s object model treats array storage as a first-class
+          optimization target. The engine tracks an <em>elements kind</em> on
+          every <code>Array</code> and specializes the machine code for each
+          operation based on it. Benchmarks published by the V8 team show a
+          two-to-ten-times performance difference between{" "}
+          <code>PACKED_SMI_ELEMENTS</code> and{" "}
+          <code>DICTIONARY_ELEMENTS</code> for the same nominal operation.
+          Libraries like React&apos;s reconciler explicitly structure their
+          fiber sibling arrays to stay in the fast path.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          React reconciler fiber siblings
+        </h3>
+        <p>
+          React keeps the children of each fiber node in an array-like
+          structure and iterates siblings by index. The reconciler is careful
+          to keep these arrays packed and to avoid sparse indices during
+          diffing, since any transition to dictionary mode degrades render
+          throughput. This is one reason that reordering arrays of children
+          without stable keys triggers so much wasted work.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Canvas and WebGL pixel buffers
+        </h3>
+        <p>
+          Every <code>&lt;canvas&gt;</code> frame pushed through{" "}
+          <code>getImageData</code> returns a <code>Uint8ClampedArray</code>{" "}
+          with four bytes per pixel in RGBA order. Image-processing libraries
+          (<code>pica</code>, <code>glfx.js</code>) operate directly on these
+          buffers; the clamped type means arithmetic that overflows is
+          saturated to 0 or 255, avoiding the extra branch per pixel that
+          pre-clamped buffers would require. WebGL vertex and index buffers
+          follow the same pattern with <code>Float32Array</code> and{" "}
+          <code>Uint16Array</code>.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Redux and normalized state
+        </h3>
+        <p>
+          Normalized Redux state typically stores entities in a keyed
+          dictionary and their ordering in a parallel{" "}
+          <code>ids: string[]</code> array. This split leverages arrays for
+          O(1) render-time iteration and hash lookups for O(1) by-id access,
+          without forcing the two concerns into a single structure. The
+          pattern is directly ported from relational database index design.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Columnar analytics and multidimensional arrays
+        </h3>
+        <p>
+          Analytical workloads (Apache Arrow, Parquet, DuckDB&apos;s vectorized
+          executor) all store columns as arrays and push operations through
+          SIMD-friendly tight loops. For two-dimensional data, the row-major
+          vs column-major choice is a throughput decision — iterating a
+          million-row column is fifty-plus times faster in column-major
+          layout than in row-major layout because of cache locality. Tensor
+          libraries (TensorFlow.js, ONNX Runtime Web) ship the same logic
+          into the browser through TypedArrays.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/other/data-structures-algorithms/data-structures/arrays-diagram-3.svg"
+          alt="Row-major versus column-major memory layout for a two-dimensional array and the corresponding cache behavior when iterating"
+          caption="Figure 3: Row-major vs column-major layout — iteration direction must match physical memory layout for good cache behavior."
+        />
+      </section>
+
+      {/* ============================================================
+          SECTION 8: Common Interview Questions
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Why is dynamic array append amortized O(1)?
+            </p>
+            <p className="mt-2 text-sm">
+              A: With a geometric growth factor <em>k</em> (typically 1.5 or
+              2), the sum of all copy costs across <em>n</em> appends forms a
+              geometric series dominated by its last term, which is O(n).
+              Dividing by <em>n</em> appends gives O(1) amortized cost per
+              append. The key invariant is that growth events are exponentially
+              spaced — doubling the array halves how often copies happen — so
+              any constant growth factor greater than 1 yields the same
+              amortized result. A linear growth strategy (adding a fixed{" "}
+              <em>c</em> slots each time) would produce O(n²) total copies and
+              O(n) amortized append.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: When would you choose an array over a linked list?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Almost always. Arrays are superior unless the workload is
+              dominated by O(1) insertions or deletions <em>at a known node
+              reference</em> (not at an index). The canonical case where a
+              linked list wins is an LRU cache&apos;s recency list, where every
+              access moves a node to the head and nodes are kept pinned by
+              external hash-map entries. For most other workloads — iteration,
+              search, sorting — arrays win on cache behavior, memory density,
+              and implementation simplicity.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you detect a duplicate in an array of n integers in
+              range [0, n-1] with O(1) extra space?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Two canonical staff-level answers. First, if the array is
+              mutable, use index marking: for each element <em>x</em>, negate
+              <code> arr[|x|]</code>; if it&apos;s already negative, you&apos;ve
+              found a duplicate. Second, treat the array as a functional graph{" "}
+              (<code>i → arr[i]</code>) and apply Floyd&apos;s
+              tortoise-and-hare cycle detection to find the duplicate without
+              mutating the array. Both give O(n) time, O(1) space, and both
+              come up by name in interview banks.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Why does iterating a 2D array by column instead of by row
+              hurt performance?
+            </p>
+            <p className="mt-2 text-sm">
+              A: In row-major languages (C, Java, Python <code>numpy</code>{" "}
+              default, JavaScript when using a flat{" "}
+              <code>row*stride + col</code> layout), consecutive elements of a
+              row are adjacent in memory while consecutive elements of a
+              column are <em>stride</em> bytes apart. Iterating by column
+              therefore loads a fresh cache line on nearly every access,
+              missing the spatial locality that arrays are designed to
+              exploit. The fix is to either transpose the data to match your
+              iteration order or to store the data column-major if column
+              iteration dominates — which is exactly what columnar analytics
+              engines do.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does V8 handle a JavaScript array that contains a mix of
+              integers, strings, and holes?
+            </p>
+            <p className="mt-2 text-sm">
+              A: V8 tracks an <em>elements kind</em> per array and transitions
+              downward (never upward) as operations require a more general
+              representation. A pure integer array sits in{" "}
+              <code>PACKED_SMI_ELEMENTS</code>; adding a string transitions to{" "}
+              <code>PACKED_ELEMENTS</code>, adding a hole transitions to{" "}
+              <code>HOLEY_ELEMENTS</code>, and enough sparsity pushes it to
+              <code> DICTIONARY_ELEMENTS</code>. Each transition disables a
+              layer of fast-path machine code; the array stays in the worse
+              representation for its lifetime. The practical implication is
+              that initialization order and type stability both matter, and
+              benchmarking a hot loop without this context can produce
+              misleading results.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: When would you pick a TypedArray over a regular Array?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Any time the workload is homogeneous, numeric, and either
+              latency-sensitive or memory-constrained. Typical candidates:
+              image pixel manipulation, audio sample processing, WebGL vertex
+              buffers, binary protocol parsing, machine-learning inference
+              tensors, and cross-worker shared state via{" "}
+              <code>SharedArrayBuffer</code>. A Float64Array uses 8 bytes per
+              element flat; an equivalent JavaScript{" "}
+              <code>Array</code> of numbers pays for boxed double pointers in
+              holey modes, roughly doubling memory and quadrupling iteration
+              cost.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 9: References & Further Reading
+          ============================================================ */}
+      <section className="mb-12">
+        <h2 className="mb-4 text-2xl font-bold">
+          References &amp; Further Reading
+        </h2>
+        <ul className="list-disc space-y-2 pl-6">
+          <li>
+            Knuth, D.E. — <em>The Art of Computer Programming, Volume 1:
+            Fundamental Algorithms</em>, 3rd Edition, Addison-Wesley, Section
+            2.2 (Linear Lists) for the canonical treatment of array address
+            arithmetic and sequential allocation.
+          </li>
+          <li>
+            Cormen, Leiserson, Rivest, Stein — <em>Introduction to
+            Algorithms</em>, 4th Edition, MIT Press, Chapter 17
+            (Amortized Analysis) for the formal proof of dynamic array
+            geometric-growth costs.
+          </li>
+          <li>
+            Drepper, U. — <em>What Every Programmer Should Know About
+            Memory</em>, Red Hat, 2007: the definitive practitioner reference
+            on cache lines, prefetching, and sequential access.
+          </li>
+          <li>
+            V8 Team — <em>Elements Kinds in V8</em> (v8.dev/blog/elements-kinds):
+            the authoritative write-up of how JavaScript array storage
+            transitions and what it means for performance.
+          </li>
+          <li>
+            MDN Web Docs — <em>TypedArray, ArrayBuffer, and SharedArrayBuffer
+            references</em>: up-to-date specifications and browser support
+            matrices.
+          </li>
+          <li>
+            Sedgewick, R. — <em>Algorithms</em>, 4th Edition, Addison-Wesley,
+            Chapters 1.1–1.3 on array-based bags, stacks, and queues with
+            resizable-array analysis.
+          </li>
+          <li>
+            Herlihy, M., Shavit, N. — <em>The Art of Multiprocessor
+            Programming</em>, Revised Edition, Morgan Kaufmann, Chapters on
+            concurrent arrays and lock-free vector designs.
+          </li>
+          <li>
+            Abadi, Boncz, Harizopoulos et al. — <em>The Design and
+            Implementation of Modern Column-Oriented Database Systems</em>,
+            Foundations and Trends in Databases, 2013, for production-scale
+            applications of contiguous array layouts to analytics workloads.
+          </li>
         </ul>
       </section>
     </ArticleLayout>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Bloom filter false positive rate as a function of bits per element and number of hashes</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">False-Positive Rate vs Bits per Element</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">p ≈ (1 − e^(−kn/m))^k — optimum k = (m/n) ln 2 ≈ 0.693 × bits/element</text>
+
+  <!-- chart axes -->
+  <line x1="100" y1="380" x2="800" y2="380" stroke="#1a1822" stroke-width="2"/>
+  <line x1="100" y1="100" x2="100" y2="380" stroke="#1a1822" stroke-width="2"/>
+
+  <!-- y-axis labels (log-ish, just illustrative) -->
+  <text x="90" y="105" text-anchor="end" font-size="10" fill="#1a1822">100%</text>
+  <text x="90" y="175" text-anchor="end" font-size="10" fill="#1a1822">10%</text>
+  <text x="90" y="245" text-anchor="end" font-size="10" fill="#1a1822">1%</text>
+  <text x="90" y="315" text-anchor="end" font-size="10" fill="#1a1822">0.1%</text>
+  <text x="90" y="385" text-anchor="end" font-size="10" fill="#1a1822">0.01%</text>
+
+  <!-- x-axis labels -->
+  <text x="100" y="400" text-anchor="middle" font-size="10" fill="#1a1822">2</text>
+  <text x="200" y="400" text-anchor="middle" font-size="10" fill="#1a1822">4</text>
+  <text x="300" y="400" text-anchor="middle" font-size="10" fill="#1a1822">6</text>
+  <text x="400" y="400" text-anchor="middle" font-size="10" fill="#1a1822">8</text>
+  <text x="500" y="400" text-anchor="middle" font-size="10" fill="#1a1822">10</text>
+  <text x="600" y="400" text-anchor="middle" font-size="10" fill="#1a1822">12</text>
+  <text x="700" y="400" text-anchor="middle" font-size="10" fill="#1a1822">14</text>
+  <text x="800" y="400" text-anchor="middle" font-size="10" fill="#1a1822">16</text>
+
+  <text x="450" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">bits per element (m/n)</text>
+  <text x="40" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822" transform="rotate(-90 40 240)">false-positive rate</text>
+
+  <!-- curve (illustrative, optimum k for each m/n) -->
+  <path d="M 100,135 Q 150,165 200,200 T 300,260 T 400,300 T 500,330 T 600,348 T 700,360 T 800,370" stroke="#6d5bd0" stroke-width="3" fill="none"/>
+
+  <!-- annotations -->
+  <circle cx="500" cy="330" r="6" fill="#cc4444" stroke="#1a1822"/>
+  <text x="515" y="325" font-size="11" font-weight="700" fill="#cc4444">10 bits/elem ≈ 1% FPR (k=7)</text>
+  <text x="515" y="342" font-size="10" fill="#1a1822" opacity="0.7">canonical default for production</text>
+
+  <circle cx="800" cy="370" r="6" fill="#4caf50" stroke="#1a1822"/>
+  <text x="775" y="365" text-anchor="end" font-size="11" font-weight="700" fill="#4caf50">16 bits/elem ≈ 0.05% FPR</text>
+
+  <circle cx="200" cy="200" r="6" fill="#cc4444" stroke="#1a1822"/>
+  <text x="215" y="195" font-size="11" fill="#1a1822">4 bits/elem ≈ 15% FPR</text>
+
+  <!-- formula box -->
+  <rect x="60" y="445" width="780" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="75" y="465" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">m = −n ln(p) / (ln 2)²    k = (m/n) ln 2    Sizing for 1M items at 1% FPR → m ≈ 9.6M bits (1.2 MB), k = 7</text>
+  <text x="75" y="482" font-size="10" fill="#1a1822" opacity="0.7">Compare: a hash set of 1M 32-byte strings = 32MB+ — Bloom is ~25× smaller for the same membership query</text>
+</svg>

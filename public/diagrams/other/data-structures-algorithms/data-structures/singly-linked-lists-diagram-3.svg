@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Memory layout comparison between contiguous array and linked list showing pointer chasing cache misses</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Memory Layout: Array vs Linked List</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Arrays pack into cache lines; linked lists scatter, costing a potential cache miss per node</text>
+
+  <!-- Array -->
+  <text x="60" y="90" font-size="14" font-weight="700" fill="#4caf50">Array: contiguous, cache-friendly</text>
+  <rect x="60" y="105" width="780" height="50" rx="4" fill="#e8dffa" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="450" y="173" text-anchor="middle" font-size="10" fill="#6d5bd0">One cache line (64 B) holds ~8 elements</text>
+
+  <g>
+    <rect x="65" y="110" width="48" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="89" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">A</text>
+    <rect x="113" y="110" width="48" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="137" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">B</text>
+    <rect x="161" y="110" width="48" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="185" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">C</text>
+    <rect x="209" y="110" width="48" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="233" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">D</text>
+    <rect x="257" y="110" width="48" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="281" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">E</text>
+    <rect x="305" y="110" width="48" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="329" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">F</text>
+    <rect x="353" y="110" width="48" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="377" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">G</text>
+    <rect x="401" y="110" width="48" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="425" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">H</text>
+  </g>
+
+  <!-- Linked List scattered -->
+  <text x="60" y="210" font-size="14" font-weight="700" fill="#cc4444">Linked list: scattered, each traversal hop may miss cache</text>
+
+  <defs>
+    <marker id="arrLL3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Heap visualization strip -->
+  <rect x="60" y="225" width="780" height="80" rx="4" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+  <text x="70" y="243" font-size="10" fill="#1a1822" opacity="0.6">Heap address space →</text>
+
+  <!-- Nodes at random positions -->
+  <rect x="80" y="255" width="60" height="40" fill="#cc4444" stroke="#1a1822"/>
+  <text x="110" y="279" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">A</text>
+  <text x="110" y="312" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">0x1A20</text>
+
+  <rect x="260" y="255" width="60" height="40" fill="#cc4444" stroke="#1a1822"/>
+  <text x="290" y="279" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">B</text>
+  <text x="290" y="312" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">0x7E80</text>
+
+  <rect x="160" y="255" width="60" height="40" fill="#cc4444" stroke="#1a1822"/>
+  <text x="190" y="279" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">C</text>
+  <text x="190" y="312" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">0x4C00</text>
+
+  <rect x="450" y="255" width="60" height="40" fill="#cc4444" stroke="#1a1822"/>
+  <text x="480" y="279" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">D</text>
+  <text x="480" y="312" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">0xB140</text>
+
+  <rect x="360" y="255" width="60" height="40" fill="#cc4444" stroke="#1a1822"/>
+  <text x="390" y="279" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">E</text>
+  <text x="390" y="312" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">0x2C90</text>
+
+  <rect x="620" y="255" width="60" height="40" fill="#cc4444" stroke="#1a1822"/>
+  <text x="650" y="279" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">F</text>
+  <text x="650" y="312" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">0x9E40</text>
+
+  <rect x="550" y="255" width="60" height="40" fill="#cc4444" stroke="#1a1822"/>
+  <text x="580" y="279" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">G</text>
+  <text x="580" y="312" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">0x5810</text>
+
+  <rect x="750" y="255" width="60" height="40" fill="#cc4444" stroke="#1a1822"/>
+  <text x="780" y="279" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">H</text>
+  <text x="780" y="312" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">0xC620</text>
+
+  <!-- Traversal arrows zigzag -->
+  <path d="M 140 275 Q 200 230 260 275" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrLL3)"/>
+  <path d="M 320 275 Q 240 320 160 275" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrLL3)"/>
+  <path d="M 220 275 Q 305 230 360 275" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrLL3)"/>
+  <path d="M 420 275 Q 435 320 450 275" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrLL3)"/>
+  <path d="M 510 275 Q 545 230 550 275" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrLL3)"/>
+  <path d="M 610 275 Q 630 320 620 275" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrLL3)"/>
+  <path d="M 680 275 Q 715 230 750 275" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrLL3)"/>
+
+  <!-- Comparison box -->
+  <rect x="40" y="340" width="400" height="140" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="40" y="340" width="400" height="28" rx="10" fill="#4caf50"/>
+  <text x="240" y="359" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Array traversal cost</text>
+  <text x="55" y="385" font-size="11" fill="#1a1822">• 1M ints, 4 MB total</text>
+  <text x="55" y="403" font-size="11" fill="#1a1822">• ~60,000 cache line fetches</text>
+  <text x="55" y="421" font-size="11" fill="#1a1822">• Prefetcher engaged</text>
+  <text x="55" y="439" font-size="11" font-weight="700" fill="#4caf50">Typical: 2–5 ns/element</text>
+  <text x="55" y="461" font-size="10" fill="#1a1822" opacity="0.7">≈ 50 GB/s bandwidth effective</text>
+
+  <rect x="460" y="340" width="400" height="140" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="460" y="340" width="400" height="28" rx="10" fill="#cc4444"/>
+  <text x="660" y="359" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Linked list traversal cost</text>
+  <text x="475" y="385" font-size="11" fill="#1a1822">• 1M nodes × 32 B = 32 MB</text>
+  <text x="475" y="403" font-size="11" fill="#1a1822">• ~1M cache line fetches worst case</text>
+  <text x="475" y="421" font-size="11" fill="#1a1822">• Prefetcher defeated (random next)</text>
+  <text x="475" y="439" font-size="11" font-weight="700" fill="#cc4444">Typical: 50–200 ns/element</text>
+  <text x="475" y="461" font-size="10" fill="#1a1822" opacity="0.7">≈ 10–50× slower than equivalent array</text>
+</svg>

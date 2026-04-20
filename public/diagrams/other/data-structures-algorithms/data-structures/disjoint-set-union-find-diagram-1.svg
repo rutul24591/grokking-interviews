@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Disjoint set union find as a forest of upward parent pointers with one root per set</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Union-Find: Forest of Parent Pointers</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each set is a tree; each element points to its parent; the root identifies the set</text>
+
+  <defs>
+    <marker id="arrUF1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- TREE 1 -->
+  <text x="200" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Set A — root: 1</text>
+  <line x1="150" y1="220" x2="195" y2="120" stroke="#1a1822" marker-end="url(#arrUF1)"/>
+  <line x1="250" y1="220" x2="205" y2="120" stroke="#1a1822" marker-end="url(#arrUF1)"/>
+  <line x1="100" y1="320" x2="145" y2="240" stroke="#1a1822" marker-end="url(#arrUF1)"/>
+  <line x1="200" y1="320" x2="155" y2="240" stroke="#1a1822" marker-end="url(#arrUF1)"/>
+
+  <circle cx="200" cy="105" r="22" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="200" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">1</text>
+  <text x="240" y="105" font-size="10" fill="#1a1822" opacity="0.6">root</text>
+
+  <circle cx="140" cy="230" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="140" y="235" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2</text>
+  <circle cx="260" cy="230" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="260" y="235" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3</text>
+  <circle cx="90" cy="335" r="18" fill="#a89bec" stroke="#1a1822"/>
+  <text x="90" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">5</text>
+  <circle cx="210" cy="335" r="18" fill="#a89bec" stroke="#1a1822"/>
+  <text x="210" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">7</text>
+
+  <!-- TREE 2 -->
+  <text x="500" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Set B — root: 4</text>
+  <line x1="450" y1="220" x2="495" y2="120" stroke="#1a1822" marker-end="url(#arrUF1)"/>
+  <line x1="550" y1="220" x2="505" y2="120" stroke="#1a1822" marker-end="url(#arrUF1)"/>
+
+  <circle cx="500" cy="105" r="22" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="500" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">4</text>
+  <text x="540" y="105" font-size="10" fill="#1a1822" opacity="0.6">root</text>
+
+  <circle cx="440" cy="230" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="440" y="235" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">6</text>
+  <circle cx="560" cy="230" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="560" y="235" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">9</text>
+
+  <!-- TREE 3 -->
+  <text x="780" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Set C — root: 8</text>
+  <circle cx="780" cy="170" r="22" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="780" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">8</text>
+  <text x="820" y="170" font-size="10" fill="#1a1822" opacity="0.6">root (singleton)</text>
+
+  <!-- Array representation -->
+  <text x="450" y="395" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Internal storage: parent[i] array</text>
+  <g font-family="ui-monospace, monospace" font-size="11">
+    <text x="115" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">i</text>
+    <text x="155" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">1</text>
+    <text x="195" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">2</text>
+    <text x="235" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">3</text>
+    <text x="275" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">4</text>
+    <text x="315" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">5</text>
+    <text x="355" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">6</text>
+    <text x="395" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">7</text>
+    <text x="435" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">8</text>
+    <text x="475" y="425" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">9</text>
+
+    <text x="80" y="455" font-size="10" fill="#1a1822">parent:</text>
+    <rect x="135" y="440" width="40" height="22" fill="#cc4444" stroke="#1a1822"/>
+    <text x="155" y="456" text-anchor="middle" fill="#ffffff">1</text>
+    <rect x="175" y="440" width="40" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="195" y="456" text-anchor="middle" fill="#1a1822">1</text>
+    <rect x="215" y="440" width="40" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="235" y="456" text-anchor="middle" fill="#1a1822">1</text>
+    <rect x="255" y="440" width="40" height="22" fill="#cc4444" stroke="#1a1822"/>
+    <text x="275" y="456" text-anchor="middle" fill="#ffffff">4</text>
+    <rect x="295" y="440" width="40" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="315" y="456" text-anchor="middle" fill="#1a1822">2</text>
+    <rect x="335" y="440" width="40" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="355" y="456" text-anchor="middle" fill="#1a1822">4</text>
+    <rect x="375" y="440" width="40" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="395" y="456" text-anchor="middle" fill="#1a1822">2</text>
+    <rect x="415" y="440" width="40" height="22" fill="#cc4444" stroke="#1a1822"/>
+    <text x="435" y="456" text-anchor="middle" fill="#ffffff">8</text>
+    <rect x="455" y="440" width="40" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="475" y="456" text-anchor="middle" fill="#1a1822">4</text>
+  </g>
+  <text x="700" y="450" font-size="11" fill="#1a1822">Roots have parent[i] = i (red cells)</text>
+  <text x="700" y="468" font-size="11" fill="#1a1822">find(i) = walk parent pointers up to root</text>
+</svg>

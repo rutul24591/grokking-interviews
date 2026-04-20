@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Trie insert and search traversal walking character by character down the prefix path</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Trie Insert &amp; Search: Character-by-Character Walk</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Both operations follow the same path; insert allocates missing children, search returns null at first miss</text>
+
+  <defs>
+    <marker id="arrTr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- INSERT "cart" -->
+  <text x="225" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Insert &quot;cart&quot;</text>
+  <line x1="225" y1="115" x2="225" y2="170" stroke="#1a1822"/>
+  <line x1="225" y1="195" x2="225" y2="245" stroke="#1a1822"/>
+  <line x1="225" y1="270" x2="225" y2="320" stroke="#1a1822"/>
+  <line x1="225" y1="345" x2="225" y2="395" stroke="#1a1822" stroke-dasharray="4,3"/>
+
+  <circle cx="225" cy="105" r="20" fill="#1a1822"/>
+  <text x="225" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">·</text>
+  <text x="265" y="108" font-size="10" fill="#4caf50">exists</text>
+
+  <circle cx="225" cy="180" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="225" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">c</text>
+  <text x="265" y="183" font-size="10" fill="#4caf50">exists</text>
+
+  <circle cx="225" cy="255" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="225" y="260" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">a</text>
+  <text x="265" y="258" font-size="10" fill="#4caf50">exists</text>
+
+  <circle cx="225" cy="330" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="225" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">r</text>
+  <text x="265" y="333" font-size="10" fill="#4caf50">exists (was leaf)</text>
+
+  <circle cx="225" cy="405" r="20" fill="#4caf50" stroke="#1a1822" stroke-width="2"/>
+  <text x="225" y="410" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">t★</text>
+  <text x="265" y="408" font-size="10" fill="#cc4444">created</text>
+
+  <text x="225" y="455" text-anchor="middle" font-size="11" fill="#1a1822">4 hops, 1 allocation, mark end-of-word</text>
+
+  <!-- SEARCH "card" -->
+  <text x="675" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">Search &quot;card&quot; → not found</text>
+  <line x1="675" y1="115" x2="675" y2="170" stroke="#1a1822"/>
+  <line x1="675" y1="195" x2="675" y2="245" stroke="#1a1822"/>
+  <line x1="675" y1="270" x2="675" y2="320" stroke="#1a1822"/>
+  <line x1="675" y1="345" x2="675" y2="395" stroke="#cc4444" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrTr2)"/>
+
+  <circle cx="675" cy="105" r="20" fill="#1a1822"/>
+  <text x="675" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">·</text>
+
+  <circle cx="675" cy="180" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="675" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">c</text>
+
+  <circle cx="675" cy="255" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="675" y="260" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">a</text>
+
+  <circle cx="675" cy="330" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="675" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">r</text>
+  <text x="715" y="333" font-size="10" fill="#1a1822">looking for &apos;d&apos;</text>
+
+  <text x="675" y="405" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">no child &apos;d&apos; → return false</text>
+
+  <!-- Complexity panel -->
+  <rect x="60" y="445" width="800" height="40" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="75" y="470" font-size="11" fill="#1a1822"><tspan font-weight="700">Both operations are O(L)</tspan> in key length L, independent of n (number of stored keys) — this is the trie&apos;s superpower over hash tables</text>
+</svg>

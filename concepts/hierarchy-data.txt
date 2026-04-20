@@ -1606,8 +1606,92 @@
         •   Design pagination strategies in depth — offset vs cursor vs keyset, and how each affects UI state and caching.
         •   Design a real-time data aggregation dashboard — handling high-frequency updates without UI jank (throttling, buffering, chart updates).
 
-3. Languages (Coming soon)
-4. Data Structure & Algorithms (Coming soon)
-5. Leetcode (Coming soon)
-6. AI (Coming soon)
-7. Design Patterns (Coming soon)
+4.  Other
+    a.  Artificial-Intelligence-Concepts
+        1. Core
+        •   LLM
+        •   Tokens
+        •   Prompting
+        •   Agents
+        •   MCP
+        •   Skills
+        •   Multi-agents
+        •   RAG
+        •   Vector DB 
+        •   Context Window
+
+        2. Additional
+        •   Hugging Face
+        •   Langchain
+        •   Agent Orchestration
+        •   Workflow    
+        •   Plug-Ins
+       
+    b.  Languages
+        1. JavaScript
+
+        2. TypeScript
+
+        3. Python
+
+        4. NodeJS
+
+        5. Java
+
+        6. C++
+
+    c.  Data Structures & Algorithms
+        1. Data Structures
+
+        •   Arrays
+        •   Singly Linked Lists
+        •   Doubly Linked Lists
+        •   Stacks
+        •   Queues
+        •   Trees
+        •   Graphs
+        •   Hash Tables
+        •   Heaps & Priority Queues
+        •   Bit Manipulation
+        •   Strings
+
+        2. Algorithms
+        •   Sorting Algorithms
+        •   Searching Algorithms
+        •   Dynamic Programming
+        •   Greedy Algorithms    
+        •   Backtracking Algorithms
+        •   Divide and Conquer Algorithms
+
+    d.  Leetcode
+        1. Patterns
+
+        •   Two-pointer
+        •   Sliding-window
+        •   Binary-search
+        •   Divide-and-conquer
+        •   Greedy
+        •   Backtracking
+        •   Dynamic Programming
+        •   Graph
+        •   Heap
+        •   Hash Table
+        •   Linked List
+        •   Math
+        •   Recursion
+        •   Stack
+        •   Queues
+        •   String
+        •   Tree
+
+        2. Problems
+
+
+    e.  Design Patterns
+        1. JavaScript
+
+        2. Python
+
+        3. Typescript
+
+

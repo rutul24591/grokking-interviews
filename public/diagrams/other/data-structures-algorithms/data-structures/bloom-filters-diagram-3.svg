@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>LSM tree read path filtering SSTable lookups through per file Bloom filters before disk seek</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Bloom Filter in the LSM Read Path</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Avoid disk seeks for keys definitely not in an SSTable — production use case in RocksDB, Cassandra, LevelDB</text>
+
+  <defs>
+    <marker id="arrBF3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Query -->
+  <rect x="50" y="100" width="120" height="50" rx="8" fill="#cc4444" stroke="#1a1822"/>
+  <text x="110" y="130" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">get("key42")</text>
+
+  <line x1="170" y1="125" x2="240" y2="125" stroke="#1a1822" marker-end="url(#arrBF3)"/>
+
+  <!-- MemTable -->
+  <rect x="240" y="95" width="140" height="60" rx="8" fill="#a89bec" stroke="#1a1822"/>
+  <text x="310" y="118" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">MemTable</text>
+  <text x="310" y="138" text-anchor="middle" font-size="10" fill="#ffffff">in-memory, check first</text>
+
+  <line x1="380" y1="125" x2="450" y2="125" stroke="#1a1822" marker-end="url(#arrBF3)"/>
+  <text x="415" y="115" text-anchor="middle" font-size="9" fill="#1a1822">miss</text>
+
+  <!-- SSTables with Bloom filters -->
+  <text x="600" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Per-SSTable Bloom filters</text>
+
+  <!-- SST1 -->
+  <rect x="450" y="100" width="60" height="50" rx="6" fill="#4caf50" stroke="#1a1822"/>
+  <text x="480" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Bloom</text>
+  <text x="480" y="138" text-anchor="middle" font-size="10" fill="#ffffff">L0-1</text>
+  <text x="480" y="170" text-anchor="middle" font-size="10" fill="#cc4444">no</text>
+  <rect x="520" y="100" width="80" height="50" rx="6" fill="#a89bec" stroke="#1a1822" stroke-dasharray="4,3" opacity="0.4"/>
+  <text x="560" y="128" text-anchor="middle" font-size="10" fill="#1a1822">SSTable</text>
+  <text x="560" y="170" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.5">skipped</text>
+
+  <!-- SST2 -->
+  <rect x="450" y="200" width="60" height="50" rx="6" fill="#4caf50" stroke="#1a1822"/>
+  <text x="480" y="222" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Bloom</text>
+  <text x="480" y="238" text-anchor="middle" font-size="10" fill="#ffffff">L0-2</text>
+  <text x="480" y="270" text-anchor="middle" font-size="10" fill="#cc4444">no</text>
+  <rect x="520" y="200" width="80" height="50" rx="6" fill="#a89bec" stroke="#1a1822" stroke-dasharray="4,3" opacity="0.4"/>
+  <text x="560" y="228" text-anchor="middle" font-size="10" fill="#1a1822">SSTable</text>
+  <text x="560" y="270" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.5">skipped</text>
+
+  <!-- SST3 - HIT -->
+  <rect x="450" y="300" width="60" height="50" rx="6" fill="#cc4444" stroke="#1a1822"/>
+  <text x="480" y="322" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Bloom</text>
+  <text x="480" y="338" text-anchor="middle" font-size="10" fill="#ffffff">L1-3</text>
+  <text x="480" y="370" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">maybe</text>
+  <line x1="510" y1="325" x2="555" y2="325" stroke="#1a1822" marker-end="url(#arrBF3)"/>
+  <rect x="555" y="300" width="100" height="50" rx="6" fill="#1a1822" stroke="#1a1822"/>
+  <text x="605" y="322" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">SSTable</text>
+  <text x="605" y="338" text-anchor="middle" font-size="10" fill="#ffffff">disk seek →</text>
+  <text x="605" y="370" text-anchor="middle" font-size="10" fill="#4caf50">found!</text>
+
+  <!-- SST4 -->
+  <rect x="450" y="400" width="60" height="50" rx="6" fill="#4caf50" stroke="#1a1822"/>
+  <text x="480" y="422" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Bloom</text>
+  <text x="480" y="438" text-anchor="middle" font-size="10" fill="#ffffff">L1-4</text>
+  <text x="480" y="470" text-anchor="middle" font-size="10" fill="#cc4444">no</text>
+  <rect x="520" y="400" width="80" height="50" rx="6" fill="#a89bec" stroke="#1a1822" stroke-dasharray="4,3" opacity="0.4"/>
+  <text x="560" y="428" text-anchor="middle" font-size="10" fill="#1a1822">SSTable</text>
+  <text x="560" y="470" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.5">skipped</text>
+
+  <!-- Summary box -->
+  <rect x="690" y="200" width="170" height="120" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="690" y="200" width="170" height="26" rx="10" fill="#6d5bd0"/>
+  <text x="775" y="218" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Win</text>
+  <text x="700" y="245" font-size="10" fill="#1a1822">4 SSTables consulted,</text>
+  <text x="700" y="262" font-size="10" fill="#1a1822">only 1 disk seek</text>
+  <text x="700" y="285" font-size="10" fill="#1a1822">3 RAM-only filter checks</text>
+  <text x="700" y="302" font-size="10" fill="#1a1822">avoided ~10ms disk I/O</text>
+  <text x="700" y="316" font-size="10" fill="#4caf50">~10× point-read speedup</text>
+</svg>

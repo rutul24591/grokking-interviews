@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Count min sketch update and query flow with increment all rows on update and minimum across rows on query</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Update vs Query Flow</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Update increments all d cells; query reads all d cells and returns the minimum</text>
+
+  <defs>
+    <marker id="arrCM2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- UPDATE -->
+  <text x="225" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">add(x, c)</text>
+  <text x="225" y="103" text-anchor="middle" font-size="11" fill="#1a1822">for i in 1..d: counter[i][hᵢ(x)] += c</text>
+
+  <g font-family="ui-monospace, monospace" font-size="10">
+    <rect x="90" y="130" width="270" height="25" fill="#ffffff" stroke="#1a1822"/>
+    <rect x="90" y="155" width="270" height="25" fill="#ffffff" stroke="#1a1822"/>
+    <rect x="90" y="180" width="270" height="25" fill="#ffffff" stroke="#1a1822"/>
+    <rect x="90" y="205" width="270" height="25" fill="#ffffff" stroke="#1a1822"/>
+
+    <rect x="120" y="130" width="30" height="25" fill="#cc4444" stroke="#1a1822"/>
+    <text x="135" y="147" text-anchor="middle" fill="#ffffff">+1</text>
+    <rect x="240" y="155" width="30" height="25" fill="#cc4444" stroke="#1a1822"/>
+    <text x="255" y="172" text-anchor="middle" fill="#ffffff">+1</text>
+    <rect x="180" y="180" width="30" height="25" fill="#cc4444" stroke="#1a1822"/>
+    <text x="195" y="197" text-anchor="middle" fill="#ffffff">+1</text>
+    <rect x="300" y="205" width="30" height="25" fill="#cc4444" stroke="#1a1822"/>
+    <text x="315" y="222" text-anchor="middle" fill="#ffffff">+1</text>
+  </g>
+
+  <text x="225" y="260" text-anchor="middle" font-size="11" fill="#1a1822">d writes per update — O(d), independent of N</text>
+  <text x="225" y="278" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">Mergeable: cell-wise sum of two sketches = sketch of union</text>
+
+  <!-- QUERY -->
+  <text x="675" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">query(x)</text>
+  <text x="675" y="103" text-anchor="middle" font-size="11" fill="#1a1822">return min(counter[i][hᵢ(x)] for i in 1..d)</text>
+
+  <g font-family="ui-monospace, monospace" font-size="10">
+    <rect x="540" y="130" width="270" height="25" fill="#ffffff" stroke="#1a1822"/>
+    <rect x="540" y="155" width="270" height="25" fill="#ffffff" stroke="#1a1822"/>
+    <rect x="540" y="180" width="270" height="25" fill="#ffffff" stroke="#1a1822"/>
+    <rect x="540" y="205" width="270" height="25" fill="#ffffff" stroke="#1a1822"/>
+
+    <rect x="570" y="130" width="30" height="25" fill="#a89bec" stroke="#1a1822"/>
+    <text x="585" y="147" text-anchor="middle" fill="#ffffff">9</text>
+    <rect x="690" y="155" width="30" height="25" fill="#a89bec" stroke="#1a1822"/>
+    <text x="705" y="172" text-anchor="middle" fill="#ffffff">12</text>
+    <rect x="630" y="180" width="30" height="25" fill="#a89bec" stroke="#1a1822"/>
+    <text x="645" y="197" text-anchor="middle" fill="#ffffff">9</text>
+    <rect x="750" y="205" width="30" height="25" fill="#a89bec" stroke="#1a1822"/>
+    <text x="765" y="222" text-anchor="middle" fill="#ffffff">11</text>
+  </g>
+
+  <text x="675" y="260" text-anchor="middle" font-size="11" fill="#1a1822">min(9, 12, 9, 11) = <tspan font-weight="700" fill="#cc4444">9</tspan> (upper bound on true count)</text>
+  <text x="675" y="278" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">d reads per query — O(d), independent of N</text>
+
+  <!-- Error bound -->
+  <rect x="60" y="310" width="780" height="175" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="60" y="310" width="780" height="28" rx="10" fill="#4caf50"/>
+  <text x="450" y="329" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Error guarantee (Cormode-Muthukrishnan 2005)</text>
+  <text x="75" y="358" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">P(estimate − true ≤ ε·N) ≥ 1 − δ</text>
+  <text x="75" y="380" font-size="11" fill="#1a1822">where N is total stream weight, ε is additive error fraction, δ is failure probability</text>
+  <text x="75" y="402" font-size="11" fill="#1a1822">Sizing: <tspan font-family="ui-monospace, monospace">w = ⌈e/ε⌉</tspan>, <tspan font-family="ui-monospace, monospace">d = ⌈ln(1/δ)⌉</tspan></text>
+  <text x="75" y="424" font-size="11" fill="#1a1822">Example: ε=0.001, δ=0.01 → w ≈ 2718, d ≈ 5 → ~14K counters total → ~56KB at 4 bytes/counter</text>
+  <text x="75" y="446" font-size="11" fill="#1a1822" opacity="0.85"><tspan font-weight="700">Bias:</tspan> always over-estimates (collisions can only add). Conservative update variants tighten the bound for skewed distributions.</text>
+  <text x="75" y="468" font-size="11" fill="#1a1822" opacity="0.85"><tspan font-weight="700">Heavy hitters:</tspan> pair the sketch with a top-K min-heap to track the most frequent items in O(d log K) per update.</text>
+</svg>

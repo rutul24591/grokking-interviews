@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Selection Sort — Scan for Minimum, Single Swap per Pass</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#1a1822">Input: [64, 25, 12, 22, 11] — exactly n−1 swaps, the comparison-sort minimum</text>
+
+  <g font-size="13" fill="#1a1822">
+    <text x="40" y="100" font-weight="700" fill="#6d5bd0">Pass 0</text>
+    <text x="40" y="118" font-size="11">scan [0..4], min=11 @ idx 4 → swap(0,4)</text>
+    <g transform="translate(200,85)">
+      <rect x="0" y="0" width="50" height="35" fill="#cc4444"/><text x="25" y="22" text-anchor="middle" fill="#fff" font-weight="700">64</text>
+      <rect x="55" y="0" width="50" height="35" fill="#a89bec"/><text x="80" y="22" text-anchor="middle">25</text>
+      <rect x="110" y="0" width="50" height="35" fill="#a89bec"/><text x="135" y="22" text-anchor="middle">12</text>
+      <rect x="165" y="0" width="50" height="35" fill="#a89bec"/><text x="190" y="22" text-anchor="middle">22</text>
+      <rect x="220" y="0" width="50" height="35" fill="#cc4444"/><text x="245" y="22" text-anchor="middle" fill="#fff" font-weight="700">11</text>
+      <path d="M25 40 Q135 60 245 40" stroke="#cc4444" fill="none" stroke-width="2" marker-end="url(#ar)"/>
+    </g>
+    <g transform="translate(550,85)">
+      <rect x="0" y="0" width="50" height="35" fill="#4caf50"/><text x="25" y="22" text-anchor="middle" fill="#fff" font-weight="700">11</text>
+      <rect x="55" y="0" width="50" height="35" fill="#a89bec"/><text x="80" y="22" text-anchor="middle">25</text>
+      <rect x="110" y="0" width="50" height="35" fill="#a89bec"/><text x="135" y="22" text-anchor="middle">12</text>
+      <rect x="165" y="0" width="50" height="35" fill="#a89bec"/><text x="190" y="22" text-anchor="middle">22</text>
+      <rect x="220" y="0" width="50" height="35" fill="#a89bec"/><text x="245" y="22" text-anchor="middle">64</text>
+    </g>
+
+    <text x="40" y="170" font-weight="700" fill="#6d5bd0">Pass 1</text>
+    <text x="40" y="188" font-size="11">scan [1..4], min=12 @ idx 2 → swap(1,2)</text>
+    <g transform="translate(550,155)">
+      <rect x="0" y="0" width="50" height="35" fill="#4caf50"/><text x="25" y="22" text-anchor="middle" fill="#fff" font-weight="700">11</text>
+      <rect x="55" y="0" width="50" height="35" fill="#4caf50"/><text x="80" y="22" text-anchor="middle" fill="#fff" font-weight="700">12</text>
+      <rect x="110" y="0" width="50" height="35" fill="#a89bec"/><text x="135" y="22" text-anchor="middle">25</text>
+      <rect x="165" y="0" width="50" height="35" fill="#a89bec"/><text x="190" y="22" text-anchor="middle">22</text>
+      <rect x="220" y="0" width="50" height="35" fill="#a89bec"/><text x="245" y="22" text-anchor="middle">64</text>
+    </g>
+
+    <text x="40" y="240" font-weight="700" fill="#6d5bd0">Pass 2</text>
+    <text x="40" y="258" font-size="11">scan [2..4], min=22 @ idx 3 → swap(2,3)</text>
+    <g transform="translate(550,225)">
+      <rect x="0" y="0" width="50" height="35" fill="#4caf50"/><text x="25" y="22" text-anchor="middle" fill="#fff" font-weight="700">11</text>
+      <rect x="55" y="0" width="50" height="35" fill="#4caf50"/><text x="80" y="22" text-anchor="middle" fill="#fff" font-weight="700">12</text>
+      <rect x="110" y="0" width="50" height="35" fill="#4caf50"/><text x="135" y="22" text-anchor="middle" fill="#fff" font-weight="700">22</text>
+      <rect x="165" y="0" width="50" height="35" fill="#a89bec"/><text x="190" y="22" text-anchor="middle">25</text>
+      <rect x="220" y="0" width="50" height="35" fill="#a89bec"/><text x="245" y="22" text-anchor="middle">64</text>
+    </g>
+
+    <text x="40" y="310" font-weight="700" fill="#6d5bd0">Pass 3</text>
+    <text x="40" y="328" font-size="11">scan [3..4], min=25 already at idx 3 → no-op</text>
+    <g transform="translate(550,295)">
+      <rect x="0" y="0" width="50" height="35" fill="#4caf50"/><text x="25" y="22" text-anchor="middle" fill="#fff" font-weight="700">11</text>
+      <rect x="55" y="0" width="50" height="35" fill="#4caf50"/><text x="80" y="22" text-anchor="middle" fill="#fff" font-weight="700">12</text>
+      <rect x="110" y="0" width="50" height="35" fill="#4caf50"/><text x="135" y="22" text-anchor="middle" fill="#fff" font-weight="700">22</text>
+      <rect x="165" y="0" width="50" height="35" fill="#4caf50"/><text x="190" y="22" text-anchor="middle" fill="#fff" font-weight="700">25</text>
+      <rect x="220" y="0" width="50" height="35" fill="#4caf50"/><text x="245" y="22" text-anchor="middle" fill="#fff" font-weight="700">64</text>
+    </g>
+  </g>
+
+  <rect x="60" y="370" width="780" height="110" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="80" y="395" font-size="14" font-weight="700" fill="#6d5bd0">Key Properties</text>
+  <text x="80" y="418" font-size="13" fill="#1a1822">Comparisons: n(n−1)/2 always — never adaptive.   Swaps: exactly n−1 — comparison-sort lower bound.</text>
+  <text x="80" y="440" font-size="13" fill="#1a1822">Legend: green = sorted prefix (final). red = candidate minimum / destination. purple = unsorted suffix.</text>
+  <text x="80" y="462" font-size="13" fill="#1a1822">Not stable: long-distance swap across equal elements (e.g. [2a,2b,1] → [1,2b,2a]).</text>
+
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#cc4444"/></marker></defs>
+</svg>

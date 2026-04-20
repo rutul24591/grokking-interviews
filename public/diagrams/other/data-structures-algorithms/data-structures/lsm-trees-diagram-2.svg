@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>LSM tree compaction lifecycle showing leveled compaction merging overlapping SSTables down the level hierarchy</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Compaction Lifecycle: Merging &amp; Reclaiming Space</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Background workers merge sorted runs, drop tombstones, and resolve duplicates — bounding read amplification</text>
+
+  <!-- Before compaction -->
+  <text x="225" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Before: L1 SSTable + overlapping L2 SSTables</text>
+
+  <text x="80" y="120" font-size="11" font-weight="700" fill="#1a1822">L1:</text>
+  <rect x="110" y="108" width="240" height="22" fill="#cc4444" stroke="#1a1822"/>
+  <text x="230" y="124" text-anchor="middle" font-size="10" fill="#ffffff">[k=10..50] (newer writes, may have tombstones)</text>
+
+  <text x="80" y="160" font-size="11" font-weight="700" fill="#1a1822">L2:</text>
+  <rect x="110" y="148" width="80" height="22" fill="#a89bec" stroke="#1a1822"/>
+  <text x="150" y="164" text-anchor="middle" font-size="9" fill="#ffffff">[10-22]</text>
+  <rect x="195" y="148" width="80" height="22" fill="#a89bec" stroke="#1a1822"/>
+  <text x="235" y="164" text-anchor="middle" font-size="9" fill="#ffffff">[23-37]</text>
+  <rect x="280" y="148" width="80" height="22" fill="#a89bec" stroke="#1a1822"/>
+  <text x="320" y="164" text-anchor="middle" font-size="9" fill="#ffffff">[38-50]</text>
+
+  <!-- arrow -->
+  <line x1="380" y1="140" x2="430" y2="140" stroke="#6d5bd0" stroke-width="3"/>
+  <polygon points="428,135 438,140 428,145" fill="#6d5bd0"/>
+  <text x="405" y="158" text-anchor="middle" font-size="10" fill="#6d5bd0">k-way merge</text>
+
+  <!-- After -->
+  <text x="650" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">After: rewritten L2, L1 cleared</text>
+
+  <text x="460" y="120" font-size="11" font-weight="700" fill="#1a1822">L1:</text>
+  <rect x="490" y="108" width="240" height="22" fill="#dddddd" stroke="#1a1822"/>
+  <text x="610" y="124" text-anchor="middle" font-size="10" fill="#1a1822">(empty after merge)</text>
+
+  <text x="460" y="160" font-size="11" font-weight="700" fill="#1a1822">L2:</text>
+  <rect x="490" y="148" width="80" height="22" fill="#4caf50" stroke="#1a1822"/>
+  <text x="530" y="164" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">[10-22]</text>
+  <rect x="575" y="148" width="80" height="22" fill="#4caf50" stroke="#1a1822"/>
+  <text x="615" y="164" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">[23-37]</text>
+  <rect x="660" y="148" width="80" height="22" fill="#4caf50" stroke="#1a1822"/>
+  <text x="700" y="164" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">[38-50]</text>
+  <rect x="745" y="148" width="80" height="22" fill="#4caf50" stroke="#1a1822"/>
+  <text x="785" y="164" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">[51-65]</text>
+
+  <text x="450" y="195" text-anchor="middle" font-size="11" fill="#1a1822" opacity="0.7">Tombstones older than gc_grace dropped • duplicate keys resolved (newest wins) • output split at SSTable size</text>
+
+  <!-- Strategies -->
+  <rect x="60" y="220" width="380" height="265" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="220" width="380" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="250" y="239" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Leveled (RocksDB, LevelDB)</text>
+  <text x="75" y="265" font-size="10" fill="#1a1822">• L0: overlapping; Lₙ: non-overlapping, ~10× Lₙ₋₁</text>
+  <text x="75" y="282" font-size="10" fill="#1a1822">• Compaction: pick L0 SST, merge with overlapping L1 SSTs</text>
+  <text x="75" y="299" font-size="10" fill="#1a1822">• Lower read &amp; space amplification</text>
+  <text x="75" y="316" font-size="10" fill="#1a1822">• Higher write amplification (each level rewritten ~10×)</text>
+  <text x="75" y="345" font-size="11" font-weight="700" fill="#1a1822">Tiered (Cassandra default, ScyllaDB)</text>
+  <text x="75" y="362" font-size="10" fill="#1a1822">• Each level holds ~N similarly-sized SSTs (e.g., 4)</text>
+  <text x="75" y="379" font-size="10" fill="#1a1822">• Compact: merge N SSTs of one level → one SST in next</text>
+  <text x="75" y="396" font-size="10" fill="#1a1822">• Lower write amplification</text>
+  <text x="75" y="413" font-size="10" fill="#1a1822">• Higher read amplification (more SSTs to check)</text>
+  <text x="75" y="430" font-size="10" fill="#1a1822">• Higher transient space amplification</text>
+  <text x="75" y="459" font-size="10" font-style="italic" fill="#1a1822" opacity="0.7">Universal (RocksDB), FIFO (TTL data),</text>
+  <text x="75" y="475" font-size="10" font-style="italic" fill="#1a1822" opacity="0.7">Time-Window (Cassandra TWCS) are variants</text>
+
+  <!-- Amplification table -->
+  <rect x="460" y="220" width="380" height="265" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="220" width="380" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="650" y="239" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">The three amplifications</text>
+
+  <text x="475" y="270" font-size="11" font-weight="700" fill="#1a1822">Write amp (WA):</text>
+  <text x="475" y="287" font-size="10" fill="#1a1822">total bytes written / user bytes written</text>
+  <text x="475" y="304" font-size="10" fill="#1a1822">Leveled: ~10–30×; Tiered: ~3–10×</text>
+
+  <text x="475" y="335" font-size="11" font-weight="700" fill="#1a1822">Read amp (RA):</text>
+  <text x="475" y="352" font-size="10" fill="#1a1822">SSTables checked per read query</text>
+  <text x="475" y="369" font-size="10" fill="#1a1822">Bloom filters cut RA dramatically; range scans</text>
+  <text x="475" y="386" font-size="10" fill="#1a1822">cannot use point-lookup Bloom filters</text>
+
+  <text x="475" y="417" font-size="11" font-weight="700" fill="#1a1822">Space amp (SA):</text>
+  <text x="475" y="434" font-size="10" fill="#1a1822">disk bytes / live bytes</text>
+  <text x="475" y="451" font-size="10" fill="#1a1822">Leveled: ~1.1×; Tiered: up to 2× during compaction</text>
+  <text x="475" y="475" font-size="10" font-style="italic" fill="#1a1822" opacity="0.7">RUM Conjecture: pick any two — read, update, memory</text>
+</svg>

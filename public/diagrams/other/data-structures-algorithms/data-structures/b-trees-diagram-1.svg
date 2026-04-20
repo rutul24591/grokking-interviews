@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>B-tree node fanout showing wide nodes with multiple keys and child pointers between them</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">B-Tree: High-Fanout Nodes Match Disk Pages</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each node holds many keys with child pointers between them; depth ≈ log₍fanout₎ n minimizes disk seeks</text>
+
+  <!-- Root -->
+  <g>
+    <rect x="350" y="90" width="200" height="40" fill="#cc4444" stroke="#1a1822"/>
+    <line x1="400" y1="90" x2="400" y2="130" stroke="#1a1822"/>
+    <line x1="450" y1="90" x2="450" y2="130" stroke="#1a1822"/>
+    <line x1="500" y1="90" x2="500" y2="130" stroke="#1a1822"/>
+    <text x="375" y="115" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">25</text>
+    <text x="425" y="115" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">50</text>
+    <text x="475" y="115" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">75</text>
+    <text x="525" y="115" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">90</text>
+  </g>
+
+  <!-- Lines to children -->
+  <line x1="350" y1="130" x2="160" y2="200" stroke="#1a1822"/>
+  <line x1="400" y1="130" x2="320" y2="200" stroke="#1a1822"/>
+  <line x1="450" y1="130" x2="490" y2="200" stroke="#1a1822"/>
+  <line x1="500" y1="130" x2="650" y2="200" stroke="#1a1822"/>
+  <line x1="550" y1="130" x2="780" y2="200" stroke="#1a1822"/>
+
+  <!-- Children -->
+  <g font-size="11">
+    <rect x="80" y="200" width="160" height="34" fill="#a89bec" stroke="#1a1822"/>
+    <text x="100" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">5</text>
+    <text x="135" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">12</text>
+    <text x="170" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">18</text>
+    <text x="215" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">22</text>
+
+    <rect x="260" y="200" width="120" height="34" fill="#a89bec" stroke="#1a1822"/>
+    <text x="290" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">30</text>
+    <text x="320" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">38</text>
+    <text x="355" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">45</text>
+
+    <rect x="420" y="200" width="140" height="34" fill="#a89bec" stroke="#1a1822"/>
+    <text x="450" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">55</text>
+    <text x="485" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">62</text>
+    <text x="525" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">70</text>
+
+    <rect x="580" y="200" width="120" height="34" fill="#a89bec" stroke="#1a1822"/>
+    <text x="610" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">78</text>
+    <text x="645" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">82</text>
+    <text x="680" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">88</text>
+
+    <rect x="720" y="200" width="120" height="34" fill="#a89bec" stroke="#1a1822"/>
+    <text x="750" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">94</text>
+    <text x="785" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">97</text>
+    <text x="820" y="222" text-anchor="middle" font-weight="700" fill="#ffffff">99</text>
+  </g>
+
+  <text x="450" y="270" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">(Leaf level — illustrating order-5 tree, real B-trees have 100s of keys per node)</text>
+
+  <!-- Footer -->
+  <rect x="60" y="290" width="780" height="195" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="290" width="780" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="309" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Why high fanout matters</text>
+  <text x="75" y="338" font-size="11" fill="#1a1822"><tspan font-weight="700">Disk page = node:</tspan> typical 4 KB or 16 KB page holds 100–500 (key, child-pointer) pairs depending on key size</text>
+  <text x="75" y="358" font-size="11" fill="#1a1822"><tspan font-weight="700">Depth:</tspan> 1 billion records with fanout 200 → only ⌈log₍200₎ 10⁹⌉ ≈ 4 levels — at most 4 page reads to find any key</text>
+  <text x="75" y="378" font-size="11" fill="#1a1822"><tspan font-weight="700">Cache:</tspan> root + first 1–2 levels stay hot in buffer pool — most lookups hit disk only at the leaf</text>
+  <text x="75" y="404" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">Order-m B-tree invariants:</text>
+  <text x="75" y="422" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">  • each node has between ⌈m/2⌉ and m children (root: 2 to m)</text>
+  <text x="75" y="440" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">  • all leaves at same depth (height-balanced)</text>
+  <text x="75" y="458" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">  • keys sorted within each node; child[i] keys &lt; key[i] &lt; child[i+1] keys</text>
+  <text x="75" y="476" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">  • Bayer &amp; McCreight 1972 — designed for Boeing&apos;s magnetic-disk file system</text>
+</svg>

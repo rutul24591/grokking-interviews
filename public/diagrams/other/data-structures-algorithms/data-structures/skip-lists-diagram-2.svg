@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Skip list probabilistic level assignment by repeatedly flipping a coin until tails</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Probabilistic Level Assignment: Coin Flips → Geometric Distribution</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each new node tosses coins until tails — that determines how many levels it occupies</text>
+
+  <!-- Coin flipping illustration -->
+  <text x="200" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Insert algorithm: pick level via coin flips</text>
+
+  <!-- Sequence -->
+  <g font-family="ui-monospace, monospace" font-size="12">
+    <rect x="60" y="120" width="40" height="40" rx="6" fill="#6d5bd0" stroke="#1a1822"/>
+    <text x="80" y="146" text-anchor="middle" fill="#ffffff">H</text>
+    <rect x="110" y="120" width="40" height="40" rx="6" fill="#6d5bd0" stroke="#1a1822"/>
+    <text x="130" y="146" text-anchor="middle" fill="#ffffff">H</text>
+    <rect x="160" y="120" width="40" height="40" rx="6" fill="#6d5bd0" stroke="#1a1822"/>
+    <text x="180" y="146" text-anchor="middle" fill="#ffffff">H</text>
+    <rect x="210" y="120" width="40" height="40" rx="6" fill="#cc4444" stroke="#1a1822"/>
+    <text x="230" y="146" text-anchor="middle" fill="#ffffff">T</text>
+  </g>
+  <text x="155" y="180" text-anchor="middle" font-size="11" fill="#1a1822">3 heads → node spans levels 0, 1, 2, 3</text>
+
+  <!-- Distribution table -->
+  <text x="600" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Distribution of node heights</text>
+
+  <g font-family="ui-monospace, monospace" font-size="11">
+    <rect x="430" y="115" width="340" height="200" rx="8" fill="#ffffff" stroke="#6d5bd0"/>
+    <text x="445" y="140" font-weight="700" fill="#1a1822">level reached</text>
+    <text x="615" y="140" font-weight="700" fill="#1a1822">probability</text>
+    <text x="700" y="140" font-weight="700" fill="#1a1822">expected #</text>
+
+    <line x1="430" y1="148" x2="770" y2="148" stroke="#6d5bd0"/>
+
+    <text x="445" y="170" fill="#1a1822">0 only (just L0)</text>
+    <text x="615" y="170" fill="#1a1822">1/2</text>
+    <text x="710" y="170" fill="#1a1822">n/2</text>
+
+    <text x="445" y="195" fill="#1a1822">up to 1</text>
+    <text x="615" y="195" fill="#1a1822">1/4</text>
+    <text x="710" y="195" fill="#1a1822">n/4</text>
+
+    <text x="445" y="220" fill="#1a1822">up to 2</text>
+    <text x="615" y="220" fill="#1a1822">1/8</text>
+    <text x="710" y="220" fill="#1a1822">n/8</text>
+
+    <text x="445" y="245" fill="#1a1822">up to 3</text>
+    <text x="615" y="245" fill="#1a1822">1/16</text>
+    <text x="710" y="245" fill="#1a1822">n/16</text>
+
+    <text x="445" y="270" fill="#1a1822">up to k</text>
+    <text x="615" y="270" fill="#1a1822">1/2^(k+1)</text>
+    <text x="710" y="270" fill="#1a1822">n/2^(k+1)</text>
+
+    <line x1="430" y1="285" x2="770" y2="285" stroke="#6d5bd0"/>
+    <text x="445" y="305" font-weight="700" fill="#cc4444">total nodes</text>
+    <text x="640" y="305" fill="#cc4444">Σ = 2n</text>
+  </g>
+
+  <!-- Why this works -->
+  <rect x="60" y="335" width="780" height="150" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="60" y="335" width="780" height="28" rx="10" fill="#4caf50"/>
+  <text x="450" y="354" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Why this gives O(log n) search without rotations</text>
+  <text x="75" y="383" font-size="11" fill="#1a1822">• Each level has ~half the nodes of the level below — geometric thinning identical to a balanced BST&apos;s level structure</text>
+  <text x="75" y="402" font-size="11" fill="#1a1822">• Maximum level with n nodes is O(log n) with high probability (Pugh 1990 analysis)</text>
+  <text x="75" y="421" font-size="11" fill="#1a1822">• Search at each level walks expected ~2 nodes before descending → total O(log n) hops</text>
+  <text x="75" y="440" font-size="11" fill="#1a1822">• <tspan font-weight="700">No rebalancing:</tspan> the random structure is &quot;balanced enough&quot; in expectation; no rotations on insert/delete</text>
+  <text x="75" y="460" font-size="11" fill="#1a1822">• <tspan font-weight="700">Concurrency advantage:</tspan> local pointer updates only, no parent/grandparent traversal — easier to lock or do CAS-based</text>
+  <text x="75" y="478" font-size="11" fill="#1a1822" opacity="0.7">Worst case is O(n) but probability vanishes exponentially with n. Adversarial input matters only if seed is exposed.</text>
+</svg>

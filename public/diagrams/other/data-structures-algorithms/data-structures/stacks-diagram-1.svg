@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Stack LIFO push and pop operations showing top of stack index movement and elements in insertion reverse order</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">LIFO: Push &amp; Pop</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Elements leave in reverse insertion order; top pointer tracks the next write/read slot</text>
+
+  <!-- Timeline of stack states -->
+  <g font-family="ui-monospace, monospace">
+    <!-- Step 1: empty -->
+    <text x="100" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">empty</text>
+    <rect x="60" y="120" width="80" height="220" rx="4" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="100" y="355" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">top = 0</text>
+
+    <!-- Step 2: push A -->
+    <text x="230" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">push A</text>
+    <rect x="190" y="120" width="80" height="220" rx="4" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <rect x="195" y="295" width="70" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="230" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">A</text>
+    <text x="230" y="355" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">top = 1</text>
+
+    <!-- Step 3: push B -->
+    <text x="360" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">push B</text>
+    <rect x="320" y="120" width="80" height="220" rx="4" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <rect x="325" y="295" width="70" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="360" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">A</text>
+    <rect x="325" y="250" width="70" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="360" y="275" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">B</text>
+    <text x="360" y="355" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">top = 2</text>
+
+    <!-- Step 4: push C -->
+    <text x="490" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#4caf50">push C</text>
+    <rect x="450" y="120" width="80" height="220" rx="4" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <rect x="455" y="295" width="70" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="490" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">A</text>
+    <rect x="455" y="250" width="70" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="490" y="275" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">B</text>
+    <rect x="455" y="205" width="70" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="490" y="230" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">C</text>
+    <text x="490" y="355" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">top = 3</text>
+
+    <!-- Step 5: pop → C -->
+    <text x="620" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">pop → C</text>
+    <rect x="580" y="120" width="80" height="220" rx="4" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <rect x="585" y="295" width="70" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="620" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">A</text>
+    <rect x="585" y="250" width="70" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="620" y="275" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">B</text>
+    <rect x="585" y="205" width="70" height="40" fill="none" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="620" y="230" text-anchor="middle" font-size="11" fill="#cc4444">(C)</text>
+    <text x="620" y="355" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">top = 2</text>
+
+    <!-- Step 6: pop → B -->
+    <text x="750" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">pop → B</text>
+    <rect x="710" y="120" width="80" height="220" rx="4" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <rect x="715" y="295" width="70" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="750" y="320" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">A</text>
+    <rect x="715" y="250" width="70" height="40" fill="none" stroke="#cc4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="750" y="275" text-anchor="middle" font-size="11" fill="#cc4444">(B)</text>
+    <text x="750" y="355" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">top = 1</text>
+  </g>
+
+  <!-- Footer/commentary -->
+  <text x="450" y="395" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">LIFO property: elements pop in reverse of push order — push A, B, C → pop C, B, A.</text>
+
+  <rect x="40" y="420" width="820" height="60" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="55" y="442" font-size="11" font-weight="700" fill="#1a1822">API (array-backed):</text>
+  <text x="55" y="462" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">push(x): buf[top++] = x    ·    pop(): return buf[--top]    ·    peek(): return buf[top-1]    ·    isEmpty(): return top === 0</text>
+</svg>

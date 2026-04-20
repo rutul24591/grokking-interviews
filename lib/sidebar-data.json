@@ -386,7 +386,10 @@
               "name": "Core Concepts",
               "slug": "core-concepts",
               "topics": [
-                { "name": "LLM (Large Language Models)", "slug": "large-language-models" },
+                {
+                  "name": "LLM (Large Language Models)",
+                  "slug": "large-language-models"
+                },
                 { "name": "Tokens", "slug": "tokens" },
                 { "name": "Prompting", "slug": "prompting" },
                 { "name": "Agents", "slug": "agents" },
@@ -426,7 +429,7 @@
         },
         {
           "name": "Data Structures & Algorithms",
-          "slug": "data-structures-and-algorithms",
+          "slug": "data-structures-algorithms",
           "subcategories": [
             { "name": "Data Structures", "slug": "data-structures" },
             { "name": "Algorithms", "slug": "algorithms" }

@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Hash function mapping keys to bucket indices showing dispersion of strings into a fixed size bucket array</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Hash Function: Key → Bucket Index</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">A good hash distributes keys uniformly; modulo capacity picks the bucket</text>
+
+  <defs>
+    <marker id="arrHT1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Keys -->
+  <text x="80" y="95" font-size="13" font-weight="700" fill="#1a1822">Keys</text>
+  <rect x="50" y="110" width="160" height="38" rx="6" fill="#ffffff" stroke="#1a1822"/>
+  <text x="130" y="133" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">&quot;alice&quot;</text>
+
+  <rect x="50" y="160" width="160" height="38" rx="6" fill="#ffffff" stroke="#1a1822"/>
+  <text x="130" y="183" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">&quot;bob&quot;</text>
+
+  <rect x="50" y="210" width="160" height="38" rx="6" fill="#ffffff" stroke="#1a1822"/>
+  <text x="130" y="233" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">&quot;charlie&quot;</text>
+
+  <rect x="50" y="260" width="160" height="38" rx="6" fill="#ffffff" stroke="#1a1822"/>
+  <text x="130" y="283" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">&quot;dana&quot;</text>
+
+  <rect x="50" y="310" width="160" height="38" rx="6" fill="#ffffff" stroke="#1a1822"/>
+  <text x="130" y="333" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">&quot;eve&quot;</text>
+
+  <rect x="50" y="360" width="160" height="38" rx="6" fill="#ffffff" stroke="#1a1822"/>
+  <text x="130" y="383" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">&quot;frank&quot;</text>
+
+  <!-- Hash function box -->
+  <rect x="270" y="190" width="160" height="110" rx="10" fill="#6d5bd0" stroke="#1a1822" stroke-width="2"/>
+  <text x="350" y="220" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Hash function</text>
+  <text x="350" y="242" text-anchor="middle" font-size="11" fill="#ffffff">SipHash-1-3 / xxHash</text>
+  <text x="350" y="265" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#ffffff">h(key) mod cap</text>
+  <text x="350" y="287" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.85">→ bucket index</text>
+
+  <!-- Bucket array -->
+  <text x="600" y="95" font-size="13" font-weight="700" fill="#1a1822">Bucket array (cap = 8)</text>
+
+  <!-- 8 buckets -->
+  <g>
+    <rect x="510" y="110" width="70" height="38" rx="4" fill="#ffffff" stroke="#1a1822"/>
+    <text x="490" y="135" text-anchor="end" font-size="11" font-weight="700" fill="#1a1822">[0]</text>
+    <text x="545" y="133" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">&quot;bob&quot;</text>
+
+    <rect x="510" y="150" width="70" height="38" rx="4" fill="#ffffff" stroke="#1a1822"/>
+    <text x="490" y="175" text-anchor="end" font-size="11" font-weight="700" fill="#1a1822">[1]</text>
+
+    <rect x="510" y="190" width="70" height="38" rx="4" fill="#ffffff" stroke="#1a1822"/>
+    <text x="490" y="215" text-anchor="end" font-size="11" font-weight="700" fill="#1a1822">[2]</text>
+    <text x="545" y="213" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">&quot;frank&quot;</text>
+
+    <rect x="510" y="230" width="70" height="38" rx="4" fill="#ffffff" stroke="#1a1822"/>
+    <text x="490" y="255" text-anchor="end" font-size="11" font-weight="700" fill="#1a1822">[3]</text>
+    <text x="545" y="253" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">&quot;alice&quot;</text>
+
+    <rect x="510" y="270" width="70" height="38" rx="4" fill="#ffffff" stroke="#1a1822"/>
+    <text x="490" y="295" text-anchor="end" font-size="11" font-weight="700" fill="#1a1822">[4]</text>
+
+    <rect x="510" y="310" width="70" height="38" rx="4" fill="#ffffff" stroke="#1a1822"/>
+    <text x="490" y="335" text-anchor="end" font-size="11" font-weight="700" fill="#1a1822">[5]</text>
+    <text x="545" y="333" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">&quot;charlie&quot;</text>
+
+    <rect x="510" y="350" width="70" height="38" rx="4" fill="#ffffff" stroke="#1a1822"/>
+    <text x="490" y="375" text-anchor="end" font-size="11" font-weight="700" fill="#1a1822">[6]</text>
+    <text x="545" y="373" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">&quot;dana&quot;</text>
+
+    <rect x="510" y="390" width="70" height="38" rx="4" fill="#ffffff" stroke="#1a1822"/>
+    <text x="490" y="415" text-anchor="end" font-size="11" font-weight="700" fill="#1a1822">[7]</text>
+    <text x="545" y="413" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">&quot;eve&quot;</text>
+  </g>
+
+  <!-- Arrows keys → hash fn → bucket -->
+  <line x1="210" y1="129" x2="268" y2="215" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="210" y1="179" x2="268" y2="225" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="210" y1="229" x2="268" y2="240" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="210" y1="279" x2="268" y2="255" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="210" y1="329" x2="268" y2="270" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="210" y1="379" x2="268" y2="285" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+
+  <line x1="430" y1="215" x2="508" y2="130" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="430" y1="225" x2="508" y2="170" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="430" y1="240" x2="508" y2="210" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="430" y1="255" x2="508" y2="250" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="430" y1="270" x2="508" y2="330" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+  <line x1="430" y1="285" x2="508" y2="370" stroke="#1a1822" stroke-width="1" marker-end="url(#arrHT1)"/>
+
+  <!-- Qualities sidebar -->
+  <rect x="650" y="110" width="220" height="330" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="650" y="110" width="220" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="760" y="129" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Hash function qualities</text>
+  <text x="665" y="158" font-size="11" font-weight="700" fill="#1a1822">1. Speed</text>
+  <text x="665" y="175" font-size="10" fill="#1a1822">O(k) in key size, tight constants</text>
+  <text x="665" y="195" font-size="11" font-weight="700" fill="#1a1822">2. Uniformity</text>
+  <text x="665" y="212" font-size="10" fill="#1a1822">Any two keys: P(collide) ≈ 1/cap</text>
+  <text x="665" y="232" font-size="11" font-weight="700" fill="#1a1822">3. Collision resistance</text>
+  <text x="665" y="249" font-size="10" fill="#1a1822">Adversary can&apos;t flood one bucket</text>
+  <text x="665" y="275" font-size="11" font-weight="700" fill="#1a1822">Common choices:</text>
+  <text x="665" y="293" font-size="10" fill="#1a1822">• SipHash: Python / Ruby / Node</text>
+  <text x="665" y="311" font-size="10" fill="#1a1822">• xxHash: Rust / Go (non-crypto)</text>
+  <text x="665" y="329" font-size="10" fill="#1a1822">• MurmurHash3: legacy Java</text>
+  <text x="665" y="347" font-size="10" fill="#1a1822">• FNV-1a: small binaries / embedded</text>
+  <text x="665" y="375" font-size="11" font-weight="700" fill="#cc4444">Adversarial resistance:</text>
+  <text x="665" y="393" font-size="10" fill="#1a1822">Per-process random seed +</text>
+  <text x="665" y="410" font-size="10" fill="#1a1822">cryptographic hash defeats</text>
+  <text x="665" y="427" font-size="10" fill="#1a1822">hash-flooding attacks.</text>
+</svg>

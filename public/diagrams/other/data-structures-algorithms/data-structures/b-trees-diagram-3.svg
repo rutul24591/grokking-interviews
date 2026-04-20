@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>B+ tree leaf-level linked list enabling efficient range scans across sorted leaves</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">B+ Tree: Linked Leaves for Range Scans</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Internal nodes store only routing keys; all data lives in leaves connected by a doubly-linked list</text>
+
+  <!-- Internal nodes -->
+  <rect x="380" y="85" width="140" height="34" fill="#cc4444" stroke="#1a1822"/>
+  <text x="425" y="106" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">40</text>
+  <text x="475" y="106" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">70</text>
+  <text x="395" y="106" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.7">routing only</text>
+
+  <line x1="380" y1="119" x2="180" y2="180" stroke="#1a1822"/>
+  <line x1="450" y1="119" x2="450" y2="180" stroke="#1a1822"/>
+  <line x1="520" y1="119" x2="720" y2="180" stroke="#1a1822"/>
+
+  <!-- Leaves with data -->
+  <g font-size="10">
+    <rect x="60" y="180" width="240" height="60" fill="#a89bec" stroke="#1a1822"/>
+    <text x="180" y="198" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Leaf 1 (keys + payloads)</text>
+    <text x="80" y="220" fill="#ffffff">10→V₁₀</text>
+    <text x="135" y="220" fill="#ffffff">20→V₂₀</text>
+    <text x="195" y="220" fill="#ffffff">30→V₃₀</text>
+    <text x="255" y="220" fill="#ffffff">35→V₃₅</text>
+
+    <rect x="330" y="180" width="240" height="60" fill="#a89bec" stroke="#1a1822"/>
+    <text x="450" y="198" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Leaf 2</text>
+    <text x="350" y="220" fill="#ffffff">42→V₄₂</text>
+    <text x="405" y="220" fill="#ffffff">55→V₅₅</text>
+    <text x="465" y="220" fill="#ffffff">62→V₆₂</text>
+    <text x="525" y="220" fill="#ffffff">68→V₆₈</text>
+
+    <rect x="600" y="180" width="240" height="60" fill="#a89bec" stroke="#1a1822"/>
+    <text x="720" y="198" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Leaf 3</text>
+    <text x="620" y="220" fill="#ffffff">75→V₇₅</text>
+    <text x="675" y="220" fill="#ffffff">82→V₈₂</text>
+    <text x="735" y="220" fill="#ffffff">90→V₉₀</text>
+    <text x="795" y="220" fill="#ffffff">99→V₉₉</text>
+  </g>
+
+  <!-- Leaf links -->
+  <line x1="300" y1="210" x2="330" y2="210" stroke="#4caf50" stroke-width="3"/>
+  <polygon points="328,205 338,210 328,215" fill="#4caf50"/>
+  <line x1="570" y1="210" x2="600" y2="210" stroke="#4caf50" stroke-width="3"/>
+  <polygon points="598,205 608,210 598,215" fill="#4caf50"/>
+
+  <text x="315" y="200" text-anchor="middle" font-size="9" fill="#4caf50">next</text>
+  <text x="585" y="200" text-anchor="middle" font-size="9" fill="#4caf50">next</text>
+
+  <text x="450" y="265" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="700">Range query SELECT * WHERE id BETWEEN 30 AND 80:</text>
+  <text x="450" y="282" text-anchor="middle" font-size="11" fill="#1a1822" opacity="0.7">Descend to Leaf 1 once → scan via leaf links → stop at 90 in Leaf 3 (no re-descent)</text>
+
+  <!-- Footer -->
+  <rect x="60" y="305" width="780" height="180" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="305" width="780" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="324" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">B-tree vs B+ tree</text>
+  <text x="75" y="354" font-size="11" fill="#1a1822"><tspan font-weight="700">B-tree:</tspan> data lives in every node (internal + leaf). Better for point lookup of a key whose value is short.</text>
+  <text x="75" y="372" font-size="11" fill="#1a1822"><tspan font-weight="700">B+ tree:</tspan> data only in leaves; internal nodes are pure routing. Higher fanout (no payloads in internals → more keys per page) and linked leaves make range scans cheap.</text>
+  <text x="75" y="392" font-size="11" fill="#1a1822"><tspan font-weight="700">Production reality:</tspan> nearly every database uses B+ trees, not classical B-trees: PostgreSQL, MySQL InnoDB, SQL Server, Oracle, SQLite, MongoDB&apos;s WiredTiger.</text>
+  <text x="75" y="418" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Clustered vs secondary indexes:</tspan> InnoDB stores rows in the primary-key B+ tree (clustered); secondary indexes store the PK as the leaf payload, requiring a second lookup unless covered.</text>
+  <text x="75" y="438" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Modern variants:</tspan> Bw-tree (Microsoft Hekaton — lock-free via delta records), fractal trees (TokuDB — buffered messages reduce write amplification), Mass tree (concurrent, cache-friendly).</text>
+  <text x="75" y="458" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Trade-off vs LSM:</tspan> B+ trees update in place (read-optimized); LSM trees append-only (write-optimized). Mixed workloads choose based on read/write ratio.</text>
+  <text x="75" y="476" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Key compression:</tspan> prefix compression within a page (PostgreSQL deduplication, InnoDB compressed pages) materially raises fanout.</text>
+</svg>

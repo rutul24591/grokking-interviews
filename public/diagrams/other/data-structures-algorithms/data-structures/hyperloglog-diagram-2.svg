@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>HyperLogLog bucketing harmonic mean estimator distributing hashes across registers and combining with reduced variance</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Bucketing &amp; Harmonic Mean: Variance Reduction</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Why splitting the stream across m buckets and using harmonic mean beats a single estimator</text>
+
+  <!-- Stream -->
+  <text x="100" y="90" font-size="13" font-weight="700" fill="#1a1822">Stream of hashes</text>
+  <g font-family="ui-monospace, monospace" font-size="10">
+    <rect x="60" y="105" width="180" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="70" y="121" fill="#1a1822">0010_1100_0000_0101_…</text>
+    <rect x="60" y="129" width="180" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="70" y="145" fill="#1a1822">1011_0001_1111_0000_…</text>
+    <rect x="60" y="153" width="180" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="70" y="169" fill="#1a1822">0010_1101_0000_0001_…</text>
+    <rect x="60" y="177" width="180" height="22" fill="#ffffff" stroke="#1a1822"/>
+    <text x="70" y="193" fill="#1a1822">0111_0010_0011_1010_…</text>
+  </g>
+
+  <!-- Routing arrows -->
+  <line x1="245" y1="116" x2="320" y2="170" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="245" y1="140" x2="320" y2="240" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="245" y1="164" x2="320" y2="170" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="245" y1="188" x2="320" y2="310" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <!-- Buckets -->
+  <text x="430" y="100" font-size="13" font-weight="700" fill="#1a1822">m buckets — first p hash bits select the bucket</text>
+  <g>
+    <rect x="320" y="155" width="380" height="35" rx="6" fill="#a89bec" stroke="#1a1822"/>
+    <text x="335" y="178" font-size="11" font-weight="700" fill="#ffffff">bucket 0010</text>
+    <text x="500" y="178" font-size="10" fill="#ffffff">M = 6 (max leading zeros from items routed here)</text>
+
+    <rect x="320" y="225" width="380" height="35" rx="6" fill="#a89bec" stroke="#1a1822"/>
+    <text x="335" y="248" font-size="11" font-weight="700" fill="#ffffff">bucket 1011</text>
+    <text x="500" y="248" font-size="10" fill="#ffffff">M = 4</text>
+
+    <rect x="320" y="295" width="380" height="35" rx="6" fill="#a89bec" stroke="#1a1822"/>
+    <text x="335" y="318" font-size="11" font-weight="700" fill="#ffffff">bucket 0111</text>
+    <text x="500" y="318" font-size="10" fill="#ffffff">M = 3</text>
+  </g>
+
+  <text x="780" y="178" text-anchor="middle" font-size="11" fill="#1a1822" font-family="ui-monospace, monospace">2⁻⁶</text>
+  <text x="780" y="248" text-anchor="middle" font-size="11" fill="#1a1822" font-family="ui-monospace, monospace">2⁻⁴</text>
+  <text x="780" y="318" text-anchor="middle" font-size="11" fill="#1a1822" font-family="ui-monospace, monospace">2⁻³</text>
+
+  <!-- Estimator -->
+  <rect x="60" y="365" width="780" height="120" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="365" width="780" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="384" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Combine with harmonic mean</text>
+  <text x="75" y="412" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">n̂ = α_m · m² / Σᵢ 2⁻ᴹ⁽ⁱ⁾</text>
+  <text x="75" y="432" font-size="11" fill="#1a1822">α_m is a bias correction constant (≈ 0.7213/(1 + 1.079/m) for m ≥ 128)</text>
+  <text x="75" y="452" font-size="11" fill="#1a1822"><tspan font-weight="700">Why harmonic mean?</tspan> Suppresses the dominating effect of a single large M(i); reduces variance vs arithmetic mean</text>
+  <text x="75" y="470" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Small-cardinality correction:</tspan> when many registers are still 0, switch to linear counting (LogLog → HyperLogLog++)</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Singly linked list insertion and deletion operations showing pointer rewiring steps</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Insertion &amp; Deletion: Pointer Rewiring</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Both operations are O(1) given a predecessor reference, but finding the predecessor is O(n)</text>
+
+  <defs>
+    <marker id="arrLL2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+    <marker id="arrLL2red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#cc4444"/>
+    </marker>
+    <marker id="arrLL2green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4caf50"/>
+    </marker>
+  </defs>
+
+  <!-- INSERTION -->
+  <text x="60" y="95" font-size="14" font-weight="700" fill="#6d5bd0">Insertion after node P</text>
+
+  <!-- Before state -->
+  <text x="60" y="120" font-size="11" fill="#1a1822" opacity="0.7">Before:</text>
+  <rect x="120" y="110" width="60" height="36" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="150" y="134" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">P</text>
+  <rect x="250" y="110" width="60" height="36" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="280" y="134" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">S</text>
+  <line x1="180" y1="128" x2="248" y2="128" stroke="#1a1822" stroke-width="2" marker-end="url(#arrLL2)"/>
+
+  <!-- After state -->
+  <text x="350" y="120" font-size="11" fill="#1a1822" opacity="0.7">After:</text>
+  <rect x="395" y="110" width="60" height="36" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="425" y="134" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">P</text>
+  <rect x="525" y="110" width="60" height="36" rx="4" fill="#c8e6c9" stroke="#4caf50" stroke-width="2"/>
+  <text x="555" y="134" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">N</text>
+  <rect x="655" y="110" width="60" height="36" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="685" y="134" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">S</text>
+  <line x1="455" y1="128" x2="523" y2="128" stroke="#4caf50" stroke-width="2" marker-end="url(#arrLL2green)"/>
+  <line x1="585" y1="128" x2="653" y2="128" stroke="#4caf50" stroke-width="2" marker-end="url(#arrLL2green)"/>
+  <text x="725" y="133" font-size="11" font-weight="600" fill="#4caf50">(new)</text>
+
+  <!-- Steps -->
+  <rect x="60" y="165" width="800" height="90" rx="8" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+  <text x="75" y="185" font-size="12" font-weight="700" fill="#1a1822">Steps (O(1)):</text>
+  <text x="75" y="205" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">1. N = new Node(value)</text>
+  <text x="75" y="223" font-size="11" font-family="ui-monospace, monospace" fill="#4caf50">2. N.next = P.next</text>
+  <text x="75" y="241" font-size="11" font-family="ui-monospace, monospace" fill="#4caf50">3. P.next = N          </text>
+  <text x="310" y="241" font-size="11" fill="#1a1822" opacity="0.7">← order matters: set N.next first to avoid losing S</text>
+
+  <!-- DELETION -->
+  <text x="60" y="300" font-size="14" font-weight="700" fill="#6d5bd0">Deletion of node S after known predecessor P</text>
+
+  <!-- Before state -->
+  <text x="60" y="330" font-size="11" fill="#1a1822" opacity="0.7">Before:</text>
+  <rect x="120" y="320" width="60" height="36" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="150" y="344" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">P</text>
+  <rect x="250" y="320" width="60" height="36" rx="4" fill="#ffebee" stroke="#cc4444" stroke-width="2"/>
+  <text x="280" y="344" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">S</text>
+  <rect x="380" y="320" width="60" height="36" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="410" y="344" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">T</text>
+  <line x1="180" y1="338" x2="248" y2="338" stroke="#1a1822" stroke-width="2" marker-end="url(#arrLL2)"/>
+  <line x1="310" y1="338" x2="378" y2="338" stroke="#1a1822" stroke-width="2" marker-end="url(#arrLL2)"/>
+
+  <!-- After state -->
+  <text x="490" y="330" font-size="11" fill="#1a1822" opacity="0.7">After:</text>
+  <rect x="535" y="320" width="60" height="36" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="565" y="344" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">P</text>
+  <rect x="665" y="320" width="60" height="36" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="695" y="344" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">T</text>
+  <line x1="595" y1="338" x2="663" y2="338" stroke="#4caf50" stroke-width="2" marker-end="url(#arrLL2green)"/>
+  <text x="735" y="344" font-size="11" fill="#cc4444" font-style="italic">S freed</text>
+
+  <!-- Steps -->
+  <rect x="60" y="375" width="800" height="95" rx="8" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+  <text x="75" y="395" font-size="12" font-weight="700" fill="#1a1822">Steps (O(1)):</text>
+  <text x="75" y="415" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">1. removed = P.next</text>
+  <text x="75" y="433" font-size="11" font-family="ui-monospace, monospace" fill="#4caf50">2. P.next = P.next.next</text>
+  <text x="75" y="451" font-size="11" font-family="ui-monospace, monospace" fill="#cc4444">3. removed.next = null (hygiene)</text>
+  <text x="350" y="451" font-size="11" fill="#1a1822" opacity="0.7">then free(removed)</text>
+  <text x="600" y="433" font-size="11" fill="#1a1822" opacity="0.7">Given only a pointer to S, finding P</text>
+  <text x="600" y="451" font-size="11" fill="#cc4444">would require an O(n) scan from head.</text>
+</svg>

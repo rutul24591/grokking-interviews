@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Path compression flattening a long chain to direct root pointers during a single find call</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Path Compression: Flatten on Every find()</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">After find(E), every node on the walked path points directly to the root</text>
+
+  <defs>
+    <marker id="arrUF3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- BEFORE -->
+  <text x="225" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">Before find(E) — long chain</text>
+
+  <line x1="225" y1="195" x2="225" y2="135" stroke="#1a1822" marker-end="url(#arrUF3)"/>
+  <line x1="225" y1="265" x2="225" y2="215" stroke="#1a1822" marker-end="url(#arrUF3)"/>
+  <line x1="225" y1="335" x2="225" y2="285" stroke="#1a1822" marker-end="url(#arrUF3)"/>
+  <line x1="225" y1="405" x2="225" y2="355" stroke="#1a1822" marker-end="url(#arrUF3)"/>
+
+  <circle cx="225" cy="115" r="22" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="225" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">A</text>
+  <text x="265" y="115" font-size="10" fill="#1a1822" opacity="0.6">root</text>
+
+  <circle cx="225" cy="205" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="225" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">B</text>
+
+  <circle cx="225" cy="275" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="225" y="280" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C</text>
+
+  <circle cx="225" cy="345" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="225" y="350" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">D</text>
+
+  <circle cx="225" cy="415" r="20" fill="#a89bec" stroke="#1a1822" stroke-width="2"/>
+  <text x="225" y="420" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">E</text>
+  <text x="265" y="418" font-size="10" fill="#cc4444">find here</text>
+
+  <text x="225" y="455" text-anchor="middle" font-size="11" fill="#1a1822">find(E): 4 hops to reach root A</text>
+
+  <!-- Arrow -->
+  <line x1="370" y1="265" x2="490" y2="265" stroke="#1a1822" stroke-width="2.5" marker-end="url(#arrUF3)"/>
+  <text x="430" y="255" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">find(E) + compress</text>
+
+  <!-- AFTER -->
+  <text x="700" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">After find(E) — chain flattened</text>
+
+  <line x1="600" y1="220" x2="685" y2="135" stroke="#1a1822" marker-end="url(#arrUF3)"/>
+  <line x1="660" y1="320" x2="690" y2="140" stroke="#1a1822" marker-end="url(#arrUF3)"/>
+  <line x1="740" y1="320" x2="710" y2="140" stroke="#1a1822" marker-end="url(#arrUF3)"/>
+  <line x1="800" y1="220" x2="715" y2="135" stroke="#1a1822" marker-end="url(#arrUF3)"/>
+
+  <circle cx="700" cy="115" r="22" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="700" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">A</text>
+  <text x="740" y="115" font-size="10" fill="#1a1822" opacity="0.6">root</text>
+
+  <circle cx="595" cy="230" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="595" y="235" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">B</text>
+  <circle cx="660" cy="330" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="660" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C</text>
+  <circle cx="740" cy="330" r="20" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="740" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">D</text>
+  <circle cx="805" cy="230" r="20" fill="#a89bec" stroke="#1a1822" stroke-width="2"/>
+  <text x="805" y="235" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">E</text>
+
+  <text x="700" y="395" text-anchor="middle" font-size="11" fill="#1a1822">All five nodes now point directly to A</text>
+  <text x="700" y="413" text-anchor="middle" font-size="11" fill="#4caf50">Future find(B/C/D/E) is a single hop</text>
+
+  <!-- footer -->
+  <rect x="60" y="465" width="800" height="25" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="482" text-anchor="middle" font-size="11" fill="#1a1822">Path compression + union by rank → amortized O(α(n)) per op (Tarjan 1975) — effectively constant time</text>
+</svg>

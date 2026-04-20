@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Array-backed versus linked-list-backed stack comparison showing storage layout and push pop implementations</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Array-Backed vs Linked-List-Backed Stack</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Same LIFO contract, different memory and concurrency profiles</text>
+
+  <defs>
+    <marker id="arrST2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Array-backed -->
+  <rect x="30" y="80" width="410" height="380" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="30" y="80" width="410" height="32" rx="10" fill="#4caf50"/>
+  <text x="235" y="101" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Array-backed (Vec / ArrayDeque)</text>
+
+  <text x="50" y="135" font-size="12" font-weight="700" fill="#1a1822">Contiguous buffer + top index</text>
+
+  <g font-family="ui-monospace, monospace">
+    <rect x="50" y="150" width="44" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="72" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">A</text>
+    <rect x="94" y="150" width="44" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="116" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">B</text>
+    <rect x="138" y="150" width="44" height="40" fill="#a89bec" stroke="#1a1822"/>
+    <text x="160" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">C</text>
+    <rect x="182" y="150" width="44" height="40" fill="#4caf50" stroke="#1a1822"/>
+    <text x="204" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">D</text>
+    <rect x="226" y="150" width="44" height="40" fill="#ffffff" stroke="#1a1822" stroke-dasharray="3,2"/>
+    <rect x="270" y="150" width="44" height="40" fill="#ffffff" stroke="#1a1822" stroke-dasharray="3,2"/>
+    <rect x="314" y="150" width="44" height="40" fill="#ffffff" stroke="#1a1822" stroke-dasharray="3,2"/>
+    <rect x="358" y="150" width="44" height="40" fill="#ffffff" stroke="#1a1822" stroke-dasharray="3,2"/>
+  </g>
+  <line x1="248" y1="200" x2="248" y2="225" stroke="#cc4444" stroke-width="2" marker-end="url(#arrST2)"/>
+  <text x="248" y="240" text-anchor="middle" font-size="11" font-weight="700" fill="#cc4444">top (4)</text>
+  <text x="50" y="275" font-size="10" fill="#1a1822" opacity="0.7">len = 4, capacity = 8 — next push writes at index 4</text>
+
+  <text x="50" y="310" font-size="11" font-weight="700" fill="#1a1822">Push: buf[top++] = x; resize × 2 when full</text>
+  <text x="50" y="328" font-size="11" font-weight="700" fill="#1a1822">Pop:  return buf[--top]</text>
+
+  <rect x="50" y="350" width="370" height="100" rx="6" fill="#e8f5e9" stroke="#4caf50"/>
+  <text x="65" y="370" font-size="11" font-weight="700" fill="#1a1822">Pros</text>
+  <text x="65" y="388" font-size="11" fill="#1a1822">• Cache-friendly: adjacent elements, hot in L1</text>
+  <text x="65" y="406" font-size="11" fill="#1a1822">• Compact: no per-node pointer or header</text>
+  <text x="65" y="424" font-size="11" fill="#1a1822">• Trivial serialization and iteration</text>
+  <text x="65" y="442" font-size="11" fill="#cc4444">Con: amortized O(1) — occasional O(n) resize</text>
+
+  <!-- Linked -->
+  <rect x="460" y="80" width="410" height="380" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="80" width="410" height="32" rx="10" fill="#6d5bd0"/>
+  <text x="665" y="101" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Linked-node (Treiber stack)</text>
+
+  <text x="480" y="135" font-size="12" font-weight="700" fill="#1a1822">Head pointer; each node is a heap allocation</text>
+
+  <!-- head -->
+  <rect x="480" y="155" width="50" height="40" rx="4" fill="#cc4444" stroke="#1a1822"/>
+  <text x="505" y="180" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">top</text>
+
+  <rect x="555" y="155" width="50" height="40" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="580" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">D</text>
+
+  <rect x="630" y="155" width="50" height="40" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="655" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">C</text>
+
+  <rect x="705" y="155" width="50" height="40" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="730" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">B</text>
+
+  <rect x="780" y="155" width="50" height="40" rx="4" fill="#ffffff" stroke="#1a1822"/>
+  <text x="805" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">A</text>
+
+  <line x1="530" y1="175" x2="553" y2="175" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrST2)"/>
+  <line x1="605" y1="175" x2="628" y2="175" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrST2)"/>
+  <line x1="680" y1="175" x2="703" y2="175" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrST2)"/>
+  <line x1="755" y1="175" x2="778" y2="175" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrST2)"/>
+  <text x="845" y="180" font-size="13" fill="#cc4444" font-weight="700">∅</text>
+
+  <text x="480" y="230" font-size="10" fill="#1a1822" opacity="0.7">Each node: value + next + allocator header ≈ 32 B</text>
+
+  <text x="480" y="260" font-size="11" font-weight="700" fill="#1a1822">Push: CAS(top, oldTop, newNode) — lock-free</text>
+  <text x="480" y="278" font-size="11" font-weight="700" fill="#1a1822">Pop:  CAS(top, oldTop, oldTop.next)</text>
+
+  <rect x="480" y="305" width="370" height="145" rx="6" fill="#e8dffa" stroke="#6d5bd0"/>
+  <text x="495" y="325" font-size="11" font-weight="700" fill="#1a1822">Pros</text>
+  <text x="495" y="343" font-size="11" fill="#1a1822">• True O(1) worst-case push (no resize)</text>
+  <text x="495" y="361" font-size="11" fill="#1a1822">• Natural lock-free design (Treiber)</text>
+  <text x="495" y="379" font-size="11" fill="#1a1822">• Fits intrusive (free-list) allocators</text>
+  <text x="495" y="402" font-size="11" font-weight="700" fill="#cc4444">Cons</text>
+  <text x="495" y="420" font-size="11" fill="#1a1822">• Pointer chase → L1 miss per pop</text>
+  <text x="495" y="438" font-size="11" fill="#1a1822">• ABA hazard under contention</text>
+</svg>

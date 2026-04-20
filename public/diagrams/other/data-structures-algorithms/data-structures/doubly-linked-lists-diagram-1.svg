@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Doubly linked list node topology with prev and next pointers and sentinel head and tail</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Doubly Linked List: Node Topology</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each node carries prev and next — sentinels remove null-endpoint special cases</text>
+
+  <defs>
+    <marker id="arrDLL1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Head sentinel -->
+  <rect x="40" y="140" width="100" height="80" rx="6" fill="#cc4444" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="90" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">HEAD</text>
+  <text x="90" y="183" text-anchor="middle" font-size="10" fill="#ffffff">(sentinel)</text>
+  <text x="60" y="205" font-size="10" font-family="ui-monospace, monospace" fill="#ffffff">prev=∅</text>
+
+  <!-- Node A -->
+  <g>
+    <rect x="180" y="140" width="140" height="80" rx="6" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <rect x="180" y="140" width="140" height="26" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="250" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Node A</text>
+    <text x="195" y="182" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">prev</text>
+    <circle cx="205" cy="193" r="3.5" fill="#1a1822"/>
+    <text x="280" y="182" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">next</text>
+    <circle cx="307" cy="193" r="3.5" fill="#1a1822"/>
+    <text x="250" y="213" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">val: 42</text>
+  </g>
+
+  <!-- Node B -->
+  <g>
+    <rect x="360" y="140" width="140" height="80" rx="6" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <rect x="360" y="140" width="140" height="26" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="430" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Node B</text>
+    <text x="375" y="182" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">prev</text>
+    <circle cx="385" cy="193" r="3.5" fill="#1a1822"/>
+    <text x="460" y="182" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">next</text>
+    <circle cx="487" cy="193" r="3.5" fill="#1a1822"/>
+    <text x="430" y="213" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">val: 17</text>
+  </g>
+
+  <!-- Node C -->
+  <g>
+    <rect x="540" y="140" width="140" height="80" rx="6" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <rect x="540" y="140" width="140" height="26" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="610" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Node C</text>
+    <text x="555" y="182" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">prev</text>
+    <circle cx="565" cy="193" r="3.5" fill="#1a1822"/>
+    <text x="640" y="182" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">next</text>
+    <circle cx="667" cy="193" r="3.5" fill="#1a1822"/>
+    <text x="610" y="213" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">val: 93</text>
+  </g>
+
+  <!-- Tail sentinel -->
+  <rect x="720" y="140" width="100" height="80" rx="6" fill="#cc4444" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="770" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">TAIL</text>
+  <text x="770" y="183" text-anchor="middle" font-size="10" fill="#ffffff">(sentinel)</text>
+  <text x="740" y="205" font-size="10" font-family="ui-monospace, monospace" fill="#ffffff">next=∅</text>
+
+  <!-- Forward arrows (curved above) -->
+  <path d="M 140 175 Q 160 130 180 160" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrDLL1)"/>
+  <path d="M 320 160 Q 340 125 360 160" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrDLL1)"/>
+  <path d="M 500 160 Q 520 125 540 160" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrDLL1)"/>
+  <path d="M 680 160 Q 700 130 720 175" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrDLL1)"/>
+
+  <!-- Back arrows (curved below) -->
+  <path d="M 180 205 Q 160 240 140 205" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrDLL1)"/>
+  <path d="M 360 205 Q 340 240 320 205" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrDLL1)"/>
+  <path d="M 540 205 Q 520 240 500 205" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrDLL1)"/>
+  <path d="M 720 205 Q 700 240 680 205" stroke="#cc4444" stroke-width="1.5" fill="none" marker-end="url(#arrDLL1)"/>
+
+  <!-- Legend -->
+  <line x1="60" y1="280" x2="90" y2="280" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrDLL1)"/>
+  <text x="100" y="285" font-size="11" fill="#1a1822">forward (next)</text>
+  <line x1="240" y1="280" x2="270" y2="280" stroke="#cc4444" stroke-width="1.5" marker-end="url(#arrDLL1)"/>
+  <text x="280" y="285" font-size="11" fill="#1a1822">backward (prev)</text>
+
+  <!-- Feature blocks -->
+  <rect x="40" y="310" width="400" height="170" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="40" y="310" width="400" height="28" rx="10" fill="#4caf50"/>
+  <text x="240" y="329" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Why sentinels</text>
+  <text x="55" y="355" font-size="11" fill="#1a1822">• Every real node has non-null prev and next</text>
+  <text x="55" y="373" font-size="11" fill="#1a1822">• Insert/delete is always a 4-pointer update</text>
+  <text x="55" y="391" font-size="11" fill="#1a1822">• No branching on head/tail boundary</text>
+  <text x="55" y="409" font-size="11" fill="#1a1822">• Empty list = HEAD.next == TAIL</text>
+  <text x="55" y="435" font-size="11" font-weight="700" fill="#1a1822">Used in:</text>
+  <text x="55" y="453" font-size="11" fill="#1a1822">Linux list_head (circular), Java</text>
+  <text x="55" y="471" font-size="11" fill="#1a1822">LinkedHashMap, Caffeine cache</text>
+
+  <rect x="460" y="310" width="400" height="170" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="460" y="310" width="400" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="660" y="329" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Per-node cost</text>
+  <text x="475" y="355" font-size="11" fill="#1a1822">• value (payload, varies)</text>
+  <text x="475" y="373" font-size="11" fill="#1a1822">• prev: 8 B pointer</text>
+  <text x="475" y="391" font-size="11" fill="#1a1822">• next: 8 B pointer</text>
+  <text x="475" y="409" font-size="11" fill="#1a1822">• allocator header: 16–24 B</text>
+  <text x="475" y="435" font-size="11" font-weight="700" fill="#1a1822">Example — 4B int payload:</text>
+  <text x="475" y="453" font-size="11" fill="#cc4444">36 B per node vs 4 B for array</text>
+  <text x="475" y="471" font-size="11" fill="#1a1822" opacity="0.7">9× memory — rarely worth it</text>
+</svg>

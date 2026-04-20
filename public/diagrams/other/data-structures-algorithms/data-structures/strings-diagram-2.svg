@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Rope data structure showing tree of string fragments with lazy concatenation and substring views</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Rope: Tree-Structured Immutable Strings</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Concatenation builds internal nodes, substring creates views, flatten materializes content on demand</text>
+
+  <!-- Rope tree for "Hello, world. How are you?" -->
+  <!-- Root -->
+  <rect x="400" y="85" width="100" height="48" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="450" y="103" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Concat</text>
+  <text x="450" y="120" text-anchor="middle" font-size="10" fill="#ffffff">len = 26</text>
+
+  <!-- Level 2 internal nodes -->
+  <rect x="220" y="175" width="100" height="48" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="270" y="193" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Concat</text>
+  <text x="270" y="210" text-anchor="middle" font-size="10" fill="#ffffff">len = 13</text>
+
+  <rect x="580" y="175" width="100" height="48" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="630" y="193" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Concat</text>
+  <text x="630" y="210" text-anchor="middle" font-size="10" fill="#ffffff">len = 13</text>
+
+  <!-- Edges from root -->
+  <line x1="440" y1="133" x2="290" y2="175" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="460" y1="133" x2="610" y2="175" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Leaves -->
+  <rect x="80" y="270" width="140" height="50" rx="8" fill="#4caf50" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="150" y="289" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Leaf</text>
+  <text x="150" y="305" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill="#ffffff">&quot;Hello, &quot;</text>
+
+  <rect x="245" y="270" width="140" height="50" rx="8" fill="#4caf50" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="315" y="289" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Leaf</text>
+  <text x="315" y="305" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill="#ffffff">&quot;world. &quot;</text>
+
+  <rect x="410" y="270" width="140" height="50" rx="8" fill="#4caf50" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="480" y="289" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Leaf</text>
+  <text x="480" y="305" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill="#ffffff">&quot;How &quot;</text>
+
+  <rect x="575" y="270" width="140" height="50" rx="8" fill="#4caf50" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="645" y="289" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Leaf</text>
+  <text x="645" y="305" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill="#ffffff">&quot;are &quot;</text>
+
+  <rect x="740" y="270" width="140" height="50" rx="8" fill="#4caf50" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="810" y="289" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Leaf</text>
+  <text x="810" y="305" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill="#ffffff">&quot;you?&quot;</text>
+
+  <!-- Edges from level 2 -->
+  <line x1="250" y1="223" x2="150" y2="270" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="290" y1="223" x2="315" y2="270" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="610" y1="223" x2="480" y2="270" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="630" y1="223" x2="645" y2="270" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="650" y1="223" x2="810" y2="270" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Operation side-panels -->
+  <rect x="40" y="350" width="255" height="130" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="350" width="255" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="167" y="369" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Concat: O(log n)</text>
+  <text x="55" y="395" font-size="10" fill="#1a1822">• New root wraps the two ropes</text>
+  <text x="55" y="412" font-size="10" fill="#1a1822">• No byte copy; structural share</text>
+  <text x="55" y="429" font-size="10" fill="#1a1822">• Balancer keeps tree depth bounded</text>
+  <text x="55" y="455" font-size="10" font-style="italic" fill="#1a1822" opacity="0.7">Text editors avoid O(n) buffer rewrites</text>
+
+  <rect x="322" y="350" width="255" height="130" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="322" y="350" width="255" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="449" y="369" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Substring: O(log n)</text>
+  <text x="337" y="395" font-size="10" fill="#1a1822">• Descend to boundary leaves</text>
+  <text x="337" y="412" font-size="10" fill="#1a1822">• Trim left and right ends only</text>
+  <text x="337" y="429" font-size="10" fill="#1a1822">• Interior subtrees reused as-is</text>
+  <text x="337" y="455" font-size="10" font-style="italic" fill="#1a1822" opacity="0.7">View, not copy — shares parent</text>
+
+  <rect x="604" y="350" width="255" height="130" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="604" y="350" width="255" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="731" y="369" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Index[i]: O(log n)</text>
+  <text x="619" y="395" font-size="10" fill="#1a1822">• Compare i vs left subtree length</text>
+  <text x="619" y="412" font-size="10" fill="#1a1822">• Recurse left or right with offset</text>
+  <text x="619" y="429" font-size="10" fill="#1a1822">• Stop when leaf covers index</text>
+  <text x="619" y="455" font-size="10" font-style="italic" fill="#1a1822" opacity="0.7">Flat array gives O(1); rope pays log n</text>
+
+  <!-- Arrow indicating rope usage -->
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">Logical content: &quot;Hello, world. How are you?&quot;</text>
+</svg>

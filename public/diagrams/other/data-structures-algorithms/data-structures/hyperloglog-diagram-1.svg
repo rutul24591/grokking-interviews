@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>HyperLogLog register array storing maximum leading zero count per bucket from hashed elements</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">HyperLogLog: Registers of Max Leading Zeros</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Hash the element, route by leading bits, store the max leading-zero count per bucket</text>
+
+  <!-- Element -->
+  <rect x="50" y="100" width="120" height="40" rx="8" fill="#cc4444" stroke="#1a1822"/>
+  <text x="110" y="125" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">"user42"</text>
+
+  <!-- Hash -->
+  <rect x="200" y="100" width="100" height="40" rx="8" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="250" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">hash 64-bit</text>
+  <line x1="170" y1="120" x2="200" y2="120" stroke="#1a1822" stroke-width="2"/>
+
+  <!-- Hash bits -->
+  <text x="450" y="100" font-size="11" font-weight="700" fill="#1a1822">Resulting 64-bit hash</text>
+  <g font-family="ui-monospace, monospace" font-size="11">
+    <rect x="320" y="110" width="80" height="30" fill="#a89bec" stroke="#1a1822"/>
+    <text x="360" y="130" text-anchor="middle" fill="#ffffff">0010 1100</text>
+    <text x="360" y="155" text-anchor="middle" font-size="9" fill="#1a1822">first 8 bits</text>
+    <text x="360" y="170" text-anchor="middle" font-size="9" fill="#cc4444">→ register #44</text>
+
+    <rect x="400" y="110" width="380" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="500" y="130" font-size="11" fill="#1a1822">000001 0110 1010 ...</text>
+    <text x="500" y="155" font-size="9" fill="#1a1822">remaining 56 bits</text>
+    <text x="500" y="170" font-size="9" fill="#cc4444">leading zeros = 5 → store 6 (5+1)</text>
+  </g>
+
+  <!-- Register array -->
+  <text x="450" y="220" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Register array (m = 2⁸ = 256 buckets, 6 bits each = 192 bytes total)</text>
+
+  <g font-family="ui-monospace, monospace" font-size="10">
+    <text x="80" y="265" font-size="10" fill="#1a1822" opacity="0.6">i:</text>
+    <text x="115" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">0</text>
+    <text x="160" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">1</text>
+    <text x="205" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">2</text>
+    <text x="250" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">3</text>
+    <text x="295" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">…</text>
+    <text x="395" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">44</text>
+    <text x="440" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">…</text>
+    <text x="540" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">128</text>
+    <text x="585" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">…</text>
+    <text x="700" y="265" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">255</text>
+
+    <text x="50" y="295" font-size="10" fill="#1a1822">M[i]:</text>
+    <rect x="100" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="115" y="296" text-anchor="middle" fill="#1a1822">3</text>
+    <rect x="145" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="160" y="296" text-anchor="middle" fill="#1a1822">5</text>
+    <rect x="190" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="205" y="296" text-anchor="middle" fill="#1a1822">2</text>
+    <rect x="235" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="250" y="296" text-anchor="middle" fill="#1a1822">7</text>
+    <rect x="280" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="295" y="296" text-anchor="middle" fill="#1a1822">…</text>
+    <rect x="380" y="280" width="30" height="22" fill="#cc4444" stroke="#1a1822"/><text x="395" y="296" text-anchor="middle" fill="#ffffff">6</text>
+    <rect x="425" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="440" y="296" text-anchor="middle" fill="#1a1822">…</text>
+    <rect x="525" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="540" y="296" text-anchor="middle" fill="#1a1822">11</text>
+    <rect x="570" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="585" y="296" text-anchor="middle" fill="#1a1822">…</text>
+    <rect x="685" y="280" width="30" height="22" fill="#ffffff" stroke="#1a1822"/><text x="700" y="296" text-anchor="middle" fill="#1a1822">4</text>
+  </g>
+
+  <text x="450" y="335" text-anchor="middle" font-size="11" fill="#1a1822">Update: M[register] = max(M[register], leadingZeros + 1)</text>
+
+  <!-- Intuition -->
+  <rect x="60" y="355" width="780" height="130" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="355" width="780" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="374" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Intuition: leading zeros are distinct-count signals</text>
+  <text x="75" y="402" font-size="11" fill="#1a1822">A uniform random hash has probability 2⁻ᵏ of starting with k zeros. Seeing k leading zeros suggests we&apos;ve drawn ~2ᵏ samples.</text>
+  <text x="75" y="421" font-size="11" fill="#1a1822">Bucket by the first p bits (m = 2ᵖ buckets), apply this estimator independently per bucket, then combine via harmonic mean.</text>
+  <text x="75" y="440" font-size="11" fill="#1a1822" opacity="0.85"><tspan font-weight="700">Estimate:</tspan> n̂ ≈ α_m · m² / Σ 2⁻ᴹ⁽ⁱ⁾ — the harmonic mean reduces variance vs arithmetic mean</text>
+  <text x="75" y="458" font-size="11" fill="#1a1822" opacity="0.85"><tspan font-weight="700">Standard error:</tspan> ≈ 1.04 / √m → 256 buckets give ~6.5%, 16K give ~0.81%</text>
+  <text x="75" y="476" font-size="11" fill="#1a1822" opacity="0.85"><tspan font-weight="700">Memory:</tspan> 6 bits per register, scales as O(log log n) — Redis HyperLogLog uses 12KB to count up to 2⁶⁴ uniques at ~0.81% error</text>
+</svg>

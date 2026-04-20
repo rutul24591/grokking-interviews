@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>B-tree node split during insertion when a node exceeds maximum capacity, promoting the median key upward</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Node Split on Insert: Median Promotion</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">A full leaf splits into two; median key promotes to parent; tree height grows only when root splits</text>
+
+  <!-- Before -->
+  <text x="225" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Before insert(35) — leaf is full</text>
+  <rect x="180" y="105" width="90" height="30" fill="#cc4444" stroke="#1a1822"/>
+  <text x="225" y="124" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">50</text>
+  <line x1="180" y1="135" x2="100" y2="180" stroke="#1a1822"/>
+  <line x1="270" y1="135" x2="350" y2="180" stroke="#1a1822"/>
+
+  <rect x="60" y="180" width="160" height="34" fill="#a89bec" stroke="#1a1822"/>
+  <text x="80" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">10</text>
+  <text x="115" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">20</text>
+  <text x="150" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">30</text>
+  <text x="185" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">40</text>
+  <text x="220" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">↑full</text>
+
+  <rect x="280" y="180" width="140" height="34" fill="#a89bec" stroke="#1a1822"/>
+  <text x="305" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">60</text>
+  <text x="345" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">75</text>
+  <text x="395" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">90</text>
+
+  <!-- Arrow -->
+  <line x1="450" y1="160" x2="510" y2="160" stroke="#6d5bd0" stroke-width="3"/>
+  <polygon points="510,155 520,160 510,165" fill="#6d5bd0"/>
+  <text x="485" y="180" text-anchor="middle" font-size="10" fill="#6d5bd0">split</text>
+
+  <!-- After -->
+  <text x="700" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">After: median 30 promotes to parent</text>
+  <rect x="630" y="105" width="140" height="30" fill="#cc4444" stroke="#1a1822"/>
+  <text x="660" y="124" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">30</text>
+  <text x="700" y="124" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">50</text>
+  <line x1="630" y1="135" x2="570" y2="180" stroke="#1a1822"/>
+  <line x1="700" y1="135" x2="700" y2="180" stroke="#1a1822"/>
+  <line x1="770" y1="135" x2="830" y2="180" stroke="#1a1822"/>
+
+  <rect x="510" y="180" width="120" height="34" fill="#a89bec" stroke="#1a1822"/>
+  <text x="535" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">10</text>
+  <text x="565" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">20</text>
+
+  <rect x="640" y="180" width="120" height="34" fill="#4caf50" stroke="#1a1822"/>
+  <text x="665" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">35</text>
+  <text x="695" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">40</text>
+
+  <rect x="770" y="180" width="120" height="34" fill="#a89bec" stroke="#1a1822"/>
+  <text x="795" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">60</text>
+  <text x="825" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">75</text>
+  <text x="865" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">90</text>
+
+  <text x="700" y="232" text-anchor="middle" font-size="10" fill="#4caf50">35 lands in new right leaf, median 30 became separator</text>
+
+  <!-- Footer -->
+  <rect x="60" y="270" width="780" height="215" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="270" width="780" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="289" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Insert algorithm</text>
+  <text x="75" y="318" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">1. Walk root → leaf following keys; place new key in leaf in sorted order</text>
+  <text x="75" y="336" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">2. If leaf now has &gt; m−1 keys, split at the median into two leaves</text>
+  <text x="75" y="354" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">3. Promote the median key to the parent (with right-leaf pointer)</text>
+  <text x="75" y="372" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">4. If parent overflows, recurse step 2–3 upward</text>
+  <text x="75" y="390" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">5. If the root splits, create a new root with the promoted median — only way the tree grows in height</text>
+  <text x="75" y="416" font-size="11" fill="#1a1822"><tspan font-weight="700">Delete:</tspan> mirror operation — remove key, if node underflows borrow from sibling or merge with sibling, recurse upward</text>
+  <text x="75" y="436" font-size="11" fill="#1a1822"><tspan font-weight="700">Concurrency:</tspan> latch-coupling (lock parent and child simultaneously, release parent once safe) — modern engines use Bw-tree or optimistic latching</text>
+  <text x="75" y="456" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Pre-emptive splitting</tspan> (split during downward walk if node is &quot;could-overflow&quot;) avoids upward recursion — used in PostgreSQL B-tree index for higher concurrency</text>
+  <text x="75" y="476" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Page write amplification:</tspan> a small insert may dirty multiple pages — InnoDB uses doublewrite buffer to make page writes torn-write safe</text>
+</svg>

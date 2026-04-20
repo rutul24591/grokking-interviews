@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>UTF-8 and UTF-16 encoding layouts for the same code points showing variable-length byte sequences and surrogate pairs</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">UTF-8 vs UTF-16 Encoding Layout</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Same code points, different byte sequences — encoding choice affects size, indexing, and compatibility</text>
+
+  <!-- Input string -->
+  <rect x="60" y="75" width="780" height="50" rx="8" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="75" y="95" font-size="11" font-weight="600" fill="#1a1822">Source string:</text>
+  <text x="75" y="115" font-size="16" font-family="ui-monospace, monospace" fill="#1a1822">&quot;A é 中 🎉&quot;</text>
+  <text x="270" y="103" font-size="10" fill="#1a1822" opacity="0.6">U+0041</text>
+  <text x="340" y="103" font-size="10" fill="#1a1822" opacity="0.6">U+00E9</text>
+  <text x="410" y="103" font-size="10" fill="#1a1822" opacity="0.6">U+4E2D</text>
+  <text x="480" y="103" font-size="10" fill="#1a1822" opacity="0.6">U+1F389</text>
+  <text x="570" y="103" font-size="10" font-weight="600" fill="#6d5bd0">4 code points total</text>
+
+  <!-- UTF-8 encoding -->
+  <text x="60" y="160" font-size="14" font-weight="700" fill="#6d5bd0">UTF-8 (variable-length, 1–4 bytes)</text>
+
+  <!-- UTF-8 bytes visualization -->
+  <g>
+    <rect x="60" y="175" width="50" height="40" fill="#4caf50" stroke="#1a1822" stroke-width="1"/>
+    <text x="85" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">41</text>
+    <text x="85" y="232" text-anchor="middle" font-size="9" fill="#1a1822">A</text>
+
+    <rect x="120" y="175" width="50" height="40" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="145" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">C3</text>
+    <rect x="170" y="175" width="50" height="40" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="195" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">A9</text>
+    <text x="170" y="232" text-anchor="middle" font-size="9" fill="#1a1822">é</text>
+
+    <rect x="230" y="175" width="50" height="40" fill="#ff9800" stroke="#1a1822" stroke-width="1"/>
+    <text x="255" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">E4</text>
+    <rect x="280" y="175" width="50" height="40" fill="#ff9800" stroke="#1a1822" stroke-width="1"/>
+    <text x="305" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">B8</text>
+    <rect x="330" y="175" width="50" height="40" fill="#ff9800" stroke="#1a1822" stroke-width="1"/>
+    <text x="355" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">AD</text>
+    <text x="305" y="232" text-anchor="middle" font-size="9" fill="#1a1822">中</text>
+
+    <rect x="390" y="175" width="50" height="40" fill="#cc4444" stroke="#1a1822" stroke-width="1"/>
+    <text x="415" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">F0</text>
+    <rect x="440" y="175" width="50" height="40" fill="#cc4444" stroke="#1a1822" stroke-width="1"/>
+    <text x="465" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">9F</text>
+    <rect x="490" y="175" width="50" height="40" fill="#cc4444" stroke="#1a1822" stroke-width="1"/>
+    <text x="515" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">8E</text>
+    <rect x="540" y="175" width="50" height="40" fill="#cc4444" stroke="#1a1822" stroke-width="1"/>
+    <text x="565" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">89</text>
+    <text x="490" y="232" text-anchor="middle" font-size="9" fill="#1a1822">🎉</text>
+  </g>
+
+  <text x="60" y="260" font-size="11" font-weight="600" fill="#1a1822">Total: 10 bytes</text>
+  <rect x="60" y="270" width="10" height="10" fill="#4caf50"/>
+  <text x="78" y="280" font-size="10" fill="#1a1822">1-byte (ASCII, 0xxx)</text>
+  <rect x="200" y="270" width="10" height="10" fill="#6d5bd0"/>
+  <text x="218" y="280" font-size="10" fill="#1a1822">2-byte (110/10)</text>
+  <rect x="330" y="270" width="10" height="10" fill="#ff9800"/>
+  <text x="348" y="280" font-size="10" fill="#1a1822">3-byte (1110/10/10)</text>
+  <rect x="490" y="270" width="10" height="10" fill="#cc4444"/>
+  <text x="508" y="280" font-size="10" fill="#1a1822">4-byte (11110/10/10/10)</text>
+
+  <!-- UTF-16 encoding -->
+  <text x="60" y="315" font-size="14" font-weight="700" fill="#6d5bd0">UTF-16 (2 or 4 bytes; surrogate pairs for supplementary planes)</text>
+
+  <g>
+    <rect x="60" y="330" width="100" height="40" fill="#4caf50" stroke="#1a1822" stroke-width="1"/>
+    <text x="110" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">00 41</text>
+    <text x="110" y="387" text-anchor="middle" font-size="9" fill="#1a1822">A (BMP)</text>
+
+    <rect x="170" y="330" width="100" height="40" fill="#4caf50" stroke="#1a1822" stroke-width="1"/>
+    <text x="220" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">00 E9</text>
+    <text x="220" y="387" text-anchor="middle" font-size="9" fill="#1a1822">é (BMP)</text>
+
+    <rect x="280" y="330" width="100" height="40" fill="#4caf50" stroke="#1a1822" stroke-width="1"/>
+    <text x="330" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">4E 2D</text>
+    <text x="330" y="387" text-anchor="middle" font-size="9" fill="#1a1822">中 (BMP)</text>
+
+    <rect x="390" y="330" width="100" height="40" fill="#cc4444" stroke="#1a1822" stroke-width="1"/>
+    <text x="440" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">D8 3C</text>
+    <rect x="500" y="330" width="100" height="40" fill="#cc4444" stroke="#1a1822" stroke-width="1"/>
+    <text x="550" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">DF 89</text>
+    <text x="495" y="387" text-anchor="middle" font-size="9" fill="#1a1822">🎉 (surrogate pair)</text>
+  </g>
+
+  <text x="60" y="410" font-size="11" font-weight="600" fill="#1a1822">Total: 10 bytes (same here; ASCII costs 2× in UTF-16)</text>
+
+  <!-- Comparison box -->
+  <rect x="620" y="160" width="220" height="215" rx="10" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="730" y="180" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Encoding trade-offs</text>
+  <text x="635" y="203" font-size="10" font-weight="600" fill="#4caf50">UTF-8 strengths</text>
+  <text x="635" y="221" font-size="9" fill="#1a1822">• ASCII = 1 byte each</text>
+  <text x="635" y="237" font-size="9" fill="#1a1822">• Self-synchronizing</text>
+  <text x="635" y="253" font-size="9" fill="#1a1822">• Web, disk, Unix default</text>
+  <text x="635" y="275" font-size="10" font-weight="600" fill="#6d5bd0">UTF-16 strengths</text>
+  <text x="635" y="293" font-size="9" fill="#1a1822">• 2B for all BMP chars</text>
+  <text x="635" y="309" font-size="9" fill="#1a1822">• Simpler iteration in CJK</text>
+  <text x="635" y="325" font-size="9" fill="#1a1822">• JS / Java / .NET / Win32</text>
+  <text x="635" y="347" font-size="10" font-weight="600" fill="#cc4444">Both: O(n) to find</text>
+  <text x="635" y="363" font-size="9" fill="#1a1822">Nth code point naively</text>
+
+  <!-- Footer -->
+  <text x="450" y="462" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">ASCII text in UTF-16 doubles memory; emoji in UTF-8 costs 4 bytes; neither encoding gives O(1) code-point indexing without an auxiliary index.</text>
+</svg>

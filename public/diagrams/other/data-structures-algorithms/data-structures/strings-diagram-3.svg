@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>KMP failure function table mapping each prefix position of a pattern to its longest proper prefix that is also a suffix</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">KMP Failure Function</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Preprocessed table lets the matcher skip characters guaranteed not to match — scans text exactly once</text>
+
+  <!-- Pattern -->
+  <text x="60" y="90" font-size="13" font-weight="700" fill="#1a1822">Pattern: <tspan font-family="ui-monospace, monospace">a b a b c a b a b</tspan></text>
+
+  <!-- Table header -->
+  <text x="60" y="125" font-size="11" font-weight="600" fill="#1a1822">Index (i)</text>
+  <text x="60" y="155" font-size="11" font-weight="600" fill="#1a1822">Char</text>
+  <text x="60" y="185" font-size="11" font-weight="600" fill="#1a1822">failure[i]</text>
+
+  <!-- Cells -->
+  <g>
+    <!-- i = 0 -->
+    <rect x="180" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="210" y="125" text-anchor="middle" font-size="12" fill="#1a1822">0</text>
+    <rect x="180" y="135" width="60" height="30" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="210" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">a</text>
+    <rect x="180" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="210" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">0</text>
+
+    <!-- i = 1 -->
+    <rect x="240" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="270" y="125" text-anchor="middle" font-size="12" fill="#1a1822">1</text>
+    <rect x="240" y="135" width="60" height="30" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="270" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">b</text>
+    <rect x="240" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="270" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">0</text>
+
+    <!-- i = 2 -->
+    <rect x="300" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="330" y="125" text-anchor="middle" font-size="12" fill="#1a1822">2</text>
+    <rect x="300" y="135" width="60" height="30" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="330" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">a</text>
+    <rect x="300" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="330" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">1</text>
+
+    <!-- i = 3 -->
+    <rect x="360" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="390" y="125" text-anchor="middle" font-size="12" fill="#1a1822">3</text>
+    <rect x="360" y="135" width="60" height="30" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="390" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">b</text>
+    <rect x="360" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="390" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">2</text>
+
+    <!-- i = 4 -->
+    <rect x="420" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="450" y="125" text-anchor="middle" font-size="12" fill="#1a1822">4</text>
+    <rect x="420" y="135" width="60" height="30" fill="#fff4e0" stroke="#1a1822" stroke-width="1"/>
+    <text x="450" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">c</text>
+    <rect x="420" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="450" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">0</text>
+
+    <!-- i = 5 -->
+    <rect x="480" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="510" y="125" text-anchor="middle" font-size="12" fill="#1a1822">5</text>
+    <rect x="480" y="135" width="60" height="30" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="510" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">a</text>
+    <rect x="480" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="510" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">1</text>
+
+    <!-- i = 6 -->
+    <rect x="540" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="570" y="125" text-anchor="middle" font-size="12" fill="#1a1822">6</text>
+    <rect x="540" y="135" width="60" height="30" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="570" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">b</text>
+    <rect x="540" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="570" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">2</text>
+
+    <!-- i = 7 -->
+    <rect x="600" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="630" y="125" text-anchor="middle" font-size="12" fill="#1a1822">7</text>
+    <rect x="600" y="135" width="60" height="30" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="630" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">a</text>
+    <rect x="600" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="630" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">3</text>
+
+    <!-- i = 8 -->
+    <rect x="660" y="105" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="690" y="125" text-anchor="middle" font-size="12" fill="#1a1822">8</text>
+    <rect x="660" y="135" width="60" height="30" fill="#e8dffa" stroke="#1a1822" stroke-width="1"/>
+    <text x="690" y="155" text-anchor="middle" font-size="13" font-family="ui-monospace, monospace" fill="#1a1822">b</text>
+    <rect x="660" y="165" width="60" height="30" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="690" y="185" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">4</text>
+  </g>
+
+  <!-- Explanation -->
+  <text x="60" y="235" font-size="12" font-weight="700" fill="#1a1822">What the table says</text>
+  <text x="60" y="255" font-size="11" fill="#1a1822">failure[i] = length of the longest proper prefix of pattern[0..i] that is also a suffix.</text>
+  <text x="60" y="273" font-size="11" fill="#1a1822">On mismatch at position i in text, shift pattern so position failure[i-1] aligns — no need to rewind text pointer.</text>
+
+  <!-- Matching example -->
+  <text x="60" y="310" font-size="12" font-weight="700" fill="#1a1822">Example match on text:</text>
+
+  <g font-family="ui-monospace, monospace">
+    <!-- Text row -->
+    <rect x="60" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="75" y="345" text-anchor="middle" font-size="13" fill="#1a1822">a</text>
+    <rect x="90" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="105" y="345" text-anchor="middle" font-size="13" fill="#1a1822">b</text>
+    <rect x="120" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="135" y="345" text-anchor="middle" font-size="13" fill="#1a1822">a</text>
+    <rect x="150" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="165" y="345" text-anchor="middle" font-size="13" fill="#1a1822">b</text>
+    <rect x="180" y="325" width="30" height="30" fill="#cc4444" stroke="#1a1822"/>
+    <text x="195" y="345" text-anchor="middle" font-size="13" fill="#ffffff">d</text>
+    <rect x="210" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="225" y="345" text-anchor="middle" font-size="13" fill="#1a1822">a</text>
+    <rect x="240" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="255" y="345" text-anchor="middle" font-size="13" fill="#1a1822">b</text>
+    <rect x="270" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="285" y="345" text-anchor="middle" font-size="13" fill="#1a1822">a</text>
+    <rect x="300" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="315" y="345" text-anchor="middle" font-size="13" fill="#1a1822">b</text>
+    <rect x="330" y="325" width="30" height="30" fill="#ffffff" stroke="#1a1822"/>
+    <text x="345" y="345" text-anchor="middle" font-size="13" fill="#1a1822">c</text>
+    <text x="370" y="345" font-size="11" fill="#1a1822">...</text>
+  </g>
+
+  <text x="60" y="380" font-size="11" fill="#1a1822">At position 4 (<tspan font-family="ui-monospace, monospace">d</tspan>) pattern mismatches. Naive algorithm rewinds i to 1.</text>
+  <text x="60" y="400" font-size="11" font-weight="600" fill="#6d5bd0">KMP consults failure[3] = 2, so it shifts pattern by 4 − 2 = 2 positions and keeps text pointer put.</text>
+
+  <!-- Complexity box -->
+  <rect x="530" y="260" width="320" height="210" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="690" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Why KMP matters</text>
+  <text x="545" y="305" font-size="11" fill="#1a1822">• Preprocess pattern in O(m)</text>
+  <text x="545" y="323" font-size="11" fill="#1a1822">• Scan text in O(n), each char visited once</text>
+  <text x="545" y="341" font-size="11" fill="#1a1822">• Total: O(n + m), worst case</text>
+  <text x="545" y="365" font-size="11" font-weight="600" fill="#6d5bd0">Naive baseline: O(n × m)</text>
+  <text x="545" y="385" font-size="11" fill="#1a1822" opacity="0.7">Attack pattern &quot;aaab&quot; on text &quot;aaaa...aaab&quot;</text>
+  <text x="545" y="403" font-size="11" fill="#1a1822" opacity="0.7">gives worst case for naive matcher</text>
+  <text x="545" y="428" font-size="11" font-weight="600" fill="#1a1822">Used inside:</text>
+  <text x="545" y="446" font-size="11" fill="#1a1822">• log aggregators (Loki, Elasticsearch)</text>
+  <text x="545" y="463" font-size="11" fill="#1a1822">• Aho–Corasick for multi-pattern scan</text>
+</svg>

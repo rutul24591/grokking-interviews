@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Merkle proof of inclusion showing the sibling path needed to verify a single leaf against the root</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Proof of Inclusion: O(log n) Sibling Path</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">To prove leaf L3 is in the tree: send L3, sibling H4, and uncle H12; verifier reconstructs root</text>
+
+  <!-- Tree -->
+  <rect x="380" y="85" width="140" height="36" rx="8" fill="#cc4444" stroke="#1a1822"/>
+  <text x="450" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">root (known)</text>
+
+  <rect x="200" y="170" width="120" height="36" rx="8" fill="#a89bec" stroke="#1a1822"/>
+  <text x="260" y="193" text-anchor="middle" font-size="12" fill="#ffffff">H12 (uncle)</text>
+  <rect x="580" y="170" width="120" height="36" rx="8" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="640" y="193" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">H34 (recompute)</text>
+
+  <line x1="320" y1="188" x2="410" y2="121" stroke="#1a1822" stroke-width="2"/>
+  <line x1="580" y1="188" x2="490" y2="121" stroke="#1a1822" stroke-width="2"/>
+
+  <rect x="100" y="260" width="100" height="36" rx="8" fill="#dddddd" stroke="#1a1822"/>
+  <text x="150" y="283" text-anchor="middle" font-size="11" fill="#1a1822">H1</text>
+  <rect x="240" y="260" width="100" height="36" rx="8" fill="#dddddd" stroke="#1a1822"/>
+  <text x="290" y="283" text-anchor="middle" font-size="11" fill="#1a1822">H2</text>
+  <rect x="560" y="260" width="100" height="36" rx="8" fill="#4caf50" stroke="#1a1822"/>
+  <text x="610" y="283" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">H3 = H(L3)</text>
+  <rect x="700" y="260" width="100" height="36" rx="8" fill="#a89bec" stroke="#1a1822"/>
+  <text x="750" y="283" text-anchor="middle" font-size="11" fill="#ffffff">H4 (sibling)</text>
+
+  <line x1="200" y1="278" x2="240" y2="206" stroke="#1a1822" stroke-width="1"/>
+  <line x1="290" y1="260" x2="290" y2="206" stroke="#1a1822" stroke-width="1"/>
+  <line x1="610" y1="260" x2="610" y2="206" stroke="#1a1822" stroke-width="1"/>
+  <line x1="700" y1="278" x2="660" y2="206" stroke="#1a1822" stroke-width="1"/>
+
+  <!-- Legend -->
+  <rect x="60" y="320" width="780" height="160" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="320" width="780" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="339" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Verifier procedure for leaf L3</text>
+  <text x="75" y="368" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">1. Compute H3 = H(L3)</text>
+  <text x="75" y="386" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">2. Compute H34 = H(H3 || H4)        ← H4 from proof</text>
+  <text x="75" y="404" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">3. Compute root' = H(H12 || H34)    ← H12 from proof</text>
+  <text x="75" y="422" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">4. Assert root' == root</text>
+  <text x="75" y="448" font-size="11" fill="#1a1822"><tspan font-weight="700">Proof size:</tspan> log₂(n) hashes — for 1M leaves, only 20 hashes (640 bytes with SHA-256)</text>
+  <text x="75" y="466" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Used by:</tspan> Bitcoin SPV (light) clients, Certificate Transparency audit, BitTorrent piece verification, IPFS content addressing</text>
+</svg>

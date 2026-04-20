@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Standard trie versus radix tree compression collapsing single child chains into edge labels</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Standard Trie vs Radix Tree (Patricia Trie)</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Collapse single-child chains into edge labels — fewer nodes, same lookup semantics</text>
+
+  <!-- STANDARD TRIE -->
+  <text x="225" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Standard trie — &quot;romane&quot;, &quot;romanus&quot;, &quot;romulus&quot;</text>
+  <line x1="225" y1="115" x2="225" y2="160" stroke="#1a1822"/>
+  <line x1="225" y1="180" x2="225" y2="220" stroke="#1a1822"/>
+  <line x1="225" y1="240" x2="225" y2="280" stroke="#1a1822"/>
+  <line x1="225" y1="300" x2="180" y2="335" stroke="#1a1822"/>
+  <line x1="225" y1="300" x2="270" y2="335" stroke="#1a1822"/>
+  <line x1="180" y1="355" x2="180" y2="395" stroke="#1a1822"/>
+  <line x1="270" y1="355" x2="270" y2="395" stroke="#1a1822"/>
+
+  <circle cx="225" cy="105" r="14" fill="#1a1822"/>
+  <text x="225" y="170" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">r</text>
+  <text x="225" y="230" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">o</text>
+  <text x="225" y="290" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">m</text>
+  <text x="180" y="345" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">a</text>
+  <text x="270" y="345" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">u</text>
+  <text x="180" y="405" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">n…</text>
+  <text x="270" y="405" text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#1a1822">l…</text>
+
+  <text x="225" y="445" text-anchor="middle" font-size="11" fill="#1a1822">Many single-child chain nodes (r-o-m, m-a-n, m-u-l)</text>
+  <text x="225" y="463" text-anchor="middle" font-size="11" fill="#cc4444">15+ nodes for 3 keys</text>
+
+  <!-- RADIX -->
+  <text x="675" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Radix tree — chains collapsed into edge labels</text>
+  <line x1="675" y1="115" x2="675" y2="180" stroke="#1a1822"/>
+  <line x1="675" y1="200" x2="600" y2="265" stroke="#1a1822"/>
+  <line x1="675" y1="200" x2="750" y2="265" stroke="#1a1822"/>
+  <line x1="600" y1="285" x2="540" y2="350" stroke="#1a1822"/>
+  <line x1="600" y1="285" x2="660" y2="350" stroke="#1a1822"/>
+
+  <text x="690" y="148" font-size="12" font-family="ui-monospace, monospace" fill="#6d5bd0">&quot;rom&quot;</text>
+  <text x="595" y="232" text-anchor="end" font-size="12" font-family="ui-monospace, monospace" fill="#6d5bd0">&quot;an&quot;</text>
+  <text x="755" y="232" font-size="12" font-family="ui-monospace, monospace" fill="#6d5bd0">&quot;ulus&quot;</text>
+  <text x="535" y="320" text-anchor="end" font-size="12" font-family="ui-monospace, monospace" fill="#6d5bd0">&quot;e&quot;</text>
+  <text x="665" y="320" font-size="12" font-family="ui-monospace, monospace" fill="#6d5bd0">&quot;us&quot;</text>
+
+  <circle cx="675" cy="105" r="14" fill="#1a1822"/>
+  <circle cx="675" cy="190" r="16" fill="#a89bec" stroke="#1a1822"/>
+  <circle cx="600" cy="275" r="16" fill="#a89bec" stroke="#1a1822"/>
+  <circle cx="750" cy="275" r="18" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="750" y="280" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">★</text>
+  <circle cx="540" cy="360" r="18" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="540" y="365" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">★</text>
+  <circle cx="660" cy="360" r="18" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="660" y="365" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">★</text>
+
+  <text x="675" y="410" text-anchor="middle" font-size="11" fill="#1a1822">Edges carry strings; only branching points get nodes</text>
+  <text x="675" y="428" text-anchor="middle" font-size="11" fill="#4caf50">5 nodes for 3 keys</text>
+
+  <!-- Comparison -->
+  <rect x="60" y="475" width="800" height="20" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="490" text-anchor="middle" font-size="11" fill="#1a1822">Used by Linux IP routing tables, Redis stream IDs, etcd, React Router&apos;s path matching, OpenZFS dataset names</text>
+</svg>

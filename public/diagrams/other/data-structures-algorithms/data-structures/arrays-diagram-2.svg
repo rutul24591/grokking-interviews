@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Dynamic array geometric growth showing capacity doubling, copy bursts, and amortized cost distribution across appends</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Dynamic Array Growth &amp; Amortization</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Geometric capacity expansion distributes O(n) copy bursts across exponentially many O(1) appends</text>
+
+  <!-- Timeline of allocations -->
+  <text x="60" y="95" font-size="13" font-weight="700" fill="#1a1822">Allocation timeline (growth factor = 2)</text>
+
+  <!-- Alloc 1: capacity 4, length 4 -->
+  <text x="60" y="125" font-size="10" fill="#1a1822" opacity="0.7">cap=4, len=4</text>
+  <g>
+    <rect x="60" y="135" width="32" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="76" y="156" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">a</text>
+    <rect x="92" y="135" width="32" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="108" y="156" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">b</text>
+    <rect x="124" y="135" width="32" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="140" y="156" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">c</text>
+    <rect x="156" y="135" width="32" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="172" y="156" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">d</text>
+  </g>
+  <text x="210" y="156" font-size="11" fill="#cc4444" font-weight="600">push(e) → full, resize!</text>
+
+  <!-- Arrow down -->
+  <path d="M 124 175 L 124 195" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+  <!-- Alloc 2: capacity 8 -->
+  <text x="60" y="210" font-size="10" fill="#1a1822" opacity="0.7">cap=8, len=5 (copy 4 + write 1)</text>
+  <g>
+    <rect x="60" y="220" width="32" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="76" y="241" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">a</text>
+    <rect x="92" y="220" width="32" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="108" y="241" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">b</text>
+    <rect x="124" y="220" width="32" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="140" y="241" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">c</text>
+    <rect x="156" y="220" width="32" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="172" y="241" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">d</text>
+    <rect x="188" y="220" width="32" height="32" fill="#4caf50" stroke="#1a1822" stroke-width="1"/>
+    <text x="204" y="241" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">e</text>
+    <rect x="220" y="220" width="32" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="252" y="220" width="32" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="284" y="220" width="32" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+  </g>
+  <text x="340" y="241" font-size="11" fill="#1a1822" opacity="0.7">3 free slots ← next 3 appends = O(1)</text>
+
+  <path d="M 172 260 L 172 280" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+  <!-- Alloc 3: capacity 16 -->
+  <text x="60" y="295" font-size="10" fill="#1a1822" opacity="0.7">cap=16, len=9 (copy 8 + write 1)</text>
+  <g>
+    <rect x="60" y="305" width="24" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <rect x="84" y="305" width="24" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <rect x="108" y="305" width="24" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <rect x="132" y="305" width="24" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <rect x="156" y="305" width="24" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <rect x="180" y="305" width="24" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <rect x="204" y="305" width="24" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <rect x="228" y="305" width="24" height="32" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <rect x="252" y="305" width="24" height="32" fill="#4caf50" stroke="#1a1822" stroke-width="1"/>
+    <rect x="276" y="305" width="24" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="300" y="305" width="24" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="324" y="305" width="24" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="348" y="305" width="24" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="372" y="305" width="24" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="396" y="305" width="24" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="420" y="305" width="24" height="32" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+  </g>
+  <text x="460" y="325" font-size="11" fill="#1a1822" opacity="0.7">7 free slots ← next 7 appends = O(1)</text>
+
+  <!-- Legend -->
+  <rect x="60" y="360" width="14" height="14" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+  <text x="80" y="372" font-size="10" fill="#1a1822">Copied element</text>
+  <rect x="180" y="360" width="14" height="14" fill="#4caf50" stroke="#1a1822" stroke-width="1"/>
+  <text x="200" y="372" font-size="10" fill="#1a1822">Newly appended</text>
+  <rect x="305" y="360" width="14" height="14" fill="#ffffff" stroke="#1a1822" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="325" y="372" font-size="10" fill="#1a1822">Reserved (free)</text>
+
+  <!-- Amortized cost annotation -->
+  <rect x="530" y="90" width="320" height="260" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="530" y="90" width="320" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="690" y="109" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Amortized cost of n appends</text>
+  <text x="545" y="140" font-size="11" fill="#1a1822">Copies occur at capacities 1, 2, 4, 8, ...</text>
+  <text x="545" y="160" font-size="11" fill="#1a1822">Sum of copies ≤ 1 + 2 + 4 + ... + n/2 + n</text>
+  <text x="545" y="180" font-size="11" font-weight="600" fill="#6d5bd0">                          = 2n − 1 = O(n)</text>
+  <text x="545" y="210" font-size="11" fill="#1a1822">n appends + O(n) total copies</text>
+  <text x="545" y="230" font-size="11" font-weight="600" fill="#4caf50">Amortized cost per append: O(1)</text>
+
+  <text x="545" y="265" font-size="11" font-weight="600" fill="#1a1822">Factor trade-off:</text>
+  <text x="545" y="285" font-size="10" fill="#1a1822">• 2×: simplest, no buffer reuse by allocator</text>
+  <text x="545" y="303" font-size="10" fill="#1a1822">• 1.5×: enables buddy-block reuse (MSVC, Go)</text>
+  <text x="545" y="321" font-size="10" fill="#1a1822">• 1.25×: tightest memory, more copies (Rust Vec)</text>
+
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Footer -->
+  <text x="450" y="470" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">Pre-allocating with `new Array(n)` skips the copy bursts and keeps worst-case tail latency predictable.</text>
+</svg>

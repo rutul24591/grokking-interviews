@@ -23,6 +23,7 @@ const PATH_MAPPINGS: Record<string, string> = {
   "system-design-problems/high-level-design": "system-design-problems/high-level-design",
   "system-design-problems/low-level-design": "system-design-problems/low-level-design",
   "other/artificial-intelligence": "other/artificial-intelligence",
+  "other/data-structures-algorithms": "other/data-structures-algorithms",
 };
 
 // Map sidebar slugs back to filesystem paths (for subcategory manifest)

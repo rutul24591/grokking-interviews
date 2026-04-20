@@ -3856,42 +3856,42 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
     {
       "slug": "api-versioning",
       "title": "API Versioning",
-      "description": "Comprehensive guide to API versioning strategies, covering URL vs header versioning, backward compatibility, deprecation policies, and migration patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to API versioning strategies — URL versioning, header versioning, semantic versioning, backward compatibility, deprecation patterns, and migration strategies for staff/principal engineer interviews."
     },
     {
       "slug": "authentication-infrastructure",
       "title": "Authentication Infrastructure",
-      "description": "Comprehensive guide to authentication infrastructure, covering OAuth 2.0, OIDC, SAML, JWT, session management, MFA, and production patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to authentication infrastructure — OAuth 2.0, OIDC, SAML, token-based auth, session management, MFA, and identity federation for staff/principal engineer interviews."
     },
     {
       "slug": "authorization-model",
       "title": "Authorization Model",
-      "description": "Comprehensive guide to authorization models, covering RBAC, ABAC, ACL, policy-based authorization, and production patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to authorization models — RBAC, ABAC, ReBAC, PBAC, policy engines, permission evaluation, and authorization architecture for staff/principal engineer interviews."
     },
     {
       "slug": "backpressure-handling",
       "title": "Backpressure Handling",
-      "description": "Comprehensive guide to backpressure in distributed systems, covering flow control, queue management, load shedding, and reactive patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to backpressure handling — flow control, queue management, load shedding, adaptive concurrency, and reactive systems for staff/principal engineer interviews."
     },
     {
       "slug": "capacity-planning",
       "title": "Capacity Planning",
-      "description": "Comprehensive guide to capacity planning, covering demand forecasting, resource sizing, growth planning, and production capacity management for staff/principal engineer interviews."
+      "description": "Comprehensive guide to capacity planning — demand forecasting, resource modeling, headroom management, growth projections, and capacity optimization for staff/principal engineer interviews."
     },
     {
       "slug": "centralized-logging",
       "title": "Centralized Logging",
-      "description": "Comprehensive guide to centralized logging, covering log aggregation, structured logging, ELK stack, log retention, and production observability patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to centralized logging architecture — log aggregation, structured logging, log shipping, indexing, retention, and observability integration for staff/principal engineer interviews."
     },
     {
       "slug": "cicd-pipelines",
       "title": "CI/CD Pipelines",
-      "description": "Comprehensive guide to CI/CD pipelines, covering deployment automation, testing strategies, rollback mechanisms, and production deployment patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to CI/CD pipeline architecture — build automation, testing strategies, deployment patterns, rollback mechanisms, and pipeline optimization for staff/principal engineer interviews."
     },
     {
       "slug": "compliance-auditing",
       "title": "Compliance & Auditing",
-      "description": "Comprehensive guide to compliance and auditing, covering GDPR, HIPAA, SOC 2, PCI DSS, audit trails, and compliance implementation patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to compliance and auditing — regulatory frameworks (GDPR, HIPAA, PCI-DSS, SOC 2), audit logging, data governance, and automated compliance checking for staff/principal engineer interviews."
     },
     {
       "slug": "consistency-model",
@@ -3901,37 +3901,37 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
     {
       "slug": "cost-optimization",
       "title": "Cost Optimization",
-      "description": "Comprehensive guide to infrastructure cost optimization, covering cloud cost management, resource right-sizing, reserved capacity, and FinOps practices for staff/principal engineer interviews."
+      "description": "Comprehensive guide to backend cost optimization — resource rightsizing, reserved capacity, spot instances, auto-scaling, storage tiering, and FinOps practices for staff/principal engineer interviews."
     },
     {
       "slug": "data-migration-strategy",
       "title": "Data Migration Strategy",
-      "description": "Comprehensive guide to zero-downtime data migrations, covering expand-contract pattern, dual writes, schema evolution, and production migration patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to data migration — schema evolution, zero-downtime migration, backward compatibility, expand-contract pattern, and migration testing for staff/principal engineer interviews."
     },
     {
       "slug": "data-retention-archival",
       "title": "Data Retention & Archival",
-      "description": "Comprehensive guide to data retention and archival, covering retention policies, storage tiers, compliance requirements, and data lifecycle management for staff/principal engineer interviews."
+      "description": "Comprehensive guide to data retention and archival — retention policies, storage tiering, archival strategies, compliance requirements, and data lifecycle management for staff/principal engineer interviews."
     },
     {
       "slug": "database-selection-strategy",
       "title": "Database Selection Strategy",
-      "description": "Comprehensive guide to database selection, covering SQL vs NoSQL, consistency requirements, access patterns, polyglot persistence, and operational considerations for staff/principal engineer interviews."
+      "description": "Comprehensive guide to database selection — SQL vs NoSQL, CAP theorem trade-offs, workload analysis, polyglot persistence, and database evaluation frameworks for staff/principal engineer interviews."
     },
     {
       "slug": "disaster-recovery-strategy",
       "title": "Disaster Recovery Strategy",
-      "description": "Comprehensive guide to disaster recovery, covering RTO/RPO, backup strategies, failover patterns, multi-region deployment, and business continuity planning for staff/principal engineer interviews."
+      "description": "Comprehensive guide to disaster recovery — RTO/RPO objectives, backup strategies, failover mechanisms, multi-region DR, testing, and recovery playbooks for staff/principal engineer interviews."
     },
     {
       "slug": "durability-guarantees",
       "title": "Durability Guarantees",
-      "description": "Comprehensive guide to data durability guarantees, covering WAL, replication, backup strategies, RPO, fsync, and data persistence patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to data durability — write-ahead logging, replication factors, consistency levels, storage engines, and durability testing for staff/principal engineer interviews."
     },
     {
       "slug": "event-replayability",
       "title": "Event Replayability",
-      "description": "Comprehensive guide to event replayability, covering event sourcing, state reconstruction, snapshots, and production patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to event replayability — event sourcing, log-based replay, idempotent handlers, schema evolution, and replay testing for staff/principal engineer interviews."
     },
     {
       "slug": "fault-tolerance-resilience",
@@ -3946,7 +3946,7 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
     {
       "slug": "idempotency-guarantees",
       "title": "Idempotency Guarantees",
-      "description": "Comprehensive guide to idempotency in distributed systems, covering idempotent APIs, deduplication, retry safety, and implementation patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to idempotency — idempotent APIs, deduplication strategies, retry safety, payment processing, and idempotency testing for staff/principal engineer interviews."
     },
     {
       "slug": "latency-slas",
@@ -3956,22 +3956,22 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
     {
       "slug": "message-ordering-guarantees",
       "title": "Message Ordering Guarantees",
-      "description": "Comprehensive guide to message ordering in distributed systems, covering partition ordering, causal ordering, sequence numbers, and reordering patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to message ordering — partition-based ordering, sequence numbers, causal ordering, exactly-once delivery, and ordering testing for staff/principal engineer interviews."
     },
     {
       "slug": "metrics-distributed-tracing",
       "title": "Metrics & Distributed Tracing",
-      "description": "Comprehensive guide to metrics and distributed tracing, covering Prometheus, OpenTelemetry, tracing propagation, and production observability for staff/principal engineer interviews."
+      "description": "Comprehensive guide to observability — metrics collection, distributed tracing, span propagation, trace sampling, correlation with logs, and observability testing for staff/principal engineer interviews."
     },
     {
       "slug": "multi-region-replication",
       "title": "Multi-Region Replication",
-      "description": "Comprehensive guide to multi-region replication, covering active-active, active-passive, conflict resolution, latency considerations, and global distribution patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to multi-region replication — synchronous vs asynchronous replication, conflict resolution, latency management, active-active architecture, and replication testing for staff/principal engineer interviews."
     },
     {
       "slug": "rate-limiting-abuse-protection",
       "title": "Rate Limiting & Abuse Protection",
-      "description": "Comprehensive guide to rate limiting and abuse protection, covering algorithms (token bucket, sliding window), DDoS mitigation, bot detection, and production patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to rate limiting — token bucket, leaky bucket, sliding window algorithms, distributed rate limiting, abuse detection, and rate limiting testing for staff/principal engineer interviews."
     },
     {
       "slug": "scalability-strategy",
@@ -3981,27 +3981,27 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
     {
       "slug": "schema-governance",
       "title": "Schema Governance",
-      "description": "Comprehensive guide to schema governance, covering schema evolution, backward compatibility, schema registry, and database migration patterns for staff/principal engineer interviews."
+      "description": "Comprehensive guide to schema governance — schema registries, backward/forward compatibility, evolution strategies, breaking change management, and schema testing for staff/principal engineer interviews."
     },
     {
       "slug": "secrets-management",
       "title": "Secrets Management",
-      "description": "Comprehensive guide to secrets management, covering secret storage, rotation, encryption, vault integration, and security best practices for staff/principal engineer interviews."
+      "description": "Comprehensive guide to secrets management — secret storage, rotation, access control, secret injection, audit logging, and secrets testing for staff/principal engineer interviews."
     },
     {
       "slug": "server-side-caching-strategy",
       "title": "Server-Side Caching Strategy",
-      "description": "Comprehensive guide to server-side caching, covering cache patterns, invalidation strategies, distributed caching, cache coherence, and production reliability for staff/principal engineer interviews."
+      "description": "Comprehensive guide to server-side caching — cache eviction policies, cache invalidation, distributed caching, cache coherence, and caching testing for staff/principal engineer interviews."
     },
     {
       "slug": "throughput-capacity",
       "title": "Throughput Capacity",
-      "description": "Comprehensive guide to backend throughput capacity, covering RPS planning, bottleneck identification, Little's Law, capacity planning, and scaling strategies for staff/principal engineer interviews."
+      "description": "Comprehensive guide to throughput capacity — capacity planning, bottleneck identification, Little's Law, scalability limits, capacity testing, and capacity monitoring for staff/principal engineer interviews."
     },
     {
       "slug": "traffic-management-load-shedding",
-      "title": "Traffic Management / Load Shedding",
-      "description": "Comprehensive guide to traffic management and load shedding, covering overload protection, request prioritization, rate limiting, and graceful degradation for staff/principal engineer interviews."
+      "title": "Traffic Management & Load Shedding",
+      "description": "Comprehensive guide to traffic management and load shedding — circuit breakers, bulkheads, priority queuing, graceful degradation, overload protection, and load shedding testing for staff/principal engineer interviews."
     }
   ],
   "requirements/non-functional-requirements/frontend-nfr": [
@@ -4225,7 +4225,7 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
     {
       "slug": "vendor-lock-in-strategy",
       "title": "Vendor Lock-in Strategy",
-      "description": "Comprehensive guide to vendor lock-in, covering make-vs-buy decisions, multi-cloud strategies, abstraction layers, exit strategies, and negotiation for staff/principal engineer interviews."
+      "description": "Comprehensive guide to vendor lock-in covering make-vs-buy decisions, multi-cloud strategies, abstraction layers, exit strategies, and negotiation leverage for staff/principal engineer interviews."
     },
     {
       "slug": "versioning-backward-compatibility",
@@ -4550,6 +4550,232 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "usereducer-vs-usestate",
       "title": "useReducer vs useState for Complex State",
       "description": "Decision framework for useState vs useReducer — complex forms, state machines, multi-step workflows, testability, and when reducers are worth the boilerplate."
+    }
+  ],
+  "other/artificial-intelligence/additional-topics": [
+    {
+      "slug": "agent-orchestration",
+      "title": "Agent Orchestration — Multi-Agent Coordination Patterns",
+      "description": "Comprehensive guide to agent orchestration covering supervisor patterns, routing strategies, crew patterns, hierarchical planning, task decomposition, and production multi-agent architectures."
+    },
+    {
+      "slug": "hugging-face",
+      "title": "Hugging Face Ecosystem",
+      "description": "Comprehensive guide to the Hugging Face ecosystem covering the Model Hub, Datasets library, Inference API, Spaces, AutoTrain, and the broader open-source AI infrastructure."
+    },
+    {
+      "slug": "langchain",
+      "title": "LangChain Framework — Building LLM Applications",
+      "description": "Comprehensive guide to LangChain covering framework architecture, chains, memory systems, tools, agents, expression language, and evaluation for production LLM application development."
+    },
+    {
+      "slug": "plugins",
+      "title": "AI Plug-In Architecture — Extensibility and Sandboxing",
+      "description": "Comprehensive guide to AI plug-in architecture covering extensibility patterns, sandboxing, capability negotiation, security boundaries, and production plugin ecosystem design."
+    },
+    {
+      "slug": "workflow",
+      "title": "AI Workflow Design — Pipelines, Evaluation Loops, and CI/CD for AI",
+      "description": "Comprehensive guide to AI workflow design covering pipeline patterns, evaluation loops, CI/CD for AI systems, human-in-the-loop processes, and production workflow architecture."
+    }
+  ],
+  "other/artificial-intelligence/core-concepts": [
+    {
+      "slug": "agents",
+      "title": "AI Agents — Autonomous LLM-Powered Systems",
+      "description": "Comprehensive guide to AI agents covering agent loops, ReAct paradigm, tool use and function calling, memory systems, planning strategies, and action execution for building autonomous LLM-powered systems."
+    },
+    {
+      "slug": "ai-application-architecture",
+      "title": "AI Application Architecture — Integration Patterns for Production",
+      "description": "Comprehensive guide to AI application architecture covering sync vs async integration, streaming responses, fallback strategies, latency SLOs, error handling, rate limiting, and production system design patterns."
+    },
+    {
+      "slug": "ai-cost-management",
+      "title": "AI Cost Management — Token Economics and Budget Optimization",
+      "description": "Comprehensive guide to AI cost management covering token economics, response caching, model selection for cost optimization, budget guardrails, usage quotas, and production cost control strategies."
+    },
+    {
+      "slug": "ai-model-deployment",
+      "title": "AI Model Deployment — Serving Patterns and Production Operations",
+      "description": "Comprehensive guide to AI model deployment covering model serving patterns (batch, real-time, edge), model versioning, canary deployments for AI, model rollback, blue-green for models, and production serving infrastructure."
+    },
+    {
+      "slug": "ai-observability-monitoring",
+      "title": "AI Observability and Monitoring",
+      "description": "Comprehensive guide to AI observability covering LLM tracing, evaluation frameworks, quality metrics, cost tracking, latency monitoring, and drift detection for production AI systems."
+    },
+    {
+      "slug": "ai-safety-security",
+      "title": "AI Safety and Security — Prompt Injection, Data Leakage, and Governance",
+      "description": "Comprehensive guide to AI safety covering prompt injection attacks, data leakage prevention, output validation, adversarial attacks, content moderation, jailbreak detection, and responsible AI governance."
+    },
+    {
+      "slug": "ai-testing-evaluation",
+      "title": "AI Testing and Evaluation — Quality Assurance for LLM Systems",
+      "description": "Comprehensive guide to AI testing and evaluation covering output testing patterns, evaluation frameworks (RAGAS, DeepEval), golden datasets, regression testing for AI, A/B testing models, and quality gates."
+    },
+    {
+      "slug": "context-window",
+      "title": "Context Window — Architecture and Management",
+      "description": "Comprehensive guide to context windows covering KV caching, sliding window attention, context compression, RoPE, long-context retrieval, and production context management strategies."
+    },
+    {
+      "slug": "data-engineering-for-ai",
+      "title": "Data Engineering for AI — Training Data Pipelines and Curation",
+      "description": "Comprehensive guide to data engineering for AI covering data pipelines for training and fine-tuning, data cleaning, synthetic data generation, data labeling strategies, dataset versioning, and data quality management."
+    },
+    {
+      "slug": "embeddings",
+      "title": "Embeddings — Semantic Vector Representations",
+      "description": "Comprehensive guide to embeddings covering embedding properties, dimensionality trade-offs, semantic similarity, clustering, classification, embedding model selection, and multimodal embeddings."
+    },
+    {
+      "slug": "fine-tuning-vs-rag",
+      "title": "Fine-Tuning vs RAG — The Core Architectural Decision",
+      "description": "Comprehensive guide to fine-tuning versus RAG trade-offs covering PEFT/LoRA/QLoRA, evaluation methodology, production decision frameworks, and when to use each approach."
+    },
+    {
+      "slug": "large-language-models",
+      "title": "Large Language Models (LLMs)",
+      "description": "Comprehensive guide to Large Language Models covering transformer architecture, training methodology, scaling laws, capabilities, limitations, and production considerations for software engineers integrating LLMs into applications."
+    },
+    {
+      "slug": "mcp",
+      "title": "Model Context Protocol (MCP)",
+      "description": "Comprehensive guide to the Model Context Protocol covering standardized tool-use architecture, resource discovery, server/client design, integrations, and building MCP-compatible tools and servers."
+    },
+    {
+      "slug": "multi-agents",
+      "title": "Multi-Agent Systems — Coordinated AI Agent Architectures",
+      "description": "Comprehensive guide to multi-agent systems covering agent orchestration patterns, coordination strategies, debate and consensus mechanisms, role specialization, conflict resolution, and production-scale multi-agent architectures."
+    },
+    {
+      "slug": "prompting",
+      "title": "Prompt Engineering & Prompt Design Patterns",
+      "description": "Comprehensive guide to prompt engineering covering system prompts, few-shot prompting, chain-of-thought reasoning, structured output generation, prompt templating, versioning, and production prompt management."
+    },
+    {
+      "slug": "rag",
+      "title": "Retrieval-Augmented Generation (RAG)",
+      "description": "Comprehensive guide to RAG covering document chunking strategies, embedding pipelines, retrieval optimization, hybrid search, reranking, and RAG evaluation frameworks for production systems."
+    },
+    {
+      "slug": "skills",
+      "title": "Skills — LLM Capability Discovery and Composition",
+      "description": "Comprehensive guide to skill systems for LLM agents covering skill registration, capability discovery, composition, routing, and skill-based agent architecture."
+    },
+    {
+      "slug": "tokens",
+      "title": "Tokens — Tokenization in Large Language Models",
+      "description": "Deep dive into tokenization algorithms (BPE, WordPiece, SentencePiece), token economics, cost implications, multilingual tokenization, and how token design affects LLM performance and production systems."
+    },
+    {
+      "slug": "vector-db",
+      "title": "Vector Databases — Semantic Search at Scale",
+      "description": "Comprehensive guide to vector databases covering vector indexing algorithms (HNSW, IVF, PQ), similarity metrics, scaling strategies, product comparison, and production vector database architecture."
+    }
+  ],
+  "other/data-structures-algorithms/data-structures": [
+    {
+      "slug": "arrays",
+      "title": "Arrays",
+      "description": "Staff-level deep dive into arrays — contiguous memory layout, dynamic resizing with amortized analysis, cache behavior, V8 elements kinds, TypedArrays, and real-world trade-offs against linked and hash-based alternatives."
+    },
+    {
+      "slug": "b-trees",
+      "title": "B-Trees & B+ Trees",
+      "description": "The disk-friendly self-balancing tree behind nearly every relational database index — high-fanout nodes match page sizes, keep height tiny, and turn billion-row lookups into 4 page reads."
+    },
+    {
+      "slug": "bit-manipulation",
+      "title": "Bit Manipulation",
+      "description": "Staff-level deep dive into bit manipulation — bitwise operators, population count, bitmasks for compact set representation, XOR identities, endianness, SIMD-adjacent techniques, and language-level quirks in JavaScript."
+    },
+    {
+      "slug": "bloom-filters",
+      "title": "Bloom Filters",
+      "description": "A probabilistic membership test that uses k hash functions and a bit array to answer 'is x in the set?' with no false negatives, bounded false positives, and a fraction of the memory of an exact set."
+    },
+    {
+      "slug": "count-min-sketch",
+      "title": "Count-Min Sketch",
+      "description": "A sublinear-space sketch for approximate frequency counting over high-cardinality streams — bounded error guarantees, mergeable across nodes, and the structure behind heavy-hitter detection in DDoS protection and analytics."
+    },
+    {
+      "slug": "disjoint-set-union-find",
+      "title": "Disjoint Set (Union-Find)",
+      "description": "A forest of parent pointers that tracks dynamic equivalence classes — Kruskal's MST, connected components, percolation, and incremental clustering all collapse to two operations: union and find."
+    },
+    {
+      "slug": "doubly-linked-lists",
+      "title": "Doubly Linked Lists",
+      "description": "Staff-level deep dive into doubly linked lists — bidirectional traversal, O(1) arbitrary deletion, LRU cache composition with hash maps, intrusive variants, and concurrency challenges."
+    },
+    {
+      "slug": "graphs",
+      "title": "Graphs",
+      "description": "Vertices, edges, and the algorithms that exploit them — adjacency representations, traversal, shortest paths, and the engineering trade-offs behind real-world graph systems."
+    },
+    {
+      "slug": "hash-tables",
+      "title": "Hash Tables",
+      "description": "Staff-level deep dive into hash tables — hash function design, chaining versus open addressing, load factor and resizing, Robin Hood hashing, V8 internals, and concurrent hash map strategies."
+    },
+    {
+      "slug": "heaps-priority-queues",
+      "title": "Heaps & Priority Queues",
+      "description": "Staff-level deep dive into binary heaps and priority queues — implicit array layout, sift-up/sift-down mechanics, heap construction in linear time, d-ary variants, Fibonacci heaps, and real-world scheduler applications."
+    },
+    {
+      "slug": "hyperloglog",
+      "title": "HyperLogLog",
+      "description": "A cardinality estimator that counts billions of distinct items in kilobytes — leading-zero registers and harmonic mean deliver ~1% accuracy at fixed memory, mergeable across shards."
+    },
+    {
+      "slug": "lsm-trees",
+      "title": "LSM Trees",
+      "description": "Log-structured merge trees turn random writes into sequential I/O via in-memory MemTables, immutable SSTables, and background compaction — the storage backbone of RocksDB, Cassandra, and modern NoSQL."
+    },
+    {
+      "slug": "merkle-trees",
+      "title": "Merkle Trees",
+      "description": "A binary hash tree that commits to arbitrary-size data with a single root digest, enabling O(log n) inclusion proofs and efficient anti-entropy sync between replicas."
+    },
+    {
+      "slug": "queues",
+      "title": "Queues",
+      "description": "Staff-level deep dive into queues — FIFO semantics, circular buffers, bounded vs unbounded designs, concurrent and lock-free variants, backpressure, and the role of queues in message brokers and schedulers."
+    },
+    {
+      "slug": "singly-linked-lists",
+      "title": "Singly Linked Lists",
+      "description": "Staff-level deep dive into singly linked lists — node topology, pointer rewiring, memory fragmentation, lock-free concurrent variants, and the narrow set of workloads where they beat arrays."
+    },
+    {
+      "slug": "skip-lists",
+      "title": "Skip Lists",
+      "description": "A probabilistic alternative to balanced trees: stacked linked lists with express lanes deliver O(log n) search, insert, and delete without rotations — the structure behind Redis sorted sets and Java's ConcurrentSkipListMap."
+    },
+    {
+      "slug": "stacks",
+      "title": "Stacks",
+      "description": "Staff-level deep dive into stacks — LIFO semantics, array-backed versus linked-list-backed implementations, call-stack frames, monotonic stack techniques, and concurrent stack designs."
+    },
+    {
+      "slug": "strings",
+      "title": "Strings",
+      "description": "Staff-level deep dive into strings — Unicode encodings, immutability, interning, rope structures, V8 ConsString/SlicedString internals, and the algorithms that exploit string structure for sub-linear search."
+    },
+    {
+      "slug": "trees",
+      "title": "Trees",
+      "description": "Staff-level deep dive into trees — binary search trees, balanced variants (AVL, red-black), traversal patterns, persistent trees, and the role of trees as indexes and scheduler structures."
+    },
+    {
+      "slug": "tries",
+      "title": "Tries",
+      "description": "Prefix trees that exploit shared key prefixes for O(L) lookup independent of n — the structure behind autocomplete, IP routing, and modern key-value indexes."
     }
   ]
 };

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>LSM tree architecture showing in-memory MemTable flushing to immutable SSTables organized in levels on disk</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">LSM Tree: MemTable + Leveled SSTables</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Writes hit the in-memory MemTable; full MemTables flush to L0 SSTables; background compaction merges levels</text>
+
+  <!-- Write arrow -->
+  <rect x="40" y="90" width="100" height="36" rx="8" fill="#cc4444" stroke="#1a1822"/>
+  <text x="90" y="113" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PUT(k,v)</text>
+  <line x1="140" y1="108" x2="200" y2="108" stroke="#1a1822" stroke-width="2"/>
+  <polygon points="200,103 210,108 200,113" fill="#1a1822"/>
+
+  <!-- WAL -->
+  <rect x="220" y="80" width="120" height="56" rx="8" fill="#a89bec" stroke="#1a1822"/>
+  <text x="280" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">WAL</text>
+  <text x="280" y="118" text-anchor="middle" font-size="9" fill="#ffffff">append-only</text>
+  <text x="280" y="130" text-anchor="middle" font-size="9" fill="#ffffff">crash recovery</text>
+
+  <!-- MemTable -->
+  <rect x="370" y="80" width="160" height="56" rx="8" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="450" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">MemTable (in-memory)</text>
+  <text x="450" y="118" text-anchor="middle" font-size="10" fill="#ffffff">sorted skip list / B-tree</text>
+  <text x="450" y="130" text-anchor="middle" font-size="10" fill="#ffffff">~64 MB threshold</text>
+
+  <line x1="340" y1="108" x2="370" y2="108" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="530" y1="108" x2="570" y2="108" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Immutable -->
+  <rect x="570" y="80" width="160" height="56" rx="8" fill="#a89bec" stroke="#1a1822" stroke-dasharray="4,2"/>
+  <text x="650" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Immutable MemTable</text>
+  <text x="650" y="118" text-anchor="middle" font-size="9" fill="#ffffff">awaiting flush</text>
+
+  <!-- Disk -->
+  <line x1="650" y1="140" x2="650" y2="180" stroke="#1a1822" stroke-width="2"/>
+  <polygon points="645,180 650,190 655,180" fill="#1a1822"/>
+  <text x="660" y="170" font-size="10" fill="#1a1822">flush</text>
+
+  <line x1="60" y1="200" x2="840" y2="200" stroke="#1a1822" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="65" y="195" font-size="9" fill="#1a1822" opacity="0.6">DISK</text>
+
+  <!-- L0 -->
+  <text x="80" y="225" font-size="11" font-weight="700" fill="#1a1822">L0</text>
+  <rect x="100" y="215" width="90" height="24" fill="#a89bec" stroke="#1a1822"/>
+  <text x="145" y="231" text-anchor="middle" font-size="9" fill="#ffffff">SST 1</text>
+  <rect x="195" y="215" width="90" height="24" fill="#a89bec" stroke="#1a1822"/>
+  <text x="240" y="231" text-anchor="middle" font-size="9" fill="#ffffff">SST 2</text>
+  <rect x="290" y="215" width="90" height="24" fill="#a89bec" stroke="#1a1822"/>
+  <text x="335" y="231" text-anchor="middle" font-size="9" fill="#ffffff">SST 3</text>
+  <rect x="385" y="215" width="90" height="24" fill="#a89bec" stroke="#1a1822"/>
+  <text x="430" y="231" text-anchor="middle" font-size="9" fill="#ffffff">SST 4</text>
+  <text x="510" y="231" font-size="9" fill="#1a1822" opacity="0.6">overlapping ranges</text>
+
+  <!-- L1 -->
+  <text x="80" y="265" font-size="11" font-weight="700" fill="#1a1822">L1</text>
+  <rect x="100" y="255" width="120" height="24" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="160" y="271" text-anchor="middle" font-size="9" fill="#ffffff">[a-d]</text>
+  <rect x="225" y="255" width="120" height="24" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="285" y="271" text-anchor="middle" font-size="9" fill="#ffffff">[e-h]</text>
+  <rect x="350" y="255" width="120" height="24" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="410" y="271" text-anchor="middle" font-size="9" fill="#ffffff">[i-l]</text>
+  <rect x="475" y="255" width="120" height="24" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="535" y="271" text-anchor="middle" font-size="9" fill="#ffffff">[m-p]</text>
+  <text x="620" y="271" font-size="9" fill="#1a1822" opacity="0.6">non-overlapping (per-level invariant)</text>
+
+  <!-- L2 -->
+  <text x="80" y="305" font-size="11" font-weight="700" fill="#1a1822">L2</text>
+  <rect x="100" y="295" width="80" height="24" fill="#cc4444" stroke="#1a1822"/>
+  <rect x="185" y="295" width="80" height="24" fill="#cc4444" stroke="#1a1822"/>
+  <rect x="270" y="295" width="80" height="24" fill="#cc4444" stroke="#1a1822"/>
+  <rect x="355" y="295" width="80" height="24" fill="#cc4444" stroke="#1a1822"/>
+  <rect x="440" y="295" width="80" height="24" fill="#cc4444" stroke="#1a1822"/>
+  <rect x="525" y="295" width="80" height="24" fill="#cc4444" stroke="#1a1822"/>
+  <rect x="610" y="295" width="80" height="24" fill="#cc4444" stroke="#1a1822"/>
+  <rect x="695" y="295" width="80" height="24" fill="#cc4444" stroke="#1a1822"/>
+  <text x="785" y="311" font-size="9" fill="#1a1822" opacity="0.6">10× larger</text>
+
+  <!-- Footer -->
+  <rect x="60" y="340" width="780" height="145" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="340" width="780" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="359" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">SSTable anatomy</text>
+  <text x="75" y="386" font-size="11" fill="#1a1822">• Sorted, immutable file of (key, value) pairs grouped into data blocks (~4-32 KB each)</text>
+  <text x="75" y="404" font-size="11" fill="#1a1822">• Index block at the tail maps key ranges to data-block offsets — binary search to find a key&apos;s block</text>
+  <text x="75" y="422" font-size="11" fill="#1a1822">• Bloom filter per SSTable (false-positive ~1%) — read path skips files that definitely don&apos;t contain the key</text>
+  <text x="75" y="448" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">O&apos;Neil et al. 1996:</tspan> The Log-Structured Merge-Tree — original paper introducing the multi-component, sequential-I/O design</text>
+  <text x="75" y="468" font-size="11" fill="#1a1822" opacity="0.7"><tspan font-weight="700">Production engines:</tspan> Google LevelDB → Facebook RocksDB → Cassandra, ScyllaDB, HBase, Pebble (CockroachDB), Badger, Pinot</text>
+</svg>

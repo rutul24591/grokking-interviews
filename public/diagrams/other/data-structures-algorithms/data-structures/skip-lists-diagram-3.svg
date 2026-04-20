@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Skip list search path descending diagonally from top level head to target node at level zero</title>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Search Path: Descend on Overshoot, Right on Undershoot</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">find(22): walk right at each level until next overshoots, then drop down — staircase pattern</text>
+
+  <defs>
+    <marker id="arrSL3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a1822"/>
+    </marker>
+    <marker id="arrSL3R" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#cc4444"/>
+    </marker>
+  </defs>
+
+  <!-- L3 -->
+  <text x="40" y="100" font-size="11" font-weight="700" fill="#6d5bd0">L3</text>
+  <line x1="80" y1="95" x2="780" y2="95" stroke="#6d5bd0" stroke-width="1.5" opacity="0.4" marker-end="url(#arrSL1)"/>
+  <rect x="60" y="80" width="30" height="30" fill="#1a1822"/>
+  <rect x="780" y="80" width="40" height="30" fill="#a89bec" stroke="#1a1822"/>
+  <text x="800" y="100" text-anchor="middle" font-size="9" fill="#ffffff">NIL</text>
+
+  <!-- L2 -->
+  <text x="40" y="160" font-size="11" font-weight="700" fill="#6d5bd0">L2</text>
+  <line x1="80" y1="155" x2="320" y2="155" stroke="#6d5bd0" stroke-width="1.5" opacity="0.4"/>
+  <line x1="350" y1="155" x2="780" y2="155" stroke="#6d5bd0" stroke-width="1.5" opacity="0.4"/>
+  <rect x="60" y="140" width="30" height="30" fill="#1a1822"/>
+  <rect x="320" y="140" width="30" height="30" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="335" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">17</text>
+  <rect x="780" y="140" width="40" height="30" fill="#a89bec"/>
+
+  <!-- L1 -->
+  <text x="40" y="220" font-size="11" font-weight="700" fill="#6d5bd0">L1</text>
+  <line x1="80" y1="215" x2="200" y2="215" stroke="#6d5bd0" stroke-width="1.5" opacity="0.4"/>
+  <line x1="230" y1="215" x2="320" y2="215" stroke="#6d5bd0" stroke-width="1.5" opacity="0.4"/>
+  <line x1="350" y1="215" x2="450" y2="215" stroke="#6d5bd0" stroke-width="1.5" opacity="0.4"/>
+  <line x1="480" y1="215" x2="780" y2="215" stroke="#6d5bd0" stroke-width="1.5" opacity="0.4"/>
+  <rect x="60" y="200" width="30" height="30" fill="#1a1822"/>
+  <rect x="200" y="200" width="30" height="30" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="215" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">9</text>
+  <rect x="320" y="200" width="30" height="30" fill="#6d5bd0" stroke="#1a1822"/>
+  <text x="335" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">17</text>
+  <rect x="450" y="200" width="30" height="30" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="465" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">22</text>
+  <rect x="780" y="200" width="40" height="30" fill="#a89bec"/>
+
+  <!-- L0 -->
+  <text x="40" y="280" font-size="11" font-weight="700" fill="#1a1822">L0</text>
+  <line x1="80" y1="275" x2="780" y2="275" stroke="#1a1822" opacity="0.3"/>
+  <rect x="60" y="260" width="30" height="30" fill="#1a1822"/>
+  <rect x="200" y="260" width="30" height="30" fill="#a89bec" stroke="#1a1822" opacity="0.6"/>
+  <text x="215" y="280" text-anchor="middle" font-size="10" fill="#ffffff">9</text>
+  <rect x="320" y="260" width="30" height="30" fill="#a89bec" stroke="#1a1822" opacity="0.6"/>
+  <text x="335" y="280" text-anchor="middle" font-size="10" fill="#ffffff">17</text>
+  <rect x="450" y="260" width="30" height="30" fill="#cc4444" stroke="#1a1822" stroke-width="2"/>
+  <text x="465" y="280" text-anchor="middle" font-size="10" fill="#ffffff">22</text>
+  <rect x="780" y="260" width="40" height="30" fill="#a89bec"/>
+
+  <!-- search path arrows in red -->
+  <line x1="90" y1="95" x2="780" y2="95" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <text x="430" y="85" font-size="10" font-weight="700" fill="#cc4444">L3: head → NIL (overshoot) ↓</text>
+
+  <line x1="90" y1="155" x2="320" y2="155" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <text x="180" y="135" font-size="10" font-weight="700" fill="#cc4444">L2: head → 17 (≤22) → next would be NIL ↓</text>
+
+  <line x1="320" y1="215" x2="450" y2="215" stroke="#cc4444" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrSL3R)"/>
+  <text x="380" y="200" font-size="10" font-weight="700" fill="#cc4444">L1: 17 → 22 ✓ found</text>
+
+  <line x1="335" y1="170" x2="335" y2="200" stroke="#cc4444" stroke-width="2" stroke-dasharray="3,2"/>
+
+  <!-- Steps narration -->
+  <rect x="60" y="320" width="780" height="170" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="320" width="780" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="339" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">find(22) trace</text>
+  <text x="75" y="368" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">step 1: at head, L3. next = NIL → drop to L2</text>
+  <text x="75" y="386" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">step 2: at head, L2. next = 17. 17 ≤ 22 → advance to node-17</text>
+  <text x="75" y="404" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">step 3: at 17, L2. next = NIL → drop to L1</text>
+  <text x="75" y="422" font-size="11" font-family="ui-monospace, monospace" fill="#1a1822">step 4: at 17, L1. next = 22. 22 == 22 → return node-22</text>
+  <text x="75" y="450" font-size="11" fill="#1a1822"><tspan font-weight="700">3 horizontal hops + 2 vertical drops</tspan> on a list of 18 keys → about log₂(18) ≈ 4.2 expected work</text>
+  <text x="75" y="468" font-size="11" fill="#1a1822" opacity="0.7">For 1M keys, expected work is ~20 hops — same as a balanced BST, achieved without any rebalancing logic</text>
+</svg>

@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Array contiguous memory layout showing cache-line boundaries and sequential access amortizing DRAM reads</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Contiguous Memory &amp; Cache Lines</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Sequential access amortizes DRAM reads across elements packed into the same cache line</text>
+
+  <!-- Address axis -->
+  <line x1="60" y1="125" x2="840" y2="125" stroke="#1a1822" stroke-width="1"/>
+  <text x="60" y="115" font-size="10" fill="#1a1822" opacity="0.6">base = 0x7F00</text>
+  <text x="840" y="115" text-anchor="end" font-size="10" fill="#1a1822" opacity="0.6">base + 16 * 8 = 0x7F80</text>
+
+  <!-- 16 Float64 elements, 8 bytes each, two cache lines of 64 bytes (8 elements each) -->
+  <!-- Cache line 1 background -->
+  <rect x="60" y="130" width="390" height="60" rx="4" fill="#e8dffa" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="255" y="208" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Cache line 1 (64 bytes)</text>
+
+  <!-- Cache line 2 background -->
+  <rect x="450" y="130" width="390" height="60" rx="4" fill="#e8dffa" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="645" y="208" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Cache line 2 (64 bytes)</text>
+
+  <!-- 16 slots -->
+  <g>
+    <rect x="60" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="84" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">3.14</text>
+    <text x="84" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[0]</text>
+  </g>
+  <g>
+    <rect x="108" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="132" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">2.71</text>
+    <text x="132" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[1]</text>
+  </g>
+  <g>
+    <rect x="156" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="180" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">1.41</text>
+    <text x="180" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[2]</text>
+  </g>
+  <g>
+    <rect x="204" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="228" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">1.73</text>
+    <text x="228" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[3]</text>
+  </g>
+  <g>
+    <rect x="252" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="276" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">0.57</text>
+    <text x="276" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[4]</text>
+  </g>
+  <g>
+    <rect x="300" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="324" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">9.81</text>
+    <text x="324" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[5]</text>
+  </g>
+  <g>
+    <rect x="348" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="372" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">6.28</text>
+    <text x="372" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[6]</text>
+  </g>
+  <g>
+    <rect x="396" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="420" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">2.30</text>
+    <text x="420" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[7]</text>
+  </g>
+  <g>
+    <rect x="450" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="474" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">4.67</text>
+    <text x="474" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[8]</text>
+  </g>
+  <g>
+    <rect x="498" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="522" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">5.83</text>
+    <text x="522" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[9]</text>
+  </g>
+  <g>
+    <rect x="546" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="570" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">7.40</text>
+    <text x="570" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[10]</text>
+  </g>
+  <g>
+    <rect x="594" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="618" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">8.12</text>
+    <text x="618" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[11]</text>
+  </g>
+  <g>
+    <rect x="642" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="666" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">3.33</text>
+    <text x="666" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[12]</text>
+  </g>
+  <g>
+    <rect x="690" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="714" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">1.00</text>
+    <text x="714" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[13]</text>
+  </g>
+  <g>
+    <rect x="738" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="762" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">4.41</text>
+    <text x="762" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[14]</text>
+  </g>
+  <g>
+    <rect x="786" y="135" width="48" height="50" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+    <text x="810" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">6.02</text>
+    <text x="810" y="178" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">[15]</text>
+  </g>
+
+  <!-- Sequential access comparison -->
+  <text x="450" y="260" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Access pattern comparison (cache effects)</text>
+
+  <!-- Sequential access box -->
+  <rect x="80" y="285" width="340" height="165" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="80" y="285" width="340" height="28" rx="10" fill="#4caf50"/>
+  <text x="250" y="304" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Sequential: 1 DRAM read per 8 elements</text>
+  <text x="100" y="335" font-size="11" fill="#1a1822">arr[0], arr[1], arr[2], arr[3] ...</text>
+  <text x="100" y="360" font-size="11" fill="#1a1822">• Hardware prefetcher detects stride</text>
+  <text x="100" y="380" font-size="11" fill="#1a1822">• Each 64B line covers 8 elements</text>
+  <text x="100" y="400" font-size="11" fill="#1a1822">• L1 hit rate ≈ 100%</text>
+  <text x="100" y="425" font-size="11" font-weight="600" fill="#4caf50">Throughput: ~50 GB/s effective</text>
+
+  <!-- Random access box -->
+  <rect x="480" y="285" width="340" height="165" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="480" y="285" width="340" height="28" rx="10" fill="#cc4444"/>
+  <text x="650" y="304" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Random: 1 DRAM read per access</text>
+  <text x="500" y="335" font-size="11" fill="#1a1822">arr[7], arr[14], arr[3], arr[11] ...</text>
+  <text x="500" y="360" font-size="11" fill="#1a1822">• Prefetcher gives up after misses</text>
+  <text x="500" y="380" font-size="11" fill="#1a1822">• Each access may trigger a fill</text>
+  <text x="500" y="400" font-size="11" fill="#1a1822">• L1 hit rate &lt; 10% on large arrays</text>
+  <text x="500" y="425" font-size="11" font-weight="600" fill="#cc4444">Throughput: ~2 GB/s effective</text>
+
+  <!-- Footer note -->
+  <text x="450" y="482" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">Typical x86-64 / ARM64 hardware, 64-byte cache lines, 8-byte doubles</text>
+</svg>

@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Row-major versus column-major memory layout for a two-dimensional array and the corresponding cache behavior when iterating</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Row-Major vs Column-Major Layout</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Iteration direction must match physical memory layout to stay cache-friendly</text>
+
+  <!-- Logical 4x4 matrix -->
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Logical 4×4 matrix</text>
+  <g>
+    <rect x="60" y="110" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="80" y="135" text-anchor="middle" font-size="11" fill="#1a1822">A</text>
+    <rect x="100" y="110" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="120" y="135" text-anchor="middle" font-size="11" fill="#1a1822">B</text>
+    <rect x="140" y="110" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="160" y="135" text-anchor="middle" font-size="11" fill="#1a1822">C</text>
+    <rect x="180" y="110" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="200" y="135" text-anchor="middle" font-size="11" fill="#1a1822">D</text>
+
+    <rect x="60" y="150" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="80" y="175" text-anchor="middle" font-size="11" fill="#1a1822">E</text>
+    <rect x="100" y="150" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="120" y="175" text-anchor="middle" font-size="11" fill="#1a1822">F</text>
+    <rect x="140" y="150" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="160" y="175" text-anchor="middle" font-size="11" fill="#1a1822">G</text>
+    <rect x="180" y="150" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="200" y="175" text-anchor="middle" font-size="11" fill="#1a1822">H</text>
+
+    <rect x="60" y="190" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="80" y="215" text-anchor="middle" font-size="11" fill="#1a1822">I</text>
+    <rect x="100" y="190" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="120" y="215" text-anchor="middle" font-size="11" fill="#1a1822">J</text>
+    <rect x="140" y="190" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="160" y="215" text-anchor="middle" font-size="11" fill="#1a1822">K</text>
+    <rect x="180" y="190" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="200" y="215" text-anchor="middle" font-size="11" fill="#1a1822">L</text>
+
+    <rect x="60" y="230" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="80" y="255" text-anchor="middle" font-size="11" fill="#1a1822">M</text>
+    <rect x="100" y="230" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="120" y="255" text-anchor="middle" font-size="11" fill="#1a1822">N</text>
+    <rect x="140" y="230" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="160" y="255" text-anchor="middle" font-size="11" fill="#1a1822">O</text>
+    <rect x="180" y="230" width="40" height="40" fill="#ffffff" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="200" y="255" text-anchor="middle" font-size="11" fill="#1a1822">P</text>
+  </g>
+
+  <!-- Row-major linearization -->
+  <text x="555" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Row-major layout (C, Java, numpy)</text>
+  <text x="555" y="113" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">addr(i,j) = base + (i * cols + j) * s</text>
+
+  <g>
+    <rect x="260" y="125" width="30" height="30" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="275" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">A</text>
+    <rect x="290" y="125" width="30" height="30" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="305" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">B</text>
+    <rect x="320" y="125" width="30" height="30" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="335" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">C</text>
+    <rect x="350" y="125" width="30" height="30" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="365" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">D</text>
+    <rect x="380" y="125" width="30" height="30" fill="#8a7ae3" stroke="#1a1822" stroke-width="1"/>
+    <text x="395" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">E</text>
+    <rect x="410" y="125" width="30" height="30" fill="#8a7ae3" stroke="#1a1822" stroke-width="1"/>
+    <text x="425" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">F</text>
+    <rect x="440" y="125" width="30" height="30" fill="#8a7ae3" stroke="#1a1822" stroke-width="1"/>
+    <text x="455" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">G</text>
+    <rect x="470" y="125" width="30" height="30" fill="#8a7ae3" stroke="#1a1822" stroke-width="1"/>
+    <text x="485" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">H</text>
+    <rect x="500" y="125" width="30" height="30" fill="#a89bec" stroke="#1a1822" stroke-width="1"/>
+    <text x="515" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">I</text>
+    <rect x="530" y="125" width="30" height="30" fill="#a89bec" stroke="#1a1822" stroke-width="1"/>
+    <text x="545" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">J</text>
+    <rect x="560" y="125" width="30" height="30" fill="#a89bec" stroke="#1a1822" stroke-width="1"/>
+    <text x="575" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">K</text>
+    <rect x="590" y="125" width="30" height="30" fill="#a89bec" stroke="#1a1822" stroke-width="1"/>
+    <text x="605" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">L</text>
+    <rect x="620" y="125" width="30" height="30" fill="#c5bcf3" stroke="#1a1822" stroke-width="1"/>
+    <text x="635" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">M</text>
+    <rect x="650" y="125" width="30" height="30" fill="#c5bcf3" stroke="#1a1822" stroke-width="1"/>
+    <text x="665" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">N</text>
+    <rect x="680" y="125" width="30" height="30" fill="#c5bcf3" stroke="#1a1822" stroke-width="1"/>
+    <text x="695" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">O</text>
+    <rect x="710" y="125" width="30" height="30" fill="#c5bcf3" stroke="#1a1822" stroke-width="1"/>
+    <text x="725" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">P</text>
+  </g>
+  <text x="260" y="170" font-size="9" fill="#1a1822" opacity="0.7">addr 0</text>
+  <text x="740" y="170" text-anchor="end" font-size="9" fill="#1a1822" opacity="0.7">addr 15</text>
+  <text x="555" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Row iteration: A,B,C,D sequential ✓ 1 cache miss per 4 elements</text>
+  <text x="555" y="213" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Column iteration: A,E,I,M — stride 4 ✗ 1 cache miss per element</text>
+
+  <!-- Column-major linearization -->
+  <text x="555" y="260" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Column-major layout (Fortran, MATLAB, R)</text>
+  <text x="555" y="278" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">addr(i,j) = base + (j * rows + i) * s</text>
+
+  <g>
+    <rect x="260" y="290" width="30" height="30" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="275" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">A</text>
+    <rect x="290" y="290" width="30" height="30" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="305" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">E</text>
+    <rect x="320" y="290" width="30" height="30" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="335" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">I</text>
+    <rect x="350" y="290" width="30" height="30" fill="#6d5bd0" stroke="#1a1822" stroke-width="1"/>
+    <text x="365" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">M</text>
+    <rect x="380" y="290" width="30" height="30" fill="#8a7ae3" stroke="#1a1822" stroke-width="1"/>
+    <text x="395" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">B</text>
+    <rect x="410" y="290" width="30" height="30" fill="#8a7ae3" stroke="#1a1822" stroke-width="1"/>
+    <text x="425" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">F</text>
+    <rect x="440" y="290" width="30" height="30" fill="#8a7ae3" stroke="#1a1822" stroke-width="1"/>
+    <text x="455" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">J</text>
+    <rect x="470" y="290" width="30" height="30" fill="#8a7ae3" stroke="#1a1822" stroke-width="1"/>
+    <text x="485" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">N</text>
+    <rect x="500" y="290" width="30" height="30" fill="#a89bec" stroke="#1a1822" stroke-width="1"/>
+    <text x="515" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">C</text>
+    <rect x="530" y="290" width="30" height="30" fill="#a89bec" stroke="#1a1822" stroke-width="1"/>
+    <text x="545" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">G</text>
+    <rect x="560" y="290" width="30" height="30" fill="#a89bec" stroke="#1a1822" stroke-width="1"/>
+    <text x="575" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">K</text>
+    <rect x="590" y="290" width="30" height="30" fill="#a89bec" stroke="#1a1822" stroke-width="1"/>
+    <text x="605" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">O</text>
+    <rect x="620" y="290" width="30" height="30" fill="#c5bcf3" stroke="#1a1822" stroke-width="1"/>
+    <text x="635" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">D</text>
+    <rect x="650" y="290" width="30" height="30" fill="#c5bcf3" stroke="#1a1822" stroke-width="1"/>
+    <text x="665" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">H</text>
+    <rect x="680" y="290" width="30" height="30" fill="#c5bcf3" stroke="#1a1822" stroke-width="1"/>
+    <text x="695" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">L</text>
+    <rect x="710" y="290" width="30" height="30" fill="#c5bcf3" stroke="#1a1822" stroke-width="1"/>
+    <text x="725" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">P</text>
+  </g>
+  <text x="555" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">Row iteration: A,B,C,D — stride 4 ✗ 1 cache miss per element</text>
+  <text x="555" y="358" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Column iteration: A,E,I,M sequential ✓ 1 cache miss per 4 elements</text>
+
+  <!-- Takeaway box -->
+  <rect x="60" y="390" width="780" height="90" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Benchmark rule of thumb</text>
+  <text x="80" y="432" font-size="11" fill="#1a1822">• Swap the loop nesting to match layout: <tspan font-family="ui-monospace, monospace">for row {`{`} for col {`{`} a[row][col] {`}`} {`}`}</tspan></text>
+  <text x="80" y="450" font-size="11" fill="#1a1822">• Columnar analytics engines (Parquet, Arrow, DuckDB) choose column-major for per-column scans</text>
+  <text x="80" y="468" font-size="11" fill="#1a1822">• Cost ratio for mismatched iteration on 1M elements: typically 20× – 50× slower</text>
+
+  <!-- Legend for color bands -->
+  <rect x="60" y="280" width="140" height="60" rx="6" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+  <text x="130" y="295" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Same color = same row</text>
+  <rect x="70" y="305" width="14" height="10" fill="#6d5bd0"/>
+  <text x="90" y="314" font-size="9" fill="#1a1822">row 0</text>
+  <rect x="70" y="320" width="14" height="10" fill="#8a7ae3"/>
+  <text x="90" y="329" font-size="9" fill="#1a1822">row 1</text>
+  <rect x="130" y="305" width="14" height="10" fill="#a89bec"/>
+  <text x="150" y="314" font-size="9" fill="#1a1822">row 2</text>
+  <rect x="130" y="320" width="14" height="10" fill="#c5bcf3"/>
+  <text x="150" y="329" font-size="9" fill="#1a1822">row 3</text>
+</svg>

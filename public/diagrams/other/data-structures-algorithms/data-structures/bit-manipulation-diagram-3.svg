@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Bitmask representing a set of features where each bit position indicates presence with union intersection and difference operations</title>
+
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Bitmask as Compact Set</text>
+  <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Each bit position encodes membership — union/intersection/difference are single CPU instructions</text>
+
+  <!-- Flag definitions -->
+  <rect x="40" y="75" width="820" height="60" rx="8" fill="#ffffff" stroke="#1a1822" stroke-width="1"/>
+  <text x="55" y="95" font-size="11" font-weight="700" fill="#1a1822">Flag positions (1 &lt;&lt; n):</text>
+  <text x="55" y="115" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">READ=1  WRITE=2  DELETE=4  ADMIN=8  AUDIT=16  BILLING=32  SUPPORT=64  OWNER=128</text>
+  <text x="55" y="128" font-size="10" fill="#1a1822" opacity="0.7">8 bits = 256 possible combinations of 8 independent flags, stored in one byte</text>
+
+  <!-- User A -->
+  <text x="60" y="165" font-size="12" font-weight="700" fill="#1a1822">User A: READ | WRITE | AUDIT = 0x13 (19)</text>
+  <g font-family="ui-monospace, monospace">
+    <rect x="60" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="78" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <text x="78" y="226" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">OWNER</text>
+    <rect x="96" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="114" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <text x="114" y="226" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">SUPPORT</text>
+    <rect x="132" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="150" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <text x="150" y="226" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">BILLING</text>
+    <rect x="168" y="175" width="36" height="36" fill="#6d5bd0" stroke="#1a1822"/>
+    <text x="186" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+    <text x="186" y="226" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">AUDIT</text>
+    <rect x="204" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="222" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <text x="222" y="226" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">ADMIN</text>
+    <rect x="240" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="258" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <text x="258" y="226" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">DELETE</text>
+    <rect x="276" y="175" width="36" height="36" fill="#6d5bd0" stroke="#1a1822"/>
+    <text x="294" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+    <text x="294" y="226" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">WRITE</text>
+    <rect x="312" y="175" width="36" height="36" fill="#6d5bd0" stroke="#1a1822"/>
+    <text x="330" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+    <text x="330" y="226" text-anchor="middle" font-size="8" fill="#1a1822" opacity="0.6">READ</text>
+  </g>
+
+  <!-- User B -->
+  <text x="470" y="165" font-size="12" font-weight="700" fill="#1a1822">User B: READ | DELETE | BILLING = 0x25 (37)</text>
+  <g font-family="ui-monospace, monospace">
+    <rect x="470" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="488" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <rect x="506" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="524" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <rect x="542" y="175" width="36" height="36" fill="#4caf50" stroke="#1a1822"/>
+    <text x="560" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+    <rect x="578" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="596" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <rect x="614" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="632" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <rect x="650" y="175" width="36" height="36" fill="#4caf50" stroke="#1a1822"/>
+    <text x="668" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+    <rect x="686" y="175" width="36" height="36" fill="#ffffff" stroke="#1a1822"/>
+    <text x="704" y="198" text-anchor="middle" font-size="14" fill="#1a1822">0</text>
+    <rect x="722" y="175" width="36" height="36" fill="#4caf50" stroke="#1a1822"/>
+    <text x="740" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+  </g>
+
+  <!-- Operations -->
+  <rect x="40" y="260" width="265" height="210" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="260" width="265" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="172" y="279" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Union: A | B</text>
+  <text x="55" y="306" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">A     = 00010011</text>
+  <text x="55" y="322" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">B     = 00100101</text>
+  <text x="55" y="342" font-size="10" font-family="ui-monospace, monospace" fill="#6d5bd0" font-weight="700">A | B = 00110111</text>
+  <text x="55" y="372" font-size="10" fill="#1a1822">All flags either has = READ, WRITE,</text>
+  <text x="55" y="388" font-size="10" fill="#1a1822">DELETE, AUDIT, BILLING = 0x37 (55)</text>
+  <text x="55" y="418" font-size="11" font-weight="700" fill="#1a1822">Use case:</text>
+  <text x="55" y="435" font-size="10" fill="#1a1822">Grant a role&apos;s cumulative permissions</text>
+  <text x="55" y="451" font-size="10" fill="#1a1822">across multiple group memberships.</text>
+
+  <rect x="317" y="260" width="265" height="210" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="317" y="260" width="265" height="28" rx="10" fill="#4caf50"/>
+  <text x="450" y="279" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Intersection: A &amp; B</text>
+  <text x="332" y="306" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">A     = 00010011</text>
+  <text x="332" y="322" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">B     = 00100101</text>
+  <text x="332" y="342" font-size="10" font-family="ui-monospace, monospace" fill="#4caf50" font-weight="700">A &amp; B = 00000001</text>
+  <text x="332" y="372" font-size="10" fill="#1a1822">Common flags = READ only.</text>
+  <text x="332" y="388" font-size="10" fill="#1a1822">= 0x01</text>
+  <text x="332" y="418" font-size="11" font-weight="700" fill="#1a1822">Use case:</text>
+  <text x="332" y="435" font-size="10" fill="#1a1822">Verify required permissions:</text>
+  <text x="332" y="451" font-size="10" fill="#1a1822">(userFlags &amp; required) === required</text>
+
+  <rect x="594" y="260" width="265" height="210" rx="10" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
+  <rect x="594" y="260" width="265" height="28" rx="10" fill="#cc4444"/>
+  <text x="727" y="279" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Difference: A &amp; ~B</text>
+  <text x="609" y="306" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">A      = 00010011</text>
+  <text x="609" y="322" font-size="10" font-family="ui-monospace, monospace" fill="#1a1822">~B     = 11011010</text>
+  <text x="609" y="342" font-size="10" font-family="ui-monospace, monospace" fill="#cc4444" font-weight="700">A &amp; ~B = 00010010</text>
+  <text x="609" y="372" font-size="10" fill="#1a1822">In A but not B = WRITE, AUDIT.</text>
+  <text x="609" y="388" font-size="10" fill="#1a1822">= 0x12</text>
+  <text x="609" y="418" font-size="11" font-weight="700" fill="#1a1822">Use case:</text>
+  <text x="609" y="435" font-size="10" fill="#1a1822">Revoke flags present in A but</text>
+  <text x="609" y="451" font-size="10" fill="#1a1822">granted by another role B.</text>
+</svg>
