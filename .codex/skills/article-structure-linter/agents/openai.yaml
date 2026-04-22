@@ -1,0 +1,4 @@
+interface:
+  display_name: "Article Structure Linter"
+  short_description: "Validate article structure fast."
+  default_prompt: "Use $article-structure-linter to validate article TSX structure and section ordering in this repo."

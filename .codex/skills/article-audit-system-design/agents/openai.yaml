@@ -1,0 +1,4 @@
+interface:
+  display_name: "System Design Article Auditor"
+  short_description: "Audit article quality and gaps."
+  default_prompt: "Use $article-audit-system-design to audit a sub-category or article set in this repo."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "System Design Article Generator"
+  short_description: "Generate repo-aligned article drafts."
+  default_prompt: "Use $article-generate-system-design to create a new TSX article draft for this repo."

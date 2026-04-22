@@ -1,0 +1,4 @@
+interface:
+  display_name: "System Design Article Enhancer"
+  short_description: "Enhance article depth and quality."
+  default_prompt: "Use $article-enhance-system-design to improve an existing article in this repo."

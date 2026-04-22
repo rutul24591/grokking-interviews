@@ -1,0 +1,4 @@
+interface:
+  display_name: "Article SVG Diagram Author"
+  short_description: "Create valid interview-focused SVGs."
+  default_prompt: "Use $svg-diagram-author to produce 3-5 SVG diagrams for a system design article."

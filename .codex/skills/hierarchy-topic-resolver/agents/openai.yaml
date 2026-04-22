@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hierarchy Topic Resolver"
+  short_description: "Resolve canonical topic paths fast."
+  default_prompt: "Use $hierarchy-topic-resolver to resolve the exact topic path from hierarchy-data.txt before article work."
