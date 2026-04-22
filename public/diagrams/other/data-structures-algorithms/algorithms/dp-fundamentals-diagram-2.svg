@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Top-Down Memoization vs Bottom-Up Tabulation</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Same recurrence: dp[i][w] = max(dp[i-1][w], dp[i-1][w-wᵢ] + vᵢ). Two implementations.</text>
+
+  <!-- Top-down panel -->
+  <rect x="40" y="80" width="400" height="220" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="240" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Top-down (memoized recursion)</text>
+  <text x="60" y="130" font-size="11" fill="#1a1822" font-family="monospace">def solve(i, w):</text>
+  <text x="60" y="146" font-size="11" fill="#1a1822" font-family="monospace">    if i == 0 or w == 0: return 0</text>
+  <text x="60" y="162" font-size="11" fill="#1a1822" font-family="monospace">    if (i, w) in cache: return cache[i,w]</text>
+  <text x="60" y="178" font-size="11" fill="#1a1822" font-family="monospace">    skip = solve(i-1, w)</text>
+  <text x="60" y="194" font-size="11" fill="#1a1822" font-family="monospace">    take = 0</text>
+  <text x="60" y="210" font-size="11" fill="#1a1822" font-family="monospace">    if wᵢ &lt;= w:</text>
+  <text x="60" y="226" font-size="11" fill="#1a1822" font-family="monospace">        take = solve(i-1, w-wᵢ) + vᵢ</text>
+  <text x="60" y="242" font-size="11" fill="#1a1822" font-family="monospace">    cache[i,w] = max(skip, take)</text>
+  <text x="60" y="258" font-size="11" fill="#1a1822" font-family="monospace">    return cache[i,w]</text>
+  <text x="60" y="284" font-size="11" font-weight="700" fill="#4caf50">✓ natural, lazy, sparse-friendly</text>
+
+  <!-- Bottom-up panel -->
+  <rect x="460" y="80" width="400" height="220" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="660" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Bottom-up (tabulation)</text>
+  <text x="480" y="130" font-size="11" fill="#1a1822" font-family="monospace">dp = [[0]*(W+1) for _ in range(n+1)]</text>
+  <text x="480" y="148" font-size="11" fill="#1a1822" font-family="monospace">for i in 1..n:</text>
+  <text x="480" y="164" font-size="11" fill="#1a1822" font-family="monospace">    for w in 0..W:</text>
+  <text x="480" y="180" font-size="11" fill="#1a1822" font-family="monospace">        dp[i][w] = dp[i-1][w]</text>
+  <text x="480" y="196" font-size="11" fill="#1a1822" font-family="monospace">        if wᵢ &lt;= w:</text>
+  <text x="480" y="212" font-size="11" fill="#1a1822" font-family="monospace">            dp[i][w] = max(</text>
+  <text x="480" y="228" font-size="11" fill="#1a1822" font-family="monospace">                dp[i][w],</text>
+  <text x="480" y="244" font-size="11" fill="#1a1822" font-family="monospace">                dp[i-1][w-wᵢ] + vᵢ)</text>
+  <text x="480" y="260" font-size="11" fill="#1a1822" font-family="monospace">return dp[n][W]</text>
+  <text x="480" y="284" font-size="11" font-weight="700" fill="#4caf50">✓ cache-friendly, space-optimizable</text>
+
+  <!-- Space optimization -->
+  <rect x="40" y="320" width="820" height="165" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="345" font-size="14" font-weight="700" fill="#6d5bd0">Space optimization: roll 2D → 1D</text>
+  <text x="60" y="367" font-size="11" fill="#1a1822" font-family="monospace">dp = [0] * (W+1)</text>
+  <text x="60" y="383" font-size="11" fill="#1a1822" font-family="monospace">for i in 1..n:</text>
+  <text x="60" y="399" font-size="11" fill="#1a1822" font-family="monospace">    for w in W..wᵢ:   # iterate HIGH to LOW for 0/1 knapsack</text>
+  <text x="60" y="415" font-size="11" fill="#1a1822" font-family="monospace">        dp[w] = max(dp[w], dp[w-wᵢ] + vᵢ)</text>
+
+  <text x="60" y="445" font-size="11" fill="#cc4444"><tspan font-weight="700">Why reversed:</tspan> dp[w-wᵢ] must still hold the previous row&rsquo;s value when read.</text>
+  <text x="60" y="463" font-size="11" fill="#cc4444">Iterating low-to-high would reuse just-updated dp[w-wᵢ], converting 0/1 into unbounded knapsack.</text>
+  <text x="60" y="480" font-size="11" fill="#4caf50" font-weight="700">Space: O(nW) → O(W). Time: O(nW) unchanged. No correctness loss if ordering is right.</text>
+</svg>

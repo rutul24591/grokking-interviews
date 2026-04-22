@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Where Jump Search Fits — Access-Cost Landscape</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Algorithm choice depends on seek cost vs sequential cost, not just n.</text>
+
+  <!-- Table -->
+  <rect x="40" y="80" width="820" height="300" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <line x1="40" y1="115" x2="860" y2="115" stroke="#6d5bd0"/>
+  <line x1="260" y1="80" x2="260" y2="380" stroke="#6d5bd0" opacity="0.4"/>
+  <line x1="460" y1="80" x2="460" y2="380" stroke="#6d5bd0" opacity="0.4"/>
+  <line x1="660" y1="80" x2="660" y2="380" stroke="#6d5bd0" opacity="0.4"/>
+
+  <text x="150" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Storage medium</text>
+  <text x="360" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Seek cost</text>
+  <text x="560" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Sequential cost</text>
+  <text x="760" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Best search</text>
+
+  <!-- Rows -->
+  <text x="60" y="145" font-size="12" fill="#1a1822">L1/L2 cache</text>
+  <text x="360" y="145" text-anchor="middle" font-size="12" fill="#4caf50">~1 ns</text>
+  <text x="560" y="145" text-anchor="middle" font-size="12" fill="#4caf50">~1 ns</text>
+  <text x="760" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">linear (SIMD)</text>
+
+  <text x="60" y="175" font-size="12" fill="#1a1822">Main memory (RAM)</text>
+  <text x="360" y="175" text-anchor="middle" font-size="12" fill="#4caf50">~100 ns</text>
+  <text x="560" y="175" text-anchor="middle" font-size="12" fill="#4caf50">~1 ns (prefetch)</text>
+  <text x="760" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">binary search</text>
+
+  <text x="60" y="205" font-size="12" fill="#1a1822">SSD random read</text>
+  <text x="360" y="205" text-anchor="middle" font-size="12" fill="#cc4444">~50 µs</text>
+  <text x="560" y="205" text-anchor="middle" font-size="12" fill="#4caf50">~200 MB/s</text>
+  <text x="760" y="205" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">B-tree index</text>
+
+  <text x="60" y="235" font-size="12" fill="#1a1822">HDD spinning disk</text>
+  <text x="360" y="235" text-anchor="middle" font-size="12" fill="#cc4444">~10 ms</text>
+  <text x="560" y="235" text-anchor="middle" font-size="12" fill="#4caf50">~150 MB/s</text>
+  <text x="760" y="235" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">B-tree (or jump)</text>
+
+  <text x="60" y="265" font-size="12" fill="#1a1822">Parquet row group</text>
+  <text x="360" y="265" text-anchor="middle" font-size="12" fill="#cc4444">decompress ~ms</text>
+  <text x="560" y="265" text-anchor="middle" font-size="12" fill="#4caf50">in-group: fast</text>
+  <text x="760" y="265" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">jump search</text>
+
+  <text x="60" y="295" font-size="12" fill="#1a1822">Tape / cold archive</text>
+  <text x="360" y="295" text-anchor="middle" font-size="12" fill="#cc4444">~seconds</text>
+  <text x="560" y="295" text-anchor="middle" font-size="12" fill="#4caf50">sequential: fast</text>
+  <text x="760" y="295" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">jump search</text>
+
+  <text x="60" y="325" font-size="12" fill="#1a1822">Streaming log / unknown n</text>
+  <text x="360" y="325" text-anchor="middle" font-size="12" fill="#cc4444">n unknown</text>
+  <text x="560" y="325" text-anchor="middle" font-size="12" fill="#4caf50">forward-only</text>
+  <text x="760" y="325" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">exponential</text>
+
+  <text x="60" y="355" font-size="12" fill="#1a1822">Linked list</text>
+  <text x="360" y="355" text-anchor="middle" font-size="12" fill="#cc4444">no random access</text>
+  <text x="560" y="355" text-anchor="middle" font-size="12" fill="#4caf50">pointer chase</text>
+  <text x="760" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">linear only</text>
+
+  <rect x="40" y="400" width="820" height="85" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="60" y="424" font-size="13" font-weight="700" fill="#cc4444">Key insight</text>
+  <text x="60" y="445" font-size="11" fill="#1a1822">Jump search dominates when seek cost ≫ sequential cost. The √n block amortizes expensive</text>
+  <text x="60" y="462" font-size="11" fill="#1a1822">seeks across many cheap sequential reads. With cache-resident uniform access, binary wins.</text>
+  <text x="60" y="479" font-size="11" fill="#1a1822">In production, a proper index (B-tree, LSM) almost always beats raw jump search on disk.</text>
+</svg>

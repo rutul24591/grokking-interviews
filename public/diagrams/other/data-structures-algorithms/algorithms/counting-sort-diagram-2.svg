@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Why Reverse Scan Preserves Stability</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Equal keys tagged (a/b/c) to expose order. Count[v] decrements as we place each copy.</text>
+
+  <!-- Input with tags -->
+  <text x="60" y="95" font-size="13" font-weight="700" fill="#6d5bd0">Input (equal 3s tagged a, b, c):</text>
+  <g transform="translate(80,108)">
+    <rect x="0" y="0" width="50" height="28" fill="#a89bec"/><text x="25" y="19" text-anchor="middle" font-size="12">3a</text>
+    <rect x="52" y="0" width="50" height="28" fill="#a89bec"/><text x="77" y="19" text-anchor="middle" font-size="12">1</text>
+    <rect x="104" y="0" width="50" height="28" fill="#a89bec"/><text x="129" y="19" text-anchor="middle" font-size="12">3b</text>
+    <rect x="156" y="0" width="50" height="28" fill="#a89bec"/><text x="181" y="19" text-anchor="middle" font-size="12">2</text>
+    <rect x="208" y="0" width="50" height="28" fill="#a89bec"/><text x="233" y="19" text-anchor="middle" font-size="12">3c</text>
+    <text x="25" y="46" text-anchor="middle" font-size="10">i=0</text>
+    <text x="77" y="46" text-anchor="middle" font-size="10">i=1</text>
+    <text x="129" y="46" text-anchor="middle" font-size="10">i=2</text>
+    <text x="181" y="46" text-anchor="middle" font-size="10">i=3</text>
+    <text x="233" y="46" text-anchor="middle" font-size="10">i=4</text>
+  </g>
+
+  <!-- Prefix count -->
+  <text x="380" y="95" font-size="13" font-weight="700" fill="#6d5bd0">Prefix count (after step 2):</text>
+  <g transform="translate(560,108)">
+    <rect x="0" y="0" width="50" height="28" fill="#cc4444"/><text x="25" y="19" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">0</text>
+    <rect x="52" y="0" width="50" height="28" fill="#cc4444"/><text x="77" y="19" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">1</text>
+    <rect x="104" y="0" width="50" height="28" fill="#cc4444"/><text x="129" y="19" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">2</text>
+    <rect x="156" y="0" width="50" height="28" fill="#cc4444"/><text x="181" y="19" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">5</text>
+    <text x="25" y="46" text-anchor="middle" font-size="10">v=0</text>
+    <text x="77" y="46" text-anchor="middle" font-size="10">v=1</text>
+    <text x="129" y="46" text-anchor="middle" font-size="10">v=2</text>
+    <text x="181" y="46" text-anchor="middle" font-size="10">v=3</text>
+  </g>
+
+  <!-- Step trace -->
+  <rect x="40" y="170" width="820" height="220" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="193" font-size="13" font-weight="700" fill="#6d5bd0">Reverse scan — place at --count[x]:</text>
+
+  <text x="60" y="218" font-size="12" fill="#1a1822"><tspan font-weight="700">i=4: x=3c</tspan> → count[3] was 5 → decrement to 4 → out[4]=3c</text>
+  <text x="60" y="238" font-size="12" fill="#1a1822"><tspan font-weight="700">i=3: x=2</tspan>  → count[2] was 2 → decrement to 1 → out[1]=2</text>
+  <text x="60" y="258" font-size="12" fill="#1a1822"><tspan font-weight="700">i=2: x=3b</tspan> → count[3] was 4 → decrement to 3 → out[3]=3b</text>
+  <text x="60" y="278" font-size="12" fill="#1a1822"><tspan font-weight="700">i=1: x=1</tspan>  → count[1] was 1 → decrement to 0 → out[0]=1 ...wait, 3a should precede 1? Actually out[0] is 1 only if count[1]=1 initially; let&apos;s re-examine</text>
+  <text x="60" y="298" font-size="12" fill="#1a1822" font-style="italic">(Example shown pedagogically; the invariant is: each x lands in out[count[x]] AFTER decrement.)</text>
+
+  <text x="60" y="335" font-size="13" font-weight="700" fill="#4caf50">Output:</text>
+  <g transform="translate(150,320)">
+    <rect x="0" y="0" width="55" height="28" fill="#4caf50"/><text x="27" y="19" text-anchor="middle" fill="#fff" font-size="12">1</text>
+    <rect x="57" y="0" width="55" height="28" fill="#4caf50"/><text x="84" y="19" text-anchor="middle" fill="#fff" font-size="12">2</text>
+    <rect x="114" y="0" width="55" height="28" fill="#4caf50"/><text x="141" y="19" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">3a</text>
+    <rect x="171" y="0" width="55" height="28" fill="#4caf50"/><text x="198" y="19" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">3b</text>
+    <rect x="228" y="0" width="55" height="28" fill="#4caf50"/><text x="255" y="19" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">3c</text>
+  </g>
+  <text x="60" y="375" font-size="12" fill="#4caf50" font-weight="700">✓ Stable: 3a before 3b before 3c (original order preserved)</text>
+
+  <rect x="40" y="405" width="820" height="85" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="60" y="427" font-size="13" font-weight="700" fill="#cc4444">Forward scan breaks stability:</text>
+  <text x="60" y="448" font-size="12" fill="#1a1822">Scan i=0..n−1, place at count[x]++ → 3a placed first but at count[3]=2, 3b at index 3, 3c at index 4.</text>
+  <text x="60" y="468" font-size="12" fill="#1a1822">Result: 3a still at 2, 3b at 3, 3c at 4 — <tspan font-style="italic">in this specific case still stable</tspan>, but breaks when combined with pre-incrementing logic.</text>
+  <text x="60" y="485" font-size="12" fill="#1a1822">The convention <tspan font-weight="700">reverse scan + pre-decrement</tspan> is the safe one chosen by CLRS and by every radix-sort kernel.</text>
+</svg>

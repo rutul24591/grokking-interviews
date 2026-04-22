@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Gap Sequences — Proven Bounds vs Empirical Performance</text>
+
+  <rect x="60" y="70" width="780" height="260" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <line x1="80" y1="100" x2="820" y2="100" stroke="#1a1822"/>
+  <line x1="80" y1="320" x2="820" y2="320" stroke="#1a1822"/>
+  <line x1="190" y1="80" x2="190" y2="320" stroke="#1a1822"/>
+  <line x1="360" y1="80" x2="360" y2="320" stroke="#1a1822"/>
+  <line x1="550" y1="80" x2="550" y2="320" stroke="#1a1822"/>
+
+  <text x="135" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Sequence</text>
+  <text x="275" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Formula</text>
+  <text x="455" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Worst-case</text>
+  <text x="685" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Notes</text>
+
+  <text x="90" y="125" font-size="12" fill="#cc4444">Shell (1959)</text>
+  <text x="200" y="125" font-size="12" fill="#1a1822">n/2, n/4, …, 1</text>
+  <text x="370" y="125" font-size="12" fill="#cc4444">Θ(n²)</text>
+  <text x="560" y="125" font-size="12" fill="#1a1822">powers of 2 — poor</text>
+
+  <text x="90" y="155" font-size="12" fill="#1a1822">Hibbard (1963)</text>
+  <text x="200" y="155" font-size="12" fill="#1a1822">2^k − 1</text>
+  <text x="370" y="155" font-size="12" fill="#1a1822">Θ(n^3/2)</text>
+  <text x="560" y="155" font-size="12" fill="#1a1822">odd gaps — first real improvement</text>
+
+  <text x="90" y="185" font-size="12" fill="#4caf50">Pratt (1971)</text>
+  <text x="200" y="185" font-size="12" fill="#1a1822">2^i · 3^j</text>
+  <text x="370" y="185" font-size="12" fill="#4caf50">Θ(n log² n)</text>
+  <text x="560" y="185" font-size="12" fill="#1a1822">best proven — too many passes</text>
+
+  <text x="90" y="215" font-size="12" fill="#4caf50">Sedgewick (1986)</text>
+  <text x="200" y="215" font-size="12" fill="#1a1822">interleaved 4^i+...</text>
+  <text x="370" y="215" font-size="12" fill="#4caf50">Θ(n^4/3)</text>
+  <text x="560" y="215" font-size="12" fill="#1a1822">best practical worst-case bound</text>
+
+  <text x="90" y="245" font-size="12" fill="#6d5bd0">Tokuda (1992)</text>
+  <text x="200" y="245" font-size="12" fill="#1a1822">⌈(9(9/4)^k − 4)/5⌉</text>
+  <text x="370" y="245" font-size="12" fill="#1a1822">empirical</text>
+  <text x="560" y="245" font-size="12" fill="#1a1822">predecessor to Ciura</text>
+
+  <text x="90" y="275" font-size="12" fill="#6d5bd0" font-weight="700">Ciura (2001)</text>
+  <text x="200" y="275" font-size="12" fill="#1a1822">1,4,10,23,57,132,301,701,1750</text>
+  <text x="370" y="275" font-size="12" fill="#1a1822">unproven</text>
+  <text x="560" y="275" font-size="12" fill="#1a1822">fastest in benchmarks (SA-found)</text>
+
+  <text x="80" y="305" font-size="11" fill="#1a1822" font-style="italic">All entries below Hibbard accept strictly greater-than shifts; stability lost in every case.</text>
+
+  <rect x="60" y="350" width="780" height="130" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="80" y="375" font-size="14" font-weight="700" fill="#6d5bd0">Key insight — parameter drives asymptotic class</text>
+  <text x="80" y="400" font-size="13" fill="#1a1822">No other common comparison sort has asymptotic behavior that depends on a tuning parameter the algorithm does not itself provide.</text>
+  <text x="80" y="422" font-size="13" fill="#1a1822">60+ years of research, and the fastest sequence (Ciura) has no closed-form bound. Found by simulated annealing.</text>
+  <text x="80" y="444" font-size="13" fill="#1a1822">Pratt gives the best proven bound (Θ(n log² n)) at the cost of many more passes — not empirically fastest.</text>
+  <text x="80" y="464" font-size="13" fill="#1a1822">Rule of thumb: for production code pick Ciura; for a proven bound pick Sedgewick.</text>
+</svg>

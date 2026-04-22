@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">The 5-Step DP Framework</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Run this before coding. Most DP failures are step-1 (state) failures, not step-5 (optimization).</text>
+
+  <g font-size="12">
+    <!-- Step 1 -->
+    <rect x="40" y="80" width="820" height="60" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+    <circle cx="70" cy="110" r="18" fill="#6d5bd0"/><text x="70" y="114" text-anchor="middle" fill="#fff" font-weight="700">1</text>
+    <text x="100" y="105" font-weight="700" fill="#6d5bd0">Identify state</text>
+    <text x="100" y="125" fill="#1a1822">What parameters uniquely define a subproblem? Goal: minimal, comparable (array-indexable).</text>
+
+    <!-- Step 2 -->
+    <rect x="40" y="155" width="820" height="60" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+    <circle cx="70" cy="185" r="18" fill="#6d5bd0"/><text x="70" y="189" text-anchor="middle" fill="#fff" font-weight="700">2</text>
+    <text x="100" y="180" font-weight="700" fill="#6d5bd0">Write transition</text>
+    <text x="100" y="200" fill="#1a1822">Recurrence: dp[state] = f(dp[smaller_states]). What decisions does each subproblem make?</text>
+
+    <!-- Step 3 -->
+    <rect x="40" y="230" width="820" height="60" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+    <circle cx="70" cy="260" r="18" fill="#6d5bd0"/><text x="70" y="264" text-anchor="middle" fill="#fff" font-weight="700">3</text>
+    <text x="100" y="255" font-weight="700" fill="#6d5bd0">Identify base cases</text>
+    <text x="100" y="275" fill="#1a1822">What are the smallest subproblems with known answers? Empty input, single element, zero budget.</text>
+
+    <!-- Step 4 -->
+    <rect x="40" y="305" width="820" height="60" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+    <circle cx="70" cy="335" r="18" fill="#6d5bd0"/><text x="70" y="339" text-anchor="middle" fill="#fff" font-weight="700">4</text>
+    <text x="100" y="330" font-weight="700" fill="#6d5bd0">Choose evaluation order</text>
+    <text x="100" y="350" fill="#1a1822">Top-down (recursion + memo) or bottom-up (tabulation)? Pick bottom-up if state space is dense.</text>
+
+    <!-- Step 5 -->
+    <rect x="40" y="380" width="820" height="60" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+    <circle cx="70" cy="410" r="18" fill="#4caf50"/><text x="70" y="414" text-anchor="middle" fill="#fff" font-weight="700">5</text>
+    <text x="100" y="405" font-weight="700" fill="#4caf50">Optimize space (optional)</text>
+    <text x="100" y="425" fill="#1a1822">If only previous row/column needed: roll 2D → 1D. Only after correctness is verified.</text>
+  </g>
+
+  <rect x="40" y="455" width="820" height="30" fill="#fff" stroke="#cc4444" stroke-width="1" rx="4"/>
+  <text x="60" y="475" font-size="11" fill="#1a1822">Complexity formula: <tspan font-weight="700">time = (# states) × (work per transition)</tspan>. If this doesn&rsquo;t match your claim, recount.</text>
+</svg>

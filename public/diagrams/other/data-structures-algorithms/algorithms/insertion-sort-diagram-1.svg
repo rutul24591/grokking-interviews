@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Insertion Sort — Key-Aside, Shift, Drop</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#1a1822">Inserting key=1 into sorted prefix [2,4,5,6] — shifts, not swaps (half the memory traffic)</text>
+
+  <!-- Step 1: extract key -->
+  <text x="40" y="100" font-size="14" font-weight="700" fill="#6d5bd0">Step 1: save key</text>
+  <g transform="translate(200,85)">
+    <rect x="0" y="0" width="50" height="35" fill="#4caf50"/><text x="25" y="22" text-anchor="middle" fill="#fff" font-weight="700">2</text>
+    <rect x="55" y="0" width="50" height="35" fill="#4caf50"/><text x="80" y="22" text-anchor="middle" fill="#fff" font-weight="700">4</text>
+    <rect x="110" y="0" width="50" height="35" fill="#4caf50"/><text x="135" y="22" text-anchor="middle" fill="#fff" font-weight="700">5</text>
+    <rect x="165" y="0" width="50" height="35" fill="#4caf50"/><text x="190" y="22" text-anchor="middle" fill="#fff" font-weight="700">6</text>
+    <rect x="220" y="0" width="50" height="35" fill="#cc4444"/><text x="245" y="22" text-anchor="middle" fill="#fff" font-weight="700">1</text>
+    <rect x="275" y="0" width="50" height="35" fill="#a89bec"/><text x="300" y="22" text-anchor="middle">3</text>
+    <path d="M245 40 L360 40" stroke="#cc4444" stroke-width="2" marker-end="url(#iar)"/>
+    <text x="370" y="48" font-size="12" fill="#cc4444">key = 1</text>
+  </g>
+
+  <!-- Step 2: shift -->
+  <text x="40" y="180" font-size="14" font-weight="700" fill="#6d5bd0">Step 2: shift larger elements right (4 shifts)</text>
+  <g transform="translate(200,165)">
+    <rect x="0" y="0" width="50" height="35" fill="#a89bec" stroke="#cc4444" stroke-width="2" stroke-dasharray="3"/><text x="25" y="22" text-anchor="middle">2</text>
+    <rect x="55" y="0" width="50" height="35" fill="#a89bec" stroke="#cc4444" stroke-width="2" stroke-dasharray="3"/><text x="80" y="22" text-anchor="middle">4</text>
+    <rect x="110" y="0" width="50" height="35" fill="#a89bec" stroke="#cc4444" stroke-width="2" stroke-dasharray="3"/><text x="135" y="22" text-anchor="middle">5</text>
+    <rect x="165" y="0" width="50" height="35" fill="#a89bec" stroke="#cc4444" stroke-width="2" stroke-dasharray="3"/><text x="190" y="22" text-anchor="middle">6</text>
+    <rect x="220" y="0" width="50" height="35" fill="#f3f1f8" stroke="#1a1822" stroke-dasharray="2"/><text x="245" y="22" text-anchor="middle" font-style="italic" font-size="11">slot</text>
+    <rect x="275" y="0" width="50" height="35" fill="#a89bec"/><text x="300" y="22" text-anchor="middle">3</text>
+    <path d="M25 55 L80 55" stroke="#cc4444" stroke-width="2" marker-end="url(#iar)"/>
+    <path d="M80 55 L135 55" stroke="#cc4444" stroke-width="2" marker-end="url(#iar)"/>
+    <path d="M135 55 L190 55" stroke="#cc4444" stroke-width="2" marker-end="url(#iar)"/>
+    <path d="M190 55 L245 55" stroke="#cc4444" stroke-width="2" marker-end="url(#iar)"/>
+  </g>
+
+  <!-- Step 3: drop key -->
+  <text x="40" y="265" font-size="14" font-weight="700" fill="#6d5bd0">Step 3: drop key into opened slot</text>
+  <g transform="translate(200,250)">
+    <rect x="0" y="0" width="50" height="35" fill="#4caf50"/><text x="25" y="22" text-anchor="middle" fill="#fff" font-weight="700">1</text>
+    <rect x="55" y="0" width="50" height="35" fill="#4caf50"/><text x="80" y="22" text-anchor="middle" fill="#fff" font-weight="700">2</text>
+    <rect x="110" y="0" width="50" height="35" fill="#4caf50"/><text x="135" y="22" text-anchor="middle" fill="#fff" font-weight="700">4</text>
+    <rect x="165" y="0" width="50" height="35" fill="#4caf50"/><text x="190" y="22" text-anchor="middle" fill="#fff" font-weight="700">5</text>
+    <rect x="220" y="0" width="50" height="35" fill="#4caf50"/><text x="245" y="22" text-anchor="middle" fill="#fff" font-weight="700">6</text>
+    <rect x="275" y="0" width="50" height="35" fill="#a89bec"/><text x="300" y="22" text-anchor="middle">3</text>
+  </g>
+
+  <rect x="60" y="310" width="780" height="160" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="80" y="335" font-size="14" font-weight="700" fill="#6d5bd0">Why this matters</text>
+  <text x="80" y="358" font-size="13" fill="#1a1822">• Total shifts = inversion count exactly → runtime Θ(n + I).</text>
+  <text x="80" y="378" font-size="13" fill="#1a1822">• Shift = 1 read + 1 write.  Swap = 3 reads + 3 writes. 2× memory-traffic advantage over bubble sort.</text>
+  <text x="80" y="398" font-size="13" fill="#1a1822">• Sequential access + predictable branch → modern CPU pipelines and prefetchers handle it near peak.</text>
+  <text x="80" y="418" font-size="13" fill="#1a1822">• Best case Θ(n) on sorted input — outer scan comparing each new element only once with its predecessor.</text>
+  <text x="80" y="440" font-size="13" fill="#1a1822">• Stable: condition is &quot;a[j] &gt; key&quot;, not &quot;≥&quot; — equal elements never shift past each other.</text>
+  <text x="80" y="462" font-size="13" fill="#1a1822">• Online: new arrivals can be inserted into the sorted prefix without reprocessing — unique among elementary sorts.</text>
+
+  <defs><marker id="iar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#cc4444"/></marker></defs>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">LCS in the Wild — Four Applications, One Algorithm</text>
+
+  <!-- Grid 2x2 -->
+  <rect x="40" y="70" width="400" height="190" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="95" font-size="13" font-weight="700" fill="#6d5bd0">1. git diff / unix diff</text>
+  <text x="60" y="118" font-size="11" fill="#1a1822">Compare file versions line-by-line.</text>
+  <text x="60" y="138" font-size="11" fill="#1a1822" font-family="monospace">- old line removed</text>
+  <text x="60" y="154" font-size="11" fill="#4caf50" font-family="monospace">+ new line added</text>
+  <text x="60" y="170" font-size="11" fill="#1a1822" font-family="monospace">  unchanged (in LCS)</text>
+  <text x="60" y="196" font-size="11" fill="#1a1822">Tokens = lines; DP on line-array.</text>
+  <text x="60" y="215" font-size="11" fill="#1a1822">Myers&rsquo; algorithm: O((m+n)·d).</text>
+  <text x="60" y="240" font-size="11" fill="#4caf50" font-weight="700">Used by: git, hg, svn, IDE diff views.</text>
+
+  <rect x="460" y="70" width="400" height="190" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="480" y="95" font-size="13" font-weight="700" fill="#6d5bd0">2. DNA / protein alignment</text>
+  <text x="480" y="118" font-size="11" fill="#1a1822">Find homologous regions, mutations.</text>
+  <text x="480" y="140" font-size="11" fill="#1a1822" font-family="monospace">A: ACGT-TGCA</text>
+  <text x="480" y="156" font-size="11" fill="#1a1822" font-family="monospace">B: AC-TGTGCA</text>
+  <text x="480" y="180" font-size="11" fill="#1a1822">Needleman-Wunsch: global alignment.</text>
+  <text x="480" y="196" font-size="11" fill="#1a1822">Smith-Waterman: local, for homology.</text>
+  <text x="480" y="216" font-size="11" fill="#1a1822">Substitution cost matrix (BLOSUM).</text>
+  <text x="480" y="240" font-size="11" fill="#4caf50" font-weight="700">Used by: BLAST, ClustalW, minimap2.</text>
+
+  <rect x="40" y="280" width="400" height="190" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="305" font-size="13" font-weight="700" fill="#6d5bd0">3. Plagiarism detection</text>
+  <text x="60" y="328" font-size="11" fill="#1a1822">Tokenize source → LCS on tokens.</text>
+  <text x="60" y="346" font-size="11" fill="#1a1822">Detects reordering-resistant copying.</text>
+  <text x="60" y="370" font-size="11" fill="#1a1822">e.g. rename variables, swap methods</text>
+  <text x="60" y="386" font-size="11" fill="#1a1822">— LCS of normalized token stream</text>
+  <text x="60" y="402" font-size="11" fill="#1a1822">still catches it.</text>
+  <text x="60" y="430" font-size="11" fill="#4caf50" font-weight="700">Used by: Moss (Stanford), JPlag, Turnitin.</text>
+
+  <rect x="460" y="280" width="400" height="190" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="480" y="305" font-size="13" font-weight="700" fill="#6d5bd0">4. Speech / NLP metrics</text>
+  <text x="480" y="328" font-size="11" fill="#1a1822">WER = edit distance / reference words.</text>
+  <text x="480" y="346" font-size="11" fill="#1a1822">ROUGE-L uses LCS on generated vs</text>
+  <text x="480" y="362" font-size="11" fill="#1a1822">reference summaries (n-gram-agnostic).</text>
+  <text x="480" y="390" font-size="11" fill="#1a1822">BLEU uses n-gram overlap; ROUGE-L</text>
+  <text x="480" y="406" font-size="11" fill="#1a1822">uses LCS — order matters, gaps ok.</text>
+  <text x="480" y="430" font-size="11" fill="#4caf50" font-weight="700">Used by: ASR benchmarks, summarization eval.</text>
+</svg>

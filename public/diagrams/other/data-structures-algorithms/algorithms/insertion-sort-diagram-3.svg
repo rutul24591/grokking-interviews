@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Crossover Point — Insertion Sort vs O(n log n) Sorts</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#1a1822">At small n, the O(n²) constant is tiny. Asymptotic analysis lies below the crossover.</text>
+
+  <!-- Axis -->
+  <line x1="80" y1="420" x2="820" y2="420" stroke="#1a1822" stroke-width="2"/>
+  <line x1="80" y1="420" x2="80" y2="100" stroke="#1a1822" stroke-width="2"/>
+  <text x="450" y="460" text-anchor="middle" font-size="13" fill="#1a1822">Input size n</text>
+  <text x="30" y="260" text-anchor="middle" font-size="13" fill="#1a1822" transform="rotate(-90 30 260)">Runtime (cycles)</text>
+
+  <!-- tick marks on x -->
+  <text x="170" y="440" text-anchor="middle" font-size="11" fill="#1a1822">8</text>
+  <text x="270" y="440" text-anchor="middle" font-size="11" fill="#1a1822">16</text>
+  <text x="360" y="440" text-anchor="middle" font-size="11" fill="#1a1822">32</text>
+  <text x="460" y="440" text-anchor="middle" font-size="11" fill="#1a1822">64</text>
+  <text x="560" y="440" text-anchor="middle" font-size="11" fill="#1a1822">128</text>
+  <text x="660" y="440" text-anchor="middle" font-size="11" fill="#1a1822">256</text>
+  <text x="760" y="440" text-anchor="middle" font-size="11" fill="#1a1822">512</text>
+
+  <!-- Insertion sort curve (O(n²) with small constant) -->
+  <path d="M100 415 Q200 400 360 370 Q500 300 700 150 L780 110" stroke="#cc4444" stroke-width="3" fill="none"/>
+  <text x="780" y="100" font-size="13" fill="#cc4444" font-weight="700">Insertion</text>
+  <text x="790" y="115" font-size="11" fill="#cc4444">O(n²), small c</text>
+
+  <!-- Quicksort curve (O(n log n) with larger constant) -->
+  <path d="M100 390 Q200 380 360 355 Q500 320 700 265 L780 250" stroke="#4caf50" stroke-width="3" fill="none"/>
+  <text x="780" y="240" font-size="13" fill="#4caf50" font-weight="700">Quicksort</text>
+  <text x="790" y="255" font-size="11" fill="#4caf50">O(n log n), larger c</text>
+
+  <!-- Crossover -->
+  <circle cx="360" cy="362" r="6" fill="#6d5bd0" stroke="#1a1822"/>
+  <line x1="360" y1="362" x2="360" y2="200" stroke="#6d5bd0" stroke-dasharray="3"/>
+  <rect x="280" y="155" width="160" height="45" fill="#fff" stroke="#6d5bd0" rx="4"/>
+  <text x="360" y="175" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="700">Crossover</text>
+  <text x="360" y="192" text-anchor="middle" font-size="11" fill="#1a1822">n ≈ 16–64 (tuned)</text>
+
+  <!-- Below crossover shading -->
+  <rect x="80" y="100" width="280" height="320" fill="#a89bec" fill-opacity="0.15"/>
+  <text x="220" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Insertion wins</text>
+  <text x="220" y="138" text-anchor="middle" font-size="11" fill="#1a1822">small n, cache-hot,</text>
+  <text x="220" y="153" text-anchor="middle" font-size="11" fill="#1a1822">no call overhead</text>
+
+  <!-- Above crossover shading -->
+  <rect x="360" y="100" width="460" height="320" fill="#4caf50" fill-opacity="0.08"/>
+  <text x="590" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">Quicksort / Merge / Tim win</text>
+  <text x="590" y="138" text-anchor="middle" font-size="11" fill="#1a1822">log factor matters</text>
+</svg>

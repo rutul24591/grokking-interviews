@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Exponential Search — Double, Then Binary Search</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">target = 42; n = 20; target at index 13. Gallop probes 1,2,4,8,16; binary search [8,16).</text>
+
+  <!-- Array -->
+  <g transform="translate(40,80)" font-size="11" font-family="monospace">
+    <text x="20" y="-5" text-anchor="middle">0</text><text x="60" y="-5" text-anchor="middle">1</text>
+    <text x="100" y="-5" text-anchor="middle">2</text><text x="140" y="-5" text-anchor="middle">3</text>
+    <text x="180" y="-5" text-anchor="middle">4</text><text x="220" y="-5" text-anchor="middle">5</text>
+    <text x="260" y="-5" text-anchor="middle">6</text><text x="300" y="-5" text-anchor="middle">7</text>
+    <text x="340" y="-5" text-anchor="middle">8</text><text x="380" y="-5" text-anchor="middle">9</text>
+    <text x="420" y="-5" text-anchor="middle">10</text><text x="460" y="-5" text-anchor="middle">11</text>
+    <text x="500" y="-5" text-anchor="middle">12</text><text x="540" y="-5" text-anchor="middle">13</text>
+    <text x="580" y="-5" text-anchor="middle">14</text><text x="620" y="-5" text-anchor="middle">15</text>
+    <text x="660" y="-5" text-anchor="middle">16</text><text x="700" y="-5" text-anchor="middle">17</text>
+    <text x="740" y="-5" text-anchor="middle">18</text><text x="780" y="-5" text-anchor="middle">19</text>
+  </g>
+
+  <text x="40" y="110" font-size="12" font-weight="700" fill="#6d5bd0">Phase 1 — Gallop (double until a[i] &gt; target):</text>
+  <g transform="translate(40,120)" font-size="11">
+    <rect x="0" y="0" width="38" height="28" fill="#e8e4f8"/><text x="20" y="19" text-anchor="middle">2</text>
+    <rect x="40" y="0" width="38" height="28" fill="#cc4444"/><text x="60" y="19" text-anchor="middle" fill="#fff" font-weight="700">5</text>
+    <rect x="80" y="0" width="38" height="28" fill="#e8e4f8"/><text x="100" y="19" text-anchor="middle">9</text>
+    <rect x="120" y="0" width="38" height="28" fill="#e8e4f8"/><text x="140" y="19" text-anchor="middle">12</text>
+    <rect x="160" y="0" width="38" height="28" fill="#cc4444"/><text x="180" y="19" text-anchor="middle" fill="#fff" font-weight="700">15</text>
+    <rect x="200" y="0" width="38" height="28" fill="#e8e4f8"/><text x="220" y="19" text-anchor="middle">18</text>
+    <rect x="240" y="0" width="38" height="28" fill="#e8e4f8"/><text x="260" y="19" text-anchor="middle">22</text>
+    <rect x="280" y="0" width="38" height="28" fill="#e8e4f8"/><text x="300" y="19" text-anchor="middle">26</text>
+    <rect x="320" y="0" width="38" height="28" fill="#cc4444"/><text x="340" y="19" text-anchor="middle" fill="#fff" font-weight="700">30</text>
+    <rect x="360" y="0" width="38" height="28" fill="#e8e4f8"/><text x="380" y="19" text-anchor="middle">33</text>
+    <rect x="400" y="0" width="38" height="28" fill="#e8e4f8"/><text x="420" y="19" text-anchor="middle">36</text>
+    <rect x="440" y="0" width="38" height="28" fill="#e8e4f8"/><text x="460" y="19" text-anchor="middle">39</text>
+    <rect x="480" y="0" width="38" height="28" fill="#e8e4f8"/><text x="500" y="19" text-anchor="middle">41</text>
+    <rect x="520" y="0" width="38" height="28" fill="#e8e4f8"/><text x="540" y="19" text-anchor="middle">42</text>
+    <rect x="560" y="0" width="38" height="28" fill="#e8e4f8"/><text x="580" y="19" text-anchor="middle">44</text>
+    <rect x="600" y="0" width="38" height="28" fill="#e8e4f8"/><text x="620" y="19" text-anchor="middle">48</text>
+    <rect x="640" y="0" width="38" height="28" fill="#cc4444"/><text x="660" y="19" text-anchor="middle" fill="#fff" font-weight="700">55</text>
+    <rect x="680" y="0" width="38" height="28" fill="#e8e4f8"/><text x="700" y="19" text-anchor="middle">60</text>
+    <rect x="720" y="0" width="38" height="28" fill="#e8e4f8"/><text x="740" y="19" text-anchor="middle">70</text>
+    <rect x="760" y="0" width="38" height="28" fill="#e8e4f8"/><text x="780" y="19" text-anchor="middle">85</text>
+  </g>
+  <text x="40" y="168" font-size="11" fill="#1a1822">probes: a[1]=5, a[2]=9, a[4]=15, a[8]=30, a[16]=55 &gt; 42 → bracket [8, 16)</text>
+
+  <text x="40" y="200" font-size="12" font-weight="700" fill="#4caf50">Phase 2 — Binary search [8, 16):</text>
+  <g transform="translate(40,210)" font-size="11">
+    <rect x="320" y="0" width="38" height="28" fill="#a89bec"/><text x="340" y="19" text-anchor="middle">30</text>
+    <rect x="360" y="0" width="38" height="28" fill="#a89bec"/><text x="380" y="19" text-anchor="middle">33</text>
+    <rect x="400" y="0" width="38" height="28" fill="#a89bec"/><text x="420" y="19" text-anchor="middle">36</text>
+    <rect x="440" y="0" width="38" height="28" fill="#cc4444"/><text x="460" y="19" text-anchor="middle" fill="#fff" font-weight="700">39</text>
+    <rect x="480" y="0" width="38" height="28" fill="#a89bec"/><text x="500" y="19" text-anchor="middle">41</text>
+    <rect x="520" y="0" width="38" height="28" fill="#4caf50"/><text x="540" y="19" text-anchor="middle" fill="#fff" font-weight="700">42 ✓</text>
+    <rect x="560" y="0" width="38" height="28" fill="#a89bec"/><text x="580" y="19" text-anchor="middle">44</text>
+    <rect x="600" y="0" width="38" height="28" fill="#a89bec"/><text x="620" y="19" text-anchor="middle">48</text>
+  </g>
+  <text x="40" y="262" font-size="11" fill="#1a1822">binary: mid=11 (39 &lt; 42) → lo=12; mid=13 (42 == 42) → FOUND at index 13.</text>
+
+  <rect x="40" y="285" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="310" font-size="14" font-weight="700" fill="#6d5bd0">Complexity</text>
+  <text x="60" y="335" font-size="12" fill="#1a1822"><tspan font-weight="700">Time:</tspan> Θ(log p) where p = target position. Gallop log p probes; binary p-range another log p.</text>
+  <text x="60" y="355" font-size="12" fill="#1a1822"><tspan font-weight="700">Space:</tspan> Θ(1) for bounded arrays; Θ(p) if streaming and probes are not free.</text>
+  <text x="60" y="375" font-size="12" fill="#1a1822"><tspan font-weight="700">Works on:</tspan> unbounded or unknown-size sorted data — binary search&rsquo;s hi is unknown.</text>
+  <text x="60" y="405" font-size="12" font-weight="700" fill="#4caf50">Wins over binary when: target near start, or n unknown. Matches binary at worst case (p = n).</text>
+  <text x="60" y="435" font-size="11" fill="#cc4444" font-style="italic">Pitfall: i *= 2 overflows in 32-bit at i ≥ 2³⁰. Use 64-bit or check i &gt; n/2.</text>
+  <text x="60" y="453" font-size="11" fill="#cc4444" font-style="italic">Pitfall: phase-2 bracket must be [i/2, min(i,n)) — not [i/2+1, i].</text>
+  <text x="60" y="471" font-size="11" fill="#cc4444" font-style="italic">Pitfall: doubling indefinitely on infinite stream without EOF check → runaway probes.</text>
+</svg>

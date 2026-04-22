@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Insertion Sort as Small-n Base Case in Production Sorts</text>
+
+  <!-- Quicksort recursion -->
+  <rect x="40" y="70" width="820" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="450" y="95" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">Quicksort / Pdqsort Recursion → Insertion Sort Cutover</text>
+  <g transform="translate(80,115)">
+    <rect x="300" y="0" width="120" height="30" fill="#6d5bd0"/>
+    <text x="360" y="20" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">n=1000 partition</text>
+    <path d="M360 30 L200 55" stroke="#1a1822"/>
+    <path d="M360 30 L520 55" stroke="#1a1822"/>
+    <rect x="140" y="55" width="120" height="30" fill="#6d5bd0"/>
+    <text x="200" y="75" text-anchor="middle" fill="#fff" font-size="12">500</text>
+    <rect x="460" y="55" width="120" height="30" fill="#6d5bd0"/>
+    <text x="520" y="75" text-anchor="middle" fill="#fff" font-size="12">500</text>
+    <path d="M200 85 L80 115"/><path d="M200 85 L320 115"/>
+    <path d="M520 85 L400 115"/><path d="M520 85 L640 115"/>
+    <rect x="30" y="115" width="100" height="30" fill="#a89bec"/><text x="80" y="135" text-anchor="middle" font-size="11">250</text>
+    <rect x="270" y="115" width="100" height="30" fill="#a89bec"/><text x="320" y="135" text-anchor="middle" font-size="11">250</text>
+    <rect x="350" y="115" width="100" height="30" fill="#a89bec"/><text x="400" y="135" text-anchor="middle" font-size="11">250</text>
+    <rect x="590" y="115" width="100" height="30" fill="#a89bec"/><text x="640" y="135" text-anchor="middle" font-size="11">250</text>
+    <text x="400" y="162" text-anchor="middle" font-size="11" fill="#1a1822">...continue partitioning...</text>
+    <rect x="200" y="150" width="400" height="3" fill="#cc4444" stroke="#cc4444" stroke-dasharray="4"/>
+    <text x="400" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#cc4444">Threshold line: n ≤ 16–32</text>
+  </g>
+
+  <!-- Below threshold: insertion sort -->
+  <rect x="40" y="290" width="820" height="190" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="450" y="315" text-anchor="middle" font-size="15" font-weight="700" fill="#4caf50">Below threshold: hand off to insertion sort</text>
+
+  <g transform="translate(80,335)">
+    <text x="0" y="15" font-size="13" font-weight="700" fill="#1a1822">Library thresholds (hardware-tuned):</text>
+    <text x="0" y="38" font-size="12" fill="#1a1822">• Tim Sort (Python 3, Java 7+):</text>
+    <text x="280" y="38" font-size="12" fill="#6d5bd0" font-weight="700">minrun ≈ 32</text>
+    <text x="0" y="58" font-size="12" fill="#1a1822">• Pdqsort (Rust default, C++ libstdc++):</text>
+    <text x="280" y="58" font-size="12" fill="#6d5bd0" font-weight="700">24</text>
+    <text x="0" y="78" font-size="12" fill="#1a1822">• GCC introsort (std::sort):</text>
+    <text x="280" y="78" font-size="12" fill="#6d5bd0" font-weight="700">16</text>
+    <text x="0" y="98" font-size="12" fill="#1a1822">• Java Arrays.sort (dual-pivot QS):</text>
+    <text x="280" y="98" font-size="12" fill="#6d5bd0" font-weight="700">47</text>
+    <text x="0" y="118" font-size="12" fill="#1a1822">• MSVC STL introsort:</text>
+    <text x="280" y="118" font-size="12" fill="#6d5bd0" font-weight="700">32</text>
+
+    <text x="460" y="15" font-size="13" font-weight="700" fill="#1a1822">Why the cutover wins:</text>
+    <text x="460" y="38" font-size="12" fill="#1a1822">• No function-call overhead</text>
+    <text x="460" y="58" font-size="12" fill="#1a1822">• No recursion / stack frames</text>
+    <text x="460" y="78" font-size="12" fill="#1a1822">• Sequential memory → L1 cache hit</text>
+    <text x="460" y="98" font-size="12" fill="#1a1822">• Branch predictor warms quickly</text>
+    <text x="460" y="118" font-size="12" fill="#1a1822">• O(n²) constant &lt; O(n log n) constant</text>
+  </g>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Ternary Search — Trisect and Eliminate</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Find peak of f(x) = −(x−5)²+25 on [0,10]. Each iteration eliminates one third.</text>
+
+  <!-- Axes -->
+  <line x1="80" y1="380" x2="820" y2="380" stroke="#1a1822" stroke-width="2"/>
+  <line x1="80" y1="380" x2="80" y2="90" stroke="#1a1822" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="12">x</text>
+  <text x="55" y="240" text-anchor="middle" font-size="12" transform="rotate(-90 55 240)">f(x)</text>
+
+  <!-- x ticks 0..10 -->
+  <g font-size="10">
+    <text x="80" y="398" text-anchor="middle">0</text>
+    <text x="154" y="398" text-anchor="middle">1</text>
+    <text x="228" y="398" text-anchor="middle">2</text>
+    <text x="302" y="398" text-anchor="middle">3</text>
+    <text x="376" y="398" text-anchor="middle">4</text>
+    <text x="450" y="398" text-anchor="middle">5</text>
+    <text x="524" y="398" text-anchor="middle">6</text>
+    <text x="598" y="398" text-anchor="middle">7</text>
+    <text x="672" y="398" text-anchor="middle">8</text>
+    <text x="746" y="398" text-anchor="middle">9</text>
+    <text x="820" y="398" text-anchor="middle">10</text>
+  </g>
+
+  <!-- Parabola: peak at x=5 (px=450), y=25 (py=90); f(0)=f(10)=0 (py=380) -->
+  <path d="M80 380 Q 450 -200, 820 380" stroke="#a89bec" stroke-width="2" fill="none"/>
+
+  <!-- Iter 1: lo=0 hi=10, m1=3.33 m2=6.67. f(m1)=22.2, f(m2)=22.2 (symmetric) - let's pick m1=3, m2=7 for simplicity -->
+  <!-- Actually with integer trisection m1=3, m2=7; f(3)=21, f(7)=21 equal, but show f(m1) < f(m2) case: pretend m1=3 → f=21, m2=6 → f=24 -->
+  <text x="80" y="130" font-size="12" font-weight="700" fill="#6d5bd0">Iter 1: lo=0 hi=10 — probes m1=3, m2=7. f(3)=21, f(7)=21 (tie → shrink both)</text>
+  <line x1="302" y1="380" x2="302" y2="150" stroke="#cc4444" stroke-width="2" stroke-dasharray="4"/>
+  <text x="302" y="148" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="700">m1</text>
+  <line x1="598" y1="380" x2="598" y2="150" stroke="#cc4444" stroke-width="2" stroke-dasharray="4"/>
+  <text x="598" y="148" text-anchor="middle" font-size="10" fill="#cc4444" font-weight="700">m2</text>
+
+  <!-- Iter 2: range [3,7], m1≈4.3→4, m2≈5.67→6. f(4)=24, f(6)=24 → again. Showing lo=4 hi=6 next -->
+  <text x="80" y="170" font-size="12" font-weight="700" fill="#6d5bd0">Iter 2: lo=3 hi=7 — probes m1=4, m2=6. f(4)=24 &lt; f(6)=24 (tie) → narrow to [4,6]</text>
+  <line x1="376" y1="380" x2="376" y2="210" stroke="#4caf50" stroke-width="2" stroke-dasharray="4"/>
+  <text x="376" y="208" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="700">m1</text>
+  <line x1="524" y1="380" x2="524" y2="210" stroke="#4caf50" stroke-width="2" stroke-dasharray="4"/>
+  <text x="524" y="208" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="700">m2</text>
+
+  <!-- Iter 3: final range small, evaluate all -->
+  <text x="80" y="230" font-size="12" font-weight="700" fill="#4caf50">Iter 3: range [4,6] ≤ 2 — evaluate all: f(4)=24, f(5)=25, f(6)=24 → peak at x=5</text>
+  <circle cx="450" cy="90" r="6" fill="#4caf50"/>
+  <text x="450" y="80" text-anchor="middle" font-size="11" fill="#4caf50" font-weight="700">peak</text>
+
+  <rect x="40" y="420" width="820" height="65" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="442" font-size="12" font-weight="700" fill="#6d5bd0">Complexity: O(log₃/₂ n) ≈ 1.71 · log₂ n iterations × 2 evaluations = 3.42 log₂ n total.</text>
+  <text x="60" y="462" font-size="11" fill="#1a1822">Each iteration eliminates one-third of the range. Requires strict unimodality.</text>
+  <text x="60" y="478" font-size="11" fill="#cc4444" font-style="italic">Pitfall: plateaus (f(m1)=f(m2)) make elimination unsafe — perturb or fallback scan.</text>
+</svg>

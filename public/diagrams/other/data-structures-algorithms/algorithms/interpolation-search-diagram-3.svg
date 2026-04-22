@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Distribution Sensitivity — Uniform vs Skewed</text>
+
+  <!-- Uniform panel -->
+  <rect x="40" y="70" width="400" height="400" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="240" y="95" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Uniform distribution — interp wins</text>
+
+  <!-- value distribution bars -->
+  <g transform="translate(60,110)">
+    <rect x="0" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="34" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="68" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="102" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="136" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="170" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="204" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="238" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="272" y="0" width="30" height="80" fill="#a89bec"/>
+    <rect x="306" y="0" width="30" height="80" fill="#a89bec"/>
+    <text x="170" y="100" text-anchor="middle" font-size="10" fill="#1a1822">evenly spaced values: 10, 20, 30, ..., 100</text>
+  </g>
+
+  <text x="60" y="240" font-size="12" font-weight="700" fill="#6d5bd0">Probe sequence for target=70:</text>
+  <text x="60" y="258" font-size="11" fill="#1a1822" font-family="monospace">pos = 0 + (70−10)·10/(100−10) = 6.67 → 6</text>
+  <text x="60" y="274" font-size="11" fill="#1a1822" font-family="monospace">a[6] = 70 → FOUND in 1 probe</text>
+
+  <text x="60" y="310" font-size="12" font-weight="700" fill="#4caf50">Each iteration square-roots the range:</text>
+  <text x="60" y="328" font-size="11" fill="#1a1822">n → √n → √√n → ... → O(log log n) total</text>
+
+  <text x="60" y="360" font-size="11" fill="#1a1822">For n=10⁹: ~5 probes. Beats binary (30) and jump (31622).</text>
+
+  <text x="60" y="395" font-size="11" fill="#4caf50" font-style="italic">Works well: auto-incrementing IDs, uniform</text>
+  <text x="60" y="410" font-size="11" fill="#4caf50" font-style="italic">timestamps, densely-packed integer keys.</text>
+
+  <!-- Skewed panel -->
+  <rect x="460" y="70" width="400" height="400" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="660" y="95" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">Skewed distribution — interp fails</text>
+
+  <g transform="translate(480,110)">
+    <rect x="0" y="70" width="30" height="10" fill="#cc4444"/>
+    <rect x="34" y="65" width="30" height="15" fill="#cc4444"/>
+    <rect x="68" y="55" width="30" height="25" fill="#cc4444"/>
+    <rect x="102" y="40" width="30" height="40" fill="#cc4444"/>
+    <rect x="136" y="20" width="30" height="60" fill="#cc4444"/>
+    <rect x="170" y="0" width="30" height="80" fill="#cc4444"/>
+    <rect x="204" y="30" width="30" height="50" fill="#cc4444"/>
+    <rect x="238" y="50" width="30" height="30" fill="#cc4444"/>
+    <rect x="272" y="65" width="30" height="15" fill="#cc4444"/>
+    <rect x="306" y="73" width="30" height="7" fill="#cc4444"/>
+    <text x="170" y="100" text-anchor="middle" font-size="10" fill="#1a1822">exponential / clustered: 1, 2, 4, 8, ..., 1024</text>
+  </g>
+
+  <text x="480" y="240" font-size="12" font-weight="700" fill="#6d5bd0">Probe for target near end:</text>
+  <text x="480" y="258" font-size="11" fill="#1a1822" font-family="monospace">pos estimate overshoots low range,</text>
+  <text x="480" y="274" font-size="11" fill="#1a1822" font-family="monospace">each probe advances by ~1 index</text>
+
+  <text x="480" y="310" font-size="12" font-weight="700" fill="#cc4444">Degrades to linear:</text>
+  <text x="480" y="328" font-size="11" fill="#1a1822">Θ(n) worst case. For n=10⁹ → 10⁹ probes.</text>
+
+  <text x="480" y="360" font-size="11" fill="#1a1822">Mitigation: probe budget → binary fallback.</text>
+
+  <text x="480" y="395" font-size="11" fill="#cc4444" font-style="italic">Fails on: Zipfian (natural language freq),</text>
+  <text x="480" y="410" font-size="11" fill="#cc4444" font-style="italic">heavy-tail (log-normal), clustered, strings.</text>
+  <text x="480" y="440" font-size="11" fill="#cc4444" font-style="italic">Adversarial: attacker-controlled keys can</text>
+  <text x="480" y="455" font-size="11" fill="#cc4444" font-style="italic">trigger worst-case → DoS vector.</text>
+</svg>

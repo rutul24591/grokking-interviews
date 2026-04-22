@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">External Merge Sort — Two Phases Across Disk-Resident Runs</text>
+
+  <!-- Phase 1 -->
+  <rect x="40" y="70" width="820" height="180" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="450" y="95" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">Phase 1 — Run Generation</text>
+  <text x="60" y="120" font-size="12" fill="#1a1822">Read M (RAM-sized) chunks, sort in memory, write back as sorted runs.</text>
+
+  <!-- Disk input -->
+  <rect x="60" y="140" width="150" height="50" fill="#cc4444" stroke="#1a1822" rx="4"/>
+  <text x="135" y="162" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Unsorted</text>
+  <text x="135" y="180" text-anchor="middle" fill="#fff" font-size="11">1 TB on disk</text>
+
+  <!-- Read + sort -->
+  <path d="M210 165 L270 165" stroke="#1a1822" marker-end="url(#ea)"/>
+  <rect x="270" y="140" width="160" height="50" fill="#6d5bd0" stroke="#1a1822" rx="4"/>
+  <text x="350" y="160" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">RAM sort (M)</text>
+  <text x="350" y="178" text-anchor="middle" fill="#fff" font-size="11">Tim Sort / Pdqsort</text>
+
+  <path d="M430 165 L490 165" stroke="#1a1822" marker-end="url(#ea)"/>
+
+  <!-- Sorted runs -->
+  <rect x="490" y="140" width="60" height="50" fill="#4caf50" stroke="#1a1822"/><text x="520" y="170" text-anchor="middle" fill="#fff" font-size="11">run 1</text>
+  <rect x="555" y="140" width="60" height="50" fill="#4caf50" stroke="#1a1822"/><text x="585" y="170" text-anchor="middle" fill="#fff" font-size="11">run 2</text>
+  <rect x="620" y="140" width="60" height="50" fill="#4caf50" stroke="#1a1822"/><text x="650" y="170" text-anchor="middle" fill="#fff" font-size="11">run 3</text>
+  <text x="700" y="170" font-size="12" fill="#1a1822">…</text>
+  <rect x="720" y="140" width="100" height="50" fill="#4caf50" stroke="#1a1822"/><text x="770" y="170" text-anchor="middle" fill="#fff" font-size="11">run 1024</text>
+
+  <text x="60" y="215" font-size="12" fill="#1a1822">Output: ⌈n/M⌉ sorted runs (here 1024).  I/O cost: 2n (read + write).</text>
+  <text x="60" y="235" font-size="12" fill="#1a1822" font-style="italic">PostgreSQL&apos;s work_mem and Oracle&apos;s sort_area_size control M.</text>
+
+  <!-- Phase 2 -->
+  <rect x="40" y="270" width="820" height="210" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="450" y="295" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">Phase 2 — k-Way Merge via Min-Heap</text>
+
+  <!-- k runs feed into heap -->
+  <rect x="60" y="320" width="50" height="25" fill="#4caf50"/><text x="85" y="337" text-anchor="middle" fill="#fff" font-size="11">run 1</text>
+  <rect x="60" y="350" width="50" height="25" fill="#4caf50"/><text x="85" y="367" text-anchor="middle" fill="#fff" font-size="11">run 2</text>
+  <rect x="60" y="380" width="50" height="25" fill="#4caf50"/><text x="85" y="397" text-anchor="middle" fill="#fff" font-size="11">run 3</text>
+  <text x="85" y="420" text-anchor="middle" font-size="12" fill="#1a1822">…</text>
+  <rect x="60" y="430" width="50" height="25" fill="#4caf50"/><text x="85" y="447" text-anchor="middle" fill="#fff" font-size="11">run k</text>
+
+  <path d="M110 332 L320 380" stroke="#1a1822"/>
+  <path d="M110 362 L320 385" stroke="#1a1822"/>
+  <path d="M110 392 L320 390" stroke="#1a1822"/>
+  <path d="M110 442 L320 395" stroke="#1a1822"/>
+
+  <!-- Heap visualization -->
+  <g transform="translate(320,320)">
+    <circle cx="80" cy="20" r="18" fill="#cc4444"/><text x="80" y="25" text-anchor="middle" fill="#fff" font-weight="700" font-size="12">1</text>
+    <circle cx="40" cy="70" r="15" fill="#a89bec"/><text x="40" y="74" text-anchor="middle" font-size="11">3</text>
+    <circle cx="120" cy="70" r="15" fill="#a89bec"/><text x="120" y="74" text-anchor="middle" font-size="11">2</text>
+    <circle cx="20" cy="115" r="12" fill="#a89bec"/><text x="20" y="119" text-anchor="middle" font-size="10">7</text>
+    <circle cx="60" cy="115" r="12" fill="#a89bec"/><text x="60" y="119" text-anchor="middle" font-size="10">5</text>
+    <circle cx="100" cy="115" r="12" fill="#a89bec"/><text x="100" y="119" text-anchor="middle" font-size="10">4</text>
+    <circle cx="140" cy="115" r="12" fill="#a89bec"/><text x="140" y="119" text-anchor="middle" font-size="10">6</text>
+    <line x1="80" y1="38" x2="40" y2="55" stroke="#1a1822"/>
+    <line x1="80" y1="38" x2="120" y2="55" stroke="#1a1822"/>
+    <line x1="40" y1="85" x2="20" y2="103" stroke="#1a1822"/>
+    <line x1="40" y1="85" x2="60" y2="103" stroke="#1a1822"/>
+    <line x1="120" y1="85" x2="100" y2="103" stroke="#1a1822"/>
+    <line x1="120" y1="85" x2="140" y2="103" stroke="#1a1822"/>
+    <text x="80" y="150" text-anchor="middle" font-size="11" fill="#1a1822">Min-heap over k run heads</text>
+  </g>
+
+  <path d="M480 380 L560 380" stroke="#1a1822" marker-end="url(#ea)"/>
+
+  <rect x="560" y="360" width="250" height="50" fill="#4caf50" stroke="#1a1822" rx="4"/>
+  <text x="685" y="380" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Merged output (sorted)</text>
+  <text x="685" y="398" text-anchor="middle" fill="#fff" font-size="11">back to disk</text>
+
+  <text x="60" y="470" font-size="12" fill="#1a1822">Passes = ⌈log_k(n/M)⌉. 1 TB data, 1 GB RAM, k=1000 → 1 pass. I/O = 2n per pass.  Heap extract-min O(log k).</text>
+
+  <defs><marker id="ea" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1a1822"/></marker></defs>
+</svg>

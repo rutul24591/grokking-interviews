@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Three Binary Search Templates — Pick by Invariant</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">Half-open [lo, hi). Answer is always in the current range. Loop while lo &lt; hi.</text>
+
+  <!-- Column 1: find-exact -->
+  <rect x="30" y="80" width="270" height="320" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="165" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">find-exact</text>
+  <text x="45" y="130" font-size="11" fill="#1a1822" font-family="monospace">lo = 0, hi = n</text>
+  <text x="45" y="148" font-size="11" fill="#1a1822" font-family="monospace">while lo &lt; hi:</text>
+  <text x="45" y="166" font-size="11" fill="#1a1822" font-family="monospace">  mid = lo + (hi-lo)/2</text>
+  <text x="45" y="184" font-size="11" fill="#1a1822" font-family="monospace">  if a[mid] == t: return mid</text>
+  <text x="45" y="202" font-size="11" fill="#1a1822" font-family="monospace">  if a[mid] &lt; t: lo = mid+1</text>
+  <text x="45" y="220" font-size="11" fill="#1a1822" font-family="monospace">  else: hi = mid</text>
+  <text x="45" y="238" font-size="11" fill="#1a1822" font-family="monospace">return -1</text>
+
+  <text x="45" y="275" font-size="11" font-weight="700" fill="#cc4444">Use when:</text>
+  <text x="45" y="293" font-size="11" fill="#1a1822">exact match required,</text>
+  <text x="45" y="309" font-size="11" fill="#1a1822">no duplicates matter.</text>
+  <text x="45" y="340" font-size="11" font-weight="700" fill="#4caf50">Invariant:</text>
+  <text x="45" y="358" font-size="11" fill="#1a1822">t ∈ a[lo..hi) if present.</text>
+  <text x="45" y="382" font-size="11" fill="#1a1822" font-style="italic">Fails on duplicates —</text>
+  <text x="45" y="396" font-size="11" fill="#1a1822" font-style="italic">returns any matching idx.</text>
+
+  <!-- Column 2: lower_bound -->
+  <rect x="315" y="80" width="270" height="320" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="450" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">lower_bound</text>
+  <text x="330" y="130" font-size="11" fill="#1a1822" font-family="monospace">lo = 0, hi = n</text>
+  <text x="330" y="148" font-size="11" fill="#1a1822" font-family="monospace">while lo &lt; hi:</text>
+  <text x="330" y="166" font-size="11" fill="#1a1822" font-family="monospace">  mid = lo + (hi-lo)/2</text>
+  <text x="330" y="184" font-size="11" fill="#1a1822" font-family="monospace">  if a[mid] &lt; t: lo = mid+1</text>
+  <text x="330" y="202" font-size="11" fill="#1a1822" font-family="monospace">  else: hi = mid</text>
+  <text x="330" y="220" font-size="11" fill="#1a1822" font-family="monospace">return lo</text>
+
+  <text x="330" y="275" font-size="11" font-weight="700" fill="#cc4444">Returns:</text>
+  <text x="330" y="293" font-size="11" fill="#1a1822">first index i where</text>
+  <text x="330" y="309" font-size="11" fill="#1a1822">a[i] ≥ t (or n if none).</text>
+  <text x="330" y="340" font-size="11" font-weight="700" fill="#4caf50">Invariant:</text>
+  <text x="330" y="358" font-size="11" fill="#1a1822">a[lo-1] &lt; t ≤ a[hi].</text>
+  <text x="330" y="382" font-size="11" fill="#1a1822" font-style="italic">Handles duplicates,</text>
+  <text x="330" y="396" font-size="11" fill="#1a1822" font-style="italic">insertion point, ranges.</text>
+
+  <!-- Column 3: upper_bound -->
+  <rect x="600" y="80" width="270" height="320" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="735" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">upper_bound</text>
+  <text x="615" y="130" font-size="11" fill="#1a1822" font-family="monospace">lo = 0, hi = n</text>
+  <text x="615" y="148" font-size="11" fill="#1a1822" font-family="monospace">while lo &lt; hi:</text>
+  <text x="615" y="166" font-size="11" fill="#1a1822" font-family="monospace">  mid = lo + (hi-lo)/2</text>
+  <text x="615" y="184" font-size="11" fill="#1a1822" font-family="monospace">  if a[mid] &lt;= t: lo = mid+1</text>
+  <text x="615" y="202" font-size="11" fill="#1a1822" font-family="monospace">  else: hi = mid</text>
+  <text x="615" y="220" font-size="11" fill="#1a1822" font-family="monospace">return lo</text>
+
+  <text x="615" y="275" font-size="11" font-weight="700" fill="#cc4444">Returns:</text>
+  <text x="615" y="293" font-size="11" fill="#1a1822">first index i where</text>
+  <text x="615" y="309" font-size="11" fill="#1a1822">a[i] &gt; t (or n if none).</text>
+  <text x="615" y="340" font-size="11" font-weight="700" fill="#4caf50">Invariant:</text>
+  <text x="615" y="358" font-size="11" fill="#1a1822">a[lo-1] ≤ t &lt; a[hi].</text>
+  <text x="615" y="382" font-size="11" fill="#1a1822" font-style="italic">count = upper − lower.</text>
+  <text x="615" y="396" font-size="11" fill="#1a1822" font-style="italic">Range end-exclusive.</text>
+
+  <rect x="30" y="420" width="840" height="65" fill="#fff" stroke="#6d5bd0" rx="6"/>
+  <text x="50" y="442" font-size="12" font-weight="700" fill="#6d5bd0">Rule of thumb:</text>
+  <text x="50" y="460" font-size="11" fill="#1a1822">Almost always prefer lower_bound/upper_bound over find-exact — they compose (range counts, insertion,</text>
+  <text x="50" y="476" font-size="11" fill="#1a1822">gallop merge, parametric search) and handle duplicates correctly. find-exact is a special case of lower_bound + check.</text>
+</svg>

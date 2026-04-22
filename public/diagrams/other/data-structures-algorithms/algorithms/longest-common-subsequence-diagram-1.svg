@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">LCS DP Table — A = &ldquo;ABCBDAB&rdquo;, B = &ldquo;BDCABA&rdquo;</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">dp[m][n] = 4. One LCS: &ldquo;BCBA&rdquo;. Diagonal = match; left/top = skip.</text>
+
+  <!-- Column labels (B) -->
+  <g font-size="12" font-family="monospace">
+    <text x="120" y="85" text-anchor="middle" fill="#6d5bd0" font-weight="700">A\B</text>
+    <text x="170" y="85" text-anchor="middle" fill="#6d5bd0">∅</text>
+    <text x="220" y="85" text-anchor="middle" fill="#6d5bd0">B</text>
+    <text x="270" y="85" text-anchor="middle" fill="#6d5bd0">D</text>
+    <text x="320" y="85" text-anchor="middle" fill="#6d5bd0">C</text>
+    <text x="370" y="85" text-anchor="middle" fill="#6d5bd0">A</text>
+    <text x="420" y="85" text-anchor="middle" fill="#6d5bd0">B</text>
+    <text x="470" y="85" text-anchor="middle" fill="#6d5bd0">A</text>
+  </g>
+
+  <g font-size="12">
+    <!-- Rows: ∅, A, B, C, B, D, A, B -->
+    <!-- ∅ row -->
+    <text x="120" y="115" text-anchor="middle" font-family="monospace">∅</text>
+    <g><rect x="145" y="100" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="119" text-anchor="middle">0</text>
+      <rect x="195" y="100" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="220" y="119" text-anchor="middle">0</text>
+      <rect x="245" y="100" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="270" y="119" text-anchor="middle">0</text>
+      <rect x="295" y="100" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="320" y="119" text-anchor="middle">0</text>
+      <rect x="345" y="100" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="370" y="119" text-anchor="middle">0</text>
+      <rect x="395" y="100" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="420" y="119" text-anchor="middle">0</text>
+      <rect x="445" y="100" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="470" y="119" text-anchor="middle">0</text>
+    </g>
+    <!-- A row -->
+    <text x="120" y="145" text-anchor="middle" font-family="monospace">A</text>
+    <g>
+      <rect x="145" y="130" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="149" text-anchor="middle">0</text>
+      <rect x="195" y="130" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="220" y="149" text-anchor="middle">0</text>
+      <rect x="245" y="130" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="270" y="149" text-anchor="middle">0</text>
+      <rect x="295" y="130" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="320" y="149" text-anchor="middle">0</text>
+      <rect x="345" y="130" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="370" y="149" text-anchor="middle">1</text>
+      <rect x="395" y="130" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="420" y="149" text-anchor="middle">1</text>
+      <rect x="445" y="130" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="149" text-anchor="middle">1</text>
+    </g>
+    <!-- B row -->
+    <text x="120" y="175" text-anchor="middle" font-family="monospace">B</text>
+    <g>
+      <rect x="145" y="160" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="179" text-anchor="middle">0</text>
+      <rect x="195" y="160" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="220" y="179" text-anchor="middle">1</text>
+      <rect x="245" y="160" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="270" y="179" text-anchor="middle">1</text>
+      <rect x="295" y="160" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="320" y="179" text-anchor="middle">1</text>
+      <rect x="345" y="160" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="370" y="179" text-anchor="middle">1</text>
+      <rect x="395" y="160" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="420" y="179" text-anchor="middle">2</text>
+      <rect x="445" y="160" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="179" text-anchor="middle">2</text>
+    </g>
+    <!-- C row -->
+    <text x="120" y="205" text-anchor="middle" font-family="monospace">C</text>
+    <g>
+      <rect x="145" y="190" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="209" text-anchor="middle">0</text>
+      <rect x="195" y="190" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="220" y="209" text-anchor="middle">1</text>
+      <rect x="245" y="190" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="270" y="209" text-anchor="middle">1</text>
+      <rect x="295" y="190" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="320" y="209" text-anchor="middle">2</text>
+      <rect x="345" y="190" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="370" y="209" text-anchor="middle">2</text>
+      <rect x="395" y="190" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="420" y="209" text-anchor="middle">2</text>
+      <rect x="445" y="190" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="209" text-anchor="middle">2</text>
+    </g>
+    <!-- B row -->
+    <text x="120" y="235" text-anchor="middle" font-family="monospace">B</text>
+    <g>
+      <rect x="145" y="220" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="239" text-anchor="middle">0</text>
+      <rect x="195" y="220" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="220" y="239" text-anchor="middle">1</text>
+      <rect x="245" y="220" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="270" y="239" text-anchor="middle">1</text>
+      <rect x="295" y="220" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="320" y="239" text-anchor="middle">2</text>
+      <rect x="345" y="220" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="370" y="239" text-anchor="middle">2</text>
+      <rect x="395" y="220" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="420" y="239" text-anchor="middle">3</text>
+      <rect x="445" y="220" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="239" text-anchor="middle">3</text>
+    </g>
+    <!-- D row -->
+    <text x="120" y="265" text-anchor="middle" font-family="monospace">D</text>
+    <g>
+      <rect x="145" y="250" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="269" text-anchor="middle">0</text>
+      <rect x="195" y="250" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="220" y="269" text-anchor="middle">1</text>
+      <rect x="245" y="250" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="270" y="269" text-anchor="middle">2</text>
+      <rect x="295" y="250" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="320" y="269" text-anchor="middle">2</text>
+      <rect x="345" y="250" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="370" y="269" text-anchor="middle">2</text>
+      <rect x="395" y="250" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="420" y="269" text-anchor="middle">3</text>
+      <rect x="445" y="250" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="269" text-anchor="middle">3</text>
+    </g>
+    <!-- A row -->
+    <text x="120" y="295" text-anchor="middle" font-family="monospace">A</text>
+    <g>
+      <rect x="145" y="280" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="299" text-anchor="middle">0</text>
+      <rect x="195" y="280" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="220" y="299" text-anchor="middle">1</text>
+      <rect x="245" y="280" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="270" y="299" text-anchor="middle">2</text>
+      <rect x="295" y="280" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="320" y="299" text-anchor="middle">2</text>
+      <rect x="345" y="280" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="370" y="299" text-anchor="middle">3</text>
+      <rect x="395" y="280" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="420" y="299" text-anchor="middle">3</text>
+      <rect x="445" y="280" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="299" text-anchor="middle">4</text>
+    </g>
+    <!-- B row -->
+    <text x="120" y="325" text-anchor="middle" font-family="monospace">B</text>
+    <g>
+      <rect x="145" y="310" width="50" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="329" text-anchor="middle">0</text>
+      <rect x="195" y="310" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="220" y="329" text-anchor="middle">1</text>
+      <rect x="245" y="310" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="270" y="329" text-anchor="middle">2</text>
+      <rect x="295" y="310" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="320" y="329" text-anchor="middle">2</text>
+      <rect x="345" y="310" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="370" y="329" text-anchor="middle">3</text>
+      <rect x="395" y="310" width="50" height="28" fill="#fff" stroke="#6d5bd0"/><text x="420" y="329" text-anchor="middle">4</text>
+      <rect x="445" y="310" width="50" height="28" fill="#4caf50" stroke="#6d5bd0"/><text x="470" y="329" text-anchor="middle" fill="#fff" font-weight="700">4</text>
+    </g>
+  </g>
+
+  <text x="530" y="327" font-size="12" fill="#4caf50" font-weight="700">← LCS length = 4</text>
+
+  <rect x="560" y="100" width="300" height="230" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="580" y="125" font-size="13" font-weight="700" fill="#6d5bd0">Recurrence</text>
+  <text x="580" y="148" font-size="11" fill="#1a1822" font-family="monospace">if A[i−1] == B[j−1]:</text>
+  <text x="580" y="164" font-size="11" fill="#1a1822" font-family="monospace">  dp[i][j] = dp[i−1][j−1] + 1</text>
+  <text x="580" y="180" font-size="11" fill="#1a1822" font-family="monospace">else:</text>
+  <text x="580" y="196" font-size="11" fill="#1a1822" font-family="monospace">  dp[i][j] = max(dp[i−1][j],</text>
+  <text x="580" y="212" font-size="11" fill="#1a1822" font-family="monospace">                  dp[i][j−1])</text>
+  <text x="580" y="245" font-size="13" font-weight="700" fill="#6d5bd0">Traceback</text>
+  <text x="580" y="265" font-size="11" fill="#1a1822">From dp[m][n]: diagonal if match,</text>
+  <text x="580" y="280" font-size="11" fill="#1a1822">else move to larger of left/top.</text>
+  <text x="580" y="300" font-size="11" fill="#4caf50" font-weight="700">Result: B → C → B → A = BCBA</text>
+
+  <rect x="40" y="360" width="820" height="125" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="385" font-size="14" font-weight="700" fill="#6d5bd0">Complexity</text>
+  <text x="60" y="405" font-size="11" fill="#1a1822"><tspan font-weight="700">Time:</tspan> Θ(mn). <tspan font-weight="700">Space:</tspan> Θ(mn) or Θ(min(m, n)) with row-rollover (loses traceback), or Θ(m+n) via Hirschberg.</text>
+  <text x="60" y="425" font-size="11" fill="#1a1822"><tspan font-weight="700">Myers:</tspan> O((m+n)·d) where d = edit distance. Near-linear on similar files (git diff).</text>
+  <text x="60" y="445" font-size="11" fill="#1a1822"><tspan font-weight="700">Hunt-Szymanski:</tspan> O((r+n) log n) for r matching pairs. Fast on sparse matches (source code diff).</text>
+  <text x="60" y="470" font-size="11" fill="#cc4444" font-style="italic">Pitfall: multiple LCSs of same length may exist. Traceback tie-breaking determines which one is returned.</text>
+</svg>

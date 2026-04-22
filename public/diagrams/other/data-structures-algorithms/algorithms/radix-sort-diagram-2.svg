@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">LSD vs MSD Radix Sort</text>
+
+  <!-- LSD column -->
+  <rect x="30" y="60" width="405" height="410" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="232" y="85" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">LSD — Least Significant Digit</text>
+  <text x="50" y="108" font-size="11" fill="#1a1822">Bottom-up: sort entire array by digit 0, then 1, …, d−1.</text>
+
+  <text x="50" y="140" font-size="12" font-weight="700" fill="#1a1822">Flow:</text>
+  <g transform="translate(50,150)">
+    <rect x="0" y="0" width="320" height="30" fill="#a89bec" rx="4"/>
+    <text x="160" y="20" text-anchor="middle" font-size="12">full array</text>
+  </g>
+  <path d="M210 190 L210 215" stroke="#1a1822" marker-end="url(#rb)"/>
+  <g transform="translate(50,220)">
+    <rect x="0" y="0" width="320" height="25" fill="#6d5bd0" rx="4"/>
+    <text x="160" y="18" text-anchor="middle" fill="#fff" font-size="12">stable sort by ones digit</text>
+  </g>
+  <path d="M210 250 L210 270" stroke="#1a1822" marker-end="url(#rb)"/>
+  <g transform="translate(50,275)">
+    <rect x="0" y="0" width="320" height="25" fill="#6d5bd0" rx="4"/>
+    <text x="160" y="18" text-anchor="middle" fill="#fff" font-size="12">stable sort by tens digit</text>
+  </g>
+  <path d="M210 305 L210 325" stroke="#1a1822" marker-end="url(#rb)"/>
+  <g transform="translate(50,330)">
+    <rect x="0" y="0" width="320" height="25" fill="#4caf50" rx="4"/>
+    <text x="160" y="18" text-anchor="middle" fill="#fff" font-size="12">stable sort by hundreds digit → done</text>
+  </g>
+
+  <text x="50" y="385" font-size="12" font-weight="700" fill="#1a1822">Pros:</text>
+  <text x="50" y="403" font-size="11" fill="#1a1822">• Simple, regular memory access pattern</text>
+  <text x="50" y="420" font-size="11" fill="#1a1822">• Ideal for fixed-width keys</text>
+  <text x="50" y="437" font-size="11" fill="#1a1822">• Stable by construction</text>
+
+  <text x="50" y="460" font-size="11" fill="#cc4444" font-weight="700">Con: always d full passes, no early exit</text>
+
+  <!-- MSD column -->
+  <rect x="450" y="60" width="420" height="410" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="660" y="85" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">MSD — Most Significant Digit</text>
+  <text x="470" y="108" font-size="11" fill="#1a1822">Top-down: partition by digit 0, recurse into each bucket.</text>
+
+  <text x="470" y="140" font-size="12" font-weight="700" fill="#1a1822">Flow:</text>
+  <g transform="translate(470,150)">
+    <rect x="0" y="0" width="380" height="30" fill="#a89bec" rx="4"/>
+    <text x="190" y="20" text-anchor="middle" font-size="12">full array</text>
+  </g>
+  <path d="M540 185 L500 215" stroke="#1a1822" marker-end="url(#rb)"/>
+  <path d="M640 185 L640 215" stroke="#1a1822" marker-end="url(#rb)"/>
+  <path d="M740 185 L820 215" stroke="#1a1822" marker-end="url(#rb)"/>
+
+  <rect x="470" y="220" width="100" height="25" fill="#6d5bd0" rx="4"/>
+  <text x="520" y="238" text-anchor="middle" fill="#fff" font-size="11">bucket &apos;a&apos;</text>
+  <rect x="590" y="220" width="100" height="25" fill="#6d5bd0" rx="4"/>
+  <text x="640" y="238" text-anchor="middle" fill="#fff" font-size="11">bucket &apos;b&apos;</text>
+  <rect x="770" y="220" width="80" height="25" fill="#6d5bd0" rx="4"/>
+  <text x="810" y="238" text-anchor="middle" fill="#fff" font-size="11">…</text>
+
+  <text x="470" y="268" font-size="11" fill="#1a1822">recurse into each bucket on next digit:</text>
+
+  <rect x="470" y="280" width="40" height="22" fill="#a89bec" rx="4"/>
+  <rect x="514" y="280" width="40" height="22" fill="#a89bec" rx="4"/>
+  <rect x="590" y="280" width="40" height="22" fill="#a89bec" rx="4"/>
+  <rect x="634" y="280" width="40" height="22" fill="#a89bec" rx="4"/>
+  <rect x="770" y="280" width="40" height="22" fill="#a89bec" rx="4"/>
+
+  <text x="470" y="325" font-size="11" fill="#4caf50" font-weight="700">early-exit: bucket size ≤ 1 stops recursion</text>
+
+  <text x="470" y="360" font-size="12" font-weight="700" fill="#1a1822">Pros:</text>
+  <text x="470" y="378" font-size="11" fill="#1a1822">• Variable-length keys (strings, names)</text>
+  <text x="470" y="395" font-size="11" fill="#1a1822">• Early termination on distinct prefixes</text>
+  <text x="470" y="412" font-size="11" fill="#1a1822">• Natural trie / suffix-array structure</text>
+
+  <text x="470" y="437" font-size="11" fill="#cc4444" font-weight="700">Con: recursion + partition overhead;</text>
+  <text x="470" y="453" font-size="11" fill="#cc4444">stability requires care. American-Flag</text>
+  <text x="470" y="469" font-size="11" fill="#cc4444">variant is in-place but unstable.</text>
+
+  <defs><marker id="rb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1a1822"/></marker></defs>
+</svg>

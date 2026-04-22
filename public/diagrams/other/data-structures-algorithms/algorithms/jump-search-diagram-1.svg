@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Jump Search — Block Skip + Linear Scan</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">target = 55; sorted 16 elements; block m = √16 = 4. 3 jumps + 3 scan steps.</text>
+
+  <!-- indices -->
+  <g transform="translate(60,80)" font-size="11" font-family="monospace">
+    <text x="25" y="-5" text-anchor="middle">0</text><text x="75" y="-5" text-anchor="middle">1</text>
+    <text x="125" y="-5" text-anchor="middle">2</text><text x="175" y="-5" text-anchor="middle">3</text>
+    <text x="225" y="-5" text-anchor="middle">4</text><text x="275" y="-5" text-anchor="middle">5</text>
+    <text x="325" y="-5" text-anchor="middle">6</text><text x="375" y="-5" text-anchor="middle">7</text>
+    <text x="425" y="-5" text-anchor="middle">8</text><text x="475" y="-5" text-anchor="middle">9</text>
+    <text x="525" y="-5" text-anchor="middle">10</text><text x="575" y="-5" text-anchor="middle">11</text>
+    <text x="625" y="-5" text-anchor="middle">12</text><text x="675" y="-5" text-anchor="middle">13</text>
+    <text x="725" y="-5" text-anchor="middle">14</text><text x="775" y="-5" text-anchor="middle">15</text>
+  </g>
+
+  <!-- Jump phase -->
+  <text x="60" y="110" font-size="12" font-weight="700" fill="#6d5bd0">Jump phase: probe index 3, 7, 11 until a[i] ≥ 55</text>
+  <g transform="translate(60,120)" font-size="12">
+    <rect x="0" y="0" width="48" height="30" fill="#e8e4f8"/><text x="25" y="20" text-anchor="middle">3</text>
+    <rect x="50" y="0" width="48" height="30" fill="#e8e4f8"/><text x="75" y="20" text-anchor="middle">8</text>
+    <rect x="100" y="0" width="48" height="30" fill="#e8e4f8"/><text x="125" y="20" text-anchor="middle">14</text>
+    <rect x="150" y="0" width="48" height="30" fill="#cc4444"/><text x="175" y="20" text-anchor="middle" fill="#fff" font-weight="700">22</text>
+    <rect x="200" y="0" width="48" height="30" fill="#e8e4f8"/><text x="225" y="20" text-anchor="middle">27</text>
+    <rect x="250" y="0" width="48" height="30" fill="#e8e4f8"/><text x="275" y="20" text-anchor="middle">33</text>
+    <rect x="300" y="0" width="48" height="30" fill="#e8e4f8"/><text x="325" y="20" text-anchor="middle">40</text>
+    <rect x="350" y="0" width="48" height="30" fill="#cc4444"/><text x="375" y="20" text-anchor="middle" fill="#fff" font-weight="700">45</text>
+    <rect x="400" y="0" width="48" height="30" fill="#e8e4f8"/><text x="425" y="20" text-anchor="middle">50</text>
+    <rect x="450" y="0" width="48" height="30" fill="#e8e4f8"/><text x="475" y="20" text-anchor="middle">52</text>
+    <rect x="500" y="0" width="48" height="30" fill="#e8e4f8"/><text x="525" y="20" text-anchor="middle">54</text>
+    <rect x="550" y="0" width="48" height="30" fill="#cc4444"/><text x="575" y="20" text-anchor="middle" fill="#fff" font-weight="700">60</text>
+    <rect x="600" y="0" width="48" height="30" fill="#e8e4f8"/><text x="625" y="20" text-anchor="middle">65</text>
+    <rect x="650" y="0" width="48" height="30" fill="#e8e4f8"/><text x="675" y="20" text-anchor="middle">70</text>
+    <rect x="700" y="0" width="48" height="30" fill="#e8e4f8"/><text x="725" y="20" text-anchor="middle">78</text>
+    <rect x="750" y="0" width="48" height="30" fill="#e8e4f8"/><text x="775" y="20" text-anchor="middle">90</text>
+  </g>
+  <text x="60" y="172" font-size="11" fill="#1a1822">a[3]=22 &lt; 55, a[7]=45 &lt; 55, a[11]=60 ≥ 55 → target is in block [8, 12)</text>
+
+  <!-- Scan phase -->
+  <text x="60" y="205" font-size="12" font-weight="700" fill="#4caf50">Scan phase: linear scan block [8, 12)</text>
+  <g transform="translate(60,215)" font-size="12">
+    <rect x="400" y="0" width="48" height="30" fill="#a89bec"/><text x="425" y="20" text-anchor="middle">50</text>
+    <rect x="450" y="0" width="48" height="30" fill="#a89bec"/><text x="475" y="20" text-anchor="middle">52</text>
+    <rect x="500" y="0" width="48" height="30" fill="#a89bec"/><text x="525" y="20" text-anchor="middle">54</text>
+    <rect x="550" y="0" width="48" height="30" fill="#4caf50"/><text x="575" y="20" text-anchor="middle" fill="#fff" font-weight="700">55? no — 60</text>
+  </g>
+  <text x="60" y="265" font-size="11" fill="#cc4444" font-weight="700">a[8]=50, a[9]=52, a[10]=54, a[11]=60 — 55 not present → return −1.</text>
+
+  <!-- Complexity -->
+  <rect x="40" y="290" width="820" height="195" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="315" font-size="14" font-weight="700" fill="#6d5bd0">Complexity</text>
+  <text x="60" y="340" font-size="12" fill="#1a1822"><tspan font-weight="700">Time:</tspan> Θ(√n). Jump: n/m probes. Scan: m−1 comparisons. Total n/m + m minimized at m = √n.</text>
+  <text x="60" y="360" font-size="12" fill="#1a1822"><tspan font-weight="700">Space:</tspan> Θ(1).</text>
+  <text x="60" y="380" font-size="12" fill="#1a1822"><tspan font-weight="700">Requires:</tspan> sorted array + random access at block granularity.</text>
+  <text x="60" y="410" font-size="12" fill="#4caf50" font-weight="700">When to prefer over binary: asymmetric access cost — expensive seeks, cheap sequential reads.</text>
+  <text x="60" y="430" font-size="11" fill="#1a1822">Example: compressed blocks (Parquet row groups), disk pages, columnar storage indexes.</text>
+  <text x="60" y="460" font-size="11" fill="#cc4444" font-style="italic">Pitfall: using jump search on cache-resident data. Binary search wins; √n &gg; log n.</text>
+  <text x="60" y="477" font-size="11" fill="#cc4444" font-style="italic">For n=10⁶: √n=1000 vs log₂n=20. Only the access-cost asymmetry justifies jump.</text>
+</svg>

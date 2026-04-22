@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Counting Sort as the LSD Radix Sort Kernel</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">32-bit keys sorted by 4 byte-wide passes — each pass is one stable counting sort.</text>
+
+  <!-- Input -->
+  <rect x="40" y="75" width="200" height="150" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="140" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Input (32-bit keys)</text>
+  <text x="60" y="120" font-size="12" font-family="monospace" fill="#1a1822">0x1A3F_B72C</text>
+  <text x="60" y="140" font-size="12" font-family="monospace" fill="#1a1822">0x1A3F_0001</text>
+  <text x="60" y="160" font-size="12" font-family="monospace" fill="#1a1822">0x7FFF_A040</text>
+  <text x="60" y="180" font-size="12" font-family="monospace" fill="#1a1822">0x0100_B72C</text>
+  <text x="60" y="200" font-size="12" font-family="monospace" fill="#1a1822">…</text>
+
+  <path d="M240 150 L300 150" stroke="#1a1822" marker-end="url(#ra)"/>
+
+  <!-- 4 passes -->
+  <rect x="300" y="85" width="140" height="130" fill="#a89bec" stroke="#1a1822" rx="6"/>
+  <text x="370" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Pass 1: byte 0</text>
+  <text x="370" y="128" text-anchor="middle" font-size="11" fill="#1a1822">counting sort</text>
+  <text x="370" y="146" text-anchor="middle" font-size="11" fill="#1a1822">k = 256</text>
+  <text x="370" y="168" text-anchor="middle" font-size="11" fill="#1a1822">stable ✓</text>
+  <text x="370" y="195" text-anchor="middle" font-size="10" fill="#1a1822">Θ(n + 256)</text>
+
+  <path d="M440 150 L470 150" stroke="#1a1822" marker-end="url(#ra)"/>
+  <rect x="470" y="85" width="140" height="130" fill="#6d5bd0" stroke="#1a1822" rx="6"/>
+  <text x="540" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Pass 2: byte 1</text>
+  <text x="540" y="128" text-anchor="middle" font-size="11" fill="#fff">counting sort</text>
+  <text x="540" y="146" text-anchor="middle" font-size="11" fill="#fff">k = 256</text>
+  <text x="540" y="168" text-anchor="middle" font-size="11" fill="#fff">stable ✓</text>
+  <text x="540" y="195" text-anchor="middle" font-size="10" fill="#fff">Θ(n + 256)</text>
+
+  <path d="M610 150 L640 150" stroke="#1a1822" marker-end="url(#ra)"/>
+  <rect x="640" y="85" width="140" height="130" fill="#a89bec" stroke="#1a1822" rx="6"/>
+  <text x="710" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Pass 3: byte 2</text>
+  <text x="710" y="128" text-anchor="middle" font-size="11" fill="#1a1822">counting sort</text>
+  <text x="710" y="146" text-anchor="middle" font-size="11" fill="#1a1822">k = 256</text>
+  <text x="710" y="168" text-anchor="middle" font-size="11" fill="#1a1822">stable ✓</text>
+  <text x="710" y="195" text-anchor="middle" font-size="10" fill="#1a1822">Θ(n + 256)</text>
+
+  <path d="M780 150 L820 150" stroke="#1a1822"/>
+  <path d="M820 150 L820 250 L80 250 L80 260" stroke="#1a1822" fill="none" marker-end="url(#ra)"/>
+
+  <rect x="40" y="260" width="200" height="130" fill="#6d5bd0" stroke="#1a1822" rx="6"/>
+  <text x="140" y="283" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Pass 4: byte 3 (MSB)</text>
+  <text x="140" y="305" text-anchor="middle" font-size="11" fill="#fff">counting sort</text>
+  <text x="140" y="323" text-anchor="middle" font-size="11" fill="#fff">k = 256</text>
+  <text x="140" y="345" text-anchor="middle" font-size="11" fill="#fff">stable ✓</text>
+  <text x="140" y="372" text-anchor="middle" font-size="10" fill="#fff">Θ(n + 256)</text>
+
+  <path d="M240 325 L300 325" stroke="#1a1822" marker-end="url(#ra)"/>
+
+  <rect x="300" y="260" width="200" height="130" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="400" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#4caf50">Fully sorted output</text>
+  <text x="320" y="305" font-size="12" font-family="monospace" fill="#1a1822">0x0100_B72C</text>
+  <text x="320" y="325" font-size="12" font-family="monospace" fill="#1a1822">0x1A3F_0001</text>
+  <text x="320" y="345" font-size="12" font-family="monospace" fill="#1a1822">0x1A3F_B72C</text>
+  <text x="320" y="365" font-size="12" font-family="monospace" fill="#1a1822">0x7FFF_A040</text>
+
+  <rect x="520" y="260" width="340" height="130" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="540" y="283" font-size="13" font-weight="700" fill="#6d5bd0">Total cost:</text>
+  <text x="540" y="305" font-size="12" fill="#1a1822">4 × Θ(n + 256) = Θ(n) for 32-bit keys</text>
+  <text x="540" y="325" font-size="12" fill="#1a1822">vs Θ(n log n) ≈ 20n for n = 10⁶ — radix wins.</text>
+  <text x="540" y="347" font-size="12" fill="#cc4444" font-weight="700">Stability of inner counting sort is required:</text>
+  <text x="540" y="365" font-size="11" fill="#1a1822">higher-byte sort must preserve relative order from</text>
+  <text x="540" y="380" font-size="11" fill="#1a1822">lower-byte sort — else algorithm fails.</text>
+
+  <rect x="40" y="410" width="820" height="70" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="432" font-size="13" font-weight="700" fill="#6d5bd0">Used in production:</text>
+  <text x="60" y="452" font-size="12" fill="#1a1822">ska_sort (C++), Rust radsort, NVIDIA CUB radix sort (10 GB/s on H100), Spark partition-&amp;-sort,</text>
+  <text x="60" y="470" font-size="12" fill="#1a1822">Hadoop TeraSort, genomic aligners (BWA/Bowtie BWT construction), LLVM small-int sort.</text>
+
+  <defs><marker id="ra" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1a1822"/></marker></defs>
+</svg>

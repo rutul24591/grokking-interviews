@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Myers&rsquo; Algorithm — LCS as Edit Graph</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">A = ABCABBA, B = CBABAC. Find shortest path from (0,0) to (m,n). Diagonals free; right/down cost 1.</text>
+
+  <!-- Grid -->
+  <g>
+    <!-- vertical lines -->
+    <line x1="150" y1="90" x2="150" y2="380" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="210" y1="90" x2="210" y2="380" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="270" y1="90" x2="270" y2="380" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="330" y1="90" x2="330" y2="380" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="390" y1="90" x2="390" y2="380" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="450" y1="90" x2="450" y2="380" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="510" y1="90" x2="510" y2="380" stroke="#6d5bd0" opacity="0.3"/>
+    <!-- horizontal -->
+    <line x1="150" y1="90" x2="510" y2="90" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="150" y1="130" x2="510" y2="130" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="150" y1="170" x2="510" y2="170" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="150" y1="210" x2="510" y2="210" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="150" y1="250" x2="510" y2="250" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="150" y1="290" x2="510" y2="290" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="150" y1="330" x2="510" y2="330" stroke="#6d5bd0" opacity="0.3"/>
+    <line x1="150" y1="370" x2="510" y2="370" stroke="#6d5bd0" opacity="0.3"/>
+  </g>
+
+  <!-- labels B along top (columns) -->
+  <g font-size="11" font-family="monospace">
+    <text x="180" y="83" text-anchor="middle">C</text>
+    <text x="240" y="83" text-anchor="middle">B</text>
+    <text x="300" y="83" text-anchor="middle">A</text>
+    <text x="360" y="83" text-anchor="middle">B</text>
+    <text x="420" y="83" text-anchor="middle">A</text>
+    <text x="480" y="83" text-anchor="middle">C</text>
+  </g>
+  <!-- labels A along left (rows) -->
+  <g font-size="11" font-family="monospace">
+    <text x="140" y="114" text-anchor="end">A</text>
+    <text x="140" y="154" text-anchor="end">B</text>
+    <text x="140" y="194" text-anchor="end">C</text>
+    <text x="140" y="234" text-anchor="end">A</text>
+    <text x="140" y="274" text-anchor="end">B</text>
+    <text x="140" y="314" text-anchor="end">B</text>
+    <text x="140" y="354" text-anchor="end">A</text>
+  </g>
+
+  <!-- Mark start and end -->
+  <circle cx="150" cy="90" r="5" fill="#4caf50"/><text x="130" y="88" font-size="10" fill="#4caf50">start</text>
+  <circle cx="510" cy="370" r="5" fill="#cc4444"/><text x="515" y="385" font-size="10" fill="#cc4444">end</text>
+
+  <!-- Diagonal matches (free edges) shown as green diagonals -->
+  <!-- A matches C at col C? A[0]=A vs B[0]=C no. Let me just show a plausible diagonal path -->
+  <!-- Simpler: draw a winning path example -->
+  <g stroke-width="2.5" fill="none">
+    <!-- path 0,0 → right to C (1 del of nothing so right=insert), then down matches -->
+    <line x1="150" y1="90" x2="210" y2="90" stroke="#cc4444"/>
+    <line x1="210" y1="90" x2="270" y2="150" stroke="#4caf50" stroke-dasharray="3"/>
+    <line x1="270" y1="150" x2="270" y2="190" stroke="#cc4444"/>
+    <line x1="270" y1="190" x2="330" y2="250" stroke="#4caf50" stroke-dasharray="3"/>
+    <line x1="330" y1="250" x2="390" y2="310" stroke="#4caf50" stroke-dasharray="3"/>
+    <line x1="390" y1="310" x2="450" y2="370" stroke="#4caf50" stroke-dasharray="3"/>
+    <line x1="450" y1="370" x2="510" y2="370" stroke="#cc4444"/>
+  </g>
+
+  <!-- Legend -->
+  <rect x="560" y="100" width="300" height="280" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="580" y="125" font-size="13" font-weight="700" fill="#6d5bd0">Edit graph edges</text>
+  <line x1="580" y1="145" x2="620" y2="145" stroke="#4caf50" stroke-width="2.5" stroke-dasharray="3"/>
+  <text x="630" y="148" font-size="11" fill="#1a1822">diagonal (A[i]==B[j]): free match</text>
+  <line x1="580" y1="165" x2="620" y2="165" stroke="#cc4444" stroke-width="2.5"/>
+  <text x="630" y="168" font-size="11" fill="#1a1822">right: insert char of B (cost 1)</text>
+  <line x1="580" y1="185" x2="580" y2="205" stroke="#cc4444" stroke-width="2.5"/>
+  <text x="590" y="200" font-size="11" fill="#1a1822">down: delete char of A (cost 1)</text>
+
+  <text x="580" y="235" font-size="13" font-weight="700" fill="#6d5bd0">Runtime</text>
+  <text x="580" y="255" font-size="11" fill="#1a1822">Path length d = # non-diagonal edges.</text>
+  <text x="580" y="271" font-size="11" fill="#1a1822">Explore by BFS on d: O((m+n)·d).</text>
+
+  <text x="580" y="300" font-size="13" font-weight="700" fill="#4caf50">Why git uses this</text>
+  <text x="580" y="320" font-size="11" fill="#1a1822">Most diffs have small d (few changed</text>
+  <text x="580" y="336" font-size="11" fill="#1a1822">lines). d=10 for a typical commit →</text>
+  <text x="580" y="352" font-size="11" fill="#1a1822">near-linear vs O(mn) classical DP.</text>
+
+  <rect x="40" y="395" width="820" height="90" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="418" font-size="13" font-weight="700" fill="#6d5bd0">LCS ↔ shortest edit script duality</text>
+  <text x="60" y="438" font-size="11" fill="#1a1822">LCS length = (m + n − min_edit_script) / 2. Finding one finds the other.</text>
+  <text x="60" y="456" font-size="11" fill="#1a1822">Myers frames it as the edit graph, Hunt-Szymanski as matching positions — same problem, different attack.</text>
+  <text x="60" y="475" font-size="11" fill="#4caf50" font-style="italic">Production: git xdiff = Myers + low-occurrence heuristic + histogram fallback for readability.</text>
+</svg>

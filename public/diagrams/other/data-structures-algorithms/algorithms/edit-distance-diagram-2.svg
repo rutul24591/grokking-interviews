@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Edit Distance Variants — Cost, Direction, and Memory</text>
+
+  <!-- Variants table -->
+  <rect x="40" y="60" width="820" height="185" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="14" font-weight="700" fill="#6d5bd0">Cost model variants</text>
+  <g font-size="11">
+    <text x="60" y="112" font-weight="700" fill="#1a1822">Variant</text>
+    <text x="260" y="112" font-weight="700" fill="#1a1822">Operations / cost</text>
+    <text x="600" y="112" font-weight="700" fill="#1a1822">Where it's used</text>
+
+    <text x="60" y="135">Levenshtein</text>
+    <text x="260" y="135">ins=del=sub=1</text>
+    <text x="600" y="135">spell check, fuzzy search</text>
+
+    <text x="60" y="155">LCS distance</text>
+    <text x="260" y="155">ins=del=1, sub=∞ (banned)</text>
+    <text x="600" y="155">diff tools (only add/remove lines)</text>
+
+    <text x="60" y="175">Damerau-Levenshtein</text>
+    <text x="260" y="175">+ adjacent transposition=1</text>
+    <text x="600" y="175">typo correction (teh→the)</text>
+
+    <text x="60" y="195">Hamming</text>
+    <text x="260" y="195">sub only, equal-length strings</text>
+    <text x="600" y="195">error-correcting codes</text>
+
+    <text x="60" y="215">Needleman-Wunsch</text>
+    <text x="260" y="215">arbitrary sub matrix + gap penalty</text>
+    <text x="600" y="215">DNA / protein alignment</text>
+
+    <text x="60" y="235">Weighted (keyboard)</text>
+    <text x="260" y="235">sub('q','w') cheap; sub('q','z') dear</text>
+    <text x="600" y="235">iOS/Android keyboard correction</text>
+  </g>
+
+  <!-- Memory optimization -->
+  <rect x="40" y="265" width="400" height="210" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="290" font-size="13" font-weight="700" fill="#4caf50">O(min(m,n)) two-row trick</text>
+  <text x="60" y="315" font-size="11" fill="#1a1822">dp[i][j] only depends on row i-1 and the</text>
+  <text x="60" y="331" font-size="11" fill="#1a1822">current row. Keep two rows (or one + temp).</text>
+  <text x="60" y="355" font-size="11" fill="#1a1822" font-family="monospace">prev = list(range(n+1))</text>
+  <text x="60" y="371" font-size="11" fill="#1a1822" font-family="monospace">for i in 1..m:</text>
+  <text x="60" y="387" font-size="11" fill="#1a1822" font-family="monospace">    curr = [i] + [0]*n</text>
+  <text x="60" y="403" font-size="11" fill="#1a1822" font-family="monospace">    for j in 1..n: ...</text>
+  <text x="60" y="419" font-size="11" fill="#1a1822" font-family="monospace">    prev = curr</text>
+  <text x="60" y="445" font-size="11" fill="#4caf50" font-weight="700">Space: Θ(mn) → Θ(min(m,n)).</text>
+  <text x="60" y="463" font-size="11" fill="#cc4444">Trade-off: can't recover ops without full table (or Hirschberg).</text>
+
+  <!-- Ukkonen banded -->
+  <rect x="460" y="265" width="400" height="210" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="480" y="290" font-size="13" font-weight="700" fill="#6d5bd0">Ukkonen&rsquo;s banded DP — O(kn)</text>
+  <text x="480" y="315" font-size="11" fill="#1a1822">If you only care whether distance ≤ k,</text>
+  <text x="480" y="331" font-size="11" fill="#1a1822">compute only cells with |i-j| ≤ k.</text>
+
+  <!-- Visual band -->
+  <g transform="translate(540,345)">
+    <rect x="0" y="0" width="180" height="90" fill="#e8e4f8" stroke="#6d5bd0"/>
+    <polygon points="0,0 60,0 180,90 120,90" fill="#a89bec"/>
+    <polygon points="0,10 50,90 0,90" fill="#a89bec" opacity="0.5"/>
+    <text x="90" y="52" text-anchor="middle" font-size="11" fill="#1a1822">band of width 2k+1</text>
+  </g>
+  <text x="480" y="458" font-size="11" fill="#4caf50" font-weight="700">Used by agrep, BLAST extension.</text>
+</svg>

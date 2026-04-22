@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Jump Search — Two-Phase Control Flow</text>
+
+  <!-- Jump phase box -->
+  <rect x="60" y="80" width="360" height="170" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="240" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Phase 1: Jump</text>
+  <text x="80" y="130" font-size="12" fill="#1a1822" font-family="monospace">prev = 0; step = √n;</text>
+  <text x="80" y="150" font-size="12" fill="#1a1822" font-family="monospace">while step &lt; n and</text>
+  <text x="80" y="168" font-size="12" fill="#1a1822" font-family="monospace">      a[step−1] &lt; target:</text>
+  <text x="80" y="186" font-size="12" fill="#1a1822" font-family="monospace">    prev = step;</text>
+  <text x="80" y="204" font-size="12" fill="#1a1822" font-family="monospace">    step += √n;</text>
+  <text x="80" y="232" font-size="11" font-weight="700" fill="#4caf50">Cost: n/√n = √n probes</text>
+
+  <!-- Scan phase box -->
+  <rect x="480" y="80" width="360" height="170" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="660" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Phase 2: Scan</text>
+  <text x="500" y="130" font-size="12" fill="#1a1822" font-family="monospace">hi = min(step, n);</text>
+  <text x="500" y="150" font-size="12" fill="#1a1822" font-family="monospace">for i = prev to hi−1:</text>
+  <text x="500" y="168" font-size="12" fill="#1a1822" font-family="monospace">    if a[i] == target:</text>
+  <text x="500" y="186" font-size="12" fill="#1a1822" font-family="monospace">        return i;</text>
+  <text x="500" y="204" font-size="12" fill="#1a1822" font-family="monospace">return −1;</text>
+  <text x="500" y="232" font-size="11" font-weight="700" fill="#4caf50">Cost: ≤ √n comparisons</text>
+
+  <!-- Arrow between -->
+  <line x1="420" y1="165" x2="480" y2="165" stroke="#1a1822" stroke-width="2" marker-end="url(#a)"/>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L8,5 L0,10 z" fill="#1a1822"/></marker></defs>
+
+  <!-- Optimality math -->
+  <rect x="60" y="275" width="780" height="90" fill="#fff" stroke="#6d5bd0" stroke-width="1" rx="4"/>
+  <text x="80" y="298" font-size="13" font-weight="700" fill="#6d5bd0">Optimal block size derivation</text>
+  <text x="80" y="320" font-size="12" fill="#1a1822" font-family="monospace">f(m) = n/m + m   (jumps + scan)</text>
+  <text x="80" y="338" font-size="12" fill="#1a1822" font-family="monospace">df/dm = −n/m² + 1 = 0  ⇒  m² = n  ⇒  m = √n</text>
+  <text x="80" y="356" font-size="12" fill="#1a1822" font-family="monospace">f(√n) = √n + √n = 2√n = Θ(√n)</text>
+
+  <!-- Decision -->
+  <rect x="60" y="385" width="780" height="100" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="80" y="408" font-size="13" font-weight="700" fill="#cc4444">Decision guide</text>
+  <text x="80" y="428" font-size="11" fill="#1a1822">• In-memory sorted array → <tspan font-weight="700">binary search</tspan> (Θ(log n)).</text>
+  <text x="80" y="445" font-size="11" fill="#1a1822">• Disk-resident or compressed blocks with expensive seeks → <tspan font-weight="700">jump search</tspan>.</text>
+  <text x="80" y="462" font-size="11" fill="#1a1822">• Unknown array length / unbounded stream → <tspan font-weight="700">exponential search</tspan>.</text>
+  <text x="80" y="479" font-size="11" fill="#1a1822">• Small n (&lt; 64) in cache → <tspan font-weight="700">linear search</tspan>, SIMD-vectorized.</text>
+</svg>

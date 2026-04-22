@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">0/1 Knapsack DP Table — 4 items, capacity 7</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">items: (w=2,v=3), (w=3,v=4), (w=4,v=5), (w=5,v=6). Answer dp[4][7] = 9.</text>
+
+  <!-- Column headers (capacity) -->
+  <g font-size="12" font-family="monospace">
+    <text x="100" y="90" text-anchor="middle" fill="#6d5bd0" font-weight="700">i\w</text>
+    <text x="170" y="90" text-anchor="middle" fill="#6d5bd0">0</text>
+    <text x="230" y="90" text-anchor="middle" fill="#6d5bd0">1</text>
+    <text x="290" y="90" text-anchor="middle" fill="#6d5bd0">2</text>
+    <text x="350" y="90" text-anchor="middle" fill="#6d5bd0">3</text>
+    <text x="410" y="90" text-anchor="middle" fill="#6d5bd0">4</text>
+    <text x="470" y="90" text-anchor="middle" fill="#6d5bd0">5</text>
+    <text x="530" y="90" text-anchor="middle" fill="#6d5bd0">6</text>
+    <text x="590" y="90" text-anchor="middle" fill="#6d5bd0">7</text>
+  </g>
+
+  <!-- Grid -->
+  <g font-size="13">
+    <!-- Row 0: base -->
+    <text x="100" y="120" text-anchor="middle" fill="#1a1822" font-family="monospace">0</text>
+    <g>
+      <rect x="140" y="105" width="60" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="170" y="124" text-anchor="middle">0</text>
+      <rect x="200" y="105" width="60" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="230" y="124" text-anchor="middle">0</text>
+      <rect x="260" y="105" width="60" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="290" y="124" text-anchor="middle">0</text>
+      <rect x="320" y="105" width="60" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="350" y="124" text-anchor="middle">0</text>
+      <rect x="380" y="105" width="60" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="410" y="124" text-anchor="middle">0</text>
+      <rect x="440" y="105" width="60" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="470" y="124" text-anchor="middle">0</text>
+      <rect x="500" y="105" width="60" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="530" y="124" text-anchor="middle">0</text>
+      <rect x="560" y="105" width="60" height="28" fill="#e8e4f8" stroke="#6d5bd0"/><text x="590" y="124" text-anchor="middle">0</text>
+    </g>
+    <!-- Row 1: (2,3) -->
+    <text x="100" y="150" text-anchor="middle" fill="#1a1822" font-family="monospace">1</text>
+    <g>
+      <rect x="140" y="135" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="170" y="154" text-anchor="middle">0</text>
+      <rect x="200" y="135" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="230" y="154" text-anchor="middle">0</text>
+      <rect x="260" y="135" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="290" y="154" text-anchor="middle">3</text>
+      <rect x="320" y="135" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="350" y="154" text-anchor="middle">3</text>
+      <rect x="380" y="135" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="410" y="154" text-anchor="middle">3</text>
+      <rect x="440" y="135" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="154" text-anchor="middle">3</text>
+      <rect x="500" y="135" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="530" y="154" text-anchor="middle">3</text>
+      <rect x="560" y="135" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="590" y="154" text-anchor="middle">3</text>
+    </g>
+    <!-- Row 2: (3,4) -->
+    <text x="100" y="180" text-anchor="middle" fill="#1a1822" font-family="monospace">2</text>
+    <g>
+      <rect x="140" y="165" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="170" y="184" text-anchor="middle">0</text>
+      <rect x="200" y="165" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="230" y="184" text-anchor="middle">0</text>
+      <rect x="260" y="165" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="290" y="184" text-anchor="middle">3</text>
+      <rect x="320" y="165" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="350" y="184" text-anchor="middle">4</text>
+      <rect x="380" y="165" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="410" y="184" text-anchor="middle">4</text>
+      <rect x="440" y="165" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="184" text-anchor="middle">7</text>
+      <rect x="500" y="165" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="530" y="184" text-anchor="middle">7</text>
+      <rect x="560" y="165" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="590" y="184" text-anchor="middle">7</text>
+    </g>
+    <!-- Row 3: (4,5) -->
+    <text x="100" y="210" text-anchor="middle" fill="#1a1822" font-family="monospace">3</text>
+    <g>
+      <rect x="140" y="195" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="170" y="214" text-anchor="middle">0</text>
+      <rect x="200" y="195" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="230" y="214" text-anchor="middle">0</text>
+      <rect x="260" y="195" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="290" y="214" text-anchor="middle">3</text>
+      <rect x="320" y="195" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="350" y="214" text-anchor="middle">4</text>
+      <rect x="380" y="195" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="410" y="214" text-anchor="middle">5</text>
+      <rect x="440" y="195" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="214" text-anchor="middle">7</text>
+      <rect x="500" y="195" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="530" y="214" text-anchor="middle">8</text>
+      <rect x="560" y="195" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="590" y="214" text-anchor="middle">9</text>
+    </g>
+    <!-- Row 4: (5,6) -->
+    <text x="100" y="240" text-anchor="middle" fill="#1a1822" font-family="monospace">4</text>
+    <g>
+      <rect x="140" y="225" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="170" y="244" text-anchor="middle">0</text>
+      <rect x="200" y="225" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="230" y="244" text-anchor="middle">0</text>
+      <rect x="260" y="225" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="290" y="244" text-anchor="middle">3</text>
+      <rect x="320" y="225" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="350" y="244" text-anchor="middle">4</text>
+      <rect x="380" y="225" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="410" y="244" text-anchor="middle">5</text>
+      <rect x="440" y="225" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="470" y="244" text-anchor="middle">7</text>
+      <rect x="500" y="225" width="60" height="28" fill="#fff" stroke="#6d5bd0"/><text x="530" y="244" text-anchor="middle">8</text>
+      <rect x="560" y="225" width="60" height="28" fill="#4caf50" stroke="#6d5bd0"/><text x="590" y="244" text-anchor="middle" fill="#fff" font-weight="700">9</text>
+    </g>
+  </g>
+
+  <text x="645" y="242" font-size="12" fill="#4caf50" font-weight="700">← answer</text>
+
+  <rect x="40" y="275" width="820" height="210" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="300" font-size="14" font-weight="700" fill="#6d5bd0">Recurrence at dp[3][7]:</text>
+  <text x="60" y="322" font-size="12" fill="#1a1822" font-family="monospace">dp[3][7] = max(dp[2][7], dp[2][7−4] + 5) = max(7, 4 + 5) = 9 — take item 3</text>
+
+  <text x="60" y="355" font-size="14" font-weight="700" fill="#6d5bd0">Traceback from dp[4][7]:</text>
+  <text x="60" y="375" font-size="11" fill="#1a1822">dp[4][7] = 9 == dp[3][7] = 9 → item 4 <tspan font-weight="700">skipped</tspan>, go to dp[3][7].</text>
+  <text x="60" y="392" font-size="11" fill="#1a1822">dp[3][7] = 9 ≠ dp[2][7] = 7 → item 3 <tspan font-weight="700">taken</tspan>, w=7−4=3, go to dp[2][3].</text>
+  <text x="60" y="409" font-size="11" fill="#1a1822">dp[2][3] = 4 ≠ dp[1][3] = 3 → item 2 <tspan font-weight="700">skipped?</tspan> — wait: 4 &gt; 3 → <tspan font-weight="700">taken</tspan>, w=0.</text>
+  <text x="60" y="426" font-size="11" fill="#1a1822">Stop at w=0 → chosen items: {2, 3} with weights 3+4=7, values 4+5=9. ✓</text>
+
+  <text x="60" y="458" font-size="12" font-weight="700" fill="#cc4444">Complexity</text>
+  <text x="60" y="478" font-size="11" fill="#1a1822">Time Θ(nW), Space Θ(nW) or Θ(W) after rollover. Pseudo-polynomial — W must be bounded.</text>
+</svg>

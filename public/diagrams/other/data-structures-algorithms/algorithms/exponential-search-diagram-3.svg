@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Timsort Galloping — Exponential Search in Merge</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#1a1822">When run A dominates run B, switch from element-wise merge to exponential probe + binary search.</text>
+
+  <!-- Two runs -->
+  <text x="60" y="90" font-size="12" font-weight="700" fill="#6d5bd0">Run A (winning):</text>
+  <g transform="translate(60,100)" font-size="11">
+    <rect x="0" y="0" width="40" height="28" fill="#a89bec"/><text x="20" y="19" text-anchor="middle">1</text>
+    <rect x="42" y="0" width="40" height="28" fill="#a89bec"/><text x="62" y="19" text-anchor="middle">2</text>
+    <rect x="84" y="0" width="40" height="28" fill="#a89bec"/><text x="104" y="19" text-anchor="middle">3</text>
+    <rect x="126" y="0" width="40" height="28" fill="#a89bec"/><text x="146" y="19" text-anchor="middle">4</text>
+    <rect x="168" y="0" width="40" height="28" fill="#a89bec"/><text x="188" y="19" text-anchor="middle">5</text>
+    <rect x="210" y="0" width="40" height="28" fill="#a89bec"/><text x="230" y="19" text-anchor="middle">6</text>
+    <rect x="252" y="0" width="40" height="28" fill="#a89bec"/><text x="272" y="19" text-anchor="middle">7</text>
+    <rect x="294" y="0" width="40" height="28" fill="#a89bec"/><text x="314" y="19" text-anchor="middle">8</text>
+    <rect x="336" y="0" width="40" height="28" fill="#a89bec"/><text x="356" y="19" text-anchor="middle">9</text>
+    <rect x="378" y="0" width="40" height="28" fill="#a89bec"/><text x="398" y="19" text-anchor="middle">10</text>
+    <rect x="420" y="0" width="40" height="28" fill="#a89bec"/><text x="440" y="19" text-anchor="middle">11</text>
+    <rect x="462" y="0" width="40" height="28" fill="#a89bec"/><text x="482" y="19" text-anchor="middle">12</text>
+    <rect x="504" y="0" width="40" height="28" fill="#a89bec"/><text x="524" y="19" text-anchor="middle">13</text>
+    <rect x="546" y="0" width="40" height="28" fill="#a89bec"/><text x="566" y="19" text-anchor="middle">14</text>
+    <rect x="588" y="0" width="40" height="28" fill="#a89bec"/><text x="608" y="19" text-anchor="middle">15</text>
+  </g>
+
+  <text x="60" y="160" font-size="12" font-weight="700" fill="#cc4444">Run B (losing): next element = 20</text>
+  <g transform="translate(60,170)" font-size="11">
+    <rect x="0" y="0" width="40" height="28" fill="#cc4444"/><text x="20" y="19" text-anchor="middle" fill="#fff" font-weight="700">20</text>
+    <rect x="42" y="0" width="40" height="28" fill="#e8e4f8"/><text x="62" y="19" text-anchor="middle">25</text>
+    <rect x="84" y="0" width="40" height="28" fill="#e8e4f8"/><text x="104" y="19" text-anchor="middle">30</text>
+  </g>
+
+  <text x="60" y="225" font-size="12" fill="#1a1822">After MIN_GALLOP=7 consecutive wins for A, Timsort abandons one-at-a-time merge.</text>
+
+  <text x="60" y="260" font-size="12" font-weight="700" fill="#4caf50">Gallop into A: find insertion point of 20</text>
+  <text x="60" y="280" font-size="11" fill="#1a1822" font-family="monospace">probe A[0]=1, A[1]=2, A[3]=4, A[7]=8, A[15]=15 — all &lt; 20 → bracket past end</text>
+  <text x="60" y="298" font-size="11" fill="#1a1822" font-family="monospace">binary-search [16, 30) → all of A &lt; 20 → copy entire A run at once</text>
+
+  <rect x="40" y="325" width="820" height="160" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="350" font-size="13" font-weight="700" fill="#6d5bd0">Why galloping pays off</text>
+  <text x="60" y="372" font-size="11" fill="#1a1822">Linear merge of skewed runs: O(|A| + |B|) element-wise comparisons. Galloping merge: O(|B| log |A|).</text>
+  <text x="60" y="390" font-size="11" fill="#1a1822">For |A|=10⁶, |B|=10: linear = 10⁶ + 10 comparisons; galloping = 10 × 20 = 200 comparisons.</text>
+  <text x="60" y="420" font-size="12" font-weight="700" fill="#cc4444">Adaptive threshold</text>
+  <text x="60" y="440" font-size="11" fill="#1a1822">MIN_GALLOP starts at 7 and adapts: decrement on successful gallop, increment on failed gallop.</text>
+  <text x="60" y="457" font-size="11" fill="#1a1822">Avoids galloping on balanced runs where overhead &gt; benefit. Proven worst-case O(n log n).</text>
+  <text x="60" y="476" font-size="11" fill="#4caf50" font-style="italic">Used in: Python list.sort (CPython), Java Arrays.sort for objects, Android, V8 Array.prototype.sort.</text>
+</svg>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Partition Schemes — Lomuto, Hoare, Three-Way (Dutch National Flag)</text>
+
+  <!-- Lomuto -->
+  <rect x="30" y="60" width="270" height="400" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="165" y="85" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">Lomuto</text>
+  <text x="50" y="108" font-size="11" fill="#1a1822">Single index i tracks &lt;pivot boundary.</text>
+  <text x="50" y="124" font-size="11" fill="#1a1822">Scan j left→right, swap when arr[j]&lt;p.</text>
+
+  <text x="50" y="155" font-size="12" font-weight="700" fill="#1a1822">invariant:</text>
+  <g transform="translate(50,165)">
+    <rect x="0" y="0" width="70" height="28" fill="#a89bec"/><text x="35" y="18" text-anchor="middle" font-size="11">&lt; pivot</text>
+    <rect x="72" y="0" width="70" height="28" fill="#f3f1f8" stroke="#1a1822"/><text x="107" y="18" text-anchor="middle" font-size="11">≥ pivot</text>
+    <rect x="144" y="0" width="70" height="28" fill="#f3f1f8" stroke="#1a1822" stroke-dasharray="3"/><text x="179" y="18" text-anchor="middle" font-size="11">unseen</text>
+  </g>
+  <text x="85" y="215" text-anchor="middle" font-size="10" fill="#6d5bd0">↑ i</text>
+  <text x="157" y="215" text-anchor="middle" font-size="10" fill="#1a1822">↑ j</text>
+
+  <text x="50" y="250" font-size="12" font-weight="700" fill="#1a1822">pros:</text>
+  <text x="50" y="268" font-size="11" fill="#1a1822">• simplest to code</text>
+  <text x="50" y="285" font-size="11" fill="#1a1822">• pivot at final index after</text>
+
+  <text x="50" y="315" font-size="12" font-weight="700" fill="#cc4444">cons:</text>
+  <text x="50" y="333" font-size="11" fill="#1a1822">• 3× more swaps than Hoare</text>
+  <text x="50" y="350" font-size="11" fill="#1a1822">• O(n²) on all-equal input</text>
+  <text x="50" y="367" font-size="11" fill="#1a1822">• duplicates pile on one side</text>
+
+  <text x="50" y="400" font-size="12" font-weight="700" fill="#1a1822">teaching default,</text>
+  <text x="50" y="417" font-size="12" font-weight="700" fill="#1a1822">CLRS pseudocode,</text>
+  <text x="50" y="434" font-size="12" font-weight="700" fill="#1a1822">rarely in production.</text>
+
+  <!-- Hoare -->
+  <rect x="315" y="60" width="270" height="400" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="450" y="85" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">Hoare</text>
+  <text x="335" y="108" font-size="11" fill="#1a1822">Two pointers converging from ends.</text>
+  <text x="335" y="124" font-size="11" fill="#1a1822">Swap when both stop.</text>
+
+  <text x="335" y="155" font-size="12" font-weight="700" fill="#1a1822">invariant:</text>
+  <g transform="translate(335,165)">
+    <rect x="0" y="0" width="80" height="28" fill="#a89bec"/><text x="40" y="18" text-anchor="middle" font-size="11">≤ pivot</text>
+    <rect x="82" y="0" width="50" height="28" fill="#f3f1f8" stroke="#1a1822" stroke-dasharray="3"/><text x="107" y="18" text-anchor="middle" font-size="10">?</text>
+    <rect x="134" y="0" width="80" height="28" fill="#6d5bd0"/><text x="174" y="18" text-anchor="middle" fill="#fff" font-size="11">≥ pivot</text>
+  </g>
+  <text x="370" y="215" text-anchor="middle" font-size="10" fill="#6d5bd0">↑ left</text>
+  <text x="530" y="215" text-anchor="middle" font-size="10" fill="#6d5bd0">↑ right</text>
+
+  <text x="335" y="250" font-size="12" font-weight="700" fill="#1a1822">pros:</text>
+  <text x="335" y="268" font-size="11" fill="#1a1822">• 3× fewer swaps (avg)</text>
+  <text x="335" y="285" font-size="11" fill="#1a1822">• balanced split on duplicates</text>
+
+  <text x="335" y="315" font-size="12" font-weight="700" fill="#cc4444">cons:</text>
+  <text x="335" y="333" font-size="11" fill="#1a1822">• pivot NOT at final position</text>
+  <text x="335" y="350" font-size="11" fill="#1a1822">• off-by-one recursion trap</text>
+  <text x="335" y="367" font-size="11" fill="#1a1822">• harder correctness proof</text>
+
+  <text x="335" y="400" font-size="12" font-weight="700" fill="#1a1822">production default —</text>
+  <text x="335" y="417" font-size="12" font-weight="700" fill="#1a1822">std::sort, sort_unstable,</text>
+  <text x="335" y="434" font-size="12" font-weight="700" fill="#1a1822">Arrays.sort.</text>
+
+  <!-- Three-way -->
+  <rect x="600" y="60" width="270" height="400" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="735" y="85" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">Three-Way (DNF)</text>
+  <text x="620" y="108" font-size="11" fill="#1a1822">Three regions: &lt;, =, &gt; pivot.</text>
+  <text x="620" y="124" font-size="11" fill="#1a1822">Equals excluded from recursion.</text>
+
+  <text x="620" y="155" font-size="12" font-weight="700" fill="#1a1822">invariant:</text>
+  <g transform="translate(620,165)">
+    <rect x="0" y="0" width="60" height="28" fill="#a89bec"/><text x="30" y="18" text-anchor="middle" font-size="11">&lt; p</text>
+    <rect x="62" y="0" width="60" height="28" fill="#cc4444"/><text x="92" y="18" text-anchor="middle" fill="#fff" font-size="11">= p</text>
+    <rect x="124" y="0" width="40" height="28" fill="#f3f1f8" stroke="#1a1822" stroke-dasharray="3"/><text x="144" y="18" text-anchor="middle" font-size="10">?</text>
+    <rect x="166" y="0" width="60" height="28" fill="#6d5bd0"/><text x="196" y="18" text-anchor="middle" fill="#fff" font-size="11">&gt; p</text>
+  </g>
+
+  <text x="620" y="245" font-size="12" font-weight="700" fill="#1a1822">pros:</text>
+  <text x="620" y="263" font-size="11" fill="#1a1822">• entropy-optimal for few keys</text>
+  <text x="620" y="280" font-size="11" fill="#1a1822">• all-equal → O(n)</text>
+  <text x="620" y="297" font-size="11" fill="#1a1822">• no wasted work on ties</text>
+
+  <text x="620" y="325" font-size="12" font-weight="700" fill="#cc4444">cons:</text>
+  <text x="620" y="343" font-size="11" fill="#1a1822">• slightly more branches</text>
+  <text x="620" y="360" font-size="11" fill="#1a1822">  on all-distinct input</text>
+
+  <text x="620" y="395" font-size="12" font-weight="700" fill="#1a1822">Pdqsort &amp; Bentley-McIlroy</text>
+  <text x="620" y="412" font-size="12" font-weight="700" fill="#1a1822">use it; Sedgewick proved</text>
+  <text x="620" y="429" font-size="12" font-weight="700" fill="#1a1822">entropy-optimality (2002).</text>
+</svg>

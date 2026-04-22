@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Merge Sort — Divide-and-Conquer Tree</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#1a1822">log n levels × Θ(n) merge work per level = Θ(n log n) total.  Recurrence T(n)=2T(n/2)+Θ(n).</text>
+
+  <!-- Level 0 -->
+  <rect x="320" y="80" width="260" height="30" fill="#6d5bd0"/>
+  <text x="450" y="100" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">[5, 2, 4, 6, 1, 3, 7, 8]</text>
+
+  <!-- Level 1 -->
+  <path d="M400 110 L200 140" stroke="#1a1822"/>
+  <path d="M500 110 L700 140" stroke="#1a1822"/>
+  <rect x="120" y="140" width="160" height="30" fill="#a89bec"/>
+  <text x="200" y="160" text-anchor="middle" font-size="12">[5, 2, 4, 6]</text>
+  <rect x="620" y="140" width="160" height="30" fill="#a89bec"/>
+  <text x="700" y="160" text-anchor="middle" font-size="12">[1, 3, 7, 8]</text>
+
+  <!-- Level 2 -->
+  <path d="M180 170 L90 200"/><path d="M220 170 L310 200"/>
+  <path d="M680 170 L590 200"/><path d="M720 170 L810 200"/>
+  <rect x="40" y="200" width="100" height="30" fill="#a89bec"/><text x="90" y="220" text-anchor="middle" font-size="11">[5, 2]</text>
+  <rect x="260" y="200" width="100" height="30" fill="#a89bec"/><text x="310" y="220" text-anchor="middle" font-size="11">[4, 6]</text>
+  <rect x="540" y="200" width="100" height="30" fill="#a89bec"/><text x="590" y="220" text-anchor="middle" font-size="11">[1, 3]</text>
+  <rect x="760" y="200" width="100" height="30" fill="#a89bec"/><text x="810" y="220" text-anchor="middle" font-size="11">[7, 8]</text>
+
+  <!-- Level 3 (leaves) -->
+  <rect x="40" y="250" width="40" height="30" fill="#cc4444"/><text x="60" y="270" text-anchor="middle" fill="#fff" font-size="11">[5]</text>
+  <rect x="100" y="250" width="40" height="30" fill="#cc4444"/><text x="120" y="270" text-anchor="middle" fill="#fff" font-size="11">[2]</text>
+  <rect x="260" y="250" width="40" height="30" fill="#cc4444"/><text x="280" y="270" text-anchor="middle" fill="#fff" font-size="11">[4]</text>
+  <rect x="320" y="250" width="40" height="30" fill="#cc4444"/><text x="340" y="270" text-anchor="middle" fill="#fff" font-size="11">[6]</text>
+  <rect x="540" y="250" width="40" height="30" fill="#cc4444"/><text x="560" y="270" text-anchor="middle" fill="#fff" font-size="11">[1]</text>
+  <rect x="600" y="250" width="40" height="30" fill="#cc4444"/><text x="620" y="270" text-anchor="middle" fill="#fff" font-size="11">[3]</text>
+  <rect x="760" y="250" width="40" height="30" fill="#cc4444"/><text x="780" y="270" text-anchor="middle" fill="#fff" font-size="11">[7]</text>
+  <rect x="820" y="250" width="40" height="30" fill="#cc4444"/><text x="840" y="270" text-anchor="middle" fill="#fff" font-size="11">[8]</text>
+  <line x1="60" y1="230" x2="60" y2="250" stroke="#1a1822"/>
+  <line x1="120" y1="230" x2="120" y2="250" stroke="#1a1822"/>
+  <line x1="280" y1="230" x2="280" y2="250" stroke="#1a1822"/>
+  <line x1="340" y1="230" x2="340" y2="250" stroke="#1a1822"/>
+  <line x1="560" y1="230" x2="560" y2="250" stroke="#1a1822"/>
+  <line x1="620" y1="230" x2="620" y2="250" stroke="#1a1822"/>
+  <line x1="780" y1="230" x2="780" y2="250" stroke="#1a1822"/>
+  <line x1="840" y1="230" x2="840" y2="250" stroke="#1a1822"/>
+
+  <!-- Merge back up -->
+  <text x="40" y="310" font-size="13" font-weight="700" fill="#4caf50">Merge back up ↑</text>
+  <rect x="40" y="320" width="100" height="30" fill="#4caf50"/><text x="90" y="340" text-anchor="middle" fill="#fff" font-size="11">[2, 5]</text>
+  <rect x="260" y="320" width="100" height="30" fill="#4caf50"/><text x="310" y="340" text-anchor="middle" fill="#fff" font-size="11">[4, 6]</text>
+  <rect x="540" y="320" width="100" height="30" fill="#4caf50"/><text x="590" y="340" text-anchor="middle" fill="#fff" font-size="11">[1, 3]</text>
+  <rect x="760" y="320" width="100" height="30" fill="#4caf50"/><text x="810" y="340" text-anchor="middle" fill="#fff" font-size="11">[7, 8]</text>
+
+  <rect x="120" y="360" width="160" height="30" fill="#4caf50"/><text x="200" y="380" text-anchor="middle" fill="#fff" font-size="12">[2, 4, 5, 6]</text>
+  <rect x="620" y="360" width="160" height="30" fill="#4caf50"/><text x="700" y="380" text-anchor="middle" fill="#fff" font-size="12">[1, 3, 7, 8]</text>
+
+  <rect x="320" y="400" width="260" height="30" fill="#4caf50"/>
+  <text x="450" y="420" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">[1, 2, 3, 4, 5, 6, 7, 8]</text>
+
+  <!-- Labels right side -->
+  <text x="870" y="95" font-size="11" fill="#1a1822" text-anchor="end">level 0</text>
+  <text x="870" y="155" font-size="11" fill="#1a1822" text-anchor="end">level 1</text>
+  <text x="870" y="215" font-size="11" fill="#1a1822" text-anchor="end">level 2</text>
+  <text x="870" y="335" font-size="11" fill="#1a1822" text-anchor="end">merge 1</text>
+  <text x="870" y="375" font-size="11" fill="#1a1822" text-anchor="end">merge 2</text>
+  <text x="870" y="415" font-size="11" fill="#1a1822" text-anchor="end">merge 3</text>
+
+  <rect x="60" y="445" width="780" height="45" fill="#fff" stroke="#6d5bd0" rx="4"/>
+  <text x="80" y="465" font-size="12" fill="#1a1822" font-weight="700">3 merge levels × 8 elements = 24 comparisons/writes ≈ n·log₂(n). Extra space: O(n) auxiliary buffer.</text>
+  <text x="80" y="482" font-size="12" fill="#1a1822">Runtime identical for sorted, reversed, or random input — not adaptive (unless natural-run variant used).</text>
+</svg>

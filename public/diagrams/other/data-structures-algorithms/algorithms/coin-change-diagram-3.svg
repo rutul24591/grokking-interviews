@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Coin Change Family — Variants, Complexity, and Applications</text>
+
+  <rect x="40" y="60" width="820" height="230" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="85" font-size="14" font-weight="700" fill="#6d5bd0">Problem variants</text>
+
+  <g font-size="11">
+    <text x="60" y="112" font-weight="700" fill="#1a1822">Variant</text>
+    <text x="320" y="112" font-weight="700" fill="#1a1822">DP state</text>
+    <text x="560" y="112" font-weight="700" fill="#1a1822">Complexity</text>
+
+    <text x="60" y="136">Min coins (unbounded)</text>
+    <text x="320" y="136">dp[a] = min #coins for amount a</text>
+    <text x="560" y="136">Θ(A · n)</text>
+
+    <text x="60" y="158">Min coins (each coin usable once)</text>
+    <text x="320" y="158">dp[i][a] — iterate backward on a</text>
+    <text x="560" y="158">Θ(A · n)</text>
+
+    <text x="60" y="180">Count of ways (unordered)</text>
+    <text x="320" y="180">outer: coins, inner: amounts asc</text>
+    <text x="560" y="180">Θ(A · n)</text>
+
+    <text x="60" y="202">Count of ordered sequences</text>
+    <text x="320" y="202">outer: amounts, inner: coins</text>
+    <text x="560" y="202">Θ(A · n)</text>
+
+    <text x="60" y="224">Reconstruct one optimal set</text>
+    <text x="320" y="224">+ parent array (which coin used)</text>
+    <text x="560" y="224">Θ(A · n) time + Θ(A) extra space</text>
+
+    <text x="60" y="246">Bounded (k_i copies of coin i)</text>
+    <text x="320" y="246">bounded knapsack / binary lifting</text>
+    <text x="560" y="246">Θ(A · Σ log k_i)</text>
+
+    <text x="60" y="268">Min coins with large A (sparse)</text>
+    <text x="320" y="268">Dijkstra on amount graph</text>
+    <text x="560" y="268">Θ((A + E) log A)</text>
+  </g>
+
+  <rect x="40" y="310" width="400" height="160" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="335" font-size="13" font-weight="700" fill="#4caf50">Real-world applications</text>
+  <text x="60" y="358" font-size="11" fill="#1a1822">• ATM cash-dispenser algorithms (often</text>
+  <text x="60" y="374" font-size="11" fill="#1a1822">  canonical → greedy; non-canonical → DP)</text>
+  <text x="60" y="392" font-size="11" fill="#1a1822">• Game currency: &ldquo;spend all gold&rdquo; change</text>
+  <text x="60" y="408" font-size="11" fill="#1a1822">• Postal stamp combinations (Frobenius)</text>
+  <text x="60" y="426" font-size="11" fill="#1a1822">• Tax bracket splitting, billing rounding</text>
+  <text x="60" y="444" font-size="11" fill="#1a1822">• Integer composition, combinatorics OEIS</text>
+
+  <rect x="460" y="310" width="400" height="160" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="480" y="335" font-size="13" font-weight="700" fill="#cc4444">Pitfalls to avoid</text>
+  <text x="480" y="358" font-size="11" fill="#1a1822">• Returning 0 instead of −1 for impossible</text>
+  <text x="480" y="374" font-size="11" fill="#1a1822">  amounts (0 coins only works for amount 0)</text>
+  <text x="480" y="392" font-size="11" fill="#1a1822">• Using INT_MAX without checking before +1</text>
+  <text x="480" y="408" font-size="11" fill="#1a1822">• Greedy where system isn&rsquo;t canonical</text>
+  <text x="480" y="426" font-size="11" fill="#1a1822">• Confusing combinations vs permutations</text>
+  <text x="480" y="444" font-size="11" fill="#1a1822">• Assuming DP works when A ≫ 10⁹ (use BFS/IDA*)</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Decision Tree — Which Search for Which Problem</text>
+
+  <!-- Root -->
+  <rect x="340" y="70" width="220" height="46" fill="#6d5bd0" rx="6"/>
+  <text x="450" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">What are you searching?</text>
+  <text x="450" y="107" text-anchor="middle" font-size="11" fill="#fff">value vs extremum vs boundary</text>
+
+  <!-- Branches -->
+  <line x1="420" y1="116" x2="180" y2="160" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="450" y1="116" x2="450" y2="160" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="480" y1="116" x2="720" y2="160" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Level 2 -->
+  <rect x="60" y="160" width="240" height="70" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="180" y="183" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Value in sorted data</text>
+  <text x="180" y="203" text-anchor="middle" font-size="11" fill="#1a1822">monotone predicate,</text>
+  <text x="180" y="218" text-anchor="middle" font-size="11" fill="#1a1822">sorted array, feasibility</text>
+
+  <rect x="330" y="160" width="240" height="70" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="450" y="183" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Extremum of function</text>
+  <text x="450" y="203" text-anchor="middle" font-size="11" fill="#1a1822">unimodal f(x), peak/min,</text>
+  <text x="450" y="218" text-anchor="middle" font-size="11" fill="#1a1822">optimization</text>
+
+  <rect x="600" y="160" width="240" height="70" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="720" y="183" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Multiple extrema</text>
+  <text x="720" y="203" text-anchor="middle" font-size="11" fill="#1a1822">non-convex, noisy,</text>
+  <text x="720" y="218" text-anchor="middle" font-size="11" fill="#1a1822">hyperparameter tuning</text>
+
+  <!-- Arrows down -->
+  <line x1="180" y1="230" x2="180" y2="260" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="450" y1="230" x2="450" y2="260" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="720" y1="230" x2="720" y2="260" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Level 3 -->
+  <rect x="60" y="260" width="240" height="140" fill="#f3f1f8" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="180" y="282" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">→ Binary search</text>
+  <text x="180" y="305" text-anchor="middle" font-size="11" fill="#1a1822">O(log n). Use lower_bound /</text>
+  <text x="180" y="321" text-anchor="middle" font-size="11" fill="#1a1822">upper_bound templates.</text>
+  <text x="180" y="345" text-anchor="middle" font-size="11" fill="#1a1822">Parametric search pattern</text>
+  <text x="180" y="361" text-anchor="middle" font-size="11" fill="#1a1822">when predicate is monotone.</text>
+  <text x="180" y="385" text-anchor="middle" font-size="10" fill="#6d5bd0" font-style="italic">Exponential if n unknown.</text>
+
+  <rect x="330" y="260" width="240" height="140" fill="#f3f1f8" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="450" y="282" text-anchor="middle" font-size="12" font-weight="700" fill="#4caf50">→ Golden-section</text>
+  <text x="450" y="305" text-anchor="middle" font-size="11" fill="#1a1822">or Brent&rsquo;s method.</text>
+  <text x="450" y="321" text-anchor="middle" font-size="11" fill="#1a1822">If derivative available:</text>
+  <text x="450" y="345" text-anchor="middle" font-size="11" fill="#1a1822">binary-search f&prime;(x)=0.</text>
+  <text x="450" y="365" text-anchor="middle" font-size="11" fill="#1a1822">Ternary for integer</text>
+  <text x="450" y="381" text-anchor="middle" font-size="11" fill="#1a1822">domains / teaching.</text>
+
+  <rect x="600" y="260" width="240" height="140" fill="#f3f1f8" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="720" y="282" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">→ Global optimization</text>
+  <text x="720" y="305" text-anchor="middle" font-size="11" fill="#1a1822">Bayesian optimization,</text>
+  <text x="720" y="321" text-anchor="middle" font-size="11" fill="#1a1822">simulated annealing,</text>
+  <text x="720" y="345" text-anchor="middle" font-size="11" fill="#1a1822">multi-start local search,</text>
+  <text x="720" y="361" text-anchor="middle" font-size="11" fill="#1a1822">evolutionary algorithms.</text>
+  <text x="720" y="385" text-anchor="middle" font-size="10" fill="#cc4444" font-style="italic">Ternary will mislead.</text>
+
+  <rect x="40" y="420" width="820" height="65" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="442" font-size="12" font-weight="700" fill="#6d5bd0">Takeaway</text>
+  <text x="60" y="462" font-size="11" fill="#1a1822">Ternary search is a specialist tool for unimodal optimization. For most real numerical work, golden-section or Brent&rsquo;s is superior.</text>
+  <text x="60" y="478" font-size="11" fill="#1a1822">If you can rewrite the problem as &ldquo;find where predicate flips&rdquo;, binary search wins on both simplicity and speed.</text>
+</svg>

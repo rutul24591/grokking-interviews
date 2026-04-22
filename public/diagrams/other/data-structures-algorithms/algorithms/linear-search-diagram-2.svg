@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">SIMD Linear Search — 8 Elements per Instruction (AVX2)</text>
+
+  <!-- Target broadcast -->
+  <text x="60" y="80" font-size="13" font-weight="700" fill="#6d5bd0">Step 1 — Broadcast target across 256-bit register:</text>
+  <g transform="translate(60,90)" font-size="11">
+    <text x="0" y="20" font-weight="700" fill="#1a1822">target = 7</text>
+    <text x="90" y="20" fill="#1a1822">→</text>
+    <rect x="110" y="0" width="560" height="28" fill="#cc4444"/>
+    <text x="390" y="19" text-anchor="middle" fill="#fff" font-weight="700">[ 7  7  7  7  7  7  7  7 ] — ymm0</text>
+  </g>
+
+  <!-- Array load -->
+  <text x="60" y="150" font-size="13" font-weight="700" fill="#6d5bd0">Step 2 — Load 8 array elements (one cache line):</text>
+  <g transform="translate(60,160)" font-size="11">
+    <rect x="0" y="0" width="70" height="28" fill="#a89bec"/><text x="35" y="19" text-anchor="middle">3</text>
+    <rect x="72" y="0" width="70" height="28" fill="#a89bec"/><text x="107" y="19" text-anchor="middle">9</text>
+    <rect x="144" y="0" width="70" height="28" fill="#a89bec"/><text x="179" y="19" text-anchor="middle">2</text>
+    <rect x="216" y="0" width="70" height="28" fill="#a89bec"/><text x="251" y="19" text-anchor="middle">7</text>
+    <rect x="288" y="0" width="70" height="28" fill="#a89bec"/><text x="323" y="19" text-anchor="middle">5</text>
+    <rect x="360" y="0" width="70" height="28" fill="#a89bec"/><text x="395" y="19" text-anchor="middle">1</text>
+    <rect x="432" y="0" width="70" height="28" fill="#a89bec"/><text x="467" y="19" text-anchor="middle">4</text>
+    <rect x="504" y="0" width="70" height="28" fill="#a89bec"/><text x="539" y="19" text-anchor="middle">8</text>
+    <text x="600" y="19" fill="#1a1822">ymm1</text>
+  </g>
+
+  <!-- Compare -->
+  <text x="60" y="220" font-size="13" font-weight="700" fill="#6d5bd0">Step 3 — VPCMPEQD ymm0, ymm1, ymm2 (single instruction, 1 cycle):</text>
+  <g transform="translate(60,230)" font-size="11">
+    <rect x="0" y="0" width="70" height="28" fill="#fff" stroke="#1a1822"/><text x="35" y="19" text-anchor="middle">0</text>
+    <rect x="72" y="0" width="70" height="28" fill="#fff" stroke="#1a1822"/><text x="107" y="19" text-anchor="middle">0</text>
+    <rect x="144" y="0" width="70" height="28" fill="#fff" stroke="#1a1822"/><text x="179" y="19" text-anchor="middle">0</text>
+    <rect x="216" y="0" width="70" height="28" fill="#4caf50"/><text x="251" y="19" text-anchor="middle" fill="#fff" font-weight="700">−1</text>
+    <rect x="288" y="0" width="70" height="28" fill="#fff" stroke="#1a1822"/><text x="323" y="19" text-anchor="middle">0</text>
+    <rect x="360" y="0" width="70" height="28" fill="#fff" stroke="#1a1822"/><text x="395" y="19" text-anchor="middle">0</text>
+    <rect x="432" y="0" width="70" height="28" fill="#fff" stroke="#1a1822"/><text x="467" y="19" text-anchor="middle">0</text>
+    <rect x="504" y="0" width="70" height="28" fill="#fff" stroke="#1a1822"/><text x="539" y="19" text-anchor="middle">0</text>
+    <text x="600" y="19" fill="#1a1822">ymm2</text>
+  </g>
+
+  <!-- Movemask -->
+  <text x="60" y="290" font-size="13" font-weight="700" fill="#6d5bd0">Step 4 — VPMOVMSKB extract match bitmask:</text>
+  <g transform="translate(60,300)" font-size="11" font-family="monospace">
+    <rect x="0" y="0" width="280" height="28" fill="#6d5bd0"/>
+    <text x="140" y="19" text-anchor="middle" fill="#fff" font-weight="700">mask = 0x0000F000</text>
+    <text x="300" y="19" fill="#1a1822">(bit position encodes matching element index)</text>
+  </g>
+
+  <!-- TZCNT -->
+  <text x="60" y="360" font-size="13" font-weight="700" fill="#4caf50">Step 5 — TZCNT (bit scan) → index = 3 → return base + 3</text>
+
+  <!-- Perf box -->
+  <rect x="40" y="395" width="820" height="95" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="418" font-size="13" font-weight="700" fill="#6d5bd0">Performance:</text>
+  <text x="60" y="438" font-size="12" fill="#1a1822">5 instructions (broadcast + load + cmp + mask + tzcnt) per 8 elements → ~0.6 cycles per element.</text>
+  <text x="60" y="458" font-size="12" fill="#1a1822">AVX-512: 16 elements per instruction → ~0.3 cycles per element. Saturates L1/L2 bandwidth.</text>
+  <text x="60" y="478" font-size="12" fill="#4caf50" font-weight="700">Used in: glibc memchr/strchr, Go bytes.IndexByte, Rust memchr crate, ripgrep, Java StringLatin1.indexOf.</text>
+</svg>

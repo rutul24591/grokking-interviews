@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Empirical Benchmark — Ciura vs Hibbard vs Sedgewick vs Quicksort</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#1a1822">Relative runtime on random integer arrays, normalized to introsort = 1.0</text>
+
+  <line x1="100" y1="400" x2="820" y2="400" stroke="#1a1822" stroke-width="2"/>
+  <line x1="100" y1="400" x2="100" y2="90" stroke="#1a1822" stroke-width="2"/>
+
+  <text x="140" y="420" text-anchor="middle" font-size="11" fill="#1a1822">10²</text>
+  <text x="280" y="420" text-anchor="middle" font-size="11" fill="#1a1822">10³</text>
+  <text x="420" y="420" text-anchor="middle" font-size="11" fill="#1a1822">10⁴</text>
+  <text x="560" y="420" text-anchor="middle" font-size="11" fill="#1a1822">10⁵</text>
+  <text x="700" y="420" text-anchor="middle" font-size="11" fill="#1a1822">10⁶</text>
+  <text x="460" y="445" text-anchor="middle" font-size="12" fill="#1a1822">n</text>
+
+  <text x="85" y="100" text-anchor="end" font-size="11" fill="#1a1822">5×</text>
+  <text x="85" y="200" text-anchor="end" font-size="11" fill="#1a1822">2×</text>
+  <text x="85" y="300" text-anchor="end" font-size="11" fill="#1a1822">1×</text>
+  <line x1="100" y1="300" x2="820" y2="300" stroke="#1a1822" stroke-dasharray="2" opacity="0.4"/>
+  <line x1="100" y1="200" x2="820" y2="200" stroke="#1a1822" stroke-dasharray="2" opacity="0.4"/>
+  <line x1="100" y1="100" x2="820" y2="100" stroke="#1a1822" stroke-dasharray="2" opacity="0.4"/>
+
+  <!-- Introsort baseline -->
+  <path d="M140 300 L280 300 L420 300 L560 300 L700 300" stroke="#4caf50" stroke-width="3" fill="none"/>
+  <text x="715" y="303" font-size="12" fill="#4caf50" font-weight="700">Introsort (1.0)</text>
+
+  <!-- Ciura -->
+  <path d="M140 290 L280 285 L420 275 L560 230 L700 180" stroke="#6d5bd0" stroke-width="3" fill="none"/>
+  <circle cx="140" cy="290" r="4" fill="#6d5bd0"/>
+  <circle cx="280" cy="285" r="4" fill="#6d5bd0"/>
+  <circle cx="420" cy="275" r="4" fill="#6d5bd0"/>
+  <circle cx="560" cy="230" r="4" fill="#6d5bd0"/>
+  <circle cx="700" cy="180" r="4" fill="#6d5bd0"/>
+  <text x="715" y="183" font-size="12" fill="#6d5bd0" font-weight="700">Ciura</text>
+
+  <!-- Sedgewick -->
+  <path d="M140 280 L280 270 L420 260 L560 200 L700 150" stroke="#a89bec" stroke-width="3" fill="none"/>
+  <text x="715" y="153" font-size="12" fill="#a89bec" font-weight="700">Sedgewick</text>
+
+  <!-- Hibbard -->
+  <path d="M140 270 L280 255 L420 240 L560 170 L700 110" stroke="#cc4444" stroke-width="3" fill="none"/>
+  <text x="715" y="113" font-size="12" fill="#cc4444" font-weight="700">Hibbard</text>
+
+  <!-- Insertion sort (off chart) -->
+  <text x="140" y="85" font-size="11" fill="#1a1822">(Insertion sort O(n²): off-scale past n=10³)</text>
+
+  <rect x="100" y="450" width="720" height="40" fill="#fff" stroke="#6d5bd0" rx="4"/>
+  <text x="120" y="475" font-size="12" fill="#1a1822">Takeaway: Ciura beats Hibbard and Sedgewick across the range; all Shell variants lose to introsort past ~10⁵.</text>
+</svg>

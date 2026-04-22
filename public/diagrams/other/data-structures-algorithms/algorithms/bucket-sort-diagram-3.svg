@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Parallel Sample Sort (Bucket Sort at Scale)</text>
+
+  <!-- Input -->
+  <rect x="40" y="65" width="820" height="50" fill="#a89bec" stroke="#1a1822" rx="4"/>
+  <text x="450" y="95" text-anchor="middle" font-size="13" fill="#1a1822">unsorted input (n elements distributed across p workers)</text>
+
+  <path d="M450 115 L450 135" stroke="#1a1822" marker-end="url(#sa)"/>
+
+  <!-- Sampling -->
+  <rect x="250" y="140" width="400" height="50" fill="#6d5bd0" rx="4"/>
+  <text x="450" y="170" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Step 1: each worker samples s·k keys → global sort of p·s·k samples</text>
+
+  <path d="M450 190 L450 210" stroke="#1a1822" marker-end="url(#sa)"/>
+
+  <!-- Pick boundaries -->
+  <rect x="250" y="215" width="400" height="50" fill="#6d5bd0" rx="4"/>
+  <text x="450" y="245" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Step 2: pick p−1 quantile boundaries → define p buckets</text>
+
+  <path d="M450 265 L450 285" stroke="#1a1822" marker-end="url(#sa)"/>
+
+  <!-- Distribute -->
+  <rect x="40" y="290" width="820" height="60" fill="#a89bec" stroke="#1a1822" rx="4"/>
+  <text x="450" y="314" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Step 3: all-to-all redistribute — each key routed to the owning bucket&apos;s worker</text>
+  <text x="450" y="334" text-anchor="middle" font-size="11" fill="#1a1822">(MPI_Alltoallv / Spark shuffle / GPU global scatter)</text>
+
+  <!-- Local sorts -->
+  <text x="60" y="375" font-size="13" font-weight="700" fill="#6d5bd0">Step 4: each worker sorts its local bucket in parallel:</text>
+  <g transform="translate(60,385)">
+    <rect x="0" y="0" width="150" height="45" fill="#4caf50" rx="4"/><text x="75" y="22" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">W0 sort</text><text x="75" y="37" text-anchor="middle" fill="#fff" font-size="10">bucket 0</text>
+    <rect x="155" y="0" width="150" height="45" fill="#4caf50" rx="4"/><text x="230" y="22" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">W1 sort</text><text x="230" y="37" text-anchor="middle" fill="#fff" font-size="10">bucket 1</text>
+    <rect x="310" y="0" width="150" height="45" fill="#4caf50" rx="4"/><text x="385" y="22" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">W2 sort</text><text x="385" y="37" text-anchor="middle" fill="#fff" font-size="10">bucket 2</text>
+    <rect x="465" y="0" width="150" height="45" fill="#4caf50" rx="4"/><text x="540" y="22" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">…</text>
+    <rect x="620" y="0" width="150" height="45" fill="#4caf50" rx="4"/><text x="695" y="22" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">W(p−1)</text><text x="695" y="37" text-anchor="middle" fill="#fff" font-size="10">bucket p−1</text>
+  </g>
+
+  <rect x="40" y="445" width="820" height="45" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="465" font-size="12" fill="#1a1822"><tspan font-weight="700">Concatenation is implicit</tspan> — buckets ordered by worker ID match the global sort order. No merge needed.</text>
+  <text x="60" y="483" font-size="12" fill="#1a1822"><tspan font-weight="700">Speedup:</tspan> near-linear in p up to shuffle bandwidth limit. Used by Spark sort-shuffle, TeraSort, NVIDIA cuDF sort.</text>
+
+  <defs><marker id="sa" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1a1822"/></marker></defs>
+</svg>

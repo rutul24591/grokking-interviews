@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Bucket Sort — Distribute, Sort, Concatenate</text>
+
+  <!-- Input -->
+  <text x="60" y="75" font-size="13" font-weight="700" fill="#6d5bd0">Input (8 floats in [0,1)):</text>
+  <g transform="translate(60,85)" font-size="11">
+    <rect x="0" y="0" width="55" height="28" fill="#a89bec"/><text x="27" y="19" text-anchor="middle">0.78</text>
+    <rect x="57" y="0" width="55" height="28" fill="#a89bec"/><text x="84" y="19" text-anchor="middle">0.17</text>
+    <rect x="114" y="0" width="55" height="28" fill="#a89bec"/><text x="141" y="19" text-anchor="middle">0.39</text>
+    <rect x="171" y="0" width="55" height="28" fill="#a89bec"/><text x="198" y="19" text-anchor="middle">0.72</text>
+    <rect x="228" y="0" width="55" height="28" fill="#a89bec"/><text x="255" y="19" text-anchor="middle">0.94</text>
+    <rect x="285" y="0" width="55" height="28" fill="#a89bec"/><text x="312" y="19" text-anchor="middle">0.21</text>
+    <rect x="342" y="0" width="55" height="28" fill="#a89bec"/><text x="369" y="19" text-anchor="middle">0.12</text>
+    <rect x="399" y="0" width="55" height="28" fill="#a89bec"/><text x="426" y="19" text-anchor="middle">0.68</text>
+  </g>
+
+  <!-- Distribute phase -->
+  <text x="60" y="150" font-size="13" font-weight="700" fill="#6d5bd0">Phase 1 — Distribute into k=10 buckets (bucket i = ⌊key·10⌋):</text>
+
+  <g transform="translate(60,165)" font-size="10">
+    <rect x="0" y="0" width="78" height="28" fill="#fff" stroke="#1a1822"/><text x="39" y="19" text-anchor="middle">B0: ∅</text>
+    <rect x="80" y="0" width="78" height="28" fill="#a89bec"/><text x="119" y="19" text-anchor="middle">B1: 0.17, 0.12</text>
+    <rect x="160" y="0" width="78" height="28" fill="#a89bec"/><text x="199" y="19" text-anchor="middle">B2: 0.21</text>
+    <rect x="240" y="0" width="78" height="28" fill="#a89bec"/><text x="279" y="19" text-anchor="middle">B3: 0.39</text>
+    <rect x="320" y="0" width="78" height="28" fill="#fff" stroke="#1a1822"/><text x="359" y="19" text-anchor="middle">B4: ∅</text>
+    <rect x="400" y="0" width="78" height="28" fill="#fff" stroke="#1a1822"/><text x="439" y="19" text-anchor="middle">B5: ∅</text>
+    <rect x="480" y="0" width="78" height="28" fill="#a89bec"/><text x="519" y="19" text-anchor="middle">B6: 0.68</text>
+    <rect x="560" y="0" width="78" height="28" fill="#a89bec"/><text x="599" y="19" text-anchor="middle">B7: 0.78, 0.72</text>
+    <rect x="640" y="0" width="78" height="28" fill="#fff" stroke="#1a1822"/><text x="679" y="19" text-anchor="middle">B8: ∅</text>
+    <rect x="720" y="0" width="78" height="28" fill="#a89bec"/><text x="759" y="19" text-anchor="middle">B9: 0.94</text>
+  </g>
+
+  <!-- Sort phase -->
+  <text x="60" y="235" font-size="13" font-weight="700" fill="#6d5bd0">Phase 2 — Sort each bucket (insertion sort):</text>
+  <g transform="translate(60,248)" font-size="10">
+    <rect x="0" y="0" width="78" height="28" fill="#fff" stroke="#1a1822"/><text x="39" y="19" text-anchor="middle">B0: —</text>
+    <rect x="80" y="0" width="78" height="28" fill="#6d5bd0"/><text x="119" y="19" text-anchor="middle" fill="#fff">B1: 0.12, 0.17</text>
+    <rect x="160" y="0" width="78" height="28" fill="#6d5bd0"/><text x="199" y="19" text-anchor="middle" fill="#fff">B2: 0.21</text>
+    <rect x="240" y="0" width="78" height="28" fill="#6d5bd0"/><text x="279" y="19" text-anchor="middle" fill="#fff">B3: 0.39</text>
+    <rect x="320" y="0" width="78" height="28" fill="#fff" stroke="#1a1822"/><text x="359" y="19" text-anchor="middle">B4: —</text>
+    <rect x="400" y="0" width="78" height="28" fill="#fff" stroke="#1a1822"/><text x="439" y="19" text-anchor="middle">B5: —</text>
+    <rect x="480" y="0" width="78" height="28" fill="#6d5bd0"/><text x="519" y="19" text-anchor="middle" fill="#fff">B6: 0.68</text>
+    <rect x="560" y="0" width="78" height="28" fill="#6d5bd0"/><text x="599" y="19" text-anchor="middle" fill="#fff">B7: 0.72, 0.78</text>
+    <rect x="640" y="0" width="78" height="28" fill="#fff" stroke="#1a1822"/><text x="679" y="19" text-anchor="middle">B8: —</text>
+    <rect x="720" y="0" width="78" height="28" fill="#6d5bd0"/><text x="759" y="19" text-anchor="middle" fill="#fff">B9: 0.94</text>
+  </g>
+
+  <!-- Concatenate -->
+  <text x="60" y="320" font-size="13" font-weight="700" fill="#4caf50">Phase 3 — Concatenate in bucket order:</text>
+  <g transform="translate(60,335)" font-size="11">
+    <rect x="0" y="0" width="55" height="28" fill="#4caf50"/><text x="27" y="19" text-anchor="middle" fill="#fff">0.12</text>
+    <rect x="57" y="0" width="55" height="28" fill="#4caf50"/><text x="84" y="19" text-anchor="middle" fill="#fff">0.17</text>
+    <rect x="114" y="0" width="55" height="28" fill="#4caf50"/><text x="141" y="19" text-anchor="middle" fill="#fff">0.21</text>
+    <rect x="171" y="0" width="55" height="28" fill="#4caf50"/><text x="198" y="19" text-anchor="middle" fill="#fff">0.39</text>
+    <rect x="228" y="0" width="55" height="28" fill="#4caf50"/><text x="255" y="19" text-anchor="middle" fill="#fff">0.68</text>
+    <rect x="285" y="0" width="55" height="28" fill="#4caf50"/><text x="312" y="19" text-anchor="middle" fill="#fff">0.72</text>
+    <rect x="342" y="0" width="55" height="28" fill="#4caf50"/><text x="369" y="19" text-anchor="middle" fill="#fff">0.78</text>
+    <rect x="399" y="0" width="55" height="28" fill="#4caf50"/><text x="426" y="19" text-anchor="middle" fill="#fff">0.94</text>
+  </g>
+
+  <rect x="40" y="395" width="820" height="95" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="418" font-size="13" font-weight="700" fill="#6d5bd0">Complexity:</text>
+  <text x="60" y="438" font-size="12" fill="#1a1822"><tspan font-weight="700">Expected:</tspan> Θ(n + k) on uniform input — each bucket has O(1) elements in expectation.</text>
+  <text x="60" y="455" font-size="12" fill="#1a1822"><tspan font-weight="700">Worst:</tspan> Θ(n²) when all keys land in one bucket (skewed input + uniform-range buckets).</text>
+  <text x="60" y="475" font-size="12" fill="#1a1822"><tspan font-weight="700">Space:</tspan> Θ(n + k). <tspan font-weight="700">Stable:</tspan> yes (with stable inner sort — insertion is stable).</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">Uniform vs Skewed — Bucket Load Imbalance</text>
+
+  <!-- Uniform -->
+  <rect x="30" y="60" width="400" height="200" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="230" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#4caf50">Uniform input → balanced buckets → O(n)</text>
+
+  <g transform="translate(50,110)">
+    <rect x="0" y="50" width="30" height="30" fill="#4caf50"/>
+    <rect x="35" y="50" width="30" height="30" fill="#4caf50"/>
+    <rect x="70" y="40" width="30" height="40" fill="#4caf50"/>
+    <rect x="105" y="55" width="30" height="25" fill="#4caf50"/>
+    <rect x="140" y="45" width="30" height="35" fill="#4caf50"/>
+    <rect x="175" y="50" width="30" height="30" fill="#4caf50"/>
+    <rect x="210" y="55" width="30" height="25" fill="#4caf50"/>
+    <rect x="245" y="45" width="30" height="35" fill="#4caf50"/>
+    <rect x="280" y="50" width="30" height="30" fill="#4caf50"/>
+    <rect x="315" y="55" width="30" height="25" fill="#4caf50"/>
+    <line x1="0" y1="80" x2="345" y2="80" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="172" y="110" text-anchor="middle" font-size="11" fill="#1a1822">buckets B0…B9 (each has ~n/k = O(1) elements)</text>
+  </g>
+
+  <text x="50" y="238" font-size="11" fill="#1a1822">• Insertion sort per bucket: O(1)·k = O(n) total</text>
+  <text x="50" y="255" font-size="11" fill="#1a1822">• Max bucket size w.h.p. = O(log n / log log n)</text>
+
+  <!-- Skewed -->
+  <rect x="450" y="60" width="420" height="200" fill="#fff" stroke="#cc4444" stroke-width="2" rx="6"/>
+  <text x="660" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#cc4444">Skewed input → one heavy bucket → O(n²)</text>
+
+  <g transform="translate(470,110)">
+    <rect x="0" y="0" width="30" height="80" fill="#cc4444"/>
+    <rect x="35" y="60" width="30" height="20" fill="#a89bec"/>
+    <rect x="70" y="70" width="30" height="10" fill="#a89bec"/>
+    <rect x="105" y="75" width="30" height="5" fill="#a89bec"/>
+    <rect x="140" y="78" width="30" height="2" fill="#a89bec"/>
+    <rect x="175" y="78" width="30" height="2" fill="#a89bec"/>
+    <rect x="210" y="80" width="30" height="0" fill="#a89bec"/>
+    <rect x="245" y="80" width="30" height="0" fill="#a89bec"/>
+    <rect x="280" y="80" width="30" height="0" fill="#a89bec"/>
+    <rect x="315" y="80" width="30" height="0" fill="#a89bec"/>
+    <line x1="0" y1="80" x2="345" y2="80" stroke="#1a1822" stroke-width="1.5"/>
+    <text x="172" y="110" text-anchor="middle" font-size="11" fill="#1a1822">B0 has ~0.8n elements; others empty</text>
+  </g>
+
+  <text x="470" y="238" font-size="11" fill="#1a1822">• Insertion sort on B0: O(n²) cost</text>
+  <text x="470" y="255" font-size="11" fill="#cc4444" font-weight="700">• Algorithm degenerates to insertion sort</text>
+
+  <!-- Fix box -->
+  <rect x="30" y="285" width="840" height="200" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="50" y="310" font-size="14" font-weight="700" fill="#6d5bd0">Fix: Quantile-Based Boundaries (Sample Sort)</text>
+
+  <text x="50" y="335" font-size="12" fill="#1a1822">1. Draw random sample of size s·k from input (oversampling factor s ≈ 16–64).</text>
+  <text x="50" y="355" font-size="12" fill="#1a1822">2. Sort the sample.</text>
+  <text x="50" y="375" font-size="12" fill="#1a1822">3. Pick bucket boundaries at positions s, 2s, …, (k−1)s in the sorted sample — these are empirical quantiles.</text>
+  <text x="50" y="395" font-size="12" fill="#1a1822">4. Distribute: each input goes to bucket determined by binary search in boundaries array.</text>
+  <text x="50" y="415" font-size="12" fill="#1a1822">5. Sort each bucket. Concatenate.</text>
+
+  <text x="50" y="445" font-size="12" fill="#4caf50" font-weight="700">Result: buckets have ~n/k ± O(√(n/k·log k)) elements (Chernoff), regardless of underlying distribution.</text>
+  <text x="50" y="467" font-size="11" fill="#1a1822" font-style="italic">Used in: Spark RangePartitioner, Hadoop TeraSort, MPI parallel sort, Intel TBB parallel_sort.</text>
+</svg>

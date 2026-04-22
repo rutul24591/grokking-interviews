@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1822">GPU Radix Sort (CUB) — Block Histogram → Global Scan → Coalesced Scatter</text>
+
+  <!-- Input tile -->
+  <text x="60" y="75" font-size="13" font-weight="700" fill="#6d5bd0">Input partitioned into per-block tiles (each block = 256 threads)</text>
+  <g transform="translate(60,90)">
+    <rect x="0" y="0" width="150" height="30" fill="#a89bec"/><text x="75" y="20" text-anchor="middle" font-size="11">Block 0 (256 keys)</text>
+    <rect x="155" y="0" width="150" height="30" fill="#a89bec"/><text x="230" y="20" text-anchor="middle" font-size="11">Block 1 (256 keys)</text>
+    <rect x="310" y="0" width="150" height="30" fill="#a89bec"/><text x="385" y="20" text-anchor="middle" font-size="11">Block 2 (256 keys)</text>
+    <rect x="465" y="0" width="150" height="30" fill="#a89bec"/><text x="540" y="20" text-anchor="middle" font-size="11">…</text>
+    <rect x="620" y="0" width="150" height="30" fill="#a89bec"/><text x="695" y="20" text-anchor="middle" font-size="11">Block N−1</text>
+  </g>
+
+  <!-- Stage 1: local histogram -->
+  <rect x="40" y="140" width="820" height="90" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="162" font-size="13" font-weight="700" fill="#6d5bd0">Stage 1 — Each block builds a local histogram (16 buckets, b=16)</text>
+  <g transform="translate(60,175)">
+    <rect x="0" y="0" width="150" height="40" fill="#6d5bd0" rx="4"/><text x="75" y="25" text-anchor="middle" fill="#fff" font-size="11">hist₀[0..15]</text>
+    <rect x="155" y="0" width="150" height="40" fill="#6d5bd0" rx="4"/><text x="230" y="25" text-anchor="middle" fill="#fff" font-size="11">hist₁[0..15]</text>
+    <rect x="310" y="0" width="150" height="40" fill="#6d5bd0" rx="4"/><text x="385" y="25" text-anchor="middle" fill="#fff" font-size="11">hist₂[0..15]</text>
+    <rect x="465" y="0" width="150" height="40" fill="#6d5bd0" rx="4"/><text x="540" y="25" text-anchor="middle" fill="#fff" font-size="11">…</text>
+    <rect x="620" y="0" width="150" height="40" fill="#6d5bd0" rx="4"/><text x="695" y="25" text-anchor="middle" fill="#fff" font-size="11">histₙ₋₁</text>
+  </g>
+
+  <!-- Stage 2: global scan -->
+  <rect x="40" y="245" width="820" height="80" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="267" font-size="13" font-weight="700" fill="#6d5bd0">Stage 2 — Global prefix scan across block-histograms → per-block scatter offsets</text>
+  <g transform="translate(60,278)">
+    <rect x="0" y="0" width="770" height="35" fill="#a89bec" rx="4"/>
+    <text x="385" y="22" text-anchor="middle" font-size="12" fill="#1a1822">parallel exclusive scan (Blelloch / decoupled look-back) — O(log n) depth</text>
+  </g>
+
+  <!-- Stage 3: scatter -->
+  <rect x="40" y="340" width="820" height="90" fill="#fff" stroke="#4caf50" stroke-width="2" rx="6"/>
+  <text x="60" y="362" font-size="13" font-weight="700" fill="#4caf50">Stage 3 — Coalesced scatter: each thread writes to its bucket&apos;s contiguous region</text>
+  <g transform="translate(60,375)">
+    <rect x="0" y="0" width="50" height="40" fill="#4caf50"/><text x="25" y="25" text-anchor="middle" fill="#fff" font-size="11">b=0</text>
+    <rect x="52" y="0" width="50" height="40" fill="#4caf50"/><text x="77" y="25" text-anchor="middle" fill="#fff" font-size="11">b=1</text>
+    <rect x="104" y="0" width="50" height="40" fill="#4caf50"/><text x="129" y="25" text-anchor="middle" fill="#fff" font-size="11">b=2</text>
+    <rect x="156" y="0" width="50" height="40" fill="#4caf50"/><text x="181" y="25" text-anchor="middle" fill="#fff" font-size="11">b=3</text>
+    <text x="225" y="27" font-size="12" fill="#1a1822">…</text>
+    <rect x="250" y="0" width="50" height="40" fill="#4caf50"/><text x="275" y="25" text-anchor="middle" fill="#fff" font-size="11">b=15</text>
+    <text x="325" y="20" font-size="11" fill="#1a1822">sorted output after this digit pass.</text>
+    <text x="325" y="37" font-size="11" fill="#1a1822">Repeat 8 times for 32-bit keys (b=16 → d=8).</text>
+  </g>
+
+  <rect x="40" y="445" width="820" height="45" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
+  <text x="60" y="465" font-size="12" fill="#1a1822"><tspan font-weight="700">Throughput:</tspan> ~10 GB/s on H100, memory-bandwidth-limited. Used in Thrust, PyTorch torch.sort (int), RAPIDS cuDF.</text>
+  <text x="60" y="483" font-size="12" fill="#1a1822"><tspan font-weight="700">Key design choice:</tspan> b=16 fits in warp-shuffle scan; coalesced writes amortize DRAM latency.</text>
+</svg>
