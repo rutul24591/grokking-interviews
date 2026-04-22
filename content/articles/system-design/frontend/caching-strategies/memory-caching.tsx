@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,30 +25,36 @@ export default function MemoryCachingConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Memory caching</strong> in the frontend context refers to storing server-fetched data, computed results,
           or derived state directly in the JavaScript heap (V8 memory) so that subsequent reads avoid redundant network
           requests or expensive recalculations. Unlike browser-level caches (HTTP cache, Cache API, IndexedDB), in-memory
           caches live entirely within the runtime of a single page session and are discarded on navigation away or tab closure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For API-heavy Single Page Applications, memory caching is often the single most impactful optimization.
           Without it, every component mount triggers a network request, every route transition re-fetches data that was
           already retrieved seconds ago, and every re-render recomputes values derived from the same inputs. Libraries
           like React Query (TanStack Query) and SWR have standardized this pattern, but the underlying primitives - Map,
           WeakMap, closures, and reference equality - are fundamental JavaScript concepts that every staff-level engineer
           should understand deeply.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge is not just "store data in a variable." Production-grade memory caching must address staleness
           detection, garbage collection pressure, cache invalidation, concurrent request deduplication, optimistic updates,
           and memory leaks from retained references. A naive cache that never evicts will eventually cause out-of-memory
           crashes on long-running sessions; a cache that evicts too aggressively offers no benefit over raw fetch calls.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concept: memory caching is a keyed store with freshness and eviction. Senior answers explain{" "}
+          <Highlight tier="important">cache identity</Highlight> (query keys),{" "}
+          <Highlight tier="important">freshness</Highlight> (staleTime/TTL), and{" "}
+          <Highlight tier="important">lifecycle</Highlight> (gcTime/eviction) plus how concurrent consumers share results.
+        </HighlightBlock>
         <p>Understanding in-memory caching requires grasping several interconnected primitives:</p>
         <ul>
           <li>
@@ -65,14 +73,14 @@ export default function MemoryCachingConciseArticle() {
             not millions), but it becomes critical in scenarios like infinite scroll where each page creates a new
             cache entry.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>TTL (Time-To-Live) Management:</strong> TTL determines how long a cache entry remains valid.
             In React Query, this maps to <code>staleTime</code> (how long data is considered fresh) and
             <code>gcTime</code> (formerly <code>cacheTime</code> - how long inactive entries remain in memory before
             garbage collection). A staleTime of 0 (the default) means data is stale immediately after fetching, which
             triggers a background refetch on the next mount. A staleTime of <code>Infinity</code> means data never
             goes stale and is only refetched via explicit invalidation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reference Counting & Subscription Tracking:</strong> React Query and SWR track how many active
             components are subscribed to each cache entry. When the last subscriber unmounts, the entry becomes
@@ -80,14 +88,14 @@ export default function MemoryCachingConciseArticle() {
             before being garbage-collected. This ensures that if a user navigates away and back within 5 minutes,
             cached data is still available instantly.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Query Keys & Cache Identity:</strong> The query key is the cache's addressing mechanism. In React
             Query, keys are arrays: <code>["users", {'{"status": "active"}'}]</code>. The library serializes these
             deterministically (sorting object keys) so that <code>["users", {'{"status": "active", "role": "admin"}'}]</code> and
             <code>["users", {'{"role": "admin", "status": "active"}'}]</code> resolve to the same cache entry. This
             serialization is critical for deduplication. Poorly designed keys lead to cache misses, duplicate fetches,
             and stale data bugs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache Normalization:</strong> Apollo Client normalizes cached data into a flat store keyed by
             entity type and ID (<code>User:123</code>). This means updating a user in one query automatically updates
@@ -95,23 +103,23 @@ export default function MemoryCachingConciseArticle() {
             own copy of the response. This is simpler but means updating a user requires invalidating every query that
             might contain that user's data.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Garbage Collection Implications:</strong> V8's garbage collector cannot collect objects that are
             referenced by an active cache. Large cache entries (e.g., arrays of 10,000 items from paginated responses)
             consume heap space proportional to their size, not their access frequency. Engineers must be intentional
             about what gets cached and for how long, especially on memory-constrained mobile devices where the browser
             may terminate tabs exceeding ~300MB.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Modern frontend caching libraries share a common architectural pattern: a centralized cache store that hooks
           subscribe to, with a query lifecycle that determines when to serve from cache, when to refetch, and when to
           evict.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">React Query Cache Lifecycle</h3>
@@ -131,31 +139,48 @@ export default function MemoryCachingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/memory-cache-architecture.svg"
           alt="In-Memory Cache Architecture showing component tree, hooks, query cache, and API server"
           caption="Memory Cache Architecture - Multiple components sharing cache entries through query key deduplication"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The critical insight is <strong>request deduplication</strong>. If three components mount simultaneously and
           all call <code>useQuery(["users"])</code>, only one network request is made. All three components subscribe
           to the same cache entry and receive the same data when the request resolves. This eliminates the "waterfall"
           problem where naive implementations fire redundant requests.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           SWR follows a similar model but with different defaults. SWR's <code>dedupingInterval</code> (2 seconds by
           default) prevents duplicate requests within a time window. Its <code>revalidateOnFocus</code> and
           <code>revalidateOnReconnect</code> options automatically trigger refetches when the user returns to the tab
           or reconnects to the network, keeping cached data synchronized with the server without explicit invalidation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/react-query-flow.svg"
           alt="React Query Cache Lifecycle Flow showing mount, cache check, fresh/stale/miss paths"
           caption="React Query Flow - Decision tree from component mount through cache check to data delivery, showing staleTime and gcTime roles"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Trade-off lens: pick a cache based on{" "}
+          <Highlight tier="important">data shape</Highlight> (REST vs GraphQL),{" "}
+          <Highlight tier="important">consistency needs</Highlight>, and{" "}
+          <Highlight tier="important">team operational maturity</Highlight>. The best choice minimizes stale bugs and
+          re-render churn while keeping memory bounded.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          React Query/SWR are great defaults for server state with built-in dedupe and background revalidation. Apollo shines
+          when normalized entities reduce update fan-out, but it carries more complexity and bundle cost.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Using Zustand (or any client store) as a data-fetch cache is a common anti-pattern unless you implement staleness,
+          invalidation, retries, and dedupe yourself. Separate server state from client UI state unless you have a strong reason.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -238,27 +263,31 @@ export default function MemoryCachingConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: stable query keys, explicit freshness per query, safe mutation handling (optimistic updates + invalidation),
+          and a plan to keep memory bounded (gcTime, pagination windows, hydration). Treat sensitive data as non-cacheable by default.
+        </HighlightBlock>
         <p>Follow these practices for production-grade in-memory caching:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design Query Keys as a Hierarchy:</strong> Structure keys as arrays with increasing specificity:
             <code>["users"]</code>, <code>["users", userId]</code>, <code>["users", userId, "posts"]</code>. This
             enables granular invalidation - invalidating <code>["users"]</code> can cascade to all user-related
             queries via <code>queryClient.invalidateQueries({"{'"}queryKey: ["users"]{"'}"})</code>. Avoid flat string keys
             like <code>"allUsers"</code> that have no relationship structure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Appropriate staleTime per Query:</strong> Not all data has the same freshness requirements.
             User profile data might tolerate <code>staleTime: 5 * 60 * 1000</code> (5 minutes), while a real-time
             chat message list might need <code>staleTime: 0</code>. Feature flags and configuration that rarely change
             can use <code>staleTime: Infinity</code> with manual invalidation on deployment events.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Optimistic Updates for Mutations:</strong> When a user performs an action (like toggling a
             favorite), update the cache immediately before the server confirms. Roll back on error. This makes the UI
             feel instant. React Query's <code>onMutate</code> callback and <code>onError</code> rollback pattern is
             purpose-built for this.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefetch on Hover or Route Transition:</strong> Anticipate what data the user will need next.
             Prefetch query data when the user hovers over a link or when route transition begins. React Query's
@@ -271,12 +300,12 @@ export default function MemoryCachingConciseArticle() {
             <code>maxPages</code> option (v5+) or implement manual eviction of distant pages that the user is
             unlikely to scroll back to.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Avoid Caching Sensitive Data:</strong> Authentication tokens, PII, or financial data should not
             linger in an in-memory cache that any browser extension or DevTools can inspect. If you must cache it,
             ensure the cache is cleared on logout and consider using <code>structuredClone</code> to prevent reference
             leaks to external code.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor Cache Health in Production:</strong> Log cache hit rates, average staleness at read time,
             and memory usage. React Query DevTools shows this in development, but production monitoring requires
@@ -294,25 +323,29 @@ export default function MemoryCachingConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Pitfalls cluster around correctness and leaks: unstable keys that defeat dedupe, infinite freshness without invalidation,
+          mutating cached objects, and letting memory grow unbounded in long sessions.
+        </HighlightBlock>
         <p>Avoid these mistakes when implementing in-memory caching:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using staleTime: Infinity Without Invalidation:</strong> Setting infinite staleTime means data
             never auto-refreshes. If you also forget to call <code>invalidateQueries</code> after mutations, users
             see permanently stale data. Always pair infinite staleTime with explicit invalidation in mutation
             <code>onSuccess</code> callbacks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Non-Deterministic Query Keys:</strong> Using objects with inconsistent property ordering or
             including unstable references (like <code>new Date()</code>) in query keys. This creates new cache entries
             for every render, defeating deduplication. Always use serializable, deterministic values in keys.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching Mutable Objects Without Cloning:</strong> Storing a reference to a fetched object and then
             mutating it directly (e.g., <code>cachedUser.name = "new"</code>) corrupts the cache for all subscribers.
             Treat cached data as immutable. If you need to transform data, use React Query's <code>select</code>
             option to derive values without modifying the cached original.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory Leaks from Forgotten Subscriptions:</strong> In custom cache implementations, failing to
             unsubscribe when components unmount causes the cache to hold references to unmounted component callbacks,
@@ -324,12 +357,12 @@ export default function MemoryCachingConciseArticle() {
             in memory causes tab crashes on mobile devices. Profile memory usage with Chrome DevTools Memory panel.
             For large datasets, paginate responses and only cache the current window, or move bulk data to IndexedDB.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Cache Warming on SSR:</strong> In Next.js, server-rendered pages have no client-side cache.
             If the client hydrates and immediately refetches all data, you lose the SSR performance benefit. Use
             React Query's <code>dehydrate/hydrate</code> to transfer the server-side cache to the client, avoiding
             double-fetching.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No Error Caching Strategy:</strong> By default, React Query does not cache errors the same way
             it caches data. A failed request with <code>retry: 3</code> will retry immediately on the next mount.
@@ -341,21 +374,26 @@ export default function MemoryCachingConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases: memory caching shines when many components share the same server state and you want to avoid redundant
+          fetches and spinners. The staff-level move is to pair it with background revalidation, optimistic mutations, and
+          bounds for paginated data to avoid memory blowups.
+        </HighlightBlock>
         <p>In-memory caching is essential in these scenarios:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Dashboard Applications:</strong> Analytics dashboards like Grafana or Datadog display dozens of
             widgets, each fetching different metrics. Memory caching with stale-while-revalidate ensures the dashboard
             renders instantly from cache on tab-switch while background refetches pull the latest data. Without caching,
             every tab switch triggers 20+ API calls simultaneously.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Real-Time Data with Polling:</strong> Stock tickers, live sports scores, or social media feeds
             that poll every few seconds. The cache stores the latest snapshot and serves it between poll intervals.
             React Query's <code>refetchInterval</code> combined with staleTime ensures smooth updates without
             UI flicker, and automatic deduplication prevents multiple polling loops when the same data is displayed
             in multiple components.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Infinite Scroll / Virtualized Lists:</strong> Applications like Twitter or Reddit that load
             content page by page. Each page is a separate cache entry keyed by page number. When users scroll back
@@ -378,7 +416,11 @@ export default function MemoryCachingConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Use In-Memory Caching</h3>
-          <p>Avoid in-memory caching for:</p>
+          <HighlightBlock as="p" tier="important">
+            Avoid in-memory caching for correctness-critical or persistence-heavy cases. If you need always-fresh reads,
+            cross-tab coordination, or offline persistence, use a different layer (HTTP cache, service worker cache, IndexedDB)
+            and optionally hydrate a small in-memory working set.
+          </HighlightBlock>
           <ul className="mt-2 space-y-2">
             <li>
               {"\u2022"} <strong>Data that must always be fresh:</strong> Payment processing, inventory availability
@@ -405,6 +447,18 @@ export default function MemoryCachingConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain how query keys drive identity, how staleTime/gcTime control freshness and memory, and
+          how the library prevents duplicate requests (shared in-flight Promise). Strong answers mention SSR hydration
+          and mutation correctness (optimistic update + rollback + invalidation).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          High-signal phrases: &quot;server state vs client UI state&quot;, &quot;return stale immediately but refetch in background&quot;,
+          and &quot;bound the cache for infinite scroll&quot;.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Also mention safety: don&apos;t cache auth tokens/PII, clear caches on logout, and avoid mutating cached objects in place.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How does React Query prevent duplicate API calls when multiple components request the same data?</p>

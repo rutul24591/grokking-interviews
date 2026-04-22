@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,28 +25,28 @@ export default function CacheInvalidationStrategiesConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Phil Karlton famously stated: <em>"There are only two hard things in Computer Science: cache invalidation
           and naming things."</em> While caching itself is straightforward — store a copy of data closer to the
           consumer — knowing <strong>when</strong> and <strong>how</strong> to discard or refresh that copy is the
           genuinely difficult engineering problem. Cache invalidation is the process of determining when cached data
           is no longer valid and must be refreshed, purged, or replaced with up-to-date information.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental challenge arises from a distributed-systems truth: there is no reliable, zero-latency
           channel between the authoritative data source and every cache that holds a copy. Between the moment data
           changes at the origin and the moment every consumer sees the new value, there is an unavoidable window of
           inconsistency. Making that window as small as possible — without crushing performance — is what cache
           invalidation strategy selection is about.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On the frontend, this problem surfaces across multiple layers: in-memory state caches (React Query, SWR,
           Redux), browser HTTP caches (controlled via Cache-Control headers), service worker caches (Cache API),
           and CDN edge caches. Each layer has different eviction semantics, different propagation latencies, and
           different blast radii when invalidation goes wrong. A staff-level engineer must reason about the
           interaction of all these layers simultaneously — a stale CDN edge response can poison a perfectly fresh
           client-side cache, and vice versa.
-        </p>
+        </HighlightBlock>
         <p>
           The cost of getting invalidation wrong is asymmetric. Invalidating too aggressively wastes bandwidth and
           origin capacity (essentially defeating the cache). Invalidating too lazily serves stale data, which can
@@ -56,19 +58,19 @@ export default function CacheInvalidationStrategiesConciseArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Cache invalidation strategies fall into several distinct categories, each offering different trade-offs
           between freshness, complexity, and performance. Understanding these categories and their precise semantics
           is essential for designing effective caching architectures.
-        </p>
+        </HighlightBlock>
 
         <h3>TTL-Based Invalidation (Time-to-Live)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The simplest strategy: every cached entry carries a timestamp or countdown. When the TTL expires, the
           entry is considered stale and must be revalidated or evicted. HTTP's <code>Cache-Control: max-age=3600</code>
           is the canonical example — the browser treats the response as fresh for 3600 seconds, then makes a
           conditional request (If-None-Match / If-Modified-Since) to the origin.
-        </p>
+        </HighlightBlock>
         <p>
           TTL is easy to implement and reason about, but it has an inherent trade-off: short TTLs reduce staleness
           but increase origin load, while long TTLs improve performance but increase the staleness window. For data
@@ -78,13 +80,13 @@ export default function CacheInvalidationStrategiesConciseArticle() {
         </p>
 
         <h3>Event-Driven Invalidation (Push Model)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instead of waiting for a timer to expire, the origin actively notifies caches when data changes. This
           push model uses mechanisms such as webhooks, WebSocket messages, Server-Sent Events, or pub/sub systems
           (Redis Pub/Sub, Kafka) to trigger invalidation. When a product price changes in the database, the
           backend publishes an event, and every cache layer that subscribes to that event purges or updates the
           corresponding entry.
-        </p>
+        </HighlightBlock>
         <p>
           Event-driven invalidation dramatically reduces the staleness window — ideally to network propagation
           latency only. However, it introduces significant complexity: you need reliable message delivery (what
@@ -146,7 +148,7 @@ export default function CacheInvalidationStrategiesConciseArticle() {
         </p>
 
         <h3>Cache-Control Directives: Precision Matters</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The semantics of HTTP cache directives are frequently misunderstood. <code>max-age=0</code> means the
           response is immediately stale but may still be served while revalidating.
           <code>no-cache</code> means the response must be revalidated with the origin before every use (but can
@@ -154,54 +156,56 @@ export default function CacheInvalidationStrategiesConciseArticle() {
           cache layer. Confusing these leads to either serving stale sensitive data (using <code>no-cache</code>
           when <code>no-store</code> was needed) or killing cache performance (using <code>no-store</code> for
           public data that simply needed short TTLs).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Choosing an invalidation strategy is not a binary decision — production systems combine multiple
           strategies across different cache layers. The architecture must account for propagation delays between
           layers, race conditions between concurrent reads and writes, and graceful degradation when invalidation
           channels fail.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/invalidation-strategies.svg"
           alt="Four Cache Invalidation Strategies Comparison"
           caption="Comparison of four primary invalidation strategies: TTL-based, Event-driven, Versioned URLs, and Tag-based — each with distinct trade-offs"
+          captionTier="important"
         />
 
         <h3>Push vs. Pull Invalidation Models</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Pull-based (TTL/polling)</strong> models are simple but inherently reactive — the cache does not
           know about changes until it checks. This creates a bounded staleness window equal to the TTL or polling
           interval. Pull models scale well because the origin does not need to know about its caches, but they
           waste bandwidth when data has not changed (unnecessary revalidation requests) and serve stale data when
           it has (until the next check).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Push-based (event-driven)</strong> models are proactive — the origin announces changes as they
           happen. This minimizes staleness but requires the origin to maintain awareness of cache subscribers,
           introduces message delivery reliability concerns, and can create write amplification (a single data
           change triggers O(N) invalidation messages where N is the number of cache nodes). In practice, hybrid
           approaches dominate: use push invalidation for high-value or frequently-changing data, and TTL-based
           expiry as a safety net for everything else.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/ttl-vs-event.svg"
           alt="TTL vs Event-Driven Invalidation Timeline"
           caption="Timeline comparison: TTL-based invalidation has a staleness window between data change and cache expiry, while event-driven achieves near-instant freshness"
+          captionTier="important"
         />
 
         <h3>Multi-Layer Invalidation Propagation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a modern frontend architecture, a single piece of data may be cached in four or more layers:
           the in-memory application cache (React Query/SWR), the browser HTTP cache, a service worker cache,
           and one or more CDN edge caches. Invalidation must propagate through all of these layers, and the
           ordering matters.
-        </p>
+        </HighlightBlock>
         <p>
           Consider a product price update. The origin database is updated first. The CDN must then be purged
           (via tag-based API call). The browser's HTTP cache might still hold the old response — it will
@@ -215,6 +219,7 @@ export default function CacheInvalidationStrategiesConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cache-consistency.svg"
           alt="Multi-Layer Cache Consistency Challenges"
           caption="Cache invalidation must propagate through Browser, CDN Edge, and Origin layers — race conditions and ordering issues can cause inconsistency"
+          captionTier="important"
         />
 
         <p>
@@ -228,6 +233,20 @@ export default function CacheInvalidationStrategiesConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Trade-off lens: you are balancing <Highlight tier="important">freshness guarantees</Highlight> against{" "}
+          <Highlight tier="important">operational complexity</Highlight> and cost. The staff-level move is to classify data
+          by staleness tolerance and apply different invalidation strategies per class instead of one global policy.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Event-driven invalidation minimizes staleness but increases blast radius and failure modes (dropped events,
+          fan-out overload). TTL is simple but guarantees a staleness window. Versioned URLs are perfect for build-time
+          assets but require HTML freshness to reference the new URLs.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Tag-based invalidation is the &quot;CDN-native&quot; solution for relationships (invalidate every page that embeds
+          a changed component), but you must budget purge rate limits and propagation latency in your correctness story.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -287,32 +306,36 @@ export default function CacheInvalidationStrategiesConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: use immutable URLs for build assets, use soft purges to protect origins, and layer invalidation
+          mechanisms so failures degrade to bounded staleness instead of permanent wrongness. Observability is non-negotiable.
+        </HighlightBlock>
         <p>These practices reflect battle-tested patterns from large-scale frontend caching systems:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Layer Your Invalidation:</strong> Never rely on a single mechanism. Combine push-based
             invalidation for immediate freshness with TTL-based expiry as a safety net. If the WebSocket event
             fails, the TTL ensures eventual consistency. Defense in depth applies to caching just as it does to
             security.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Immutable URLs for Static Assets:</strong> Hash all build-time assets and serve them
             with <code>Cache-Control: max-age=31536000, immutable</code>. This eliminates the invalidation
             problem for the largest class of frontend resources. Your HTML entry point should use <code>no-cache</code>
             to always fetch the latest asset references.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer Soft Purges Over Hard Purges:</strong> When invalidating CDN content, use soft purges
             (mark stale) rather than hard purges (delete) for popular resources. This allows the CDN to serve the
             stale version while refetching from origin, preventing thundering herd problems that can bring down
             your origin server during traffic spikes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Invalidate Relationships, Not Just Entities:</strong> When a product's image changes,
             invalidate not only the image URL but also every page that embeds it — the product detail page, the
             category listing, the search results. Tag-based invalidation with surrogate keys makes this tractable.
             Failing to invalidate related content is the most common source of visual inconsistencies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version Your API Responses:</strong> Include an ETag or a version number in API responses.
             Client-side caches can use this to determine staleness without downloading the full response body.
@@ -341,6 +364,11 @@ export default function CacheInvalidationStrategiesConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Most incidents come from mismatch between correctness expectations and invalidation reality: missing dependent
+          invalidations, herd effects on expiry/purge, and assuming a purge at one layer (CDN) automatically fixes every
+          other layer (browser/app caches).
+        </HighlightBlock>
         <p>These mistakes are responsible for the majority of caching incidents in production:</p>
         <ul className="space-y-3">
           <li>
@@ -350,13 +378,13 @@ export default function CacheInvalidationStrategiesConciseArticle() {
             or stable callbacks to ensure the invalidation handler references the current query client instance,
             not a stale closure from a previous render.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Thundering Herd on Cache Expiry:</strong> When a popular cached resource expires (or is
             hard-purged) simultaneously across many clients, all of them send refetch requests to the origin at
             once. Mitigation strategies include jittering TTLs (add a random offset to prevent synchronized
             expiry), using stale-while-revalidate to absorb the spike, and implementing request coalescing at
             the CDN layer to collapse concurrent identical requests into one.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting to Invalidate Related Data:</strong> Updating a user's avatar in the profile
             service but failing to invalidate the avatar in the comments feed cache, the chat presence cache,
@@ -364,47 +392,52 @@ export default function CacheInvalidationStrategiesConciseArticle() {
             else. Map out data dependencies before implementing invalidation — use a dependency graph to identify
             all downstream caches that reference a given entity.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using no-cache When You Mean no-store:</strong> For sensitive data (banking information,
             medical records), <code>no-cache</code> still allows the response to be stored in the cache — it
             just requires revalidation before each use. If the cache is compromised, the data is exposed. Use
             <code>no-store</code> for data that must never be persisted in any cache, and <code>private, no-cache</code>
             for data that can be stored in the browser cache but must not be stored in shared caches (CDN, proxy).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Invalidating Without Warming:</strong> Purging a CDN cache for a popular resource without
             pre-warming (pre-fetching the new version) means the first user after the purge experiences a cache
             miss and slow response. For critical paths, issue a purge followed immediately by a synthetic request
             to warm the cache before real users hit it.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Browser Cache When Purging CDN:</strong> You purge the CDN, but browsers that
             loaded the page before the purge still have the old response in their HTTP cache. Until those browser
             caches expire, those users continue seeing stale data. For critical updates, combine CDN purge with
             a mechanism to signal the client (versioned API endpoints, WebSocket notifications, or a service
             worker that checks for updates).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Coupling Cache Keys to Session State:</strong> Including authentication tokens or session
             IDs in cache keys for shared caches creates per-user cache entries that cannot be shared, destroying
             cache efficiency. Use the <code>Vary</code> header thoughtfully — <code>Vary: Cookie</code> on a CDN
             effectively disables caching. Separate public (cacheable) and private (per-user) content into
             different endpoints with different cache policies.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Real-world mapping is about staleness cost. Use tag-based invalidation for shared page composition, event-driven
+          for near-real-time correctness, and TTL/SWR for cheap bounded staleness. Static assets should be immutable and
+          versioned so invalidation is unnecessary.
+        </HighlightBlock>
         <p>Each scenario demands a different invalidation strategy based on its consistency requirements:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>E-Commerce Product Updates:</strong> Product catalog data (titles, descriptions, images)
             changes infrequently and tolerates seconds of staleness. Use tag-based CDN invalidation with
             surrogate keys. When a merchant updates a product, the write handler purges the product tag, which
             invalidates all pages containing that product (detail page, category listings, search results). Pair
             with a 60-second TTL as a safety net.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Social Media Feeds:</strong> Feed data changes constantly and user expectations for freshness
             are high but not absolute (seconds of delay are acceptable). Use TTL-based caching with short
@@ -419,19 +452,19 @@ export default function CacheInvalidationStrategiesConciseArticle() {
             publishes an event. Client-side, use a polling mechanism as a fallback, checking a lightweight
             version endpoint every 30 seconds.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Static Assets (JS/CSS/Fonts):</strong> These never change once deployed — they are immutable.
             Use versioned URLs with content hashing and serve with <code>immutable, max-age=31536000</code>.
             Invalidation is a non-issue because the content is addressed by its hash. The HTML document that
             references them is the only thing that needs freshness management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Financial Data (Stock Prices, Account Balances):</strong> Staleness is unacceptable —
             showing an old stock price can lead to incorrect trading decisions. Use event-driven invalidation
             with WebSocket streams. Do not cache at the CDN level. Browser cache should use
             <code>no-store</code> for the most sensitive data, or very short TTLs (1-5 seconds) with
             <code>must-revalidate</code> for data where brief staleness is tolerable.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -449,6 +482,19 @@ export default function CacheInvalidationStrategiesConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: describe a multi-layer invalidation plan with explicit time bounds (e.g., &quot;within 5 seconds&quot;),
+          and show you understand both herd prevention (SWR, request coalescing, TTL jitter) and relationship invalidation
+          (purge by tag/surrogate key).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          High-signal framing: &quot;invalidate relationships, not just entities&quot;, &quot;prefer soft purge over hard purge&quot;,
+          and &quot;layer invalidation with TTL as a safety net&quot;.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Also mention that purging one layer doesn&apos;t purge others: browser HTTP cache and in-memory client caches need their
+          own invalidation story (short TTLs, version checks, or client push events).
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: You have a high-traffic e-commerce site. A product price changes. How do you ensure all users see the new price within 5 seconds?</p>

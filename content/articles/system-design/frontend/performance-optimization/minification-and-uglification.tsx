@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,24 +28,26 @@ export default function MinificationUglificationArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Minification</strong> removes unnecessary characters from source code (whitespace, 
           comments, newlines) without changing functionality. <strong>Uglification</strong> (or 
           mangling) goes further by renaming variables and functions to shorter names. Together, they 
-          typically reduce JavaScript bundle size by <strong>30-60%</strong> and CSS by 
-          <strong>20-40%</strong> before compression.
-        </p>
-        <p>
+          typically reduce JavaScript bundle size by{" "}
+          <Highlight tier="important">30-60%</Highlight> and CSS by{" "}
+          <Highlight tier="important">20-40%</Highlight> before compression.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These are build-time transformations — your source code stays readable and maintainable, 
           but the production output is compact and optimized. Every modern bundler (Webpack, Vite, 
           Rollup, esbuild) performs minification automatically in production builds, but understanding 
           the underlying techniques helps you configure optimal settings and debug issues.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/minification-pipeline.svg"
           alt="Diagram showing minification pipeline from source code through parsing, transformation, mangling, and output with size reduction percentages"
           caption="Minification pipeline: source code is parsed, transformed, mangled, and output as compact bundle"
+          captionTier="important"
         />
 
         <p>
@@ -58,11 +62,11 @@ export default function MinificationUglificationArticle() {
             <strong>Comment Removal:</strong> Strip all comments (unless preserved by license 
             comments). Reduces size without affecting execution.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Variable Mangling:</strong> Rename variables and functions to shorter names 
             (<code>userData</code> → <code>a</code>, <code>calculateTotal</code> → <code>b</code>). 
             This is where &quot;uglification&quot; gets its name — the output is ugly but functional.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Dead Code Elimination:</strong> Remove unreachable code (after return statements, 
             in false conditionals), unused variables, and unused exports.
@@ -122,6 +126,17 @@ export default function MinificationUglificationArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concept: minification is not just whitespace. It relies on AST transforms (dead code
+          elimination, constant folding, mangling) and can break boundary contracts if you use globals or
+          reflection.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat minification as a correctness-sensitive optimization: anything referenced by name (globals, string property access) is a hazard.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Minification works best when combined with tree shaking and compression; don&apos;t evaluate it in isolation.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/minification-techniques.svg"
@@ -277,6 +292,16 @@ export default function MinificationUglificationArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The flow you should describe: parse → transform → mangle → emit + source maps, and how your build
+          tooling integrates this with tree shaking and compression.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Your architecture includes source maps: they must exist for ops/debugging but be handled safely (upload to error tools, protect access).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Be able to explain what changes at build time vs runtime: minification is build-time, so runtime gains come from fewer bytes/less parse.
+        </HighlightBlock>
 
         <h3>Build Pipeline Integration</h3>
         <p>
@@ -374,6 +399,14 @@ export default function MinificationUglificationArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Minification is a build-time optimization with two big senior-level concerns:
+          <Highlight tier="important"> operational debuggability</Highlight> (source maps, stack traces) and
+          <Highlight tier="important"> correctness at boundaries</Highlight> (globals, reflection, property
+          access). The best minifier choice is usually a trade between build time and the last few percent of
+          compression.
+        </HighlightBlock>
+
         <h3>Minifier Trade-offs</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -389,12 +422,16 @@ export default function MinificationUglificationArticle() {
               <tr>
                 <td className="p-3 font-medium">Terser</td>
                 <td className="p-3">Moderate (slower)</td>
-                <td className="p-3">Best compression</td>
+                <td className="p-3">
+                  <Highlight tier="important">Best compression</Highlight>
+                </td>
                 <td className="p-3">Production builds where size matters most</td>
               </tr>
               <tr>
                 <td className="p-3 font-medium">esbuild</td>
-                <td className="p-3">Fastest (10-100x)</td>
+                <td className="p-3">
+                  <Highlight tier="important">Fastest (10-100x)</Highlight>
+                </td>
                 <td className="p-3">Good (1-5% larger)</td>
                 <td className="p-3">Fast builds, development, large projects</td>
               </tr>
@@ -407,11 +444,20 @@ export default function MinificationUglificationArticle() {
             </tbody>
           </table>
         </div>
+        <HighlightBlock as="p" tier="important" className="mt-4">
+          If you ship source maps, treat them as production artifacts: store them securely, upload to an error tracker,
+          and avoid exposing them publicly unless you accept the reverse-engineering trade-off. Staff-level answers mention
+          both developer ergonomics and security/IP considerations.
+        </HighlightBlock>
 
         <h3>Minification Level Trade-offs</h3>
         <p>
           Aggressive minification settings provide better compression but may cause issues:
         </p>
+        <HighlightBlock as="p" tier="important">
+          The most dangerous knob is property mangling. Only use it if you can constrain the surface area (reserved names,
+          no reflection/dynamic access, and strong test coverage) because failures are usually runtime-only and hard to detect.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
@@ -477,6 +523,16 @@ export default function MinificationUglificationArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: always ship source maps safely, reserve external API names when needed, and pick a
+          minifier based on build-time constraints vs size wins.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Don&apos;t minify dev builds. Keep prod minification deterministic so you can reproduce issues.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validate integration boundaries: if a third-party script expects `window.foo`, protect that name from mangling.
+        </HighlightBlock>
 
         <h3>Use Production Mode</h3>
         <p>
@@ -552,11 +608,11 @@ export default function MinificationUglificationArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Mangling Breaking External APIs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If your code accesses <code>window.myGlobal</code> or uses string-based property access 
           (<code>obj[&quot;propertyName&quot;]</code>), mangling can rename the variable but not the 
           string:
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Problem:</strong> <code>window.appData</code> gets mangled to <code>window.a</code>, 
           but external code still expects <code>window.appData</code>.
@@ -567,10 +623,10 @@ export default function MinificationUglificationArticle() {
         </p>
 
         <h3>Not Generating Source Maps</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Minified code is unreadable. Without source maps, debugging production errors is nearly 
           impossible:
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Problem:</strong> Error stack traces show minified line/column numbers.
         </p>
@@ -592,9 +648,9 @@ export default function MinificationUglificationArticle() {
         </p>
 
         <h3>Dropping All Console Statements</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Removing all console statements including console.error can hinder production debugging:
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Problem:</strong> No way to see errors in browser console.
         </p>
@@ -634,6 +690,16 @@ export default function MinificationUglificationArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases should show pragmatic choices: fast CI builds for large repos vs maximum compression for
+          consumer traffic, plus how you validate correctness in production.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use cases should include operational readiness: source maps in Sentry/Datadog, and guardrails to prevent breaking releases.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention what you measured: transfer size and parse/execute improvements, plus whether it moved INP/TBT.
+        </HighlightBlock>
 
         <h3>E-Commerce: Terser Optimization</h3>
         <p>
@@ -696,15 +762,24 @@ export default function MinificationUglificationArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain what minification does, how it can break boundaries, and why source maps are non-negotiable for prod debugging.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers compare minifiers (Terser/esbuild/SWC) and justify based on size vs build speed.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out pitfalls: mangling globals, missing source maps, and dropping useful logs/errors.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is minification and how does it reduce bundle size?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Minification removes unnecessary characters from source code without changing 
               functionality:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>Whitespace Removal:</strong> Spaces, tabs, newlines for readability are removed.
@@ -723,9 +798,9 @@ export default function MinificationUglificationArticle() {
                 <strong>Expression Optimization:</strong> Constant expressions evaluated at build time.
               </li>
             </ul>
-            <p>
+            <HighlightBlock as="p" tier="important">
               Together, these techniques reduce JavaScript by 30-60% and CSS by 20-40% before compression.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -745,10 +820,10 @@ export default function MinificationUglificationArticle() {
                 Written in Rust.
               </li>
             </ul>
-            <p>
+            <HighlightBlock as="p" tier="important">
               Choose Terser for smallest bundles, esbuild for fastest builds, SWC for TypeScript 
               projects.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">

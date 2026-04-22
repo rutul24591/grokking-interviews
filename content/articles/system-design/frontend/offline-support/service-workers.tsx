@@ -254,41 +254,6 @@ export default function ServiceWorkersConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          Service Worker implementation spans registration, lifecycle handling,
-          and caching strategies:
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">
-              Basic Service Worker Registration and Lifecycle
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">
-              Caching Strategies Implementation
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Update Notification Pattern</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>

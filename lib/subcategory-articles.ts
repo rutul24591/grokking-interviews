@@ -4676,6 +4676,103 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Comprehensive guide to vector databases covering vector indexing algorithms (HNSW, IVF, PQ), similarity metrics, scaling strategies, product comparison, and production vector database architecture."
     }
   ],
+  "other/data-structures-algorithms/algorithms": [
+    {
+      "slug": "binary-search",
+      "title": "Binary Search",
+      "description": "Binary Search — O(log n) divide-and-conquer search over sorted data. The lower_bound / upper_bound / parametric-search template behind databases, compilers, and rate limiters."
+    },
+    {
+      "slug": "bubble-sort",
+      "title": "Bubble Sort",
+      "description": "Staff-level deep dive into bubble sort — adjacent-swap mechanics, early-termination optimization, cocktail-shaker variant, cache behavior, and the educational role bubble sort plays despite its O(n²) disqualification from production."
+    },
+    {
+      "slug": "bucket-sort",
+      "title": "Bucket Sort",
+      "description": "Bucket Sort — distribute into k buckets, sort each, concatenate. Linear expected time on uniformly distributed data; the sort behind histogram equalization and range partitioning."
+    },
+    {
+      "slug": "counting-sort",
+      "title": "Counting Sort",
+      "description": "Counting Sort — non-comparative linear-time sorting for small integer ranges. The stable workhorse inside radix sort and histogram-based sorts."
+    },
+    {
+      "slug": "dp-fundamentals",
+      "title": "Dynamic Programming Fundamentals",
+      "description": "DP Fundamentals — optimal substructure, overlapping subproblems, memoization vs tabulation, state design, and the principled path from recursion to O(n²) wins."
+    },
+    {
+      "slug": "exponential-search",
+      "title": "Exponential Search",
+      "description": "Exponential Search — doubling-bracket then binary search. O(log i) for unbounded sorted streams and arrays where the target is near the start."
+    },
+    {
+      "slug": "heap-sort",
+      "title": "Heap Sort",
+      "description": "Heap Sort — guaranteed O(n log n) in-place sorting via binary-heap extraction. Introsort's safety net and the Linux kernel's sort of choice."
+    },
+    {
+      "slug": "insertion-sort",
+      "title": "Insertion Sort",
+      "description": "Staff-level deep dive into insertion sort — shift-and-insert mechanics, adaptiveness on nearly-sorted input, binary insertion variant, the role as small-array base case in Tim Sort and Pdqsort, and cache-friendly O(nk) behavior."
+    },
+    {
+      "slug": "interpolation-search",
+      "title": "Interpolation Search",
+      "description": "Interpolation Search — O(log log n) on uniformly distributed sorted data by guessing position from value, O(n) worst case on skewed data."
+    },
+    {
+      "slug": "jump-search",
+      "title": "Jump Search",
+      "description": "Jump Search — O(√n) block-skipping search on sorted arrays. A middle ground between linear and binary when random access is expensive."
+    },
+    {
+      "slug": "knapsack-01",
+      "title": "0/1 Knapsack",
+      "description": "0/1 Knapsack — the archetypal DP. O(nW) pseudo-polynomial, NP-hard in input size. Unbounded, subset-sum, and meet-in-the-middle variants."
+    },
+    {
+      "slug": "linear-search",
+      "title": "Linear Search",
+      "description": "Linear Search — sequential O(n) scan. The default, cache-optimal, branchless-friendly search for small, unsorted, or streaming data."
+    },
+    {
+      "slug": "longest-common-subsequence",
+      "title": "Longest Common Subsequence (LCS)",
+      "description": "LCS — the O(mn) DP underlying diff, git merge, bioinformatics alignment, and version control. State design and Hunt-Szymanski optimization."
+    },
+    {
+      "slug": "merge-sort",
+      "title": "Merge Sort",
+      "description": "Staff-level deep dive into merge sort — divide-and-conquer mechanics, stable merge, top-down vs bottom-up, in-place and natural variants, Tim Sort and external merge sort as production descendants."
+    },
+    {
+      "slug": "quick-sort",
+      "title": "Quick Sort",
+      "description": "Quick Sort — partition-based in-place sorting with expected O(n log n), the workhorse behind introsort, Pdqsort, and most production sort() implementations."
+    },
+    {
+      "slug": "radix-sort",
+      "title": "Radix Sort",
+      "description": "Radix Sort — LSD and MSD variants, digit-by-digit linear-time sorting. The fastest known sort for fixed-width integer keys on both CPU and GPU."
+    },
+    {
+      "slug": "selection-sort",
+      "title": "Selection Sort",
+      "description": "Staff-level deep dive into selection sort — the minimum-swap comparison sort, tournament-selection extension, heapsort as the O(n log n) descendant, and why selection sort wins when writes are the dominant cost."
+    },
+    {
+      "slug": "shell-sort",
+      "title": "Shell Sort",
+      "description": "Staff-level deep dive into Shell sort — gap sequences, h-sortedness, theoretical complexity bounds for Shell, Hibbard, Sedgewick, Ciura sequences, and Shellsort's niche between insertion sort and O(n log n) algorithms."
+    },
+    {
+      "slug": "ternary-search",
+      "title": "Ternary Search",
+      "description": "Ternary Search — divide the range into thirds to find the extremum of a unimodal function. O(log n) with larger constants than binary search."
+    }
+  ],
   "other/data-structures-algorithms/data-structures": [
     {
       "slug": "arrays",

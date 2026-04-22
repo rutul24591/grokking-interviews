@@ -13,6 +13,7 @@ import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 import type { ArticleMetadata } from "@/types/article";
 import { ExampleViewer } from "@/components/articles/ExampleViewer";
+import { HighlightLegend } from "@/components/articles/HighlightLegend";
 import {
   ArticleExampleToggle,
   useArticleViewMode,
@@ -28,9 +29,15 @@ type ArticleLayoutProps = {
 
 export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
   const [examples, setExamples] = useState<ExampleGroup[]>([]);
-  const formattedDate = new Date(metadata.lastUpdated).toLocaleDateString(
-    "en-US",
-    { year: "numeric", month: "long", day: "numeric" },
+  const formattedDate = useMemo(
+    () =>
+      new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+      }).format(new Date(`${metadata.lastUpdated}T00:00:00Z`)),
+    [metadata.lastUpdated],
   );
   const pathname = usePathname();
   const backHref = useMemo(() => {
@@ -261,9 +268,21 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
           </div>
         )}
 
+        {highlightsOn && view === "article" && (
+          <div className="mb-6">
+            <HighlightLegend />
+          </div>
+        )}
+
         {/* Article Content */}
         <HighlightsProvider value={{ highlightsOn, setHighlightsOn }}>
-          <article className="prose">
+          <article
+            className={classNames(
+              "prose",
+              highlightsOn && "article-highlights-on",
+            )}
+            data-highlights-on={highlightsOn ? "true" : "false"}
+          >
             {view === "example" ? (
               <ExampleViewer
                 key={activeExample?.id ?? "no-example"}

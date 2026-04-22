@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,39 +26,39 @@ export default function CdnCachingConciseArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A <strong>Content Delivery Network (CDN)</strong> is a geographically distributed network of proxy servers
           and data centers that cache content at <strong>edge locations</strong> (also called Points of Presence, or PoPs)
           close to end users. CDN caching is the mechanism by which these edge servers store copies of origin server
           responses and serve them directly to nearby users, eliminating round-trips to the origin and dramatically
           reducing latency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The concept emerged in the late 1990s when Akamai Technologies (founded 1998) pioneered the first commercial
           CDN to solve the "flash crowd" problem, where sudden traffic spikes would overwhelm origin servers. Today,
           CDNs like Cloudflare, Fastly, AWS CloudFront, and Vercel Edge Network handle a significant portion of all
           internet traffic, with Cloudflare alone reporting that they serve over 20% of all websites.
-        </p>
+        </HighlightBlock>
         <p>
           At the infrastructure level, a CDN operates through several key components:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Edge PoPs:</strong> Servers deployed in data centers across dozens or hundreds of cities worldwide.
             Each PoP contains cache storage and routing logic. A major CDN like Cloudflare operates 300+ PoPs; AWS
             CloudFront has 450+ edge locations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Origin Shield:</strong> An intermediate caching layer between edge PoPs and the origin server.
             When multiple edge PoPs experience cache misses simultaneously, the origin shield consolidates these
             requests into a single origin fetch, preventing thundering herd problems. Fastly calls this "shielding,"
             CloudFront calls it "Origin Shield," and Cloudflare offers "Tiered Caching."
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Anycast Routing:</strong> Most CDNs use anycast DNS to route users to the nearest PoP based on
             network topology (not just geographic distance). This means a user in Tokyo hits the Tokyo PoP, while a
             user in London hits the London PoP, all using the same IP address.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Origin Server:</strong> Your actual application server (or object storage like S3) that generates
             the canonical response. The CDN only contacts the origin on cache misses or revalidation.
@@ -67,13 +69,18 @@ export default function CdnCachingConciseArticle() {
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          At a staff/principal level, CDN caching is a set of explicit decisions about{" "}
+          <Highlight tier="important">cache keys</Highlight>, TTL/revalidation, and invalidation mechanics that keep
+          <strong> correctness</strong> intact while maximizing hit rate and controlling origin load.
+        </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">Cache Keys</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A cache key is the unique identifier the CDN uses to store and look up cached responses. By default, most
           CDNs use the full request URL (scheme + host + path + query string) as the cache key. However, this can be
           customized extensively:
-        </p>
+        </HighlightBlock>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
           <code>{`// Default cache key components
 // https://example.com/api/products?page=2&sort=price
@@ -97,10 +104,10 @@ Cache-Control: max-age=60
         </pre>
 
         <h3 className="mt-6 font-semibold">The Vary Header</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>Vary</code> header tells the CDN to store separate cached copies based on specific request headers.
           This is critical for serving different content to different clients from the same URL:
-        </p>
+        </HighlightBlock>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
           <code>{`// Vary on Accept-Encoding: separate cache for gzip vs brotli
 Vary: Accept-Encoding
@@ -130,10 +137,10 @@ addEventListener('fetch', event =&gt; {
         </pre>
 
         <h3 className="mt-6 font-semibold">Surrogate Keys & Cache Tags</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Surrogate keys (Fastly's term) or cache tags (Cloudflare's term) allow you to associate cached resources
           with logical labels for targeted invalidation. Instead of purging by URL, you purge by semantic meaning:
-        </p>
+        </HighlightBlock>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
           <code>{`// Origin response headers
 Surrogate-Key: product-123 category-electronics homepage-featured
@@ -153,11 +160,11 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
         </pre>
 
         <h3 className="mt-6 font-semibold">Edge Compute</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern CDNs go beyond simple caching by offering compute at the edge. Cloudflare Workers, Vercel Edge
           Functions, and Fastly Compute run your code at edge PoPs, enabling dynamic responses without origin
           round-trips. This blurs the line between "CDN" and "application server":
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>A/B testing at the edge:</strong> Route users to variants without origin involvement.
@@ -184,57 +191,59 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
             <strong>L1 (Edge PoP):</strong> The server closest to the user. Handles most requests. Limited storage
             per PoP means less popular content may be evicted.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>L2 (Regional/Shield):</strong> A larger, regional cache shared by multiple L1 PoPs. When L1
             misses, it checks L2 before going to origin. This dramatically reduces origin load because only one L2
             request is made instead of N separate L1-to-origin requests.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding the full request flow through a CDN is essential for debugging cache behavior and optimizing
           hit rates. The following diagram illustrates the global architecture of a CDN with origin shielding:
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cdn-architecture.svg"
           alt="CDN global architecture showing origin server, origin shield, and edge PoPs serving users worldwide"
           caption="Figure 1: Global CDN architecture with origin shield and geographically distributed edge PoPs"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a user makes a request, the CDN processes it through a well-defined flow with multiple caching layers.
           Each layer provides an opportunity for a cache hit, reducing the total latency:
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cdn-cache-flow.svg"
           alt="CDN request flow showing DNS resolution, edge cache lookup, origin shield, and origin server"
           caption="Figure 2: Detailed request flow through CDN layers from client to origin and back"
+          captionTier="important"
         />
 
         <p>
           The flow works as follows:
         </p>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>DNS Resolution:</strong> The user's browser resolves the domain. Anycast DNS returns the IP
             of the nearest edge PoP (typically {'&lt;'}5ms).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Edge Cache Lookup:</strong> The edge PoP checks its local cache using the cache key. On a
             <strong> cache hit</strong>, the response is returned immediately (1-5ms). The response
             includes <code>x-cache: HIT</code> or <code>cf-cache-status: HIT</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Origin Shield (L2):</strong> On a cache miss, the edge PoP forwards the request to the origin
             shield. If the shield has a cached copy, it returns it to the edge (which caches it locally). This
             adds 10-30ms but prevents origin contact.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Origin Fetch:</strong> If the shield also misses, the request goes to the origin server. The
             origin processes the request and returns a response with appropriate <code>Cache-Control</code> headers.
@@ -251,10 +260,10 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
       {/* Section 5: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The CDN landscape offers different trade-offs depending on your needs. Here is a comparison of the
           major CDN providers across key dimensions that matter for frontend engineers:
-        </p>
+        </HighlightBlock>
 
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-sm">
@@ -321,29 +330,33 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
           </table>
         </div>
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           <strong>Key trade-off:</strong> Invalidation speed vs. cost. Fastly's instant purge (~150ms global
           propagation) is unmatched but comes at a premium. CloudFront is cheaper but invalidation takes minutes.
           For most frontend applications, Cloudflare or Vercel offer the best balance of developer experience,
           performance, and cost.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 6: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices are about protecting correctness (no user data leaks, no stale deploys) while keeping hit rate
+          high. Treat caching as a contract: what is cacheable, for how long, by which layer, and how it is invalidated.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use content-hashed filenames for static assets:</strong> Name files
             like <code>app.a1b2c3.js</code> and set <code>Cache-Control: public, max-age=31536000, immutable</code>.
             The hash changes when content changes, so you never need to invalidate. This is the single most
             effective CDN caching strategy.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate CDN and browser TTLs:</strong> Use <code>s-maxage</code> for the CDN
             and <code>max-age</code> for the browser. CDN caches can be purged instantly; browser caches cannot.
             Keep browser TTLs short (60-300s) for mutable content while allowing the CDN to cache for hours.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Enable origin shielding:</strong> Reduce origin load by consolidating cache misses through
             a shield layer. This is especially important during cache warming (after a full purge or deployment)
@@ -354,16 +367,16 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
             Cache-Control headers. Users get instant responses from stale cache while the CDN fetches fresh content
             in the background. This eliminates the latency penalty of cache expiration.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use cache tags for surgical invalidation:</strong> Tag responses with semantic labels
             (product IDs, category names) and purge by tag when data changes. This is far more precise than
             purging by URL pattern and avoids the over-purging problem.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Minimize Vary header values:</strong> Only include headers that actually affect the response.
             Never <code>Vary: User-Agent</code> or <code>Vary: Cookie</code> as these create thousands of variants.
             Normalize request attributes at the edge into a small set of cache key components.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Monitor cache hit ratios:</strong> Track your CDN's cache hit ratio (aim for 90%+). Use
             CDN analytics to identify URLs with low hit rates and investigate whether cache keys are too specific,
@@ -380,37 +393,42 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
       {/* Section 7: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          CDN caching failures are usually correctness failures, not speed failures: accidentally caching
+          user-specific responses, creating cache-key explosions, and purging the CDN while ignoring browser caches.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cdn-invalidation.svg"
           alt="CDN cache invalidation methods showing purge by URL, purge by tag, purge all, and TTL expiration"
           caption="Figure 3: Cache invalidation strategies and their propagation across edge nodes"
+          captionTier="important"
         />
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching responses with Set-Cookie headers:</strong> If your origin sets cookies (session IDs,
             analytics), the CDN may cache that response and serve the same cookie to every user. Most CDNs
             bypass cache for responses with <code>Set-Cookie</code>, but if you're using custom cache logic,
             strip these headers before caching. This is a security vulnerability, not just a performance issue.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache key explosion from Vary:</strong> Using <code>Vary: User-Agent</code> creates a separate
             cache entry for every unique User-Agent string (thousands of variations). Your cache hit rate drops to
             near zero. Instead, normalize to device classes (mobile, tablet, desktop) at the edge.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting about browser cache after CDN purge:</strong> Purging the CDN cache doesn't purge
             users' browser caches. If you set <code>max-age=3600</code>, users may still see stale content for up
             to an hour after you purge the CDN. Use short <code>max-age</code> values for mutable content and rely
             on <code>s-maxage</code> for CDN-level caching.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Thundering herd on cache expiration:</strong> When a popular resource's TTL expires, all edge
             PoPs simultaneously fetch from origin. Use <code>stale-while-revalidate</code> to serve stale content
             while refreshing, or enable request coalescing (Fastly calls this "request collapsing") to
             deduplicate concurrent origin fetches.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not accounting for cache warming after deployments:</strong> After a deployment that changes
             URLs or purges caches, your origin will see a traffic spike as all edge PoPs refill their caches. Plan
@@ -433,33 +451,38 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
       {/* Section 8: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Real systems use CDNs to separate “global, cacheable, immutable” content from “personalized, mutable, risky”
+          content. The best designs cache the shell and static assets aggressively, then constrain dynamic data to
+          smaller surfaces with explicit TTL + invalidation.
+        </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">Static Sites & JAMstack</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Static sites are the ideal CDN caching scenario. Every page is pre-built at deploy time, so the entire
           site can be served from edge with <code>immutable</code> caching. Frameworks like Next.js (with static
           export), Astro, and Gatsby generate content-hashed assets that never need invalidation. Deploy-time
           atomic cache swaps ensure users always see a consistent version of the site.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 font-semibold">API Caching at the Edge</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For read-heavy APIs (product catalogs, search results, public data), caching API responses at the edge
           can reduce origin load by 90%+ and cut P99 latency from 500ms to {'&lt;'}10ms. The key is identifying
           which endpoints are cacheable and setting appropriate TTLs. Use <code>s-maxage=60,
           stale-while-revalidate=600</code> for data that changes infrequently, and <code>s-maxage=0</code> with
           <code>stale-while-revalidate=60</code> for near-real-time data that should still benefit from edge
           serving during revalidation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 font-semibold">Personalization Challenges</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Personalized content is the enemy of CDN caching because each user sees different data. Strategies to
           work around this include: serving a cached "shell" (header, footer, layout) from the edge and loading
           personalized content via client-side JavaScript; using Edge Compute to inject personalized fragments into
           cached templates (Cloudflare HTMLRewriter, Vercel Edge Middleware); or segmenting users into a small
           number of cohorts (free/premium, region, language) and caching per-cohort rather than per-user.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 font-semibold">A/B Testing at the Edge</h3>
         <p>
@@ -495,27 +518,31 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview answers should name the layers (browser, CDN, origin), then specify the policy per layer: cache key,
+          TTL/revalidation, and invalidation. Doing that crisply reads as senior in both design and operations.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel p-4">
             <h3 className="font-semibold">Q: How would you design a CDN caching strategy for a high-traffic e-commerce site where product pages need to show up-to-date pricing?</h3>
             <div className="mt-3 space-y-2">
-              <p>
+              <HighlightBlock as="p" tier="important">
                 <strong>A:</strong> The key insight is separating cacheable from non-cacheable content. Product page
                 layouts, images, and descriptions rarely change and can be cached aggressively
                 with <code>s-maxage=3600</code>. For pricing, I would use one of two approaches:
-              </p>
-              <p>
+              </HighlightBlock>
+              <HighlightBlock as="p" tier="important">
                 <strong>Approach 1 (Stale-While-Revalidate):</strong> Cache the full page
                 with <code>s-maxage=60, stale-while-revalidate=3600</code>. Prices are at most 60 seconds stale, and
                 users always get instant responses. When a price changes, use cache tags (<code>product-123</code>) to
                 purge instantly via Fastly's surrogate keys or Cloudflare cache tags.
-              </p>
-              <p>
+              </HighlightBlock>
+              <HighlightBlock as="p" tier="important">
                 <strong>Approach 2 (Edge Compute):</strong> Cache the product page shell at the edge and inject the
                 current price at the edge using a Worker/Edge Function that fetches the price from a fast key-value
                 store (Cloudflare KV, Vercel Edge Config). The shell has a long TTL; the price lookup adds ~5ms.
-              </p>
+              </HighlightBlock>
               <p>
                 Both approaches keep P99 latency under 50ms while ensuring prices are current within seconds.
               </p>
@@ -525,18 +552,18 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
           <div className="rounded-lg border border-theme bg-panel p-4">
             <h3 className="font-semibold">Q: What is the difference between s-maxage and max-age, and why does it matter for CDN caching?</h3>
             <div className="mt-3 space-y-2">
-              <p>
+              <HighlightBlock as="p" tier="important">
                 <strong>A:</strong> <code>max-age</code> applies to all caches (browser and CDN),
                 while <code>s-maxage</code> applies only to shared/proxy caches (CDN) and
                 overrides <code>max-age</code> at that layer. This distinction is critical because browser caches
                 cannot be remotely purged, but CDN caches can.
-              </p>
-              <p>
+              </HighlightBlock>
+              <HighlightBlock as="p" tier="important">
                 In practice, you want the CDN to cache aggressively (high <code>s-maxage</code>) because you can purge
                 it instantly when content changes. But you want the browser to cache conservatively
                 (low <code>max-age</code>) because once content is in a user's browser cache, you have no way to
                 invalidate it until the TTL expires.
-              </p>
+              </HighlightBlock>
               <p>
                 Example: <code>Cache-Control: public, s-maxage=86400, max-age=60</code> means the CDN caches for 24
                 hours (and you can purge it anytime), while each user's browser only caches for 60 seconds.
@@ -547,9 +574,9 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
           <div className="rounded-lg border border-theme bg-panel p-4">
             <h3 className="font-semibold">Q: You deploy a bug fix but users are still seeing the old version. Walk through your debugging process.</h3>
             <div className="mt-3 space-y-2">
-              <p>
+              <HighlightBlock as="p" tier="important">
                 <strong>A:</strong> I would systematically check each caching layer:
-              </p>
+              </HighlightBlock>
               <p>
                 <strong>1. Browser cache:</strong> Open DevTools, check the Network tab. If the response
                 shows <code>(from disk cache)</code>, the browser is serving a cached copy. Hard refresh (Ctrl+Shift+R)

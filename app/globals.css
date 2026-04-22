@@ -262,32 +262,67 @@ body {
 }
 
 /* Article Highlight Styles */
+.prose .highlight-crucial,
+.prose .highlight-important {
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.highlight-crucial,
+.highlight-important,
+.prose .highlight-crucial,
+.prose .highlight-important {
+  border-radius: 0.5rem;
+}
+
+.highlight-crucial:is(p, li, div, td, th, blockquote),
+.highlight-important:is(p, li, div, td, th, blockquote),
+.prose .highlight-crucial:is(p, li, div, td, th, blockquote),
+.prose .highlight-important:is(p, li, div, td, th, blockquote) {
+  padding: 0.35rem 0.65rem;
+}
+
 .highlight-crucial,
 .prose .highlight-crucial {
-  background-color: rgba(168, 85, 247, 0.15);
-  border-left: 3px solid rgba(168, 85, 247, 0.5);
-  padding: 0.25em 0.5em;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s ease;
+  background-color: rgba(236, 72, 153, 0.16) !important;
+  box-shadow: inset 3px 0 0 rgba(168, 85, 247, 0.72);
 }
 
 [data-theme="dark"] .highlight-crucial,
 [data-theme="dark"] .prose .highlight-crucial {
-  background-color: rgba(168, 85, 247, 0.25);
-  border-left-color: rgba(192, 132, 252, 0.5);
+  background-color: rgba(244, 114, 182, 0.3) !important;
+  box-shadow: inset 3px 0 0 rgba(216, 180, 254, 0.9);
 }
 
 .highlight-important,
 .prose .highlight-important {
-  background-color: rgba(251, 191, 36, 0.15);
-  border-left: 3px solid rgba(245, 158, 11, 0.5);
-  padding: 0.25em 0.5em;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s ease;
+  background-color: rgba(251, 146, 60, 0.16) !important;
+  box-shadow: inset 3px 0 0 rgba(234, 88, 12, 0.72);
 }
 
 [data-theme="dark"] .highlight-important,
 [data-theme="dark"] .prose .highlight-important {
-  background-color: rgba(251, 191, 36, 0.25);
-  border-left-color: rgba(251, 191, 36, 0.5);
+  background-color: rgba(251, 146, 60, 0.3) !important;
+  box-shadow: inset 3px 0 0 rgba(253, 186, 116, 0.9);
+}
+
+span.highlight-crucial,
+span.highlight-important,
+.prose span.highlight-crucial,
+.prose span.highlight-important {
+  padding: 0.08rem 0.4rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+figcaption.highlight-crucial,
+figcaption.highlight-important,
+.prose figcaption.highlight-crucial,
+.prose figcaption.highlight-important {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.2rem 0.75rem;
 }

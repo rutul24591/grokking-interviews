@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,28 +28,29 @@ export default function CodeSplittingArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Code splitting</strong> is a build optimization technique that breaks a monolithic JavaScript bundle into smaller, 
-          logically-separated chunks that are loaded on-demand rather than all at once during initial page load. Instead of shipping 
+          <Highlight tier="important">logically-separated chunks</Highlight> that are{" "}
+          <Highlight tier="important">loaded on-demand</Highlight> rather than all at once during initial page load. Instead of shipping 
           a single bundle containing every component, route, library, and feature in your application, code splitting enables you to 
           deliver only the code required for the current view, deferring the download of unused code until it is actually needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental problem code splitting addresses is the <strong>bundle size bottleneck</strong>. Modern single-page 
           applications (SPAs) built with frameworks like React, Angular, or Vue can easily accumulate 1-5 megabytes of JavaScript 
           when all dependencies, components, and routes are bundled together. On a fast broadband connection, this might add only 
           1-2 seconds to load time. However, on a 3G mobile connection (common in many parts of the world), downloading and parsing 
           2 megabytes of JavaScript can take 10-30 seconds — during which the page is completely unresponsive and unusable.
-        </p>
+        </HighlightBlock>
         <p>
           Code splitting directly impacts several critical performance metrics:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Time to Interactive (TTI):</strong> By reducing the initial JavaScript payload, the browser spends less time 
             downloading, parsing, compiling, and executing JavaScript before the page becomes interactive. A 500 KB reduction in 
             initial bundle can improve TTI by 1-3 seconds on mid-tier mobile devices.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>First Contentful Paint (FCP):</strong> Smaller bundles mean the browser can begin rendering content sooner, 
             as the main thread is blocked for shorter durations by JavaScript execution.
@@ -80,6 +83,19 @@ export default function CodeSplittingArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Internalize three ideas: a <Highlight tier="important">split point</Highlight> is a new network
+          request, chunk graphs can create <Highlight tier="important">waterfalls</Highlight>, and the UX
+          outcome is governed by <Highlight tier="important">prefetch + loading states</Highlight>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Optimize for what ships on the first view: move non-critical code behind interactions, routes, or
+          feature flags, but keep the initial render path simple and predictable.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Think in terms of constraints: network RTT, cache behavior, and CPU parse/execute. Chunking that
+          improves LCP but harms INP is not a win.
+        </HighlightBlock>
         
         <h3>Static vs Dynamic Imports</h3>
         <p>
@@ -162,11 +178,24 @@ export default function CodeSplittingArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The flow you should be able to explain end-to-end: route render → missing chunk → fetch → parse →
+          execute → hydrate/paint, plus what you do when chunk load fails (retry, refresh, backoff).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          SSR adds a constraint: the server must know which chunks to preload so hydration doesn&apos;t mismatch.
+          Your architecture should make chunk discovery deterministic.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Production readiness includes failure handling: chunk load errors (deploy race), offline, and flaky
+          networks must have user-safe fallbacks.
+        </HighlightBlock>
         
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/code-splitting-architecture.svg"
           alt="Comparison diagram showing traditional single bundle approach versus code splitting with multiple on-demand chunks"
           caption="Traditional bundling delivers all code upfront versus code splitting which loads chunks on demand"
+          captionTier="important"
         />
 
         <h3>Traditional Bundling Architecture</h3>
@@ -282,19 +311,31 @@ export default function CodeSplittingArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Code splitting is fundamentally a{" "}
+          <Highlight tier="important">cost-shifting strategy</Highlight>: you trade{" "}
+          <Highlight tier="important">initial load</Highlight> bytes for{" "}
+          <Highlight tier="important">on-demand navigation</Highlight> bytes. At staff/principal level, the
+          question is not &quot;should we split?&quot; but{" "}
+          <Highlight tier="important">where to place split points</Highlight> and{" "}
+          <Highlight tier="important">how to hide navigation latency</Highlight>{" "}
+          (prefetch, skeletons, and priority hints).
+        </HighlightBlock>
+
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/code-splitting-tradeoffs.svg"
           alt="Comparison chart showing benefits versus trade-offs of implementing code splitting in web applications"
           caption="Code splitting provides significant benefits but introduces trade-offs that must be carefully managed"
+          captionTier="important"
         />
 
         <h3>Benefits of Code Splitting</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Faster Initial Load:</strong> The most significant benefit. By reducing the initial JavaScript payload 
             by 50-80%, pages become interactive much faster. For e-commerce sites, this directly correlates with conversion 
             rates — Amazon found that every 100ms of latency cost them 1% in sales.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Improved Cache Efficiency:</strong> When code is split into logical chunks, deploying a bugfix to one 
             component invalidates only that component&apos;s chunk cache. Users retain cached vendor chunks and unchanged 
@@ -316,22 +357,22 @@ export default function CodeSplittingArticle() {
 
         <h3>Trade-offs and Costs</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Navigation Latency:</strong> The primary trade-off. When a user navigates to a route whose chunk is not 
             yet loaded, they experience a delay while the chunk downloads. This delay ranges from 100ms (small chunk, fast 
             connection) to 2+ seconds (large chunk, slow connection). Without proper loading states, this creates a perceived 
             &quot;frozen&quot; UI.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Increased HTTP Requests:</strong> Each chunk requires a separate HTTP request. While HTTP/2 mitigates 
             this with multiplexing, excessive splitting (dozens of tiny chunks) can still introduce overhead from connection 
             management and request headers.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Loading Waterfalls:</strong> If chunks have dependencies on other chunks, they load sequentially rather 
             than in parallel. For example, if a route chunk depends on a vendor chunk that wasn&apos;t preloaded, the route 
             chunk must wait for the vendor chunk to finish downloading first. This waterfall effect can multiply latency.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SSR Complexity:</strong> React.lazy does not work with server-side rendering out of the box because the 
             server needs to know which chunks to preload before sending HTML. Solutions like Next.js&apos;s dynamic() or 
@@ -400,6 +441,17 @@ export default function CodeSplittingArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices are about hiding latency: choose sensible chunk sizes, prefetch likely next routes,
+          avoid waterfalls, and make SSR-compatible choices when SEO or first paint matters.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prefer a few meaningful chunks over dozens of tiny ones. Over-splitting often creates waterfalls and
+          hurts the median and the tail.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validate with metrics: TBT/INP for CPU cost, and route navigation latency for chunk fetch cost.
+        </HighlightBlock>
 
         <h3>Start with Route-Level Splitting</h3>
         <p>
@@ -491,22 +543,22 @@ export default function CodeSplittingArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Over-Splitting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Creating too many tiny chunks introduces significant overhead. Each chunk requires a separate HTTP request, and the 
           cumulative latency of multiple round-trips can exceed the cost of downloading a slightly larger bundle. A common 
           mistake is splitting every component into its own chunk — this creates dozens of requests and loading waterfalls.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Group related components into logical chunks. Aim for chunks in the 50-150 KB range 
           (uncompressed). Use bundler configuration to control minimum chunk sizes and prevent over-splitting.
         </p>
 
         <h3>Loading Waterfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A loading waterfall occurs when chunks have sequential dependencies. For example, if a route chunk imports a 
           component chunk, which imports a utility chunk, the browser must download them one after another. Three 50 KB 
           chunks with waterfall loading take 3x the latency of a single 150 KB chunk.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Flatten your import chains. Use bundler features like splitChunks to hoist shared 
           dependencies into common chunks. Preload critical dependent chunks to parallelize downloads.
@@ -523,11 +575,11 @@ export default function CodeSplittingArticle() {
         </p>
 
         <h3>Breaking SSR</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           React.lazy does not work with server-side rendering out of the box. During SSR, the server needs to know which 
           chunks to preload in the HTML it sends. Using React.lazy without SSR support results in hydration mismatches 
           and flash-of-unstyled-content.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Use framework-specific solutions like Next.js&apos;s dynamic() or libraries like 
           @loadable/component that provide SSR-compatible lazy loading.
@@ -544,10 +596,10 @@ export default function CodeSplittingArticle() {
         </p>
 
         <h3>Ignoring Prefetching</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Code splitting without prefetching means users experience navigation latency on every first visit to a route. 
           This is especially problematic for primary navigation paths (e.g., homepage to product page).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Implement prefetching for likely next routes. Use hover-based prefetching for navigation 
           links and idle-time prefetching for secondary routes.
@@ -569,6 +621,17 @@ export default function CodeSplittingArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases are where interviewers check judgment: segment users (admin vs regular), split heavy
+          editors/charts, and measure the impact on TTI/TBT/INP, not just bundle size.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out &quot;what stayed in the entry chunk&quot; explicitly (shell, nav, auth gating) and why.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention how you prefetch the next step in critical flows (checkout, onboarding) to remove perceived
+          navigation latency.
+        </HighlightBlock>
 
         <h3>E-Commerce Platform</h3>
         <p>
@@ -638,16 +701,27 @@ export default function CodeSplittingArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: define split points, explain the navigation latency trade-off, and describe how you
+          mitigate it (prefetch, loading states, SSR-safe chunking) while validating with metrics.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers are structured: what to split, why, how to measure, and how to prevent regressions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention real production failure modes: chunk load errors after deploys, cache invalidation, and
+          waterfall dependencies.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is code splitting and why is it important for performance?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Code splitting is a technique that breaks a monolithic JavaScript bundle into smaller chunks that are loaded 
               on-demand rather than all at once. Instead of shipping one large bundle containing every route, component, and 
               library, code splitting enables the application to load only the code needed for the current view.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               It is important for performance because:
             </p>
@@ -666,11 +740,11 @@ export default function CodeSplittingArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 2: What are the trade-offs of code splitting? When might you NOT want to split code?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="crucial" className="mb-3">
               The primary trade-off is <strong>navigation latency</strong>. When a user navigates to a route whose chunk 
               is not yet loaded, they experience a delay (100-1000ms) while the chunk downloads. Without proper loading 
               states, this creates a poor user experience.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               Other trade-offs include increased HTTP requests (mitigated by HTTP/2), loading waterfalls if chunks have 
               dependencies, SSR complexity, and debugging overhead.

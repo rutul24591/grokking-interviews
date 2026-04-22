@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "generate-article-routes": "tsx scripts/generate-article-routes.ts",
+    "generate-examples-manifest:other": "node scripts/generate-examples-manifest-other.js",
     "generate-examples-manifest:requirements": "node scripts/generate-examples-manifest-requirements.js",
     "generate-examples-manifest:problems": "node scripts/generate-examples-manifest-problems.js",
     "orchestrator": "node --import tsx ./scripts/orchestrator.ts",

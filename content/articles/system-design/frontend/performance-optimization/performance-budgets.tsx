@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,21 +28,23 @@ export default function PerformanceBudgetsArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
-          A <strong>performance budget</strong> is a set of measurable, enforceable limits on metrics that 
+        <HighlightBlock as="p" tier="crucial">
+          A <strong>performance budget</strong> is a set of{" "}
+          <Highlight tier="important">measurable, enforceable limits</Highlight> on metrics that 
           directly impact user experience — including JavaScript bundle size, CSS payload, image weight, 
           Core Web Vitals thresholds (LCP, INP, CLS), and overall page load time. When any metric exceeds 
-          its budget, the violation is treated like a failing test: the CI build fails, the pull request 
+          its budget, the violation is treated like a{" "}
+          <Highlight tier="important">failing test</Highlight>: the CI build fails, the pull request 
           is blocked, or an alert fires to notify the team.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Performance budgets address a fundamental problem in software development: <strong>performance 
           regression is invisible until it&apos;s catastrophic</strong>. Each feature adds &quot;just a 
           few kilobytes&quot; of JavaScript. Each new library seems &quot;worth the trade-off.&quot; Each 
           design iteration adds &quot;only a couple images.&quot; Individually, these decisions seem 
           reasonable. Collectively, they compound into a 5-megabyte page that takes 15 seconds to load on 
           mobile — and by then, it&apos;s too late to fix without major rework.
-        </p>
+        </HighlightBlock>
         <p>
           Performance budgets make this invisible creep visible and enforceable. They shift the conversation 
           from subjective debates (&quot;is this fast enough?&quot;) to objective decisions (&quot;does this 
@@ -53,6 +57,7 @@ export default function PerformanceBudgetsArticle() {
           src="/diagrams/system-design-concepts/frontend/performance-optimization/performance-budgets-types.svg"
           alt="Diagram showing different types of performance budgets: quantity-based (bundle size, image weight), timing-based (LCP, FCP, TBT), and rule-based (Lighthouse score)"
           caption="Performance budgets span three categories: quantity limits, timing thresholds, and quality scores"
+          captionTier="important"
         />
 
         <p>
@@ -80,12 +85,12 @@ export default function PerformanceBudgetsArticle() {
           </li>
         </ul>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Performance budgets are not aspirational goals — they are <strong>hard limits</strong> backed by 
           business metrics. An aspirational goal says &quot;we&apos;d like LCP under 2.5 seconds.&quot; A 
           budget says &quot;LCP must be under 2.5 seconds for 75% of users, and violations block deployment.&quot; 
           The distinction matters because budgets require accountability.
-        </p>
+        </HighlightBlock>
 
         <p>
           In system design interviews, performance budgets demonstrate understanding of measurable quality 
@@ -100,6 +105,16 @@ export default function PerformanceBudgetsArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concept: budgets are constraints you enforce continuously. A senior approach defines budgets by
+          surface (mobile vs desktop), ties them to business outcomes, and makes violations actionable.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Budgets should cover both &quot;bytes&quot; (JS/CSS/images) and &quot;experience&quot; (LCP/INP/CLS at p75).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Without an exception process, teams either bypass budgets or slow down entirely. Senior ownership defines the process.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/performance-budgets-ci-pipeline.svg"
@@ -120,11 +135,11 @@ export default function PerformanceBudgetsArticle() {
           test — just analyzing build output.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Total JavaScript (compressed):</strong> Target: ≤ 200KB for initial load, ≤ 500KB total. 
             JavaScript is the most expensive byte-for-byte asset because it must be parsed, compiled, and 
             executed — not just downloaded.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Total CSS:</strong> Target: ≤ 50KB. CSS is render-blocking; large stylesheets delay 
             First Contentful Paint (FCP).
@@ -254,6 +269,16 @@ export default function PerformanceBudgetsArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The workflow is: define metrics → collect lab + field → enforce in CI → monitor in prod → run an
+          exception process. Interviewers want the operational loop, not just the definition.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Make enforcement automated: PR comments, failing checks, and dashboards. Manual policing doesn&apos;t scale.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Segment architecture by device and geography; the budget that passes on desktop can fail badly on mobile.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/performance-budgets-monitoring.svg"
@@ -403,6 +428,22 @@ export default function PerformanceBudgetsArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Budgets are a governance mechanism. The real trade-off is{" "}
+          <Highlight tier="important">product velocity vs performance debt</Highlight>. Staff-level ownership
+          means picking budgets that are enforceable, segmented (mobile vs desktop), and paired with an
+          explicit exception process.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Budgets should be scoped to where users feel pain: initial route (LCP/INP), key flows (checkout),
+          and slowest cohorts (mid-tier mobile). A single global budget invites gaming; segmented budgets
+          (device, route, geography) keep the system honest.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Lab budgets are great for catching regressions early, but success is field p75. Strong answers
+          describe a loop: enforce in CI (synthetic), then validate with RUM/CrUX (real users) before tightening thresholds.
+        </HighlightBlock>
+
         <h3>Budget Strictness Trade-offs</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -418,7 +459,9 @@ export default function PerformanceBudgetsArticle() {
               <tr>
                 <td className="p-3 font-medium">Aggressive</td>
                 <td className="p-3">Best UX, strong performance culture</td>
-                <td className="p-3">Slower feature velocity, frequent violations</td>
+                <td className="p-3">
+                  <Highlight tier="important">Slower feature velocity, frequent violations</Highlight>
+                </td>
                 <td className="p-3">Consumer-facing sites, e-commerce</td>
               </tr>
               <tr>
@@ -508,6 +551,16 @@ export default function PerformanceBudgetsArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: start with baseline, tighten gradually, segment budgets, and make budget failures
+          visible in PRs so performance doesn&apos;t become invisible debt.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use budgets as guardrails, not goals: they should block regressions and force explicit trade-off discussions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validate with field data. Passing Lighthouse while failing real-user p75 is not success.
+        </HighlightBlock>
 
         <h3>Start with Quantity Budgets</h3>
         <p>
@@ -584,30 +637,30 @@ export default function PerformanceBudgetsArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Setting Unrealistic Budgets</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Setting a 100KB JavaScript budget for a complex React application sets the team up for failure. 
           Unrealistic budgets get ignored or disabled.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Start at your current baseline or 20% below. Tighten gradually over 
           quarters as optimization wins accumulate.
         </p>
 
         <h3>Enforcing Only in Production</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Catching budget violations after deployment means users experienced the regression. By then, 
           it&apos;s harder to roll back.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Integrate budget checks in CI/CD. Block PRs that violate budgets. 
           Use production monitoring as a safety net, not the primary enforcement mechanism.
         </p>
 
         <h3>Ignoring Third-Party Scripts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Third-party scripts (analytics, ads, chat widgets, A/B testing) often account for 30-50% of 
           JavaScript payload but receive less scrutiny than first-party code.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Set explicit third-party script budgets. Require performance review 
           before adding new third-party scripts. Use tools like RequestMap to visualize third-party impact.
@@ -649,6 +702,16 @@ export default function PerformanceBudgetsArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases should show enforcement working: catching regressions pre-deploy, preventing third-party
+          bloat, and keeping mobile INP/LCP within agreed SLOs.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use cases should include what happened culturally: budgets changed behavior (dependency choices, review discipline, performance ownership).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Include the exception story: what required an exception, how it was approved, and how you paid it down later.
+        </HighlightBlock>
 
         <h3>E-Commerce Site: Budget-Driven Optimization</h3>
         <p>
@@ -755,25 +818,34 @@ export default function PerformanceBudgetsArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: define budgets, show how you enforce them in CI and monitor in prod, and explain how you keep teams productive (baselines + exceptions).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers mention segmentation (mobile/desktop), p75 targets, and an automated feedback loop.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Bring up third-party scripts explicitly; they often dominate regressions in real products.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is a performance budget and why is it important?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               A performance budget is a set of measurable, enforceable limits on metrics that impact user 
               experience — including bundle size (JavaScript, CSS, images), Core Web Vitals (LCP, INP, CLS), 
               and page load time. When any metric exceeds its budget, the violation triggers a failure: the 
               CI build fails, the PR is blocked, or an alert fires.
-            </p>
-            <p className="mb-3">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mb-3">
               Performance budgets are important because <strong>performance regression is invisible until 
               it&apos;s catastrophic</strong>. Each feature adds &quot;just a few kilobytes,&quot; each 
               library seems &quot;worth the trade-off,&quot; and collectively they compound into a 
               5-megabyte page. Budgets make this invisible creep visible and enforceable. They shift 
               conversations from subjective (&quot;is this fast enough?&quot;) to objective (&quot;does 
               this exceed our limit?&quot;).
-            </p>
+            </HighlightBlock>
             <p>
               Industry research shows direct business impact: Amazon found every 100ms of latency cost 1% 
               in sales; Google found a 500ms delay reduced traffic by 20%. Budgets protect against these 

@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,26 +25,40 @@ export default function RequestDeduplicationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition and Context</h2>
-        <p>
-          <strong>Request deduplication</strong> is the practice of eliminating redundant API calls when multiple
+        <HighlightBlock as="p" tier="crucial">
+          <strong>Request deduplication</strong> is the practice of{" "}
+          <Highlight tier="important">eliminating redundant API calls</Highlight> when multiple
           components or users request the same data simultaneously. Without deduplication, a single user action
           can trigger multiple identical requests, wasting bandwidth, increasing server load, and causing race
           conditions where responses arrive out of order.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Request deduplication happens at multiple layers: component level (React Query, SWR), application level
           (custom request cache), and infrastructure level (CDN caching, API gateway caching). Each layer provides
           different benefits and trade-offs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, request deduplication is not just about adding a library - it is
-          about understanding request patterns, designing cache invalidation strategies, and making architectural
-          decisions about where deduplication should happen in your stack.
-        </p>
+          about understanding <Highlight tier="important">request patterns</Highlight>, designing{" "}
+          <Highlight tier="important">cache invalidation</Highlight> strategies, and making{" "}
+          <Highlight tier="important">architectural</Highlight> decisions about where deduplication should happen in your stack.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concepts: distinguish{" "}
+          <Highlight tier="important">deduplication (share in-flight)</Highlight> vs{" "}
+          <Highlight tier="important">caching (reuse fresh)</Highlight>, and be explicit about invalidation and
+          failure modes (timeouts, retries, and memory leaks).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The senior interview angle is correctness under concurrency: one canonical request per key, consistent cache updates, and safe failure handling.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Always define your freshness model: TTL, stale-while-revalidate, and event-based invalidation.
+        </HighlightBlock>
         <p>
           Understanding request deduplication requires grasping three fundamental concepts: how duplicate requests
           occur, promise sharing mechanisms, and cache invalidation strategies.
@@ -57,11 +73,13 @@ export default function RequestDeduplicationArticle() {
         </p>
 
         <h3 className="mt-6 font-semibold text-lg">Promise Sharing</h3>
-        <p>
-          Promise sharing is the core mechanism of request deduplication. When a request is in-flight, subsequent
-          requests for the same data return the same Promise instead of creating new requests. All callers receive
+        <HighlightBlock as="p" tier="important">
+          Promise sharing is the core mechanism of request deduplication. When a request is{" "}
+          <Highlight tier="important">in-flight</Highlight>, subsequent
+          requests for the same data return the same{" "}
+          <Highlight tier="important">Promise</Highlight> instead of creating new requests. All callers receive
           the same result when the Promise resolves.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Implementation pattern:</strong> Maintain a Map of in-flight requests keyed by request
           parameters. When a request starts, store its Promise in the Map. When a duplicate request is detected,
@@ -88,11 +106,24 @@ export default function RequestDeduplicationArticle() {
           src="/diagrams/system-design-concepts/frontend/performance-optimization/request-deduplication-concept.svg"
           alt="Request deduplication concept showing multiple components sharing a single in-flight request"
           caption="Request Deduplication - Multiple components share a single in-flight request"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Additional Important Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          This section is about scope: dedupe can be local (one render tree), per-tab, per-user, or cross-user at the edge.
+          Staff-level answers explain which scope you need and choose the layer accordingly.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Libraries (React Query/SWR/Apollo) give you correct in-flight collapse + caching quickly, but you still own:
+          query key design, invalidation, and failure handling (retries, timeouts, and partial data).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Infrastructure caching (CDN/gateway) solves cross-user duplication for public data, but forces you to be explicit
+          about TTLs, cache keys, auth boundaries, and &quot;stale while revalidate&quot; behavior.
+        </HighlightBlock>
 
         <h3 className="mt-6 font-semibold text-lg">Deduplication Libraries</h3>
         <p>
@@ -153,6 +184,17 @@ export default function RequestDeduplicationArticle() {
 
       <section>
         <h2>Architecture and Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The architecture you should articulate: normalize requests into stable keys, collapse concurrent
+          callers onto one in-flight Promise, update cache once, and broadcast the result to all consumers
+          while handling retries/timeouts safely.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Decide where dedupe happens: component library (React Query/SWR) vs app layer vs infra (CDN/API gateway). Each solves different duplication scopes.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Avoid race conditions: late responses must not overwrite newer data; key design and versioning matter.
+        </HighlightBlock>
         <p>
           A production request deduplication implementation has multiple layers: client-side deduplication for
           in-flight requests, caching for repeated requests, and server-side caching for cross-user deduplication.
@@ -185,14 +227,23 @@ export default function RequestDeduplicationArticle() {
           src="/diagrams/system-design-concepts/frontend/performance-optimization/request-deduplication-flow.svg"
           alt="Request deduplication flow showing request check, in-flight Map, Promise sharing, and cache update"
           caption="Deduplication Flow - Check in-flight, share Promise, update cache, notify components"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Trade-offs and Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Request deduplication involves trade-offs between freshness, complexity, and performance.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The two correctness traps are: (1) coalescing requests that shouldn&apos;t be shared (user-specific auth / params),
+          and (2) allowing late responses to overwrite newer data. Both are solved with careful key design and versioning.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Deduplication reduces load but can also create a &quot;single point of waiting&quot;: if the canonical request is slow,
+          everyone waits. Production designs add timeouts, fallbacks (stale cache), and jitter to avoid thundering herds.
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="w-full border-collapse text-sm">
@@ -230,6 +281,16 @@ export default function RequestDeduplicationArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: use proven libraries when possible, design consistent query keys, define invalidation
+          rules up front, and instrument request collapse rates so you can prove impact.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat invalidation as a first-class design problem. Deduplication without invalidation just creates stale correctness bugs.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Instrument: duplicate request rate, cache hit rate, error rate, and tail latency. Otherwise you can&apos;t prove improvement.
+        </HighlightBlock>
         <p>
           Based on production experience, these practices consistently improve request deduplication effectiveness.
         </p>
@@ -297,14 +358,14 @@ export default function RequestDeduplicationArticle() {
         </p>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent query keys:</strong> Using different key structures for the same data causes
             cache misses and duplicate requests. Use query key factories to ensure consistency.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not invalidating cache:</strong> Data becomes stale and never updates. Always invalidate
             cache on mutations. Use optimistic updates for better UX.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-caching:</strong> Caching data that changes frequently causes stale data issues.
             Set appropriate staleTime based on data volatility.
@@ -313,15 +374,25 @@ export default function RequestDeduplicationArticle() {
             <strong>Memory leaks:</strong> Not cleaning up settled Promises from in-flight Map causes memory
             leaks. Always remove Promises when they settle.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No timeout handling:</strong> In-flight requests that never settle cause memory leaks
             and stale locks. Implement timeouts for all requests.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases should show: fewer redundant calls, lower backend load, and better perceived performance
+          from avoiding duplicated spinners and race conditions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use cases should mention user-visible impact: fewer loading states, fewer UI inconsistencies, and faster navigation.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention operational wins: reduced rate-limit hits and more stable backend p95/p99 latency under spikes.
+        </HighlightBlock>
         <p>
           These case studies demonstrate the business impact of request deduplication across different industries.
         </p>
@@ -364,20 +435,30 @@ export default function RequestDeduplicationArticle() {
           src="/diagrams/system-design-concepts/frontend/performance-optimization/request-deduplication-business-impact.svg"
           alt="Business impact of request deduplication showing before and after comparison of API calls and performance improvements"
           caption="Business Impact - Request deduplication reduces API calls 70-90%, improving performance"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: define dedupe vs cache, explain in-flight Promise sharing, and describe invalidation/retry/timeout handling in a production system.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers use a concrete mechanism: stable keys, Map of in-flight Promises, and safe cleanup.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out cross-tab and multi-client concerns (CDN/API gateway caching) when relevant.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What is request deduplication and why is it important?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Request deduplication eliminates redundant API calls when multiple components or users request
               the same data simultaneously. It is important because duplicate requests waste bandwidth, increase
               server load, cause race conditions, and degrade user experience. Deduplication ensures only one
               request is made for identical data, with results shared across all callers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

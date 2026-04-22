@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,19 +28,20 @@ export default function BundleSizeOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Bundle size optimization</strong> is the systematic practice of minimizing the amount of 
           JavaScript, CSS, and other assets shipped to the browser. Every kilobyte matters: large bundles 
-          increase download time, parsing time, compilation time, and memory usage — directly impacting Time 
-          to Interactive (TTI) and Core Web Vitals.
-        </p>
-        <p>
+          increase download time, parsing time, compilation time, and memory usage — directly impacting{" "}
+          <Highlight tier="important">Time to Interactive (TTI)</Highlight> and{" "}
+          <Highlight tier="important">Core Web Vitals</Highlight>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A typical unoptimized React application can easily ship 2-5 megabytes of JavaScript when including 
           framework code, third-party libraries, and application code. On a fast broadband connection (100 
           Mbps), this might add only 1-2 seconds to load time. However, on a typical 3G mobile connection 
           (1.5 Mbps), downloading 3 megabytes takes 16+ seconds — and that&apos;s before parsing and execution, 
           which can add another 5-10 seconds on mid-tier mobile devices.
-        </p>
+        </HighlightBlock>
         <p>
           Bundle size optimization is not about a single technique but a systematic approach involving:
         </p>
@@ -51,9 +54,9 @@ export default function BundleSizeOptimizationArticle() {
             <strong>Dependency Optimization:</strong> Replacing heavy libraries with lighter alternatives or 
             native APIs.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Code Splitting:</strong> Breaking the bundle into smaller chunks loaded on demand.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Build Configuration:</strong> Tuning bundler settings for optimal output.
           </li>
@@ -79,11 +82,11 @@ export default function BundleSizeOptimizationArticle() {
             <strong>COOK:</strong> Reducing load time by 0.85 seconds increased conversions by 7%.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In system design interviews, bundle size optimization demonstrates understanding of the browser 
           rendering pipeline, network constraints, build tooling, and the trade-offs between developer 
           experience and production performance.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -91,11 +94,27 @@ export default function BundleSizeOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          For staff/principal interviews, bundle size is never just &quot;KB&quot;. You need to connect bytes
+          to outcomes:
+          <Highlight tier="important">download</Highlight>, <Highlight tier="important">parse/execute</Highlight>,
+          <Highlight tier="important">cache churn</Highlight>, and <Highlight tier="important">long tasks</Highlight>
+          that degrade <Highlight tier="important">INP</Highlight>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat JavaScript as the most expensive byte: it costs you network, CPU, and interactivity.
+          If you optimize only transfer size, you can still fail on mid-tier mobile devices due to parse/execute time.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Always separate &quot;initial route&quot; cost from &quot;total app&quot; cost. Senior answers reference
+          what ships on the first view, what is deferred (chunks), and what is shared (vendor) for caching.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/bundle-size-composition.svg"
           alt="Treemap visualization showing typical JavaScript bundle composition with application code, React, third-party libraries, router, and utilities"
           caption="Typical bundle composition before optimization: third-party libraries often account for 50%+ of bundle size"
+          captionTier="important"
         />
 
         <h3>Why Bundle Size Matters</h3>
@@ -200,11 +219,25 @@ export default function BundleSizeOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The architecture view is: measure → attribute cost → change delivery shape (split) → change
+          dependency graph (shake/replace) → enforce with budgets. Interviewers want to hear how you avoid
+          optimizing blind and how you prevent regression.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The output of this pipeline should be a repeatable artifact: a bundle report (sizes, chunking),
+          and a decision log for why a dependency stays or gets replaced.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Your runtime architecture changes too: more chunks implies more failure modes (chunk load errors),
+          and your UX must tolerate that (fallbacks, retries, and safe refresh flows).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/bundle-size-optimization-steps.svg"
           alt="Step-by-step diagram showing bundle size reduction from 2.4 MB through tree shaking, code splitting, library replacement, and compression to final 120 KB"
           caption="Bundle optimization pipeline: systematic approach achieving 95% total reduction"
+          captionTier="important"
         />
 
         <h3>Bundle Optimization Pipeline</h3>
@@ -296,6 +329,19 @@ export default function BundleSizeOptimizationArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Bundle optimization is a{" "}
+          <Highlight tier="important">multi-constraint</Highlight> problem: network (download), CPU (parse/execute),
+          cacheability, and dev velocity. For senior interviews, be explicit about{" "}
+          <Highlight tier="important">which metric you are optimizing</Highlight> (TTI/TBT vs LCP vs cost) and
+          what you are willing to trade (more chunks, more build complexity, stricter budgets).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          A senior-level framing is to optimize in this order: initial route bytes and long tasks first (LCP/INP),
+          then cache churn (vendor stability), then the long tail (rare routes). Chunking is not &quot;free&quot;:
+          too many chunks increase request overhead, scheduling complexity, and the chance of waterfalling.
+        </HighlightBlock>
+
         <h3>Optimization Techniques Comparison</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -310,24 +356,38 @@ export default function BundleSizeOptimizationArticle() {
             </thead>
             <tbody className="divide-y divide-theme">
               <tr>
-                <td className="p-3 font-medium">Replace Heavy Libraries</td>
+                <td className="p-3 font-medium">
+                  <Highlight tier="important">Replace Heavy Libraries</Highlight>
+                </td>
                 <td className="p-3">Medium</td>
-                <td className="p-3">High (50-80% reduction)</td>
+                <td className="p-3">
+                  <Highlight tier="important">High (50-80% reduction)</Highlight>
+                </td>
                 <td className="p-3">Low</td>
                 <td className="p-3">Large third-party dependencies</td>
               </tr>
               <tr>
-                <td className="p-3 font-medium">Tree Shaking</td>
+                <td className="p-3 font-medium">
+                  <Highlight tier="important">Tree Shaking</Highlight>
+                </td>
                 <td className="p-3">Low</td>
-                <td className="p-3">High (60-90% per library)</td>
+                <td className="p-3">
+                  <Highlight tier="important">High (60-90% per library)</Highlight>
+                </td>
                 <td className="p-3">Low</td>
                 <td className="p-3">ES module libraries</td>
               </tr>
               <tr>
-                <td className="p-3 font-medium">Code Splitting</td>
+                <td className="p-3 font-medium">
+                  <Highlight tier="important">Code Splitting</Highlight>
+                </td>
                 <td className="p-3">Medium</td>
-                <td className="p-3">High (70-85% initial load)</td>
-                <td className="p-3">Medium</td>
+                <td className="p-3">
+                  <Highlight tier="important">High (70-85% initial load)</Highlight>
+                </td>
+                <td className="p-3">
+                  <Highlight tier="important">Medium</Highlight>
+                </td>
                 <td className="p-3">Multi-page applications</td>
               </tr>
               <tr>
@@ -374,6 +434,13 @@ export default function BundleSizeOptimizationArticle() {
             to 400 KB may not be noticeable to users.
           </li>
         </ul>
+        <ul className="space-y-2 mt-4">
+          <HighlightBlock as="li" tier="important">
+            <strong>Hidden regressions:</strong> Small byte increases can still cause large{" "}
+            <Highlight tier="important">CPU regressions</Highlight> on mobile (parse/execute), which show up as
+            higher <Highlight tier="important">TBT/INP</Highlight> even when transfer size looks acceptable.
+          </HighlightBlock>
+        </ul>
       </section>
 
       {/* ============================================================
@@ -381,11 +448,24 @@ export default function BundleSizeOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices here are about repeatability: a senior engineer sets up a workflow where
+          &quot;bundle got bigger&quot; is caught like a test failure, not discovered via user complaints.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prefer high-leverage moves first: replace heavy libs, remove dead dependencies, and only then tune
+          chunk graphs and build settings.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Guardrails matter: add budgets and CI checks, and validate improvements with both lab (Lighthouse) and
+          field (RUM/CrUX) signals.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/bundle-size-analyzer.svg"
           alt="Bundle analyzer treemap showing visual breakdown of modules by size with React, lodash, app code, router, and utilities"
           caption="Bundle analyzer visualization: identify largest modules for targeted optimization"
+          captionTier="important"
         />
 
         <h3>Measure Before Optimizing</h3>
@@ -449,10 +529,10 @@ export default function BundleSizeOptimizationArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Not Analyzing the Bundle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimizing without understanding bundle composition leads to wasted effort. You might spend hours 
           optimizing application code when a single library replacement would save 10x more.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Always run bundle analysis first. Focus optimization efforts on the 
           largest contributors.
@@ -469,20 +549,20 @@ export default function BundleSizeOptimizationArticle() {
         </p>
 
         <h3>Over-Splitting Chunks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Creating too many tiny chunks introduces HTTP request overhead and can hurt caching. Each chunk 
           requires a separate request, and many small files may be evicted from cache more aggressively.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Aim for 5-15 chunks total. Group related code into logical chunks of 
           50-150 KB each.
         </p>
 
         <h3>Not Testing on Slow Networks</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optimizations that look good on broadband may not help users on 3G. A 300 KB bundle loads instantly 
           on fiber but takes 2+ seconds on 3G.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Test with Chrome DevTools Network throttling (Slow 3G preset). Use 
           WebPageTest with real mobile devices.
@@ -504,6 +584,18 @@ export default function BundleSizeOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In interviews, use cases matter because they prove you can pick the right lever (replace vs split
+          vs shake) and quantify impact (TTI/INP/conversion), not just recite techniques.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use &quot;before/after&quot; numbers, and connect to a metric the business cares about (conversion, bounce,
+          retention) plus a web metric (LCP/INP/TBT).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Be explicit about trade-offs: what got slower (build time, complexity, more chunks) and what you did to
+          control it (budgets, monitoring, documentation).
+        </HighlightBlock>
 
         <h3>E-Commerce Site: 2 MB to 400 KB</h3>
         <p>
@@ -552,14 +644,25 @@ export default function BundleSizeOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain a prioritized plan, justify the top 2–3 levers, and talk about measurement,
+          regression prevention, and mobile impact. Avoid &quot;just add code splitting&quot; without evidence.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          A strong answer sounds like: baseline → biggest contributors → remove/replace → split strategically →
+          enforce budgets → validate with RUM.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Tie your explanation back to user-facing latency (TTI/INP/LCP), not only bundle KB.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: How would you approach reducing a 3 MB JavaScript bundle?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               I would follow a systematic approach:
-            </p>
+            </HighlightBlock>
             <ol className="space-y-2">
               <li>
                 <strong>Measure:</strong> Run webpack-bundle-analyzer to understand bundle composition. 
@@ -582,17 +685,17 @@ export default function BundleSizeOptimizationArticle() {
                 to prevent regression.
               </li>
             </ol>
-            <p className="mt-3">
+            <HighlightBlock as="p" tier="important" className="mt-3">
               Typical result: 3 MB → 500-700 KB (75-85% reduction).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 2: What native browser APIs can replace common utility libraries?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Several native APIs can replace utility libraries:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-1">
               <li>• <strong>Intl.NumberFormat:</strong> Replaces numeral.js for number formatting</li>
               <li>• <strong>Intl.DateTimeFormat:</strong> Replaces moment.js for date formatting</li>

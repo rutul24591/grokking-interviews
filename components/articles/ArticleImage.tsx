@@ -2,11 +2,17 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useHighlights } from "@/components/articles/HighlightsContext";
+import type { HighlightTier } from "@/components/articles/highlightMeta";
+import { classNames } from "@/lib/classNames";
 
 type ArticleImageProps = {
   src: string;
   alt: string;
   caption?: string;
+  captionClassName?: string;
+  captionTier?: HighlightTier;
+  captionStyle?: React.CSSProperties;
   width?: number;
   height?: number;
   priority?: boolean;
@@ -19,11 +25,15 @@ export function ArticleImage({
   src,
   alt,
   caption,
+  captionClassName,
+  captionTier,
+  captionStyle,
   width = 900,
   height = 500,
   priority = false,
 }: ArticleImageProps) {
   const [error, setError] = useState(false);
+  const { highlightsOn } = useHighlights();
   const isSvg = src.endsWith(".svg");
   
   // Add cache-busting query parameter only for SVGs (Next.js Image doesn't support query params)
@@ -40,7 +50,14 @@ export function ArticleImage({
           </div>
         </div>
         {caption && (
-          <figcaption className="mt-3 text-center text-sm text-muted">
+          <figcaption
+            className={classNames(
+              "mt-3 text-center text-sm text-muted",
+              captionClassName,
+              highlightsOn && captionTier && `highlight-${captionTier}`,
+            )}
+            style={captionStyle}
+          >
             {caption}
           </figcaption>
         )}
@@ -74,7 +91,14 @@ export function ArticleImage({
         )}
       </div>
       {caption && (
-        <figcaption className="mt-3 text-center text-sm text-muted">
+        <figcaption
+          className={classNames(
+            "mt-3 text-center text-sm text-muted",
+            captionClassName,
+            highlightsOn && captionTier && `highlight-${captionTier}`,
+          )}
+          style={captionStyle}
+        >
           {caption}
         </figcaption>
       )}

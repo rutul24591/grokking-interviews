@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,23 +28,24 @@ export default function CompressionArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>HTTP compression</strong> reduces the size of text-based responses (HTML, CSS, 
           JavaScript, JSON, SVG) sent over the network. The server compresses the response body before 
           sending it, and the browser decompresses it before processing. This typically reduces transfer 
-          sizes by <strong>60-85%</strong> with virtually no perceptible overhead on the client side.
-        </p>
-        <p>
+          sizes by <Highlight tier="important">60-85%</Highlight> with virtually no perceptible overhead on the client side.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Compression is one of the highest-ROI performance optimizations available. A simple server 
           configuration change can reduce JavaScript bundle transfer from 500KB to 150KB, CSS from 
           100KB to 30KB, and HTML from 50KB to 15KB. For users on slow or metered connections, this 
           difference translates to seconds of load time saved.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/compression-algorithms.svg"
           alt="Comparison chart showing Gzip vs Brotli compression ratios, browser support, and compression speeds for different file types"
           caption="Gzip vs Brotli: Brotli provides 15-25% better compression but is slower to compress"
+          captionTier="important"
         />
 
         <p>
@@ -54,11 +57,11 @@ export default function CompressionArticle() {
             and servers. Provides 60-75% size reduction for text assets. Fast compression and 
             decompression.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Brotli (br):</strong> Google&apos;s modern algorithm (2015). Provides 15-25% better 
             compression than Gzip. Supported in all modern browsers over HTTPS. Slower compression but 
             equally fast decompression.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <p>
@@ -103,6 +106,20 @@ export default function CompressionArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          What to remember: compression is negotiated via{" "}
+          <Highlight tier="important">Accept-Encoding</Highlight>/<Highlight tier="important">Content-Encoding</Highlight>,
+          and your biggest wins come from compressing{" "}
+          <Highlight tier="important">text assets</Highlight> (JS/CSS/HTML/JSON), not already-compressed media.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Compression is mostly &quot;free&quot; for clients (fast decompression) but not free for servers.
+          Treat it as a CPU budget decision, especially for dynamic pages.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Know the fallbacks: Brotli requires HTTPS and modern browsers. Always keep a gzip fallback and
+          ensure caches serve the right variant.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/compression-flow.svg"
@@ -235,6 +252,19 @@ export default function CompressionArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          You should be able to reason about where compression happens (origin vs edge), how caching interacts
+          (especially <Highlight tier="important">Vary: Accept-Encoding</Highlight>), and how CPU limits can
+          become a tail-latency problem.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The cleanest architecture is: pre-compress static assets at build time, serve them from CDN/edge,
+          and dynamically compress only truly dynamic responses.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Verify in production using real headers and transfer sizes, not assumptions. Misconfigurations are
+          common (no compression, wrong MIME types, missing Vary).
+        </HighlightBlock>
 
         <h3>Compression Strategies</h3>
         <p>
@@ -360,6 +390,18 @@ export default function CompressionArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Compression decisions are a CPU vs bandwidth trade. The senior-level default is:
+          <Highlight tier="important"> pre-compress static assets</Highlight> (Brotli) and
+          <Highlight tier="important"> dynamically compress personalized HTML/JSON</Highlight> (usually
+          Gzip or mid-level Brotli), with explicit fallbacks and guardrails to avoid CPU saturation.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The practical decision is less about &quot;which algorithm is better&quot; and more about{" "}
+          <Highlight tier="important">when you pay the CPU cost</Highlight>: build-time (static) versus per-request
+          (dynamic). In high-traffic systems, per-request compression can become a tail-latency amplifier under load.
+        </HighlightBlock>
+
         <h3>Gzip vs. Brotli Decision Matrix</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -373,12 +415,16 @@ export default function CompressionArticle() {
             <tbody className="divide-y divide-theme">
               <tr>
                 <td className="p-3 font-medium">Static JS/CSS bundles</td>
-                <td className="p-3">Brotli level 11 (pre-compressed)</td>
+                <td className="p-3">
+                  <Highlight tier="important">Brotli level 11 (pre-compressed)</Highlight>
+                </td>
                 <td className="p-3">Best compression, one-time CPU cost</td>
               </tr>
               <tr>
                 <td className="p-3 font-medium">Dynamic HTML</td>
-                <td className="p-3">Brotli level 4-6 (dynamic)</td>
+                <td className="p-3">
+                  <Highlight tier="important">Brotli level 4-6 (dynamic)</Highlight>
+                </td>
                 <td className="p-3">Good compression, reasonable CPU</td>
               </tr>
               <tr>
@@ -399,6 +445,12 @@ export default function CompressionArticle() {
             </tbody>
           </table>
         </div>
+        <HighlightBlock as="p" tier="important" className="mt-4">
+          Interview signal: mention <strong>content negotiation</strong> via{" "}
+          <Highlight tier="important">Accept-Encoding</Highlight>, correct{" "}
+          <Highlight tier="important">Vary: Accept-Encoding</Highlight> caching, and a measurable CPU guardrail
+          (caps, circuit breaker, or selectively disabling dynamic compression under stress).
+        </HighlightBlock>
 
         <h3>Dynamic vs. Pre-Compression Trade-offs</h3>
         <div className="overflow-x-auto">
@@ -467,6 +519,17 @@ export default function CompressionArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: pre-compress static bundles, use mid-level compression for dynamic responses,
+          set correct headers, and continuously verify with real responses and RUM.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Never compress already-compressed formats (JPEG/PNG/WOFF2/video). It wastes CPU for near-zero gain.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use Brotli level 11 for pre-compressed static assets; use mid-level settings for dynamic content to
+          avoid p99 latency spikes.
+        </HighlightBlock>
 
         <h3>Enable Both Gzip and Brotli</h3>
         <p>
@@ -548,10 +611,10 @@ export default function CompressionArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Not Enabling Compression at All</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Surprisingly common, especially on self-hosted servers. Without compression, JavaScript 
           bundles are 3-4x larger than necessary.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Check with <code>curl -I -H &quot;Accept-Encoding: gzip, br&quot;</code>. 
           Verify Content-Encoding header is present.
@@ -566,20 +629,20 @@ export default function CompressionArticle() {
         </p>
 
         <h3>Using High Brotli Levels for Dynamic Content</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Brotli level 11 is extremely slow (seconds per file). Using it for dynamic content adds 
           significant latency.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Use level 4-6 for dynamic content. Save level 11 for 
           pre-compressed static assets.
         </p>
 
         <h3>Missing Vary Header</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without <code>Vary: Accept-Encoding</code>, proxies may cache the wrong compressed version 
           and serve it to incompatible browsers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Always include <code>Vary: Accept-Encoding</code> in compressed 
           responses.
@@ -618,6 +681,17 @@ export default function CompressionArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In interviews, use cases are about picking the right compression strategy per asset class and
+          showing measurable impact (transfer size, LCP, and server CPU).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Always include the operational side: where compression ran (edge vs origin), what the CPU impact was,
+          and how you verified it stayed correct over deploys.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use concrete before/after numbers (KB transferred, LCP delta, server latency) rather than only &quot;faster&quot;.
+        </HighlightBlock>
 
         <h3>E-Commerce Site: Brotli Migration</h3>
         <p>
@@ -679,17 +753,27 @@ export default function CompressionArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain negotiation + where to apply Brotli vs gzip + caching/Vary + why CPU becomes a
+          tail-latency risk for dynamic compression.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers mention pre-compression for static bundles and mid-level dynamic compression for HTML/JSON.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out the common pitfalls: compressing media, missing Vary, and using high Brotli levels dynamically.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is HTTP compression and how does it work?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               HTTP compression reduces the size of text-based responses by compressing the response 
               body before sending. The browser automatically sends an Accept-Encoding header listing 
               supported algorithms (gzip, br), and the server responds with a Content-Encoding header 
               indicating which algorithm was used.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The browser decompresses the response transparently before passing it to JavaScript or 
               rendering. This typically reduces transfer sizes by 60-85% for text assets.
@@ -730,16 +814,16 @@ export default function CompressionArticle() {
             <h3 className="text-lg font-semibold mb-3">Question 3: When should you use pre-compression vs. dynamic compression?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
             <ul className="space-y-2 mb-3">
-              <li>
+              <HighlightBlock as="li" tier="important">
                 <strong>Pre-Compression:</strong> Best for static assets (JavaScript bundles, CSS 
                 files, fonts) that don&apos;t change frequently. Compress at build time with maximum 
                 compression (Brotli level 11). Zero runtime CPU cost.
-              </li>
-              <li>
+              </HighlightBlock>
+              <HighlightBlock as="li" tier="important">
                 <strong>Dynamic Compression:</strong> Best for dynamic content (HTML, API responses) 
                 that changes per request. Use moderate compression levels (Gzip 6, Brotli 4-6) to 
                 balance compression ratio with CPU cost.
-              </li>
+              </HighlightBlock>
             </ul>
             <p>
               Production setups typically use both: pre-compression for static assets, dynamic 

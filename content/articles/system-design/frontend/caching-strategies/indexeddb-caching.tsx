@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +25,12 @@ export default function IndexedDBCachingConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>IndexedDB</strong> is a low-level, transactional, client-side storage API built into every modern browser
           that allows web applications to store and retrieve significant amounts of structured data, including files and
           blobs. Unlike localStorage (which is synchronous, string-only, and capped at ~5MB), IndexedDB provides an
           asynchronous, indexed object store capable of holding hundreds of megabytes to gigabytes of data per origin.
-        </p>
+        </HighlightBlock>
         <p>
           The W3C published the IndexedDB 1.0 specification in January 2015, with IndexedDB 2.0 following in 2018.
           It replaced the deprecated Web SQL Database specification, which was based on SQLite and never achieved
@@ -36,31 +38,36 @@ export default function IndexedDBCachingConciseArticle() {
           providing a relational SQL interface, it offers a key-value object store with secondary indexes, making it
           more aligned with how JavaScript applications naturally structure data.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storage limits are origin-based and vary by browser. Chrome and Firefox allocate up to 80% of available disk
           space per origin (with a global limit of 60% of total disk). Safari is more conservative, granting roughly
           1GB by default and prompting users for more. In all browsers, IndexedDB storage is considered "best-effort" --
           the browser may evict data under storage pressure unless the application requests persistent storage via
           the StorageManager API (<code>navigator.storage.persist()</code>).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, IndexedDB is a critical tool for building offline-first architectures,
           reducing API load through client-side caching layers, and enabling experiences that work seamlessly across
           intermittent connectivity. Understanding its transactional model, indexing capabilities, and failure modes
           is essential for designing robust frontend data layers.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The IndexedDB interview signal is that you understand it as a real database:{" "}
+          <Highlight tier="important">schema/versioning</Highlight>, indexed access paths, transactional behavior, and
+          operational failure modes (quota, multi-tab upgrades). If you miss those, “just store stuff offline” reads junior.
+        </HighlightBlock>
         <p>IndexedDB is built on several foundational primitives that distinguish it from simpler storage mechanisms:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Databases and Versioning:</strong> An IndexedDB database is opened by name and version number.
             When you open a database with a higher version than what exists, the <code>onupgradeneeded</code> event
             fires, giving you a transaction to create or modify object stores and indexes. This is the only context
             in which schema changes are allowed. Version numbers must be integers and can only increase.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Object Stores:</strong> The equivalent of tables in relational databases. Each object store holds
             JavaScript objects and is associated with a key path (an in-line key like <code>id</code>) or uses
@@ -73,13 +80,13 @@ export default function IndexedDBCachingConciseArticle() {
             no duplicates) or multi-entry (indexing each element in an array-valued field). Under the hood, indexes are
             maintained as B-tree structures.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Transactions:</strong> All read/write operations occur within transactions. Three modes exist:
             <code>readonly</code> (concurrent reads), <code>readwrite</code> (exclusive lock on specified stores), and
             <code>versionchange</code> (exclusive lock on entire database during upgrades). Transactions auto-commit
             when all requests complete and no new requests are made in the same event loop tick. If any request fails,
             the entire transaction rolls back.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Key Ranges:</strong> The <code>IDBKeyRange</code> API allows you to query ranges of keys:
             <code>IDBKeyRange.bound(lower, upper)</code>, <code>IDBKeyRange.only(value)</code>,
@@ -97,29 +104,30 @@ export default function IndexedDBCachingConciseArticle() {
             functions, DOM nodes, or Error objects. This means you can store complex nested objects directly without
             serialization.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Wrapper Libraries:</strong> The raw IndexedDB API is notoriously verbose and callback-based.
             <strong>Dexie.js</strong> is the most popular wrapper, providing a Promise-based, chainable query API
             with built-in support for live queries, transactions, and migrations. The <strong>idb</strong> library by
             Jake Archibald offers a thinner Promise wrapper that stays closer to the native API. For most production
             applications, using Dexie.js is strongly recommended over the raw API.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           IndexedDB operates as an embedded database within the browser process, following the same-origin policy.
           Each origin (protocol + host + port) gets its own isolated set of databases. The storage engine varies
           by browser: Chrome uses LevelDB, Firefox uses SQLite as a backend, and Safari uses its own implementation.
           Regardless of backend, the API semantics remain consistent.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/indexeddb-architecture.svg"
           alt="IndexedDB Architecture - Database, Object Stores, Records, and Indexes"
           caption="IndexedDB architecture: A database contains object stores (analogous to tables), each holding records accessible via primary keys and secondary indexes"
+          captionTier="important"
         />
 
         <p>
@@ -129,16 +137,17 @@ export default function IndexedDBCachingConciseArticle() {
           success/error events, (5) when all requests complete and no more are pending in the current microtask,
           the transaction auto-commits, (6) the data is durably written to disk (with fsync semantics in most browsers).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For offline-first applications, IndexedDB typically serves as the local source of truth. The application
           reads from and writes to IndexedDB first, then synchronizes with the server in the background. This
           pattern requires a sync queue, conflict resolution strategy, and network status awareness.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/offline-sync-flow.svg"
           alt="Offline Sync Flow - IndexedDB as local source of truth with background synchronization"
           caption="Offline sync architecture: IndexedDB serves as the local data layer, with a sync queue that drains when connectivity is restored"
+          captionTier="important"
         />
 
         <p>
@@ -151,6 +160,11 @@ export default function IndexedDBCachingConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          IndexedDB is the right tool when you need{" "}
+          <Highlight tier="important">large structured data</Highlight> with queries and transactions. If you just need
+          to cache fetch responses, prefer the Cache API; if you just need a handful of keys, prefer localStorage.
+        </HighlightBlock>
         <p>Understanding when to use IndexedDB requires comparing it against other client-side storage mechanisms:</p>
         <table className="w-full border-collapse">
           <thead>
@@ -217,26 +231,30 @@ export default function IndexedDBCachingConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">IndexedDB vs Cache API: A Common Point of Confusion</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Both IndexedDB and the Cache API can store large amounts of data, but they serve different purposes.
             The Cache API is designed for caching HTTP request/response pairs and is tightly integrated with Service
             Workers for network interception. IndexedDB is for structured application data. In practice, a well-designed
             offline app uses <em>both</em>: Cache API for static assets and API response caching, IndexedDB for
             application state, user-generated data, and data that needs querying or indexing.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In production, IndexedDB issues tend to be operational: transaction lifecycle bugs, multi-tab upgrade blocks,
+          and unbounded growth. “Best practices” are the guardrails that prevent silent data loss and broken upgrades.
+        </HighlightBlock>
         <p>Building reliable IndexedDB-backed caching requires careful attention to several areas:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Dexie.js (or idb) Instead of Raw API:</strong> The native IndexedDB API is callback-based,
             verbose, and error-prone. Dexie.js provides Promise-based queries, automatic transaction management,
             built-in migration support, and live queries for reactive UI updates. The productivity gain is substantial,
             and it handles many edge cases around transaction lifecycle that are easy to get wrong manually.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Design Indexes Deliberately:</strong> Create indexes only on properties you actually query by.
             Each index adds write overhead (the B-tree must be updated on every insert/update) and consumes storage
@@ -249,18 +267,18 @@ export default function IndexedDBCachingConciseArticle() {
             and <code>bulkAdd()</code> methods that are significantly faster than individual puts. For 10,000
             records, batching can be 10-50x faster than individual writes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Handle Version Migrations Carefully:</strong> Schema changes require incrementing the database
             version, which triggers <code>onupgradeneeded</code>. This event fires with an exclusive lock on the
             database, blocking all other connections. Plan migrations to be fast and non-destructive. Never delete
             data during a migration without having a fallback path.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Storage Quota Monitoring:</strong> Use the StorageManager API to check available quota
             before large writes: <code>navigator.storage.estimate()</code>. Request persistent storage with
             <code>navigator.storage.persist()</code> for data the user expects to survive. Implement graceful
             degradation when storage is exhausted -- evict least-recently-used cache entries.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Close Connections When Done:</strong> An open IndexedDB connection prevents version upgrade
             transactions from other tabs (or from your own code after a deployment). Listen for the
@@ -272,33 +290,37 @@ export default function IndexedDBCachingConciseArticle() {
             avoid <code>getAll()</code> which loads everything into memory. Use cursors with key ranges to paginate
             results. This keeps memory usage predictable and avoids blocking the main thread for long periods.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Add TTL (Time-to-Live) Metadata:</strong> IndexedDB does not have built-in expiration. Store
             a <code>cachedAt</code> timestamp with each record and implement a cleanup routine that removes stale
             entries on application start or periodically. This prevents unbounded storage growth from cached data
             that is no longer relevant.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The two most common IndexedDB production incidents are (1) transaction lifetime bugs (auto-commit surprises)
+          and (2) blocked upgrades due to long-lived connections in other tabs. Both are easy to miss in local testing.
+        </HighlightBlock>
         <p>These are the most frequent issues encountered when using IndexedDB in production:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Transaction Auto-Commit Surprises:</strong> Transactions auto-commit when all pending requests
             are complete and no new requests are issued in the same microtask. If you <code>await</code> a non-IDB
             Promise (like a fetch) inside a transaction, the transaction will commit (or abort) before the await
             resolves. All IDB operations must be synchronously queued within the transaction scope. This is the
             single most common source of IndexedDB bugs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Blocking Version Upgrades:</strong> If tab A has an open connection to database version 1 and
             tab B tries to open version 2, tab B's open request blocks until tab A closes its connection. Without
             handling the <code>versionchange</code> event, users with multiple tabs will experience a hung upgrade.
             Always listen for <code>versionchange</code> and either close the connection or prompt the user to
             reload.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Safari Quirks and Limitations:</strong> Safari has historically been the most problematic browser
             for IndexedDB. Issues include: data eviction after 7 days of inactivity in iOS Safari (relaxed in
@@ -306,12 +328,12 @@ export default function IndexedDBCachingConciseArticle() {
             performance compared to Chrome and Firefox. Always test IndexedDB-heavy features in Safari, particularly
             in private browsing mode where storage may be further restricted.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Storage Quota Errors:</strong> When IndexedDB runs out of space, write operations fail
             with a <code>QuotaExceededError</code>. If you do not catch and handle this error, writes silently fail
             and data is lost. Implement quota monitoring, graceful degradation, and user-visible warnings when
             storage is running low.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing Non-Cloneable Data:</strong> Attempting to store functions, DOM nodes, Error objects, or
             objects with circular references will throw a <code>DataCloneError</code>. Sanitize data before storing
@@ -335,20 +357,25 @@ export default function IndexedDBCachingConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          IndexedDB is a frontend data-layer primitive: use it when the client must hold a{" "}
+          <Highlight tier="important">large local replica</Highlight> of server data (or user-created data) and query it
+          interactively with predictable latency.
+        </HighlightBlock>
         <p>IndexedDB is the right choice when your application needs to manage large, structured, queryable data on the client:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Offline-First Applications:</strong> Apps like Google Docs, Notion, and Linear use IndexedDB to
             store documents, pages, and issues locally. Users can create, edit, and delete content while offline, and
             changes sync when connectivity returns. The local IndexedDB copy serves as the primary data source, with
             the server acting as the persistence and sync layer.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Large Dataset Caching:</strong> Applications that display catalogs, directories, or reference
             data (think a parts database for an engineering tool with 500,000 items) cache the dataset in IndexedDB
             and perform client-side filtering and search. This eliminates network round-trips for every search query
             and provides sub-millisecond response times.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Email and Messaging Clients:</strong> Web-based email clients (Outlook Web, Gmail) cache
             thousands of messages in IndexedDB with indexes on date, sender, subject, and labels. This enables
@@ -393,10 +420,14 @@ export default function IndexedDBCachingConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Strong answers treat IndexedDB as a database and call out the core trade-offs: asynchronous API, transactions,
+          version migrations, quota/eviction risk, and multi-tab behavior.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How does IndexedDB differ from localStorage, and when would you choose one over the other?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: IndexedDB is asynchronous, stores structured data (objects, blobs, ArrayBuffers) natively, supports
               indexes for efficient querying, provides ACID transactions, and can hold hundreds of megabytes. localStorage
               is synchronous (blocks the main thread), stores only strings, has no indexing or transaction support, and
@@ -404,7 +435,7 @@ export default function IndexedDBCachingConciseArticle() {
               IndexedDB when you need to cache structured datasets, support offline workflows, or store {'&gt;'} 5MB. The
               critical architectural distinction is that localStorage's synchronous nature makes it unsuitable for any
               operation involving more than a handful of keys, as it can cause visible UI jank.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -424,7 +455,7 @@ export default function IndexedDBCachingConciseArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What happens when IndexedDB runs out of storage quota, and how do you handle it in production?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: When quota is exceeded, write operations reject with a <code>QuotaExceededError</code>. In production,
               you handle this with a multi-layered strategy: (1) Proactively monitor quota using
               <code>navigator.storage.estimate()</code> and warn users when usage exceeds 80% of quota. (2) Implement
@@ -434,7 +465,7 @@ export default function IndexedDBCachingConciseArticle() {
               automatically. (4) Catch <code>QuotaExceededError</code> on all write paths and fall back gracefully --
               either by evicting stale data and retrying, or by degrading to network-only mode with a user notification.
               (5) Implement a storage budget system that tracks usage by data category and enforces per-category limits.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

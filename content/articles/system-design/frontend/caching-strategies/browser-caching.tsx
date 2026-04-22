@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,37 +25,37 @@ export default function BrowserCachingConciseArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Browser caching</strong> is a mechanism by which web browsers store copies of HTTP responses locally,
           allowing subsequent requests for the same resources to be served without making a network round-trip to the origin
           server. It is one of the most impactful performance optimizations available to frontend engineers because it operates
           at the edge of the network stack, eliminating latency and bandwidth consumption entirely for cached resources.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           HTTP caching has been part of the web since HTTP/1.0 introduced the <code>Expires</code> header in 1996. HTTP/1.1
           (RFC 2616, 1999) significantly expanded caching semantics with <code>Cache-Control</code>, <code>ETag</code>, and
           conditional request headers. The modern caching specification is defined in RFC 9111 (June 2022), which obsoletes
           the caching sections of RFC 7234 and provides clearer semantics for cache behavior. Understanding these mechanisms
           at a deep level is essential for staff-level engineers because misconfigured caching is one of the most common
           sources of production bugs (stale content, broken deployments, security leaks) and performance regressions.
-        </p>
+        </HighlightBlock>
         <p>
           Modern browsers maintain multiple cache layers, each with different characteristics and performance profiles:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Cache (in-process):</strong> Stores resources in the browser process memory. Extremely fast (~0ms
             access time) but volatile, it is cleared when the tab or browser is closed. Typically used for resources loaded
             during the current navigation session, including preloaded resources, inline scripts, and sub-resources of the
             current page. Memory cache is not shared across tabs in most browsers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Disk Cache (HTTP Cache):</strong> Persists resources to disk using a content-addressable storage system.
             Access time is ~1-10ms depending on I/O speed. This is the primary HTTP cache that respects <code>Cache-Control</code> headers.
             It survives browser restarts and is shared across tabs and windows. Chrome&apos;s disk cache uses a custom LRU
             eviction algorithm and typically allocates up to 80% of available disk space (capped at ~320MB on mobile,
             several GB on desktop).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Service Worker Cache (Cache API):</strong> A programmatic cache controlled via JavaScript that operates
             independently of the HTTP cache. It intercepts fetch requests and can implement custom caching strategies
@@ -67,28 +68,28 @@ export default function BrowserCachingConciseArticle() {
             is becoming less relevant.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The browser checks these caches in order: memory cache first, then disk cache, then service worker cache (if
           registered), then push cache, and finally the network. This hierarchy means a resource can be served from memory
           in under a millisecond, whereas a network request might take 50-500ms or more depending on connection quality
           and server location.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The HTTP caching model is built around two fundamental concepts: <strong>freshness</strong> (how long a cached
           response can be used without checking the server) and <strong>validation</strong> (how to check if a stale cached
           response is still valid). These are controlled through HTTP headers that the server sends with each response.
-        </p>
+        </HighlightBlock>
 
         <h3>Cache-Control Directives</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>Cache-Control</code> header (RFC 9111) is the primary mechanism for controlling cache behavior. It accepts
           multiple comma-separated directives that can be combined to express precise caching intentions:
-        </p>
+        </HighlightBlock>
         <ul>
           <li>
             <strong><code>max-age=N</code>:</strong> Specifies the maximum time in seconds that a response is considered
@@ -103,19 +104,19 @@ export default function BrowserCachingConciseArticle() {
             shorter freshness for browsers. Example: <code>Cache-Control: max-age=60, s-maxage=3600</code> caches for
             1 minute in browsers but 1 hour at CDN.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong><code>no-cache</code>:</strong> Despite the misleading name, this does NOT prevent caching. It forces
             the cache to revalidate the response with the origin server before every use, even if the response is fresh.
             The cached copy is stored but never served without first confirming it is still current. This is implemented
             via conditional requests using <code>If-None-Match</code> or <code>If-Modified-Since</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong><code>no-store</code>:</strong> The response must NOT be stored in any cache, including the browser&apos;s
             disk cache. This is the only directive that truly prevents caching. Use this for sensitive data like
             authentication tokens, financial transactions, or personally identifiable information. Note that memory cache
             behavior with <code>no-store</code> varies across browsers; some browsers may still briefly keep the response
             in memory cache for the duration of the navigation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong><code>public</code>:</strong> Indicates that the response may be stored by any cache, including shared
             caches like CDNs. This is the default for responses without <code>Authorization</code> headers. Explicitly
@@ -156,10 +157,10 @@ export default function BrowserCachingConciseArticle() {
         </ul>
 
         <h3>ETag (Entity Tag)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An <code>ETag</code> is an opaque identifier assigned by the server to a specific version of a resource. When
           the resource changes, the server assigns a new ETag. ETags come in two forms:
-        </p>
+        </HighlightBlock>
         <ul>
           <li>
             <strong>Strong ETags</strong> (e.g., <code>ETag: &quot;33a64df5&quot;</code>): Indicate byte-for-byte
@@ -215,26 +216,27 @@ export default function BrowserCachingConciseArticle() {
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding how the browser decides whether to serve from cache or make a network request is critical for
           debugging caching issues and designing optimal caching strategies. The following diagram illustrates the
           complete decision flow:
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/http-cache-flow.svg"
           alt="HTTP Cache Decision Flow"
           caption="How browsers decide whether to serve content from cache or make a network request"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The cache decision process follows a strict hierarchy. When the browser needs a resource, it first checks the
           memory cache (fastest, ~0ms). If the resource is not in memory, it checks the disk cache. If found on disk,
           the browser evaluates freshness: is the <code>max-age</code> still valid? If fresh, the cached response is
           served without any network activity. This is called a <strong>cache hit</strong> and appears as
           &quot;(from memory cache)&quot; or &quot;(from disk cache)&quot; in Chrome DevTools.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When a cached response is stale (past its <code>max-age</code>), the browser performs a <strong>conditional
           request</strong>. It sends the cached ETag in an <code>If-None-Match</code> header or the
           <code>Last-Modified</code> value in an <code>If-Modified-Since</code> header. The server checks whether the
@@ -242,7 +244,7 @@ export default function BrowserCachingConciseArticle() {
           typically 200-400 bytes versus the full resource payload. The browser then serves the cached version and resets
           the freshness timer. If the resource has changed, the server responds with <code>200 OK</code> and the full
           new content, which replaces the cached entry.
-        </p>
+        </HighlightBlock>
         <p>
           For choosing which cache headers to use for different types of resources, the following decision tree provides
           a practical guide:
@@ -252,6 +254,7 @@ export default function BrowserCachingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cache-headers-decision.svg"
           alt="Cache Headers Decision Tree"
           caption="Decision tree for selecting appropriate cache headers based on resource type"
+          captionTier="important"
         />
 
         <p>
@@ -264,6 +267,7 @@ export default function BrowserCachingConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cache-lifecycle.svg"
           alt="Cache Lifecycle Timeline"
           caption="Timeline showing how a cached resource progresses through fresh, stale, revalidation, and replacement states"
+          captionTier="important"
         />
 
         <h3>Cache Key Construction</h3>
@@ -277,23 +281,23 @@ export default function BrowserCachingConciseArticle() {
         </p>
 
         <h3>Cache Partitioning</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern browsers (Chrome 86+, Firefox 85+, Safari 15+) implement <strong>cache partitioning</strong> (also
           called &quot;double-keyed caching&quot;) to prevent cross-site tracking. The cache key includes both the
           top-level site and the requesting origin. This means that a resource loaded from <code>cdn.example.com</code> on
           <code>site-a.com</code> creates a different cache entry than the same resource loaded on <code>site-b.com</code>.
           Cache partitioning reduces the effectiveness of shared CDN caching but is a necessary privacy protection that
           prevents cache-based timing attacks and user fingerprinting.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Each caching mechanism has distinct trade-offs in terms of precision, performance, server overhead, and
           browser support. The following table compares the four primary HTTP caching mechanisms:
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -342,18 +346,18 @@ export default function BrowserCachingConciseArticle() {
         </table>
 
         <h3>Combining Mechanisms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In practice, you should combine freshness and validation headers. A common production pattern is:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Static assets with hashes:</strong> <code>Cache-Control: public, max-age=31536000, immutable</code>
             (no ETag needed since the URL changes when content changes)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>HTML documents:</strong> <code>Cache-Control: no-cache</code> + <code>ETag</code> (always revalidate
             to get the latest asset URLs)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>API responses:</strong> <code>Cache-Control: private, max-age=0, must-revalidate</code> +
             <code>ETag</code> (cache in browser only, always revalidate)
@@ -361,53 +365,58 @@ export default function BrowserCachingConciseArticle() {
         </ul>
 
         <h3>max-age vs. no-cache vs. no-store</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These three directives represent a spectrum from maximum caching to zero caching. <code>max-age=N</code> allows
           serving from cache without any network activity for N seconds. <code>no-cache</code> stores the response but
           requires revalidation before every use (conditional request, possible 304). <code>no-store</code> prevents
           storing the response entirely (full request every time). The choice depends on the acceptable staleness window
           and sensitivity of the data. Using <code>no-store</code> when <code>no-cache</code> would suffice wastes
           bandwidth; using <code>max-age</code> when <code>no-cache</code> is needed causes stale content bugs.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 6: Best Practices */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best-practice bar for interviews: use hashed assets for long-lived caching, force HTML to revalidate so deploys
+          are safe, and never let shared caches store user-specific responses. Everything else is tuning around freshness
+          vs cost.
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use content hashes in static asset filenames:</strong> Generate filenames like <code>app.3f8a2b.js</code>
             using your build tool (webpack, Vite, esbuild). This creates a new URL when content changes, making it safe to
             use <code>max-age=31536000, immutable</code>. This is the single most impactful caching optimization because
             it eliminates all network requests for unchanged assets. Configure your bundler to produce deterministic hashes
             based on file content, not build timestamp, so identical source produces identical filenames across builds.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always revalidate HTML entry points:</strong> Use <code>Cache-Control: no-cache</code> with
             <code>ETag</code> for your HTML pages. Since HTML files reference hashed static assets, users must always get
             the latest HTML to discover new asset URLs after deployments. If HTML is cached with <code>max-age</code>,
             users may load the old HTML that references old JavaScript bundles that no longer exist on the server, causing
             broken applications. This is the most common deployment-related caching bug.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Set Cache-Control explicitly on every response:</strong> Do not rely on browser heuristic caching.
             When no <code>Cache-Control</code> or <code>Expires</code> header is present, browsers use heuristic freshness
             (typically 10% of the time since <code>Last-Modified</code>). This heuristic behavior is unpredictable and
             can lead to stale content that is difficult to debug. Always be explicit about your caching intent.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use <code>private</code> for user-specific content:</strong> Any response containing user-specific
             data must include <code>Cache-Control: private</code> to prevent CDNs and shared proxies from storing it.
             Without this, a CDN could cache one user&apos;s profile page and serve it to another user. This is both a
             privacy violation and a security vulnerability, especially for applications handling PII or financial data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement <code>stale-while-revalidate</code> for frequently-accessed, infrequently-updated
             content:</strong> This directive provides instant cache hits while ensuring freshness in the background.
             It is ideal for blog posts, documentation pages, product listings, and other content that changes occasionally.
             Example: <code>max-age=300, stale-while-revalidate=600</code> serves fresh content for 5 minutes, then serves
             stale for up to 10 more minutes while revalidating in the background.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Add <code>Vary: Accept-Encoding</code> to compressible responses:</strong> If your server serves
             different encodings (gzip, brotli, identity), include <code>Vary: Accept-Encoding</code> so caches store
@@ -435,28 +444,33 @@ export default function BrowserCachingConciseArticle() {
       {/* Section 7: Common Pitfalls */}
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Pitfall pattern: you optimize for speed and accidentally break correctness. The high-severity failures are
+          stale HTML after deploys, caching user-specific responses in shared caches, and misusing <code>no-store</code>
+          vs <code>no-cache</code> (security vs efficiency).
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Confusing <code>no-cache</code> with <code>no-store</code>:</strong> This is the most common caching
             misconception. <code>no-cache</code> does NOT prevent caching; it forces revalidation before each use.
             <code>no-store</code> is the directive that prevents caching entirely. Using <code>no-cache</code> when you
             mean <code>no-store</code> means the response is still stored on disk, which is a security risk for sensitive
             data. Conversely, using <code>no-store</code> when you mean <code>no-cache</code> wastes bandwidth by forcing
             full downloads every time.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching HTML with long <code>max-age</code>:</strong> If your HTML file references hashed static
             assets (e.g., <code>{'&lt;'}script src="/app.3f8a2b.js"{'&gt;'}</code>), caching the HTML means users continue
             requesting the old JS file after a deployment. If the old JS file is deleted from the server (common with
             new deployments), the application breaks entirely. Always use <code>no-cache</code> on HTML entry points.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Setting <code>max-age</code> without content hashing:</strong> If you use <code>max-age=31536000</code>
             on <code>/app.js</code> (without a hash in the filename), you have no way to bust the cache when the file
             changes. Users will be stuck with the old version until <code>max-age</code> expires. Cache busting via query
             strings (<code>/app.js?v=2</code>) is unreliable because some CDNs and proxies ignore query strings for
             caching purposes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting <code>Vary: Accept-Encoding</code>:</strong> If your server negotiates content encoding
             (gzip, brotli) but does not include <code>Vary: Accept-Encoding</code>, a shared cache (CDN) may serve a
@@ -477,40 +491,45 @@ export default function BrowserCachingConciseArticle() {
             serve the stale response in certain conditions (e.g., disconnected mode). <code>no-cache</code> explicitly
             requires revalidation before every use, regardless of network conditions.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-relying on ETags without understanding server behavior:</strong> In load-balanced environments,
             different backend servers may generate different ETags for the same content (especially if ETags are based
             on inode number + size + modification time, as Apache&apos;s default). This causes unnecessary cache
             invalidation when requests hit different servers. Use content-based ETags (hash of response body) or
             disable ETags and use <code>Last-Modified</code> in such environments.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       {/* Section 8: Real-World Use Cases */}
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
+          Production caching is about safe deploys and safe data. The strongest patterns separate immutable assets (cache
+          forever) from entry points and personalized data (revalidate or don&apos;t cache), and they document exactly
+          when to use <code>private</code>, <code>no-cache</code>, and <code>no-store</code>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding how production systems implement caching strategies provides valuable context for system design
           interviews and real-world architecture decisions.
-        </p>
+        </HighlightBlock>
         <h3>SPA with Content-Hashed Assets</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The most common production pattern for React/Next.js applications. The HTML entry point (<code>index.html</code>)
           uses <code>Cache-Control: no-cache</code> with <code>ETag</code>, ensuring users always get the latest asset
           references. All JavaScript, CSS, and image assets use content hashes in filenames and are served with
           <code>Cache-Control: public, max-age=31536000, immutable</code>. This pattern achieves near-zero cache-related
           bugs while maximizing cache hit rates for static assets. Webpack, Vite, and other modern bundlers support this
           natively.
-        </p>
+        </HighlightBlock>
         <h3>API-Heavy Dashboard Applications</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Applications like analytics dashboards, admin panels, and monitoring tools make frequent API calls. For
           non-personalized data (aggregated metrics, system-wide statistics), use <code>Cache-Control: public,
           max-age=30, stale-while-revalidate=60</code> with <code>ETag</code>. For user-specific data (personal
           dashboards, settings), use <code>Cache-Control: private, no-cache</code> with <code>ETag</code>. This
           combination allows instant page loads from cache while ensuring data freshness through background revalidation.
-        </p>
+        </HighlightBlock>
         <h3>E-Commerce Product Pages</h3>
         <p>
           Product detail pages benefit from aggressive caching of product images and descriptions (these change
@@ -559,6 +578,19 @@ export default function BrowserCachingConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: connect headers to deploy safety, data sensitivity, and measurable outcomes (hit rate, bytes saved,
+          tail latency). You should be able to explain <code>no-cache</code> vs <code>no-store</code> precisely and propose
+          a safe SPA caching scheme in under 60 seconds.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers mention the two-tier deploy pattern: hashed immutable assets cached for a year, HTML entry points
+          always revalidated (ETag + no-cache), plus <code>private</code> for personalized responses.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Also call out modern reality: cache partitioning reduces cross-site CDN cache wins, so treat third-party assets as
+          cold-cache and use preloading/resource hints intentionally.
+        </HighlightBlock>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4">
           <p className="font-semibold">Q: What is the difference between <code>Cache-Control: no-cache</code> and <code>Cache-Control: no-store</code>, and when would you use each?</p>

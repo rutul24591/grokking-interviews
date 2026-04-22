@@ -47,11 +47,12 @@ export default function ArticlePage() {
           overwrites the old address with the new one — the previous address is
           lost (unless explicitly preserved in an audit table). In an
           event-sourced system, the address update is stored as an event (e.g.,{" "}
-          <code>{`AddressChanged { oldAddress, newAddress, timestamp }`}</code>),
-          appended to an append-only event log. The user&apos;s current address
-          is derived by replaying all events for that user from the event log,
-          applying each event in sequence to reconstruct the current state. The
-          event log is the source of truth — the current state is a derivation.
+          <code>{`AddressChanged { oldAddress, newAddress, timestamp }`}</code>
+          ), appended to an append-only event log. The user&apos;s current
+          address is derived by replaying all events for that user from the
+          event log, applying each event in sequence to reconstruct the current
+          state. The event log is the source of truth — the current state is a
+          derivation.
         </p>
         <p>
           The pattern was popularized by Martin Fowler in 2005 (building on
@@ -104,17 +105,18 @@ export default function ArticlePage() {
           event-sourced system. It is an append-only database that stores events
           in the order they occurred. Each event has a globally unique
           identifier, an aggregate identifier (the entity the event belongs to),
-          a sequence number (the event&apos;s position within the aggregate&apos;s
-          event stream), an event type (e.g., <code>OrderCreated</code>,{" "}
-          <code>ItemAdded</code>, <code>OrderConfirmed</code>), an event payload
-          (the data describing what happened), a timestamp, and optionally a
-          metadata field (containing the user ID, correlation ID, causation ID,
-          and other contextual information). The event store guarantees that
-          events for a given aggregate are stored in sequence-number order and
-          that no two events for the same aggregate can have the same sequence
-          number (enforced by a unique constraint on the aggregate ID + sequence
-          number pair). This guarantee is critical because it ensures that events
-          can be replayed in the exact order they occurred, producing a
+          a sequence number (the event&apos;s position within the
+          aggregate&apos;s event stream), an event type (e.g.,{" "}
+          <code>OrderCreated</code>, <code>ItemAdded</code>,{" "}
+          <code>OrderConfirmed</code>), an event payload (the data describing
+          what happened), a timestamp, and optionally a metadata field
+          (containing the user ID, correlation ID, causation ID, and other
+          contextual information). The event store guarantees that events for a
+          given aggregate are stored in sequence-number order and that no two
+          events for the same aggregate can have the same sequence number
+          (enforced by a unique constraint on the aggregate ID + sequence number
+          pair). This guarantee is critical because it ensures that events can
+          be replayed in the exact order they occurred, producing a
           deterministic reconstruction of the aggregate&apos;s state.
         </p>
 
@@ -143,10 +145,10 @@ export default function ArticlePage() {
         <p>
           <strong>Snapshots</strong> are a performance optimization that
           addresses the growing cost of aggregate reconstruction as the event
-          stream grows. For an aggregate with 10 events, replaying all events
-          is fast. For an aggregate with 10,000 events (e.g., a high-activity
-          user account with thousands of interactions), replaying all events
-          from the beginning is prohibitively slow. A snapshot captures the
+          stream grows. For an aggregate with 10 events, replaying all events is
+          fast. For an aggregate with 10,000 events (e.g., a high-activity user
+          account with thousands of interactions), replaying all events from the
+          beginning is prohibitively slow. A snapshot captures the
           aggregate&apos;s state at a specific point in its event stream (e.g.,
           after event 100) and stores it in a snapshot store. When
           reconstructing the aggregate, the system loads the most recent
@@ -155,9 +157,9 @@ export default function ArticlePage() {
           from O(total events) to O(events since last snapshot). Snapshots are
           typically taken every N events (e.g., every 100 events) or on a
           time-based schedule (e.g., daily for active aggregates). The snapshot
-          is not a replacement for the event stream — the events are retained
-          in the event store because they are the source of truth. The snapshot
-          is a cached derivation of the state at a point in time, and it can be
+          is not a replacement for the event stream — the events are retained in
+          the event store because they are the source of truth. The snapshot is
+          a cached derivation of the state at a point in time, and it can be
           discarded and rebuilt from the event stream at any time.
         </p>
 
@@ -176,9 +178,9 @@ export default function ArticlePage() {
           the old and new versions. An <em>upcaster</em> is a function that
           transforms an event from an older schema version to a newer one during
           replay — it fills in missing fields with default values, renames
-          fields, or transforms data types. Upcasters allow the event handler
-          to work with a single schema version (the latest) by upcasting old
-          events to the latest version before applying them.
+          fields, or transforms data types. Upcasters allow the event handler to
+          work with a single schema version (the latest) by upcasting old events
+          to the latest version before applying them.
         </p>
 
         <p>
@@ -218,7 +220,8 @@ export default function ArticlePage() {
           method (e.g., <code>order.confirm()</code>), which validates the
           command against the aggregate&apos;s current state (e.g., the order
           must be in &quot;pending&quot; status to be confirmed). If the
-          validation passes, the aggregate produces one or more new events (e.g.,{" "}
+          validation passes, the aggregate produces one or more new events
+          (e.g.,{" "}
           <code>{`OrderConfirmed { orderId, timestamp, confirmedBy }`}</code>).
           These events are appended to the aggregate&apos;s event stream in the
           event store with the next sequence numbers. The append operation is
@@ -234,9 +237,9 @@ export default function ArticlePage() {
         </p>
 
         <p>
-          The read flow is handled entirely by projections. When a query arrives,
-          the query handler does not interact with the event store — it reads
-          from the projection&apos;s read model, which is a denormalized,
+          The read flow is handled entirely by projections. When a query
+          arrives, the query handler does not interact with the event store — it
+          reads from the projection&apos;s read model, which is a denormalized,
           query-optimized data structure. The read model is updated
           asynchronously by the projection, which consumes events from the event
           bus and applies them to its database. The projection maintains an
@@ -311,11 +314,11 @@ export default function ArticlePage() {
           (a single SELECT query) and supports complex queries natively (SQL
           JOINs, aggregations, filtering). The audit table provides a history of
           changes, but it is typically a secondary concern — it records what
-          changed (old value → new value) but not why it changed or what business
-          event triggered the change. Event Sourcing, by contrast, records the
-          business event itself (OrderConfirmed, not &quot;status changed from
-          pending to confirmed&quot;), which is semantically richer and more
-          aligned with the domain language.
+          changed (old value → new value) but not why it changed or what
+          business event triggered the change. Event Sourcing, by contrast,
+          records the business event itself (OrderConfirmed, not &quot;status
+          changed from pending to confirmed&quot;), which is semantically richer
+          and more aligned with the domain language.
         </p>
 
         <table className="w-full border-collapse">
@@ -331,9 +334,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 <strong>Current State Access</strong>
               </td>
-              <td className="p-3">
-                O(1) — single row lookup
-              </td>
+              <td className="p-3">O(1) — single row lookup</td>
               <td className="p-3">
                 O(N) — replay N events (or O(1) with snapshot)
               </td>
@@ -342,9 +343,7 @@ export default function ArticlePage() {
               <td className="p-3">
                 <strong>Audit Trail</strong>
               </td>
-              <td className="p-3">
-                Separate audit table (technical changes)
-              </td>
+              <td className="p-3">Separate audit table (technical changes)</td>
               <td className="p-3">
                 Built-in — event log is the audit trail (business events)
               </td>
@@ -356,39 +355,27 @@ export default function ArticlePage() {
               <td className="p-3">
                 Difficult — requires audit table reconstruction
               </td>
-              <td className="p-3">
-                Natural — replay events up to time T
-              </td>
+              <td className="p-3">Natural — replay events up to time T</td>
             </tr>
             <tr>
               <td className="p-3">
                 <strong>New Read Models</strong>
               </td>
-              <td className="p-3">
-                Schema migration + data migration
-              </td>
-              <td className="p-3">
-                New projection + replay from event log
-              </td>
+              <td className="p-3">Schema migration + data migration</td>
+              <td className="p-3">New projection + replay from event log</td>
             </tr>
             <tr>
               <td className="p-3">
                 <strong>Schema Evolution</strong>
               </td>
-              <td className="p-3">
-                ALTER TABLE — database handles migration
-              </td>
-              <td className="p-3">
-                Event versioning + upcasters — manual
-              </td>
+              <td className="p-3">ALTER TABLE — database handles migration</td>
+              <td className="p-3">Event versioning + upcasters — manual</td>
             </tr>
             <tr>
               <td className="p-3">
                 <strong>Query Flexibility</strong>
               </td>
-              <td className="p-3">
-                SQL — joins, aggregations, subqueries
-              </td>
+              <td className="p-3">SQL — joins, aggregations, subqueries</td>
               <td className="p-3">
                 Via projections — each optimized for its query
               </td>
@@ -426,18 +413,18 @@ export default function ArticlePage() {
 
         <p>
           Model events as past-tense facts in the domain language, not as
-          technical data changes. An event should describe <em>what happened in
-          the business</em>, not <em>what changed in the database</em>.{" "}
-          <code>OrderConfirmed</code> is a good event name — it describes a
-          business event. <code>OrderStatusChanged</code> is a poor event name
-          — it describes a data change. The event payload should contain the
-          data necessary to reconstruct the aggregate&apos;s state after the
-          event, not a diff of what changed. For <code>OrderConfirmed</code>,
-          the payload should contain the order ID, the confirmation timestamp,
-          and the user who confirmed — not &quot;status: pending → confirmed.&quot;
-          This approach ensures that the event log is a meaningful business
-          record that domain experts can read and understand, not just a
-          technical change log.
+          technical data changes. An event should describe{" "}
+          <em>what happened in the business</em>, not{" "}
+          <em>what changed in the database</em>. <code>OrderConfirmed</code> is
+          a good event name — it describes a business event.{" "}
+          <code>OrderStatusChanged</code> is a poor event name — it describes a
+          data change. The event payload should contain the data necessary to
+          reconstruct the aggregate&apos;s state after the event, not a diff of
+          what changed. For <code>OrderConfirmed</code>, the payload should
+          contain the order ID, the confirmation timestamp, and the user who
+          confirmed — not &quot;status: pending → confirmed.&quot; This approach
+          ensures that the event log is a meaningful business record that domain
+          experts can read and understand, not just a technical change log.
         </p>
 
         <p>
@@ -511,20 +498,18 @@ export default function ArticlePage() {
           Storing derived data in events is a common mistake that corrupts the
           event stream. Events should contain only the data that was known at
           the time the event occurred — not data that is derived from other
-          events or from external sources. For example, an <code>
-            OrderConfirmed
-          </code>{" "}
-          event should contain the order ID and the confirmation timestamp, but
-          it should <em>not</em> contain the order total — the total is derived
-          from the items in the order (which are recorded in <code>ItemAdded</code>{" "}
-          events), not from the confirmation event itself. Storing derived data
-          in events creates redundancy and inconsistency: if the item prices
-          change (e.g., a retroactive discount is applied), the order total in
-          the <code>OrderConfirmed</code> event is stale and contradicts the
-          total computed from the <code>ItemAdded</code> events. The rule is:
-          events should contain the <em>minimal data necessary to apply the
-          event to the aggregate</em> — any additional data should be derived
-          during replay.
+          events or from external sources. For example, an{" "}
+          <code>OrderConfirmed</code> event should contain the order ID and the
+          confirmation timestamp, but it should <em>not</em> contain the order
+          total — the total is derived from the items in the order (which are
+          recorded in <code>ItemAdded</code> events), not from the confirmation
+          event itself. Storing derived data in events creates redundancy and
+          inconsistency: if the item prices change (e.g., a retroactive discount
+          is applied), the order total in the <code>OrderConfirmed</code> event
+          is stale and contradicts the total computed from the{" "}
+          <code>ItemAdded</code> events. The rule is: events should contain the{" "}
+          <em>minimal data necessary to apply the event to the aggregate</em> —
+          any additional data should be derived during replay.
         </p>
 
         <p>
@@ -553,8 +538,8 @@ export default function ArticlePage() {
           embedded in events (e.g., a <code>UserRegistered</code> event contains
           the user&apos;s email address). The solution is to encrypt
           personally-identifiable information (PII) in events with a per-user
-          encryption key, and delete the key when the user exercises their
-          right to erasure. The encrypted data remains in the event store but is
+          encryption key, and delete the key when the user exercises their right
+          to erasure. The encrypted data remains in the event store but is
           unreadable (effectively deleted). Alternatively, the PII can be stored
           in a separate &quot;PII vault&quot; database outside the event store,
           and events contain only a reference to the PII (e.g., a PII ID). When
@@ -677,16 +662,14 @@ export default function ArticlePage() {
           </h3>
           <p className="mb-3">
             Aggregate reconstruction follows a deterministic process: create an
-            empty aggregate instance, load all events for that aggregate from the
-            event store (ordered by sequence number), and apply each event to the
-            aggregate in sequence. Each event handler on the aggregate mutates
-            the aggregate&apos;s state based on the event&apos;s data. For
-            example, an Order aggregate starts as an empty object. The{" "}
+            empty aggregate instance, load all events for that aggregate from
+            the event store (ordered by sequence number), and apply each event
+            to the aggregate in sequence. Each event handler on the aggregate
+            mutates the aggregate&apos;s state based on the event&apos;s data.
+            For example, an Order aggregate starts as an empty object. The{" "}
             <code>OrderCreated</code> event initializes the order ID, customer
             ID, and creation timestamp. The <code>ItemAdded</code> events append
-            items to the order&apos;s item list. The <code>
-              OrderConfirmed
-            </code>{" "}
+            items to the order&apos;s item list. The <code>OrderConfirmed</code>{" "}
             event sets the status to &quot;confirmed.&quot; After all events
             have been applied, the aggregate&apos;s state reflects all changes
             and represents the current state.
@@ -698,10 +681,11 @@ export default function ArticlePage() {
             system captures the aggregate&apos;s current state and stores it as
             a snapshot, along with the sequence number of the last event
             included in the snapshot. When reconstructing the aggregate, the
-            system loads the most recent snapshot (which provides the aggregate&apos;s
-            state up to sequence number N) and replays only the events after N
-            (from N+1 to the current sequence number). This reduces the replay
-            cost from O(total events) to O(events since last snapshot).
+            system loads the most recent snapshot (which provides the
+            aggregate&apos;s state up to sequence number N) and replays only the
+            events after N (from N+1 to the current sequence number). This
+            reduces the replay cost from O(total events) to O(events since last
+            snapshot).
           </p>
           <p className="mb-3">
             The snapshot frequency is a tuning parameter. With a snapshot every
@@ -740,28 +724,27 @@ export default function ArticlePage() {
             This is the event versioning and schema evolution problem, and it
             requires a multi-step approach. First, the event type is versioned:
             the existing event becomes <code>OrderCreated:v1</code> (without{" "}
-            <code>currency</code>), and the new event is <code>
-              OrderCreated:v2
-            </code>{" "}
-            (with <code>currency</code>). Both versions coexist in the event
-            store — historical events remain as v1, and new events are published
-            as v2.
+            <code>currency</code>), and the new event is{" "}
+            <code>OrderCreated:v2</code> (with <code>currency</code>). Both
+            versions coexist in the event store — historical events remain as
+            v1, and new events are published as v2.
           </p>
           <p className="mb-3">
             The event handler for <code>OrderCreated</code> must be updated to
-            handle both v1 and v2. There are two approaches. <strong>Approach 1:
-            Dual-version handler.</strong> The handler has two code paths — one
-            for v1 events (which sets <code>currency</code> to a default value,
-            e.g., &quot;USD&quot;) and one for v2 events (which uses the{" "}
-            <code>currency</code> field from the event payload). This approach
-            is simple but requires the handler to maintain version-specific
-            logic indefinitely. <strong>Approach 2: Upcaster.</strong> An
-            upcaster function transforms v1 events to v2 events during replay by
-            adding the <code>currency</code> field with a default value. The
-            event handler then only handles v2 events — the upcaster ensures
-            that all events (including historical v1 events) are presented to
-            the handler as v2 events. This approach keeps the handler simple
-            (single version) but requires maintaining the upcaster.
+            handle both v1 and v2. There are two approaches.{" "}
+            <strong>Approach 1: Dual-version handler.</strong> The handler has
+            two code paths — one for v1 events (which sets <code>currency</code>{" "}
+            to a default value, e.g., &quot;USD&quot;) and one for v2 events
+            (which uses the <code>currency</code> field from the event payload).
+            This approach is simple but requires the handler to maintain
+            version-specific logic indefinitely.{" "}
+            <strong>Approach 2: Upcaster.</strong> An upcaster function
+            transforms v1 events to v2 events during replay by adding the{" "}
+            <code>currency</code> field with a default value. The event handler
+            then only handles v2 events — the upcaster ensures that all events
+            (including historical v1 events) are presented to the handler as v2
+            events. This approach keeps the handler simple (single version) but
+            requires maintaining the upcaster.
           </p>
           <p className="mb-3">
             The upcaster approach is generally preferred because it centralizes
@@ -770,15 +753,16 @@ export default function ArticlePage() {
             event:{" "}
           </p>
           <p className="mb-3">
-            <code>
-              {`upcast(event: OrderCreated:v1) => OrderCreated:v2 {`}
-            </code>
+            <code>{`upcast(event: OrderCreated:v1) => OrderCreated:v2 {`}</code>
             <br />
             <code>&nbsp;&nbsp;...event,</code>
             <br />
             <code>&nbsp;&nbsp;version: 2,</code>
             <br />
-            <code>&nbsp;&nbsp;currency: event.customer.country === &apos;UK&apos; ? &apos;GBP&apos; : &apos;USD&apos;</code>
+            <code>
+              &nbsp;&nbsp;currency: event.customer.country === &apos;UK&apos; ?
+              &apos;GBP&apos; : &apos;USD&apos;
+            </code>
             <br />
             <code>{"}"}</code>
           </p>
@@ -815,20 +799,20 @@ export default function ArticlePage() {
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-3 text-lg font-semibold">
             Q3: What is the difference between an event and a fact in event
-            sourcing? Can events be wrong, and if so, how do you handle an
-            event that was published incorrectly?
+            sourcing? Can events be wrong, and if so, how do you handle an event
+            that was published incorrectly?
           </h3>
           <p className="mb-3">
             In event sourcing, an event is a record of something that happened —
             it is a statement about the past. A fact is a statement that is
-            objectively true. The critical insight is that <em>events are not
-            always facts</em> — an event can be published incorrectly due to a
-            bug, a race condition, or an erroneous user action. For example, a
-            bug in the order processing logic might publish an{" "}
-            <code>OrderConfirmed</code> event for an order that should not have
-            been confirmed (e.g., the payment had not been received). The event
-            exists in the event store, but it does not represent a true business
-            fact.
+            objectively true. The critical insight is that{" "}
+            <em>events are not always facts</em> — an event can be published
+            incorrectly due to a bug, a race condition, or an erroneous user
+            action. For example, a bug in the order processing logic might
+            publish an <code>OrderConfirmed</code> event for an order that
+            should not have been confirmed (e.g., the payment had not been
+            received). The event exists in the event store, but it does not
+            represent a true business fact.
           </p>
           <p className="mb-3">
             The standard approach to handling an incorrect event is to append a{" "}
@@ -862,15 +846,18 @@ export default function ArticlePage() {
             handling accidental confirmations is to cancel the order, which
             produces a <code>OrderCancelled</code> event. Both events are
             correct records of what happened — the user confirmed, then the user
-            (or an admin) cancelled. The event log preserves both facts, and
-            the aggregate&apos;s final state (cancelled) is correct.
+            (or an admin) cancelled. The event log preserves both facts, and the
+            aggregate&apos;s final state (cancelled) is correct.
           </p>
           <p>
-            The key principle is: <strong>events are immutable records of what
-            happened, not statements of what should have happened</strong>. An
-            event is &quot;wrong&quot; only if it does not accurately record
-            what happened (e.g., a bug caused the event to be published with
-            incorrect data). In that case, the correction is a compensating
+            The key principle is:{" "}
+            <strong>
+              events are immutable records of what happened, not statements of
+              what should have happened
+            </strong>
+            . An event is &quot;wrong&quot; only if it does not accurately
+            record what happened (e.g., a bug caused the event to be published
+            with incorrect data). In that case, the correction is a compensating
             event that records the corrective action, not a deletion of the
             incorrect event.
           </p>
@@ -907,8 +894,8 @@ export default function ArticlePage() {
             product categories, and order timestamp. When the query arrives, it
             is a simple SQL query against this denormalized table:{" "}
             <code>
-              SELECT * FROM order_search_index WHERE product_categories
-              CONTAINS &apos;X&apos; AND customer_region = &apos;Y&apos; AND
+              SELECT * FROM order_search_index WHERE product_categories CONTAINS
+              &apos;X&apos; AND customer_region = &apos;Y&apos; AND
               order_timestamp &gt; NOW() - INTERVAL &apos;30 days&apos;
             </code>
             .
@@ -938,15 +925,18 @@ export default function ArticlePage() {
             is later resolved when the missing data arrives.
           </p>
           <p>
-            The key insight is that <strong>cross-aggregate queries in event
-            sourcing are answered by read-side projections, not by querying the
-            event store directly</strong>. The event store is optimized for
-            append and sequential read (single-aggregate reconstruction), not
-            for complex multi-aggregate queries. The projection transforms the
-            event streams into a query-optimized read model that answers the
-            cross-aggregate query efficiently. This is the CQRS pattern applied
-            to event sourcing — the event store is the write side, and the
-            projection&apos;s read model is the read side.
+            The key insight is that{" "}
+            <strong>
+              cross-aggregate queries in event sourcing are answered by
+              read-side projections, not by querying the event store directly
+            </strong>
+            . The event store is optimized for append and sequential read
+            (single-aggregate reconstruction), not for complex multi-aggregate
+            queries. The projection transforms the event streams into a
+            query-optimized read model that answers the cross-aggregate query
+            efficiently. This is the CQRS pattern applied to event sourcing —
+            the event store is the write side, and the projection&apos;s read
+            model is the read side.
           </p>
         </div>
 
@@ -960,8 +950,8 @@ export default function ArticlePage() {
             many use cases. The primary anti-patterns are:
           </p>
           <p className="mb-3">
-            <strong>Anti-pattern 1: Event Sourcing for simple CRUD.</strong>{" "}
-            If the entity&apos;s history is not valuable (e.g., user preferences,
+            <strong>Anti-pattern 1: Event Sourcing for simple CRUD.</strong> If
+            the entity&apos;s history is not valuable (e.g., user preferences,
             configuration settings, session data), Event Sourcing adds
             complexity without benefit. State-stored persistence is simpler,
             faster, and sufficient. The question to ask is: &quot;Would the
@@ -973,8 +963,8 @@ export default function ArticlePage() {
             Event Sourcing but querying the event store directly for read
             operations (by replaying events for each query) is an anti-pattern.
             The event store is optimized for append, not for read. Every read
-            query that requires event replay incurs O(N) latency, which does
-            not scale. If you use Event Sourcing, pair it with CQRS — use
+            query that requires event replay incurs O(N) latency, which does not
+            scale. If you use Event Sourcing, pair it with CQRS — use
             projections to build read models that answer queries efficiently.
           </p>
           <p className="mb-3">
@@ -985,35 +975,37 @@ export default function ArticlePage() {
             <code>EmailAddressChanged</code>, <code>PhoneNumberUpdated</code>,{" "}
             <code>PreferencesSaved</code>), not data changes. Data change events
             are technically correct but semantically impoverished — they do not
-            convey the business meaning of the change, and they couple the
-            event schema to the data schema.
+            convey the business meaning of the change, and they couple the event
+            schema to the data schema.
           </p>
           <p className="mb-3">
-            <strong>Anti-pattern 4: Event Sourcing for high-velocity,
-            low-value data.</strong> Sensor readings, clickstream events, and
-            log entries are high-volume data points that are better stored in a
-            time-series database or a log aggregation system. Event Sourcing is
-            designed for business events with rich semantics and long-term value
-            — not for millions of low-value data points per second.
+            <strong>
+              Anti-pattern 4: Event Sourcing for high-velocity, low-value data.
+            </strong>{" "}
+            Sensor readings, clickstream events, and log entries are high-volume
+            data points that are better stored in a time-series database or a
+            log aggregation system. Event Sourcing is designed for business
+            events with rich semantics and long-term value — not for millions of
+            low-value data points per second.
           </p>
           <p className="mb-3">
             <strong>Anti-pattern 5: Premature Event Sourcing.</strong> Adopting
-            Event Sourcing at the start of a project, before the domain model
-            is stable, is risky. Event schema changes are expensive (they
-            require upcasters and testing), and a changing domain model means
-            frequent schema changes. It is better to start with state-stored
-            persistence and migrate to Event Sourcing when the domain model
-            stabilizes and the business requirements for auditability, temporal
-            queries, or flexible read models become clear.
+            Event Sourcing at the start of a project, before the domain model is
+            stable, is risky. Event schema changes are expensive (they require
+            upcasters and testing), and a changing domain model means frequent
+            schema changes. It is better to start with state-stored persistence
+            and migrate to Event Sourcing when the domain model stabilizes and
+            the business requirements for auditability, temporal queries, or
+            flexible read models become clear.
           </p>
           <p>
-            The decision framework is: use Event Sourcing when (1) the
-            complete history of an entity is a business requirement (audit,
-            compliance, debugging), (2) temporal queries are needed (what was
-            the state at time T?), (3) the domain model is stable and unlikely
-            to change frequently, and (4) the team has the expertise to manage
-            event versioning, snapshots, and projections. If any of these
-            conditions are not met, Event Sourcing is likely the wrong choice.
+            The decision framework is: use Event Sourcing when (1) the complete
+            history of an entity is a business requirement (audit, compliance,
+            debugging), (2) temporal queries are needed (what was the state at
+            time T?), (3) the domain model is stable and unlikely to change
+            frequently, and (4) the team has the expertise to manage event
+            versioning, snapshots, and projections. If any of these conditions
+            are not met, Event Sourcing is likely the wrong choice.
           </p>
         </div>
       </section>
@@ -1023,19 +1015,18 @@ export default function ArticlePage() {
         <h2>References</h2>
         <ol className="space-y-2">
           <li>
-            Fowler, M. (2005). &quot;Event Sourcing.&quot;
-            martinfowler.com. — The seminal article introducing the Event
-            Sourcing pattern.
+            Fowler, M. (2005). &quot;Event Sourcing.&quot; martinfowler.com. —
+            The seminal article introducing the Event Sourcing pattern.
           </li>
           <li>
             Young, G. (2006). &quot;Eventsourcing — an introduction.&quot;
-            CodeBetter Blog. — Early practical exposition of Event Sourcing
-            with implementation examples.
+            CodeBetter Blog. — Early practical exposition of Event Sourcing with
+            implementation examples.
           </li>
           <li>
             Vernon, V. (2013). &quot;Implementing Domain-Driven Design.&quot;
-            Addison-Wesley. — Chapter 8 covers Event Sourcing in the context
-            of aggregates and bounded contexts.
+            Addison-Wesley. — Chapter 8 covers Event Sourcing in the context of
+            aggregates and bounded contexts.
           </li>
           <li>
             Kleppmann, M. (2017). &quot;Designing Data-Intensive
@@ -1045,8 +1036,8 @@ export default function ArticlePage() {
           </li>
           <li>
             Event Store Ltd. &quot;Event Store Documentation.&quot; —
-            Production-tested event store database with comprehensive guides
-            on Event Sourcing patterns and projections.
+            Production-tested event store database with comprehensive guides on
+            Event Sourcing patterns and projections.
           </li>
         </ol>
       </section>

@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,36 +28,38 @@ export default function DebouncingThrottlingArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
-          <strong>Debouncing</strong> and <strong>throttling</strong> are rate-limiting techniques that 
+        <HighlightBlock as="p" tier="crucial">
+          <strong>Debouncing</strong> and <strong>throttling</strong> are{" "}
+          <Highlight tier="important">rate-limiting techniques</Highlight> that 
           control how often a function executes in response to frequent events. Without them, events like 
           scrolling (fires 60+ times/second), typing (fires on every keystroke), or window resizing (fires 
           continuously) can trigger expensive operations hundreds of times per second — causing jank, 
-          excessive API calls, and wasted computation.
-        </p>
-        <p>
+          <Highlight tier="important">excessive API calls</Highlight>, and wasted computation.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These techniques are essential for frontend performance because modern web applications respond 
           to user input in real-time. Every keystroke might trigger a search API call. Every scroll event 
           might recalculate layout. Every mouse move might update a tooltip position. Without rate limiting, 
           the browser&apos;s main thread becomes overwhelmed, resulting in dropped frames, unresponsive UI, 
           and poor user experience.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/debounce-vs-throttle.svg"
           alt="Timeline comparison showing debounce (executes after quiet period) vs throttle (executes at regular intervals) for the same event stream"
           caption="Debounce waits for activity to stop; throttle executes at regular intervals during activity"
+          captionTier="important"
         />
 
         <p>
           The key distinction between the two techniques:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce:</strong> Wait until the event <em>stops firing</em> for a specified delay, 
             then execute once. Like an elevator door — it waits for people to stop entering before closing. 
             The function executes <strong>once</strong> after the last event.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Throttle:</strong> Execute at most once per specified interval, no matter how often 
             the event fires. Like a train schedule — it runs at fixed intervals regardless of passengers 
@@ -94,6 +98,18 @@ export default function DebouncingThrottlingArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The interview-ready mental model: debounce is about{" "}
+          <Highlight tier="important">acting on intent</Highlight> (after quiet), throttle is about{" "}
+          <Highlight tier="important">bounded freshness</Highlight> (updates at a max rate). Both are forms of
+          backpressure for the main thread and your APIs.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Default heuristics: search/autosave/resize usually want debounce; scroll/drag/mouse-move usually want throttle.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The real goal is protecting responsiveness (INP) and preventing backend overload (burst API calls).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/debounce-timeline.svg"
@@ -231,6 +247,17 @@ export default function DebouncingThrottlingArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Architecture-wise, rate limiting is a state machine: you track timer/last-run, decide whether to
+          run now, schedule a trailing run, and ensure cleanup on unmount to avoid leaks.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          When explaining the flow, include cancellation: unmounts, route changes, and superseded requests must
+          not update stale state.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat UI and API separately: UI event frequency control does not replace request deduplication and caching.
+        </HighlightBlock>
 
         <h3>Implementation Patterns</h3>
         <p>
@@ -360,7 +387,19 @@ export default function DebouncingThrottlingArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Debounce vs throttle is a{" "}
+          <Highlight tier="important">freshness vs efficiency</Highlight> trade. Senior-level answers tie
+          the choice to user experience expectations: continuous feedback (throttle) vs act-on-intent
+          after user stops (debounce).
+        </HighlightBlock>
+
         <h3>When to Use Debounce vs. Throttle</h3>
+        <HighlightBlock as="p" tier="important">
+          A crisp interview heuristic: <strong>debounce</strong> for &quot;act on intent&quot; (user pauses),
+          <strong> throttle</strong> for &quot;bounded freshness&quot; (keep updating but cap work). The wrong choice
+          either feels laggy (too much debounce) or wastes CPU/network (too much throttle).
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
@@ -429,10 +468,10 @@ export default function DebouncingThrottlingArticle() {
           Choosing the right delay is critical for user experience:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Search Debounce:</strong> 150-300ms. Shorter feels responsive, longer reduces API 
             calls. 250ms is a good default.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Auto-save Debounce:</strong> 500-1000ms. Longer to avoid saving incomplete input, 
             but not so long that users worry about data loss.
@@ -441,10 +480,10 @@ export default function DebouncingThrottlingArticle() {
             <strong>Resize Debounce:</strong> 100-250ms. Layout recalculation is expensive, but users 
             expect quick response.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Scroll Throttle:</strong> 50-100ms (10-20 updates/second). Smooth enough for 
             progress bars, not so frequent as to cause jank.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mouse Move Throttle:</strong> 50-100ms. Similar to scroll — frequent enough for 
             smooth tracking, not excessive.
@@ -501,6 +540,16 @@ export default function DebouncingThrottlingArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: pick delays that match UX expectations, cancel on unmount, use passive listeners for
+          scroll/touch, and guard APIs with dedupe/rate limits so the backend isn&apos;t thrashed.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Choose delays by product expectation: interactive feedback typically needs ~100–200ms; search feels ok at ~150–300ms.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Always test on mid-tier mobile; the same handler that feels fine on desktop can drop frames on mobile.
+        </HighlightBlock>
 
         <h3>Use React Hooks for Cleanup</h3>
         <p>
@@ -578,10 +627,10 @@ export default function DebouncingThrottlingArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Creating New Debounced Functions Each Render</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Defining the debounced function inside the component body creates a new instance every render, 
           losing the timer state:
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Problem:</strong> <code>const debouncedFn = debounce(fn, 300)</code> inside component 
           creates new debounced function each render. Timer resets immediately.
@@ -592,9 +641,9 @@ export default function DebouncingThrottlingArticle() {
         </p>
 
         <h3>Too Long a Delay</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A 1000ms debounce on search feels unresponsive. Users expect feedback within 200-300ms.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Use 150-300ms for search, 500-1000ms for auto-save. Test with real 
           users to find the right balance.
@@ -613,10 +662,10 @@ export default function DebouncingThrottlingArticle() {
         </p>
 
         <h3>Using Debounce Where Throttle is Needed</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Debouncing a scroll handler means no updates while scrolling — the user sees nothing until 
           they stop:
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Problem:</strong> Progress bar doesn&apos;t update during scroll, tooltip lags behind 
           mouse.
@@ -656,6 +705,16 @@ export default function DebouncingThrottlingArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases should show that you can choose correctly: search (debounce), scroll/drag (throttle),
+          analytics batching (throttle), and abuse protection (throttle + dedupe).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention end-to-end cost: the handler might trigger layout, rendering, or API calls; pick the technique by what the work is.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          State the trade-off explicitly: debounce improves efficiency but can feel laggy; throttle preserves feedback but does more work.
+        </HighlightBlock>
 
         <h3>E-Commerce: Search Autocomplete</h3>
         <p>
@@ -731,14 +790,24 @@ export default function DebouncingThrottlingArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: define both, pick the right one for the scenario, call out cleanup/unmount, and connect
+          the choice to UX + backend load + INP.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers mention sensible defaults (search debounce, scroll throttle) and explain why.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Bring up pitfalls: recreating debounced functions, too-long delays, and missing passive listeners.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What's the difference between debouncing and throttling?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Debouncing and throttling are both rate-limiting techniques, but they work differently:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-2 mb-3">
               <li>
                 <strong>Debounce:</strong> Waits until the event <em>stops firing</em> for a specified 
@@ -751,10 +820,10 @@ export default function DebouncingThrottlingArticle() {
                 <strong>repeatedly</strong> at regular intervals during continuous events.
               </li>
             </ul>
-            <p>
+            <HighlightBlock as="p" tier="important">
               Use debounce for search inputs, auto-save, and resize handlers. Use throttle for scroll 
               handlers, mouse tracking, and analytics events.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">

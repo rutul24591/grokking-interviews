@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,26 +28,26 @@ export default function ImageOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Image optimization</strong> is the practice of delivering images in the right format, 
-          size, and quality to minimize file size while maintaining acceptable visual quality. Images 
-          account for <strong>50-70% of total page weight</strong> on most websites, making image 
+          <Highlight tier="important">size, and quality</Highlight> to minimize file size while maintaining acceptable visual quality. Images 
+          account for <Highlight tier="important">50-70% of total page weight</Highlight> on most websites, making image 
           optimization the highest-ROI performance technique available.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A single unoptimized hero image can be 5 MB — more than the entire rest of the page combined. 
           On a 3G connection, downloading a 5 MB image takes 25+ seconds. On a fast 100 Mbps connection, 
           it still takes 400ms. Meanwhile, an optimized version of the same image might be 150-300 KB — 
           a 95%+ reduction with minimal visible quality loss.
-        </p>
+        </HighlightBlock>
         <p>
           The three pillars of image optimization are:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Format:</strong> Use the smallest format the browser supports. Modern formats like 
             WebP and AVIF deliver 30-50% smaller files than JPEG/PNG at equivalent quality.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Size:</strong> Serve images at the dimensions they&apos;re displayed. A 2400px wide 
             image displayed at 400px wastes 95% of its pixels (and bytes).
@@ -81,11 +83,23 @@ export default function ImageOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concepts to remember: choose the best format per use case, serve the{" "}
+          <Highlight tier="important">right size</Highlight> via responsive images, and prioritize the{" "}
+          <Highlight tier="important">LCP asset</Highlight> explicitly (don&apos;t lazy-load it).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          If you only remember one rule: do not ship &quot;original uploads&quot; to end users. Always transform.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat CLS as part of image correctness: reserve dimensions/aspect ratio so images don&apos;t shift layout.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/image-formats-comparison.svg"
           alt="Comparison chart of image formats showing JPEG, WebP, AVIF, PNG, and SVG with their compression ratios, browser support, and recommended use cases"
           caption="Image format comparison: AVIF provides 40-50% compression vs JPEG, WebP provides 25-35%, with varying browser support"
+          captionTier="important"
         />
 
         <h3>Modern Image Formats</h3>
@@ -215,6 +229,16 @@ export default function ImageOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Architecture-wise, image optimization is a pipeline: ingest → transform (resize/encode) → store →
+          deliver via CDN with caching and negotiation. Senior answers mention cache keys and invalidation.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Make the cache key explicit: format + width + DPR + quality. Otherwise you risk serving wrong variants or missing cache hits.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The LCP path is special: preload and prioritize the hero variant so it competes well in the network queue.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/image-optimization-pipeline.svg"
@@ -297,6 +321,18 @@ export default function ImageOptimizationArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Image optimization is a bandwidth, CPU, and product-quality negotiation. Staff-level answers should
+          mention: <Highlight tier="important">format negotiation</Highlight>,{" "}
+          <Highlight tier="important">responsive sizing</Highlight>, and{" "}
+          <Highlight tier="important">LCP prioritization</Highlight> (do not lazy-load the hero).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The hidden system trade-off is <strong>variant explosion</strong>: every width/quality/format combination
+          creates a new cache key. Strong answers mention controlling the variant set (few widths, sensible quality),
+          and ensuring CDN caching keeps transform costs and origin load bounded.
+        </HighlightBlock>
+
         <h3>Format Selection Guide</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -311,7 +347,9 @@ export default function ImageOptimizationArticle() {
             <tbody className="divide-y divide-theme">
               <tr>
                 <td className="p-3 font-medium">Photographs</td>
-                <td className="p-3">AVIF → WebP</td>
+                <td className="p-3">
+                  <Highlight tier="important">AVIF → WebP</Highlight>
+                </td>
                 <td className="p-3">JPEG</td>
                 <td className="p-3">PNG (too large)</td>
               </tr>
@@ -323,7 +361,9 @@ export default function ImageOptimizationArticle() {
               </tr>
               <tr>
                 <td className="p-3 font-medium">Icons, logos</td>
-                <td className="p-3">SVG</td>
+                <td className="p-3">
+                  <Highlight tier="important">SVG</Highlight>
+                </td>
                 <td className="p-3">PNG</td>
                 <td className="p-3">JPEG (artifacts on edges)</td>
               </tr>
@@ -382,6 +422,11 @@ export default function ImageOptimizationArticle() {
             </tbody>
           </table>
         </div>
+        <HighlightBlock as="p" tier="important" className="mt-4">
+          CDN image pipelines buy you on-the-fly transforms and edge caching; self-hosting buys you predictable cost and
+          tighter control. For interviews, call out the operational details: cache headers, invalidation strategy,
+          and a fallback behavior when transforms fail (serve a baseline variant, not the original upload).
+        </HighlightBlock>
 
         <h3>Quality Settings Trade-offs</h3>
         <ul className="space-y-2">
@@ -409,6 +454,16 @@ export default function ImageOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: automate format/size selection, reserve dimensions to prevent CLS, preload LCP
+          images, and monitor real-user LCP/CLS after changes.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prefer automation (CDN or build pipeline) over developer-by-developer manual resizing. Consistency wins.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validate on mobile networks: image bytes dominate; improvements should show up in LCP and total transfer.
+        </HighlightBlock>
 
         <h3>Always Set Explicit Dimensions</h3>
         <p>
@@ -490,31 +545,31 @@ export default function ImageOptimizationArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Serving Original Uploads</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User-uploaded images are often 5-15 MB from modern phone cameras. Serving these directly 
           is the most common image performance mistake.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Always process uploads through an optimization pipeline before 
           serving. Never serve originals directly.
         </p>
 
         <h3>Missing Width/Height Attributes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Images without dimensions cause Cumulative Layout Shift (CLS) as they load. This harms 
           user experience and Core Web Vitals scores.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Always specify <code>width</code> and <code>height</code>, or 
           use CSS <code>aspect-ratio</code> to reserve space.
         </p>
 
         <h3>Lazy-Loading the LCP Image</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The hero/LCP image must load eagerly. Lazy-loading it adds 1-3 seconds to LCP because the 
           image won&apos;t start downloading until JavaScript executes and the Intersection Observer 
           triggers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Use <code>fetchPriority=&quot;high&quot;</code> and 
           <code>loading=&quot;eager&quot;</code> for the LCP image. Never lazy-load above-the-fold 
@@ -522,10 +577,10 @@ export default function ImageOptimizationArticle() {
         </p>
 
         <h3>Missing sizes Attribute</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without <code>sizes</code>, the browser assumes images are 100vw wide and downloads the 
           largest variant — negating srcset benefits.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Always include <code>sizes</code> that accurately describe 
           display width at different breakpoints.
@@ -557,6 +612,16 @@ export default function ImageOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases should quantify impact: reduced transfer bytes, faster LCP, and fewer bandwidth-heavy
+          regressions from user uploads.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention operational guardrails: upload limits, background processing, and fallbacks when transforms fail.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Tie outcomes to business metrics (conversion, bounce) and web metrics (LCP/CLS).
+        </HighlightBlock>
 
         <h3>E-Commerce Product Images</h3>
         <p>
@@ -616,16 +681,26 @@ export default function ImageOptimizationArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain format fallback (AVIF/WebP/JPEG), responsive sizing (srcset/sizes), LCP prioritization,
+          and CLS prevention via reserved space.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers include a pipeline view (ingest/transform/CDN) and measurable results.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out pitfalls: missing sizes, missing dimensions, and lazy-loading the hero.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: Why are images the highest-ROI optimization target?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Images typically account for 50-70% of total page weight. A single unoptimized hero 
               image can be 5 MB — more than the rest of the page combined. The optimization potential 
               is enormous:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-1">
               <li>• Modern formats (AVIF, WebP) provide 30-50% better compression than JPEG</li>
               <li>• Responsive images ensure mobile users don&apos;t download desktop-sized files</li>
@@ -687,10 +762,10 @@ export default function ImageOptimizationArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 4: When should you NOT lazy-load an image?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="crucial" className="mb-3">
               Never lazy-load the LCP (Largest Contentful Paint) element — typically the hero image 
               or main heading. Lazy-loading the LCP adds 1-3 seconds to LCP because:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-1">
               <li>• Image won&apos;t start downloading until JavaScript executes</li>
               <li>• Intersection Observer must trigger the load</li>

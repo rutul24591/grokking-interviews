@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,26 +28,31 @@ export default function VirtualizationWindowingArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Virtualization</strong> (also called <strong>windowing</strong>) is a rendering optimization 
-          technique that only mounts DOM elements for the items currently visible in the viewport, plus a 
+          technique that{" "}
+          <Highlight tier="important">
+            only mounts DOM elements for the items currently visible
+          </Highlight>{" "}
+          in the viewport, plus a 
           small buffer zone above and below. Instead of rendering 10,000 list items and creating 10,000 DOM 
           nodes, a virtualized list might only render 20-30 nodes at any given time — regardless of the total 
           dataset size.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The technique works by calculating which items are visible based on the scroll position and 
           container dimensions, then positioning only those items within a container whose total height 
           matches what the full list would occupy. As the user scrolls, items that leave the viewport are 
           unmounted and recycled for newly visible items. This recycling is why the technique is called 
           &quot;virtualization&quot; — items appear to exist in the DOM, but they&apos;re actually being 
           dynamically created and destroyed as needed.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/virtualization-concept.svg"
           alt="Diagram comparing non-virtualized list (10000 DOM nodes) vs virtualized list (20-30 DOM nodes) with viewport highlighting"
           caption="Virtualization reduces thousands of DOM nodes to just the visible items plus a small buffer"
+          captionTier="important"
         />
 
         <p>
@@ -60,10 +67,10 @@ export default function VirtualizationWindowingArticle() {
             <strong>Memory Usage:</strong> Each DOM node uses ~0.5-1KB of memory. 10,000 rows with nested 
             elements can consume 50-100MB of browser memory. Virtualization keeps memory usage under 5MB.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Scroll Performance:</strong> Non-virtualized lists scroll at 15-30fps with visible 
             stuttering. Virtualized lists maintain 55-60fps smooth scrolling.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Time to Interactive:</strong> Non-virtualized lists take 3-8 seconds to become 
             interactive. Virtualized lists are interactive in under 100ms.
@@ -105,11 +112,22 @@ export default function VirtualizationWindowingArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core idea: keep DOM node count bounded. Virtualization is how you maintain responsiveness when the
+          dataset is large, and it&apos;s often the difference between passing and failing INP under load.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Key knobs are measurement (fixed vs variable height) and overscan. Both are correctness and UX levers, not just performance.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Be able to explain why DOM size is expensive: memory, layout, paint, and event handling overhead.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/virtualization-scroll-mechanics.svg"
           alt="Diagram showing virtualization scroll mechanics with outer container, inner container, visible items, and overscan buffer"
           caption="Virtualization anatomy: outer container scrolls, inner container sets height, visible items are positioned absolutely"
+          captionTier="important"
         />
 
         <h3>The DOM Bottleneck</h3>
@@ -124,16 +142,16 @@ export default function VirtualizationWindowingArticle() {
             with text content uses ~0.5KB. A list item with nested elements (avatar, text, metadata, 
             actions) can easily exceed 2KB.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Initial Render Cost:</strong> Creating DOM nodes is expensive. The browser must 
             parse HTML, create node objects, calculate styles, compute layout, and paint pixels. For 
             10,000 nodes, this takes 2-5 seconds on mid-tier devices.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Layout Cost:</strong> Any style change triggers layout recalculation. With thousands 
             of nodes, a single setState can cause the browser to recalculate layout for the entire tree, 
             blocking the main thread for hundreds of milliseconds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Paint Cost:</strong> During scroll, the browser must repaint visible content. With 
             thousands of elements, maintaining 60fps (16.67ms per frame) becomes impossible.
@@ -240,14 +258,30 @@ export default function VirtualizationWindowingArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Architecture: outer scroll container + inner spacer + absolutely positioned visible items + overscan.
+          Senior answers include how you handle variable heights, scroll restoration, and accessibility.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Virtualization is often paired with pagination/infinite scroll. Explain why these solve different problems (data vs DOM).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validation is required: measure INP, dropped frames, and memory before/after. Virtualization that breaks UX is not a win.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/virtualization-overscan.svg"
           alt="Diagram showing overscan buffer zones above and below viewport with items being mounted/unmounted during scroll"
           caption="Overscan buffers prevent blank spaces during fast scrolling by pre-rendering items outside the viewport"
+          captionTier="important"
         />
 
         <h3>Virtualization Component Architecture</h3>
+        <HighlightBlock as="p" tier="important">
+          The main correctness knobs in real systems are{" "}
+          <Highlight tier="important">item measurement</Highlight> (fixed vs variable height) and{" "}
+          <Highlight tier="important">overscan</Highlight> (too low flickers; too high defeats the DOM savings).
+        </HighlightBlock>
         <p>
           A virtualized list consists of several layers:
         </p>
@@ -342,6 +376,22 @@ export default function VirtualizationWindowingArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Virtualization is the &quot;big hammer&quot; for DOM scale, but it changes semantics:
+          measurement, accessibility, scroll restoration, and UI testing. Senior answers explicitly call out
+          when <Highlight tier="important">CSS content-visibility</Highlight> is enough vs when you need full
+          windowing.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Windowing can break assumptions: screen readers may not &quot;see&quot; offscreen items, browser find-in-page
+          misses unmounted rows, and QA automation becomes flaky if item indices change. You need an accessibility
+          and testing plan, not just a perf plan.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Dynamic-height lists are the hardest case: you either measure rows (ResizeObserver) or approximate heights
+          and correct. Both approaches can cause scroll jump if not handled carefully.
+        </HighlightBlock>
+
         <h3>Library Comparison</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -367,7 +417,9 @@ export default function VirtualizationWindowingArticle() {
                 <td className="p-3">5KB gzipped</td>
                 <td className="p-3">Headless hook</td>
                 <td className="p-3">Yes</td>
-                <td className="p-3">Custom layouts, maximum flexibility</td>
+                <td className="p-3">
+                  <Highlight tier="important">Custom layouts, maximum flexibility</Highlight>
+                </td>
               </tr>
               <tr>
                 <td className="p-3 font-medium">react-virtuoso</td>
@@ -456,6 +508,16 @@ export default function VirtualizationWindowingArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: choose the smallest adequate library, get measurement right (fixed vs variable
+          height), tune overscan, and handle UX concerns like scroll restoration and accessibility.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use stable keys, explicit heights when possible, and avoid expensive per-item effects that negate virtualization.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Add escape hatches: empty states, error states, and safe loading indicators when data arrives late.
+        </HighlightBlock>
 
         <h3>Choose the Right Library</h3>
         <p>
@@ -540,20 +602,20 @@ export default function VirtualizationWindowingArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Virtualizing Small Lists</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Virtualization adds complexity. For lists under 100 items, the performance benefit is 
           negligible and may not justify the overhead.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Profile first. If the list renders in under 100ms and scrolls 
           smoothly, skip virtualization.
         </p>
 
         <h3>Not Setting Explicit Heights</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Virtualization requires knowing item heights to calculate positions. Without explicit 
           heights, the virtualizer can&apos;t position items correctly.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Use FixedSizeList when possible. For variable heights, use 
           VariableSizeList and provide a function to estimate heights, or use a library that 
@@ -561,10 +623,10 @@ export default function VirtualizationWindowingArticle() {
         </p>
 
         <h3>Using Array Indices as Keys</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using array indices as React keys breaks item recycling. When items are reordered or 
           filtered, React will re-render items unnecessarily.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Use stable, unique IDs as keys (e.g., <code>user.id</code>, 
           <code>product.sku</code>).
@@ -607,6 +669,16 @@ export default function VirtualizationWindowingArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases: large tables/search results/log streams. The story you should tell is DOM boundedness
+          and keeping interactions responsive under load (INP).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use cases should connect to &quot;why now&quot;: when lists cross ~1k items, DOM costs become dominant on mobile.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention trade-offs: complexity, accessibility, and testing challenges, plus how you mitigated them.
+        </HighlightBlock>
 
         <h3>E-Commerce: Product Search Results</h3>
         <p>
@@ -672,17 +744,26 @@ export default function VirtualizationWindowingArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain DOM bottlenecks, the windowing algorithm, measurement/overscan trade-offs, and how you validate improvements in INP and frame rate.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers mention when not to virtualize (small lists) and alternatives (`content-visibility`).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out common pitfalls: missing explicit heights, unstable keys, and broken scroll restoration.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What problem does virtualization solve?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="crucial" className="mb-3">
               Virtualization solves the DOM bottleneck when rendering large lists. The DOM is expensive: 
               each node consumes memory (~0.5-1KB), and creating thousands of nodes blocks the main thread 
               for seconds. Virtualization only renders visible items (20-30 nodes) instead of the full 
               dataset (10,000+ nodes).
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               The performance impact is dramatic: initial render drops from 2-5 seconds to 5-15ms, memory 
               usage drops from 50-100MB to 2-5MB, and scroll performance improves from 15-30fps to 55-60fps.

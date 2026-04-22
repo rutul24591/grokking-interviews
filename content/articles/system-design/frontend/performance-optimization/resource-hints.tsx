@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,20 +28,20 @@ export default function ResourceHintsArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Resource hints</strong> are declarative instructions you place in your HTML (typically as 
           <code>&lt;link&gt;</code> elements in the <code>&lt;head&gt;</code>) that tell the browser to perform 
-          network operations earlier than it normally would. Without hints, the browser discovers resources 
+          <Highlight tier="important">network operations earlier</Highlight> than it normally would. Without hints, the browser discovers resources 
           only when the HTML parser or CSS parser encounters them — which can be too late for critical assets 
           like fonts, API domains, or next-page bundles.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           There are four primary resource hints: <code>dns-prefetch</code>, <code>preconnect</code>, 
           <code>prefetch</code>, and <code>preload</code>. Each operates at a different stage of the 
           resource-loading pipeline and serves a distinct purpose. Using them correctly can shave hundreds 
           of milliseconds off your page load; using them incorrectly wastes bandwidth and can actually 
           hurt performance.
-        </p>
+        </HighlightBlock>
         <p>
           The performance impact of resource hints is significant:
         </p>
@@ -47,9 +49,9 @@ export default function ResourceHintsArticle() {
           <li>
             <strong>dns-prefetch:</strong> Saves 20-120ms per domain by resolving DNS early.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>preconnect:</strong> Saves 100-300ms by establishing full connection (DNS + TCP + TLS) early.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>preload:</strong> Eliminates late-discovery delay for critical resources like fonts and LCP images.
           </li>
@@ -73,11 +75,24 @@ export default function ResourceHintsArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concept: hints change when the browser does work. Preload is{" "}
+          <Highlight tier="important">mandatory for current-page critical</Highlight>; prefetch is{" "}
+          <Highlight tier="important">optional for future</Highlight>. The common senior failure mode is
+          over-hinting and harming the true critical path.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The interview-ready distinction: preload = current page and high priority; prefetch = future navigation and low priority.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Hints only matter if they change discovery time. Preloading something already discovered early is usually wasted markup.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/resource-hints-overview.svg"
           alt="Diagram showing four resource hints cards: dns-prefetch, preconnect, prefetch, and preload with their characteristics and use cases"
           caption="Four key resource hints: dns-prefetch and preconnect for connection setup, prefetch and preload for resource downloads"
+          captionTier="important"
         />
 
         <h3>The Four Resource Hints</h3>
@@ -168,6 +183,16 @@ export default function ResourceHintsArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The flow to explain: resource discovery timing → priority queue → connection warm-up → fetch/parse.
+          You should be able to read a network waterfall and justify each hint.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Architecture includes constraints: Save-Data, metered connections, and third-party origins. Your hint strategy should respect user intent and bandwidth.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Explain how hints interact with SSR/streaming: server-rendered HTML can expose critical resources earlier, reducing the need for aggressive hints.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/resource-hints-timeline.svg"
@@ -264,6 +289,23 @@ export default function ResourceHintsArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Resource hints are about{" "}
+          <Highlight tier="important">manipulating the browser&apos;s priority queue</Highlight>. The failure
+          mode is predictable: you over-hint and accidentally delay the true critical path. In interviews,
+          explain how you decide what is LCP-critical vs &quot;nice to have&quot; and how you validate with
+          network waterfalls and field data.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Preload is the sharpest tool: it changes fetch priority and can steal bandwidth from CSS/HTML if overused.
+          Use it for a small set of truly critical assets (fonts, LCP image, critical scripts) and ensure the browser
+          can actually reuse the response (correct <code>as</code>, <code>crossorigin</code> when needed, and proper caching).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prefetch is a bet: it can make navigation feel instant, but on slow/metered networks it&apos;s pure waste.
+          Senior answers mention conditional prefetch (Save-Data, effectiveType), and measuring real navigation hit rate.
+        </HighlightBlock>
+
         <h3>Comparison Table</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -305,7 +347,9 @@ export default function ResourceHintsArticle() {
               <tr>
                 <td className="p-3 font-medium"><code>preload</code></td>
                 <td className="p-3">Full download</td>
-                <td className="p-3">High (mandatory)</td>
+                <td className="p-3">
+                  <Highlight tier="important">High (mandatory)</Highlight>
+                </td>
                 <td className="p-3">Current page</td>
                 <td className="p-3">Full resource size</td>
                 <td className="p-3">Late-discovered critical resources</td>
@@ -382,6 +426,16 @@ export default function ResourceHintsArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: preload only a few truly critical resources, preconnect to 2-4 origins max, respect
+          Save-Data, and continuously audit hints for unused preloads.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat hints like production config: revisit quarterly, remove unused preloads, and validate via waterfalls and field data.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use preload for LCP-critical assets (fonts/hero image) and avoid preloading non-critical JS that can steal bandwidth from LCP.
+        </HighlightBlock>
 
         <h3>Preconnect Sparingly</h3>
         <p>
@@ -464,32 +518,32 @@ export default function ResourceHintsArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Over-Hinting</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Preloading too many resources dilutes the priority of each one. If you preload 10 resources, 
           the browser may not prioritize the truly critical ones. Chrome even logs a console warning if 
           a preloaded resource isn&apos;t used within 3 seconds.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Limit preloads to 3-5 truly critical resources. Audit your preloads 
           quarterly and remove unused ones.
         </p>
 
         <h3>Confusing prefetch and preload</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Using <code>preload</code> for a next-page resource wastes bandwidth (it fetches at high 
           priority for something you don&apos;t need yet). Using <code>prefetch</code> for a current-page 
           critical resource means it loads too late.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Remember: <strong>preload = current page, high priority</strong>. 
           <strong>prefetch = future page, low priority</strong>.
         </p>
 
         <h3>Not Handling Prefetch on Metered Connections</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Prefetching on slow or metered connections can waste user bandwidth. Some browsers honor the 
           <code>Save-Data</code> header and skip prefetch, but not all do.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Check <code>navigator.connection.saveData</code> before injecting 
           dynamic prefetch hints. Respect user preferences.
@@ -522,6 +576,16 @@ export default function ResourceHintsArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases: speeding up LCP fonts/images (preload), reducing third-party handshake latency (preconnect),
+          and making common navigation paths feel instant (prefetch).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use cases should include what you measured: LCP delta, navigation latency delta, and whether INP regressed.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention the failure mode: over-hinting and wasting bandwidth. Show how you prevented it (limits, audits).
+        </HighlightBlock>
 
         <h3>Font Optimization for News Site</h3>
         <p>
@@ -582,6 +646,15 @@ export default function ResourceHintsArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain each hint, the cost model, and how you verify hints helped (waterfalls + field data) without harming LCP/INP.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers stress restraint: 3–5 preloads max, 2–4 preconnects, and Save-Data awareness.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out the most common mistake: confusing preload and prefetch.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -607,9 +680,9 @@ export default function ResourceHintsArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 2: What&apos;s the difference between preload and prefetch?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="crucial" className="mb-3">
               The key differences:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-1">
               <li>• <strong>preload:</strong> For the <em>current page</em>. Fetches at HIGH priority. Mandatory — browser must fetch it.</li>
               <li>• <strong>prefetch:</strong> For <em>future navigation</em>. Fetches at LOW priority during idle time. Optional — browser may skip it.</li>
@@ -618,10 +691,10 @@ export default function ResourceHintsArticle() {
               Use preload for resources the current page needs but would discover late (fonts, LCP images). 
               Use prefetch for resources the next page will need (next step in checkout, linked pages).
             </p>
-            <p className="mt-3">
+            <HighlightBlock as="p" tier="important" className="mt-3">
               Confusing these is a common mistake — preloading next-page resources wastes bandwidth, while 
               prefetching current-page critical resources means they load too late.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">

@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,37 +28,39 @@ export default function MemoizationReactMemoArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Memoization</strong> is an optimization technique that caches the result of expensive 
           computations and returns the cached result when the same inputs occur again. In React, 
-          memoization serves two primary purposes: preventing unnecessary re-renders of components 
+          memoization serves two primary purposes:{" "}
+          <Highlight tier="important">preventing unnecessary re-renders</Highlight> of components 
           (<code>React.memo</code>) and avoiding expensive recalculations of derived data 
           (<code>useMemo</code>, <code>useCallback</code>).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           React re-renders a component whenever its parent re-renders, even if the component&apos;s 
           props haven&apos;t changed. For most components this is fine — React&apos;s reconciliation 
           is fast enough that the overhead of checking props often exceeds the cost of re-rendering. 
           However, for expensive components (large lists, complex charts, heavy computations), 
           preventing unnecessary re-renders can make the difference between smooth 60fps interactions 
           and janky, unresponsive UI.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/memoization-concept.svg"
           alt="Diagram showing memoization concept: function with same inputs returns cached result instead of recomputing"
           caption="Memoization caches results by input — same inputs return cached output instead of recomputing"
+          captionTier="important"
         />
 
         <p>
           The performance impact of proper memoization can be significant:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Reduced Re-renders:</strong> A list component with 1000 items that re-renders on 
             every parent state change can be reduced to re-rendering only when its specific props 
             change.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Faster Interactions:</strong> Expensive computations (filtering, sorting, 
             transformations) that block the main thread can be cached, making interactions feel 
@@ -110,6 +114,16 @@ export default function MemoizationReactMemoArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concepts: memoization only helps when the avoided work is bigger than the overhead. Know the
+          failure modes: <Highlight tier="important">unstable props</Highlight>, wrong deps, and memory bloat.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Memoization is not a default. Senior answers start with profiling and then apply memoization surgically.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The interview-relevant connection is responsiveness: preventing long tasks and improving INP, not just fewer renders.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/memoization-react-render.svg"
@@ -268,6 +282,16 @@ export default function MemoizationReactMemoArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The flow to explain: parent rerenders → child props comparison → skip or rerender. Senior answers
+          connect this to tracing long tasks and improving INP, not just &quot;fewer renders&quot;.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Explain reference stability: object/array/function identity drives memoization outcomes. Without stable references, memo adds overhead.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Describe how you validate impact: profiler, flame charts, and real interaction latency.
+        </HighlightBlock>
 
         <h3>React Render Flow with Memoization</h3>
         <p>
@@ -364,6 +388,13 @@ export default function MemoizationReactMemoArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Memoization is a{" "}
+          <Highlight tier="important">CPU vs memory vs complexity</Highlight> trade. At senior level, you
+          should explicitly state when memoization makes performance worse (comparison overhead, unstable
+          props) and how you verify with profiling rather than blanket rules.
+        </HighlightBlock>
+
         <h3>Memoization Techniques Comparison</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -406,15 +437,15 @@ export default function MemoizationReactMemoArticle() {
 
         <h3>When NOT to Memoize</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cheap Components:</strong> If a component renders in &lt;1ms, memoization overhead 
             (prop comparison) may cost more than just re-rendering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Props Always Change:</strong> If the component receives new object/array props on 
             every render (inline objects, unstable references), memo comparison always fails — paying 
             comparison cost for zero benefit.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Simple Primitives:</strong> <code>useMemo(() =&gt; a + b, [a, b])</code> is slower 
             than just computing <code>a + b</code> directly. Only memoize expensive operations.
@@ -481,6 +512,16 @@ export default function MemoizationReactMemoArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: profile first, stabilize references where it matters, avoid memo everywhere, and
+          validate improvements with real interaction latency (INP) and flame charts.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prefer structural fixes over memo band-aids: avoid unnecessary rerenders by design (component boundaries, state colocation).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Watch memory: memoization trades CPU for memory; on mobile, this can backfire.
+        </HighlightBlock>
 
         <h3>Profile Before Optimizing</h3>
         <p>
@@ -545,9 +586,9 @@ export default function MemoizationReactMemoArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Inline Objects Break Memo</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Passing inline objects to memoized components defeats the purpose:
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Problem:</strong> <code>{'<Chart config={{ theme: "dark" }} />'}</code> creates a 
           new object every render. React.memo comparison always fails.
@@ -570,20 +611,20 @@ export default function MemoizationReactMemoArticle() {
         </p>
 
         <h3>Premature Memoization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adding memo/useMemo everywhere &quot;just in case&quot; adds code complexity and memory 
           overhead without benefit:
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Profile first. Only memoize components that are measurably 
           expensive to re-render.
         </p>
 
         <h3>Missing Dependencies</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Omitting dependencies from useMemo/useCallback creates stale closures — the memoized value 
           uses outdated state:
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Problem:</strong> <code>useMemo(() =&gt; items.filter(f), [])</code> — filter never
           updates when f changes.
@@ -610,6 +651,16 @@ export default function MemoizationReactMemoArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases: large lists, expensive charts, derived data transforms, and keeping interactions responsive
+          under load without over-memoizing the entire app.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use cases should include measurement: which component was expensive, what changed, and what the INP/TBT deltas were.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention pitfalls you avoided: stale closures from bad deps and unstable props that invalidate memo.
+        </HighlightBlock>
 
         <h3>Dashboard with Multiple Charts</h3>
         <p>
@@ -673,25 +724,34 @@ export default function MemoizationReactMemoArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: define memoization, explain when it helps vs hurts, and describe a profiling-driven approach tied to INP.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers mention unstable references and correct dependencies as the main correctness hazards.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Bring up the React 19/Compiler context, but still show you can debug performance without it.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is memoization and how does React.memo work?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Memoization is an optimization technique that caches results of expensive computations 
               and returns cached results when inputs repeat. In React, React.memo memoizes components 
               by performing shallow prop comparison and skipping re-render if props haven&apos;t changed.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               React.memo works by: (1) storing props after first render, (2) on parent re-render, 
               comparing new props with stored props using ===, (3) if all props equal, skip re-render 
               and reuse previous output, (4) if any prop differs, re-render and update stored props.
             </p>
-            <p>
+            <HighlightBlock as="p" tier="important">
               Shallow comparison means comparing references, not deep equality. New object literals 
               always differ even with identical contents.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">

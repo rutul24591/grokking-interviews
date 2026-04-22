@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,13 +25,13 @@ export default function CachingPatternsConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Caching patterns</strong> (also called caching strategies) are deterministic algorithms that govern
           how a service worker or caching layer resolves a resource request by coordinating between the local cache
           and the network. The five canonical patterns are <strong>Cache-First</strong>, <strong>Cache-Only</strong>,
           <strong>Network-First</strong>, <strong>Network-Only</strong>, and <strong>Stale-While-Revalidate (SWR)</strong>.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           These patterns were formalized by Jake Archibald in his 2014 &ldquo;Offline Cookbook&rdquo; article and later
           codified by Google&rsquo;s <strong>Workbox</strong> library (first released 2017, now at v7). Workbox provides
           a first-class <code>workbox-strategies</code> module that maps each pattern to a concrete class:
@@ -37,18 +39,34 @@ export default function CachingPatternsConciseArticle() {
           <code>StaleWhileRevalidate</code>. Before Workbox, developers hand-rolled these strategies inside
           <code>fetch</code> event handlers in raw service worker code, leading to inconsistent implementations and
           subtle bugs around cache versioning, opaque response handling, and quota management.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Understanding when to apply each pattern is a core competency for staff-level frontend engineers, because the
           choice directly impacts perceived performance (Time to First Byte, Largest Contentful Paint), offline
           resilience, data freshness, and storage quota consumption. In a system design interview, you are expected to
           articulate the trade-off space and map resource types to the correct strategy.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>Each strategy defines a strict priority order between two sources &mdash; the cache and the network &mdash; along with fallback behavior:</p>
+        <HighlightBlock as="p" tier="crucial">
+          Each strategy is a policy for the same question: &quot;should this request be served from cache or from the
+          network, and what do we do when one path fails?&quot; Staff-level answers map strategies to resource types and
+          explicitly reason about <Highlight tier="important">freshness</Highlight>,{" "}
+          <Highlight tier="important">offline behavior</Highlight>, and{" "}
+          <Highlight tier="important">deploy safety</Highlight>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Quick mapping: <strong>Cache-First</strong> for versioned immutable assets, <strong>Network-First</strong> for
+          content/APIs where freshness matters (with a timeout), <strong>Network-Only</strong> for mutations/auth/checkout,
+          <strong>Cache-Only</strong> for precached app-shell/offline fallbacks, and <strong>SWR</strong> when one-request
+          staleness is acceptable for speed.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Two pitfalls to call out: unbounded cache growth (quota/eviction) and caching the wrong responses (errors/PII).
+          In interviews, mention bounding caches (entries + age) and classifying data by sensitivity.
+        </HighlightBlock>
 
         <div className="mt-4 space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
@@ -148,12 +166,12 @@ export default function CachingPatternsConciseArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 font-semibold">Runtime Caching vs. Precaching</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Precaching</strong> happens during the service worker <code>install</code> event. You provide a
           manifest of URLs and revision hashes, and Workbox downloads and caches all of them up front. This is
           typically used for the app shell (HTML, critical CSS/JS). Precached resources use <strong>Cache-Only</strong> at
           runtime because they are guaranteed to be in the cache.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Runtime caching</strong> happens on-the-fly as users navigate the app. When a request matches a
           registered route (e.g., <code>registerRoute(/\/api\//, new NetworkFirst(...))</code>), the specified
@@ -165,43 +183,46 @@ export default function CachingPatternsConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Each caching pattern follows a distinct decision tree when a fetch event fires. Understanding these flows
           is essential for debugging cache behavior, choosing the right strategy, and explaining trade-offs in
           interviews.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/patterns-comparison.svg"
           alt="Comparison of all five caching strategy patterns"
           caption="Overview of all five caching strategies: Cache-First, Cache-Only, Network-First, Network-Only, and Stale-While-Revalidate with their priority order and ideal use cases"
+          captionTier="important"
         />
 
         <h3 className="mt-6 mb-3 font-semibold">Cache-First Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Cache-First flow is optimized for speed. On the happy path (cache hit), the response is served in
           under 1ms with zero network overhead. The network is only contacted on a cold start or when the cache
           entry has been evicted by the expiration plugin.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/cache-first-flow.svg"
           alt="Cache-First strategy decision flow diagram"
           caption="Cache-First flow: Cache is always consulted first. Network is the fallback. Responses are cached on miss for future requests."
+          captionTier="important"
         />
 
         <h3 className="mt-6 mb-3 font-semibold">Network-First Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Network-First flow prioritizes freshness but includes a critical timeout mechanism. Without the
           timeout, users on flaky connections (e.g., underground subway, airplane mode transitioning) would wait
           indefinitely. The timeout converts a slow network into a fast cache hit. The cached response is always
           the most recent successful network response, so even the fallback is reasonably fresh.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/caching-strategies/network-first-flow.svg"
           alt="Network-First strategy decision flow diagram"
           caption="Network-First flow: Network is attempted first with a configurable timeout. Cache serves as fallback for offline or slow-network scenarios."
+          captionTier="important"
         />
 
         <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-5">
@@ -212,16 +233,25 @@ export default function CachingPatternsConciseArticle() {
             <li><strong>2.</strong> Simultaneously fetch from network &rarr; when response arrives, update the cache</li>
             <li><strong>3.</strong> If cache was empty, wait for network response and return it (same as Network-Only for first request)</li>
           </ol>
-          <p className="mt-2">
+          <HighlightBlock as="p" tier="important" className="mt-2">
             The key insight is that the client gets a response as fast as Cache-First (from cache) while the cache
             is kept fresh in the background. The next request will see the updated data. This makes SWR ideal for
             resources that change occasionally but where instant display is more important than absolute freshness.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Trade-off lens: caching is choosing <Highlight tier="important">when you’re willing to be stale</Highlight> in
+          exchange for speed and resilience. Network-First buys freshness, Cache-First buys repeat speed, and SWR buys
+          responsiveness with bounded staleness. Cache-Only is for the app shell; Network-Only is for correctness-critical flows.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Don&apos;t choose a strategy in isolation: pair it with expiration (age/entries) and think about failure modes
+          (slow networks, 5xx, offline) so your fallback is intentional rather than accidental.
+        </HighlightBlock>
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr className="border-b border-theme">
@@ -295,39 +325,44 @@ export default function CachingPatternsConciseArticle() {
 
         <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4">
           <p className="font-semibold">Key Decision Heuristic</p>
-          <p className="mt-2 text-sm">
+          <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
             Ask two questions: (1) &ldquo;Can I tolerate stale data?&rdquo; and (2) &ldquo;Does this resource change?&rdquo;
             If yes to both &rarr; SWR. If stale is OK and it rarely changes &rarr; Cache-First. If stale is not OK &rarr;
             Network-First. If correctness is critical &rarr; Network-Only. If it&rsquo;s precached and immutable &rarr; Cache-Only.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: make Cache-First safe (content-addressed URLs), make Network-First humane (timeouts), and make
+          all runtime caches bounded (entries + age) so you don&apos;t lose to quota and eviction. Also: never cache
+          mutations or sensitive tokens.
+        </HighlightBlock>
         <p>Follow these guidelines when designing your caching strategy layer:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Content-Addressable URLs for Cache-First:</strong> Hash your static asset filenames
             (e.g., <code>main.a1b2c3.js</code>). This makes Cache-First safe because the URL changes when
             content changes, guaranteeing a cache miss and fresh fetch without needing manual invalidation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always Set Network Timeouts for Network-First:</strong> Without a timeout, degraded networks
             (not fully offline, but slow) create the worst UX &mdash; the user waits with no response. Set
             <code>networkTimeoutSeconds: 3</code> as a baseline and adjust based on your API latency profile.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pair Strategies with Expiration Plugins:</strong> Every runtime cache needs bounds.
             Use <code>ExpirationPlugin</code> with both <code>maxEntries</code> (cap total items) and
             <code>maxAgeSeconds</code> (cap staleness) to prevent unbounded cache growth that exhausts
             the user&rsquo;s storage quota.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use CacheableResponsePlugin for Opaque Responses:</strong> Cross-origin requests (e.g., CDN
             fonts) return opaque responses with status 0. Without <code>CacheableResponsePlugin(&#123; statuses: [0, 200] &#125;)</code>,
             these responses won&rsquo;t be cached, breaking Cache-First for third-party resources.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Separate Cache Namespaces:</strong> Use distinct <code>cacheName</code> values per strategy
             (e.g., <code>&apos;static-v1&apos;</code>, <code>&apos;api-v1&apos;</code>, <code>&apos;images-v1&apos;</code>). This allows granular
@@ -353,42 +388,47 @@ export default function CachingPatternsConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Pitfall pattern: caching makes the system faster but more stateful. Most production failures come from serving
+          stale API data, waiting too long on slow networks (no timeout), or letting caches grow unbounded until eviction
+          breaks offline/consistency assumptions.
+        </HighlightBlock>
         <p>Avoid these mistakes that commonly appear in caching strategy implementations:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using Cache-First for API Responses:</strong> This serves stale data indefinitely until
             the cache entry expires. Users see outdated information with no indication it&rsquo;s stale. Use
             Network-First or SWR for dynamic data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Cache Versioning or Expiration:</strong> Caches grow without bound. A user who visits
             your site daily for a year accumulates thousands of cached responses. Without
             <code>ExpirationPlugin</code>, this can exceed the browser&rsquo;s storage quota (varies: ~50MB on
             Safari, much higher on Chrome) and cause silent eviction of other caches.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Caching Error Responses:</strong> If an API returns a 500 error and you cache it with
             Cache-First or SWR, subsequent requests serve the cached error. Always validate response status
             before caching. Workbox&rsquo;s <code>CacheableResponsePlugin</code> handles this by only caching
             200 responses by default.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing Network Timeout in Network-First:</strong> On degraded connections (not offline,
             but 20+ second latency), Network-First without a timeout creates terrible UX &mdash; the user
             waits with a spinner even though a perfectly usable cached version exists.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-Precaching:</strong> Precaching 50MB of assets during <code>install</code> delays
             service worker activation, consumes bandwidth, and may fail on slow connections. Precache only
             the critical app shell ({'&lt;'}1MB) and runtime-cache everything else lazily.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring Cache-Control Headers:</strong> Service worker caching operates independently
             of HTTP cache headers, but the browser&rsquo;s HTTP cache sits between the service worker and the
             network. If your CDN sets <code>Cache-Control: max-age=31536000</code>, the service worker&rsquo;s
             network fetch may hit the HTTP cache instead of the origin, returning stale data even with
             Network-First. Use Workbox&rsquo;s <code>fetchOptions: &#123; cache: &apos;no-cache&apos; &#125;</code> to bypass.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Handling Quota Exceeded Errors:</strong> When storage is full, <code>cache.put()</code>
             throws a <code>QuotaExceededError</code>. Without a try/catch, this crashes the service worker&rsquo;s
@@ -400,28 +440,33 @@ export default function CachingPatternsConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases: the interview signal is correct classification. Pick the strategy based on how bad staleness is,
+          how expensive the network is, and whether offline is a requirement. Then add bounds (expiration) and a safe
+          story for auth/PII and mutations.
+        </HighlightBlock>
         <p>Here is how to map each caching strategy to concrete resource types in a production application:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache-First:</strong> Google Fonts (woff2 files), versioned JS/CSS bundles
             (<code>main.abc123.js</code>), product images on an e-commerce site, icon SVGs, and any asset
             served from a CDN with content-hash filenames.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache-Only:</strong> The app shell HTML (<code>/index.html</code> or <code>/app-shell</code>),
             an offline fallback page (<code>/offline.html</code>), and critical CSS that was precached during
             service worker installation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Network-First:</strong> REST API responses (<code>/api/users/me</code>), HTML pages on a
             news site or blog, GraphQL query results, server-rendered pages, and any resource where users
             expect the latest data but offline access is valuable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Network-Only:</strong> Authentication endpoints (<code>/api/auth/login</code>), payment
             processing (<code>/api/checkout</code>), form submissions, WebSocket upgrade requests, and any
             POST/PUT/DELETE operation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SWR:</strong> User avatar images, profile data, social media feeds (Twitter timeline),
             weather widgets, stock ticker (where 30-second staleness is OK), and third-party CDN libraries
@@ -449,6 +494,18 @@ export default function CachingPatternsConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: pick a strategy per resource type, explain the staleness/latency/offline trade, and mention the
+          operational guardrails (timeouts, expiration bounds, cache versioning, and avoiding caching auth/PII/mutations).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          High-signal phrases: &quot;Cache-First is only safe with content-addressed URLs&quot;, &quot;Network-First needs a timeout&quot;,
+          and &quot;SWR is one-request stale by design&quot;.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Also mention layering: service worker caches (Cache API) can sit on top of the HTTP cache and CDN behavior, so you
+          must understand how they compose to avoid double-caching or surprising staleness.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: You are building a PWA for a news website. Which caching strategy do you use for article pages and why?</p>

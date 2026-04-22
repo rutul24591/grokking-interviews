@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,31 +28,35 @@ export default function LazyLoadingArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
-          <strong>Lazy loading</strong> is a design pattern that defers the loading of resources until they are actually 
-          needed, rather than loading everything upfront during initial page load. In frontend development, lazy loading 
+        <HighlightBlock as="p" tier="crucial">
+          <strong>Lazy loading</strong> is a design pattern that{" "}
+          <Highlight tier="important">
+            defers the loading of resources until they are actually needed
+          </Highlight>
+          , rather than <Highlight tier="important">loading everything upfront</Highlight>{" "}
+          during initial page load. In frontend development, lazy loading{" "}
           applies to three primary targets: <strong>images</strong> (the largest bandwidth consumers), 
           <strong>components</strong> (heavy UI elements not immediately visible), and <strong>routes</strong> (entire 
           pages loaded on navigation).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental insight behind lazy loading is simple but powerful: users rarely consume an entire application 
           in a single session. A visitor to an e-commerce site might browse the homepage and a few product pages but never 
           visit the checkout, account settings, or order history. A user of a SaaS dashboard might spend their entire 
           session in the analytics view without ever opening the settings panel. Loading code and assets for features that 
           users never access is wasted bandwidth, wasted parsing time, and wasted memory.
-        </p>
+        </HighlightBlock>
         <p>
           Lazy loading directly addresses this waste by inverting the default loading strategy. Instead of &quot;load 
           everything, then render,&quot; lazy loading follows &quot;render what&apos;s needed, load the rest on demand.&quot; 
           This shift has profound performance implications:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Reduced Initial Payload:</strong> A typical page with 30 images might total 5-10 MB. With lazy loading, 
             only the 3-5 above-fold images (500 KB - 1 MB) load initially. The remaining 80-90% of image data is deferred 
             until the user scrolls.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Faster Time to Interactive:</strong> By deferring non-critical resources, the browser can focus its 
             limited network and CPU resources on loading and executing the code needed for the initial view. This directly 
@@ -95,11 +101,23 @@ export default function LazyLoadingArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concepts: define what is &quot;critical&quot; vs &quot;deferable&quot;, pick the right trigger
+          (viewport vs interaction), and always pair lazy loading with placeholders to protect{" "}
+          <Highlight tier="important">CLS</Highlight>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Lazy loading is a prioritization tool: it should improve LCP/INP without introducing CLS or broken UX.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Keep the LCP path eager. If your hero is gated on JS/IntersectionObserver, you are almost guaranteed to regress LCP.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/lazy-loading-types.svg"
           alt="Diagram comparing three types of lazy loading: images with viewport triggers, components with interaction triggers, and routes with navigation triggers"
           caption="Three primary lazy loading targets: images, components, and routes — each with different trigger mechanisms"
+          captionTier="important"
         />
 
         <h3>The Lazy Loading Spectrum</h3>
@@ -223,6 +241,16 @@ export default function LazyLoadingArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The flow to explain: resource is discovered → priority is assigned → trigger fires → fetch/parse →
+          paint. Senior answers mention how you ensure the LCP path is not gated on JS.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Architecture includes fallback strategy: native `loading=\"lazy\"` when possible, IntersectionObserver when you need control, and safe defaults for old browsers.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          In production, include error handling (broken URLs, timeouts) so lazy-loaded regions don&apos;t become blank holes.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/lazy-loading-intersection-observer.svg"
@@ -336,6 +364,13 @@ export default function LazyLoadingArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Lazy loading is a prioritization tool, not a blanket rule. Senior-level correctness means:
+          <Highlight tier="important"> never lazy-load the LCP path</Highlight>, and always reserve space to
+          avoid <Highlight tier="important">CLS</Highlight>. Treat lazy loading as a way to keep the main
+          thread and network focused on what the user needs in the next 1-2 seconds.
+        </HighlightBlock>
+
         <h3>Benefits of Lazy Loading</h3>
         <ul className="space-y-2">
           <li>
@@ -368,10 +403,10 @@ export default function LazyLoadingArticle() {
             <strong>Content Delay:</strong> Lazy-loaded content is not immediately available. Users who scroll quickly 
             may see loading placeholders. On slow connections, this can be frustrating.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SEO Considerations:</strong> Search engine crawlers may not execute JavaScript to lazy-load content. 
             Critical content for SEO should be eagerly loaded or use server-side rendering.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Accessibility Challenges:</strong> Screen readers may not announce lazy-loaded content that hasn&apos;t 
             loaded yet. Proper ARIA attributes and loading announcements are required.
@@ -380,10 +415,10 @@ export default function LazyLoadingArticle() {
             <strong>Implementation Complexity:</strong> Lazy loading requires careful handling of loading states, error 
             states, and edge cases (rapid scrolling, network failures).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Layout Shift Risk:</strong> Without proper dimension placeholders, lazy-loaded images cause 
             Cumulative Layout Shift as they load. This harms user experience and Core Web Vitals scores.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Browser Support:</strong> While <code>loading=&quot;lazy&quot;</code> is widely supported, older 
             browsers require Intersection Observer polyfills or fallback strategies.
@@ -461,6 +496,16 @@ export default function LazyLoadingArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: never lazy-load LCP, reserve space (dimensions/aspect ratio), handle errors, and
+          choose native lazy loading first unless you need IntersectionObserver control.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Define a consistent placeholder strategy (skeleton/blur/solid) and make sure it doesn&apos;t cause layout shifts.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validate with Web Vitals: LCP should improve, CLS should not regress, and INP should remain stable.
+        </HighlightBlock>
 
         <h3>Always Set Explicit Dimensions</h3>
         <p>
@@ -553,11 +598,11 @@ export default function LazyLoadingArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Lazy-Loading the LCP Element</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The most critical mistake is lazy-loading the Largest Contentful Paint element (usually the hero image or 
           main heading). This adds 1-3 seconds to LCP because the image won&apos;t start loading until JavaScript 
           executes and the Intersection Observer triggers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Identify your LCP element using Chrome DevTools or Lighthouse. Load it eagerly 
           with <code>loading=&quot;eager&quot;</code> and <code>fetchPriority=&quot;high&quot;</code>. Only lazy-load 
@@ -565,10 +610,10 @@ export default function LazyLoadingArticle() {
         </p>
 
         <h3>Missing Dimensions Causing Layout Shift</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Lazy-loading images without explicit dimensions causes the page layout to shift as images load. This creates 
           a jarring experience where text and elements jump around, and directly harms CLS scores.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Always specify <code>width</code> and <code>height</code> on images, or use CSS 
           <code>aspect-ratio</code> to reserve space. For responsive images, calculate aspect ratio from the source 
@@ -607,10 +652,10 @@ export default function LazyLoadingArticle() {
         </p>
 
         <h3>Over-Lazy-Loading</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Lazy-loading everything, including small icons and above-the-fold content, creates a poor user experience 
           with constant loading indicators and pop-in effects.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Be selective. Only lazy-load resources that are: (1) below the fold, (2) 
           significant in size (&gt;50 KB), and (3) not critical for initial interaction or SEO.
@@ -633,6 +678,16 @@ export default function LazyLoadingArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases should show good taste: defer below-fold media, lazy-load heavy modals/editors, and
+          verify improvements in LCP/INP without introducing CLS regressions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention how you choose what to defer: content below fold, large assets, and features many users never open.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Include measurement: before/after initial bytes, LCP changes, and any new errors from lazy-load failures.
+        </HighlightBlock>
 
         <h3>E-Commerce Product Listing</h3>
         <p>
@@ -701,16 +756,26 @@ export default function LazyLoadingArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain what gets deferred, why it helps, and how you avoid the two classic regressions:
+          lazy-loading LCP and causing CLS.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers distinguish images vs components vs routes and pick the right mechanism for each.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out constraints: SEO (crawler JS), accessibility (screen readers), and error handling.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is lazy loading and why is it important for performance?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Lazy loading is a design pattern that defers loading of resources until they are actually needed, rather 
               than loading everything during initial page load. It applies to images (below-fold images load as user 
               scrolls), components (heavy UI elements load when triggered), and routes (page bundles load on navigation).
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               It is important for performance because:
             </p>
@@ -758,9 +823,9 @@ export default function LazyLoadingArticle() {
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 3: When should you NOT use lazy loading?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="crucial" className="mb-3">
               Lazy loading is not appropriate in these scenarios:
-            </p>
+            </HighlightBlock>
             <ul className="space-y-1">
               <li>• <strong>Above-the-fold content:</strong> The LCP element and critical above-the-fold images 
               should load eagerly. Lazy loading these adds 1-3 seconds to LCP.</li>

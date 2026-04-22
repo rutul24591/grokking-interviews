@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,20 +24,20 @@ export default function ApplicationCacheConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Application Cache (AppCache)</strong> was an HTML5 API introduced around 2009 that promised simple
           offline support for web applications through a declarative manifest file. The idea was compelling: add a
           single <code>manifest</code> attribute to your <code>{'&lt;'}html{'&gt;'}</code> tag, point it at a plain-text
           manifest file listing the resources you wanted cached, and the browser would handle the rest. No JavaScript
           required for basic offline functionality.
-        </p>
+        </HighlightBlock>
         <p>
           AppCache arrived during the early wave of HTML5 excitement alongside localStorage, the History API, and Web
           Workers. The W3C standardized it in the HTML5 specification, and by 2010-2011 all major browsers had shipped
           implementations. For a brief period it was the only standards-based mechanism for building offline-capable
           web applications, predating Service Workers by several years.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The honeymoon was short-lived. Developers quickly discovered a series of deeply unintuitive behaviors and
           architectural constraints that made AppCache nearly impossible to use correctly in production. Jake
           Archibald&apos;s landmark 2012 article &quot;Application Cache is a Douchebag&quot; catalogued these issues
@@ -44,36 +45,40 @@ export default function ApplicationCacheConciseArticle() {
           AppCache from the HTML Living Standard. Chrome removed it from non-secure contexts in Chrome 50 (2016),
           Firefox removed it entirely in Firefox 85 (January 2021), and Chrome followed suit in Chrome 93 (August 2021).
           Today, no modern browser supports AppCache in its full form.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Despite being dead technology, AppCache remains interview-relevant for staff and principal engineers because
           it illustrates a critical lesson in API design: <strong>implicit behavior and declarative-only APIs with
           opaque semantics create systems that are easy to start with but impossible to debug or extend.</strong> It
           also provides essential context for understanding why Service Workers were designed the way they were &mdash;
           nearly every Service Worker design decision is a direct reaction to an AppCache failure.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          AppCache is interview-relevant primarily as a cautionary tale: a declarative manifest plus implicit behaviors
+          produced an “offline cache” that was difficult to reason about and nearly impossible to operate safely.
+        </HighlightBlock>
         <p>
           AppCache revolved around a <strong>cache manifest file</strong>, a plain-text document served with the MIME
           type <code>text/cache-manifest</code>. The manifest declared three categories of resources:
         </p>
 
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CACHE (Explicit Section):</strong> Resources listed here were downloaded and cached on the first
             visit. Once cached, the browser would always serve them from the AppCache, even when online, until the
             manifest itself changed. This was the default section &mdash; any URL listed before the first section
             header was implicitly in the CACHE section.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>NETWORK (Online Whitelist):</strong> URLs or patterns listed here were never cached and always
             fetched from the network. The wildcard <code>*</code> meant &quot;allow any URL not explicitly cached to
             go to the network.&quot; Without this wildcard, any resource not in CACHE or FALLBACK would fail when
             fetched, even if the user was online.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>FALLBACK (Fallback Entries):</strong> Pairs of URL patterns and fallback resources. If a network
             request matching the pattern failed (offline or server error), the browser would serve the fallback
@@ -82,17 +87,17 @@ export default function ApplicationCacheConciseArticle() {
         </ul>
 
         <h3>Implicit Master Entries</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           One of AppCache&apos;s most problematic features was the <strong>master entry</strong> concept. Any HTML page
           that referenced a manifest file via the <code>manifest</code> attribute was automatically added to the cache
           as a &quot;master entry,&quot; even if it was not listed in the manifest&apos;s CACHE section. This meant
           that simply visiting a page with a manifest attribute would cache that page&apos;s HTML &mdash; permanently,
           until the manifest changed. Developers who didn&apos;t understand this would find that their pages were being
           served stale forever.
-        </p>
+        </HighlightBlock>
 
         <h3>Update Mechanism</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           AppCache updated through a specific lifecycle. On each page load, the browser checked if the manifest file
           had changed (byte-for-byte comparison of the manifest content, not its resources). If the manifest was
           unchanged, the browser fired a <code>noupdate</code> event and served everything from cache. If the manifest
@@ -100,7 +105,7 @@ export default function ApplicationCacheConciseArticle() {
           stored them in a new version of the cache, and fired the <code>updateready</code> event. Critically, the
           page continued to use the old cache until the next full page load, creating the infamous
           &quot;double-reload&quot; problem.
-        </p>
+        </HighlightBlock>
 
         <h3>applicationCache API Events</h3>
         <p>The <code>window.applicationCache</code> object exposed a state machine with these events:</p>
@@ -124,11 +129,11 @@ export default function ApplicationCacheConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding AppCache&apos;s architecture requires tracing two distinct scenarios: the first visit (when no
           cache exists) and subsequent visits (when the cache is populated). The flow reveals the &quot;cache-first&quot;
           design that was both AppCache&apos;s defining feature and its fatal flaw.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">First Visit Flow</h3>
@@ -159,14 +164,15 @@ export default function ApplicationCacheConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/manifest-flow.svg"
           alt="AppCache Manifest Update Flow Diagram"
           caption="AppCache update flow showing the problematic double-reload cycle and implicit master entry caching"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The key architectural insight is that AppCache always served from cache first, then checked for updates in
           the background. There was no way to bypass this behavior. You could not say &quot;check the network first
           and fall back to cache.&quot; You could not selectively update one resource. You could not invalidate a
           single cached entry. The cache was all-or-nothing, and the update was always one load cycle behind.
-        </p>
+        </HighlightBlock>
         <p>
           This architecture was acceptable for truly static applications (e.g., a calculator app or a simple game)
           where the content rarely changed. But for any application with dynamic content, user-generated data, or
@@ -177,6 +183,10 @@ export default function ApplicationCacheConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The comparison with Service Workers is the point: AppCache was easy to enable but impossible to operate
+          safely; Service Workers are more work up front, but they make caching explicit, debuggable, and evolvable.
+        </HighlightBlock>
         <p>
           The comparison between AppCache and Service Workers is central to understanding why the migration happened
           and why Service Workers are designed as they are.
@@ -269,45 +279,50 @@ export default function ApplicationCacheConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/caching-strategies/appcache-vs-sw.svg"
           alt="AppCache vs Service Workers Comparison Diagram"
           caption="Side-by-side comparison highlighting why Service Workers replaced the declarative, inflexible AppCache model"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          “Best practices” for AppCache in 2026 means migration. The only correct plan is to inventory current behavior,
+          implement the equivalent in a Service Worker, then remove AppCache artifacts and verify update flow.
+        </HighlightBlock>
         <p>
           Since AppCache is deprecated and removed, best practices focus entirely on <strong>detection and migration</strong>.
           If you encounter AppCache in a legacy codebase, here is the recommended migration path.
         </p>
 
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Audit for AppCache Usage:</strong> Search your codebase for <code>manifest=</code> attributes on
             <code>{'&lt;'}html{'&gt;'}</code> tags and any <code>.appcache</code> or <code>.manifest</code> files. Check
             for references to <code>window.applicationCache</code> in JavaScript. Run Lighthouse audits which flag
             AppCache usage as an error.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Inventory Cached Resources:</strong> Parse the existing manifest file to understand which resources
             are cached, which are network-only, and which have fallbacks. This becomes your requirements document for
             the Service Worker migration.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Service Worker Equivalent:</strong> For each CACHE entry, add it to a precache list in
             your Service Worker (Workbox&apos;s <code>precacheAndRoute()</code> is ideal). For each NETWORK entry,
             configure a network-only strategy. For each FALLBACK pair, implement a fetch handler that catches network
             errors and returns the fallback response.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Run Both in Parallel (Briefly):</strong> During migration, you can temporarily have both the
             manifest attribute and a Service Worker registered. The Service Worker takes precedence for fetch
             interception when both are present. This gives you a safety net during testing.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Remove AppCache Artifacts:</strong> Delete the manifest file, remove the <code>manifest</code>
             attribute from HTML, and remove any <code>applicationCache</code> JavaScript code. Ensure your server
             stops serving the manifest file &mdash; or returns a 404/410 to trigger the <code>obsolete</code> event,
             which clears existing AppCaches on clients that still have them.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Adopt Workbox for Maintainability:</strong> Rather than writing raw Service Worker caching logic,
             use Google&apos;s Workbox library. It provides declarative-like configuration (solving the simplicity
@@ -324,37 +339,41 @@ export default function ApplicationCacheConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The high-signal pitfalls are: implicit caching of HTML (master entries), all-or-nothing updates, opaque
+          failure modes, and an update model that keeps users one deploy behind.
+        </HighlightBlock>
         <p>
           Understanding <em>why</em> AppCache failed is the most valuable part of studying it. These are the specific
           design flaws that led to its deprecation, and each one informed how Service Workers were built differently.
         </p>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Master Entry Caching Bug:</strong> Every page that referenced the manifest was implicitly cached.
             If you had a multi-page site and only wanted to cache static assets, too bad &mdash; every HTML page the
             user visited was cached and would be served stale on subsequent visits. Developers had no way to opt out
             of this behavior. Service Workers solve this by giving developers explicit control over what enters the
             cache through the <code>cache.put()</code> and <code>cache.addAll()</code> APIs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No Partial Updates:</strong> Changing even one byte of the manifest triggered a re-download of
             every resource listed in it. For applications with megabytes of cached assets, this meant users
             re-downloaded everything on every deployment. Service Workers allow granular cache management &mdash; you
             can update, add, or delete individual cache entries independently.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Opaque Update Cycle:</strong> The update check was a byte comparison of the manifest file itself,
             not its referenced resources. If you updated a CSS file but forgot to change the manifest (e.g., bump
             a version comment), the browser would never notice. Conversely, changing the manifest re-downloaded
             everything even if no actual resources had changed.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>The Double-Reload Problem:</strong> On the visit where an update was detected, the user still saw
             the old cached version. The new resources were downloaded in the background and only became active on the
             next page load. This meant users were always one visit behind the current version. The only workaround was
             <code>swapCache()</code> followed by <code>location.reload()</code>, which was jarring and unreliable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No Programmatic Control:</strong> You could not dynamically decide what to cache based on runtime
             conditions (user role, network speed, device capabilities). The manifest was static and applied uniformly.
@@ -383,35 +402,39 @@ export default function ApplicationCacheConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The only “real-world” value today is legacy context: where it appeared, why it was attractive, and the
+          migration lessons it taught. You should never propose AppCache as a solution in modern designs.
+        </HighlightBlock>
         <p>
           While AppCache is deprecated, understanding where it was used provides context for its design goals and
           explains why you might still encounter it in legacy systems.
         </p>
 
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Early Mobile Web Apps (2010-2014):</strong> Before native app stores dominated, companies like
             the Financial Times built web apps using AppCache for offline reading. The FT&apos;s web app was one of
             the most prominent AppCache users, eventually migrating to Service Workers. Mobile Safari&apos;s early
             support for AppCache (before Service Workers) made it the only option for iOS web app offline support.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Simple Offline Tools:</strong> Calculator apps, unit converters, reference guides, and single-page
             utilities were good fits for AppCache because they had static content that rarely changed. The all-or-nothing
             caching model was acceptable when &quot;all&quot; was a small set of files.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Progressive Web Apps (Early Era):</strong> Before Service Workers were standardized, AppCache was
             the foundation for early PWA-like experiences. Google promoted it as part of the &quot;mobile web
             app&quot; story circa 2011-2013.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Interview Relevance Today:</strong> AppCache is frequently asked about in staff/principal engineer
             interviews not because you need to use it, but because it demonstrates understanding of: why APIs get
             deprecated, the tension between simplicity and flexibility in API design, the evolution of web platform
             capabilities, and how community feedback shapes standards (the Service Worker spec was directly informed
             by AppCache failures).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -429,10 +452,14 @@ export default function ApplicationCacheConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview answers should be concrete: name the failure modes (master entry caching, all-or-nothing updates,
+          double reload, opaque errors) and then describe how Service Workers address each with explicit, debuggable control.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: Why was Application Cache deprecated, and what specific design flaws led to its removal?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: AppCache was deprecated because its declarative-only model created deeply unintuitive behaviors that
               could not be worked around. The three most critical flaws were: (1) implicit master entry caching, where
               every page referencing the manifest was automatically cached and served stale on return visits, with no
@@ -444,7 +471,7 @@ export default function ApplicationCacheConciseArticle() {
               impossible due to opaque error handling and lack of tooling. The community consensus, led by Jake
               Archibald&apos;s influential critique, was that the API&apos;s simplicity was deceptive &mdash; it
               was easy to set up but created production-breaking behaviors that developers could not diagnose or fix.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -467,7 +494,7 @@ export default function ApplicationCacheConciseArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: If you inherited a legacy application still using AppCache, how would you plan the migration to Service Workers?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: I would approach the migration in four phases. <strong>Phase 1 (Audit):</strong> Parse the existing
               manifest file to inventory all CACHE, NETWORK, and FALLBACK entries. Identify any JavaScript using
               <code>window.applicationCache</code> events. Test the current offline behavior to establish baseline
@@ -481,7 +508,7 @@ export default function ApplicationCacheConciseArticle() {
               attribute from HTML, delete the .appcache file (or return 404/410 to trigger the <code>obsolete</code>
               event on remaining clients), and remove all <code>applicationCache</code> JavaScript. Monitor error
               rates post-deployment to catch any edge cases.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

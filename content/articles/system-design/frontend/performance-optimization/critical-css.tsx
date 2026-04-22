@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,28 +28,31 @@ export default function CriticalCssArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
-          <strong>Critical CSS</strong> is the minimum set of CSS rules required to render the above-the-fold content 
+        <HighlightBlock as="p" tier="crucial">
+          <strong>Critical CSS</strong> is the{" "}
+          <Highlight tier="important">minimum set of CSS rules</Highlight> required to render the above-the-fold content 
           of a webpage. Instead of forcing the browser to download, parse, and apply the entire stylesheet before 
-          painting anything, critical CSS is inlined directly in the HTML <code>&lt;head&gt;</code> and the 
+          painting anything, critical CSS is{" "}
+          <Highlight tier="important">inlined directly in the HTML</Highlight>{" "}
+          <code>&lt;head&gt;</code> and the 
           remaining CSS is loaded asynchronously. This eliminates CSS as a render-blocking resource, dramatically 
           improving First Contentful Paint (FCP) and Largest Contentful Paint (LCP).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           By default, browsers treat every <code>&lt;link rel=&quot;stylesheet&quot;&gt;</code> as render-blocking — 
           they won&apos;t paint any pixels until all linked stylesheets are downloaded and parsed. This is by design: 
           rendering HTML without CSS would produce a Flash of Unstyled Content (FOUC), which is jarring. However, for 
           a typical site with 200-300 KB of CSS, this can add 500ms-2s to the first render on slower connections, 
           even though only 10-30 KB of those styles are needed for the initial viewport.
-        </p>
+        </HighlightBlock>
         <p>
           Critical CSS solves this by splitting the stylesheet into two parts:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Critical CSS (Inlined):</strong> The 10-30 KB needed for above-the-fold content, placed directly 
             in a <code>&lt;style&gt;</code> tag in the HTML head. This is available immediately with no network request.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Non-Critical CSS (Async):</strong> The remaining 170-270 KB for below-the-fold content, loaded 
             asynchronously without blocking render using techniques like preload or the print media trick.
@@ -81,11 +86,24 @@ export default function CriticalCssArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concept to carry: CSS is render-blocking by default, so the game is to make above-the-fold
+          styles available in the first response while keeping long-term caching sane.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Critical CSS is about sequencing: users should see styled above-the-fold content without waiting for
+          a stylesheet round trip.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The main trade-off is repeat visits: inlined CSS can&apos;t be cached independently, so you pay again
+          on every HTML response.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/critical-css-flow.svg"
           alt="Diagram showing critical CSS extraction process from full stylesheet through extraction tool to inlined critical CSS and async-loaded non-critical CSS"
           caption="Critical CSS flow: full stylesheet is split into inlined critical CSS (10-30 KB) and asynchronously loaded non-critical CSS"
+          captionTier="important"
         />
 
         <h3>Render-Blocking CSS</h3>
@@ -184,6 +202,18 @@ export default function CriticalCssArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The flow to explain: extract critical rules → inline → async-load the rest with a safe fallback →
+          verify CLS/FOUC and cache behavior. At senior level, mention variants (logged-in vs logged-out).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Production correctness means: non-critical CSS must always load (including noscript fallback), and
+          extraction must cover meaningful layout variants.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat fonts as part of the same architecture. If fonts block text, your critical CSS work won&apos;t
+          translate into perceived performance.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/critical-css-render-path.svg"
@@ -289,6 +319,15 @@ export default function CriticalCssArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Critical CSS is an{" "}
+          <Highlight tier="important">availability-of-styles</Highlight> tactic: you are paying build and caching
+          complexity to guarantee above-the-fold pixels render without waiting for a stylesheet RTT. In interviews,
+          articulate the trade between{" "}
+          <Highlight tier="important">repeat-visit cache efficiency</Highlight> and{" "}
+          <Highlight tier="important">first-visit paint</Highlight>.
+        </HighlightBlock>
+
         <h3>Benefits of Critical CSS</h3>
         <ul className="space-y-2">
           <li>
@@ -303,10 +342,10 @@ export default function CriticalCssArticle() {
             <strong>Better Perceived Performance:</strong> Users see content faster, even if total load time is 
             unchanged.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Single Round-Trip Rendering:</strong> If the HTML with inlined critical CSS fits in the first 
             TCP congestion window (~14 KB), the browser can render after a single network round-trip.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3>Trade-offs and Costs</h3>
@@ -315,18 +354,18 @@ export default function CriticalCssArticle() {
             <strong>Duplicated CSS:</strong> Critical CSS is both inlined in the HTML and present in the full 
             stylesheet, adding 10-30 KB to total page size.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching Inefficiency:</strong> Inlined CSS can&apos;t be cached separately by the browser. On 
             repeat visits, users re-download inlined CSS with every HTML page.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Build Complexity:</strong> Automated critical CSS extraction adds build time and complexity. 
             Headless browser rendering can be slow (2-5 seconds per page).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Dynamic Content Challenges:</strong> If above-the-fold content changes based on user state 
             (logged-in header, personalized hero), statically extracted critical CSS may not cover all variations.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Below-Fold Flash:</strong> If the async stylesheet fails to load or loads slowly, below-the-fold 
             content appears unstyled when the user scrolls.
@@ -397,6 +436,16 @@ export default function CriticalCssArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: keep inlined CSS small, ensure non-critical CSS always loads, and treat fonts as part
+          of the first-paint story (otherwise critical CSS doesn&apos;t save you).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Keep the inlined payload tight (aim to fit within the first congestion window where possible).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validate that your strategy improves FCP/LCP without regressing CLS (missing dimensions, late CSS).
+        </HighlightBlock>
 
         <h3>Keep Critical CSS Under 14 KB</h3>
         <p>
@@ -456,10 +505,10 @@ export default function CriticalCssArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Inlining Too Much CSS</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Inlining more than 30 KB of CSS defeats the purpose — the HTML becomes slow to download, negating the 
           benefit of eliminating the CSS request.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Be aggressive about what&apos;s truly &quot;above-the-fold.&quot; Use tools 
           that show extracted CSS size and set a hard limit.
@@ -475,10 +524,10 @@ export default function CriticalCssArticle() {
         </p>
 
         <h3>Dynamic Content Mismatch</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If above-the-fold content changes based on user state (logged-in header, personalized hero), statically 
           extracted critical CSS may not cover all variations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Generate critical CSS for each significant layout variant. For highly dynamic 
           content, consider a hybrid approach with a minimal base critical CSS and component-level extraction.
@@ -495,10 +544,10 @@ export default function CriticalCssArticle() {
         </p>
 
         <h3>Forgetting About Fonts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           You can inline all critical CSS perfectly, but if a web font blocks text rendering for 3 seconds, the 
           user still sees a blank page.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Always pair critical CSS with <code>font-display: swap</code> or 
           <code>font-display: optional</code>. Preload critical font files.
@@ -510,6 +559,16 @@ export default function CriticalCssArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In interviews, use cases should connect critical CSS to measurable FCP/LCP wins, and clearly state
+          what you traded (build complexity, caching inefficiency) to get them.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Include the &quot;how we kept it maintainable&quot; part: automation, constraints, and periodic audits.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention how you handled personalization/layout variants (separate critical sets or hybrid strategy).
+        </HighlightBlock>
 
         <h3>News Publisher: FCP Improvement</h3>
         <p>
@@ -561,15 +620,25 @@ export default function CriticalCssArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: describe render-blocking behavior, the inline/async split, caching trade-offs, and
+          how you avoid CLS/FOUC across variants.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers reference measurable targets (FCP/LCP/CLS) and a safe loading fallback (noscript).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out real pitfalls: inlining too much, dynamic mismatch, and forgetting fonts.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is critical CSS and why does it improve performance?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Critical CSS is the minimum CSS needed to render above-the-fold content, inlined directly in the 
               HTML <code>&lt;head&gt;</code> to eliminate render-blocking stylesheet downloads.
-            </p>
+            </HighlightBlock>
             <p className="mb-3">
               It improves performance because:
             </p>
@@ -577,12 +646,14 @@ export default function CriticalCssArticle() {
               <li>• <strong>Eliminates render-blocking:</strong> Browsers normally wait for all CSS to download 
               before rendering. Critical CSS removes this blocking for above-the-fold content.</li>
               <li>• <strong>Reduces round-trips:</strong> The CSS is available immediately with no network request.</li>
-              <li>• <strong>Single TCP window:</strong> If HTML + critical CSS fits in ~14 KB, the browser can 
-              render after one network round-trip.</li>
+              <HighlightBlock as="li" tier="important">
+                • <strong>Single TCP window:</strong> If HTML + critical CSS fits in ~14 KB, the browser can 
+                render after one network round-trip.
+              </HighlightBlock>
             </ul>
-            <p className="mt-3">
+            <HighlightBlock as="p" tier="important" className="mt-3">
               Typical improvement: FCP improves by 500ms-1.5s on 3G connections.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">

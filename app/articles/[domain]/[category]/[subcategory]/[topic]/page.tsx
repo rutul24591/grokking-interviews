@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { articleRoutes, loadArticle } from "@/lib/article-routes";
-import { ArticleWrapper } from "@/components/articles/ArticleWrapper";
 
 type ArticlePageProps = {
   params: Promise<{
@@ -21,13 +20,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
+  const ArticleComponent = article.component;
+
   return (
     <Suspense
       fallback={
         <div className="p-8 text-center text-muted">Loading article...</div>
       }
     >
-      <ArticleWrapper Component={article.component} />
+      <ArticleComponent />
     </Suspense>
   );
 }

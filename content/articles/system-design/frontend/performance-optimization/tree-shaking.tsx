@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,19 +28,20 @@ export default function TreeShakingArticle() {
           ============================================================ */}
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Tree shaking</strong> is a dead code elimination technique used by JavaScript bundlers to remove 
           unused exports from the final production bundle. The term evokes the mental model of shaking a tree and 
           watching the dead leaves (unused code) fall off, leaving only the living branches (used code). When you 
-          import a single function from a library, tree shaking ensures that only that function and its dependencies 
+          import a single function from a library, tree shaking ensures that only that{" "}
+          <Highlight tier="important">function and its dependencies</Highlight>{" "}
           end up in your bundle — not the entire library.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Tree shaking relies on the <strong>static structure of ES modules</strong> (import/export syntax) to 
           determine at build time which exports are actually used by your application. The bundler performs static 
           analysis on your code, builds a dependency graph, marks which exports are referenced, and eliminates 
           everything else during the minification phase.
-        </p>
+        </HighlightBlock>
         <p>
           The impact of tree shaking on bundle size can be dramatic. Consider these common scenarios:
         </p>
@@ -52,10 +55,10 @@ export default function TreeShakingArticle() {
             <strong>Date libraries:</strong> Moment.js is a monolithic ~300 KB bundle with no tree shaking support. 
             date-fns, built with ES modules, allows importing only the functions you need (~3 KB per function).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>UI libraries:</strong> Material UI, Ant Design, and similar component libraries can be 
             tree-shaken to include only the components you actually use, reducing bundle size by 80-90%.
-          </li>
+          </HighlightBlock>
         </ul>
         <p>
           Tree shaking is distinct from but complementary to other optimization techniques:
@@ -85,11 +88,24 @@ export default function TreeShakingArticle() {
           ============================================================ */}
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Core concept: tree shaking needs{" "}
+          <Highlight tier="important">static analyzability</Highlight> (ESM import/export) and correct side
+          effect modeling. Senior answers mention toolchain config and library selection, not just &quot;use
+          lodash-es&quot;.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The main interview point: tree shaking is build-time elimination, so runtime wins come from fewer bytes and less parse/execute.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Know the top reasons shaking fails: CommonJS, transpiling modules, side effects flags, and namespace imports/barrels.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/tree-shaking-process.svg"
           alt="Diagram showing tree shaking process from source code with multiple exports through bundler analysis to final bundle with only used exports"
           caption="Tree shaking process: static analysis identifies used exports, unused exports are eliminated from final bundle"
+          captionTier="important"
         />
 
         <h3>How Tree Shaking Works</h3>
@@ -206,6 +222,16 @@ export default function TreeShakingArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The flow is: build dependency graph → mark used exports → analyze side effects → eliminate in
+          minification. You should be able to explain why a bundler keeps code even if you think it&apos;s unused.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Architecture includes packaging: libraries must ship ESM entry points, and your build must preserve ESM until bundling.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validate with tooling: bundle analyzer + source maps. Don&apos;t assume shaking happened.
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/performance-optimization/tree-shaking-es-modules.svg"
@@ -301,6 +327,13 @@ export default function TreeShakingArticle() {
       <section>
         <h2>Trade-offs & Comparison</h2>
 
+        <HighlightBlock as="p" tier="crucial">
+          Tree shaking is &quot;free&quot; at runtime but fragile at the ecosystem boundary. Senior-level
+          correctness is ensuring your toolchain preserves{" "}
+          <Highlight tier="important">ES module semantics</Highlight> and that you understand how side effects
+          and barrel exports can silently defeat shaking.
+        </HighlightBlock>
+
         <h3>Benefits of Tree Shaking</h3>
         <ul className="space-y-2">
           <li>
@@ -324,15 +357,15 @@ export default function TreeShakingArticle() {
 
         <h3>Trade-offs and Limitations</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>ES Module Requirement:</strong> Tree shaking only works with ES module syntax. Libraries 
             published only in CommonJS format cannot be tree-shaken. This limits library choices.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Configuration Sensitivity:</strong> Tree shaking requires correct configuration: 
             <code>sideEffects: false</code> in package.json, proper Babel/TypeScript settings, and production 
             mode. Misconfiguration silently disables tree shaking.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Transpilation Pitfalls:</strong> If Babel or TypeScript transpiles ES modules to CommonJS 
             (for older browser support), tree shaking breaks. The output must preserve ES module syntax for 
@@ -415,6 +448,16 @@ export default function TreeShakingArticle() {
           ============================================================ */}
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices: prefer ESM libs, keep modules as ESM through transpilation, set sideEffects flags
+          correctly, and avoid barrel exports that defeat shaking.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prefer named imports, avoid wildcard namespace imports, and keep re-exports explicit so bundlers can prune effectively.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat side effects as a correctness feature. Mislabeling can break apps; over-labeling can block shaking.
+        </HighlightBlock>
 
         <h3>Use Named Exports</h3>
         <p>
@@ -487,30 +530,30 @@ export default function TreeShakingArticle() {
         <h2>Common Pitfalls</h2>
 
         <h3>Using CommonJS Libraries</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Importing from CommonJS-only libraries (like lodash instead of lodash-es) prevents tree shaking. 
           The entire library is included regardless of which functions you use.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Always prefer ES module versions of libraries. Check the package.json for 
           a <code>"module"</code> field indicating ES module entry point.
         </p>
 
         <h3>Missing sideEffects Configuration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without <code>"sideEffects": false</code> in package.json, bundlers conservatively assume all imports 
           have side effects and keep unused code.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Add <code>"sideEffects": false</code> to your library&apos;s package.json, 
           or specify which file patterns have side effects.
         </p>
 
         <h3>Transpiling to CommonJS</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If Babel or TypeScript converts ES modules to CommonJS, tree shaking breaks because the output uses 
           <code>require()</code> instead of <code>import/export</code>.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Solution:</strong> Configure Babel with <code>"modules": false</code> and TypeScript with 
           <code>"module": "esnext"</code>. Let the bundler handle module transformation.
@@ -550,6 +593,16 @@ export default function TreeShakingArticle() {
           ============================================================ */}
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Use cases: cutting lodash/date lib bloat, reducing vendor chunk size, and making route chunks smaller
+          so navigation latency improves.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Use cases should include before/after bundle numbers and whether it improved TBT/INP on mobile.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Mention the ecosystem reality: sometimes the right move is replacing a library that can&apos;t be shaken.
+        </HighlightBlock>
 
         <h3>E-Commerce Site: Lodash Optimization</h3>
         <p>
@@ -604,15 +657,24 @@ export default function TreeShakingArticle() {
           ============================================================ */}
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview bar: explain why ESM is required, how side effects affect elimination, and how you verify shaking via build output.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Strong answers talk about tooling (`sideEffects`, module settings) and library selection.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Call out common pitfalls: CommonJS imports, transpiling modules, and barrel files.
+        </HighlightBlock>
 
         <div className="space-y-6">
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
             <h3 className="text-lg font-semibold mb-3">Question 1: What is tree shaking and how does it work?</h3>
             <p className="text-muted mb-3"><strong>Answer:</strong></p>
-            <p className="mb-3">
+            <HighlightBlock as="p" tier="important" className="mb-3">
               Tree shaking is a dead code elimination technique that removes unused exports from JavaScript bundles. 
               It works by:
-            </p>
+            </HighlightBlock>
             <ol className="space-y-2">
               <li>
                 <strong>Static Analysis:</strong> The bundler parses import/export statements at build time to 
@@ -627,11 +689,11 @@ export default function TreeShakingArticle() {
                 removed from the bundle.
               </li>
             </ol>
-            <p className="mt-3">
+            <HighlightBlock as="p" tier="crucial" className="mt-3">
               Tree shaking only works with ES module syntax (<code>import/export</code>) because it requires 
               static analysis. CommonJS (<code>require/module.exports</code>) is dynamically resolved at runtime, 
               preventing tree shaking.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-5">
