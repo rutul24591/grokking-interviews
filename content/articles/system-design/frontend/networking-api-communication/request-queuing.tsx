@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function RequestQueuingConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Request Queuing</strong> is a client-side pattern for
           controlling the order, concurrency, and lifecycle of outgoing HTTP
           requests. Rather than allowing every component to fire requests freely
           and compete for limited browser connections, a queue mediates access
           to the network, enforcing concurrency limits, priority ordering, and
           graceful handling of failures, cancellations, and offline conditions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The need for request queuing stems from fundamental browser
           constraints. HTTP/1.1 browsers enforce a per-origin connection limit
           of 6 concurrent connections (per the HTTP specification and browser
@@ -56,8 +57,8 @@ export default function RequestQueuingConciseArticle() {
           through multiplexing, but introduce their own prioritization
           challenges at the stream level, and server-side resource contention
           remains a concern regardless of protocol version.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, understanding request queuing
           means designing queue architectures that account for priority
           inversion, starvation prevention, backpressure propagation, and
@@ -68,25 +69,25 @@ export default function RequestQueuingConciseArticle() {
           in-flight requests, and supports dependent queries that naturally form
           a sequential queue. SWR's revalidation mechanism effectively queues
           background refetches and merges them with active requests.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Beyond data fetching libraries, explicit request queuing is essential
           in scenarios like file upload managers (limiting concurrent uploads to
           prevent bandwidth saturation), offline-first applications (queuing
           mutations in IndexedDB for later replay), and API clients operating
           against rate-limited endpoints (respecting 429 Retry-After headers by
           queuing subsequent requests until the rate limit window resets).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request queuing encompasses several queue types and management
           strategies, each addressing different constraints:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>FIFO Queue (First-In, First-Out):</strong> The simplest
             queue discipline, where requests are processed in the order they
             arrive. Each request waits for the preceding request to complete (or
@@ -97,8 +98,8 @@ export default function RequestQueuingConciseArticle() {
             limitation is that there is no mechanism to elevate urgent requests,
             making FIFO unsuitable when different requests have different
             criticality levels.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Priority Queue:</strong> Requests are assigned priority
             levels (commonly Critical, High, Normal, Low) and processed in
             priority order rather than arrival order. When a concurrency slot
@@ -111,8 +112,8 @@ export default function RequestQueuingConciseArticle() {
             eventually be promoted or dispatched, even when higher-priority
             requests keep arriving, typically via aging mechanisms that
             increment priority over time.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Concurrency-Limited Queue:</strong> Enforces a maximum
             number of in-flight requests (for example, 4 concurrent requests),
             regardless of priority. When the limit is reached, new requests wait
@@ -125,7 +126,7 @@ export default function RequestQueuingConciseArticle() {
             concurrency adjustment based on response times or error rates
             (adaptive concurrency) represents an advanced pattern used by
             Netflix's concurrency limiter.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Offline Queue (Outbox Pattern):</strong> When the
             application detects loss of network connectivity (via

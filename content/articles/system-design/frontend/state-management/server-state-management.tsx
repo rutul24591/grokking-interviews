@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,22 +24,22 @@ export default function ServerStateManagementConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Server state</strong> is data that originates from and is persisted on a remote server. Unlike client
           state (UI toggles, form inputs, selected tabs), server state is fundamentally different: it is asynchronous,
           has shared ownership across multiple clients, and is potentially out-of-date the moment it arrives at the
           browser. Any other user, background job, or external system can mutate server state without your application
           knowing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For years, the dominant pattern was to fetch data inside <code>useEffect</code>, store it in local
           component state via <code>useState</code>, and manually track loading and error flags. This imperative
           approach forced developers to reinvent request deduplication, caching, background refetching, retry logic,
           stale data detection, pagination, and garbage collection in every feature. The result was bloated Redux
           stores full of <code>isLoading</code> / <code>error</code> / <code>data</code> triples alongside unrelated
           UI state, creating tightly coupled and fragile code.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The paradigm shift came with libraries like <strong>React Query</strong> (now TanStack Query),{" "}
           <strong>SWR</strong>, and <strong>Apollo Client</strong>, which treat server state as a first-class
           concern. Instead of telling the app <em>how</em> to fetch, cache, and synchronize, you declare{" "}
@@ -46,43 +47,48 @@ export default function ServerStateManagementConciseArticle() {
           entire categories of bugs: stale closures over outdated data, race conditions between competing requests,
           zombie child components displaying data from unmounted parents, and memory leaks from forgotten
           subscriptions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The key mental model is: <strong>the cache is the single source of truth for remote data</strong>. Components
           subscribe to cache entries via query keys, and the library decides when to serve cached data, when to
           refetch in the background, and when to garbage-collect unused entries. This inverts the traditional control
           flow and dramatically simplifies application architecture.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The staff-level bar is being crisp about three things:{" "}
+          <strong>query keys</strong> (identity), <strong>staleness windows</strong> (freshness policy), and{" "}
+          <strong>invalidation</strong> (correctness after writes). Everything else is an optimization on top.
+        </HighlightBlock>
         <p>
           Server state libraries share a set of foundational concepts, even though their APIs and internal
           implementations differ:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Query Keys:</strong> A serializable, unique identifier (typically an array like{" "}
             <code>["users", userId]</code>) that maps to a cache entry. Keys enable automatic deduplication: if
             three components request the same key, only one network call is made. Key structure also drives
             granular invalidation — invalidating <code>["users"]</code> can cascade to all entries whose key
             starts with that prefix.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale-While-Revalidate:</strong> Borrowed from HTTP cache semantics (RFC 5861). Cached data is
             served immediately (even if stale) while a background refetch runs. Once the fresh response arrives,
             the UI updates seamlessly. The <code>staleTime</code> config controls how long data is considered
             fresh (default 0 in React Query, meaning data is always stale on re-mount). A well-tuned staleTime
             eliminates redundant network requests without sacrificing data freshness.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Invalidation:</strong> After a mutation (POST, PUT, DELETE), related cache entries must
             be invalidated so components refetch fresh data. React Query provides{" "}
             <code>queryClient.invalidateQueries</code> to mark entries as stale by key prefix or exact match.
             Apollo uses <code>refetchQueries</code> or cache eviction. Getting invalidation right is the single
             most impactful decision in server state architecture.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Background Refetching:</strong> Libraries automatically refetch when the window regains focus
             (<code>refetchOnWindowFocus</code>), when the network reconnects, or on configurable intervals. This
@@ -110,12 +116,12 @@ export default function ServerStateManagementConciseArticle() {
             the user clicks. <code>queryClient.prefetchQuery</code> silently populates the cache entry, so the
             destination page renders instantly.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimistic Updates:</strong> Mutations can immediately update the local cache with the
             expected result before the server responds. If the mutation fails, the cache rolls back to its
             previous state via the <code>onMutate</code> / <code>onError</code> lifecycle. This provides instant
             perceived performance for actions like toggling a like button or reordering a list.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache Normalization (Apollo):</strong> Apollo Client stores entities by their{" "}
             <code>__typename</code> and <code>id</code>, creating a flat, normalized lookup table. Updating a
@@ -133,31 +139,32 @@ export default function ServerStateManagementConciseArticle() {
 
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Understanding the internal architecture of server state libraries reveals why they are so effective
           at eliminating boilerplate and bugs.
-        </p>
+        </HighlightBlock>
 
         <h3>React Query Internal Model</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At the center is the <strong>QueryClient</strong>, which holds an in-memory cache map keyed by
           serialized query keys. Each cache entry tracks its data, error state, timestamps (dataUpdatedAt,
           fetchedAt), fetch status, and a set of observer subscriptions. When a component mounts with{" "}
           <code>useQuery</code>, an <strong>Observer</strong> is created and registered against the cache entry.
           The observer listens for cache updates and triggers re-renders when data or status changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When a fetch is triggered (initial mount, invalidation, window focus), the QueryClient checks whether an
           active fetch for that key already exists. If so, the new request is deduplicated — the observer simply
           subscribes to the in-flight promise. If no fetch is active, a new one is initiated. The fetch function
           (your API call) runs, and its result is written to the cache. All observers are notified, and subscribed
           components re-render with fresh data.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/server-state-architecture.svg"
           alt="Server State Architecture showing QueryClient cache, deduplication, and component subscriptions"
           caption="Server state architecture — multiple components share a single cache entry via query keys, with automatic request deduplication"
+          captionTier="important"
         />
 
         <h3>Apollo Client Normalized Cache</h3>
@@ -177,26 +184,27 @@ export default function ServerStateManagementConciseArticle() {
         </p>
 
         <h3>Client State vs Server State</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architectural distinction between client state and server state is not just semantic — it dictates
           which tools to use and how to structure your application. Conflating them (e.g., storing API responses
           in Redux alongside UI toggles) creates unnecessary coupling and forces you to manually solve problems
           that server state libraries handle automatically.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/client-vs-server-state.svg"
           alt="Client State vs Server State comparison diagram"
           caption="Client state is synchronous and app-owned; server state is asynchronous, shared, and potentially stale — they require fundamentally different management approaches"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Each server state library makes different trade-offs. The right choice depends on your API protocol,
           team experience, and feature requirements:
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -270,54 +278,58 @@ export default function ServerStateManagementConciseArticle() {
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When to Choose What</h3>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>React Query:</strong> Best default choice. Protocol-agnostic, excellent DX, active
               community, great for REST and GraphQL alike.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>SWR:</strong> When minimal bundle size matters and you need simple caching without complex
               mutation workflows. Ideal for read-heavy apps.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Apollo Client:</strong> When your backend is GraphQL and you need normalized caching to
               avoid redundant refetches across deeply nested queries.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>RTK Query:</strong> When your team already uses Redux Toolkit and wants server state
               integrated into the existing Redux ecosystem.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices are primarily about correctness and cost: set staleness windows intentionally, keep query keys
+          consistent, and make invalidation predictable after mutations.
+        </HighlightBlock>
         <p>These practices apply across all server state libraries and are critical for production applications:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Set a non-zero staleTime for stable data:</strong> Data that changes infrequently (user
             profile, feature flags, static lookups) should have a staleTime of 5-30 minutes. This eliminates
             redundant network requests on every component mount and dramatically improves perceived performance.
             The default staleTime of 0 means every mount triggers a background refetch.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Structure query keys hierarchically:</strong> Use arrays like{" "}
             <code>["todos", "list", {"{"} status: "active" {"}"}]</code> so you can invalidate at any
             granularity. Invalidating <code>["todos"]</code> cascades to all todo-related queries. Create a
             query key factory to ensure consistency across your codebase.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate server state from client state completely:</strong> Use React Query / SWR for
             server data and Zustand / useState for UI state. Never store API responses in Redux or Zustand — this
             forces you to manually handle loading, error, staleness, and cache invalidation, which is exactly
             what server state libraries automate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use optimistic updates for user-initiated mutations:</strong> Actions like toggling a
             favorite, sending a message, or reordering items should update the UI instantly and reconcile with
             the server response. Always implement rollback on error. This is the single biggest UX improvement
             you can make.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Prefetch on hover or route anticipation:</strong> When a user hovers over a link, prefetch
             the destination&apos;s data. By the time they click, the data is already cached. Use{" "}
@@ -346,44 +358,48 @@ export default function ServerStateManagementConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Most server-state bugs come from mis-specified identity (unstable query keys), mis-specified freshness
+          (staleTime defaults), or overly broad invalidation after writes.
+        </HighlightBlock>
         <p>Avoid these mistakes that frequently cause bugs and performance issues in production:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mixing server and client state in one store:</strong> Storing API responses in Redux or
             Zustand alongside UI state means you are manually reimplementing caching, invalidation, loading
             tracking, and garbage collection. This is the most common anti-pattern. It leads to stale data bugs,
             duplicated loading states, and massive reducer complexity. Use dedicated server state libraries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not setting staleTime (leaving default 0):</strong> With staleTime of 0, every component
             mount triggers a background refetch, even if data was fetched milliseconds ago. In a complex
             component tree where the same query key appears in multiple components, this causes visible loading
             flickers and wasted bandwidth. Always explicitly set staleTime based on your data&apos;s volatility.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Creating waterfall queries unintentionally:</strong> Fetching data in a parent, waiting for
             render, then fetching in a child creates sequential network requests. Use{" "}
             <code>prefetchQuery</code> to start child queries in parallel, or restructure your API to return
             nested data in a single request. Waterfalls add 200-500ms per hop.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-fetching with too-broad invalidation:</strong> Invalidating <code>["todos"]</code>{" "}
             after editing a single todo refetches every todo-related query (list, detail, stats). Use targeted
             invalidation with exact keys, or use{" "}
             <code>queryClient.setQueryData</code> to update the specific cache entry directly without
             refetching.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting to handle error and loading states:</strong> Server state is inherently
             asynchronous. Every query can be in loading, error, success, or idle state. Not handling these
             cases leads to undefined data access, blank screens, and poor error recovery UX. Use the{" "}
             <code>status</code> field or destructured <code>isLoading</code> / <code>isError</code> flags.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using unstable query keys:</strong> If a query key includes an object reference that changes
             on every render (e.g., an inline object), the library treats it as a new query each time, causing
             infinite refetch loops. Always memoize or use stable references for query key values.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not deduplicating mutations:</strong> Unlike queries, mutations are not deduplicated by
             default. A user double-clicking a "Submit" button fires two mutations. Guard against this with
@@ -394,20 +410,24 @@ export default function ServerStateManagementConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Server state libraries pay off when you have multiple consumers of the same data and you need correctness
+          under churn: caching, background refresh, deduplication, and predictable invalidation.
+        </HighlightBlock>
         <p>Server state management shines in applications with complex data requirements:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Data-Heavy Dashboards:</strong> Analytics platforms (Grafana, Datadog, Mixpanel) display
             dozens of widgets that each fetch different metrics. React Query deduplicates shared queries,
             manages individual refetch intervals per widget, and handles stale data gracefully. Background
             refetching on window focus ensures the dashboard stays current without manual refresh.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>E-commerce Product Pages:</strong> Product detail, reviews, inventory, and recommendations
             can be fetched as parallel queries. Optimistic updates on add-to-cart provide instant feedback.
             Prefetching on product hover makes navigation feel instant. Cache invalidation after purchase ensures
             accurate inventory counts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Social Feeds &amp; Infinite Scroll:</strong> Infinite query pagination manages growing lists
             of posts efficiently. Optimistic updates for likes and comments make the feed feel responsive. Cache
@@ -451,13 +471,17 @@ export default function ServerStateManagementConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Strong answers separate client vs server state, then explain cache identity (keys), freshness policy
+          (staleTime + refetch triggers), and correctness after writes (invalidation vs direct update vs optimistic).
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: What is the difference between server state and client state, and why do they need different
               management approaches?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Client state is synchronous, owned entirely by the application, and always up-to-date (UI
               toggles, form inputs, selected tab). Server state is asynchronous, has shared ownership (any
               client can mutate it), and is potentially stale the moment it arrives. Client state needs simple
@@ -467,7 +491,7 @@ export default function ServerStateManagementConciseArticle() {
               manually implement all of these concerns, which is exactly what libraries like React Query
               automate. The separation is not just organizational — it reflects fundamentally different data
               lifecycles.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -475,7 +499,7 @@ export default function ServerStateManagementConciseArticle() {
               Q: How does React Query handle cache invalidation after a mutation, and what are the tradeoffs
               between invalidation strategies?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: React Query offers three mutation strategies, each with different tradeoffs. (1){" "}
               <strong>Invalidation</strong>: call{" "}
               <code>queryClient.invalidateQueries({"{"} queryKey: ["todos"] {"}"})</code> in <code>onSuccess</code>
@@ -490,14 +514,14 @@ export default function ServerStateManagementConciseArticle() {
               feedback but is the most complex to implement correctly. The best practice is to use invalidation
               as the default, direct cache update when the mutation response matches the query shape exactly,
               and optimistic updates only for user-facing actions where perceived latency matters.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How would you architect server state in a large-scale application with 50+ API endpoints?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: At scale, the key decisions are: (1) Create a <strong>query key factory</strong> — a central
               object that generates consistent keys for every entity and its variants (list, detail, filtered).
               This prevents key typos and ensures invalidation cascades correctly. (2) Build{" "}
@@ -512,7 +536,7 @@ export default function ServerStateManagementConciseArticle() {
               to avoid waterfalls on the client. This architecture keeps the codebase predictable even as the
               number of endpoints grows, because each domain is self-contained and cache invalidation is
               explicit.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

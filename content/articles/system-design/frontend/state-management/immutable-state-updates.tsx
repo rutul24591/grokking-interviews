@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,27 +24,27 @@ export default function ImmutableStateUpdatesConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Immutable state updates</strong> refer to the practice of never modifying existing data in place.
           Instead of changing a property on an existing object, you create a new object that contains the desired
           changes while preserving the original. In JavaScript, there is no true language-level immutability for
           objects and arrays &mdash; immutability is enforced by convention, tooling, and discipline rather than
           the runtime itself.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           React&rsquo;s rendering model fundamentally depends on immutable updates. When you call a state setter,
           React performs a <strong>reference equality check</strong> (===) between the old and new state values.
           If the reference is the same, React assumes nothing changed and skips the re-render entirely. This is
           why direct mutation &mdash; modifying a property on the same object reference &mdash; silently breaks
           React&rsquo;s change detection, leading to stale UI that never updates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The importance of immutability extends beyond rendering correctness. It enables <strong>time-travel
           debugging</strong> (each state snapshot is a distinct object you can step through), makes state changes
           <strong>predictable</strong> (every update produces a traceable new value), simplifies
           <strong>concurrency</strong> (no shared mutable state between concurrent renders in React 18+), and
           supports features like undo/redo where you need to retain previous states.
-        </p>
+        </HighlightBlock>
         <p>
           Historically, the JavaScript ecosystem went through several phases. Facebook&rsquo;s <strong>Immutable.js</strong> (2014)
           introduced persistent data structures with structural sharing, but its non-native API and large bundle
@@ -56,8 +57,10 @@ export default function ImmutableStateUpdatesConciseArticle() {
 
       <section>
         <h2>Core Concepts</h2>
-        <p>Understanding immutable state updates requires grasping how JavaScript handles object references and the
-          tools available for creating new references efficiently:</p>
+        <HighlightBlock as="p" tier="important">
+          Understanding immutable state updates requires grasping how JavaScript handles object references and the
+          tools available for creating new references efficiently:
+        </HighlightBlock>
         <ul>
           <li>
             <strong>Spread Operator (Shallow Copy):</strong> The spread syntax (<code>{"{ ...obj }"}</code> for
@@ -77,21 +80,21 @@ export default function ImmutableStateUpdatesConciseArticle() {
             functions, DOM nodes, or prototype chains. Use it sparingly &mdash; deep cloning an entire state tree
             on every update defeats the performance benefits of structural sharing.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Immer (produce & Draft Proxies):</strong> Immer wraps your state in a Proxy-based draft.
             Inside the <code>produce</code> callback, you write code that looks like direct mutation
             (e.g., <code>draft.user.name = &quot;Alice&quot;</code>), but Immer intercepts every operation and
             builds a new immutable state tree behind the scenes. It automatically applies structural sharing &mdash;
             only the changed paths get new references. Immer also auto-freezes the produced state in development
             to catch accidental mutations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Structural Sharing:</strong> The key performance optimization that makes immutability practical
             at scale. When you update one branch of a state tree, only the nodes along the path from the root to
             the changed leaf are copied. All other branches retain their original references. This means a state
             tree with 10,000 nodes might only allocate 5 new objects for a single leaf change, and React can use
             reference equality to skip re-rendering every component connected to the unchanged branches.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Object.freeze / Object.seal:</strong> <code>Object.freeze</code> makes an object&rsquo;s
             properties non-writable and non-configurable (shallow freeze only). <code>Object.seal</code> prevents
@@ -99,36 +102,36 @@ export default function ImmutableStateUpdatesConciseArticle() {
             they throw errors in strict mode when you attempt mutation, helping you catch bugs early. They are not
             a substitute for immutable update patterns.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Why Mutation Breaks React:</strong> When you mutate <code>state.user.name = &quot;New&quot;</code>
             directly, the outer <code>state</code> object&rsquo;s reference hasn&rsquo;t changed. React&rsquo;s
             reconciler compares <code>prevState === nextState</code>, sees they are the same reference, and
             concludes nothing changed. The component does not re-render, and the UI shows stale data. This is not
             a bug in React &mdash; it is a deliberate design choice that enables efficient O(1) change detection
             instead of deep comparison.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Redux Toolkit&rsquo;s Built-in Immer:</strong> Redux Toolkit (RTK) integrates Immer into
             its <code>createSlice</code> and <code>createReducer</code> APIs. Reducers written with RTK can use
             mutative syntax directly, and Immer handles immutable production transparently. This eliminates the
             historically error-prone spread-heavy reducer pattern that plagued vanilla Redux.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>The Copy-on-Write Mental Model:</strong> Think of immutable updates like a file system with
             copy-on-write semantics. Reading is free &mdash; you access the existing tree. Writing triggers a copy
             of only the affected path, and the new root points to the new branch while sharing everything else
             with the old root. Both the old and new versions coexist independently.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Structural sharing is the mechanism that makes immutable updates performant. Without it, every state
           change would require deep-cloning the entire state tree &mdash; an O(n) operation that would be
           prohibitively expensive for large applications.
-        </p>
+        </HighlightBlock>
         <p>
           Consider a state tree where the root object <code>A</code> has children <code>B</code> and <code>E</code>,
           <code>B</code> has child <code>C</code>, <code>C</code> has child <code>D</code>, and <code>E</code> has
@@ -150,19 +153,21 @@ export default function ImmutableStateUpdatesConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/structural-sharing.svg"
           alt="Structural Sharing Tree Diagram"
           caption="Structural sharing: only the path from root to the changed leaf (D) is copied. Unchanged branches (E, F) retain their original references, saving memory and enabling O(1) equality checks."
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The difference between mutation and immutable updates is critical for React&rsquo;s rendering pipeline.
           When you mutate state directly, the object reference remains unchanged, and React&rsquo;s shallow
           comparison concludes no update occurred. With immutable updates, a new root reference is always
           produced, guaranteeing React detects the change.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/mutation-vs-immutable.svg"
           alt="Mutation vs Immutable Update Comparison"
           caption="Side-by-side comparison: mutation keeps the same reference (React skips re-render, UI is stale), while immutable update produces a new reference (React detects change, UI updates correctly)."
+          captionTier="important"
         />
 
         <p>
@@ -239,47 +244,49 @@ export default function ImmutableStateUpdatesConciseArticle() {
           </tbody>
         </table>
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
           For most React applications, the recommended approach is to use <strong>spread patterns for flat state</strong> and
           <strong>Immer for anything nested more than one level deep</strong>. Immutable.js is largely considered legacy
           at this point, and structuredClone should be reserved for cases where you genuinely need a fully independent
           deep copy (e.g., passing state to a Web Worker).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>Follow these practices to maintain immutability effectively across your codebase:</p>
+        <HighlightBlock as="p" tier="important">
+          Follow these practices to maintain immutability effectively across your codebase:
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Keep State Shape Flat:</strong> Normalize nested data structures. Instead of deeply nested
             objects, use flat maps keyed by ID. This makes spread-based updates trivial and eliminates the need
             for Immer in most cases. Follow the principle: if you need more than two levels of spread, flatten
             your state shape or reach for Immer.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Immer for Complex Reducers:</strong> When dealing with deeply nested state, array
             manipulations within nested objects, or complex reducer logic, Immer eliminates entire categories
             of bugs. Redux Toolkit includes it by default &mdash; take advantage of it.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Freeze State in Development:</strong> Use <code>Object.freeze</code> in development builds
             (Immer does this automatically) to catch accidental mutations early. A mutation attempt on frozen
             state throws a TypeError in strict mode, surfacing the bug immediately rather than causing a
             subtle rendering issue.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Never Mutate Function Parameters:</strong> Treat all function arguments as read-only. If a
             function needs to modify data, clone it first. This applies especially to event handlers, utility
             functions, and any code that receives state-derived values.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Prefer Functional Array Methods:</strong> Use <code>map</code>, <code>filter</code>,
             and <code>reduce</code> instead of <code>push</code>, <code>splice</code>, <code>sort</code> (in-place),
             or <code>reverse</code> (in-place). For modern environments, <code>toSorted()</code>,
             <code>toReversed()</code>, and <code>toSpliced()</code> provide immutable alternatives to their
             mutating counterparts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use TypeScript Readonly Types:</strong> Leverage <code>Readonly{'<T>'}</code>,
             <code>ReadonlyArray{'<T>'}</code>, and <code>as const</code> assertions to enforce immutability at
@@ -301,40 +308,42 @@ export default function ImmutableStateUpdatesConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>These mistakes account for the majority of immutability-related bugs in production React applications:</p>
+        <HighlightBlock as="p" tier="important">
+          These mistakes account for the majority of immutability-related bugs in production React applications:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accidentally Mutating State Directly:</strong> The most common bug. Calling
             <code>state.items.push(newItem)</code> instead of <code>setState([...state.items, newItem])</code>.
             The push succeeds silently (the array is modified), but React never re-renders because the array
             reference hasn&rsquo;t changed. The fix only appears after an unrelated re-render, making the bug
             intermittent and difficult to diagnose.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Shallow Spread Missing Nested Objects:</strong> Writing
             <code>{"setState({ ...state, user: { name: 'New' } })"}</code> when the user object has other
             properties like <code>email</code> and <code>role</code>. The spread replaces the entire user object,
             losing all properties not explicitly included. The correct pattern is
             <code>{"setState({ ...state, user: { ...state.user, name: 'New' } })"}</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mutating Arrays with sort() or reverse():</strong> These methods mutate the original array
             and return the same reference. Writing <code>setState(state.items.sort())</code> both mutates the
             existing state and returns the same reference &mdash; a double bug. Use
             <code>{"setState([...state.items].sort())"}</code> or the newer <code>toSorted()</code> method.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Immer: Forgetting to Return in produce:</strong> When using Immer, you either mutate the
             draft <em>or</em> return a new value, but never both. If your produce callback neither mutates nor
             returns, Immer produces the original state unchanged. If you accidentally do both (mutate the draft
             and return a new object), Immer throws an error.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Deep Cloning Large State on Every Update:</strong> Using <code>structuredClone</code> or
             <code>JSON.parse(JSON.stringify(state))</code> for every state update. This creates O(n) work per
             update instead of O(path length) with structural sharing. For a state tree with 10,000 nodes, this
             can cause noticeable frame drops.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing Non-Serializable Values in State:</strong> Placing class instances, functions, or DOM
             references in state that needs to be immutably updated. <code>structuredClone</code> cannot handle
@@ -352,39 +361,41 @@ export default function ImmutableStateUpdatesConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>Immutable state updates are foundational in these patterns and architectures:</p>
+        <HighlightBlock as="p" tier="important">
+          Immutable state updates are foundational in these patterns and architectures:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Redux Reducers:</strong> Redux&rsquo;s entire architecture is built on immutability. Every
             reducer must return a new state reference (or the unchanged state for unhandled actions). Redux
             DevTools relies on immutable snapshots for time-travel debugging, action replay, and state diff
             visualization. Redux Toolkit wraps all reducers in Immer automatically, making this seamless.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>React useState and useReducer:</strong> Every call to a state setter must pass a new
             reference for React to schedule a re-render. The <code>useReducer</code> hook is essentially a
             local Redux &mdash; the same immutability rules apply to its reducer function. Functional updates
             (<code>{"setState(prev =&gt; ({ ...prev, count: prev.count + 1 }))"}</code>) are the idiomatic pattern.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Undo/Redo Systems:</strong> Immutability enables trivially simple undo/redo. Maintain a
             history stack of state snapshots. Undo pops the current state and restores the previous reference.
             Because each snapshot is an independent object (thanks to structural sharing, this is
             memory-efficient), there is no risk of undo corrupting the current state through shared mutable
             references.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Optimistic UI Updates:</strong> When performing an optimistic update (showing the result
             before the server confirms), you need the ability to roll back to the previous state if the server
             rejects the change. Immutable state makes rollback trivial &mdash; simply restore the previous state
             reference. Mutable state would require manually reversing every individual change.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Concurrent React (React 18+):</strong> React&rsquo;s concurrent rendering can pause and
             resume renders, potentially reading state at different points in time. Immutable state guarantees
             that a render started with a particular state snapshot always sees consistent data, even if new
             updates arrive while the render is in progress.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -405,7 +416,7 @@ export default function ImmutableStateUpdatesConciseArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: Why does React require immutable state updates, and what happens if you mutate state directly?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: React uses reference equality (===) to determine if state has changed. When you mutate an object
               directly, its reference stays the same, so React's comparison returns true (no change detected)
               and skips the re-render. The component continues displaying stale data. This is a deliberate design
@@ -414,12 +425,12 @@ export default function ImmutableStateUpdatesConciseArticle() {
               performance advantages. Additionally, immutable state enables time-travel debugging (each state is a
               distinct snapshot), supports concurrent rendering (renders can read state without worrying about
               mid-render mutations), and makes state changes traceable and predictable.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What is structural sharing and why is it important for performance?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Structural sharing is the practice of reusing unchanged portions of a data structure when creating
               an updated copy. When you update a leaf node in a state tree, only the nodes along the path from the
               leaf to the root are copied — all other branches retain their original references. This means
@@ -428,12 +439,12 @@ export default function ImmutableStateUpdatesConciseArticle() {
               branches receive the same prop references and skip re-rendering entirely. Without structural sharing,
               immutable updates would require deep cloning the entire state on every change, making immutability
               impractical for large applications.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: Compare spread operator patterns with Immer for state updates. When would you choose one over the other?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Spread operators are native, zero-dependency, and fast for flat or one-level-deep state updates.
               They are the right choice for simple component state like <code>{"{ ...state, loading: true }"}</code>.
               However, spread becomes unwieldy and error-prone for deeply nested updates — updating a property
@@ -443,7 +454,7 @@ export default function ImmutableStateUpdatesConciseArticle() {
               but the ergonomic and correctness benefits for complex state far outweigh the cost. The practical rule:
               use spread for flat state, Immer for anything nested more than one level. If you are using Redux
               Toolkit, Immer is already included — use it everywhere.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

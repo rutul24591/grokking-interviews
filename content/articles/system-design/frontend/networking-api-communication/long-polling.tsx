@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function LongPollingConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Long Polling</strong> is a client-server communication pattern
           where the client sends an HTTP request and the server holds the
           connection open until it has new data to send or a timeout threshold
@@ -44,8 +45,8 @@ export default function LongPollingConciseArticle() {
           the client immediately sends a new request, re-establishing the held
           connection. This creates a near-continuous open channel using standard
           HTTP semantics.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Long polling emerged in the mid-2000s under the umbrella term "Comet,"
           coined by Alex Russell in 2006. It was the primary technique for
           achieving server-push behavior in web applications before WebSockets
@@ -56,8 +57,8 @@ export default function LongPollingConciseArticle() {
           page reloads. Facebook Messenger used long polling for years before
           transitioning to MQTT over WebSockets, and many chat systems relied on
           it well into the 2010s.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental insight behind long polling is eliminating the waste
           inherent in short polling. Instead of the client asking "anything
           new?" every N seconds and getting "no" most of the time, the client
@@ -66,8 +67,8 @@ export default function LongPollingConciseArticle() {
           latency after the event occurs on the server (limited only by
           server-side processing time), and no requests are wasted on empty
           responses during idle periods.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, the critical design
           consideration with long polling is that it fundamentally changes the
           server's resource model. Unlike short polling where each request is
@@ -81,8 +82,8 @@ export default function LongPollingConciseArticle() {
           requirement is the primary reason long polling was historically
           difficult to implement correctly and why it pushed the industry toward
           async server frameworks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Long polling remains relevant today for several reasons. It works
           through every HTTP proxy and corporate firewall because it uses
           standard HTTP request-response semantics (unlike WebSockets which
@@ -94,18 +95,18 @@ export default function LongPollingConciseArticle() {
           infrastructure constraints, serverless limitations with connection
           duration caps, or corporate network policies), long polling provides
           the closest approximation to true server push using only HTTP.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Long polling introduces several design challenges that do not exist in
           simple request-response patterns. Understanding these concepts is
           essential for building robust implementations:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Held Connection:</strong> The core mechanism of long
             polling. The client sends a request and the server deliberately
             delays its response. The connection remains open in a pending state.
@@ -116,8 +117,8 @@ export default function LongPollingConciseArticle() {
             event occurs, the server looks up all pending connections interested
             in that event, writes the response data, and closes the connection.
             The client then immediately re-establishes a new held connection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout Management:</strong> Connections cannot be held
             indefinitely. HTTP intermediaries (proxies, load balancers, CDNs)
             and browsers themselves impose timeouts, typically 30-120 seconds.
@@ -129,8 +130,8 @@ export default function LongPollingConciseArticle() {
             timeout-and-reconnect cycle creates a heartbeat-like pattern that
             keeps the connection alive through intermediaries while allowing the
             server to periodically clean up stale connections.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Immediate Reconnection:</strong> The distinguishing behavior
             of long polling versus short polling. When the client receives a
             response (whether it contains data or is a timeout response), it
@@ -142,7 +143,7 @@ export default function LongPollingConciseArticle() {
             "since" parameter (timestamp or sequence ID) in the reconnection
             request so the server can deliver any events that occurred during
             the gap.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Message Ordering and Sequence IDs:</strong> In a
             long-polling system, messages can potentially arrive out of order or

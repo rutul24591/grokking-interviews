@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function BackgroundSyncConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Background Sync</strong> is a Web API that defers
           network-dependent actions until the user has stable connectivity,
           guaranteeing that outbound requests eventually reach the server even
@@ -45,16 +46,16 @@ export default function BackgroundSyncConciseArticle() {
           the registered Service Worker and fires a <code>sync</code> event,
           giving the application a second (or third, or nth) chance to deliver
           data reliably.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The mental model is a <strong>reliable outbox</strong>: the
           application writes an intent to a local store (typically IndexedDB),
           registers a sync tag with the browser, and then forgets about it. The
           browser itself becomes the delivery guarantor. This is fundamentally
           different from retry logic inside application code, because
           application code requires an open page; Background Sync does not.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Background Sync was proposed by Google within the Web Incubator
           Community Group (WICG) in 2015 and first shipped in Chrome 49 in March
           2016. The specification distinguishes two flavors: <em>one-off</em>{" "}
@@ -65,25 +66,25 @@ export default function BackgroundSyncConciseArticle() {
           limits its viability as a sole reliability strategy. Staff and
           principal engineers must therefore treat it as a progressive
           enhancement layered on top of a robust fallback.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Architecturally, Background Sync sits alongside the Background Fetch
           API. While Background Sync is designed for small, transactional
           payloads (form submissions, analytics pings, chat messages),
           Background Fetch targets large downloads and uploads with progress
           notification. Understanding where one ends and the other begins is
           critical when designing offline-capable systems at scale.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mastering Background Sync requires understanding six interlocking
           primitives that collectively form the reliability pipeline:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>SyncManager API:</strong> The entry point. Accessed via{" "}
             <code>
               navigator.serviceWorker.ready.then(reg =&gt;
@@ -95,8 +96,8 @@ export default function BackgroundSyncConciseArticle() {
             <code>register()</code> call returns a Promise that resolves when
             the browser acknowledges the tag. The browser maintains an internal
             set of pending tags and deduplicates by tag name.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>One-Off Sync:</strong> The core mechanic. A single sync
             registration corresponds to a single <code>sync</code> event in the
             Service Worker. Once the event handler resolves its promise
@@ -104,8 +105,8 @@ export default function BackgroundSyncConciseArticle() {
             handler rejects, the browser schedules a retry. "One-off" means the
             developer must re-register the tag if another sync is needed later —
             it is not recurring.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Retry Semantics:</strong> The browser — not the application
             — controls retry timing. The specification intentionally leaves
             retry policy to the user agent. In practice, Chromium uses
@@ -114,7 +115,7 @@ export default function BackgroundSyncConciseArticle() {
             <code>true</code>, signaling that failure here is permanent. This is
             the application&apos;s final opportunity to notify the user or
             persist the failure state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Tag-Based Deduplication:</strong> Registering the same tag
             while a previous sync for that tag is still pending is a no-op — the
@@ -134,7 +135,7 @@ export default function BackgroundSyncConciseArticle() {
             delivery; the browser re-spawns it specifically to handle the sync
             event.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>IndexedDB as the Outbox:</strong> Because the sync event
             carries no payload (only the tag string), the application must store
             the data to be sent somewhere durable. IndexedDB is the standard
@@ -143,19 +144,19 @@ export default function BackgroundSyncConciseArticle() {
             structured data including Blobs. The pattern is: page writes to
             IndexedDB, registers sync, SW reads from IndexedDB on sync event,
             sends the data, then deletes the IndexedDB record on success.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Background Sync lifecycle spans two distinct execution contexts
           (page and Service Worker) and involves an intermediary (the
           browser&apos;s sync scheduler) that is invisible to application code.
           Understanding the full flow is essential for debugging and for
           anticipating edge cases.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">End-to-End Sync Flow</h3>
@@ -212,9 +213,10 @@ export default function BackgroundSyncConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/background-sync-flow.svg"
           alt="Background Sync lifecycle flow showing the timeline from user action through offline period to eventual delivery"
           caption="Background Sync Lifecycle — The browser manages delivery across connectivity gaps, even if the app is closed"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A critical subtlety: the Service Worker may be terminated by the
           browser at any point between step 3 and step 6. This is normal. The
           browser&apos;s sync scheduler operates independently of the Service
@@ -222,30 +224,31 @@ export default function BackgroundSyncConciseArticle() {
           browser will start a fresh Service Worker instance if necessary. This
           means all state must be in IndexedDB — not in Service Worker variables
           or closures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Another edge case arises when connectivity is available at
           registration time. In this scenario, the browser will fire the sync
           event almost immediately, potentially while the page is still open.
           This is by design: it simplifies the programming model so the
           application does not need separate "online" and "offline" code paths.
           Every mutation goes through the outbox.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/offline-support/background-sync-architecture.svg"
           alt="Background Sync architecture showing the decoupled relationship between page, IndexedDB, Service Worker, and server"
           caption="Architecture Overview — The page and Service Worker are decoupled via IndexedDB, enabling resilience across app restarts"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Background Sync occupies a specific niche in the reliability spectrum.
           Understanding its trade-offs relative to alternatives is essential for
           making sound architectural decisions:
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto">
           <table className="w-full border-collapse text-sm">
@@ -345,10 +348,10 @@ export default function BackgroundSyncConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices emerge from production deployments and spec-level
           understanding of the API&apos;s guarantees and limitations:
-        </p>
+        </HighlightBlock>
         <ul>
           <li>
             <strong>Use meaningful, unique sync tags:</strong> Tags should
@@ -359,21 +362,21 @@ export default function BackgroundSyncConciseArticle() {
             everything in the outbox. The choice between unique and shared tags
             is an architectural decision, not a trivial naming choice.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Store full request payloads in IndexedDB:</strong> Persist
             the complete HTTP request — URL, method, headers, and serialized
             body. Do not store just an ID and attempt to reconstruct the request
             in the Service Worker. The page context that created the request may
             no longer exist, and the reconstruction logic may have changed
             between app versions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Make sync operations idempotent:</strong> Because the
             browser may fire the sync event multiple times (on retry), every
             operation must be safe to repeat. Use idempotency keys
             (client-generated UUIDs sent in a request header) so the server can
             deduplicate. This is not optional — it is a correctness requirement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle partial failures in batch syncs:</strong> If the
             outbox contains five pending requests and the third one fails, do
@@ -389,7 +392,7 @@ export default function BackgroundSyncConciseArticle() {
             confidence-building moment. Use a toast, badge, or inline status
             indicator.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement a fallback for unsupported browsers:</strong>{" "}
             Feature-detect with <code>&apos;SyncManager&apos; in window</code>.
             When Background Sync is unavailable, fall back to an in-page retry
@@ -397,7 +400,7 @@ export default function BackgroundSyncConciseArticle() {
             <code>online</code> event to trigger outbox draining. This fallback
             works while the page is open, which covers the majority of
             real-world usage.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Limit payload size in sync operations:</strong> Background
             Sync is designed for small, transactional data. If you need to sync
@@ -417,12 +420,12 @@ export default function BackgroundSyncConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These pitfalls represent the gap between the API&apos;s apparent
           simplicity and production reality:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Assuming universal browser support:</strong> The most common
             and most damaging mistake. Safari has no Background Sync support and
             has shown no intent to implement it (citing privacy and battery
@@ -430,16 +433,16 @@ export default function BackgroundSyncConciseArticle() {
             Building a critical path that depends solely on Background Sync will
             fail silently for 25-30% of users. Always feature-detect and provide
             a fallback.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not making operations idempotent:</strong> If the sync event
             handler succeeds in sending data but fails to delete the IndexedDB
             record (e.g., the SW is killed between the fetch response and the
             IDB transaction), the next sync will re-send the same data. Without
             server-side idempotency, this results in duplicate orders, duplicate
             messages, or duplicate analytics events.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing too much in the IndexedDB outbox:</strong> IndexedDB
             has storage quotas (typically based on available disk space, but can
             be as low as 50 MB on some mobile browsers). An application that
@@ -447,7 +450,7 @@ export default function BackgroundSyncConciseArticle() {
             quota, causing subsequent writes to fail silently or throw.
             Implement outbox size limits and inform the user when the queue is
             full.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not handling Service Worker termination mid-sync:</strong>{" "}
             The browser may terminate the Service Worker during a sync event if
@@ -486,33 +489,33 @@ export default function BackgroundSyncConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Background Sync excels in scenarios where data must survive
           intermittent connectivity and where eventual delivery (rather than
           instant confirmation) is acceptable:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Offline form submissions:</strong> Field workers collecting
             inspection data, survey responses, or safety checklists in areas
             with poor connectivity. The form saves locally and syncs when the
             worker returns to coverage. This is arguably the canonical use case
             for the API.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Chat and messaging applications:</strong> Queue outbound
             messages when offline. The user sees the message as "sending" with a
             clock icon, which transitions to "sent" (checkmark) when the sync
             completes. WhatsApp Web uses a similar pattern, though with
             proprietary sync rather than the Web API.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Analytics event batching:</strong> Instead of firing
             analytics events immediately (which may fail and be lost), batch
             them into IndexedDB and flush via Background Sync. This improves
             data completeness significantly for mobile users on flaky
             connections.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Offline e-commerce cart submissions:</strong> A customer on
             a mobile device adds items to a cart and proceeds to checkout. If
@@ -558,13 +561,18 @@ export default function BackgroundSyncConciseArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: treat Background Sync as an outbox + Service Worker
+          replay pipeline, and be explicit about idempotency, fallback behavior
+          for non-Chromium browsers, and user-facing delivery semantics.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How does Background Sync differ from simply retrying failed
               fetch requests?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The fundamental difference is lifecycle scope. An in-page retry
               mechanism (e.g., exponential backoff in a <code>catch</code>{" "}
               block) only works while the page is open. If the user closes the
@@ -577,7 +585,7 @@ export default function BackgroundSyncConciseArticle() {
               other network activity, reducing battery drain on mobile. The
               trade-off is that you lose control over retry timing and must
               accept the browser&apos;s schedule.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

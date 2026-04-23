@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function Http2AndHttp3ConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>HTTP/2</strong> (RFC 7540, standardized in 2015) introduced
           binary framing, multiplexing, header compression via HPACK, and server
           push over a single TCP connection. <strong>HTTP/3</strong> (RFC 9114,
@@ -45,8 +46,8 @@ export default function Http2AndHttp3ConciseArticle() {
           transport protocol that integrates TLS 1.3 natively, eliminates
           transport-layer head-of-line blocking, and supports 0-RTT connection
           resumption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           From a frontend architecture perspective, these protocol evolutions
           fundamentally changed how we think about resource delivery. HTTP/1.1
           forced the industry into workarounds: domain sharding (spreading
@@ -57,8 +58,8 @@ export default function Http2AndHttp3ConciseArticle() {
           HTML. HTTP/2 made every one of these techniques obsolete or
           counterproductive by allowing hundreds of concurrent streams over a
           single connection.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server push, one of HTTP/2's headline features, allowed servers to
           proactively send resources the client hadn't requested yet. In theory,
           the server could push critical CSS or JS alongside the HTML response,
@@ -67,8 +68,8 @@ export default function Http2AndHttp3ConciseArticle() {
           leading to wasted bandwidth. Chrome formally removed server push
           support in 2022, and the industry shifted toward 103 Early Hints as a
           more effective alternative.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           HTTP/3's QUIC protocol addresses the most fundamental limitation of
           HTTP/2: TCP-level head-of-line blocking. When HTTP/2 multiplexes
           streams over a single TCP connection and a packet is lost, TCP stalls
@@ -80,18 +81,18 @@ export default function Http2AndHttp3ConciseArticle() {
           traditional 4-tuple (source IP, source port, destination IP,
           destination port) that TCP relies on. This eliminates the full TLS
           handshake penalty users experience during network transitions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the protocol evolution requires grasping six
           foundational mechanisms that differentiate HTTP/2 and HTTP/3 from
           their predecessor:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Binary Framing Layer:</strong> HTTP/2 replaced HTTP/1.1's
             text-based protocol with a binary framing layer. Messages are
             decomposed into frames (HEADERS, DATA, PRIORITY, RST_STREAM,
@@ -101,8 +102,8 @@ export default function Http2AndHttp3ConciseArticle() {
             encoding is more compact, less error-prone to parse, and enables
             multiplexing. Critically, the semantics of HTTP (methods, status
             codes, headers) remain unchanged; only the wire format changed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Multiplexing:</strong> HTTP/1.1's pipelining allowed sending
             multiple requests without waiting for responses, but responses had
             to arrive in order (head-of-line blocking at the application layer).
@@ -113,8 +114,8 @@ export default function Http2AndHttp3ConciseArticle() {
             blocks a small CSS file. However, because HTTP/2 runs over TCP, a
             lost TCP segment still stalls all streams until retransmission
             completes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Header Compression:</strong> HTTP/1.1 headers are sent as
             uncompressed plaintext on every request, often repeating cookies,
             user-agent strings, and other headers that don't change between
@@ -126,7 +127,7 @@ export default function Http2AndHttp3ConciseArticle() {
             introducing a separate unidirectional stream for table updates,
             avoiding the head-of-line blocking problem that would occur if table
             updates were lost.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stream Prioritization:</strong> HTTP/2 allows clients to
             assign priority weights and dependencies to streams, signaling which
@@ -168,7 +169,7 @@ export default function Http2AndHttp3ConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The connection model is the most consequential difference between HTTP
           versions. HTTP/1.1 uses up to 6 parallel TCP connections per origin,
           each carrying one request at a time (or pipelining, which was rarely
@@ -178,15 +179,16 @@ export default function Http2AndHttp3ConciseArticle() {
           blocking. HTTP/3 replaces TCP with QUIC, maintaining the
           single-connection model but with independent streams that are immune
           to cross-stream blocking.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/http-version-comparison.svg"
           alt="HTTP/1.1 vs HTTP/2 vs HTTP/3 connection model comparison"
           caption="Connection model evolution: HTTP/1.1 requires multiple TCP connections with sequential requests, HTTP/2 multiplexes streams over one TCP connection (but TCP-level HOL blocking remains), HTTP/3 uses QUIC with truly independent streams"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The multiplexing model in HTTP/2 fundamentally changes how resources
           flow from server to client. Instead of opening separate connections
           for each resource, the browser negotiates a single connection during
@@ -196,15 +198,16 @@ export default function Http2AndHttp3ConciseArticle() {
           high-priority resources (CSS, critical JS) ahead of lower-priority
           ones (images, analytics scripts) without requiring separate
           connections.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/http2-multiplexing.svg"
           alt="HTTP/2 multiplexing showing interleaved streams"
           caption="HTTP/2 multiplexing: multiple streams carry different resources simultaneously over a single connection, with frames interleaved on the wire"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           From a frontend performance perspective, the connection setup latency
           is particularly important. On a typical 4G mobile connection with
           100ms RTT, HTTP/1.1 with TLS 1.2 requires 3 round trips (TCP SYN, TLS
@@ -214,7 +217,7 @@ export default function Http2AndHttp3ConciseArticle() {
           connections, meaning data can flow in as little as 0ms of additional
           latency for returning visitors. On high-latency satellite connections
           (600ms+ RTT), this difference translates to seconds of saved time.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -745,11 +748,11 @@ export default function Http2AndHttp3ConciseArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: How does HTTP/2 multiplexing change frontend optimization
               strategies?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: HTTP/2 multiplexing eliminates the need for most HTTP/1.1
               workarounds. Domain sharding becomes harmful because it forces
               multiple connections instead of leveraging one multiplexed
@@ -766,14 +769,14 @@ export default function Http2AndHttp3ConciseArticle() {
               because they don't consume scarce connection slots. The
               fetchpriority API lets developers communicate resource importance
               directly to the browser's stream scheduler.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: What problem does HTTP/3's QUIC solve that HTTP/2 couldn't?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: HTTP/2 multiplexes multiple streams over a single TCP
               connection, but TCP treats the entire connection as one ordered
               byte stream. When a TCP packet is lost, TCP's reliability
@@ -790,7 +793,7 @@ export default function Http2AndHttp3ConciseArticle() {
               integrates TLS 1.3 directly, saving a round trip on connection
               setup, and supports connection migration via connection IDs so
               connections survive network changes (critical for mobile).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

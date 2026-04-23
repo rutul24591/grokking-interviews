@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function RestApiDesignConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>REST (Representational State Transfer)</strong> is an
           architectural style for designing networked applications, defined by
           Roy Fielding in his 2000 doctoral dissertation. REST is not a protocol
@@ -46,8 +47,8 @@ export default function RestApiDesignConciseArticle() {
           distributed architecture. It has become the dominant paradigm for web
           API design, powering the vast majority of public and internal APIs
           consumed by frontend applications today.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           REST defines six architectural constraints. First,{" "}
           <strong>client-server separation</strong> mandates that the user
           interface concerns are decoupled from data storage concerns, allowing
@@ -69,8 +70,8 @@ export default function RestApiDesignConciseArticle() {
           <strong>code-on-demand</strong> (optional) allows servers to extend
           client functionality by transferring executable code, such as
           JavaScript.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At a staff or principal engineer level, it is important to understand
           the <strong>Richardson Maturity Model</strong>, which classifies APIs
           into four levels. Level 0 uses HTTP as a transport tunnel with a
@@ -88,17 +89,17 @@ export default function RestApiDesignConciseArticle() {
           pragmatism has won: the industry broadly uses "REST" to mean
           HTTP-based APIs with resource-oriented URLs and proper use of HTTP
           methods, regardless of HATEOAS compliance.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Six foundational concepts underpin effective REST API design and
           consumption from the frontend:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Resource-Oriented Design:</strong> Resources are the
             fundamental abstraction in REST. URIs identify resources using
             nouns, never verbs. The endpoint should be /users, not /getUsers or
@@ -110,8 +111,8 @@ export default function RestApiDesignConciseArticle() {
             resource naming conventions become a governance concern; teams need
             an API style guide to prevent inconsistencies like mixing
             /user-profiles with /userAccounts across services.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>HTTP Methods and Idempotency:</strong> GET retrieves a
             resource without side effects and is both safe and idempotent. POST
             creates a new resource and is neither safe nor idempotent; calling
@@ -124,8 +125,8 @@ export default function RestApiDesignConciseArticle() {
             critical for frontend retry logic: safe to retry GET, PUT, and
             DELETE on network failure, but retrying POST requires an idempotency
             key to prevent duplicate creation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Status Codes:</strong> HTTP status codes provide
             machine-readable semantics for responses. The 2xx family signals
             success: 200 OK for general success, 201 Created for resource
@@ -141,7 +142,7 @@ export default function RestApiDesignConciseArticle() {
             Error and 503 Service Unavailable. Frontend code should route error
             handling based on status code families, not individual codes, for
             resilience.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Content Negotiation:</strong> The Accept header tells the
             server what response format the client prefers (application/json,
@@ -155,7 +156,7 @@ export default function RestApiDesignConciseArticle() {
             relying on server defaults to avoid subtle bugs when API gateway
             configurations change.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               HATEOAS (Hypermedia as the Engine of Application State):
             </strong>{" "}
@@ -169,7 +170,7 @@ export default function RestApiDesignConciseArticle() {
             partial adoption of HATEOAS (using Link headers for pagination, for
             instance) reduces coupling between client and server by allowing the
             server to change URI structures without breaking clients.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Statelessness:</strong> Every request must carry all
             necessary context: authentication tokens (in Authorization headers,
@@ -189,7 +190,7 @@ export default function RestApiDesignConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The REST request lifecycle from a frontend application follows a
           well-defined sequence. The client first constructs a URL by combining
           the base API URL with the resource path and any query parameters for
@@ -201,8 +202,8 @@ export default function RestApiDesignConciseArticle() {
           client then selects the appropriate HTTP method based on the intended
           operation, attaches a request body for POST, PUT, or PATCH operations,
           and sends the request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On receiving the response, the frontend first inspects the status code
           to determine the broad outcome: success (2xx), redirection (3xx),
           client error (4xx), or server error (5xx). For success responses, it
@@ -216,12 +217,13 @@ export default function RestApiDesignConciseArticle() {
           subsequent conditional requests, Link for pagination URLs,
           X-RateLimit-Remaining for proactive rate limit management, and
           Cache-Control for client-side caching decisions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/rest-request-flow.svg"
           alt="REST Request Lifecycle from Frontend to API"
           caption="REST Request Lifecycle - Complete flow from URL construction through response handling in a frontend application"
+          captionTier="crucial"
         />
 
         <p>

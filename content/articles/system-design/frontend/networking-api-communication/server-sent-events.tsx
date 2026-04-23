@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +30,7 @@ export default function ServerSentEventsConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Server-Sent Events (SSE)</strong> is a W3C standard that
           enables servers to push real-time updates to clients over a single,
           long-lived HTTP connection. The client opens a standard HTTP GET
@@ -38,8 +39,8 @@ export default function ServerSentEventsConciseArticle() {
           connection open and writing discrete events as they occur. Unlike
           WebSockets, SSE is strictly unidirectional: data flows exclusively
           from server to client.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SSE was introduced as part of the HTML5 specification and is exposed
           to JavaScript through the <strong>EventSource API</strong>. The
           protocol is deliberately simple: it operates over plain HTTP, requires
@@ -49,8 +50,8 @@ export default function ServerSentEventsConciseArticle() {
           <strong>Last-Event-ID</strong> header. This simplicity made it a
           natural fit for notification feeds, live scoreboards, and activity
           streams throughout the 2010s.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff/principal level, what matters most is understanding SSE in
           the context of modern infrastructure. On HTTP/1.1, browsers enforce a
           limit of roughly six concurrent connections per origin, so each
@@ -67,18 +68,18 @@ export default function ServerSentEventsConciseArticle() {
           <code>ReadableStream</code> body, provides similar streaming semantics
           but lacks the auto-reconnect and Last-Event-ID resume features that
           EventSource provides out of the box.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding SSE deeply requires grasping six foundational concepts
           that govern how connections are established, maintained, and
           recovered:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>EventSource API:</strong> The browser-native interface for
             consuming SSE streams. Constructed with a URL (and optional
             configuration object), EventSource manages the connection lifecycle
@@ -88,8 +89,8 @@ export default function ServerSentEventsConciseArticle() {
             <code>onmessage</code> for unnamed events or{" "}
             <code>addEventListener</code> for named event types. Calling{" "}
             <code>close()</code> terminates the connection permanently.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Event Stream Format:</strong> The server writes plain text
             conforming to a simple line-oriented protocol. Each field starts
             with a keyword followed by a colon: <code>data:</code> carries the
@@ -100,8 +101,8 @@ export default function ServerSentEventsConciseArticle() {
             reconnecting. Events are delimited by a blank line (double newline).
             Lines beginning with a colon are comments, often used as keep-alive
             heartbeats.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Auto-Reconnection:</strong> When the connection drops
             (network failure, server restart, proxy timeout), EventSource
             automatically attempts to reconnect after a configurable delay. The
@@ -111,7 +112,7 @@ export default function ServerSentEventsConciseArticle() {
             detect disconnects or implement retry logic. The{" "}
             <code>readyState</code> transitions from OPEN back to CONNECTING
             during reconnection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Last-Event-ID:</strong> When reconnecting, EventSource
             automatically sends a <code>Last-Event-ID</code> HTTP header

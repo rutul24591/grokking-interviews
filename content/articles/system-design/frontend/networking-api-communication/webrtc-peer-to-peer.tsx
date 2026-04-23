@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function WebRtcPeerToPeerArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>WebRTC (Web Real-Time Communication)</strong> is a collection
           of protocols, APIs, and standards that enable real-time communication
           directly between browsers and devices without requiring a central
@@ -50,8 +51,8 @@ export default function WebRtcPeerToPeerArticle() {
           once a connection is established, data flows directly between peers,
           reducing latency, eliminating server bandwidth costs, and enabling
           decentralized architectures.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           WebRTC was initially developed by Google (acquired from Global IP
           Solutions in 2010) and open-sourced in 2011. It became a W3C
           recommendation in 2018 and is now supported in all major browsers
@@ -62,8 +63,8 @@ export default function WebRtcPeerToPeerArticle() {
           Transport Protocol) for encrypted media, SCTP (Stream Control
           Transmission Protocol) for data channels, and ICE (Interactive
           Connectivity Establishment) for NAT traversal.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, understanding WebRTC requires
           grasping the distinction between the signaling phase (establishing the
           P2P connection) and the media/data phase (actual communication).
@@ -74,8 +75,8 @@ export default function WebRtcPeerToPeerArticle() {
           traversal via STUN/TURN servers, encryption via DTLS, and media
           transport via SRTP. This separation gives developers flexibility in
           signaling while ensuring interoperable media transport.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business case for WebRTC is compelling for real-time
           applications. Server-relayed communication (e.g., WebSocket-based
           video) requires significant server bandwidth and introduces latency
@@ -88,17 +89,17 @@ export default function WebRtcPeerToPeerArticle() {
           relays), firewall restrictions may block P2P, and mobile networks may
           terminate idle connections. Understanding these trade-offs is critical
           for architecture decisions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebRTC is built on six foundational concepts that govern how
           peer-to-peer connections are established and maintained:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>RTCPeerConnection:</strong> The core WebRTC API that
             represents a P2P connection between two peers. It handles:
             negotiating capabilities via SDP (Session Description Protocol),
@@ -110,7 +111,7 @@ export default function WebRtcPeerToPeerArticle() {
             "connected" state. RTCPeerConnection manages the underlying UDP
             sockets, retransmissions, congestion control, and quality adaptation
             automatically.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SDP (Session Description Protocol):</strong> A text-based
             format for describing multimedia session capabilities. SDP includes:
@@ -124,7 +125,7 @@ export default function WebRtcPeerToPeerArticle() {
             SDP is opaque to applications -- developers treat it as a blob to
             transmit, not parse.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>ICE Candidates:</strong> Network addresses that a peer can
             receive data on. A peer typically has multiple candidates: host
             candidates (local IP addresses), server-reflexive candidates (public
@@ -134,8 +135,8 @@ export default function WebRtcPeerToPeerArticle() {
             priority order (host first, then server-reflexive, then relay) until
             a working pair is found. This process is called ICE gathering and
             connectivity checks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>STUN/TURN Servers:</strong> Infrastructure for NAT traversal.
             <strong>STUN (Session Traversal Utilities for NAT)</strong> servers
             help peers discover their public IP address. A peer sends a request
@@ -149,7 +150,7 @@ export default function WebRtcPeerToPeerArticle() {
             so it is used only when direct connection fails. Google provides free
             STUN servers (stun.l.google.com:19302); TURN requires self-hosting
             (coturn) or paid services (Twilio, Xirsys).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>RTCDataChannel:</strong> A bidirectional channel for
             arbitrary data transfer over an RTCPeerConnection. Data channels use

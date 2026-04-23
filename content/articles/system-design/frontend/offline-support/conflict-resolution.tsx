@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function ConflictResolutionConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Conflict resolution</strong> in the context of offline web
           applications refers to the set of strategies and algorithms used to
           reconcile divergent changes when two or more clients modify the same
@@ -46,8 +47,8 @@ export default function ConflictResolutionConciseArticle() {
           fundamental challenge is that without a central coordinator available
           at write time, clients inevitably produce conflicting versions of
           shared state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The theoretical roots trace back to Leslie Lamport&apos;s 1978 paper
           on logical clocks, which established that distributed systems cannot
           rely on physical time for ordering events. This led to the development
@@ -57,8 +58,8 @@ export default function ConflictResolutionConciseArticle() {
           application-level conflict resolution for mobile disconnected clients,
           introducing the concept of dependency checks and merge procedures that
           modern offline-first frameworks still build upon.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           From a staff/principal engineer perspective, the critical insight is
           rooted in the CAP theorem: offline-first applications fundamentally
           choose <strong>Availability</strong> and{" "}
@@ -70,8 +71,8 @@ export default function ConflictResolutionConciseArticle() {
           what happens when partitions heal. The choice of conflict resolution
           strategy directly impacts data integrity, user experience, system
           complexity, and operational cost.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Major production systems illustrate the spectrum of approaches. Google
           Docs pioneered Operational Transformation (OT) for real-time
           collaborative text editing, relying on a central server to serialize
@@ -82,18 +83,18 @@ export default function ConflictResolutionConciseArticle() {
           three-way merge with CloudKit as the coordination layer. Each approach
           reflects different tradeoffs between complexity, correctness, latency,
           and the nature of the data being synchronized.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding conflict resolution requires internalizing six
           foundational strategies, each with distinct guarantees, complexity
           profiles, and appropriate use cases:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Last-Write-Wins (LWW):</strong> The simplest conflict
             resolution strategy. Each write is tagged with a timestamp, and when
             conflicts are detected, the write with the latest timestamp is
@@ -106,7 +107,7 @@ export default function ConflictResolutionConciseArticle() {
             of actual event ordering. LWW is appropriate only for data where the
             latest value is genuinely the most correct (e.g., a user&apos;s
             last-known GPS location, a preference toggle, a read/unread status).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version Vectors / Vector Clocks:</strong> A mechanism for
             detecting concurrent modifications without relying on physical
@@ -283,12 +284,14 @@ export default function ConflictResolutionConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/conflict-detection-flow.svg"
           alt="Conflict Detection and Resolution Flow"
           caption="End-to-end conflict detection flow: two clients edit while offline, server detects conflict on sync, resolution strategy produces merged state"
+          captionTier="crucial"
         />
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/offline-support/crdt-convergence.svg"
           alt="CRDT Convergence Across Replicas"
           caption="CRDT convergence: three replicas receive operations in different orders but converge to the same final state"
+          captionTier="crucial"
         />
       </section>
 
@@ -409,17 +412,18 @@ export default function ConflictResolutionConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/conflict-strategies-comparison.svg"
           alt="Conflict Resolution Strategies Comparison Matrix"
           caption="Visual comparison of conflict resolution strategies across complexity, data safety, real-time capability, offline capability, and storage overhead"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices are distilled from production systems handling offline
           conflict resolution at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Choose the Right Conflict Granularity:</strong>{" "}
             Document-level conflicts force users to reconcile entire documents
             even when changes are in different sections. Field-level conflicts
@@ -428,8 +432,8 @@ export default function ConflictResolutionConciseArticle() {
             almost eliminates user-facing conflicts. For rich text,
             character-level CRDTs provide the finest granularity. Match
             granularity to your data model and expected edit patterns.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use CRDTs for Collaborative Real-time Features:</strong>{" "}
             When multiple users edit simultaneously, CRDTs provide the strongest
             convergence guarantees without central coordination. Libraries like
@@ -437,7 +441,7 @@ export default function ConflictResolutionConciseArticle() {
             JSON-like structures, and arrays efficiently. Evaluate whether your
             data model maps naturally to existing CRDT types before building
             custom solutions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement LWW Only for Non-critical Data:</strong> Reserve
             last-write-wins for data where the latest value is genuinely the
@@ -446,14 +450,14 @@ export default function ConflictResolutionConciseArticle() {
             LWW for user-generated content, financial data, or any data where
             losing a write would frustrate or harm the user.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Always Preserve Conflicting Versions:</strong> Never
             silently discard a conflicting version. Even when applying automatic
             resolution, store the &quot;losing&quot; version in a conflict log
             or revision history. This enables audit trails, undo, and manual
             recovery. CouchDB&apos;s approach of storing all conflicting
             revisions as a revision tree is a strong pattern to emulate.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Design Data Structures to Minimize Conflicts:</strong>{" "}
             Structural choices dramatically reduce conflict frequency. Use
@@ -688,13 +692,19 @@ export default function ConflictResolutionConciseArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: explain why offline-first implies eventual
+          consistency, how you detect concurrency (vector clocks/version
+          vectors), and how you choose a resolution strategy that matches the
+          data model and UX risk (data loss vs complexity).
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: Explain the difference between OT and CRDTs. When would you
               choose one over the other?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: OT and CRDTs both solve the concurrent editing problem but with
               fundamentally different architectures. OT transforms operations
               against concurrent operations, requiring a central server to
@@ -712,7 +722,7 @@ export default function ConflictResolutionConciseArticle() {
               libraries like Yjs have solved the practical challenges
               (performance, garbage collection, rich text support) that
               historically made CRDTs less practical than OT.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

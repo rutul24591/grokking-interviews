@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,15 +35,15 @@ export default function FileSystemAccessApiConciseArticle() {
           ============================================================ */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>File System Access API</strong> (formerly known as the Native File System API) is a web platform
           interface shipped in Chrome 86 (October 2020) that gives web applications the ability to read from and write
           to files and directories on the user&apos;s local device. Before this API, browser-based applications were
           limited to the read-only <code>{'<'}input type=&quot;file&quot;{'>'}
           </code> element and the one-shot download anchor trick for saving — neither of which supports the open-edit-save
           workflow that native desktop applications take for granted.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The API addresses two fundamentally different storage scenarios. First, the <strong>picker-based APIs</strong> (
           <code>showOpenFilePicker</code>, <code>showSaveFilePicker</code>, <code>showDirectoryPicker</code>) let users
           grant a web app permission to interact with real files on their disk. The user stays in control: every access
@@ -51,12 +52,12 @@ export default function FileSystemAccessApiConciseArticle() {
           that requires no user prompts at all. OPFS is invisible in the OS file explorer, managed entirely by the
           browser, and is designed for high-performance storage needs — think SQLite databases, application caches, and
           binary blobs that have no reason to live in the user&apos;s Documents folder.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Together these two surfaces enable a class of web applications that was previously impractical: code editors
           that save directly to disk, image editors that handle multi-gigabyte files, and offline-first apps that persist
           structured data via OPFS-backed SQLite — all without installing a single native binary.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -66,13 +67,13 @@ export default function FileSystemAccessApiConciseArticle() {
         <h2>Core Concepts</h2>
 
         <h3>Picker APIs and File Handles</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The three picker methods — <code>showOpenFilePicker()</code>, <code>showSaveFilePicker()</code>, and{" "}
           <code>showDirectoryPicker()</code> — are the primary entry points for interacting with the user&apos;s real
           file system. All three <strong>require a transient user activation</strong> (a click, tap, or keydown event)
           and return <code>Promise</code>-based results.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <code>showOpenFilePicker()</code> returns an array of <code>FileSystemFileHandle</code> objects. Each handle
           is a persistent reference to a specific file; it does not hold the file data itself. You call{" "}
           <code>handle.getFile()</code> to obtain a standard <code>File</code> blob for reading, and{" "}
@@ -80,39 +81,39 @@ export default function FileSystemAccessApiConciseArticle() {
           <code>showSaveFilePicker()</code> works similarly but opens a save dialog, creating a new file or overwriting
           an existing one. <code>showDirectoryPicker()</code> returns a <code>FileSystemDirectoryHandle</code> that
           provides methods to iterate entries, create subdirectories, and resolve paths within the tree.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           File type filters narrow what the picker displays. You pass an <code>accept</code> object mapping a
           human-readable description to an array of MIME types and/or extensions:{" "}
           <code>{'{'} description: &quot;Images&quot;, accept: {'{'} &quot;image/*&quot;: [&quot;.png&quot;, &quot;.jpg&quot;] {'}'} {'}'}</code>.
           The <code>multiple</code> option on <code>showOpenFilePicker</code> controls whether the user can select
           more than one file.
-        </p>
+        </HighlightBlock>
 
         <h3>Permissions and User Gestures</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Every picker call implicitly requests <strong>read permission</strong>. Write permission is separate: after
           obtaining a handle, you call <code>handle.requestPermission({'{'} mode: &quot;readwrite&quot; {'}'})</code>,
           which may trigger a second browser prompt asking the user to confirm edit access. You can check the current
           state with <code>handle.queryPermission()</code>, which returns <code>&quot;granted&quot;</code>,{" "}
           <code>&quot;denied&quot;</code>, or <code>&quot;prompt&quot;</code>.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Permissions persist for the lifetime of the page session. On reload, the handle remains valid (if serialized
           to IndexedDB), but permission resets to <code>&quot;prompt&quot;</code> — the user must re-grant via a gesture.
           Chrome 122 introduced an experimental <strong>persistent permissions</strong> feature that allows trusted
           installed PWAs to retain permissions across sessions, though this is still behind a flag for most sites.
-        </p>
+        </HighlightBlock>
 
         <h3>Origin Private File System (OPFS)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           OPFS is accessed via <code>navigator.storage.getDirectory()</code>, which returns a{" "}
           <code>FileSystemDirectoryHandle</code> representing the root of a per-origin sandbox. Unlike the picker APIs,
           OPFS does not require user interaction, does not surface files to the operating system, and is subject to the
           same quota management as IndexedDB and Cache API (typically a percentage of available disk space, evicted under
           storage pressure unless the origin has requested <code>navigator.storage.persist()</code>).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           OPFS truly shines in <strong>Web Workers</strong>, where you can obtain a{" "}
           <code>FileSystemSyncAccessHandle</code> via <code>fileHandle.createSyncAccessHandle()</code>. This
           synchronous handle exposes <code>read()</code>, <code>write()</code>, <code>truncate()</code>, and{" "}
@@ -120,10 +121,10 @@ export default function FileSystemAccessApiConciseArticle() {
           streams, and no async overhead. This is the mechanism that makes running <strong>SQLite compiled to
           Wasm</strong> in the browser practical: the SQLite VFS (Virtual File System) layer maps directly onto
           these synchronous I/O calls, achieving near-native read/write throughput.
-        </p>
+        </HighlightBlock>
 
         <h3>FileSystemWritableFileStream</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For the async (main-thread-compatible) path, writing goes through a{" "}
           <code>FileSystemWritableFileStream</code>. This is a <code>WritableStream</code> with three key methods:{" "}
           <code>write()</code> accepts a <code>Blob</code>, <code>ArrayBuffer</code>, <code>TypedArray</code>, or
@@ -131,7 +132,7 @@ export default function FileSystemAccessApiConciseArticle() {
           written to a temporary swap file and are only committed atomically when you call <code>close()</code>. If
           the tab crashes or you call <code>abort()</code>, the original file is untouched — a critical safety
           guarantee for editor-style applications.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -139,25 +140,27 @@ export default function FileSystemAccessApiConciseArticle() {
           ============================================================ */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The following diagram contrasts the two access paths. On the left, the picker-based flow requires explicit
           user gestures and permission grants to access real files on disk. On the right, OPFS provides a sandboxed
           virtual file system with no prompts, optimized for application-internal data.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-storage/file-system-api-architecture.svg"
           alt="File System Access API architecture showing the two paths: picker-based access to user's real files and OPFS sandboxed storage"
           caption="Figure 1: Two access paths — Picker APIs for user files vs. OPFS for application data"
+          captionTier="important"
         />
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The permission model is layered and session-scoped by default. Read access is granted implicitly when the
           user selects a file through a picker. Write access requires an explicit second grant. The diagram below
           shows the full permission lifecycle including what happens on page reload.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-storage/file-system-permissions.svg"
           alt="File System Access API permission flow showing read access, write access escalation, and session lifecycle"
           caption="Figure 2: Permission flow — read vs. write access and session lifecycle"
+          captionTier="crucial"
         />
       </section>
 
@@ -166,10 +169,10 @@ export default function FileSystemAccessApiConciseArticle() {
           ============================================================ */}
       <section>
         <h2>Trade-offs Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing the right storage surface depends on whether you need user-visible files, high-throughput binary I/O,
           structured queries, or simple key-value persistence. The table below compares the four most relevant options.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead>
@@ -234,10 +237,14 @@ export default function FileSystemAccessApiConciseArticle() {
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-sm text-muted">
+        <HighlightBlock
+          as="p"
+          tier="important"
+          className="mt-2 text-sm text-muted"
+        >
           *Safari supports OPFS but only the asynchronous methods — <code>createSyncAccessHandle</code> is not
           available in Safari as of early 2026. Firefox supports OPFS sync access in Workers.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* ============================================================
@@ -246,39 +253,39 @@ export default function FileSystemAccessApiConciseArticle() {
       <section>
         <h2>Best Practices</h2>
         <ol>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always initiate pickers from user gestures.</strong> The API requires transient activation. Calling{" "}
             <code>showOpenFilePicker()</code> from a <code>setTimeout</code> or a promise chain that has lost its
             activation context will throw a <code>SecurityError</code>. Wire pickers directly to{" "}
             <code>onClick</code> handlers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use OPFS for application-internal data.</strong> If the user does not need to see, rename, or move
             the files, OPFS is faster, simpler (no permissions), and available cross-browser. Reserve the picker APIs
             for workflows where the user explicitly chooses a file location.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle permission denial gracefully.</strong> Users can deny the permission prompt or revoke access
             at any time. Always wrap <code>requestPermission()</code> and <code>createWritable()</code> calls in
             try/catch blocks and provide clear UI feedback when access is lost. Do not retry prompts in a loop —
             browsers will suppress repeated requests.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Persist handles in IndexedDB for returning sessions.</strong> <code>FileSystemFileHandle</code> and{" "}
             <code>FileSystemDirectoryHandle</code> are structured-cloneable and can be stored in IndexedDB. On the next
             visit, retrieve the handle and call <code>queryPermission()</code> — if the user re-grants via a gesture, you
             skip the file picker entirely. This enables &quot;recent files&quot; lists.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Move heavy I/O to Web Workers.</strong> OPFS synchronous access handles are only available off the
             main thread. Even for picker-based files, reading large blobs in a Worker prevents UI jank. Transfer{" "}
             <code>ArrayBuffer</code> data between threads using <code>postMessage</code> with transferables.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always close writable streams.</strong> Forgetting to call <code>close()</code> on a{" "}
             <code>FileSystemWritableFileStream</code> means changes are never committed to disk. Use try/finally or
             the <code>using</code> keyword (TC39 Explicit Resource Management) where supported.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement feature detection, not browser detection.</strong> Check for the existence of{" "}
             <code>window.showOpenFilePicker</code> rather than sniffing the user agent. For OPFS, check{" "}
@@ -300,19 +307,19 @@ export default function FileSystemAccessApiConciseArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ol>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Assuming picker APIs work cross-browser.</strong> <code>showOpenFilePicker</code>,{" "}
             <code>showSaveFilePicker</code>, and <code>showDirectoryPicker</code> are Chromium-only (Chrome, Edge,
             Opera). Firefox and Safari have explicitly declined to implement these APIs, citing security and
             philosophical concerns about granting web apps persistent disk access. You must always provide a fallback
             path using <code>{'<'}input type=&quot;file&quot;{'>'}</code> and download anchors.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Confusing OPFS browser support with picker support.</strong> OPFS (
             <code>navigator.storage.getDirectory()</code>) has broader support — Chrome, Firefox, and Safari all
             implement the async surface. However, <code>createSyncAccessHandle()</code> is not available in Safari,
             which breaks Wasm-based SQLite in that browser. Test each capability independently.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Expecting permissions to survive page reload.</strong> By default, permissions reset when the page
             is unloaded. Developers who persist handles in IndexedDB often forget that the next session requires a
@@ -324,12 +331,12 @@ export default function FileSystemAccessApiConciseArticle() {
             JSON-serializable. You cannot <code>JSON.stringify()</code> a handle. You must store them in IndexedDB
             (which uses the structured clone algorithm) or transfer them via <code>postMessage</code> to Workers.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Blocking the main thread with large file operations.</strong> Even though{" "}
             <code>FileSystemWritableFileStream</code> is async, writing multi-gigabyte files on the main thread still
             causes GC pressure and jank. Offload large reads and writes to a Worker using OPFS sync access handles
             or by transferring buffers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not handling the AbortError from cancelled pickers.</strong> When a user dismisses the file picker
             without selecting a file, the promise rejects with an <code>AbortError</code>. This is not an exceptional
@@ -351,44 +358,46 @@ export default function FileSystemAccessApiConciseArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Code Editors</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           VS Code for the Web (<code>vscode.dev</code>) uses the File System Access API to open local folders, edit
           files, and save changes directly — replicating the desktop experience. The directory handle provides a
           complete view of the project tree, and write-back happens through <code>createWritable()</code>. For
           browsers that lack picker support, it falls back to a virtual file system backed by IndexedDB.
-        </p>
+        </HighlightBlock>
 
         <h3>Image and Design Editors</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Applications like Photopea and Figma leverage the API to open PSD, SVG, and proprietary design files
           from disk, edit them in a canvas-based editor, and save-as back to the original location or a new file.
           The ability to overwrite in place (rather than forcing a download) is the key UX improvement over the
           traditional download-anchor approach.
-        </p>
+        </HighlightBlock>
 
         <h3>Document and Spreadsheet Apps</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Google Docs and Sheets can open local <code>.docx</code> and <code>.xlsx</code> files via the picker,
           provide a web-based editing experience, and export changes back to the same file. This &quot;round-trip
           editing&quot; flow eliminates the friction of manually importing and exporting files.
-        </p>
+        </HighlightBlock>
 
         <h3>SQLite on OPFS</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code>sqlite3</code> Wasm build from the official SQLite project uses OPFS synchronous access handles
           as its VFS backend. This enables full SQL databases in the browser with ACID transactions, achieving
           read throughput within 2x of native SQLite. Projects like <code>wa-sqlite</code>,{" "}
           <code>sql.js-httpvfs</code>, and Absurd SQL also target OPFS. This pattern is rapidly becoming the
           standard for complex offline-first web applications that outgrow IndexedDB&apos;s key-value model.
-        </p>
+        </HighlightBlock>
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <p className="font-semibold">When NOT to Use the File System Access API</p>
+          <HighlightBlock as="p" tier="crucial" className="font-semibold">
+            When NOT to Use the File System Access API
+          </HighlightBlock>
           <ul className="mt-2 space-y-2 text-sm">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Simple file uploads</strong> — <code>{'<'}input type=&quot;file&quot;{'>'}</code> is sufficient,
               universally supported, and requires no feature detection.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Small key-value data</strong> — <code>localStorage</code> or IndexedDB are simpler and
               cross-browser.
@@ -397,10 +406,10 @@ export default function FileSystemAccessApiConciseArticle() {
               <strong>Cache/offline assets</strong> — Use the Cache API with a Service Worker. It is purpose-built
               for HTTP responses and integrates with the fetch pipeline.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Cross-browser requirement with no fallback budget</strong> — If you cannot afford to build
               and maintain a fallback path, avoid the picker APIs entirely.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
@@ -413,11 +422,11 @@ export default function FileSystemAccessApiConciseArticle() {
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: How would you architect a web-based code editor that supports opening, editing, and saving local project
               directories — and what happens on browsers that don't support the File System Access picker APIs?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               On Chromium browsers, use showDirectoryPicker() to obtain a FileSystemDirectoryHandle for the project
               root. Recursively iterate the directory with handle.entries() to build a file tree in memory. When the
               user opens a file, call fileHandle.getFile() to read its contents into the editor buffer. On save, call
@@ -429,15 +438,15 @@ export default function FileSystemAccessApiConciseArticle() {
               The key architectural insight is to abstract the file system behind an interface — a FileSystemProvider
               — so the editor code never directly calls browser APIs. This lets you swap implementations (native FS,
               OPFS, IndexedDB, even a remote backend) without changing the editor core.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Explain the difference between OPFS async methods and createSyncAccessHandle(). When would you choose
               one over the other?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               OPFS async methods (getFile(), createWritable()) work on the main thread and return promises. They are
               fine for occasional reads/writes of moderate-sized data. However, every await introduces microtask
               scheduling overhead and you cannot perform random-access reads (seek to offset, read N bytes) without
@@ -447,14 +456,14 @@ export default function FileSystemAccessApiConciseArticle() {
               may issue thousands of small reads per query. The synchronous handle also exclusively locks the file,
               preventing concurrent access. Use async methods for simple file I/O in the main thread. Use sync access
               handles in workers for high-throughput, low-latency, random-access workloads.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: What are the key security and privacy considerations when using the File System Access API?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               The File System Access API requires explicit user permission via a file picker dialog — sites cannot
               silently access arbitrary files. Permissions are granular (read vs read-write) and can be revoked by
               the user at any time. The API is only available in secure contexts (HTTPS). OPFS is origin-scoped,
@@ -464,14 +473,14 @@ export default function FileSystemAccessApiConciseArticle() {
               gracefully — the user may deny access on revisit. (4) Be aware that file handles stored in IndexedDB
               can become stale if the user moves or deletes the file. (5) For cross-origin resources, use CORS and
               avoid caching opaque responses.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Compare OPFS with IndexedDB for storing large binary data. When would you choose each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               OPFS excels at: large binary files (GB scale), random-access reads/writes via sync handles, file-like
               semantics (paths, directories), and high-throughput sequential I/O. IndexedDB excels at: structured
               data with indexes and queries, transactional guarantees, and widespread browser support. Choose OPFS
@@ -479,7 +488,7 @@ export default function FileSystemAccessApiConciseArticle() {
               random access. Choose IndexedDB for: application state, user preferences, structured records with
               secondary indexes, and when you need to support Firefox/Safari without OPFS. They often work together:
               OPFS for large binaries, IndexedDB for metadata and indexes.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

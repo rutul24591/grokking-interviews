@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function NetworkStatusDetectionConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Network status detection</strong> is the practice of
           determining whether a user&apos;s device has meaningful connectivity
           to the network and, more critically, whether it can reach your
@@ -48,8 +49,8 @@ export default function NetworkStatusDetectionConciseArticle() {
           always been notoriously unreliable because it only checks whether the
           network adapter is enabled, not whether packets can actually reach
           their destination.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The modern approach to connectivity detection combines multiple
           signals: the browser&apos;s native online/offline API for instant (but
           shallow) status, the Network Information API for connection quality
@@ -59,8 +60,8 @@ export default function NetworkStatusDetectionConciseArticle() {
           consumption, and the art of network status detection lies in balancing
           these trade-offs to produce a single, actionable connectivity state
           that the UI can trust.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At the staff and principal engineer level, this topic goes well beyond
           checking a boolean. You must reason about the{" "}
           <strong>&quot;lie-fi&quot; problem</strong>: the scenario where a user
@@ -74,8 +75,8 @@ export default function NetworkStatusDetectionConciseArticle() {
           the device is &quot;online,&quot; DNS resolves, and HTTP requests
           succeed but return the portal&apos;s HTML rather than your API&apos;s
           response.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The distinction between &quot;online&quot; (network adapter is up),
           &quot;connected&quot; (can reach the internet), and
           &quot;reachable&quot; (can reach your specific server) forms a
@@ -86,18 +87,18 @@ export default function NetworkStatusDetectionConciseArticle() {
           reliability of the connection, not just its binary existence, produce
           dramatically better user experiences than a simple online/offline
           toggle.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Network status detection in web applications relies on six fundamental
           primitives, each providing a different signal with distinct
           reliability and cost characteristics:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Navigator.onLine API:</strong> A synchronous boolean
             property (<code>navigator.onLine</code>) that returns{" "}
             <code>true</code> if the browser believes the device is connected to
@@ -113,7 +114,7 @@ export default function NetworkStatusDetectionConciseArticle() {
             accuracy is fundamentally limited. It will return <code>true</code>{" "}
             during lie-fi, captive portals, and server-side outages, making it
             insufficient as a sole connectivity indicator.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Online/Offline Events:</strong> The <code>window</code>{" "}
             object fires <code>online</code> and
@@ -271,9 +272,10 @@ export default function NetworkStatusDetectionConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/network-detection-layers.svg"
           alt="Network detection layers showing 5 stacked layers from network adapter status (least reliable) to fetch monitoring and heartbeat (most reliable)"
           caption="Network Detection Layers - Reliability increases from bottom (network adapter check) to top (active fetch monitoring), while speed decreases. A robust system combines all layers."
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The adaptive loading flow is a separate but complementary decision
           tree that runs whenever the connectivity state or connection quality
           changes. Rather than a binary &quot;show everything&quot; or
@@ -281,12 +283,13 @@ export default function NetworkStatusDetectionConciseArticle() {
           type to a specific experience tier, gracefully degrading the content
           and asset quality to match the user&apos;s actual bandwidth and
           latency conditions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/offline-support/adaptive-loading-flow.svg"
           alt="Adaptive loading decision tree branching from 4g (full experience) through 3g (standard) to 2g (lite) and slow-2g (minimal)"
           caption="Adaptive Loading Flow - Content quality and asset strategy are adjusted based on the effective connection type, with saveData as an override that always wins."
+          captionTier="important"
         />
       </section>
 
@@ -401,18 +404,19 @@ export default function NetworkStatusDetectionConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/network-detection-comparison.svg"
           alt="Comparison matrix of network detection methods showing accuracy, speed, battery impact, and lie-fi detection capabilities"
           caption="Network Detection Methods Comparison - Color-coded ratings highlight the trade-offs: no single method scores well across all dimensions."
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Building robust network status detection requires disciplined
           engineering practices that account for the inherent unreliability of
           network state:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>1. Never Trust navigator.onLine Alone:</strong> Treat{" "}
             <code>navigator.onLine</code> as a quick negative check (if{" "}
             <code>false</code>, you are definitely offline) but never as a
@@ -420,8 +424,8 @@ export default function NetworkStatusDetectionConciseArticle() {
             with a heartbeat ping before enabling online-dependent
             functionality. This is the single most common mistake in
             connectivity detection implementations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               2. Implement Exponential Backoff for Heartbeat Pings:
             </strong>{" "}
@@ -432,7 +436,7 @@ export default function NetworkStatusDetectionConciseArticle() {
             (detected via the Page Visibility API), reduce or pause heartbeats
             entirely to conserve battery. This adaptive frequency balances
             detection speed against resource consumption.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               3. Use the Network Information API for Adaptive Content:
@@ -505,12 +509,12 @@ export default function NetworkStatusDetectionConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Network status detection is deceptively simple at the API level but
           fraught with edge cases that cause real production issues:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Treating Online/Offline as Binary:</strong> The reality of
             network connectivity is a spectrum, not a switch. Between
             &quot;fully online with 100 Mbps fiber&quot; and &quot;completely
@@ -522,8 +526,8 @@ export default function NetworkStatusDetectionConciseArticle() {
             resolve hostnames but TCP is fine). Treating this as a boolean leads
             to broken UIs that show &quot;online&quot; when nothing works or
             &quot;offline&quot; when slow requests would eventually succeed.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-Pinging the Server:</strong> Sending heartbeat requests
             every 2-3 seconds is a common overreaction to the inaccuracy of{" "}
             <code>navigator.onLine</code>. At scale (millions of users), this
@@ -532,7 +536,7 @@ export default function NetworkStatusDetectionConciseArticle() {
             power-saving idle states, significantly draining battery. Use
             adaptive intervals: 30s when stable, faster only during transition
             periods, and pause entirely when the page is in the background.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Debouncing Status Transitions:</strong> Mobile devices
             frequently experience rapid online-offline- online flapping when
@@ -544,7 +548,7 @@ export default function NetworkStatusDetectionConciseArticle() {
             heartbeat verification on the online transition eliminates this
             issue.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Showing Disruptive &quot;You&apos;re Offline&quot; Modals:
             </strong>{" "}
@@ -555,7 +559,7 @@ export default function NetworkStatusDetectionConciseArticle() {
             punishes the user for a network condition they cannot control. Use a
             non-blocking banner or status indicator instead, and ensure all
             offline-compatible functionality remains accessible.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Handling Captive Portals:</strong> A captive portal is a
             WiFi network that intercepts HTTP requests and redirects them to a
@@ -705,13 +709,18 @@ export default function NetworkStatusDetectionConciseArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: articulate why connectivity is not binary (lie-fi,
+          captive portals, partial reachability), and propose a layered design
+          that combines signals into a small state machine the UI can trust.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: Why is navigator.onLine unreliable and how would you build a
               more accurate connectivity detection system?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <code>navigator.onLine</code> only checks whether the network
               adapter (WiFi, Ethernet, cellular radio) is enabled at the OS
               level. It performs no actual network request, DNS lookup, or
@@ -739,7 +748,7 @@ export default function NetworkStatusDetectionConciseArticle() {
               detection specifically, the heartbeat endpoint must return a known
               response body that the client validates, not just a 200 status
               code.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -747,7 +756,7 @@ export default function NetworkStatusDetectionConciseArticle() {
               Q: How would you implement adaptive loading based on the
               user&apos;s network conditions?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Adaptive loading adjusts content quality and asset strategy
               based on measured connection performance. I would start by
               checking <code>navigator.connection.saveData</code>. If{" "}
@@ -773,7 +782,7 @@ export default function NetworkStatusDetectionConciseArticle() {
               cellular). The implementation would use a React context provider
               that exposes the current connection tier to all components,
               allowing them to make rendering decisions accordingly.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

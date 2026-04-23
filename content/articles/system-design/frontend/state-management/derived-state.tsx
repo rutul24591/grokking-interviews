@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,19 +24,19 @@ export default function DerivedStateConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Derived state</strong> is any value that can be computed deterministically from existing state rather
           than being stored independently. The foundational principle is simple: <em>don{"'"}t store what you can compute</em>.
           If a value is a pure function of other state, it should be calculated on demand or memoized, never duplicated
           in a separate store or useState call.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Redundant state is one of the most prolific sources of bugs in frontend applications. When the same information
           lives in two places, they inevitably drift out of sync. A filtered list stored alongside the original list and
           the active filter is a classic example: updating the filter without recomputing the filtered list leaves stale
           data in the UI. The fix is not "remember to update both"—it is to eliminate the duplicate entirely and derive
           the filtered list every time it is needed.
-        </p>
+        </HighlightBlock>
         <p>
           The concept has deep roots. Spreadsheet formulas (1979, VisiCalc) were early derived state: cell C1 containing
           <code>=A1+B1</code> recomputes automatically when either input changes. MobX (2015) brought this idea to React
@@ -44,40 +45,44 @@ export default function DerivedStateConciseArticle() {
           itself adopted the pattern with <code>useMemo</code> in Hooks (2019), and Recoil (2020) extended it to
           asynchronous derived state via selectors.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At staff/principal level, understanding derived state is not optional. It directly impacts rendering performance,
           state architecture decisions, and the long-term maintainability of any non-trivial application. Choosing where
           and how to derive values—during render, in a memoized selector, or via automatic dependency tracking—is a
           design decision with significant downstream consequences.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Keep one source of truth, then pick a derivation mechanism that matches the scope: compute in render for cheap
+          values, memoize for expensive values, and use shared selectors for shared derivations.
+        </HighlightBlock>
         <p>Derived state rests on several interconnected ideas that determine how values are computed, cached, and propagated:</p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Computing During Render:</strong> The simplest form of derived state is a local variable computed
             inside the render function. If the parent state changes and the component re-renders, the derived value is
             automatically fresh. This approach is zero-cost when the computation is trivial (a boolean flag, a string
             concatenation, a simple filter on a small array). No hooks, no selectors—just a <code>const</code> in the
             function body.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>useMemo (React):</strong> When the computation is expensive (sorting thousands of items, complex
             transformations), <code>useMemo</code> caches the result and only recomputes when its dependency array changes.
             The key contract: useMemo is a <em>performance optimization</em>, not a semantic guarantee. React may discard
             cached values under memory pressure. Write code that works without useMemo, then add it to avoid redundant
             work. Incorrect dependency arrays are the number one source of stale derived state bugs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Reselect (createSelector):</strong> In Redux and similar stores, Reselect provides composable
             memoized selectors. A selector consists of <em>input selectors</em> (functions that extract slices of state)
             and an <em>output selector</em> (a function that computes the derived value from those slices). Memoization
             is based on referential equality of inputs: if no input selector returns a new reference, the cached output
             is returned immediately. Selectors compose naturally—one selector{"'"}s output becomes another{"'"}s input,
             forming a dependency graph.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Zustand Selectors with Shallow Equality:</strong> Zustand encourages deriving state via inline
             selectors passed to <code>useStore</code>. By default, Zustand uses strict equality (===) to determine if
@@ -97,12 +102,12 @@ export default function DerivedStateConciseArticle() {
             handles Suspense integration, caching, and dependency tracking. This is powerful for values that depend on
             server data—a user{"'"}s permissions derived from an API response, for example.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>The "Derive, Don{"'"}t Duplicate" Principle:</strong> Store the minimal canonical state. Everything
             else should be a function of that state. A shopping cart stores items with quantities and prices. The total
             is derived. The item count is derived. The "has items" boolean is derived. If you find yourself writing
             <code>setTotal(newTotal)</code> alongside <code>setItems(newItems)</code>, you have redundant state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Referential Stability:</strong> Derived values that return objects or arrays create new references
             on every computation. This breaks React{"'"}s shallow comparison for props and can cascade unnecessary
@@ -115,11 +120,11 @@ export default function DerivedStateConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Derived state forms a directed acyclic graph (DAG) where base state nodes sit at the roots and derived
           values flow downstream. Understanding this graph is critical for predicting when recomputation occurs and
           ensuring that changes propagate correctly without redundant work.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Dependency Graph Structure</h3>
@@ -144,6 +149,7 @@ export default function DerivedStateConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/derived-state-graph.svg"
           alt="Derived State Dependency Graph"
           caption="Dependency graph showing base state nodes flowing into derived values. Changing 'filter' recomputes downstream nodes but leaves unrelated state untouched."
+          captionTier="important"
         />
 
         <p>
@@ -158,14 +164,15 @@ export default function DerivedStateConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/selector-memoization.svg"
           alt="Selector Memoization Flow"
           caption="Memoized selector flow: input selectors are checked for referential equality. If unchanged, the cached result is returned immediately (green path). If changed, the output selector recomputes (orange path)."
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The memoization check is cheap—just reference comparisons on the input selector results. The expensive
           work (filtering, sorting, transforming) only runs when genuinely needed. This is why Reselect selectors
           scale well: even in stores with hundreds of state slices, a selector only recomputes when <em>its specific
           inputs</em> change, not when any state changes.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">When Recomputation Happens</h3>
@@ -181,6 +188,10 @@ export default function DerivedStateConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The trade-off is explicitness vs automation: dependency arrays (useMemo) and input selectors (Reselect) are
+          explicit but easy to get wrong; automatic tracking (MobX/Recoil) reduces boilerplate but can hide costs.
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -235,28 +246,37 @@ export default function DerivedStateConciseArticle() {
             </tr>
           </tbody>
         </table>
+        <HighlightBlock as="p" tier="important" className="mt-4">
+          Prefer <strong>useMemo</strong> for expensive per-component computations, <strong>Reselect</strong> for shared
+          derivations over a global store, and automatic tracking (<strong>MobX/Recoil</strong>) when the ecosystem already
+          fits your app and you can operationalize its debugging model.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Best practices are about avoiding redundant sources of truth and keeping derivations pure, stable, and cheap
+          to recompute. Memoize only when profiling shows it matters.
+        </HighlightBlock>
         <p>Follow these guidelines to implement derived state effectively:</p>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Start Without Memoization:</strong> Compute derived values as plain variables in the render function.
             Only add useMemo or selectors when profiling reveals a performance problem. Premature memoization adds
             complexity without measurable benefit for cheap computations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Store Minimal Canonical State:</strong> Ask "can I compute this from existing state?" before adding
             any new state variable. A <code>fullName</code> derived from <code>firstName</code> and <code>lastName</code>
             should never be stored separately. An <code>isValid</code> flag derived from form fields should never be
             in useState.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Reselect for Shared Derivations:</strong> When multiple components need the same derived value
             from a global store, use Reselect or equivalent memoized selectors. This ensures the computation runs once
             and the result is shared, rather than each component independently filtering/sorting the same data.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Keep Selectors Pure:</strong> Selectors must be pure functions with no side effects. They should
             not dispatch actions, mutate state, or trigger API calls. A selector receives state and returns a value—
@@ -287,31 +307,35 @@ export default function DerivedStateConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The biggest pitfall is duplicating derived state and then trying to keep it in sync with effects. The second
+          is breaking referential stability, which silently triggers re-render cascades.
+        </HighlightBlock>
         <p>These mistakes frequently appear in production codebases and interviews:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Storing Derived State in useState:</strong> The most common antipattern. Storing a filtered list
             in useState alongside the source list and filter creates two sources of truth. When state A changes, you
             must remember to update state B in a useEffect—introducing an extra render cycle, potential infinite loops,
             and guaranteed sync bugs. Derive it instead.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Incorrect useMemo Dependencies:</strong> Omitting a dependency causes the memoized value to be
             stale. Including an unstable reference (an object or array created during render) causes useMemo to
             recompute every render, defeating the purpose entirely. Both scenarios are common and insidious.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Selectors Returning New References:</strong> A selector like <code>state ={'&gt;'} ({'{'}
             items: state.items.filter(predicate) {'}'})</code> returns a new object on every call, even if the filtered
             array is identical. This triggers re-renders in every subscribed component. Use Reselect or shallow equality
             to prevent this.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-Memoizing:</strong> Wrapping every computation in useMemo, even trivial ones like
             <code>firstName + {'"'} {'"'} + lastName</code>. The overhead of memoization (storing previous values,
             comparing dependencies) can exceed the cost of the computation itself. Memoize when the computation is
             O(n) or worse, not O(1).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Synchronizing State with useEffect:</strong> Using <code>useEffect</code> to "sync" derived state
             is an antipattern documented by the React team. It causes double renders (one for the source change, one
@@ -333,19 +357,23 @@ export default function DerivedStateConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Derived state is pervasive in production applications. The goal is correctness (no drift) and predictable
+          performance (no redundant recomputation).
+        </HighlightBlock>
         <p>Derived state is pervasive in production applications:</p>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Filtered & Sorted Lists:</strong> E-commerce product grids, search results, and data tables.
             The canonical state is the full list plus filter/sort parameters. The displayed list is always derived.
             Libraries like TanStack Table make this explicit—columns, sorting, filtering, and pagination are all
             derived from the source data and configuration state.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Computed Totals & Aggregates:</strong> Shopping cart totals (subtotal, tax, shipping, discount,
             grand total) are all derived from cart items. Dashboard KPIs (average response time, 95th percentile,
             error rate) are derived from metrics data. Never store a total alongside its components.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Form Validity:</strong> Whether a form is valid, which fields have errors, and the error messages
             themselves are all derived from the current field values and validation rules. Libraries like React Hook
@@ -391,10 +419,14 @@ export default function DerivedStateConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Strong answers emphasize “single source of truth”, explain how memoization works, and call out the failure
+          modes (stale deps, unstable references, over-memoization).
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What is derived state, and why should you avoid storing it in useState?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Derived state is any value that can be computed from other existing state. Storing it in useState
               creates a second source of truth that must be kept in sync with the original state. This synchronization
               is typically done via useEffect, which introduces an extra render cycle (the component renders with stale
@@ -402,12 +434,12 @@ export default function DerivedStateConciseArticle() {
               place that updates the source state must also update the derived state, or the two will diverge. The
               correct approach is to compute the value during render (as a const) or memoize it with useMemo if the
               computation is expensive. This guarantees the derived value is always consistent with its source.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How does Reselect's memoization work, and when does a selector recompute?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Reselect's createSelector takes one or more input selectors and an output selector. On each call,
               it runs the input selectors and compares their return values to the previously cached values using strict
               referential equality (===). If all input selectors return the same references as the previous invocation,
@@ -416,12 +448,12 @@ export default function DerivedStateConciseArticle() {
               recomputes only when the specific slice of state it depends on actually changes—not when any state changes.
               The key implication is that input selectors should return stable references; a selector that creates a new
               array or object on every call will defeat memoization.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you decide between computing during render, useMemo, and Reselect?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The decision follows a progression based on cost and scope. For cheap computations (boolean checks,
               string concatenation, filtering small arrays under ~100 items), compute as a plain variable during
               render—no memoization needed. For expensive computations (sorting thousands of items, complex
@@ -431,7 +463,7 @@ export default function DerivedStateConciseArticle() {
               referential stability that prevents downstream re-renders. MobX computed is preferred when using MobX
               because it handles dependency tracking automatically. The anti-pattern to avoid in all cases is storing
               the derived value in separate state and syncing it manually.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Offline-First Architecture</strong> is a design philosophy
           where applications are built to function fully without a network
           connection, treating connectivity as an enhancement rather than a
@@ -45,8 +46,8 @@ export default function OfflineFirstArchitectureConciseArticle() {
           assuming the network is always available and degrading gracefully when
           it is not, offline-first applications assume the network is
           unavailable and upgrade the experience when connectivity is detected.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The evolution of this thinking follows a clear trajectory. Early web
           applications were strictly online-only, rendering every page on the
           server. The rise of SPAs introduced offline-capable patterns, where
@@ -59,8 +60,8 @@ export default function OfflineFirstArchitectureConciseArticle() {
           applications where data ownership resides with the user, collaboration
           happens via CRDTs, and servers are optional relay nodes rather than
           the source of truth.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Why does this matter at the staff/principal level? Because network
           reliability is a spectrum, not a binary state. Even on 5G, users
           experience micro-disconnections in elevators, tunnels, airplanes, and
@@ -75,17 +76,17 @@ export default function OfflineFirstArchitectureConciseArticle() {
           environments. The philosophical shift is fundamental: stop treating
           the network as a given, and start treating it as an unreliable,
           optional enhancement.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Offline-first architecture rests on six foundational pillars that
           collectively enable a seamless experience regardless of connectivity:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Local-First Data:</strong> All reads and writes target a
             local data store before anything touches the network. IndexedDB is
             the primary browser-based option, offering asynchronous access to
@@ -95,8 +96,8 @@ export default function OfflineFirstArchitectureConciseArticle() {
             relational query capability in the browser. The local store is the
             source of truth for the UI at all times. The server is a peer, not
             the authority.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Sync Engine:</strong> The sync engine is the most
             architecturally significant component. It runs in the background
             (often in a service worker or dedicated Web Worker) and reconciles
@@ -105,7 +106,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
             Production sync engines like Replicache, ElectricSQL, and PowerSync
             provide battle-tested implementations. Building one from scratch is
             a multi-month engineering effort that most teams underestimate.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Optimistic Writes:</strong> When a user performs an action,
             the UI updates immediately based on the local write. There is no
@@ -129,7 +130,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
             detection entirely by ensuring all operations commute, but they
             constrain the data model.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Queue-Based Mutations (Outbox Pattern):</strong> All write
             operations are appended to a persistent outbox queue in IndexedDB
             rather than sent directly to the server. When connectivity resumes,
@@ -138,7 +139,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
             exponential backoff or flag it for user intervention. This pattern
             guarantees that no user action is lost, even across browser
             restarts, because the queue is durable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Progressive Data Loading:</strong> The UI renders in layers:
             first a skeleton, then cached data from the local store (which may
@@ -179,6 +180,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/offline-first-architecture.svg"
           alt="Offline-First Layered Architecture Diagram"
           caption="Offline-First Architecture - UI reads/writes locally, sync engine handles background reconciliation with the server"
+          captionTier="crucial"
         />
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
@@ -231,6 +233,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/offline-first-sync-flow.svg"
           alt="Offline-First Sync Flow Diagram"
           caption="Sync Flow - Shows the complete lifecycle from local write through offline queuing to server reconciliation"
+          captionTier="important"
         />
       </section>
 
@@ -326,15 +329,16 @@ export default function OfflineFirstArchitectureConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/offline-first-vs-online-first.svg"
           alt="Offline-First vs Online-First Comparison"
           caption="Online-First introduces latency and spinners; Offline-First delivers instant UI by writing locally and syncing in the background"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices are distilled from production offline-first systems at
           scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
           <li>
             <strong>Use IndexedDB, Not localStorage:</strong> localStorage is
@@ -343,27 +347,27 @@ export default function OfflineFirstArchitectureConciseArticle() {
             with indexes, handles megabytes to gigabytes of data, and supports
             transactions. Use a wrapper like Dexie.js to tame its verbose API.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement the Outbox Pattern:</strong> Never send mutations
             directly to the server. Write them to a persistent outbox queue in
             IndexedDB, then let the sync engine drain the queue. This guarantees
             durability across page refreshes, browser crashes, and connectivity
             changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version All Synced Records:</strong> Every record that
             participates in sync must carry a version identifier (monotonic
             counter, Lamport timestamp, or hash). Without versioning, the sync
             engine cannot detect conflicts or determine which version is newer.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design Idempotent Operations:</strong> Every mutation in the
             outbox must be safe to replay. If the sync engine sends a mutation
             but does not receive a confirmation (network timeout), it will
             retry. If the operation is not idempotent, the retry will cause
             duplicates or incorrect state. Use idempotency keys and upsert
             semantics.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle Merge Conflicts at the Field Level:</strong>{" "}
             Document-level conflict resolution (last-write-wins on the entire
@@ -371,13 +375,13 @@ export default function OfflineFirstArchitectureConciseArticle() {
             the description, merging at the field level preserves both changes.
             This requires tracking changes per field, not per document.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Show Sync Status to Users:</strong> Users need to know
             whether they are online, offline, syncing, or have unsynced changes.
             A subtle sync indicator (similar to Google Docs' "All changes saved"
             / "Saving..." / "Offline") builds trust and sets correct
             expectations about data freshness.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Exponential Backoff for Sync Retries:</strong>{" "}
             When the server is unreachable, the sync engine should not hammer
@@ -541,13 +545,18 @@ export default function OfflineFirstArchitectureConciseArticle() {
 
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: describe the local-first read/write path, the durable
+          outbox + sync engine, and how you ensure correctness under retries,
+          conflicts, and storage eviction.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How would you design an offline-first architecture for a
               collaborative note-taking app?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Start with IndexedDB as the local store using a library like
               Dexie.js. All reads and writes go to IndexedDB first, so the UI is
               always responsive. Implement an outbox pattern: every user edit
@@ -562,7 +571,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
               not the source of truth. On first load, hydrate IndexedDB from the
               server, then switch to local-first reads. Show a sync status
               indicator so users know when changes are saved remotely.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -570,7 +579,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
               Q: What are the key differences between offline-capable and
               offline-first?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Offline-capable treats offline as an edge case: the app is
               designed for online use and adds caching (usually via service
               workers) so it does not completely break when the network drops.
@@ -585,7 +594,7 @@ export default function OfflineFirstArchitectureConciseArticle() {
               (offline-first requires version vectors), conflict handling
               (offline-capable rarely needs it), and testing strategy
               (offline-first must test sync edge cases).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

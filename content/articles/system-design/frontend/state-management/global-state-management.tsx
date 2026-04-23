@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,20 +24,20 @@ export default function GlobalStateManagementConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Global state management</strong> refers to the practice of maintaining application-wide state in a
           centralized or coordinated data structure that is accessible by any component in the tree, regardless of its
           position in the hierarchy. It exists to solve a fundamental tension in component-based UI architectures: components
           are designed to be self-contained, yet real applications require many components to share and react to the same
           data — user authentication, shopping carts, theme preferences, notification counts, and multi-step form state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Without global state management, developers resort to <strong>prop drilling</strong> — passing data through
           every intermediate component between the source and the consumer. In a deeply nested tree with 8-12 levels
           (common in enterprise applications), this creates tight coupling, verbose code, and maintenance nightmares.
           Lifting state to a common ancestor works for small trees but breaks down as applications scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The evolution of global state management in React follows a clear lineage. Facebook introduced the{" "}
           <strong>Flux architecture</strong> in 2014 to solve the cascading update problem in their notification system,
           where bidirectional data flow caused state inconsistencies. Flux enforced <strong>unidirectional data flow</strong>:
@@ -44,35 +45,39 @@ export default function GlobalStateManagementConciseArticle() {
           introducing a single store with pure reducer functions and middleware for side effects. Redux became the de facto
           standard but drew criticism for excessive boilerplate — a simple counter required actions, action creators, reducers,
           and selectors.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This boilerplate fatigue spurred a new generation of solutions. <strong>MobX</strong> (2015) embraced mutable
           observable state with automatic dependency tracking. <strong>Zustand</strong> (2019) stripped state management to
           its essence — a hook-based store with no providers. <strong>Recoil</strong> (2020, Facebook) and <strong>Jotai</strong>{" "}
           (2020, Poimandres) introduced atomic state models where state is composed bottom-up from independent atoms rather
           than top-down from a monolithic store. Each solution reflects a different philosophy about how state should be
           structured, accessed, and updated.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The interview-relevant core is understanding the <strong>update propagation model</strong> (who re-renders when),
+          and how each library makes trade-offs between explicitness, ergonomics, and performance.
+        </HighlightBlock>
         <p>
           Understanding global state management requires grasping the architectural patterns that underpin each library
           and the problems they optimize for.
         </p>
 
         <h3>Flux Architecture & Unidirectional Data Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Flux established the principle that state changes should flow in one direction: user interactions produce{" "}
           <strong>actions</strong> (plain objects describing what happened), which are processed by <strong>dispatchers</strong>{" "}
           and applied by <strong>stores</strong>, which notify <strong>views</strong> to re-render. This eliminates the
           "cascading update" problem where a model updating another model triggers an unpredictable chain of changes.
           Every state mutation is traceable from action to final state, enabling deterministic debugging.
-        </p>
+        </HighlightBlock>
 
         <h3>Redux: Single Store with Reducers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redux distills Flux into three principles: (1) the entire application state lives in a <strong>single
           immutable store</strong>, (2) state can only change by dispatching actions, and (3) changes are made by{" "}
           <strong>pure reducer functions</strong> that take (state, action) and return new state. This creates a
@@ -82,7 +87,7 @@ export default function GlobalStateManagementConciseArticle() {
           patterns), and RTK Query (data fetching and caching). Middleware like redux-thunk and redux-saga handle
           side effects by intercepting actions before they reach reducers. Selectors (often memoized with Reselect)
           derive computed data from the store, preventing unnecessary re-renders.
-        </p>
+        </HighlightBlock>
 
         <h3>Zustand: Minimal External Store</h3>
         <p>
@@ -123,7 +128,7 @@ export default function GlobalStateManagementConciseArticle() {
         </p>
 
         <h3>Context API Limitations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           React{"'"}s built-in Context API is often misidentified as a state management solution. In reality, it is
           a <strong>dependency injection mechanism</strong> — it broadcasts a value down the tree. The critical
           limitation: when a context value changes, <strong>every consumer of that context re-renders</strong>,
@@ -132,19 +137,19 @@ export default function GlobalStateManagementConciseArticle() {
           <code>theme</code> forces every consumer that only reads <code>cart</code> to re-render. This makes
           Context unsuitable for frequently changing state. It works well for low-frequency, broadly consumed
           values like locale, theme, and authentication status.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Each state management library implements a distinct architecture for how state updates propagate
           to components. Understanding these architectures is essential for choosing the right tool and
           debugging performance issues.
-        </p>
+        </HighlightBlock>
 
         <h3>Redux: Centralized Dispatch Cycle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redux follows a strict unidirectional cycle. A component calls <code>dispatch(action)</code>.
           The action passes through the middleware chain (where async operations like API calls happen).
           The root reducer (composed of slice reducers) produces a new state object. The store notifies
@@ -152,16 +157,17 @@ export default function GlobalStateManagementConciseArticle() {
           functions against the new state. React re-renders only components whose selected value changed
           (referential equality check). DevTools can record every action and state snapshot, enabling
           time-travel debugging.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/redux-data-flow.svg"
           alt="Redux Unidirectional Data Flow Diagram"
           caption="Redux data flow: UI dispatches actions through middleware, reducers produce new state, selectors trigger targeted re-renders"
+          captionTier="important"
         />
 
         <h3>Comparing Architectures</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The four major paradigms differ fundamentally in how state is structured and how updates
           propagate. Redux uses a single centralized store where all state lives in one immutable tree — updates
           go through a dispatch-reduce cycle and components subscribe via selectors. Zustand also uses an
@@ -172,16 +178,17 @@ export default function GlobalStateManagementConciseArticle() {
           observable tree where mutations are tracked automatically — components wrapped in{" "}
           <code>observer</code> re-render only when their specifically accessed observables change,
           requiring zero manual subscription management.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/state-library-comparison.svg"
           alt="State Management Library Architecture Comparison"
           caption="Architectural comparison: Redux (centralized store), Zustand (external store with subscriptions), Recoil/Jotai (atom graph), MobX (observable tree)"
+          captionTier="important"
         />
 
         <h3>The Context Re-render Problem</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Context API{"'"}s re-render behavior is the primary reason it cannot serve as a general-purpose state
           management solution. When a Provider{"'"}s value changes (even if only one property in a value object
           changes), React triggers a re-render for <strong>every</strong> component that calls{" "}
@@ -189,21 +196,22 @@ export default function GlobalStateManagementConciseArticle() {
           use <code>useSyncExternalStore</code> with selector-based subscriptions, meaning only
           components whose selected slice of state actually changed will re-render. This difference
           becomes critical in applications with 50+ components consuming shared state.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/context-rerender-problem.svg"
           alt="Context API Re-render Problem vs Zustand Subscriptions"
           caption="Context API re-renders ALL consumers on any value change; Zustand only re-renders components whose selected state changed"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Selecting a state management solution requires weighing multiple dimensions. The following comparison
           covers the most decision-relevant factors for production applications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 overflow-x-auto rounded-lg border border-theme">
           <table className="w-full text-sm">
@@ -295,7 +303,7 @@ export default function GlobalStateManagementConciseArticle() {
           </table>
         </div>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Key trade-off dimensions:</strong> Redux offers the strongest ecosystem and debugging tools
           but at the cost of boilerplate and learning curve. Zustand provides the best ratio of power to
           simplicity, with a 1KB bundle and near-zero API surface. Atomic libraries (Recoil/Jotai) excel when
@@ -303,36 +311,40 @@ export default function GlobalStateManagementConciseArticle() {
           centralized stores. MobX is the most "magical" — it requires the least explicit code but its
           proxy-based reactivity can surprise developers who expect explicit subscriptions. Context API should
           only be used for low-frequency, broadly consumed values.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The staff-level posture is to keep global state <strong>small</strong>, <strong>selectable</strong>, and
+          <strong>testable</strong>. Most production pain comes from over-globalization and broad subscriptions.
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate server state from client state:</strong> Use React Query, SWR, or RTK Query for
             server-fetched data (API responses, cached entities). Reserve global state for truly client-side
             concerns: UI state, user preferences, form wizards, and optimistic updates. Mixing the two leads to
             stale data bugs and redundant cache invalidation logic.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use selectors aggressively:</strong> Never subscribe to the entire store. In Redux, use
             Reselect{"'"}s <code>createSelector</code> for memoized derived data. In Zustand, always pass a
             selector: <code>useStore(s ={'&gt;'} s.count)</code> rather than <code>useStore()</code>. This is
             the single most impactful performance optimization for global state.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Normalize complex relational data:</strong> When storing entities with relationships
             (users, posts, comments), normalize into flat maps keyed by ID rather than nested objects.
             Redux Toolkit{"'"}s <code>createEntityAdapter</code> provides this out of the box. Normalization
             eliminates data duplication and makes updates O(1) instead of requiring deep traversal.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keep state minimal and derived:</strong> Store the minimum source-of-truth data and compute
             everything else via selectors or computed values. If you can derive it from existing state, do not
             store it separately. This prevents state synchronization bugs where derived values fall out of sync
             with their sources.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Co-locate state with its closest consumer:</strong> Not all shared state needs to be global.
             Use local component state for UI concerns (form inputs, toggle visibility, scroll position). Use
@@ -361,27 +373,31 @@ export default function GlobalStateManagementConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The most common failure mode is making state global by default. The second is subscribing too broadly and
+          then chasing re-render perf regressions.
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Over-globalizing state:</strong> The most pervasive anti-pattern. Putting form input values,
             modal open/close state, or component-specific UI state in a global store. This creates unnecessary
             coupling, hurts performance (global state changes trigger more subscription checks), and makes
             components harder to reuse. A good rule: if only one component or one subtree uses the state, it
             should not be global.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Subscribing to the entire store:</strong> Calling <code>useStore()</code> without a selector
             means every state change triggers a re-render in that component, even if the component only uses one
             property. In Redux, using <code>useSelector(state ={'&gt;'} state)</code> defeats the entire purpose of
             selectors. This is the number one performance issue in global state implementations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Putting server state in Redux:</strong> Before React Query and SWR existed, storing API
             responses in Redux was the standard approach. Today, this is an anti-pattern. Server state has
             fundamentally different concerns (caching, invalidation, background refetching, optimistic updates,
             pagination) that dedicated libraries handle far better. Redux then stores stale data that requires
             manual cache invalidation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mutating state directly (Redux/Zustand):</strong> In vanilla Redux, directly mutating state
             in a reducer breaks change detection and DevTools. RTK uses Immer internally to allow "mutative"
@@ -401,46 +417,46 @@ export default function GlobalStateManagementConciseArticle() {
             create a new reference every render. Use <code>createSelector</code> or stable function references.
             In Zustand, use <code>shallow</code> equality when selecting objects or arrays.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not handling hydration mismatches:</strong> Global state persisted to localStorage will
             differ from server-rendered HTML, causing hydration errors. Use patterns like{" "}
             <code>skipHydration</code> (Zustand) or deferred initialization to avoid SSR/client mismatches.
             Always account for the case where persisted state is undefined or has an outdated schema.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Global state management shines in specific scenarios where state is genuinely shared across
           distant parts of the component tree and changes frequently enough to matter.
-        </p>
+        </HighlightBlock>
 
         <h3>Authentication & User Session</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authentication state (current user, roles, permissions, tokens) is the canonical global state use case.
           It is needed by the navigation bar, route guards, API interceptors, feature flags, and profile
           components. This state changes infrequently (login/logout events) but is read everywhere. Context API
           is actually appropriate here due to low update frequency. For more complex scenarios (token refresh,
           permission checks), Zustand or Redux provide better structure.
-        </p>
+        </HighlightBlock>
 
         <h3>UI Preferences & Theme</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Dark/light theme, locale, sidebar collapse state, and layout preferences need to be accessible globally
           and persisted across sessions. These are low-frequency updates that affect many components. Zustand
           with persist middleware is an excellent fit — minimal overhead, automatic localStorage sync, and
           SSR-safe hydration patterns.
-        </p>
+        </HighlightBlock>
 
         <h3>Shopping Cart & Multi-Step Workflows</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           E-commerce carts must be accessible from product pages, the header badge, checkout flow, and mini-cart
           overlay. Cart state involves complex operations (add, remove, update quantity, apply coupons, calculate
           totals). Redux or Zustand handle this well because the state is complex enough to benefit from structured
           actions and derived computations (total price, item count, discount calculations).
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border-l-4 border-orange-400 bg-panel-soft p-4">
           <h4 className="mb-2 font-semibold text-orange-400">When NOT to Use Global State</h4>
@@ -468,10 +484,14 @@ export default function GlobalStateManagementConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Strong answers describe a decision framework: classify the state (local vs global vs server), then choose the
+          simplest tool that supports selectors, debugging, and team-scale maintainability.
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-5">
           <h3 className="mb-3 text-lg font-semibold">Q: When would you choose Zustand over Redux for a new project?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Choose Zustand when you need shared client state without the ceremony. Zustand excels in small-to-mid-sized
             applications and even large apps that do not require Redux's ecosystem (RTK Query, extensive middleware
             chains, established team patterns). Concrete decision points: (1) <strong>Bundle sensitivity</strong> — Zustand
@@ -481,17 +501,17 @@ export default function GlobalStateManagementConciseArticle() {
             Zustand stores work outside React (in utility modules, tests, or SSR contexts) without wrapping the app.
             (4) <strong>Flexibility</strong> — Zustand does not enforce a specific pattern; you can use plain setState,
             Immer, or opinionated slices.
-          </p>
-          <p className="mt-2">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-2">
             Choose Redux when: the team already knows it, you need RTK Query for data fetching, you require time-travel
             debugging across a complex action history, or you are building an enterprise application where Redux's
             strict patterns enforce consistency across a large team.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-5">
           <h3 className="mb-3 text-lg font-semibold">Q: Why is Context API not a state management solution?</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Context API solves <strong>dependency injection</strong>, not state management. It provides a way to pass
             values down the tree without prop drilling, but it has no built-in mechanism for: (1) <strong>Selective
             subscriptions</strong> — there is no selector API, so all consumers re-render when any part of the context
@@ -499,14 +519,14 @@ export default function GlobalStateManagementConciseArticle() {
             (3) <strong>Middleware/side effects</strong> — no way to intercept updates for logging, async operations,
             or validation. (4) <strong>DevTools</strong> — no action history, no time-travel, no state inspection
             beyond React DevTools.
-          </p>
-          <p className="mt-2">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-2">
             The re-render problem is the critical issue. If your context provides <code>{'{ user, theme, notifications }'}</code>{" "}
             and <code>notifications</code> updates every 5 seconds, every component consuming <code>user</code> or{" "}
             <code>theme</code> re-renders too. The workaround — splitting into many small contexts — creates its own
             maintenance burden and "provider hell" (deeply nested wrappers). Context is appropriate for{" "}
             <strong>low-frequency, broadly consumed values</strong> like theme, locale, and auth status.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-5">

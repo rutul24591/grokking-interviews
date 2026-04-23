@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,22 +24,22 @@ export default function CookiesConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An <strong>HTTP cookie</strong> is a small piece of data (up to ~4 KB) that a server sends to a
           user&rsquo;s browser via the <code>Set-Cookie</code> response header. The browser stores it and
           automatically attaches it to every subsequent request to the same origin via the <code>Cookie</code>{" "}
           request header. Cookies were invented by Lou Montulli at Netscape in 1994 to solve a fundamental
           problem of the stateless HTTP protocol: how does a server remember who you are between requests?
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The formal specification is <strong>RFC 6265</strong> (HTTP State Management Mechanism, 2011),
           which superseded the original Netscape cookie spec and RFC 2965. Cookies remain the{" "}
           <em>only</em> browser storage mechanism that is automatically sent with every HTTP request --
           this is both their superpower and their primary performance concern. Unlike{" "}
           <code>localStorage</code>, <code>sessionStorage</code>, or IndexedDB, cookies are inherently
           server-readable without any client-side JavaScript intervention.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cookies are the original web storage mechanism. Before the Web Storage API (2009) and IndexedDB
           (2015), cookies were the sole option for persisting client-side state. Today, they remain
           indispensable for authentication (session IDs, JWTs), CSRF protection, server-side personalization,
@@ -46,23 +47,23 @@ export default function CookiesConciseArticle() {
           landscape has shifted dramatically: third-party cookie deprecation, SameSite enforcement, CHIPS
           (Cookies Having Independent Partitioned State), and privacy regulations like GDPR and ePrivacy
           have fundamentally changed how cookies are used in modern applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In system design interviews, cookies surface in discussions about authentication architecture,
           cross-origin security, session management, and the trade-offs between server-readable state
           (cookies) and client-only state (Web Storage). Understanding cookie attributes at depth -- not
           just that they exist, but <em>why</em> each flag matters -- distinguishes staff-level candidates.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
 
         <h3>Set-Cookie Header Attributes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a server wants to set a cookie, it sends a <code>Set-Cookie</code> header in the HTTP
           response. Each attribute controls a different dimension of the cookie&rsquo;s behavior:
-        </p>
+        </HighlightBlock>
         <ul>
           <li>
             <strong>Domain:</strong> Specifies which hosts the cookie is sent to. If set to{" "}
@@ -85,26 +86,26 @@ export default function CookiesConciseArticle() {
             <em>session cookie</em> that is deleted when the browser closes (though modern browsers with
             session restore may persist them). Setting <code>Max-Age=0</code> immediately deletes the cookie.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Secure:</strong> The cookie is only sent over HTTPS connections. This prevents
             man-in-the-middle attacks on unsecured networks from sniffing session tokens. All
             authentication cookies must use this flag. As of 2024, Chrome requires <code>Secure</code>{" "}
             for any cookie with <code>SameSite=None</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>HttpOnly:</strong> The cookie is inaccessible to JavaScript via{" "}
             <code>document.cookie</code>, <code>XMLHttpRequest</code>, and the Fetch API. This is the
             primary defense against XSS-based session hijacking. If an attacker injects a script, they
             cannot exfiltrate <code>HttpOnly</code> cookies. This flag should be set on all session and
             authentication cookies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>SameSite:</strong> Controls whether the cookie is sent on cross-site requests. Three
             values exist: <code>Strict</code> (never sent cross-site), <code>Lax</code> (sent only on
             top-level navigations like clicking a link), and <code>None</code> (always sent, but requires{" "}
             <code>Secure</code>). Since Chrome 80 (2020), the default is <code>Lax</code> when no
             SameSite attribute is specified.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3>Cookie Prefixes</h3>
@@ -113,13 +114,13 @@ export default function CookiesConciseArticle() {
           preventing subdomain or path attacks:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>__Host-:</strong> The strictest prefix. Cookies with this prefix must be set with{" "}
             <code>Secure</code>, must not have a <code>Domain</code> attribute (locked to the exact host),
             and must have <code>Path=/</code>. This prevents a compromised subdomain from overwriting the
             parent domain&rsquo;s session cookie. Example:{" "}
             <code>Set-Cookie: __Host-session=abc123; Secure; Path=/; HttpOnly</code>.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>__Secure-:</strong> A lighter constraint. The cookie must be set with the{" "}
             <code>Secure</code> flag but can have a <code>Domain</code> attribute. This ensures the cookie
@@ -156,17 +157,17 @@ export default function CookiesConciseArticle() {
         </p>
 
         <h3>Cookie Jar Limits</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browsers impose limits on cookie storage. RFC 6265 recommends at least 50 cookies per domain
           and 4096 bytes per cookie (including name, value, and attributes). In practice, modern browsers
           allow approximately 180 cookies per domain (Chrome, Firefox) with 4 KB per individual cookie.
           Total storage across all domains is typically capped at around 3200 cookies. When limits are
           exceeded, browsers evict older or least-recently-used cookies silently -- there is no error or
           callback to the application.
-        </p>
+        </HighlightBlock>
 
         <h3>First-Party vs. Third-Party Cookies</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A <strong>first-party cookie</strong> is set by the domain in the browser&rsquo;s address bar.
           A <strong>third-party cookie</strong> is set by a different domain, typically via an embedded
           resource (script, iframe, image) from that domain. Third-party cookies have been the backbone
@@ -175,10 +176,10 @@ export default function CookiesConciseArticle() {
           APIs (Topics API, Attribution Reporting, CHIPS). Safari (ITP) and Firefox (ETP) already block
           third-party cookies by default. Architects must design authentication and analytics systems
           that function without relying on third-party cookies.
-        </p>
+        </HighlightBlock>
 
         <h3>Cookie Consent & GDPR</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Under the EU&rsquo;s General Data Protection Regulation (GDPR) and the ePrivacy Directive,
           setting non-essential cookies without explicit user consent is illegal. &ldquo;Essential&rdquo;
           cookies (authentication, security, cart state) are exempt, but analytics, advertising, and
@@ -187,26 +188,28 @@ export default function CookiesConciseArticle() {
           preferences themselves are typically stored in a first-party cookie (which is itself exempt as
           essential). The California Consumer Privacy Act (CCPA) has similar but distinct requirements,
           using an opt-out rather than opt-in model.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The cookie lifecycle involves a continuous exchange between browser and server. On the initial
           request, the browser has no cookies for the domain. The server&rsquo;s response includes one or
           more <code>Set-Cookie</code> headers. The browser validates each cookie against its attributes
           (domain, secure, SameSite) and stores valid cookies in its cookie jar. On every subsequent request
           to the same domain (and matching path), the browser automatically attaches all applicable cookies
           in the <code>Cookie</code> header -- the developer writes no code to make this happen.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-storage/cookie-request-flow.svg"
           alt="Cookie Request-Response Flow Diagram"
+          caption="Cookie request/response lifecycle: server sets via Set-Cookie, browser stores, browser sends Cookie automatically on subsequent requests."
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code>SameSite</code> attribute introduces conditional behavior based on the request context.
           When a user clicks a link from <code>external-site.com</code> to <code>your-site.com</code>,
           that is a top-level cross-site navigation. <code>SameSite=Lax</code> cookies are sent because
@@ -215,20 +218,22 @@ export default function CookiesConciseArticle() {
           <code>Lax</code> cookies are <em>not</em> sent. <code>Strict</code> cookies are not sent in
           either cross-site scenario. <code>None</code> cookies are sent in all scenarios, provided the
           connection is HTTPS.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-storage/cookie-samesite.svg"
           alt="SameSite Cookie Policy Comparison Diagram"
+          caption="SameSite behavior by context: top-level navigation vs iframe/fetch, and what Strict/Lax/None sends."
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding this flow is crucial for debugging authentication failures. A common production
           issue: a developer deploys a new subdomain (<code>app.example.com</code> to{" "}
           <code>new.example.com</code>) and wonders why session cookies are not sent. The answer is usually
           that the cookie was set without a <code>Domain</code> attribute (locked to the original host) or
           the <code>SameSite</code> attribute is blocking the cross-site context.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -309,40 +314,45 @@ export default function CookiesConciseArticle() {
             </tr>
           </tbody>
         </table>
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
+          Heuristic: use cookies only for server-readable, security-sensitive state (sessions, CSRF, personalization
+          required on first paint). Keep cookies tiny. Put everything else in Web Storage / IndexedDB to avoid a
+          per-request bandwidth tax.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always set HttpOnly on authentication cookies.</strong> Session tokens, JWTs stored as
             cookies, and CSRF tokens should never be accessible to JavaScript. This is the single most
             important defense against XSS-based session hijacking. If your framework exposes session cookies
             to <code>document.cookie</code>, it is misconfigured.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Always set the Secure flag on cookies containing sensitive data.</strong> This prevents
             session tokens from being transmitted over unencrypted HTTP connections. In production, every
             cookie except localhost development cookies should be Secure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Default to SameSite=Lax.</strong> Browsers already enforce this as the default, but
             explicitly setting it documents your intent and prevents surprises if browser defaults ever
             change. Only use <code>SameSite=None</code> when you have a legitimate cross-site use case
             (embedded widgets, federated auth) and always pair it with <code>Secure</code> and consider{" "}
             <code>Partitioned</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use __Host- prefix for session cookies.</strong> This prevents subdomain takeover
             attacks where a compromised subdomain overwrites the parent&rsquo;s session cookie. The prefix
             enforces <code>Secure</code>, <code>Path=/</code>, and no <code>Domain</code> attribute.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Minimize cookie payload size.</strong> Every cookie is sent with every request to the
             matching domain. A 4 KB cookie on a domain that serves 50 resources per page load adds 200 KB
             of upload overhead. Store only opaque session identifiers in cookies -- keep the actual session
             data server-side (in Redis, a database, or a signed JWT where the server validates the signature).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use a separate cookieless domain for static assets.</strong> Serve images, CSS, and JS
             from a domain like <code>static.example.com</code> that has no cookies set. This avoids sending
@@ -368,26 +378,26 @@ export default function CookiesConciseArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not setting HttpOnly on session cookies.</strong> This is the most common and dangerous
             cookie security mistake. A single XSS vulnerability allows an attacker to exfiltrate the session
             token via <code>document.cookie</code> and impersonate the user. The fix is a single attribute,
             yet it is frequently overlooked in custom authentication implementations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Oversized cookies inflating every request.</strong> Storing JSON blobs, user preferences,
             or analytics payloads in cookies adds that data to every HTTP request. On high-traffic pages
             with dozens of subresources, this creates a measurable bandwidth tax. A common symptom: CDN
             request logs show abnormally large request headers. The solution: move non-essential data to{" "}
             <code>localStorage</code> or <code>sessionStorage</code>, and keep cookies under 200 bytes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SameSite confusion breaking cross-origin auth.</strong> After Chrome 80 defaulted to{" "}
             <code>SameSite=Lax</code>, many applications with cross-origin API calls broke silently --
             cookies were no longer sent on fetch requests to a different domain. The fix depends on context:
             for same-site subdomains, ensure cookies use <code>Domain</code> attribute; for truly cross-site
             APIs, use <code>SameSite=None; Secure</code> or switch to bearer tokens in headers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring third-party cookie deprecation.</strong> Relying on third-party cookies for
             authentication in iframes (e.g., single sign-on widgets) will break in Safari, Firefox, and
@@ -395,14 +405,14 @@ export default function CookiesConciseArticle() {
             <code>Partitioned</code> cookies (CHIPS) for embedded widgets, the FedCM API for federated
             login, or redirect-based flows that establish first-party cookies.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Setting Domain too broadly.</strong> Setting <code>Domain=example.com</code> on a
             sensitive cookie means every subdomain -- including that forgotten staging environment at{" "}
             <code>staging.example.com</code> or a user-content domain at <code>uploads.example.com</code>{" "}
             -- receives the cookie. If any subdomain is compromised, the attacker gains the session token.
             Omit the <code>Domain</code> attribute or use <code>__Host-</code> prefix to lock cookies to
             the exact host.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting to set cookie expiration on logout.</strong> Deleting a session from the
             server side is not sufficient. The cookie persists in the browser until it expires or is
@@ -422,62 +432,64 @@ export default function CookiesConciseArticle() {
       <section>
         <h2>Real-World Use Cases</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Authentication Sessions:</strong> The most fundamental use case. The server issues a
             session ID cookie after login (<code>__Host-session=abc; Secure; HttpOnly; SameSite=Lax; Path=/</code>).
             On each request, the server looks up the session in Redis or a database. This pattern scales
             horizontally because any server can validate the session against the shared store. JWTs stored
             in <code>HttpOnly</code> cookies are a stateless alternative, though they introduce revocation
             complexity.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CSRF Token Delivery:</strong> The double-submit cookie pattern sets a random token in
             both a cookie and a hidden form field (or custom header). The server verifies that both match.
             Because an attacker on a different origin cannot read the cookie value (same-origin policy),
             they cannot forge the matching header. The cookie is <em>not</em>{" "}
             <code>HttpOnly</code> in this case, because JavaScript needs to read it to set the header.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>A/B Testing & Feature Flags:</strong> Assigning users to experiment cohorts via cookies
             ensures consistent experiences across requests. The cookie value (e.g.,{" "}
             <code>experiment_checkout=variant_b</code>) is sent to the server, which renders the
             appropriate variant. CDNs can also branch on cookie values for edge-level A/B testing, though
             this fragments the cache.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Analytics & Attribution:</strong> First-party analytics cookies (like Google Analytics&rsquo;{" "}
             <code>_ga</code> cookie) assign a persistent client ID to track returning visitors. With
             third-party cookie deprecation, analytics platforms have shifted entirely to first-party cookies
             set via server-side tagging or JavaScript on the first-party domain.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Server-Side Personalization:</strong> Language preferences, region settings, and
             currency selections stored in cookies allow the server to render personalized content on the
             first paint -- before any JavaScript executes. This eliminates the flash of incorrect content
             that occurs when personalization relies on client-side JavaScript reading{" "}
             <code>localStorage</code> after hydration.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Use Cookies</h3>
-          <p>Cookies are the wrong choice when:</p>
+          <HighlightBlock as="p" tier="crucial">
+            Cookies are the wrong choice when:
+          </HighlightBlock>
           <ul className="mt-2 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Storing large data:</strong> Anything over a few hundred bytes should go in{" "}
               <code>localStorage</code>, <code>sessionStorage</code>, or IndexedDB. Cookies are sent with
               every request -- large cookies create a per-request bandwidth tax.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Client-only state:</strong> UI theme, sidebar collapse state, scroll positions, and
               draft content are never needed by the server. Storing them in cookies is wasteful and a
               potential privacy concern.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Structured or queryable data:</strong> If you need to store complex objects, perform
               lookups by key, or manage transactional data, use IndexedDB. Cookies have no query
               capability and are limited to string key-value pairs.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>High-frequency writes:</strong> Updating cookies triggers header changes on every
               subsequent request. For rapidly changing state (cursor position, real-time collaboration
@@ -492,10 +504,10 @@ export default function CookiesConciseArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: How would you design a secure authentication system using cookies? Walk through the attributes you would set and why.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: I would store an opaque session ID (not the user data itself) in a cookie with the following
               attributes: __Host-session={"<"}random_id{">"}; Secure; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400.
               The __Host- prefix locks the cookie to the exact host (no subdomain leakage) and enforces Secure
@@ -505,14 +517,14 @@ export default function CookiesConciseArticle() {
               matching Max-Age), enabling instant revocation on logout or suspicious activity. For additional CSRF
               protection on non-GET requests, I would implement a double-submit cookie pattern with a separate
               non-HttpOnly CSRF token cookie, validated against a custom header.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: Explain the difference between SameSite Strict, Lax, and None. When would you use each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Strict never sends the cookie on any cross-site request, including top-level navigations. If a
               user clicks a link from an email to your banking site, the session cookie is not sent -- the user
               appears logged out until they navigate within the site. This provides maximum CSRF protection but
@@ -524,15 +536,15 @@ export default function CookiesConciseArticle() {
               including iframes, cross-origin fetch, and embedded widgets. It requires Secure. Use it only when
               your service is legitimately embedded in third-party sites (payment widgets, federated login
               iframes, embedded SaaS tools) and pair it with Partitioned to prevent cross-site tracking.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: A web application's cookies are 3 KB total. The page loads 40 subresources from the same domain.
               What is the performance impact and how would you fix it?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Every one of those 40 requests includes the 3 KB cookie payload in the Cookie request header,
               adding 120 KB of upload overhead per page load. On mobile connections with limited uplink bandwidth
               (often 1-5 Mbps), this can add 200-500ms of latency. Three fixes, in order of impact: (1) Move static
@@ -543,15 +555,15 @@ export default function CookiesConciseArticle() {
               same connection. The Cookie header, being identical across requests, compresses very efficiently -- but
               this only helps on the wire, not on the server's header parsing cost. The cookieless domain approach
               is the most effective and is standard practice at scale.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are the security implications of setting Secure, HttpOnly, and SameSite attributes? When might
               each be insufficient?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Secure ensures cookies are only sent over HTTPS, preventing network eavesdropping. However, it does
               nothing against XSS or MITM at the TLS layer (e.g., compromised CA). HttpOnly prevents JavaScript access,
               blocking XSS-based cookie theft. However, it does not prevent CSRF attacks or XSS that exfiltrates data
@@ -560,7 +572,7 @@ export default function CookiesConciseArticle() {
               SameSite=None is explicitly for cross-site use. None of these attributes protect against server-side
               vulnerabilities like session fixation or weak session ID generation. Defense in depth requires combining
               these attributes with CSRF tokens, Content Security Policy, and secure session management on the server.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

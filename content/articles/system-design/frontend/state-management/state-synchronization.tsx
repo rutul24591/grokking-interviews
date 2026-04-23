@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,21 @@ export default function StateSynchronizationConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>State Synchronization Across Tabs</strong> refers to the set of browser APIs, patterns, and
           architectural strategies that keep application state consistent when users have multiple tabs or windows
           open to the same origin. In a world where users routinely operate dozens of tabs, an application that
           cannot propagate critical state changes -- authentication, theme preferences, shopping cart contents,
           or notification counts -- across all open instances creates a fragmented, unreliable experience.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Consider the consequences of ignoring cross-tab consistency. A user logs out in one tab but remains
           authenticated in another, potentially exposing sensitive data on a shared workstation. A customer adds
           items to a cart in one tab and sees a stale, empty cart in another, leading to duplicate purchases or
           abandoned sessions. A support agent working across multiple case tabs sees conflicting ticket statuses,
           eroding trust in the tool. These are not edge cases -- they represent the default behavior of any
           single-page application that treats each tab as an isolated runtime.
-        </p>
+        </HighlightBlock>
         <p>
           The challenge is fundamentally one of distributed state management within a single browser. Each tab
           runs its own JavaScript execution context with its own memory heap. There is no shared memory model
@@ -46,36 +47,36 @@ export default function StateSynchronizationConciseArticle() {
           from the original localStorage storage event to the modern BroadcastChannel API, SharedWorkers, and
           the Web Locks API -- reflects the growing importance of multi-tab consistency in production applications.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At the staff and principal engineer level, the ability to reason about cross-tab synchronization is
           a proxy for deeper competence: understanding browser security boundaries, concurrency without threads,
           leader election in an ephemeral environment, and the trade-offs between eventual consistency and strict
           ordering in a client-side distributed system.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           There are seven primary mechanisms for cross-tab communication. Each has distinct semantics, browser
           support characteristics, and suitability for different synchronization patterns.
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>BroadcastChannel API:</strong> The modern, purpose-built primitive for same-origin tab
             communication. Creating a BroadcastChannel with a shared name connects all tabs that open the same
             channel. Messages are structured-cloneable (objects, arrays, Blobs, ArrayBuffers), fire-and-forget,
             and delivered asynchronously. The sender does not receive its own message. Available in all modern
             browsers including Safari 15.4+. This is the recommended default for most use cases.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>localStorage Storage Event:</strong> The original cross-tab communication mechanism. When one
             tab writes to localStorage, all other same-origin tabs receive a "storage" event with the key, old
             value, and new value. The sending tab does not receive the event. Limitations include string-only
             payloads (requiring JSON serialization), synchronous writes that block the main thread, a ~5MB storage
             cap, and no support in Web Workers. Despite these constraints, it remains the most universally
             supported mechanism and serves as a reliable fallback.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SharedWorker:</strong> A Web Worker that maintains a single execution context shared across
             all tabs from the same origin. Tabs connect via MessagePort and the worker acts as a centralized hub,
@@ -104,22 +105,22 @@ export default function StateSynchronizationConciseArticle() {
             universally and can handle large payloads. Some libraries layer change detection on top of IndexedDB
             transactions.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Web Locks API:</strong> Not a communication channel itself, but a coordination primitive. The
             Web Locks API allows tabs to request named locks with exclusive or shared modes. This enables leader
             election (only one tab acquires the exclusive lock), resource gating, and ordered access to shared
             state. When combined with BroadcastChannel, Web Locks provide the foundation for sophisticated
             coordination patterns.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture of cross-tab synchronization depends on the chosen mechanism, but two fundamental
           patterns emerge: <strong>peer-to-peer broadcast</strong> and <strong>leader-follower coordination</strong>.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Peer-to-Peer Broadcast (BroadcastChannel / localStorage)</h3>
@@ -137,14 +138,15 @@ export default function StateSynchronizationConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/cross-tab-sync.svg"
           alt="Cross-Tab State Synchronization via BroadcastChannel"
           caption="BroadcastChannel propagation: Tab 1 broadcasts a logout event, Tabs 2 and 3 receive it, update auth state, and redirect to login"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The peer-to-peer model is simple and sufficient for idempotent state updates (auth changes, theme
           toggles, preference writes). However, it struggles when operations require coordination -- for example,
           ensuring only one tab maintains a WebSocket connection to avoid redundant server load, or preventing
           multiple tabs from simultaneously refreshing an OAuth token.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Leader-Follower Pattern (Web Locks + BroadcastChannel)</h3>
@@ -162,22 +164,23 @@ export default function StateSynchronizationConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/leader-election.svg"
           alt="Leader Election Pattern for Cross-Tab Coordination"
           caption="Leader election via Web Locks: one tab manages expensive operations and broadcasts results; failover is automatic when the leader closes"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The leader-follower pattern is critical for applications with expensive shared resources. Without it,
           opening ten tabs to a real-time dashboard could mean ten WebSocket connections, ten polling loops, and
           ten token refresh cycles -- all performing identical work. With leader election, one tab does the work
           and the rest benefit from the results.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing the right synchronization mechanism depends on payload requirements, browser support constraints,
           and architectural complexity budget.
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -241,33 +244,35 @@ export default function StateSynchronizationConciseArticle() {
           </tbody>
         </table>
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
           For most applications, <strong>BroadcastChannel with a localStorage fallback</strong> provides the best
           balance of simplicity, performance, and compatibility. Reserve SharedWorkers for cases where you need a
           centralized state authority, and Service Worker relaying for PWAs that already have a Service Worker
           lifecycle in place.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>Follow these guidelines when implementing cross-tab synchronization:</p>
+        <HighlightBlock as="p" tier="important">
+          Follow these guidelines when implementing cross-tab synchronization:
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use Message Schemas with Versioning:</strong> Define typed message schemas with a type
             discriminator and a version field. This prevents breaking changes when updating the sync protocol
             and allows tabs running different code versions (during rolling deployments) to coexist gracefully.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement Idempotent Handlers:</strong> Message delivery is at-most-once for BroadcastChannel
             and at-least-once for some edge cases with localStorage. Design receivers so that processing the same
             message twice produces no harmful side effects. Use message IDs or state timestamps to deduplicate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Gate Sensitive Syncs with Origin Validation:</strong> While same-origin APIs inherently
             restrict to your origin, always validate message structure and type before acting on it. Malicious
             browser extensions can inject messages into BroadcastChannels.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Debounce High-Frequency State Changes:</strong> Syncing every keystroke or scroll position
             across tabs creates unnecessary overhead. Batch and debounce updates with a 100-300ms window for
@@ -278,11 +283,11 @@ export default function StateSynchronizationConciseArticle() {
             disconnect SharedWorker ports in cleanup functions (useEffect return, beforeunload). Orphaned
             channels can cause memory leaks and unexpected message delivery.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide Fallback Mechanisms:</strong> Feature-detect BroadcastChannel and fall back to
             localStorage events. Feature-detect Web Locks and fall back to a BroadcastChannel-based election.
             Never assume a single API will be available in all deployment targets.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Separate Sync Concerns from UI State:</strong> Create a dedicated synchronization layer that
             sits between your state management library (Zustand, Redux, Jotai) and the browser APIs. This keeps
@@ -298,20 +303,22 @@ export default function StateSynchronizationConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>Avoid these mistakes that frequently arise in cross-tab synchronization implementations:</p>
+        <HighlightBlock as="p" tier="important">
+          Avoid these mistakes that frequently arise in cross-tab synchronization implementations:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Infinite Sync Loops:</strong> Tab A broadcasts a change, Tab B receives and updates its state,
             which triggers its own sync broadcast, which Tab A receives, ad infinitum. The fix is straightforward:
             mark state updates originating from sync messages with a flag (e.g., isRemoteUpdate) and skip
             broadcasting when that flag is set.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Race Conditions on Simultaneous Writes:</strong> Two tabs modify the same state at the exact
             same time. Without a conflict resolution strategy, the last write wins arbitrarily. For critical
             state, use the Web Locks API to serialize writes, or implement vector clocks / logical timestamps
             to detect and resolve conflicts deterministically.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stale Tab Detection Failure:</strong> A tab left open for hours or days may have stale state,
             expired tokens, or outdated code. When it suddenly broadcasts a message, other tabs may process
@@ -329,11 +336,11 @@ export default function StateSynchronizationConciseArticle() {
             and block the main thread. For payloads larger than a few kilobytes, BroadcastChannel with structured
             clone is significantly more efficient.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Assuming Message Ordering:</strong> BroadcastChannel does not guarantee message ordering
             across multiple channels or during high-frequency posting. If ordering matters, include a monotonic
             sequence number in each message and buffer out-of-order messages on the receiving side.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not Handling the "First Tab" Edge Case:</strong> When the very first tab opens, there are no
             peers to sync with. The initialization path must handle this gracefully -- typically by reading from
@@ -344,15 +351,17 @@ export default function StateSynchronizationConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>Cross-tab synchronization is critical in these production scenarios:</p>
+        <HighlightBlock as="p" tier="important">
+          Cross-tab synchronization is critical in these production scenarios:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Authentication & Session Management:</strong> When a user logs out in one tab, all tabs must
             immediately clear tokens, sensitive data, and redirect to the login page. This is a security
             requirement, not a UX nicety. Financial applications, healthcare portals, and enterprise tools
             commonly require this. The BroadcastChannel pattern with an "auth-invalidated" message type is the
             standard approach.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Theme and Preference Synchronization:</strong> Toggling dark mode in one tab should update all
             tabs instantly. This is typically handled via localStorage sync since theme state is small (a single
@@ -365,12 +374,12 @@ export default function StateSynchronizationConciseArticle() {
             should all reflect the same state. This often combines BroadcastChannel for real-time sync with
             server-side cart state as the source of truth.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Collaborative Editing:</strong> Applications like Google Docs, Notion, or Figma use a leader
             tab to manage the WebSocket connection to the collaboration server. Follower tabs receive operational
             transforms or CRDTs via BroadcastChannel from the leader, reducing server connection overhead by
             N-1 where N is the number of open tabs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Notification Deduplication:</strong> A notification system must ensure a push notification
             alert appears in only one tab (typically the focused one), not all of them. The leader election
@@ -380,7 +389,9 @@ export default function StateSynchronizationConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Synchronize Across Tabs</h3>
-          <p>Avoid cross-tab sync for:</p>
+          <HighlightBlock as="p" tier="crucial">
+            Avoid cross-tab sync for:
+          </HighlightBlock>
           <ul className="mt-2 space-y-2">
             <li>• <strong>Form input state:</strong> Users may intentionally have different form states in different tabs (e.g., composing two different emails)</li>
             <li>• <strong>Scroll position and UI viewport:</strong> These are inherently per-tab and syncing them creates a confusing experience</li>
@@ -396,7 +407,7 @@ export default function StateSynchronizationConciseArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you ensure a user is logged out of all open tabs when they click "Log Out" in one tab?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Use BroadcastChannel as the primary mechanism. When the logout action fires in one tab, post a
               message like {`{ type: "AUTH_LOGOUT", timestamp: Date.now() }`} to a dedicated auth channel. Every
               tab listens on this channel and, upon receiving the message, clears in-memory tokens, removes
@@ -405,12 +416,12 @@ export default function StateSynchronizationConciseArticle() {
               "auth_logout_at" with a timestamp) and listening for the storage event. The receiving tabs check
               the timestamp to avoid processing stale events. Critical detail: clear sensitive DOM content
               (account details, financial data) before the redirect completes, as the redirect is asynchronous.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you prevent duplicate WebSocket connections when a user has multiple tabs open?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Implement the leader election pattern using the Web Locks API. Each tab attempts to acquire an
               exclusive lock named "ws-leader" using navigator.locks.request(). Only one tab succeeds and becomes
               the leader, establishing the WebSocket connection. The leader forwards all received messages to
@@ -421,12 +432,12 @@ export default function StateSynchronizationConciseArticle() {
               the WebSocket. For browsers without Web Locks, implement election via BroadcastChannel heartbeats:
               the leader sends periodic pings, and if followers miss three consecutive heartbeats, one promotes
               itself using a deterministic tiebreaker (e.g., lowest tab ID).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What are the trade-offs between BroadcastChannel and SharedWorker for cross-tab state management?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: BroadcastChannel is a stateless pub/sub pipe -- it delivers messages but maintains no state. It
               is simple to use, well-supported (including Safari 15.4+), and ideal for broadcasting state changes
               where each tab maintains its own copy of state. SharedWorker, by contrast, provides a centralized
@@ -437,7 +448,7 @@ export default function StateSynchronizationConciseArticle() {
               For complex scenarios requiring a single source of truth with transactional guarantees (collaborative
               editing, ordered event processing), SharedWorker is the better architectural choice -- with a
               BroadcastChannel fallback for Safari.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

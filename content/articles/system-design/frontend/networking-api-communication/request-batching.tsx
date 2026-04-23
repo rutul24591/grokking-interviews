@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function RequestBatchingConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Request Batching</strong> is a network optimization technique
           where multiple individual HTTP requests are combined into a single
           network call, reducing round-trip overhead, connection contention, and
@@ -44,8 +45,8 @@ export default function RequestBatchingConciseArticle() {
           its own fetch, a batching layer intercepts requests during a
           collection window, aggregates them, sends one consolidated request,
           and demultiplexes the response back to each original caller.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The concept gained significant traction in the frontend ecosystem
           through Facebook's DataLoader library, open-sourced in 2016, which
           formalized the per-tick batching and caching pattern for GraphQL
@@ -54,8 +55,8 @@ export default function RequestBatchingConciseArticle() {
           keys, and dispatches a single batch function. This approach solved the
           notorious N+1 query problem in GraphQL resolvers, where a list of N
           items would each trigger an individual database or API call.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, understanding request batching
           means appreciating its relationship with the JavaScript event loop's
           microtask queue, its implications for perceived latency versus
@@ -65,8 +66,8 @@ export default function RequestBatchingConciseArticle() {
           collects multiple setState calls within the same synchronous execution
           context and performs a single re-render, request batching collects
           multiple fetch calls and performs a single network round-trip.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GraphQL query batching extends this further by allowing multiple
           independent GraphQL operations to be sent as an array in a single POST
           body, while REST batch endpoints (such as Google's Batch API or
@@ -74,17 +75,17 @@ export default function RequestBatchingConciseArticle() {
           an array of responses. Both approaches reduce the number of TCP
           connections, TLS handshakes, and HTTP headers transmitted, which is
           especially impactful on high-latency mobile networks.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request batching encompasses several distinct strategies, each suited
           to different timing and throughput requirements:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Time-Window Batching:</strong> Requests are collected over a
             defined time interval (typically 5-50 milliseconds). When the window
             expires, all accumulated requests are dispatched as a single batch.
@@ -96,8 +97,8 @@ export default function RequestBatchingConciseArticle() {
             requests; too large a window delays every request unnecessarily. In
             practice, a 10-16ms window aligns well with the browser's frame
             budget and JavaScript event loop tick behavior.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Size-Based Batching:</strong> Requests are collected until a
             quantity threshold is reached (for example, 10 or 50 requests), at
             which point the batch is dispatched immediately. This strategy
@@ -107,8 +108,8 @@ export default function RequestBatchingConciseArticle() {
             where requests arrive frequently and consistently. Most production
             implementations combine size-based batching with a maximum time
             window as a fallback to ensure requests are never held indefinitely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>DataLoader Pattern:</strong> Popularized by Facebook, this
             pattern leverages the JavaScript microtask queue to batch all load
             calls within a single event loop tick. When code calls
@@ -121,7 +122,7 @@ export default function RequestBatchingConciseArticle() {
             call returns the cached Promise without adding a duplicate to the
             batch. This makes it both a batching and a caching layer,
             eliminating redundant work at multiple levels.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>GraphQL Batching:</strong> Multiple independent GraphQL
             operations are combined into a single HTTP POST request as a JSON

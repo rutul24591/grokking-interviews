@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function CircuitBreakerPatternConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>circuit breaker pattern</strong> is a stability pattern
           that prevents an application from repeatedly attempting operations
           that are likely to fail. Named after the electrical circuit breaker
@@ -46,8 +47,8 @@ export default function CircuitBreakerPatternConciseArticle() {
           subsequent requests without actually making the network call. After a
           recovery timeout, it enters a "half-open" state to probe whether the
           service has recovered.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Michael Nygard introduced this pattern in his 2007 book "Release It!"
           as one of several stability patterns for production systems. It gained
           widespread adoption when Netflix implemented it in their Hystrix
@@ -57,8 +58,8 @@ export default function CircuitBreakerPatternConciseArticle() {
           directly to frontend applications -- and arguably matters even more on
           the client side, where resources (battery, bandwidth, CPU) are more
           constrained and user experience is the primary concern.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At the staff/principal level, the circuit breaker's value lies in its
           role as a <strong>system-level resilience mechanism</strong> that
           complements per-request retry logic. While retries handle transient
@@ -71,8 +72,8 @@ export default function CircuitBreakerPatternConciseArticle() {
           recognizing the pattern of failure and failing fast, allowing the
           application to show cached data or degraded UI immediately rather than
           waiting through futile retry cycles.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           In the frontend context, circuit breakers also enable sophisticated
           fallback strategies. When the recommendations API is down, show
           popular items from cache. When the search service is unavailable, fall
@@ -80,17 +81,17 @@ export default function CircuitBreakerPatternConciseArticle() {
           fails, switch to polling. These degraded experiences are far better
           than error screens, and circuit breakers provide the state machine
           that determines when to use them.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The circuit breaker pattern is built on six foundational concepts that
           govern its behavior:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Three States (Closed, Open, Half-Open):</strong> The circuit
             breaker is a finite state machine with three states.{" "}
             <strong>Closed</strong> is the normal operating state where all
@@ -106,8 +107,8 @@ export default function CircuitBreakerPatternConciseArticle() {
             if it fails, it returns to Open. The naming convention follows the
             electrical metaphor: a closed circuit allows current (requests) to
             flow, an open circuit blocks it.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Failure Threshold:</strong> The condition that triggers the
             transition from Closed to Open. This is typically expressed as "N
             failures within a time window" -- for example, 5 consecutive
@@ -118,8 +119,8 @@ export default function CircuitBreakerPatternConciseArticle() {
             the application hammers a clearly down service for an extended
             period before protecting itself. The right threshold depends on the
             endpoint's normal error rate, traffic volume, and criticality.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Recovery Timeout:</strong> The duration the circuit remains
             Open before transitioning to Half-Open. This gives the failing
             service time to recover before the breaker probes it again. Typical
@@ -130,8 +131,8 @@ export default function CircuitBreakerPatternConciseArticle() {
             timeouts that increase with each consecutive trip (similar to
             exponential backoff), recognizing that a service failing repeatedly
             needs progressively more recovery time.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Fallback Strategy:</strong> The alternative behavior when
             the circuit is Open. This is where the circuit breaker pattern
             becomes a UX pattern, not just a reliability pattern. Common
@@ -142,7 +143,7 @@ export default function CircuitBreakerPatternConciseArticle() {
             or CDN-hosted data), and queuing the operation for later
             (offline-first pattern). The choice of fallback determines whether
             an outage is invisible to users or results in error screens.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sliding Window (Time-Based vs. Count-Based):</strong> The
             failure tracking mechanism that feeds the threshold decision.{" "}
@@ -174,21 +175,22 @@ export default function CircuitBreakerPatternConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The circuit breaker sits as a proxy layer between the application and
           the network client, wrapping all outbound requests. Its position in
           the request pipeline is critical: it must sit outside the retry layer
           so that retries are also subject to circuit breaker state. If the
           circuit is open, retries should not be attempted at all.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/circuit-breaker-states.svg"
           alt="Circuit Breaker State Machine"
           caption="Circuit breaker state machine showing transitions: Closed (normal) to Open (failures exceed threshold), Open to Half-Open (timeout expires), Half-Open to Closed (probe succeeds) or back to Open (probe fails)"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The state machine transitions are driven by request outcomes. In the
           Closed state, every response is evaluated: successes decrement or
           reset the failure counter, failures increment it. When the failure
@@ -198,15 +200,16 @@ export default function CircuitBreakerPatternConciseArticle() {
           the outcome of the probe request determines the next state: success
           returns to Closed (resetting all counters), failure returns to Open
           (resetting the recovery timer).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/circuit-breaker-flow.svg"
           alt="Circuit Breaker Request Flow"
           caption="Request flow through a circuit breaker: Closed state forwards requests, Open state returns fallback immediately, Half-Open state sends a single probe to test recovery"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a frontend architecture, the circuit breaker registry is typically
           a singleton service that manages breaker instances for each endpoint.
           The HTTP client (Axios, fetch wrapper) consults the registry before
@@ -214,8 +217,8 @@ export default function CircuitBreakerPatternConciseArticle() {
           breaker wraps the query function itself, meaning the caching layer
           sees circuit breaker fallback responses as successful (cacheable)
           results, allowing cached data to serve while the circuit is open.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The integration between circuit breakers and retry logic follows a
           clear hierarchy: the circuit breaker is the outer layer, retry logic
           is the inner layer. A request first checks the circuit state. If
@@ -224,7 +227,7 @@ export default function CircuitBreakerPatternConciseArticle() {
           If the circuit trips, subsequent requests bypass the retry layer
           entirely. This layering ensures that retry budgets are not wasted on
           endpoints that are clearly unavailable.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -771,11 +774,11 @@ export default function CircuitBreakerPatternConciseArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: Explain the three states of a circuit breaker and when
               transitions occur.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: <strong>Closed</strong> is the normal state where requests pass
               through. When failures exceed a threshold (e.g., 5 failures in 30
               seconds), the breaker transitions to <strong>Open</strong>, where
@@ -786,15 +789,15 @@ export default function CircuitBreakerPatternConciseArticle() {
               the breaker returns to Closed; if it fails, it returns to Open
               with a fresh recovery timeout. The key insight is that the breaker
               provides system-level protection that per-request timeouts cannot.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: How would you implement a circuit breaker for a frontend
               application with multiple API endpoints?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Create a circuit breaker registry (a Map from endpoint key to
               breaker instance) that manages per-endpoint breakers. Each breaker
               has its own failure threshold, recovery timeout, and fallback
@@ -805,7 +808,7 @@ export default function CircuitBreakerPatternConciseArticle() {
               aggressive thresholds that trip quickly. The registry emits
               state-change events for observability, and breaker state can
               optionally be shared across browser tabs via BroadcastChannel.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

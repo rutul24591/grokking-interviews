@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function WebSocketsConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>WebSocket</strong> is a communication protocol defined in RFC
           6455 (2011) that provides persistent, full-duplex communication
           channels over a single TCP connection. Unlike HTTP's request-response
           model, WebSocket allows both the client and server to send messages
           independently at any time, making it the foundational protocol for
           real-time web applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           A WebSocket connection begins life as a standard HTTP request. The
           client sends an HTTP GET with an <code>Upgrade: websocket</code>{" "}
           header, and if the server supports it, it responds with HTTP 101
@@ -55,8 +56,8 @@ export default function WebSocketsConciseArticle() {
           allows WebSocket traffic to traverse existing HTTP infrastructure
           (proxies, load balancers, firewalls) that would otherwise reject
           unknown protocols on port 80/443.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At the wire level, WebSocket uses a lightweight binary framing
           protocol. Each frame consists of an opcode (identifying the frame
           type: text, binary, ping, pong, close), a masking bit
@@ -66,8 +67,8 @@ export default function WebSocketsConciseArticle() {
           data itself. This framing overhead is minimal — as little as 2 bytes
           per frame for small messages — compared to HTTP headers that can
           easily exceed 500 bytes per request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Staff-level context: WebSocket over HTTP/2 (RFC 8441, 2018) introduced
           the CONNECT method for bootstrapping WebSocket connections within an
           existing HTTP/2 stream, enabling multiplexing of WebSocket alongside
@@ -82,17 +83,17 @@ export default function WebSocketsConciseArticle() {
           transports (long polling), automatic reconnection, rooms/namespaces,
           and acknowledgments — but introduce their own protocol overhead and
           are not interoperable with raw WebSocket clients.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Six foundational concepts define how WebSocket operates at the
           protocol and application level:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>HTTP Upgrade Handshake:</strong> The client initiates a
             standard HTTP/1.1 GET request with headers{" "}
             <code>Connection: Upgrade</code>, <code>Upgrade: websocket</code>,{" "}
@@ -104,8 +105,8 @@ export default function WebSocketsConciseArticle() {
             that both sides understand the WebSocket protocol. The handshake
             also supports cookie-based authentication, allowing session tokens
             to be validated before the connection upgrades.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Full-Duplex Communication:</strong> Once established, either
             party can send messages at any time without waiting for a response.
             This is fundamentally different from HTTP's half-duplex model where
@@ -114,7 +115,7 @@ export default function WebSocketsConciseArticle() {
             the same TCP connection. Messages are independent and do not follow
             request-response pairing — the server can push 100 messages without
             the client ever sending one.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Frame Types:</strong> WebSocket defines several frame types
             via opcodes: text frames (opcode 0x1) carry UTF-8 encoded strings,
@@ -206,9 +207,10 @@ export default function WebSocketsConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/websocket-handshake.svg"
           alt="WebSocket Handshake and Communication Flow"
           caption="WebSocket lifecycle: HTTP upgrade handshake, bidirectional frame exchange, ping/pong heartbeat, and close handshake sequence"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Reconnection strategy</strong> is a critical application-level
           concern not handled by the protocol itself. When a connection drops
           (network interruption, server restart, mobile background), the client
@@ -219,15 +221,16 @@ export default function WebSocketsConciseArticle() {
           channels or topics. During the disconnection window, messages are lost
           unless the application implements message queuing with sequence IDs,
           allowing the client to request missed messages after reconnection.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/websocket-vs-http.svg"
           alt="WebSocket vs HTTP Communication Model Comparison"
           caption="HTTP opens a new connection per request-response cycle; WebSocket maintains a persistent connection for continuous bidirectional messaging"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Scaling WebSocket across multiple servers</strong> introduces
           a fundamental challenge: WebSocket connections are stateful and pinned
           to a specific server process. If a client connects to Server A, only
@@ -241,7 +244,7 @@ export default function WebSocketsConciseArticle() {
           subscribes to that topic and forwards the message. Most production
           systems use the pub/sub approach — this is how Slack, Discord, and
           Figma scale WebSocket to millions of concurrent connections.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -802,10 +805,10 @@ export default function WebSocketsConciseArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: Explain the WebSocket handshake process.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The client sends an HTTP/1.1 GET request with{" "}
               <code>Connection: Upgrade</code>, <code>Upgrade: websocket</code>,{" "}
               <code>Sec-WebSocket-Version: 13</code>, and a random
@@ -818,14 +821,14 @@ export default function WebSocketsConciseArticle() {
               the WebSocket protocol and prevents cross-protocol attacks. After
               the 101 response, the connection switches from HTTP to the
               WebSocket binary framing protocol on the same TCP connection.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: How would you scale WebSockets across multiple servers?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: WebSocket connections are stateful — each connection is pinned
               to one server. For multi-server deployments, there are two
               approaches. First, sticky sessions: the load balancer routes all
@@ -839,7 +842,7 @@ export default function WebSocketsConciseArticle() {
               For extreme scale (millions of connections), shard the pub/sub by
               user ID or room ID and use consistent hashing for topic
               assignment.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

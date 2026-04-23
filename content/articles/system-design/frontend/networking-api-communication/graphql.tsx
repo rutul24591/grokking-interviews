@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function GraphQLConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>GraphQL</strong> is a query language for APIs and a
           server-side runtime for executing those queries against a type system
           you define for your data. Created by Facebook in 2012 to power their
@@ -47,8 +48,8 @@ export default function GraphQLConciseArticle() {
           across multiple endpoints, the client sends a structured query
           describing exactly the fields it needs, and the server returns
           precisely that shape of data in a single round trip.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The core motivation behind GraphQL was solving two persistent problems
           in REST APIs: <strong>over-fetching</strong> (receiving more data than
           the client needs, wasting bandwidth and parse time) and{" "}
@@ -59,16 +60,16 @@ export default function GraphQLConciseArticle() {
           might need user data, their posts, comments on those posts, and like
           counts -- with REST, that could mean four separate API calls, each
           returning extraneous fields.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           GraphQL is built on a strong type system expressed through the Schema
           Definition Language (SDL). Every field has a defined type, every query
           is validated against the schema before execution, and clients can
           introspect the schema to discover available operations. This type
           system enables powerful tooling: code generation, auto-completion in
           IDEs, compile-time query validation, and self-documenting APIs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff/principal level, it is important to understand that GraphQL
           is not a silver bullet. The N+1 query problem is a well-known
           server-side challenge: a query requesting a list of users with their
@@ -85,17 +86,17 @@ export default function GraphQLConciseArticle() {
           hit a single POST endpoint. Understanding these trade-offs -- not just
           the developer experience benefits -- is what separates a senior
           engineer's perspective from an architect's.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GraphQL is built on six foundational concepts that work together to
           create a flexible data-fetching layer:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Schema Definition Language (SDL):</strong> The schema is the
             contract between client and server. It defines types (object types,
             enums, interfaces, unions, input types), the three root operation
@@ -107,8 +108,8 @@ export default function GraphQLConciseArticle() {
             allow clients to discover the schema at runtime, powering tools like
             GraphiQL and Apollo Studio -- though introspection should be
             disabled in production for security.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Queries:</strong> Queries are read operations where the
             client specifies exactly which fields it needs, including nested
             relationships to arbitrary depth. Queries support arguments for
@@ -119,7 +120,7 @@ export default function GraphQLConciseArticle() {
             own response shape, making it particularly powerful for
             component-driven UIs where each component knows its own data
             requirements.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mutations:</strong> Mutations are write operations that
             modify server-side data. They follow the same syntax as queries but
@@ -219,9 +220,10 @@ export default function GraphQLConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/graphql-architecture.svg"
           alt="GraphQL Frontend Architecture Diagram"
           caption="Frontend GraphQL Architecture - Layered stack from React components through Apollo Client to the GraphQL server"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The query lifecycle begins when a component mounts and calls a
           useQuery hook. The client library first checks its cache policy:{" "}
           <strong>cache-first</strong> returns cached data immediately (issuing
@@ -236,15 +238,16 @@ export default function GraphQLConciseArticle() {
           objects into a dictionary keyed by __typename and id -- updates the
           cache, and triggers a re-render of any component subscribed to the
           affected data.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/graphql-cache-normalization.svg"
           alt="GraphQL Cache Normalization Diagram"
           caption="Cache Normalization - How nested API responses are flattened into a normalized store with entity references"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Cache normalization is the key architectural insight that makes
           GraphQL clients powerful. Instead of storing query results as opaque
           blobs (like REST caching), the normalized cache decomposes responses
@@ -256,7 +259,7 @@ export default function GraphQLConciseArticle() {
           entities without stable IDs require custom cache key functions, and
           certain operations (like adding/removing items from lists) still
           require manual cache updates via update functions or cache eviction.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -989,10 +992,10 @@ export default function GraphQLConciseArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: How does GraphQL caching differ from REST caching?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: REST leverages HTTP caching natively -- each endpoint has a
               unique URL that proxies, CDNs, and browsers cache with standard
               Cache-Control headers. GraphQL uses a single POST endpoint, making
@@ -1006,14 +1009,14 @@ export default function GraphQLConciseArticle() {
               client-side complexity. At scale, teams use persisted queries
               (sending a hash instead of the full query) to enable CDN caching
               via GET requests, combining the benefits of both approaches.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: Explain the N+1 problem in GraphQL and how to solve it.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: The N+1 problem occurs when resolving a list of parent entities
               triggers individual database queries for each parent's related
               children. For example, fetching 50 users and each user's posts
@@ -1029,7 +1032,7 @@ export default function GraphQLConciseArticle() {
               JOINs at the database level (losing resolver composability),
               Lookahead techniques that inspect the query AST to determine
               needed fields upfront, or ORM-level batching (Prisma's findMany).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Retry logic</strong> is the practice of automatically
           re-attempting a failed network request after a delay, while{" "}
           <strong>exponential backoff</strong> is a delay strategy where wait
           times increase geometrically between attempts (typically doubling).
           Together, they form the foundational resilience pattern for any
           frontend application communicating over unreliable networks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The need for structured retry strategies emerged as distributed
           systems became the norm. A naive approach -- retrying immediately and
           indefinitely -- creates the <strong>thundering herd problem</strong>:
@@ -54,8 +55,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
           creating a feedback loop where the system never stabilizes. The 2012
           AWS DynamoDB outage was a canonical example, where aggressive client
           retries amplified a minor issue into a multi-hour region-wide failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At the staff/principal level, retry logic is not just about "try
           again." It intersects with idempotency guarantees, retry budgets (as
           defined in the Google SRE book), circuit breakers, and observability.
@@ -67,8 +68,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
           Backoff and Jitter" (2015) formalized decorrelated jitter as the
           optimal strategy, and it remains the industry standard for retry delay
           computation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In a frontend context, retry logic must also consider user experience.
           Retrying silently in the background is appropriate for analytics pings
           or background syncs, but for user-initiated actions (submitting a
@@ -76,17 +77,17 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
           perceived latency. A request that retries three times with exponential
           backoff could take 15 seconds before surfacing an error -- an eternity
           for a user staring at a spinner.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Effective retry logic requires understanding six interconnected
           concepts that determine when, how, and how often to retry:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Exponential Backoff:</strong> The delay before each retry
             follows the formula delay = base * 2^attempt, where base is
             typically 1 second. This means delays of 1s, 2s, 4s, 8s, 16s for
@@ -97,8 +98,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             retry traffic from all clients decays exponentially, allowing
             recovery. Most implementations cap the maximum delay (e.g., 30
             seconds) to prevent absurdly long waits.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Jitter:</strong> Even with exponential backoff, if many
             clients experience failure at the same moment, they will all retry
             at identical intervals (1s, 2s, 4s), creating synchronized bursts.
@@ -114,8 +115,8 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             range, creating naturally spreading intervals that the AWS
             Architecture Blog demonstrated outperforms the other strategies
             across all metrics.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Retry Budget:</strong> A global constraint limiting the
             percentage of total requests that can be retries. Google's SRE
             practices recommend a 10% retry budget: if your application makes
@@ -127,7 +128,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
             spiral. Retry budgets are typically implemented as a token bucket
             shared across all request types, with tokens replenishing at a fixed
             rate.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Idempotency Keys:</strong> Retries are only safe when the
             operation can be executed multiple times without different outcomes.
@@ -173,20 +174,21 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The retry mechanism sits between the application's API layer and the
           network transport, intercepting failed requests and deciding whether
           and when to retry. This is typically implemented as middleware in an
           HTTP client (such as Axios interceptors or a fetch wrapper).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/retry-backoff-timeline.svg"
           alt="Retry with Exponential Backoff Timeline"
           caption="Exponential backoff timeline showing increasing delays between retry attempts -- 1s, 2s, 4s -- before eventual success on the fourth attempt"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The request lifecycle with retry logic follows a clear decision tree:
           make the request, evaluate the response, classify the error (retryable
           or not), check the retry budget, compute the backoff delay with
@@ -194,15 +196,16 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
           the retry loop -- either because the request succeeded, the error is
           non-retryable, the max attempts are exhausted, or the retry budget is
           depleted.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/jitter-comparison.svg"
           alt="Jitter Strategy Comparison"
           caption="Comparison of retry patterns without jitter (thundering herd), with full jitter (wide spread), and with decorrelated jitter (optimal distribution)"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           In a real-world frontend application, the retry layer must coordinate
           with several other systems: the authentication layer (to refresh
           tokens before retrying 401s), the request queue (to prevent duplicate
@@ -211,15 +214,15 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
           loading or error states). This coordination is why retry logic is best
           implemented as a centralized service rather than ad-hoc in individual
           components.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For React applications, this typically means an Axios instance
           configured with retry interceptors, shared across all data-fetching
           hooks. Libraries like React Query and SWR provide built-in retry
           configuration (retryCount, retryDelay function) that integrates with
           their caching and deduplication logic, making them the preferred
           approach for most applications.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -723,11 +726,11 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: Why is exponential backoff preferred over fixed delay for
               retries?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Fixed delay retries create synchronized bursts (thundering
               herd) where all clients retry at the same intervals, maintaining
               constant pressure on a failing server. Exponential backoff reduces
@@ -736,15 +739,15 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               traffic evenly, preventing traffic spikes and allowing the server
               to recover gracefully. The key insight is that aggregate retry
               traffic matters more than individual retry timing.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: What is the difference between full jitter and decorrelated
               jitter, and which is better?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Full jitter randomizes delay between 0 and the backoff value
               (random(0, base * 2^n)), which provides good spread but can
               produce very short delays. Decorrelated jitter uses the previous
@@ -754,7 +757,7 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               faster with fewer calls because it avoids both the too-short
               delays of full jitter and the synchronized peaks of no-jitter
               approaches.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

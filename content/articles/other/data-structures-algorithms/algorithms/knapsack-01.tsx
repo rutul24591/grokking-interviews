@@ -143,7 +143,7 @@ export default function KnapsackArticle() {
         </p>
         <p className="mb-4">
           <span className="font-semibold">DP vs ILP:</span> integer linear programming expresses
-          knapsack naturally: maximize Σvᵢxᵢ subject to Σwᵢxᵢ ≤ W, xᵢ ∈ {0, 1}. Modern ILP
+          knapsack naturally: maximize Σvᵢxᵢ subject to Σwᵢxᵢ ≤ W, xᵢ ∈ {"{0, 1}"}. Modern ILP
           solvers are highly optimized and handle multi-constraint knapsacks that plain DP
           can&rsquo;t. For 10+ constraints or 10⁶+ items, ILP beats DP.
         </p>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function RequestCancellationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Request Cancellation</strong> is the practice of terminating
           in-flight HTTP requests that are no longer needed, preventing wasted
           bandwidth, avoiding state updates on unmounted components, and
@@ -46,8 +47,8 @@ export default function RequestCancellationArticle() {
           Firefox 57+, Safari 11.1+, Edge 79+), provides a unified mechanism for
           canceling DOM operations including fetch requests, event listeners,
           and any API that supports abort signals.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Before AbortController, canceling requests was notoriously difficult.
           XMLHttpRequest had an abort() method, but it was not composable and
           did not propagate to nested operations. There was no standard way to
@@ -60,8 +61,8 @@ export default function RequestCancellationArticle() {
           controller creates a signal, the signal is passed to the operation, and
           calling controller.abort() signals all listening operations to
           terminate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, request cancellation is not
           just about calling abort() -- it is about designing systems that
           gracefully handle cancellation at every layer. This includes:
@@ -74,8 +75,8 @@ export default function RequestCancellationArticle() {
           model). The most sophisticated implementations treat cancellation as a
           first-class concern, designing APIs and components that are
           cancellation-aware from the ground up.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business case for proper request cancellation is compelling.
           Applications that do not cancel requests waste bandwidth on responses
           that are never used (impacting mobile data costs and performance),
@@ -85,17 +86,17 @@ export default function RequestCancellationArticle() {
           cancellation eliminates these issues, resulting in faster perceived
           performance, cleaner error logs, and more predictable application
           behavior.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Request cancellation with AbortController is built on six foundational
           concepts that govern how signals are created, propagated, and handled:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>AbortController and AbortSignal:</strong> AbortController is
             a class that creates and controls an AbortSignal instance. The
             controller has two properties: <code>signal</code> (the AbortSignal
@@ -108,8 +109,8 @@ export default function RequestCancellationArticle() {
             controller.abort() to cancel. The operation listens to the signal's
             abort event and terminates when triggered. Multiple operations can
             listen to the same signal, enabling coordinated cancellation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Signal Propagation:</strong> In real applications, requests
             flow through multiple layers: UI component → data-fetching hook →
             API client → fetch wrapper → native fetch. Each layer must propagate
@@ -121,8 +122,8 @@ export default function RequestCancellationArticle() {
             common source of memory leaks: developers add AbortController at the
             component level but forget to thread the signal through
             intermediate layers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>AbortError Handling:</strong> When a request is aborted, the
             Promise rejects with a DOMException named "AbortError". This is not
             an error condition -- it is expected behavior when canceling
@@ -134,7 +135,7 @@ export default function RequestCancellationArticle() {
             <code>if (error.name === 'AbortError') return</code>. React Query
             and SWR handle this automatically, but custom fetch wrappers must
             implement it explicitly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cleanup on Unmount:</strong> The most common use case for
             cancellation is cleaning up in-flight requests when a component

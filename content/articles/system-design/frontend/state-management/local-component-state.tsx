@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,13 +37,13 @@ export default function LocalComponentStateConciseArticle() {
       {/* Section 1: Definition & Context */}
       <section>
         <h2>Definition &amp; Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Local component state</strong> is data that is owned,
           managed, and scoped entirely within a single component (or a small
           subtree of the component hierarchy). It represents the simplest and
           most performant form of state management in React: state that lives
           exactly where it is needed and nowhere else.
-        </p>
+        </HighlightBlock>
         <p>
           The concept has evolved significantly over React&rsquo;s lifetime.
           In class components, state was declared via{" "}
@@ -54,7 +55,7 @@ export default function LocalComponentStateConciseArticle() {
           than an instance property, enabling state in function components and
           promoting the composition of stateful logic through custom hooks.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The guiding principle behind local state is{" "}
           <strong>colocation</strong> &mdash; keeping state as close as
           possible to the code that uses it. This principle, championed by
@@ -63,14 +64,14 @@ export default function LocalComponentStateConciseArticle() {
           reveal that roughly 80% of state is UI-local (toggles, form inputs,
           animation flags, pagination cursors) and benefits from remaining at
           the component level rather than being promoted to a global store.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           When state is colocated, components become self-contained units
           that are easier to reason about, test in isolation, and refactor
           independently. Moving state up the tree should be a deliberate
           decision made only when multiple distant components genuinely need
           the same data, not a default architectural choice.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 2: Core Concepts */}
@@ -78,7 +79,7 @@ export default function LocalComponentStateConciseArticle() {
         <h2>Core Concepts</h2>
 
         <h3>useState Semantics</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <code>useState</code> returns a tuple of the current value and a
           setter function. The setter can receive either a direct value or a{" "}
           <strong>functional updater</strong>{" "}
@@ -88,18 +89,18 @@ export default function LocalComponentStateConciseArticle() {
           state; if they are referentially equal, the re-render is bailed
           out. This makes primitive state cheap but requires immutable update
           patterns for objects and arrays.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Lazy initialization</strong> allows expensive computations
           to run only on the first render by passing a function to{" "}
           <code>useState</code> (e.g.,{" "}
           <code>useState(() =&gt; computeExpensiveDefault())</code>). This
           is frequently overlooked but matters in performance-sensitive
           scenarios such as parsing large JSON from localStorage on mount.
-        </p>
+        </HighlightBlock>
 
         <h3>useReducer for Complex State Machines</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When local state involves multiple sub-values that change together
           or transitions that depend on the current state,{" "}
           <code>useReducer</code> provides a more structured approach. The
@@ -109,8 +110,8 @@ export default function LocalComponentStateConciseArticle() {
           component. It is particularly valuable for form wizards, drag-and-drop
           interactions, and any UI with a finite set of states (idle, loading,
           success, error).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           A key architectural insight: <code>useReducer</code> also accepts
           a lazy initializer as its third argument, and the dispatch function
           is <strong>stable across re-renders</strong> (referentially
@@ -118,7 +119,7 @@ export default function LocalComponentStateConciseArticle() {
           never causes unnecessary child re-renders &mdash; a benefit that{" "}
           <code>useState</code> setters share but inline callback handlers
           do not.
-        </p>
+        </HighlightBlock>
 
         <h3>State Identity and Referential Equality</h3>
         <p>
@@ -158,7 +159,7 @@ export default function LocalComponentStateConciseArticle() {
         </p>
 
         <h3>Single Source of Truth at the Component Level</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Each piece of state should have exactly one owner. Duplicating
           state across components (e.g., copying a prop into local state
           without a synchronization mechanism) is one of the most common
@@ -166,20 +167,20 @@ export default function LocalComponentStateConciseArticle() {
           state, it should be computed during render rather than stored
           separately &mdash; the principle of{" "}
           <strong>derived state</strong>.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 3: Architecture & Flow */}
       <section>
         <h2>Architecture &amp; Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding how local state changes propagate through React&rsquo;s
           internals is essential for diagnosing performance problems and
           predicting rendering behavior at scale.
-        </p>
+        </HighlightBlock>
 
         <h3>React&rsquo;s Reconciliation with State Changes</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When <code>setState</code> (or <code>dispatch</code>) is called,
           React does not immediately re-render. Instead, it enqueues the
           update on the component&rsquo;s fiber node and schedules a render
@@ -189,10 +190,10 @@ export default function LocalComponentStateConciseArticle() {
           tree against the previous tree (reconciliation) and computes the
           minimal set of DOM mutations. Only during the commit phase are
           actual DOM writes performed synchronously.
-        </p>
+        </HighlightBlock>
 
         <h3>Batching Behavior</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In React 17 and earlier, batching only occurred inside React event
           handlers. Multiple <code>setState</code> calls in a{" "}
           <code>setTimeout</code>, <code>Promise.then</code>, or native DOM
@@ -203,16 +204,17 @@ export default function LocalComponentStateConciseArticle() {
           native events all receive a single re-render per microtask. This
           significantly reduces wasted renders in real-world applications
           where async operations frequently trigger multiple state updates.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/local-state-lifecycle.svg"
           alt="Local State Update Lifecycle showing setState batching, reconciliation, and commit phases"
           caption="Local state update lifecycle: from setState calls through React 18 automatic batching to DOM commit"
+          captionTier="important"
         />
 
         <h3>Closures and Stale State</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every render creates a closure over the state values at that
           point in time. If a callback (e.g., a <code>setTimeout</code>{" "}
           or event listener registered in <code>useEffect</code>) captures
@@ -222,7 +224,7 @@ export default function LocalComponentStateConciseArticle() {
           functional updaters (<code>setState(prev =&gt; prev + 1)</code>),
           refs to track the latest value (<code>useRef</code>), or
           restructuring effects so dependencies are correctly declared.
-        </p>
+        </HighlightBlock>
 
         <h3>Lifting State &mdash; Architectural Pattern</h3>
         <p>
@@ -237,17 +239,18 @@ export default function LocalComponentStateConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/lifting-state-up.svg"
           alt="Lifting state up pattern showing before (duplicated state, out of sync) and after (single source of truth in parent)"
           caption="Lifting state up: eliminating duplicated state by moving ownership to the nearest common ancestor"
+          captionTier="important"
         />
       </section>
 
       {/* Section 5: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing between local state mechanisms depends on complexity,
           performance requirements, and debugging needs. The following
           comparison covers the primary options for component-level state.
-        </p>
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -350,7 +353,7 @@ export default function LocalComponentStateConciseArticle() {
             </tbody>
           </table>
         </div>
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
           A useful heuristic: start with <code>useState</code>. If you find
           yourself writing multiple related <code>useState</code> calls that
           always change together, consolidate into <code>useReducer</code>.
@@ -358,14 +361,14 @@ export default function LocalComponentStateConciseArticle() {
           position you only read imperatively), use <code>useRef</code>. Only
           promote to an external store when genuinely different subtrees of
           the component hierarchy need the same data.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 6: Best Practices */}
       <section>
         <h2>Best Practices</h2>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Keep state as local as possible (colocation principle).
             </strong>{" "}
@@ -373,8 +376,8 @@ export default function LocalComponentStateConciseArticle() {
             siblings provably need the same data. Premature lifting leads to
             prop drilling and unnecessary re-renders in intermediate
             components.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Use functional updaters for state that depends on previous
               values.
@@ -382,8 +385,8 @@ export default function LocalComponentStateConciseArticle() {
             <code>setState(prev =&gt; prev + 1)</code> avoids stale closure
             bugs in async callbacks, effects, and event handlers that fire
             rapidly (e.g., keystrokes, scroll events).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Prefer a single <code>useReducer</code> over multiple
               correlated <code>useState</code> calls.
@@ -391,15 +394,15 @@ export default function LocalComponentStateConciseArticle() {
             If three or more pieces of state always change in response to the
             same event, a reducer consolidates the logic and prevents
             inconsistent intermediate states.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Never mutate state directly.</strong> Always create new
             references for objects and arrays. Use spread syntax, array
             methods that return new arrays (<code>map</code>,{" "}
             <code>filter</code>, <code>concat</code>), or utility libraries
             like Immer for deeply nested updates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Derive values during render instead of storing them.
             </strong>{" "}
@@ -407,7 +410,7 @@ export default function LocalComponentStateConciseArticle() {
             filtered list, full name from first + last), compute it inline.
             Storing derived data creates synchronization obligations and
             duplication risks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Use lazy initialization for expensive defaults.
@@ -441,23 +444,23 @@ export default function LocalComponentStateConciseArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale closures in effects and callbacks.</strong>{" "}
             Forgetting to include state variables in dependency arrays or
             relying on closure-captured values in <code>setTimeout</code>{" "}
             and <code>setInterval</code> leads to components operating on
             outdated data. Use functional updaters or refs for the latest
             value.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Copying props into state without synchronization.</strong>{" "}
             Initializing state from a prop (
             <code>useState(props.value)</code>) creates a snapshot that
             diverges when the parent re-renders with a new prop. Either
             treat the prop as the source of truth (controlled pattern) or
             add a key to reset the component when the prop changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Object/array state mutations that skip re-renders.
             </strong>{" "}
@@ -465,8 +468,8 @@ export default function LocalComponentStateConciseArticle() {
             <code>setArr(arr)</code> passes the same reference, so React
             bails out. Always spread into a new array:{" "}
             <code>setArr([...arr, item])</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Over-lifting state, causing prop drilling and wasted renders.
             </strong>{" "}
@@ -474,7 +477,7 @@ export default function LocalComponentStateConciseArticle() {
             text) in a high-level parent forces every intermediate component
             to re-render. Isolate fast-changing state in the lowest possible
             component or use composition patterns like children-as-props.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Using state for values that do not affect UI.
@@ -512,13 +515,13 @@ export default function LocalComponentStateConciseArticle() {
         <h2>Real-World Use Cases</h2>
 
         <h3>Form Inputs and Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each input&rsquo;s value and validation state (dirty, touched,
           error message) lives locally. The form component owns the
           aggregate submission state. This two-tier pattern avoids lifting
           every keystroke to a global store while still supporting
           cross-field validation at the form level.
-        </p>
+        </HighlightBlock>
 
         <h3>Toggles, Modals, and Disclosure Widgets</h3>
         <p>
@@ -549,32 +552,32 @@ export default function LocalComponentStateConciseArticle() {
             When NOT to Use Local State
           </h4>
           <ul className="space-y-2 text-sm">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Server cache / async data:</strong> Data fetched from
               APIs is better managed by server-state libraries (React Query,
               SWR, Apollo) that handle caching, deduplication, background
               refetching, and stale-while-revalidate semantics.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Deeply shared UI state:</strong> When a theme toggle,
               locale selector, or authenticated user object is consumed by
               dozens of components across multiple routes, Context or a
               lightweight global store (Zustand, Jotai) avoids prop drilling
               through the entire tree.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>URL-driven state:</strong> Filters, sort order, and
               search queries that should be shareable via URL belong in the
               URL search params, not component state. Libraries like
               nuqs or Next.js <code>useSearchParams</code> synchronize URL
               and UI.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Cross-tab or persistent state:</strong> Values that
               must survive page reloads (e.g., shopping cart) or synchronize
               across browser tabs require localStorage/sessionStorage or an
               external store with persistence middleware.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
       </section>
@@ -589,7 +592,7 @@ export default function LocalComponentStateConciseArticle() {
               Q: When would you choose useReducer over useState, and what are
               the implications for testing?
             </h3>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>A:</strong> I reach for <code>useReducer</code> when
               local state involves multiple sub-values that transition
               together (e.g., a form with fields, validation errors, and
@@ -603,7 +606,7 @@ export default function LocalComponentStateConciseArticle() {
               independently. With <code>useState</code>, testing requires
               rendering the component and simulating events, which is slower
               and more coupled to the UI structure.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-5 border border-theme">
@@ -611,7 +614,7 @@ export default function LocalComponentStateConciseArticle() {
               Q: Explain the stale closure problem and how you would debug
               it in production.
             </h3>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> A stale closure occurs when a callback
               created in a previous render captures an outdated state value.
               For example, a <code>setInterval</code> callback inside{" "}
@@ -627,7 +630,7 @@ export default function LocalComponentStateConciseArticle() {
               value in a ref and read <code>ref.current</code> inside the
               callback, or (3) restructure the effect to include the
               dependency and handle cleanup correctly.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg bg-panel-soft p-5 border border-theme">
@@ -635,7 +638,7 @@ export default function LocalComponentStateConciseArticle() {
               Q: How does React 18&rsquo;s automatic batching differ from
               React 17, and what edge cases should you watch for?
             </h3>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               <strong>A:</strong> In React 17, batching only applied inside
               React synthetic event handlers. State updates inside{" "}
               <code>setTimeout</code>, <code>Promise.then</code>, native
@@ -651,7 +654,7 @@ export default function LocalComponentStateConciseArticle() {
               synchronous flush of the enclosed updates. However,{" "}
               <code>flushSync</code> should be used sparingly because it
               bypasses the scheduler and can degrade performance if overused.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,19 +24,19 @@ export default function OptimisticUpdatesConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Optimistic Updates</strong> are a UI pattern where the interface is updated immediately in response to
           a user action, before the server confirms the operation. Instead of waiting for a network round-trip to complete,
           the application assumes the operation will succeed and reflects the expected result instantly, rolling back only
           if the server reports a failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This pattern is rooted in a fundamental insight: perceived performance matters more than actual latency. Research
           from the Nielsen Norman Group and Google consistently shows that response times under 100ms feel instantaneous to
           users, while anything above 300ms introduces a noticeable delay. On typical networks, a server round-trip takes
           50-500ms depending on geography, payload size, and server processing time. Optimistic updates eliminate this
           perceived wait entirely.
-        </p>
+        </HighlightBlock>
         <p>
           The pattern was pioneered in native mobile and desktop applications long before it became common on the web.
           Native apps like email clients and note-taking tools have used write-ahead patterns for decades, updating local
@@ -43,41 +44,41 @@ export default function OptimisticUpdatesConciseArticle() {
           libraries like React Query, Apollo Client, and SWR made the pattern accessible with built-in primitives for
           snapshot, rollback, and reconciliation.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The psychology behind optimistic updates is grounded in the principle of immediate feedback. When a user taps a
           like button and sees the count increment instantly, the interaction feels responsive and trustworthy. When the
           same action shows a spinner for 300ms before updating, it introduces cognitive friction. Users begin to wonder
           whether the action registered, sometimes tapping again and creating duplicate requests. Optimistic updates
           eliminate this ambiguity by providing deterministic, instant visual confirmation.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding optimistic updates requires grasping several interconnected concepts that govern how state flows
           between the client and server during mutations.
-        </p>
+        </HighlightBlock>
 
         <h3>Optimistic vs Pessimistic Updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Pessimistic updates</strong> follow a request-then-update pattern: the user triggers an action, the
           client sends a request, waits for the server response, and only then updates the UI. This approach guarantees
           data consistency but introduces latency into every interaction. <strong>Optimistic updates</strong> invert this
           by following an update-then-confirm pattern: the UI changes immediately, the request fires in the background,
           and the client reconciles once the server responds. The trade-off is added complexity in exchange for a
           dramatically better user experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Snapshot-and-Rollback Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The foundation of safe optimistic updates is the snapshot-and-rollback pattern. Before applying an optimistic
           change, the client captures a snapshot of the current state. If the server request fails, the client restores
           this snapshot, effectively "undoing" the optimistic change. This requires the client to maintain a reference
           to the previous state for the duration of the in-flight request. In React Query, this snapshot is captured in
           the <code>onMutate</code> callback and returned as context, which is then available in the <code>onError</code> handler
           for rollback.
-        </p>
+        </HighlightBlock>
 
         <h3>Conflict Resolution Strategies</h3>
         <p>
@@ -85,11 +86,11 @@ export default function OptimisticUpdatesConciseArticle() {
           application must resolve conflicts. Three primary strategies exist:
         </p>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Last-Write-Wins (LWW):</strong> The most recent write overwrites any previous value. Simple to
             implement but can silently discard changes. Appropriate for low-contention data like user preferences or
             individual profile fields.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Merge:</strong> The server attempts to merge concurrent changes intelligently, similar to a git
             merge. This works well for additive operations (adding items to a list) but poorly for conflicting edits
@@ -129,28 +130,28 @@ export default function OptimisticUpdatesConciseArticle() {
           values, normalized data) that the client could not predict. Reconciliation replaces the optimistic snapshot
           with the actual server data.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Idempotency is a critical requirement for optimistic update patterns. If a network hiccup causes a retry,
           the server must handle duplicate requests gracefully. This is typically achieved through client-generated
           idempotency keys (UUIDs sent with the request) or server-side deduplication windows. Without idempotency,
           retrying a failed "add to cart" operation could add the item twice.
-        </p>
+        </HighlightBlock>
 
         <h3>Retry Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Not all failures warrant immediate rollback. Transient network errors (timeouts, 503s) may resolve on retry,
           making automatic retry with exponential backoff preferable to instant rollback. The decision tree is:
           client errors (400-level) trigger immediate rollback; server errors (500-level) and network failures trigger
           retry with a maximum attempt limit; only after exhausting retries does the client roll back. During retries,
           the optimistic state remains visible, keeping the UI responsive while the system attempts recovery.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The optimistic update lifecycle follows a deterministic sequence that branches based on server response:
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Optimistic Update Lifecycle</h3>
@@ -170,20 +171,22 @@ export default function OptimisticUpdatesConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/optimistic-update-flow.svg"
           alt="Optimistic Update Flow Diagram showing happy path and error path"
           caption="Optimistic Update Flow - The happy path (green) confirms the update while the error path (orange) rolls back to the snapshot"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A critical architectural consideration is the relationship between optimistic state and server state. The
           optimistic state is ephemeral - it exists only between the moment the user acts and the moment the server
           responds. During this window, the UI displays "predicted" data. If multiple mutations fire in rapid
           succession (a user rapidly toggling a like button), each mutation must maintain its own snapshot, and
           rollbacks must be applied in reverse order to avoid corrupting intermediate states.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/optimistic-vs-pessimistic.svg"
           alt="Optimistic vs Pessimistic Updates Timeline Comparison"
           caption="Perceived latency comparison - Pessimistic updates block the UI for the duration of the network round-trip, while optimistic updates provide instant feedback"
+          captionTier="important"
         />
 
         <p>
@@ -196,10 +199,10 @@ export default function OptimisticUpdatesConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing between optimistic, pessimistic, and eventual consistency models depends on the nature of the
           operation and the tolerance for inconsistency:
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -248,32 +251,39 @@ export default function OptimisticUpdatesConciseArticle() {
             </tr>
           </tbody>
         </table>
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
+          Interview rule of thumb: use optimistic updates for low-risk, idempotent mutations where rollback is an
+          acceptable UX (likes, reorder, toggles). Prefer pessimistic updates when incorrect UI would surprise or
+          alarm users (payments, destructive actions, permission changes).
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>Follow these guidelines to implement robust optimistic updates:</p>
+        <HighlightBlock as="p" tier="important">
+          Follow these guidelines to implement robust optimistic updates:
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Capture Snapshots:</strong> Before applying any optimistic change, snapshot the affected
             state. Never rely on reconstructing previous state from the mutation parameters alone. The snapshot must
             include all data that the optimistic update modifies, including derived or computed fields.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cancel Conflicting Queries:</strong> Before applying an optimistic update, cancel any in-flight
             refetches for the same data. If a refetch completes during the optimistic window, it will overwrite the
             optimistic data with stale server data, causing a confusing flash of old content.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Invalidate on Settle:</strong> Always invalidate and refetch affected queries in the
             <code>onSettled</code> callback, regardless of whether the mutation succeeded or failed. This ensures
             the cache converges to the true server state and catches any side effects the server may have applied.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Idempotency Keys:</strong> Generate a unique identifier for each mutation and send it with
             the request. The server should use this key to deduplicate requests, making retries safe. UUIDs generated
             on the client are the standard approach.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scope Optimistic Updates Narrowly:</strong> Only update the specific cache entries affected by
             the mutation. Broad cache invalidation during the optimistic window increases the risk of race conditions
@@ -299,37 +309,39 @@ export default function OptimisticUpdatesConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>Avoid these mistakes when implementing optimistic updates:</p>
+        <HighlightBlock as="p" tier="important">
+          Avoid these mistakes when implementing optimistic updates:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No Rollback on Error:</strong> The most dangerous pitfall. If the server rejects a mutation and
             the client does not roll back, the UI permanently diverges from the server state. The user sees data that
             does not exist on the server, leading to confusion and data loss when the page refreshes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Flash of Incorrect State:</strong> When a rollback occurs, users briefly see the "correct"
             optimistic state revert to the previous state. If rollback happens after 2-3 seconds of the user seeing
             the updated UI, it feels like the app is "undoing" their action. Mitigate this by showing an immediate
             error toast and using a subtle animation for the revert.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Race Conditions with Rapid Mutations:</strong> A user rapidly likes and unlikes a post, generating
             multiple in-flight requests. If responses arrive out of order, the final UI state may not reflect the
             last user action. Solutions include request cancellation, sequence numbers, or debouncing the network
             call while applying each toggle optimistically.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Handling Offline Scenarios:</strong> On mobile or flaky networks, the mutation request may
             never reach the server. Without a retry queue or offline detection, the optimistic state persists
             indefinitely, and the user believes their action was saved. Implement network status detection and
             either queue mutations for retry or roll back immediately when offline is detected.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimistic Updates on Non-Idempotent Operations:</strong> Applying optimistic updates to
             operations like "create new item" without idempotency keys risks duplicate creation on retry. If the
             first request actually succeeded but the response was lost, retrying creates a second item. Always
             use idempotency keys for create operations.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stale Snapshot from Background Refetch:</strong> If a background refetch updates the cache
             between the snapshot and the rollback, rolling back to the snapshot restores stale data. Always cancel
@@ -347,14 +359,16 @@ export default function OptimisticUpdatesConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>Optimistic updates are ubiquitous in modern web applications:</p>
+        <HighlightBlock as="p" tier="important">
+          Optimistic updates are ubiquitous in modern web applications:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Like/Reaction Buttons:</strong> Twitter, Instagram, and Facebook update the like count and icon
             state instantly on tap. The count increments immediately, and a heart animation plays. If the server
             rejects (rate limit, deleted post), the count silently decrements. This is the canonical optimistic
             update use case because the operation is idempotent, low-risk, and high-frequency.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Todo Lists and Task Management:</strong> Apps like Todoist and Linear toggle task completion,
             reorder items, and update labels optimistically. Dragging a task to a different column in a Kanban board
@@ -367,11 +381,11 @@ export default function OptimisticUpdatesConciseArticle() {
             immediately, while the server persists the new order asynchronously. This eliminates the jarring experience
             of items snapping back to original positions during server round-trips.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Message Sending:</strong> Slack, Discord, and WhatsApp Web display sent messages instantly in the
             chat thread, showing a subtle "sending" indicator. If delivery fails, the message shows a retry icon.
             This pattern is essential for real-time communication where any delay breaks conversational flow.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shopping Cart Updates:</strong> E-commerce platforms update cart quantities optimistically. When
             a user changes quantity from 1 to 2, the subtotal updates instantly. If inventory validation fails on the
@@ -381,17 +395,19 @@ export default function OptimisticUpdatesConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Use Optimistic Updates</h3>
-          <p>Pessimistic updates are the safer choice for:</p>
+          <HighlightBlock as="p" tier="crucial">
+            Pessimistic updates are the safer choice for:
+          </HighlightBlock>
           <ul className="mt-2 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <strong>Payment processing:</strong> Users must see confirmed charges, not optimistic amounts that
               may differ after server-side tax calculations or coupon validation.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Destructive actions:</strong> Deleting accounts, removing team members, or revoking access
               should confirm server success before updating the UI. Rollback on a "user deleted" screen is
               deeply confusing.
-            </li>
+            </HighlightBlock>
             <li>
               <strong>Multi-step workflows:</strong> Operations that trigger server-side chains (approval flows,
               email sending, third-party API calls) have unpredictable outcomes that the client cannot anticipate.
@@ -411,7 +427,7 @@ export default function OptimisticUpdatesConciseArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle a failed optimistic update without confusing the user?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: The key is the snapshot-and-rollback pattern combined with clear user feedback. Before applying the
               optimistic change, capture a snapshot of the current state. If the server returns an error, restore the
               snapshot and display a non-intrusive notification (toast or inline message) explaining what happened.
@@ -419,12 +435,12 @@ export default function OptimisticUpdatesConciseArticle() {
               operations, consider adding a subtle undo animation rather than an abrupt revert. Additionally, always
               invalidate and refetch the affected queries after rollback to ensure the cache is consistent with the
               server, accounting for any changes that may have occurred during the in-flight window.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: A user rapidly toggles a like button five times. How do you ensure the final state is correct?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: This is a classic race condition problem. Three approaches work: First, debounce the network request
               while applying each toggle optimistically - only send the final state after 300ms of inactivity. Second,
               use request cancellation (AbortController) to cancel in-flight requests before sending a new one, ensuring
@@ -433,12 +449,12 @@ export default function OptimisticUpdatesConciseArticle() {
               optimistic toggling on each click, so the UI is always responsive but the server only processes the final
               intent. React Query's mutation cancellation and query invalidation on settle handle most of this
               automatically.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: When would you choose pessimistic updates over optimistic updates, and why?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Pessimistic updates are the right choice when the cost of showing incorrect state exceeds the cost of
               latency. Specific cases include: payment processing, where showing a wrong total or false confirmation
               is unacceptable; destructive operations like account deletion, where rolling back after showing "deleted"
@@ -447,7 +463,7 @@ export default function OptimisticUpdatesConciseArticle() {
               the same resource, making frequent rollbacks more disruptive than a brief loading state. The rule of thumb
               is: if a rollback would surprise or alarm the user, use pessimistic updates. If a rollback would merely
               be a minor inconvenience (a like count reverting), optimistic updates are preferred.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

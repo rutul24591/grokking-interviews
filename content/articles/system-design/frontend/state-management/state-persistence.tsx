@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,21 +24,21 @@ export default function StatePersistenceConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>State persistence</strong> is the practice of saving application state to a durable
           storage medium so that it survives page reloads, tab closures, browser restarts, or even
           device reboots. Without persistence, every piece of in-memory state (React useState, Zustand
           stores, Redux trees) is lost the instant the JavaScript execution context is destroyed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The need for persistence arises from a fundamental tension in web architecture: HTTP is
           stateless, the browser treats each navigation as a fresh start, yet users expect continuity.
           They expect their theme preference to survive a refresh, their half-written form to still be
           there after an accidental tab close, and their shopping cart to persist across devices. These
           expectations create a spectrum of persistence requirements that range from ephemeral
           session-scoped data to cross-device, server-synced state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Modern browsers expose several storage APIs, each with different capacity limits, access
           patterns, and lifetimes. Choosing the right API (and designing the persistence layer around
           it) is a critical architectural decision that affects performance, security, offline
@@ -45,45 +46,45 @@ export default function StatePersistenceConciseArticle() {
           &ldquo;where do I store data?&rdquo; but &ldquo;how do I design a persistence strategy that
           handles versioning, migration, conflict resolution, encryption, and quota management
           gracefully?&rdquo;
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding state persistence requires familiarity with the browser storage APIs and the
           middleware patterns that connect them to your state management layer.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-4 font-semibold">Browser Storage APIs</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>localStorage:</strong> Synchronous key-value store scoped to the origin. Capacity
             is typically 5-10 MB across all mainstream browsers. Data persists until explicitly cleared
             by the user or the application. Because the API is synchronous, large reads or writes
             block the main thread. Values must be strings, so complex objects require
             JSON.stringify/parse round-trips.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>sessionStorage:</strong> Identical API to localStorage but scoped to a single
             browser tab. Data is destroyed when the tab is closed. Useful for wizard flows, form
             drafts, or any state that should not leak across tabs. Opening a link in a new tab creates
             a fresh sessionStorage.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>IndexedDB:</strong> A full transactional, structured database in the browser.
             Supports indexes, cursors, and large binary data (Blobs). Capacity is typically limited
             only by available disk space (browsers may allow up to 50% of free disk or more). All
             operations are asynchronous. Ideal for offline-first applications, large datasets, or
             structured records that benefit from indexed queries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Cookies:</strong> The oldest storage mechanism. Limited to ~4 KB per cookie.
             Automatically sent with every HTTP request to the matching origin, making them the only
             storage mechanism accessible server-side during SSR. Support attributes like HttpOnly,
             Secure, SameSite, and Expires for fine-grained control. Primarily used for authentication
             tokens, session identifiers, and consent flags.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache API:</strong> Part of the Service Worker specification. Designed for caching
             HTTP request/response pairs. Not a general-purpose state store but excellent for caching
@@ -93,13 +94,13 @@ export default function StatePersistenceConciseArticle() {
 
         <h3 className="mt-6 font-semibold">Persistence Middleware Patterns</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Zustand persist middleware:</strong> Wraps a Zustand store with automatic
             serialization/deserialization. Supports custom storage engines (localStorage, AsyncStorage,
             IndexedDB wrappers), partial state persistence via <code>partialize</code>, version
             numbers, and migration functions. The <code>skipHydration</code> option is critical for
             SSR to avoid hydration mismatches.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Redux Persist:</strong> A standalone library that intercepts the Redux store and
             automatically persists/rehydrates slices. Supports transforms (compression, encryption),
@@ -137,11 +138,11 @@ export default function StatePersistenceConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The persistence lifecycle follows a predictable pattern regardless of the storage backend.
           Understanding this flow is essential for debugging issues like stale state, hydration
           mismatches, and performance bottlenecks.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Persistence Lifecycle</h3>
@@ -163,21 +164,23 @@ export default function StatePersistenceConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/state-management/persistence-lifecycle.svg"
           alt="State Persistence Lifecycle Diagram"
           caption="Full persistence lifecycle: from initial load through hydration to debounced write-back on state changes"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A critical nuance is the <strong>hydration timing problem</strong>. During SSR, the server
           has no access to the client&apos;s localStorage or IndexedDB. The server renders with
           default state, and the client hydrates with persisted state, creating a potential mismatch.
           Solutions include delaying render until hydration is complete (PersistGate pattern),
           rendering a loading skeleton on the server, or using cookies (which are sent with the
           request) for SSR-critical state like theme preference or locale.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/storage-comparison.svg"
           alt="Browser Storage API Comparison"
           caption="Visual comparison of browser storage APIs: capacity, lifetime, accessibility, and API type"
+          captionTier="important"
         />
       </section>
 
@@ -253,41 +256,48 @@ export default function StatePersistenceConciseArticle() {
             </tr>
           </tbody>
         </table>
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
+          Heuristic: persist the smallest possible source-of-truth state. Prefer cookies for SSR-critical, security
+          sensitive values (auth/session, theme to avoid FOUC). Prefer IndexedDB for large/offline datasets. Treat
+          localStorage as a small synchronous preference cache, and debounce writes aggressively.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>Follow these practices to build robust and maintainable persistence layers:</p>
+        <HighlightBlock as="p" tier="important">
+          Follow these practices to build robust and maintainable persistence layers:
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Version Your Persisted State:</strong> Always store a version number alongside
             your data. When your state shape changes (adding fields, renaming keys, restructuring
             nested objects), increment the version and provide a migration function. Without
             versioning, users returning after a deploy will hit runtime errors from mismatched shapes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Write Migration Functions:</strong> Treat state migrations like database
             migrations. Each version bump should have a corresponding function that transforms version
             N to version N+1. Test migrations against snapshot fixtures of previous versions to
             prevent regressions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Encrypt Sensitive Data:</strong> Never store authentication tokens, personal data,
             or financial information in plain text in localStorage. Use the Web Crypto API to encrypt
             data before persisting. Better yet, use HttpOnly cookies for tokens so JavaScript cannot
             access them at all.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce Writes:</strong> State updates can fire dozens of times per second during
             user interaction. Debounce writes to storage with a 300-500ms delay to batch rapid changes
             and avoid thrashing the synchronous localStorage API on the main thread.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Persist Selectively:</strong> Do not persist your entire state tree. Use
             partialize (Zustand) or whitelists (Redux Persist) to persist only the data that needs to
             survive page reloads. Transient UI state (modal open/close, hover state, scroll position)
             should remain in-memory only.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Handle Storage Quota Errors:</strong> Wrap all storage writes in try/catch. When
             a QuotaExceededError is thrown, implement a graceful fallback: notify the user, evict
@@ -309,32 +319,34 @@ export default function StatePersistenceConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>Avoid these frequently encountered mistakes when implementing state persistence:</p>
+        <HighlightBlock as="p" tier="important">
+          Avoid these frequently encountered mistakes when implementing state persistence:
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR Hydration Mismatch:</strong> The server renders with default state, the
             client hydrates with persisted state, and React throws a hydration mismatch warning (or
             silently renders incorrect UI). Fix this by delaying hydration to useEffect, using a
             loading placeholder during rehydration, or persisting SSR-critical state in cookies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storage Full Errors:</strong> localStorage silently fails or throws
             QuotaExceededError. Many applications never catch this error, leading to data loss. Always
             wrap setItem calls in try/catch and have a degradation strategy (evict old data, reduce
             what you persist, warn the user).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Stale Persisted State:</strong> After a deploy that changes state shape, returning
             users load outdated data that crashes the app. This is the most common persistence bug in
             production. Solution: version numbers + migration functions, plus a try/catch that falls
             back to defaults if migration fails.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Security of Stored Tokens:</strong> Storing JWT tokens or API keys in localStorage
             exposes them to XSS attacks. Any JavaScript running on the page (including third-party
             scripts) can read localStorage. Use HttpOnly cookies for tokens, and never persist
             secrets client-side without encryption.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cross-Tab Synchronization Issues:</strong> When a user has multiple tabs open,
             state changes in one tab are not reflected in others unless you listen for the
@@ -347,17 +359,19 @@ export default function StatePersistenceConciseArticle() {
             slows hydration, and creates more surface area for migration bugs. Persist only the
             minimal source-of-truth state.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Blocking the Main Thread with Synchronous I/O:</strong> Reading or writing large
             objects (100KB+) to localStorage blocks the main thread. For large state, use IndexedDB
             (asynchronous) or move persistence to a Web Worker to keep the UI responsive.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>State persistence powers many familiar user experiences across the web:</p>
+        <HighlightBlock as="p" tier="important">
+          State persistence powers many familiar user experiences across the web:
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Theme and Locale Preferences:</strong> Persisting dark/light mode and language
@@ -371,22 +385,24 @@ export default function StatePersistenceConciseArticle() {
             can accidentally close the tab and return to their in-progress work. Google Docs takes
             this further with IndexedDB for offline editing and server sync.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Shopping Cart Persistence:</strong> E-commerce carts persist to localStorage
             (guest users) or server-side (authenticated users) so items survive across sessions.
             Shopify, Amazon, and Stripe Checkout all implement cart persistence with conflict
             resolution when anonymous carts merge with authenticated accounts.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Offline-First Applications:</strong> PWAs like Notion, Figma, and Linear persist
             entire document trees to IndexedDB for offline access. Changes queue locally and sync
             when connectivity returns, using CRDTs or operational transforms for conflict resolution.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Persist State</h3>
-          <p>Avoid persistence for:</p>
+          <HighlightBlock as="p" tier="crucial">
+            Avoid persistence for:
+          </HighlightBlock>
           <ul className="mt-2 space-y-2">
             <li>
               &bull; <strong>Derived/computed state:</strong> Data that can be recalculated from
@@ -414,7 +430,7 @@ export default function StatePersistenceConciseArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle state persistence with SSR without causing hydration mismatches?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: The server cannot access localStorage or IndexedDB, so it renders with default
               state. On the client, persisted state is loaded asynchronously in a useEffect to avoid
               mismatches. Libraries like Zustand use <code>skipHydration: true</code> to delay store
@@ -422,12 +438,12 @@ export default function StatePersistenceConciseArticle() {
               locale), use cookies since they are sent with the HTTP request. The PersistGate pattern
               (Redux Persist) renders a loading placeholder until rehydration completes, guaranteeing
               the first meaningful render uses persisted data.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you design a migration system for persisted state that evolves over multiple releases?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Store a version number alongside persisted data. On load, compare stored version to
               current version. Maintain an ordered array of migration functions, each transforming
               version N to N+1. Run migrations sequentially from stored version to current version.
@@ -435,12 +451,12 @@ export default function StatePersistenceConciseArticle() {
               default state rather than crashing. Test migrations with snapshot fixtures from every
               historical version. This is directly analogous to database schema migrations and
               follows the same principles (forward-only, idempotent, testable).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: When should you use IndexedDB over localStorage for persistence?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use IndexedDB when: (1) data exceeds 5 MB (e.g., offline document storage, cached
               API responses), (2) you need structured queries with indexes (finding records by
               non-primary fields), (3) you need to store binary data like images or files, (4) you
@@ -449,7 +465,7 @@ export default function StatePersistenceConciseArticle() {
               ({'&lt;'}1 MB), simple key-value (user preferences, feature flags), and synchronous access
               is acceptable. The async nature of IndexedDB adds complexity, so reach for it only when
               localStorage's limitations are actually constraining your use case.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

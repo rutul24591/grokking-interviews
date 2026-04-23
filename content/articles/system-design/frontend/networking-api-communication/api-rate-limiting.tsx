@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function ApiRateLimitingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>API Rate Limiting</strong> from the client-side perspective is
           the practice of proactively throttling outgoing requests to respect
           server-imposed quotas and avoid triggering 429 Too Many Requests
@@ -47,8 +48,8 @@ export default function ApiRateLimitingArticle() {
           that prevents applications from hitting limits in the first place,
           handles 429 responses gracefully when they occur, and maintains a
           functional user experience even under quota constraints.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rate limiting has become ubiquitous in modern API design. Every major
           API provider implements some form of rate limiting: GitHub's REST API
           allows 5,000 requests per hour for authenticated users, Stripe limits
@@ -59,8 +60,8 @@ export default function ApiRateLimitingArticle() {
           consuming these APIs, understanding and implementing client-side rate
           limiting is not optional -- it is a fundamental requirement for
           production reliability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business case for client-side rate limiting extends beyond mere
           compliance. When an application consistently hits rate limits, users
           experience errors, failed operations, and degraded functionality. By
@@ -71,8 +72,8 @@ export default function ApiRateLimitingArticle() {
           trust with API providers by demonstrating responsible usage patterns.
           Some API providers even offer higher quotas to applications that
           demonstrate good citizenship through proper rate limit handling.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, client-side rate limiting
           intersects with several architectural concerns. It requires
           coordination with authentication systems (since rate limits are often
@@ -84,18 +85,18 @@ export default function ApiRateLimitingArticle() {
           rate limiting not as a constraint but as a resource allocation
           problem, dynamically distributing quota across competing operations
           based on business priority.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Effective client-side rate limiting requires understanding six
           foundational concepts that govern how quotas are tracked, enforced,
           and recovered from:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Rate Limit Headers:</strong> APIs communicate quota
             information through standardized HTTP response headers. The most
             common headers include: <strong>X-RateLimit-Limit</strong> (maximum
@@ -112,8 +113,8 @@ export default function ApiRateLimitingArticle() {
             The critical insight is that headers provide authoritative quota
             state -- the client's internal counter is merely an estimate that
             drifts over time and must be corrected by header values.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Token Bucket Algorithm:</strong> The most widely used
             rate-limiting algorithm for client-side implementation. Imagine a
             bucket that holds tokens, where each request consumes one token. The
@@ -128,7 +129,7 @@ export default function ApiRateLimitingArticle() {
             implement rate limiting (allowing short bursts while enforcing
             sustained limits), making it the natural choice for client-side
             throttling.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Leaky Bucket Algorithm:</strong> An alternative approach
             where requests enter a bucket that leaks at a constant rate. Unlike
@@ -192,14 +193,14 @@ export default function ApiRateLimitingArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A production-grade client-side rate limiting architecture consists of
           several layers working together: a quota tracker that maintains
           authoritative limit state from response headers, a rate limiter that
           enforces throttling using an algorithm like token bucket, a request
           queue that holds requests when quota is exhausted, and a 429 handler
           that processes rate-limit responses and triggers recovery.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">
@@ -243,9 +244,10 @@ export default function ApiRateLimitingArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/rate-limit-flow.svg"
           alt="Client-Side Rate Limiting Flow Diagram"
           caption="Client-side rate limiting flow: requests check quota tracker, pass through rate limiter, queue if exhausted, and 429 responses trigger backoff and quota reset"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The request lifecycle with rate limiting follows a decision tree. When
           a component initiates a request, it first passes through the rate
           limiter, which checks if quota is available. If tokens exist (token
@@ -256,9 +258,9 @@ export default function ApiRateLimitingArticle() {
           (analytics, prefetching). When the rate limiter determines quota will
           become available (based on refill rate or window reset time), it
           dequeues requests in priority order and dispatches them.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When a 429 response is received, the 429 handler takes over. It
           extracts the Retry-After header (or calculates delay from
           X-RateLimit-Reset), updates the quota tracker to reflect zero
@@ -267,15 +269,16 @@ export default function ApiRateLimitingArticle() {
           operations are rate-limited, allowing the application to show
           appropriate feedback (e.g., "Actions temporarily limited, please wait"
           rather than generic error messages).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/rate-limit-headers.svg"
           alt="Rate Limit Header Parsing Diagram"
           caption="Rate limit header parsing: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, and Retry-After headers extracted and used to update quota tracker"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           For multi-tab applications, the architecture extends to include
           cross-tab coordination. Each tab maintains a local quota tracker but
           subscribes to a BroadcastChannel for quota updates. When any tab makes
@@ -286,12 +289,13 @@ export default function ApiRateLimitingArticle() {
           BroadcastChannel approach is lightweight and requires no server-side
           changes, making it the preferred solution for most browser-based
           applications.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/rate-limit-strategies.svg"
           alt="Rate Limiting Strategies Comparison"
           caption="Rate limiting strategies: Token Bucket (allows bursting), Leaky Bucket (constant rate), Sliding Window Log (precise), and Sliding Window Counter (approximate)"
+          captionTier="important"
         />
       </section>
 
@@ -643,11 +647,11 @@ export default function ApiRateLimitingArticle() {
         <h2>Interview Questions &amp; Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q1: How would you implement client-side rate limiting for an API
               that allows 100 requests per minute with burst up to 150?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> I would implement a token bucket
               algorithm with capacity 150 (burst limit) and refill rate 100/60 =
               1.67 tokens per second. The implementation would: (1) Initialize a
@@ -659,15 +663,15 @@ export default function ApiRateLimitingArticle() {
               Critically, I would also implement proactive throttling when
               remaining tokens drop below 30, and coordinate across browser tabs
               using BroadcastChannel to share token state.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q2: Your application receives a 429 response with Retry-After: 60.
               What steps do you take?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> First, I immediately update the quota
               tracker to reflect zero remaining requests to prevent further
               attempts. Second, I extract the Retry-After value (60 seconds) and
@@ -680,7 +684,7 @@ export default function ApiRateLimitingArticle() {
               implement exponential backoff for subsequent 429s -- if another
               429 arrives after retry, wait 120 seconds, then 240, capped at 600
               seconds.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

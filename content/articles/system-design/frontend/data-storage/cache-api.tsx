@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,59 +24,59 @@ export default function CacheApiConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>Cache API</strong> is a browser-native storage interface defined as part of the Service Worker
           specification that stores <code>Request</code>/<code>Response</code> pairs. Unlike the browser's automatic
           HTTP cache (governed by <code>Cache-Control</code>, <code>ETag</code>, and <code>Last-Modified</code>
           headers), the Cache API gives developers full programmatic control over what is cached, when entries are
           added or removed, and how lookups are performed. It is the foundation for offline-first web architectures,
           enabling applications to serve content without any network connectivity.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Although the Cache API was designed alongside Service Workers and is most commonly used within a Service
           Worker's <code>fetch</code> and <code>install</code> event handlers, it is <strong>not</strong> limited
           to the Service Worker context. The <code>caches</code> global is available in the <code>window</code>{" "}
           context as well, meaning you can read from, write to, and inspect caches directly from your page scripts.
           This dual availability is important for patterns like pre-populating caches before a Service Worker
           activates, or reading cached data in the main thread for UI rendering decisions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The API operates on the same origin-scoped storage quota that IndexedDB shares (typically up to 60% of
           available disk space, varying by browser). Entries do not expire automatically; the Cache API has no
           built-in TTL mechanism. This is a deliberate design choice that gives developers maximum flexibility but
           also maximum responsibility. If you do not delete old entries, they persist indefinitely until the browser
           evicts the entire origin under storage pressure (which happens without warning for non-persistent storage).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For staff and principal engineers, the Cache API is a critical primitive in the broader storage and
           networking architecture. It sits at the intersection of the Service Worker lifecycle, the Fetch API, CORS
           policy, and storage quota management. Mastering it means understanding not just the method signatures,
           but how opaque responses behave, why cache versioning via named caches is the standard invalidation
           pattern, and how the Cache API interacts with (rather than replaces) the browser's HTTP cache layer.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Cache API surface is deliberately minimal: a <code>CacheStorage</code> interface that manages
           named caches, and a <code>Cache</code> interface that stores individual request/response pairs. The
           simplicity is deceptive; the edge cases around CORS, opaque responses, and storage behavior require
           careful attention.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 font-semibold">CacheStorage (the caches global)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>caches</code> object is available globally in both the window and Service Worker contexts. It
           provides the top-level management layer for named caches:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>caches.open(cacheName):</strong> Opens an existing named cache or creates a new one. Returns
             a Promise resolving to a <code>Cache</code> object. The cache name is a plain string; the convention
             is to use versioned names like <code>'static-v3'</code> or <code>'api-v2'</code> to enable atomic
             cache rotation during Service Worker updates.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>caches.match(request, options):</strong> Searches <strong>all</strong> named caches for a
             matching entry and returns the first match found. This is a convenience method that avoids opening
@@ -86,11 +87,11 @@ export default function CacheApiConciseArticle() {
             <strong>caches.has(cacheName):</strong> Returns a boolean Promise indicating whether a named cache
             exists. Useful for conditional logic during Service Worker activation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>caches.delete(cacheName):</strong> Deletes an entire named cache and all its entries. This
             is the primary mechanism for cache invalidation: delete old versioned caches during the{" "}
             <code>activate</code> event to free storage and prevent serving stale assets.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>caches.keys():</strong> Returns a Promise resolving to an array of all cache names. Combined
             with <code>caches.delete()</code>, this enables the standard cleanup pattern of iterating all caches
@@ -99,17 +100,17 @@ export default function CacheApiConciseArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 font-semibold">Cache Instance Methods</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Once you have a <code>Cache</code> object from <code>caches.open()</code>, you interact with individual
           entries:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>cache.put(request, response):</strong> Stores a request/response pair. The request can be a
             URL string or a <code>Request</code> object. You must <strong>clone</strong> the response before
             caching if you also need to return it to the caller, because Response bodies are streams that can
             only be consumed once.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>cache.add(url):</strong> A convenience method that calls <code>fetch(url)</code> and then
             stores the resulting pair. Critically, <code>cache.add()</code> <strong>rejects if the response
@@ -117,12 +118,12 @@ export default function CacheApiConciseArticle() {
             mechanism against caching error responses but can surprise developers expecting it to behave like{" "}
             <code>cache.put()</code>.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>cache.addAll(urls):</strong> The atomic variant. Fetches all URLs and stores all pairs. If
             any single request fails (network error or non-2xx status), <strong>none</strong> of the entries
             are cached. This atomicity makes it ideal for precaching during the Service Worker install event,
             where partial caches would leave the application in a broken state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>cache.match(request, options):</strong> Looks up a single cached response. Returns{" "}
             <code>undefined</code> if no match is found (not a rejection). Options include{" "}
@@ -138,56 +139,57 @@ export default function CacheApiConciseArticle() {
             Promise indicating whether an entry was found and removed. Accepts the same options as{" "}
             <code>cache.match()</code>.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>cache.keys(request, options):</strong> Returns all cached <code>Request</code> objects,
             optionally filtered by a specific request. With no arguments, returns every request in the cache.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 font-semibold">Opaque Responses & CORS</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When you fetch a cross-origin resource without CORS headers (using <code>mode: 'no-cors'</code>), the
           browser returns an <strong>opaque response</strong> with status <code>0</code>, empty headers, and an
           inaccessible body. The Cache API will store opaque responses, but with a critical caveat: browsers pad
           the reported storage size of opaque responses (Chrome uses ~7MB per entry regardless of actual size).
           This is a security measure to prevent cache-timing attacks that could infer response sizes, but it
           means caching many opaque responses can rapidly exhaust your storage quota.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 font-semibold">Cache Versioning</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Because the Cache API has no built-in expiration, the standard invalidation pattern uses versioned cache
           names. When deploying a new Service Worker version, you open a new cache (e.g., <code>'static-v4'</code>),
           precache the updated assets, and delete old caches (<code>'static-v3'</code>) during the activate event.
           This provides atomic rollover: the old cache remains intact while the new SW installs, ensuring the
           previous SW version continues serving consistent assets until the new version takes control.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Cache API operates as a developer-controlled storage layer that sits alongside (not within) the
           browser's automatic HTTP cache. Understanding the architectural relationship between these layers, and
           how the Cache API integrates with Service Workers and the Fetch API, is essential for designing correct
           caching strategies.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-storage/cache-api-architecture.svg"
           alt="Cache API Architecture"
           caption="CacheStorage manages named caches, each storing Request/Response pairs, accessible from both window and Service Worker contexts"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>CacheStorage</code> container holds multiple named caches. Each named cache is an independent
           key-value store where the key is a <code>Request</code> (matched by URL and optionally method and
           headers) and the value is a <code>Response</code>. The typical production setup uses separate named
           caches for different resource types: one for static assets (versioned by build hash), one for API
           responses, and one for images or other media. This separation enables targeted invalidation without
           affecting other cache categories.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           When a Service Worker intercepts a fetch event, the decision flow typically checks the Cache API first
           (for Cache First strategies) or the network first (for Network First strategies), then falls back to
           the alternative. The Cache API lookup happens entirely in the browser process with no network activity,
@@ -195,15 +197,16 @@ export default function CacheApiConciseArticle() {
           request via <code>fetch()</code>, that request passes through the browser's HTTP cache before reaching
           the network. This layering means a "network" request from the SW may actually be served from the
           HTTP cache, an important nuance when reasoning about freshness guarantees.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-storage/cache-api-vs-http-cache.svg"
           alt="Cache API vs HTTP Cache Comparison"
           caption="The Cache API provides manual, code-driven control while the HTTP cache is automatic and header-driven"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The distinction between these two cache layers is fundamental. The HTTP cache is transparent to your
           application code, managed by the browser based on response headers, and cannot be reliably inspected
           or modified by JavaScript. The Cache API is entirely opaque to the browser's automatic caching logic,
@@ -211,15 +214,15 @@ export default function CacheApiConciseArticle() {
           two layers complement each other: HTTP caching handles CDN efficiency and standard browser behavior,
           while the Cache API handles offline support, precaching, and fine-grained invalidation logic that
           header-based caching cannot express.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choosing the right storage mechanism depends on what you are caching, how much control you need, and
           whether offline access is a requirement:
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -283,53 +286,53 @@ export default function CacheApiConciseArticle() {
           </tbody>
         </table>
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
           A common architectural mistake is using the Cache API to store arbitrary data that would be better suited
           for IndexedDB. The Cache API is optimized for HTTP Request/Response pairs. If you need to store JSON
           objects, user-generated content, or application state, IndexedDB provides indexed queries, transactions,
           and structured cloning that the Cache API does not. Conversely, if you need to intercept and serve
           network responses offline, the Cache API is the correct choice because it integrates directly with the
           Service Worker fetch event.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices reflect production experience with large-scale applications that rely on the Cache API
           for offline support and performance optimization:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Version Your Caches with Named Strings:</strong> Use descriptive, versioned cache names like{" "}
             <code>'static-v4'</code> or <code>'api-2026-03'</code>. During the Service Worker activate event,
             delete all caches whose names do not appear in a known-good whitelist. This is the only reliable
             invalidation mechanism since the Cache API has no TTL support.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Clean Up Old Caches on Activate:</strong> The activate event is the correct place to delete
             outdated caches. Use <code>caches.keys()</code> to enumerate all caches, filter out those matching
             the current version, and delete the rest. Wrap this logic in <code>event.waitUntil()</code> to ensure
             cleanup completes before the SW begins handling fetch events.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Never Cache POST Requests:</strong> The Cache API technically allows storing any HTTP method,
             but caching POST requests violates HTTP semantics and leads to dangerous side effects. POST requests
             are not idempotent; replaying a cached POST response can cause duplicate submissions, incorrect state
             mutations, or security vulnerabilities.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Handle Opaque Responses with Extreme Care:</strong> If you must cache cross-origin resources
             fetched without CORS, implement strict limits. Set a maximum entry count for opaque-response caches
             and implement manual eviction. Each opaque response may consume ~7MB of reported quota regardless of
             actual size, and you cannot inspect the status code to verify success.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Clone Before Caching:</strong> Response bodies are readable streams consumed on first
             read. When implementing runtime caching in a fetch handler, call <code>response.clone()</code>{" "}
             before passing one copy to the cache and returning the other to the caller. Forgetting this produces
             a TypeError at runtime.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate Responses Before Caching with cache.put:</strong> Unlike <code>cache.add()</code>,
             the <code>cache.put()</code> method does not reject on non-2xx responses. Always check{" "}
@@ -342,35 +345,35 @@ export default function CacheApiConciseArticle() {
             responses, and images. This enables independent versioning and invalidation: you can rotate the static
             cache on each deployment while preserving longer-lived API cache entries.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Monitor Storage Quota:</strong> Use <code>navigator.storage.estimate()</code> to track usage
             and available quota. Implement proactive eviction when usage exceeds a threshold (e.g., 80%). For
             critical applications, request persistent storage via <code>navigator.storage.persist()</code> to
             prevent the browser from evicting your origin's data under storage pressure.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These issues have caused production incidents in applications relying on the Cache API. Each requires
           specific awareness and mitigation:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Opaque Response Size Inflation:</strong> Browsers pad the reported storage size of opaque
             responses as a security measure. In Chrome, each opaque response consumes approximately 7MB of
             quota regardless of its actual content size. Caching 50 opaque image responses could report 350MB
             of usage, potentially triggering quota eviction. Mitigate by using CORS where possible or by
             strictly limiting the number of cached opaque entries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No Automatic Eviction Within a Cache:</strong> Unlike the HTTP cache, the Cache API never
             evicts individual entries. It grows unbounded until you explicitly delete entries or the browser
             evicts the entire origin under storage pressure. Without custom expiration logic (checking timestamps
             stored in IndexedDB or a metadata cache), entries persist indefinitely.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>cache.add() Fails on Non-2xx Responses:</strong> Calling <code>cache.add('/api/data')</code>{" "}
             rejects if the server returns a 404, 500, or any non-2xx status. Developers expecting silent failure
@@ -385,13 +388,13 @@ export default function CacheApiConciseArticle() {
             application logic depends on inspecting cached response data, ensure CORS is properly configured on
             the origin server.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stale Caches After Deployment:</strong> Because the Cache API does not expire entries, a user
             who never closes their browser tab may continue receiving assets from an old cache indefinitely. The
             Service Worker update mechanism (byte-diff check on the SW script) is the trigger for cache rotation,
             but it only fires on navigation events. Long-lived single-page applications may need manual update
             checks via <code>registration.update()</code> on a timer.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache Key Sensitivity to Query Strings:</strong> By default, <code>cache.match()</code>{" "}
             treats the full URL including query string as the cache key. A request for <code>/api/data?v=1</code>{" "}
@@ -410,30 +413,30 @@ export default function CacheApiConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Cache API enables several critical architectural patterns in production web applications:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>PWA Offline App Shell:</strong> The app shell model precaches the HTML skeleton, critical
             CSS, core JavaScript, and key images during the Service Worker install event using{" "}
             <code>cache.addAll()</code>. On subsequent visits, the shell loads instantly from cache regardless
             of network conditions. Dynamic content is then fetched from API endpoints (with their own caching
             strategy) and injected into the shell. Twitter Lite reduced initial load time to under 3 seconds
             on 3G using this pattern.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Runtime Caching for API Responses:</strong> Using a stale-while-revalidate strategy, the
             Service Worker serves cached API responses immediately while fetching fresh data in the background.
             The next request receives the updated response. This pattern is ideal for product catalogs, news
             feeds, and any content where sub-second response time matters more than real-time freshness.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Asset Precaching with Build Integration:</strong> Build tools (Workbox, next-pwa) generate
             a precache manifest at build time containing hashed asset URLs. The Service Worker caches these
             during install, guaranteeing that all assets for a specific build version are available offline.
             The hash in the filename serves as both the cache-busting mechanism and the version identifier.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Offline Fallback Pages:</strong> Cache a custom offline HTML page during install. When a
             navigation request fails (no network and no cached response), serve the offline page from cache.
@@ -450,18 +453,20 @@ export default function CacheApiConciseArticle() {
 
         <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h3 className="mb-3 font-semibold">When NOT to Use the Cache API</h3>
-          <p>The Cache API is not a general-purpose storage mechanism. Avoid it when:</p>
+          <HighlightBlock as="p" tier="crucial">
+            The Cache API is not a general-purpose storage mechanism. Avoid it when:
+          </HighlightBlock>
           <ul className="mt-2 space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               &bull; <strong>Storing structured application data:</strong> JSON objects, user preferences,
               shopping carts, and form state belong in IndexedDB or localStorage. The Cache API stores
               Request/Response pairs and does not support queries or indexes.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               &bull; <strong>Caching sensitive data without encryption:</strong> Cached responses are stored
               in cleartext on disk. Authentication tokens, personal information, or financial data should use
               encrypted storage or be excluded from caching entirely.
-            </li>
+            </HighlightBlock>
             <li>
               &bull; <strong>Replacing a CDN:</strong> The Cache API caches data on the user's device. It does
               not reduce origin server load for other users. Use CDN caching for shared resources and the Cache
@@ -481,11 +486,11 @@ export default function CacheApiConciseArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: How does the Cache API differ from the browser's HTTP cache, and when would you use one over the
               other?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The HTTP cache is automatic and header-driven: the browser manages it based on Cache-Control,
               ETag, and Last-Modified headers. You cannot programmatically add, remove, or inspect entries. The
               Cache API is entirely manual and code-driven: you decide what to cache, when to evict, and how to
@@ -495,15 +500,15 @@ export default function CacheApiConciseArticle() {
               need offline support, deterministic precaching, or custom invalidation logic that cannot be expressed
               with HTTP headers alone. In production, they complement each other: HTTP caching handles edge/CDN
               efficiency, while the Cache API handles on-device offline resilience.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: Explain the risks of caching opaque responses and how you would mitigate them in a production
               application.
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Opaque responses come from cross-origin requests made without CORS. They have status 0, empty
               headers, and inaccessible bodies. The risks are threefold: (1) Size inflation - browsers pad each
               opaque response to ~7MB of reported quota, so caching 100 entries could report 700MB and trigger
@@ -514,15 +519,15 @@ export default function CacheApiConciseArticle() {
               (third-party CDNs), implement a strict maximum entry count for opaque caches (e.g., 50 entries),
               use a dedicated named cache for opaque resources to isolate quota impact, and implement periodic
               full-cache rotation rather than per-entry eviction.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: Design a cache management strategy for a PWA that serves 500 pages of content offline. How do
               you handle updates, storage limits, and cache invalidation?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use a tiered approach with separate named caches: (1) App shell cache (versioned, e.g.,
               'shell-v12') precached during install containing the HTML template, critical CSS, and core JS.
               Rotated atomically on each deployment via the activate event. (2) Content cache (e.g., 'content-v1')
@@ -534,14 +539,14 @@ export default function CacheApiConciseArticle() {
               usage exceeds 70%. Request persistent storage to prevent browser-initiated eviction. For updates,
               use a versioned SW script that triggers a new install cycle; the new SW can selectively migrate
               still-valid content cache entries rather than re-downloading all 500 pages.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are the key differences between the Cache API and IndexedDB? When would you use each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The Cache API is designed for HTTP request/response pairs: keys are Request objects (or URLs),
               values are Response objects. It's ideal for caching network responses, precaching app shells, and
               offline support. IndexedDB is a full NoSQL database: keys can be any structured data, values can
@@ -549,7 +554,7 @@ export default function CacheApiConciseArticle() {
               fetch responses and Service Worker offline patterns. Use IndexedDB for structured application data,
               complex queries, and non-HTTP data storage. They often work together: Cache API for static assets
               and HTML, IndexedDB for user data and application state.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

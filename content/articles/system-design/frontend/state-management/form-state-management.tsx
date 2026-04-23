@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,25 +24,25 @@ export default function FormStateManagementConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Form state management is the discipline of tracking, validating, and submitting user input within a
           structured UI. It encompasses field values, validation errors, touched/dirty flags, submission status,
           and the coordination of all these concerns across potentially dozens of interdependent fields.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Forms are arguably the hardest UI state problem because they sit at the intersection of user
           experience, data integrity, and performance. A checkout form with address autocomplete, coupon
           validation, and real-time shipping calculations touches local state, server state, derived state, and
           side effects simultaneously. Unlike most UI state, form state has a lifecycle that spans creation,
           mutation, validation, submission, and reset, with user expectations for instant feedback at every stage.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The fundamental architectural decision is <strong>controlled vs uncontrolled</strong>. In a controlled
           form, React owns every field value through state. Each keystroke triggers a state update, a re-render,
           and a DOM reconciliation. In an uncontrolled form, the DOM owns the values; React reads them only when
           needed (typically on submit) via refs. This distinction has cascading implications for performance,
           testability, and validation strategy.
-        </p>
+        </HighlightBlock>
         <p>
           At the staff/principal level, you are expected to articulate why form state is categorically different
           from other application state: it is inherently mutable, ephemeral, high-frequency, and tightly coupled
@@ -52,27 +53,31 @@ export default function FormStateManagementConciseArticle() {
 
       <section>
         <h2>Core Concepts</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The key is to minimize re-render cost while preserving UX: use uncontrolled-by-default primitives, then
+          selectively subscribe to the few fields that need real-time reactivity, validation, or derived UI.
+        </HighlightBlock>
 
         <h3>Controlled Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In the controlled paradigm, React is the single source of truth. Every input element receives its
           current value from React state and reports changes through an onChange handler. This gives you complete
           programmatic control: you can transform input in real time (formatting phone numbers), conditionally
           prevent changes (character limits), or derive computed values (password strength indicators).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The cost is re-renders. Each keystroke in a controlled input triggers setState, which re-renders the
           component and all its children. In a form with 30 fields, a naive controlled implementation re-renders
           the entire form tree on every single keystroke. This is where performance optimization through
           memoization, state colocation, or library-level solutions becomes critical.
-        </p>
+        </HighlightBlock>
 
         <h3>Uncontrolled Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uncontrolled components let the DOM manage its own state. You attach a ref to the input and read its
           value imperatively when needed. Default values are set via the defaultValue prop. This eliminates
           per-keystroke re-renders entirely, making it inherently faster for large forms.
-        </p>
+        </HighlightBlock>
         <p>
           The trade-off is reduced reactivity. You cannot easily perform real-time validation, conditional field
           logic based on current values, or instant UI feedback without adding imperative DOM manipulation that
@@ -81,13 +86,13 @@ export default function FormStateManagementConciseArticle() {
         </p>
 
         <h3>React Hook Form</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           React Hook Form (RHF) bridges the gap by using uncontrolled components internally while exposing a
           controlled-like API. It registers inputs via refs (the register function), avoids re-rendering the
           entire form on field changes, and provides a subscription-based model (watch) for fields that need
           reactivity. The handleSubmit function collects all values at submission time without intermediate
           re-renders.
-        </p>
+        </HighlightBlock>
         <p>
           Key APIs include: <strong>register</strong> (connects an input to the form via ref),{" "}
           <strong>watch</strong> (subscribes to specific field changes, triggering re-renders only for consumers),{" "}
@@ -141,34 +146,40 @@ export default function FormStateManagementConciseArticle() {
 
       <section>
         <h2>Architecture & Flow</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Architecture is largely a performance story: where do values live, and which updates trigger which re-renders?
+          Library choice is usually about subscription granularity and validation pipeline ergonomics.
+        </HighlightBlock>
 
         <h3>Controlled vs Uncontrolled Data Flow</h3>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/controlled-vs-uncontrolled.svg"
           alt="Controlled vs Uncontrolled components data flow comparison"
           caption="Controlled components use React state as source of truth; uncontrolled components use the DOM directly."
+          captionTier="important"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a controlled flow, each keystroke traverses the full React cycle: event handler, state update,
           reconciliation, and DOM patch. The Virtual DOM diff is typically cheap, but the component tree
           re-render is not, especially when unoptimized parent components force child re-renders. React Hook
           Form circumvents this by storing field values in a ref-based store, notifying only subscribed
           components (via watch or useWatch) when specific fields change.
-        </p>
+        </HighlightBlock>
 
         <h3>Validation Pipeline</h3>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/state-management/form-validation-flow.svg"
           alt="Form validation flow from user input through field, schema, and form-level validation to server"
           caption="Validation flows through multiple stages: field-level, schema, form-level, and server-side."
+          captionTier="important"
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           Formik{"'"}s architecture wraps the entire form tree in a context provider. Any field change updates the
           context, which triggers re-renders in all consuming components. FastField opts out of this by
           implementing shouldComponentUpdate with a shallow comparison of its own field slice. This architectural
           difference, context-based (Formik) vs ref-based (RHF), is the primary reason for their performance
           divergence.
-        </p>
+        </HighlightBlock>
         <p>
           At scale, form architecture also involves considerations like form state persistence (saving draft
           state to localStorage or a backend), multi-step form orchestration (wizard patterns where each step
@@ -179,6 +190,10 @@ export default function FormStateManagementConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The trade-off is explicitness vs performance: controlled-by-default approaches are conceptually simple but can
+          re-render too much; subscription/ref-based approaches reduce re-renders but require more disciplined patterns.
+        </HighlightBlock>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm">
             <thead>
@@ -236,53 +251,57 @@ export default function FormStateManagementConciseArticle() {
             </tbody>
           </table>
         </div>
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="important" className="mt-4">
           React Hook Form dominates in performance-sensitive scenarios and has become the community default for
           new projects. Formik remains viable for teams already invested in its ecosystem. React Final Form
           offers the best performance-to-size ratio but has a smaller community. Native useState is appropriate
           only for trivial forms (login, search) where adding a library would be over-engineering.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Treat forms as a product surface: validation UX, error mapping, and persistence matter as much as typing
+          correctness. Optimize re-renders only after you have the right lifecycle and contracts.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Colocate validation with types.</strong> Use Zod schemas that double as TypeScript types. A
             single schema definition ensures your form shape, validation rules, and TypeScript interface never
             drift apart. This eliminates an entire class of bugs where the form accepts data the backend rejects.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validate on blur, not on change, for most fields.</strong> onChange validation creates a
             hostile UX where errors appear before the user finishes typing. Reserve onChange for specific fields
             like password strength meters where real-time feedback adds value.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce async validation.</strong> Server-side uniqueness checks (email availability,
             username taken) should be debounced to 300-500ms. Without debouncing, every keystroke triggers a
             network request, overwhelming your API and creating a janky experience.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Persist form state for long forms.</strong> For multi-step wizards or forms that take more
             than a minute to complete, persist draft state to localStorage or sessionStorage. Users who
             accidentally close a tab or navigate away should not lose their progress.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate form state from application state.</strong> Form state is ephemeral and
             high-frequency. Do not put it in Redux, Zustand, or any global store. Form libraries manage their own
             internal state; let them. Global stores are for data that persists beyond the form{"'"}s lifecycle.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Controller for third-party components.</strong> Custom selects, date pickers, and rich
             text editors cannot use register directly. React Hook Form{"'"}s Controller component bridges
             uncontrolled internals with controlled external components without sacrificing performance.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Design for server errors.</strong> Server-side validation always exists even with thorough
             client validation. Use setError (RHF) or setFieldError (Formik) to map server response errors back
             to specific fields. Never show a generic "Something went wrong" when the server told you exactly
             which field failed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement proper form reset.</strong> After successful submission, reset the form to its
             initial state including all dirty/touched flags. For edit forms, reset to the newly saved values, not
@@ -293,28 +312,32 @@ export default function FormStateManagementConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The common failure pattern is a mismatch between update frequency (keystrokes) and subscription scope (whole
+          form tree). Fixes are isolation, subscriptions, and choosing a library that matches the form’s complexity.
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Re-rendering the entire form on every keystroke.</strong> Using a single useState object for
             all form fields means every field change re-renders every field. This is the most common performance
             mistake. Either use individual useState calls per field, or adopt a form library that isolates
             re-renders.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not debouncing expensive validation.</strong> Running regex-heavy or async validation on
             every keystroke creates input lag and unnecessary API calls. Always debounce validation that involves
             computation or network requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Losing form state on unmount.</strong> In multi-step wizards, conditionally rendering steps
             (mounting/unmounting) destroys form state for unmounted steps. Either keep all steps mounted
             (hide with CSS), lift state up, or use a form library{"'"}s built-in state persistence across mounts.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Showing errors too eagerly.</strong> Displaying "required" errors on pristine, untouched
             fields creates a hostile initial form experience. Gate error display behind the touched flag: only
             show errors for fields the user has interacted with and left.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring the uncontrolled-to-controlled warning.</strong> Switching an input from
             uncontrolled (undefined value) to controlled (defined value) during its lifecycle causes React to
@@ -336,22 +359,26 @@ export default function FormStateManagementConciseArticle() {
 
       <section>
         <h2>Real-World Use Cases</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Real-world form architecture is about orchestration: multi-step flows, persistence, async validation, and
+          making sure partial edits don’t corrupt app state when a submit fails.
+        </HighlightBlock>
 
         <h3>Multi-Step Wizards</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Checkout flows, onboarding wizards, and insurance applications split complex forms across multiple
           steps. Each step validates independently, but all steps submit as a single atomic payload. React Hook
           Form{"'"}s useFormContext shares a single form instance across step components without prop drilling.
           State persists across steps because the form component remains mounted even as step visibility changes.
-        </p>
+        </HighlightBlock>
 
         <h3>Dynamic Forms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CMS builders, survey tools, and configuration screens render forms from JSON schema definitions.
           Fields are generated dynamically with useFieldArray (RHF) or FieldArray (Formik). The schema drives
           field types, validation rules, conditional visibility, and layout. This pattern requires robust
           type safety because the form shape is not statically known.
-        </p>
+        </HighlightBlock>
 
         <h3>Inline Editing</h3>
         <p>
@@ -376,10 +403,14 @@ export default function FormStateManagementConciseArticle() {
       {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Strong interview answers tie the library choice back to re-render behavior, validation pipeline, and lifecycle
+          orchestration (multi-step flows, persistence, server error mapping).
+        </HighlightBlock>
 
         <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
           <p className="font-semibold">Q: How does React Hook Form achieve better performance than Formik?</p>
-          <p className="mt-2 text-muted">
+          <HighlightBlock as="p" tier="important" className="mt-2 text-muted">
             React Hook Form stores field values in a mutable ref object rather than React state. When a user
             types, the value updates in the ref without triggering a re-render. Only components that explicitly
             subscribe to a field via watch or useWatch re-render when that specific field changes. Formik, by
@@ -387,12 +418,12 @@ export default function FormStateManagementConciseArticle() {
             which triggers re-renders in every component consuming that context. Formik's FastField mitigates
             this with shouldComponentUpdate, but it is opt-in and does not cover all consumption patterns. The
             fundamental difference is ref-based mutation (RHF) vs state-based immutability (Formik).
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
           <p className="font-semibold">Q: How would you architect a multi-step form wizard that persists state across steps and survives page refresh?</p>
-          <p className="mt-2 text-muted">
+          <HighlightBlock as="p" tier="important" className="mt-2 text-muted">
             Create a single React Hook Form instance at the wizard container level and share it across steps via
             FormProvider and useFormContext. Each step is a component that renders its fields and runs step-level
             validation on "Next." Steps are shown/hidden via CSS (display: none) rather than
@@ -402,12 +433,12 @@ export default function FormStateManagementConciseArticle() {
             all steps, submit the full payload, and clear the persisted draft. This architecture avoids losing
             state on step transitions, survives accidental refreshes, and validates each step independently
             while submitting atomically.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
           <p className="font-semibold">Q: When should you use controlled vs uncontrolled inputs, and when does it matter?</p>
-          <p className="mt-2 text-muted">
+          <HighlightBlock as="p" tier="important" className="mt-2 text-muted">
             Use controlled inputs when you need real-time reactivity: conditional field visibility based on
             another field's value, live formatting (phone numbers, currency), character-by-character validation
             (password strength), or derived calculations. Use uncontrolled inputs for simple forms where you
@@ -416,7 +447,7 @@ export default function FormStateManagementConciseArticle() {
             optimization will create visible input lag on mid-range devices. React Hook Form effectively makes
             this decision for you by defaulting to uncontrolled (ref-based) while allowing controlled behavior
             (watch) only where explicitly needed, giving you the best of both worlds.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Periodic Background Sync</strong> is a Web API that allows an
           installed Progressive Web App (PWA) to periodically wake its service
           worker and synchronize data in the background, even when the user is
@@ -45,8 +46,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           request when connectivity returns), Periodic Background Sync fires on
           a recurring schedule, enabling PWAs to pre-fetch fresh content so it
           is immediately available the next time the user opens the app.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The API shipped in <strong>Chrome 80</strong> (February 2020) and
           remains a Chromium-only feature as of 2026. Mozilla explicitly
           declined to implement it, citing privacy concerns around enabling
@@ -56,8 +57,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           web platform APIs — powerful because it closes a critical gap between
           native apps and PWAs, restricted because only one browser engine
           supports it and imposes strict guardrails on who can use it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The core problem it solves is <strong>content staleness</strong>.
           Consider a news PWA: without periodic sync, the user opens the app,
           sees yesterday{"'"}s cached headlines, and must wait for a network
@@ -66,8 +67,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           them in the Cache API or IndexedDB. The user opens the app and sees
           fresh content instantly — an experience indistinguishable from a
           native news app.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff/principal level, the critical design consideration is the{" "}
           <strong>permission model</strong>. Unlike Notification or Geolocation
           APIs, Periodic Background Sync has no user-facing permission prompt.
@@ -81,8 +82,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           API — the engagement heuristic is opaque, non-standardizable, and
           Chrome-specific, making cross-browser interoperability impossible by
           design.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The relationship to native app background fetch is instructive. iOS
           and Android have long allowed native apps to schedule background data
           refreshes (iOS <code>BGAppRefreshTask</code>, Android{" "}
@@ -93,18 +94,18 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           key difference: native apps get background execution as a default
           capability, while web apps must earn it through demonstrated user
           engagement.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding Periodic Background Sync requires grasping six
           fundamental concepts that together define how the API operates, who
           can use it, and what constraints the browser enforces:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>PeriodicSyncManager API:</strong> The primary interface,
             accessed via <code>registration.periodicSync</code> on a{" "}
             <code>ServiceWorkerRegistration</code> object. The{" "}
@@ -120,7 +121,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             <code>getTags()</code> to list active registrations and{" "}
             <code>unregister(tag)</code> to remove one. The API is intentionally
             minimal: you register your intent, and the browser decides the rest.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Site Engagement Index:</strong> Chrome maintains an internal
             per-origin engagement score based on a weighted combination of
@@ -242,11 +243,13 @@ export default function PeriodicBackgroundSyncConciseArticle() {
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/offline-support/periodic-sync-flow.svg"
           alt="Periodic Background Sync flow showing registration, browser scheduling, service worker execution, and content freshness over a 24-hour timeline"
+          caption="Periodic Background Sync flow: registration with a minimum interval, browser-controlled scheduling, service worker execution via the `periodicsync` event, and local persistence that makes the next app open feel instant."
+          captionTier="crucial"
           width={800}
           height={500}
           priority={true}
         />
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Step 4 — Service Worker Activation:</strong> When the
           scheduled time arrives and conditions are favorable, the browser wakes
           the service worker and dispatches a <code>periodicsync</code> event
@@ -258,8 +261,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           within the event{"'"}s lifetime — calling{" "}
           <code>event.waitUntil(promise)</code> with the fetch-and-store Promise
           keeps the worker alive until the operation completes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Step 5 — Content Delivery:</strong> When the user next opens
           the PWA, the application reads from the local cache/IndexedDB first.
           Because the periodic sync already refreshed this data, the user sees
@@ -267,10 +270,12 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           app may optionally perform an additional network fetch to get any
           updates that occurred after the last sync, but the initial render is
           fast and fresh.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/offline-support/periodic-sync-scheduling.svg"
           alt="Browser scheduling decision flow for periodic sync events showing engagement score, battery, and network checks"
+          caption="Scheduling decision tree: the browser enforces engagement thresholds, battery and network constraints, and batching. Your `minInterval` is a hint, not a contract."
+          captionTier="important"
           width={800}
           height={450}
         />
@@ -288,12 +293,12 @@ export default function PeriodicBackgroundSyncConciseArticle() {
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Periodic Background Sync offers a unique set of trade-offs that
           distinguish it from alternative approaches to content freshness.
           Understanding these trade-offs is essential for making informed
           architectural decisions.
-        </p>
+        </HighlightBlock>
         <table>
           <thead>
             <tr>
@@ -378,10 +383,12 @@ export default function PeriodicBackgroundSyncConciseArticle() {
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/offline-support/periodic-sync-vs-polling.svg"
           alt="Comparison between client-side polling and Periodic Background Sync showing battery, network, and scheduling differences"
+          caption="Periodic sync vs polling: periodic sync is browser-scheduled, battery-aware, and runs with the app closed; polling burns foreground CPU/network and requires an open page."
+          captionTier="important"
           width={800}
           height={400}
         />
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Periodic Background Sync vs. Client Polling:</strong> The most
           common alternative to periodic sync is client-side polling using{" "}
           <code>setInterval</code> or <code>setTimeout</code>. Polling requires
@@ -390,8 +397,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           app is closed, is battery and network-aware, and is batched by the
           browser. However, polling works in all browsers and gives the
           developer precise control over timing — periodic sync offers neither.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Periodic Background Sync vs. Push Notifications:</strong> Push
           notifications (via the Push API) can wake a service worker on demand
           when the server has new data. This provides real-time freshness but
@@ -401,7 +408,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
           real-time delivery. For content that changes on a schedule (daily
           news, weekly reports), periodic sync is simpler. For content that
           changes unpredictably (chat messages, alerts), push is necessary.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Periodic Background Sync vs. Stale-While-Revalidate:</strong>{" "}
           The <code>stale-while-revalidate</code>
@@ -416,13 +423,13 @@ export default function PeriodicBackgroundSyncConciseArticle() {
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implementing Periodic Background Sync effectively requires attention
           to both the technical API surface and the broader architectural
           implications:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>
               Request reasonable <code>minInterval</code> values:
             </strong>{" "}
@@ -434,8 +441,8 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             24 hours. The browser may still fire more frequently than requested
             for high-engagement sites, but starting with a reasonable request
             signals good intent.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>
               Handle the <code>periodicsync</code> event efficiently:
             </strong>{" "}
@@ -445,7 +452,7 @@ export default function PeriodicBackgroundSyncConciseArticle() {
             The browser may terminate the service worker if it runs too long.
             Keep total execution time under 30 seconds. Use{" "}
             <code>event.waitUntil()</code> with a well-bounded Promise.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>
               Use Cache API for static assets, IndexedDB for structured data:

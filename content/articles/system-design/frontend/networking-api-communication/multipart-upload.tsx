@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function MultipartUploadArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Multipart Upload</strong> is a file transfer technique where a
           large file is divided into smaller chunks (parts), each uploaded
           independently, and then assembled on the server into the complete
@@ -46,8 +47,8 @@ export default function MultipartUploadArticle() {
           servers), memory constraints (loading entire files into memory), lack
           of progress visibility (no intermediate feedback), and inability to
           resume after failures (starting over from zero on network errors).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The term "multipart" has two related meanings in this context. First,
           <strong>multipart/form-data</strong> is the HTTP content type used for
           form submissions with file inputs, where multiple form fields and
@@ -57,8 +58,8 @@ export default function MultipartUploadArticle() {
           Multipart Upload, Google Cloud Storage Resumable Uploads, Azure Block
           Blobs) where files are split into 5MB-100MB chunks, uploaded in
           parallel or sequence, and assembled server-side.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, multipart upload is not just
           about splitting files -- it is about designing resilient transfer
           systems that handle real-world conditions: unstable mobile networks
@@ -71,8 +72,8 @@ export default function MultipartUploadArticle() {
           explicit lifecycle management: initialize upload session, transfer
           chunks with retry logic, complete assembly, and handle cleanup for
           abandoned sessions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The business case for multipart upload is compelling for any
           application handling files larger than 10MB. Single-request uploads
           fail silently on timeout, provide no progress feedback, and waste
@@ -85,17 +86,17 @@ export default function MultipartUploadArticle() {
           applications handling gigabyte-scale files (video editing, scientific
           datasets, backup archives), multipart upload is not optional -- it is
           the only viable transfer mechanism.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multipart upload is built on six foundational concepts that govern how
           files are chunked, transferred, and assembled:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Chunking Strategy:</strong> The file is divided into
             fixed-size chunks (typically 5MB-100MB). Chunk size involves
             trade-offs: smaller chunks (5MB) provide finer-grained progress
@@ -108,8 +109,8 @@ export default function MultipartUploadArticle() {
             server capacity. A common strategy is adaptive chunking: start with
             10MB chunks, monitor upload speed, and increase chunk size for
             subsequent chunks if bandwidth is underutilized.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Upload Session:</strong> Before uploading chunks, the
             client initiates an upload session with the server. The server
             creates a unique session ID (or upload ID), allocates resources for
@@ -120,7 +121,7 @@ export default function MultipartUploadArticle() {
             completed within the TTL, the server cleans up partial chunks. This
             prevents orphaned data from abandoned uploads consuming storage
             indefinitely.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Chunk Transfer:</strong> Each chunk is uploaded as a
             separate HTTP request (typically PUT or POST) with metadata: session

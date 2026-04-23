@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,15 +30,15 @@ export default function ShortPollingConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Short Polling</strong> is a client-server communication
           pattern where the client repeatedly sends HTTP requests to the server
           at fixed (or adaptive) intervals, asking "do you have new data?" The
           server responds immediately with either new data or an empty/unchanged
           response, and the connection closes. The client waits for the next
           interval tick, then repeats.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Short polling is the oldest and simplest approach to achieving
           near-real-time updates over HTTP. Before WebSockets were standardized
           in 2011 (RFC 6455), and before Server-Sent Events gained browser
@@ -47,8 +48,8 @@ export default function ShortPollingConciseArticle() {
           it. The XMLHttpRequest object, introduced in Internet Explorer 5
           (1999) and later standardized, made this pattern possible without full
           page reloads.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, the important question is not
           whether short polling is "good" or "bad" but when it is the correct
           architectural choice. Short polling persists in modern systems for
@@ -62,8 +63,8 @@ export default function ShortPollingConciseArticle() {
           resource consumption: you can calculate exactly how many requests per
           second N clients will generate with interval I (N/I requests per
           second), making capacity planning straightforward.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hidden cost of short polling is waste. If the data changes once
           per minute but the client polls every 3 seconds, 19 out of 20 requests
           return no new information. Each wasted request consumes server CPU
@@ -73,8 +74,8 @@ export default function ShortPollingConciseArticle() {
           polling, and what separates a naive implementation from a
           production-grade one, lies in minimizing this waste through adaptive
           intervals, conditional requests, and intelligent backoff strategies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Short polling is the right choice when: the update frequency is
           genuinely low (once every 30 seconds or more), the infrastructure
           cannot support persistent connections (serverless functions with
@@ -83,18 +84,18 @@ export default function ShortPollingConciseArticle() {
           of implementation outweighs the marginal latency improvement of more
           sophisticated approaches. A dashboard that refreshes sales figures
           every 60 seconds for 50 internal users does not need WebSockets.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Effective short polling implementations rely on several techniques
           that transform a naive setInterval loop into a robust,
           resource-efficient data synchronization mechanism:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Fixed Interval Polling:</strong> The baseline approach where
             the client sends a request every N milliseconds using setInterval or
             setTimeout chains. The key distinction between setInterval and
@@ -107,8 +108,8 @@ export default function ShortPollingConciseArticle() {
             setTimeout. The interval value is a trade-off between freshness and
             load: 1 second gives near-real-time at high cost, 60 seconds is
             gentle but stale.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Adaptive Interval:</strong> Instead of a fixed interval, the
             client dynamically adjusts the polling frequency based on observed
             activity. When the server returns new data, the client shortens the
@@ -120,8 +121,8 @@ export default function ShortPollingConciseArticle() {
             responsiveness during active periods. The algorithm typically uses a
             multiplier: on empty response, multiply interval by 1.5 (up to max);
             on data, reset to minimum.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Conditional Requests with ETags:</strong> HTTP provides
             built-in mechanisms to avoid transferring unchanged data. The server
             includes an ETag header (a hash or version identifier) in its
@@ -132,7 +133,7 @@ export default function ShortPollingConciseArticle() {
             headers work for timestamp-based conditional requests. At scale,
             this optimization is significant: a 304 response is typically
             200-300 bytes versus potentially kilobytes of JSON payload.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Visibility-Based Polling:</strong> When a browser tab is not
             visible (the user has switched to another tab or minimized the

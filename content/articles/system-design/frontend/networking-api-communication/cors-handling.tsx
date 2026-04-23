@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function CorsHandlingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-Origin Resource Sharing (CORS)</strong> is a security
           mechanism that relaxes the Same-Origin Policy (SOP), allowing web
           applications to request resources from domains different from the one
@@ -49,8 +50,8 @@ export default function CorsHandlingArticle() {
           servers to declare which origins are permitted to access their
           resources, enabling legitimate cross-origin API consumption while
           maintaining security boundaries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           CORS works through a system of HTTP headers exchanged between browser
           and server. When a frontend application makes a cross-origin request,
           the browser automatically adds an <strong>Origin</strong> header
@@ -65,8 +66,8 @@ export default function CorsHandlingArticle() {
           origin in Access-Control-Allow-Origin, the browser blocks the response
           from reaching the application JavaScript, even though the request
           itself succeeded.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, understanding CORS requires
           distinguishing between the security model (what CORS protects against)
           and the operational challenges (how CORS impacts frontend
@@ -77,8 +78,8 @@ export default function CorsHandlingArticle() {
           the response. This distinction is critical: CORS is about data
           exfiltration prevention, not mutation prevention. For mutations, you
           need CSRF tokens, SameSite cookies, and other defenses.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The operational impact of CORS on frontend applications is substantial.
           Misconfigured CORS headers are a leading cause of production
           incidents: APIs that work in Postman fail in the browser, development
@@ -88,17 +89,17 @@ export default function CorsHandlingArticle() {
           between simple and preflighted requests, credential handling, wildcard
           policies, and Vary headers -- is essential for any engineer building
           production frontend applications.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CORS is built on six foundational concepts that govern how cross-origin
           requests are evaluated, permitted, or blocked:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Origin and Same-Origin Policy:</strong> An origin is defined
             by the tuple of protocol (http/https), domain (example.com), and
             port (80/443/3000). Two URLs share the same origin only if all three
@@ -116,7 +117,7 @@ export default function CorsHandlingArticle() {
             <strong>reading responses</strong>, not making requests -- a
             malicious site can still submit forms or POST data to your API, but
             it cannot read the response without CORS permission.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Simple vs Preflight Requests:</strong> CORS distinguishes
             between "simple" requests that can be sent directly and "preflight"
@@ -272,9 +273,10 @@ export default function CorsHandlingArticle() {
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/cors-preflight-flow.svg"
           alt="CORS Preflight Request Flow Diagram"
           caption="CORS Preflight Flow: Browser sends OPTIONS preflight request, server responds with allowed methods/headers, then browser sends actual request if preflight succeeds"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The preflight flow introduces an additional round trip that impacts
           latency, especially on high-latency mobile networks. A typical
           preflight adds 50-200ms to request latency depending on network
@@ -282,15 +284,16 @@ export default function CorsHandlingArticle() {
           performance optimization: using simple requests where possible,
           caching preflight responses with Max-Age, and designing APIs that do
           not require custom headers all reduce CORS-related latency.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/cors-simple-vs-preflight.svg"
           alt="Simple vs Preflight CORS Request Comparison"
           caption="Simple requests (GET/POST/HEAD with simple headers) go directly, while non-simple requests (PUT/DELETE/custom headers) require a preflight OPTIONS request first"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For credentials-based authentication, the flow is more complex. When{" "}
           <code>credentials: 'include'</code> is set, the browser includes
           cookies with the cross-origin request. The server must respond with
@@ -300,15 +303,16 @@ export default function CorsHandlingArticle() {
           frontend origin must be explicitly whitelisted on the server -- the
           server cannot use wildcard and must dynamically echo back the Origin
           header or maintain a whitelist of allowed origins.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/networking-api-communication/cors-decision-tree.svg"
           alt="CORS Decision Tree Diagram"
           caption="CORS Decision Tree: Is request simple? If yes, send directly. If no, send preflight. Check credentials? If yes, require specific origin (no wildcard). Validate headers and methods at each step."
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           From an architecture perspective, CORS configuration should be
           centralized in an API gateway or reverse proxy layer rather than
           implemented in each backend service. This ensures consistent CORS
@@ -320,7 +324,7 @@ export default function CorsHandlingArticle() {
           Access-Control-Max-Age values based on API stability, and including
           Vary: Origin on all CORS responses to ensure proper CDN caching
           behavior.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -672,11 +676,11 @@ export default function CorsHandlingArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q1: Explain the difference between simple and preflight CORS
               requests. When is a preflight triggered?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> Simple requests use GET, POST, or HEAD
               methods, have no custom headers beyond a safe list (Accept,
               Accept-Language, Content-Language, Content-Type with restrictions,
@@ -692,15 +696,15 @@ export default function CorsHandlingArticle() {
               Access-Control-Request-Method and Access-Control-Request-Headers,
               asking the server for permission before sending the actual
               request.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q2: Why can you not use Access-Control-Allow-Origin: * with
               credentials?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               <strong>Answer:</strong> This is a security requirement. If
               wildcard origins were allowed with credentials, any malicious site
               could make authenticated requests to your API and read the
@@ -712,7 +716,7 @@ export default function CorsHandlingArticle() {
               credentials, the browser ensures only trusted sites can read
               authenticated responses. The server must validate the Origin
               header and echo back the specific matching origin.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

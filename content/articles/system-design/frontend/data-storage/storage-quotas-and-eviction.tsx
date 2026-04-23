@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -31,7 +32,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every browser enforces <strong>storage quotas</strong> that limit how
           much data a single origin can persist on disk. These quotas exist
           because browsers share a finite disk with the operating system, other
@@ -41,8 +42,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           reclaim disk space. Understanding these limits and their enforcement
           mechanisms is critical for any engineer building offline-capable,
           data-intensive, or media-rich web applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The quotas apply to the pool of storage shared by IndexedDB, the Cache
           API, and the Origin Private File System (OPFS). Notably,{" "}
           <code>localStorage</code> and <code>sessionStorage</code> operate
@@ -50,8 +51,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           origin) and are not part of this shared quota pool. This distinction
           is important: a large IndexedDB database does not reduce your
           localStorage capacity, and vice versa.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Modern browsers expose the <code>navigator.storage</code> API (the
           StorageManager interface) for querying current usage and quota, and
           for requesting persistent storage that survives eviction. Before this
@@ -62,8 +63,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           <code>QuotaExceededError</code> gracefully, implement cleanup
           strategies proactively, and choose the right persistence guarantees
           for different classes of data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The eviction model follows a <strong>best-effort</strong> default: the
           browser may delete your origin's data at any time without warning when
           under storage pressure. This is not hypothetical. Safari is known for
@@ -73,20 +74,20 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           <strong>persistent storage</strong> via{" "}
           <code>navigator.storage.persist()</code>, which tells the browser to
           exempt your origin from automatic eviction.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
 
         <h3 className="mt-6 mb-3 font-semibold">StorageManager API</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>StorageManager</code> interface, accessed via{" "}
           <code>navigator.storage</code>, provides two essential methods for
           quota management:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>navigator.storage.estimate():</strong> Returns a Promise
             resolving to an object with <code>usage</code> (bytes currently
             consumed) and <code>quota</code> (maximum bytes available to this
@@ -98,8 +99,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             and prompts the user for more. The <code>usageDetails</code>{" "}
             property (Chrome-specific, non-standard) breaks down usage by
             storage system (indexedDB, caches, serviceWorkerRegistrations).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>navigator.storage.persist():</strong> Requests that the
             browser grant persistent storage to this origin. Returns a Promise
             resolving to a boolean indicating whether persistent storage was
@@ -110,13 +111,13 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             granted, persistent storage means the browser will <em>not</em>{" "}
             evict this origin's data under storage pressure (the user can still
             manually clear it).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 font-semibold">
           Best-Effort vs. Persistent Buckets
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           All origin storage starts as <strong>best-effort</strong> by default.
           Best-effort data can be evicted by the browser at any time when under
           storage pressure, without user interaction or notification.
@@ -124,18 +125,18 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           <code>persist()</code>) is protected from automatic eviction. You can
           check current persistence status with{" "}
           <code>navigator.storage.persisted()</code>, which returns a boolean.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The distinction is critical for application architecture.
           User-generated content (documents, drafts, photos) should be in
           persistent storage. Cached API responses and precached assets can
           remain best-effort since they can be re-fetched from the network.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 font-semibold">
           Per-Origin and Global Limits
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browser quotas operate at two levels. The{" "}
           <strong>global limit</strong> caps the total disk space all origins
           can use collectively (Chrome: ~60% of disk, Firefox: ~50%). The{" "}
@@ -146,10 +147,10 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           mode, raised to 10 GB for persistent origins. These numbers shift with
           browser versions and should be queried dynamically via{" "}
           <code>estimate()</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 font-semibold">LRU Eviction Order</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When eviction is triggered, browsers sort best-effort origins by{" "}
           <strong>least recently used</strong> (LRU). The origin that has gone
           the longest without user interaction is evicted first. Eviction is{" "}
@@ -160,12 +161,12 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           database but keeping another). This all-or-nothing model simplifies
           the browser's implementation but means applications cannot protect
           individual databases from eviction independently.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 font-semibold">
           localStorage's Separate Limit
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>localStorage</code> API has a fixed per-origin limit of
           approximately 5 MB in most browsers (10 MB in some). This is entirely
           separate from the shared quota pool. localStorage stores strings only,
@@ -174,10 +175,10 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           LRU eviction process (except in Safari, which may clear it under
           certain conditions like 7-day inactivity in private browsing or ITP
           enforcement).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 font-semibold">Opaque Response Padding</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When the Cache API stores an opaque response (a cross-origin response
           fetched without CORS), browsers add <strong>padding</strong> to the
           reported size. This prevents attackers from using storage quotas as an
@@ -188,12 +189,12 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           unexpected
           <code>QuotaExceededError</code> in applications that cache third-party
           assets.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 font-semibold">
           Storage Buckets API (Emerging)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>Storage Buckets API</strong> is a proposal (Chrome 122+
           behind a flag) that allows origins to create named buckets with
           individual persistence and quota policies. Instead of a single
@@ -206,39 +207,41 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           instances. This would replace the current all-or-nothing eviction
           model with fine-grained control, but as of early 2026, it is not yet
           widely available.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding how disk space flows from the hardware level down to
           individual storage APIs is essential for designing applications that
           respect browser limits. The following diagram illustrates how the
           browser carves out its storage pool and allocates it per origin.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-storage/storage-quota-breakdown.svg"
           alt="Browser Storage Quota Breakdown"
           caption="Disk space allocation: total disk to browser pool to per-origin quota. IndexedDB, Cache API, and OPFS share a single pool, while localStorage has a separate fixed limit."
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the browser detects storage pressure (either the global pool is
           nearing capacity or the device itself is low on disk), it initiates
           the eviction process. The following diagram shows how eviction
           decisions are made and why persistent storage is the key defense
           mechanism.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/data-storage/eviction-policy.svg"
           alt="Browser Storage Eviction Policy"
           caption="Eviction flow: storage pressure triggers LRU sorting, persistent origins are skipped, best-effort origins are evicted atomically (all storage for that origin deleted together)."
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The architecture has several implications for application design.
           First, your application cannot predict <em>when</em> eviction will
           occur because it depends on other origins' behavior and the user's
@@ -248,15 +251,15 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           eviction is to either request persistent storage or design your
           application to gracefully re-hydrate from the server when local data
           is missing.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browser quota policies differ significantly. Understanding these
           differences is essential for building cross-browser applications:
-        </p>
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -330,7 +333,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           </tbody>
         </table>
 
-        <p className="mt-4">
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
           The most significant trade-off is between <strong>persistent</strong>{" "}
           and <strong>best-effort</strong> storage. Persistent storage
           guarantees data survival but requires user trust (and in Firefox,
@@ -340,17 +343,17 @@ export default function StorageQuotasAndEvictionConciseArticle() {
           (documents, settings, offline drafts) while keeping caches and
           prefetched data as best-effort. If persistence is denied, design the
           application to re-sync from the server gracefully.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These practices come from production experience building PWAs and
           offline-first applications at scale:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always Check Quota Before Large Writes:</strong> Before
             storing a large asset (video, image set, offline dataset), call{" "}
             <code>navigator.storage.estimate()</code> and verify that{" "}
@@ -359,8 +362,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             <code>QuotaExceededError</code> and allows you to present the user
             with a meaningful message or trigger a cleanup before the write
             attempt.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Request Persistent Storage for Critical Apps:</strong> If
             your application stores user-generated content (documents, media,
             form drafts) or must work offline reliably (field service apps,
@@ -369,7 +372,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             signals engagement (e.g., after the user saves their first
             document). Check the result and inform the user of the storage
             guarantee level.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement Proactive Cache Cleanup:</strong> Do not wait for{" "}
             <code>QuotaExceededError</code>. Implement a periodic cleanup
@@ -378,36 +381,36 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             index), and prunes least-recently-used items. Run this during idle
             time using <code>requestIdleCallback</code>.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Handle QuotaExceededError at Every Write:</strong> Wrap
             every IndexedDB transaction, <code>cache.put()</code>, and{" "}
             <code>localStorage.setItem()</code> in error handling that catches{" "}
             <code>QuotaExceededError</code> specifically. When caught, trigger
             cleanup, notify the user, and retry or degrade gracefully. Never let
             an unhandled quota error crash the application.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Design for Data Loss:</strong> Assume that best-effort
             storage can vanish at any time. Always have a server-side source of
             truth. When the application starts, check if expected local data
             exists. If not, re-sync from the server rather than showing an
             error. This makes eviction invisible to the user.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Avoid Caching Opaque Responses Unnecessarily:</strong> Due
             to the 7 MB padding per opaque response in Chrome, be selective
             about which cross-origin resources you cache. If you must cache
             cross-origin assets, configure CORS headers on the origin server so
             responses are not opaque. Monitor your Cache API usage via{" "}
             <code>estimate()</code> to detect unexpected quota consumption.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor Storage Usage in Production:</strong> Log{" "}
             <code>navigator.storage.estimate()</code> results to your analytics
             pipeline. Track quota utilization percentages across your user base.
             Set alerts for when the p90 usage exceeds 50% of quota. This gives
             you early warning before users start hitting quota limits.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Storage Buckets API When Available:</strong> As browser
             support matures, adopt the Storage Buckets API to create separate
@@ -420,12 +423,12 @@ export default function StorageQuotasAndEvictionConciseArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           These pitfalls have caused real production issues in data-heavy web
           applications:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Safari Aggressive Eviction in Private Browsing:</strong> In
             Safari's private browsing mode, IndexedDB and Cache API storage may
             be capped at extremely low limits or cleared when the tab closes.
@@ -434,7 +437,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             visited in 7 days. Applications that rely on persistent local data
             must account for Safari's behavior by always having a server
             fallback and checking for data existence on every page load.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Assuming Unlimited Storage:</strong> Developers who test on
             desktop Chrome with 500 GB disks rarely encounter quota limits. But
@@ -443,7 +446,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             GB free gives you roughly 4.8 GB total, shared across all origins.
             Your application may only get a fraction of that in practice.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not Handling QuotaExceededError:</strong> The most common
             failure mode. Developers wrap IndexedDB writes in try/catch but
             forget that <code>cache.put()</code> and <code>cache.addAll()</code>{" "}
@@ -451,8 +454,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             unhandled error in the SW install event causes the entire Service
             Worker installation to fail, leaving users stuck on the old version
             indefinitely.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Opaque Response Inflation:</strong> Caching third-party
             fonts, analytics scripts, or CDN images without CORS results in
             opaque responses. Each padded at 7 MB in Chrome, 100 such responses
@@ -461,42 +464,42 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             <code>Access-Control-Allow-Origin</code>) to third-party resources,
             or use <code>crossorigin</code> attributes on {"<"}link{">"} and{" "}
             {"<"}script{">"} tags.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring estimate() Inaccuracy:</strong> The values from{" "}
             <code>estimate()</code> are intentionally imprecise. Browsers may
             report rounded values to prevent storage-based fingerprinting. Do
             not use <code>estimate()</code> to calculate exact available bytes.
             Instead, use it as an approximate gauge and always handle write
             failures regardless of what the estimate reported.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not Testing Eviction Scenarios:</strong> Most test
             environments never trigger eviction because they have ample disk
             space. Use Chrome DevTools {">"} Application {">"} Storage to
             simulate quota limits. Test what happens when your application
             starts with empty storage after an eviction. If it crashes or shows
             a blank screen, your eviction resilience is insufficient.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Conflating Persistence with Durability:</strong> Persistent
             storage prevents automatic browser eviction, but it does not protect
             against the user manually clearing site data, browser updates that
             reset storage, or OS-level storage cleanup tools. Never treat
             client-side storage as the sole copy of important data. Always sync
             to a server.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Real-World Use Cases</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storage quota management is critical in several classes of
           applications:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Progressive Web Applications (PWAs):</strong> PWAs like
             Spotify Web, Twitter/X, and Pinterest rely heavily on Service Worker
             caches and IndexedDB for offline functionality and instant loading.
@@ -504,8 +507,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             assets and user data from eviction. They implement tiered storage
             strategies: core app shell in persistent cache, media content in
             best-effort cache with LRU cleanup.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Media-Heavy Applications:</strong> Video editing tools
             (Clipchamp), photo editors (Photopea), and music production apps
             (BandLab) store large binary assets locally for performance. These
@@ -513,8 +516,8 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             space before imports, streaming large files through OPFS rather than
             loading them entirely into memory, and implementing export-and-purge
             workflows to keep usage within limits.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Offline-First Field Applications:</strong> Applications used
             in areas with unreliable connectivity (construction sites, rural
             healthcare, warehouse management) cache entire datasets locally in
@@ -522,7 +525,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
             critical requirement, implement background sync for data upload when
             connectivity returns, and maintain detailed storage usage dashboards
             so field workers can manage their device space.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>E-commerce with Offline Browse:</strong> Some e-commerce
             PWAs cache product catalogs (images, descriptions, prices) for
@@ -577,12 +580,12 @@ export default function StorageQuotasAndEvictionConciseArticle() {
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: A user reports that your PWA lost all its offline data after
               not using it for a week. The user is on Safari. What happened and
               how would you prevent it?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Safari's Intelligent Tracking Prevention (ITP) enforces a 7-day
               cap on client-side storage for origins that the user has not
               interacted with. After 7 days of inactivity, Safari may delete all
@@ -599,16 +602,16 @@ export default function StorageQuotasAndEvictionConciseArticle() {
               from ITP restrictions; (4) inform users on Safari about the
               limitation and recommend adding to home screen for reliable
               offline access.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: You are building an application that needs to cache 2 GB of map
               tiles for offline use. How would you design the storage
               architecture to handle quota limits across browsers?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: First, query available space with navigator.storage.estimate()
               and verify 2 GB fits within the quota (on Firefox best-effort, the
               per-origin cap is 2 GB so you would be at the limit). Request
@@ -623,19 +626,19 @@ export default function StorageQuotasAndEvictionConciseArticle() {
               zoom levels only, and show users how much space is available.
               Implement an LRU eviction policy for tiles: when approaching 80%
               quota, remove the least recently accessed tile regions. Add a
-              settings UI where users can manage their offline regions and see
-              storage consumption. Always handle QuotaExceededError by removing
-              the oldest tiles and retrying the write.
-            </p>
-          </div>
+	              settings UI where users can manage their offline regions and see
+	              storage consumption. Always handle QuotaExceededError by removing
+	              the oldest tiles and retrying the write.
+	            </HighlightBlock>
+	          </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="crucial" className="font-semibold">
               Q: Explain the difference between storage eviction and the user
               clearing site data. How does persistent storage protect against
               each?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Storage eviction is an automatic browser process triggered by
               storage pressure. The browser selects best-effort origins sorted
               by LRU and deletes all their data (IndexedDB, Cache API, OPFS, SW
@@ -652,15 +655,15 @@ export default function StorageQuotasAndEvictionConciseArticle() {
               browser-automated eviction only. For true durability, you must
               sync data to a server. Design the client as a performance cache
               layer, not the canonical data store.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
+            <HighlightBlock as="p" tier="important" className="font-semibold">
               Q: What are the key differences between best-effort and persistent
               storage? When would you request persistent storage?
-            </p>
-            <p className="mt-2 text-sm">
+            </HighlightBlock>
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Best-effort storage is the default: the browser can evict data
               at any time when storage pressure occurs. Persistent storage is
               granted via navigator.storage.persist() and protects against
@@ -673,7 +676,7 @@ export default function StorageQuotasAndEvictionConciseArticle() {
               times). Don't request it on first visit — browsers may deny the
               request for untrusted origins. Check storage.estimate() before
               requesting to ensure you actually need it.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

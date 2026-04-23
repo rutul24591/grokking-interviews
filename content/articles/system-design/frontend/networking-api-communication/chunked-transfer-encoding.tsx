@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function ChunkedTransferEncodingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Chunked Transfer Encoding</strong> is an HTTP mechanism that
           allows a server to send a response in multiple parts (chunks) without
           specifying the total content length upfront. Introduced in HTTP/1.1
@@ -46,8 +47,8 @@ export default function ChunkedTransferEncodingArticle() {
           applications, this means the ability to start processing and rendering
           data before the complete response arrives -- critical for large
           payloads, real-time data, and long-running operations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           In chunked transfer encoding, the server sends data as a series of
           chunks, each preceded by its size in hexadecimal. The format is:
           chunk-size (hex), CRLF, chunk-data, CRLF. This repeats for each chunk.
@@ -57,8 +58,8 @@ export default function ChunkedTransferEncodingArticle() {
           processing each as it arrives. This is fundamentally different from
           Content-Length-based responses where the client must wait for the
           entire body before processing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff or principal engineer level, understanding chunked transfer
           encoding requires distinguishing between the HTTP-level mechanism
           (Transfer-Encoding: chunked) and the application-level streaming
@@ -69,8 +70,8 @@ export default function ChunkedTransferEncodingArticle() {
           than waiting for completion. This is the foundation for Server-Sent
           Events, streaming GraphQL responses, LLM token streaming, and
           progressive JSON parsing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The frontend impact of chunked responses is significant. Without
           chunked support, a 1GB API response requires buffering the entire
           gigabyte before JavaScript can access any data -- this causes memory
@@ -81,17 +82,17 @@ export default function ChunkedTransferEncodingArticle() {
           download without intermediate buffering. For real-time applications,
           chunked encoding is the transport layer that enables server push
           semantics over HTTP.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Chunked transfer encoding is built on six foundational concepts that
           govern how streaming responses are sent and consumed:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Transfer-Encoding Header:</strong> When a server sends
             <code>Transfer-Encoding: chunked</code>, it signals that the
             response body is chunked rather than having a fixed Content-Length.
@@ -102,7 +103,7 @@ export default function ChunkedTransferEncodingArticle() {
             do not use chunked encoding explicitly -- they have native streaming
             via frames, but the conceptual model (progressive response) is the
             same.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Chunk Format:</strong> Each chunk consists of: chunk-size
             (hexadecimal number indicating data length, excluding the CRLF),
@@ -123,7 +124,7 @@ export default function ChunkedTransferEncodingArticle() {
             trailers are available via response.trailers (though browser support
             is limited).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Progressive Response Processing:</strong> Instead of waiting
             for response.then(res =&gt; res.json()) to complete (which buffers
             the entire body), the frontend can access the ReadableStream via
@@ -132,8 +133,8 @@ export default function ChunkedTransferEncodingArticle() {
             efficiency (do not buffer entire response), and real-time updates
             (process server-sent events as they arrive). The pattern is:
             fetch(url).then(res =&gt; processStream(res.body.getReader())).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Backpressure Handling:</strong> When processing streaming
             responses, the client must handle backpressure -- the situation where
             the server sends data faster than the client can process it. The
@@ -143,7 +144,7 @@ export default function ChunkedTransferEncodingArticle() {
             buffer fills. For application-level backpressure (e.g., processing
             JSON objects one at a time), use async iteration with await to
             ensure each chunk is processed before reading the next.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Connection Management:</strong> Chunked responses keep the
             HTTP connection open until the terminating chunk is received. This

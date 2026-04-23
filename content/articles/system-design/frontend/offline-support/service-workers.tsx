@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +37,7 @@ export default function ServiceWorkersConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>A Service Worker</strong> is a programmable network proxy that
           runs in a separate browser thread, sitting between web pages and the
           network to intercept, modify, and respond to fetch requests. It is a
@@ -44,8 +45,8 @@ export default function ServiceWorkersConciseArticle() {
           persists independently of the page that registered it. Service Workers
           form the technical backbone of Progressive Web Apps, enabling offline
           functionality, push notifications, and background synchronization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Service Workers were introduced in Chrome 40 (January 2015) as a
           replacement for the deeply flawed Application Cache (AppCache) API.
           AppCache suffered from an opaque, declarative model that made cache
@@ -54,8 +55,8 @@ export default function ServiceWorkersConciseArticle() {
           maintained under the WHATWG umbrella) was designed to give developers
           full programmatic control over the network layer, moving from a
           declarative manifest to an imperative, event-driven JavaScript API.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The mental model is straightforward: a Service Worker is a JavaScript
           file that the browser runs in the background, separate from any web
           page, acting as a middleware layer between the application and the
@@ -63,8 +64,8 @@ export default function ServiceWorkersConciseArticle() {
           through the Service Worker, which can respond from cache, forward to
           the network, synthesize a response, or combine strategies. This
           architecture is sometimes described as an "in-browser reverse proxy."
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           At a staff/principal engineer level, several architectural decisions
           in the specification are worth understanding. Service Workers require
           HTTPS (with localhost as the sole exception) because they can
@@ -76,8 +77,8 @@ export default function ServiceWorkersConciseArticle() {
           also mandates same-origin restrictions: a Service Worker can only
           intercept requests originating from pages served from the same origin
           as the worker itself.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The W3C specification has evolved significantly since its initial
           draft. Major additions include the Navigation Preload API (allowing
           the browser to start network requests in parallel with SW boot time),
@@ -85,17 +86,17 @@ export default function ServiceWorkersConciseArticle() {
           improvements to the Cache API. Browser support is now universal across
           modern browsers, though iOS Safari has historically lagged behind with
           notable quirks around storage eviction and push notification support.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Six fundamental concepts define how Service Workers operate and how
           engineers should reason about them:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Lifecycle Phases:</strong> A Service Worker transitions
             through well-defined states: installing (triggered after download,
             where precaching occurs), waiting (parked if an older SW still
@@ -105,7 +106,7 @@ export default function ServiceWorkersConciseArticle() {
             installation). Understanding this lifecycle is essential because it
             governs when new code takes effect and how updates propagate to
             users.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scope and Registration:</strong> A Service Worker's scope is
             determined by the URL path of the worker script and an optional
@@ -115,15 +116,15 @@ export default function ServiceWorkersConciseArticle() {
             placing the worker in a subdirectory ("/scripts/sw.js") and
             wondering why it cannot intercept requests from other paths.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Fetch Event Interception:</strong> The fetch event fires for
             every network request made by controlled pages, including
             navigations, scripts, stylesheets, images, and API calls. Inside the
             handler, event.respondWith() lets the worker provide a custom
             Response. If respondWith() is not called, the request falls through
             to the browser's default network handling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache API Integration:</strong> The Cache API (caches.open,
             cache.put, cache.match) provides programmatic, versioned cache
             management entirely separate from the HTTP cache. Engineers can
@@ -131,7 +132,7 @@ export default function ServiceWorkersConciseArticle() {
             request-response pairs, and delete old cache versions during the
             activate phase. Unlike the HTTP cache, the Cache API gives full
             control over what is stored, when it expires, and how it is evicted.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Message Passing:</strong> Service Workers communicate with
             pages via postMessage. A page can send messages to its controlling
@@ -142,7 +143,7 @@ export default function ServiceWorkersConciseArticle() {
             for coordinating cache updates, notifying users of new content, and
             synchronizing state.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Update Mechanism:</strong> Browsers perform a byte-for-byte
             comparison of the Service Worker file on every navigation (or at
             least every 24 hours, per specification). If even a single byte
@@ -151,17 +152,17 @@ export default function ServiceWorkersConciseArticle() {
             worker are closed. The skipWaiting() method bypasses the waiting
             phase, and clients.claim() allows the new worker to immediately take
             control of existing pages.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture & Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Service Worker lifecycle is a carefully orchestrated sequence
           designed to ensure reliability and prevent breaking existing user
           sessions during updates.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Lifecycle Flow</h3>
@@ -213,9 +214,10 @@ export default function ServiceWorkersConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/sw-lifecycle.svg"
           alt="Service Worker Lifecycle State Diagram"
           caption="Service Worker Lifecycle - States from registration through activation to redundancy, including the critical waiting phase"
+          captionTier="crucial"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The "waiting" phase deserves deeper examination because it is the most
           misunderstood part of the lifecycle. Without it, a new Service Worker
           could activate while existing tabs are still running code that depends
@@ -224,8 +226,8 @@ export default function ServiceWorkersConciseArticle() {
           to a normalized format. If v2 activates while v1 tabs are open, those
           tabs would receive responses in the wrong format. The waiting phase
           prevents this by ensuring a clean handoff.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Calling skipWaiting() bypasses this safety mechanism. It is useful
           during development and for non-critical updates (e.g., adding a new
           cached asset) but dangerous for updates that change cache structure or
@@ -233,15 +235,16 @@ export default function ServiceWorkersConciseArticle() {
           selectively: the new worker sends a message to clients asking "is it
           safe to skip waiting?", and clients respond based on their current
           state.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/offline-support/sw-fetch-interception.svg"
           alt="Service Worker Fetch Interception Flow"
           caption="Fetch Interception - How Service Workers intercept requests and apply different caching strategies"
+          captionTier="important"
         />
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The fetch interception flow is where caching strategies come into
           play. When a fetch event fires, the worker examines the request (URL,
           method, headers) and decides how to respond. For navigation requests,
@@ -250,11 +253,18 @@ export default function ServiceWorkersConciseArticle() {
           never changes for a given URL. For API responses,
           stale-while-revalidate provides a balance: return the cached version
           instantly while fetching a fresh copy in the background for next time.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs & Comparisons</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Service Workers unlock offline and aggressive caching, but they also
+          introduce a second runtime (the worker) with its own lifecycle and
+          update semantics. Most production failures come from cache
+          invalidation mistakes, version skew during upgrades, and storage
+          eviction behavior that varies across browsers (especially iOS Safari).
+        </HighlightBlock>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-theme">
@@ -368,23 +378,24 @@ export default function ServiceWorkersConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/sw-caching-strategies.svg"
           alt="Service Worker Caching Strategies Comparison"
           caption="Comparison of five caching strategies: Cache First, Network First, Stale-While-Revalidate, Cache Only, and Network Only"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Production-grade Service Worker implementations should follow these
           practices:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Version Your Caches:</strong> Use cache names that include a
             version identifier (e.g., "static-v3", "api-v2"). During the
             activate event, iterate over all cache names and delete any that do
             not match the current version set. This prevents unbounded cache
             growth and ensures stale data is purged on update.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Workbox for Production:</strong> Google's Workbox
             library abstracts caching strategies, precaching, routing, and
@@ -394,21 +405,21 @@ export default function ServiceWorkersConciseArticle() {
             build-time integration with webpack, Rollup, and Vite makes precache
             manifest generation automatic.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Handle Updates Gracefully:</strong> When a new Service
             Worker is waiting, notify the user with an "Update available"
             banner. On user confirmation, send a SKIP_WAITING message to the new
             worker, which calls skipWaiting() and then clients.claim(). Reload
             the page to ensure all code is consistent with the new worker. Never
             auto-refresh without user consent.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Limit Precache Size:</strong> Keep precached assets under
             5MB. Precaching every asset in your application wastes bandwidth and
             slows installation. Focus on the app shell (HTML, critical CSS, core
             JS bundles, key fonts) and use runtime caching for everything else.
             Audit precache size regularly as your application grows.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use Navigation Preload:</strong> Enable navigation preload
             in the activate event to eliminate the performance penalty of SW

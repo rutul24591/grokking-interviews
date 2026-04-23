@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,15 +37,15 @@ export default function ProgressiveWebAppsConciseArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Progressive Web Apps (PWAs)</strong> are web applications that
           use modern browser APIs and strategies to deliver reliable, fast, and
           engaging experiences that rival native applications. The term was
           coined by Alex Russell and Frances Berriman in 2015, and Google
           championed the concept at Google I/O that same year, positioning PWAs
           as the convergence point between web reach and native capability.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           PWAs bridge the gap between web and native by leveraging Service
           Workers for offline functionality and background processing, a Web App
           Manifest for installability and home screen presence, and HTTPS for
@@ -52,8 +53,8 @@ export default function ProgressiveWebAppsConciseArticle() {
           discoverable via search engines, linkable via URLs, and progressively
           enhanced so they work on any browser but deliver richer experiences on
           supporting platforms.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The shift from &quot;app stores as the only distribution channel&quot;
           to &quot;installable web&quot; is significant from a business
           perspective. Starbucks reported 2x daily active users on their PWA
@@ -66,8 +67,8 @@ export default function ProgressiveWebAppsConciseArticle() {
           These numbers demonstrate that PWAs are not a theoretical nicety but a
           proven business strategy for reaching users on unreliable networks and
           constrained devices.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           For staff and principal engineers, understanding PWAs means
           understanding the entire stack: how the browser install flow works,
           how Service Worker lifecycles interact with cache invalidation, how
@@ -77,17 +78,17 @@ export default function ProgressiveWebAppsConciseArticle() {
           understanding the platform gaps: iOS Safari has historically lagged
           behind Chrome in PWA support, creating real architectural decisions
           about what capabilities to rely on.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Core Concepts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PWAs are defined not by a single technology but by a collection of
           capabilities and patterns working together:
-        </p>
+        </HighlightBlock>
         <ul>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Web App Manifest:</strong> A JSON file (manifest.json or
             manifest.webmanifest) that describes the application to the browser.
             It specifies the app name, short_name, icons (including maskable
@@ -97,8 +98,8 @@ export default function ProgressiveWebAppsConciseArticle() {
             theme_color (for the OS-level chrome), background_color (for the
             splash screen), and orientation preferences. The manifest is linked
             from HTML via a &lt;link rel=&quot;manifest&quot;&gt; tag.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Service Worker Requirement:</strong> A Service Worker is
             mandatory for a PWA. It must be served over HTTPS (or localhost for
             development) and acts as a programmable network proxy between the
@@ -107,7 +108,7 @@ export default function ProgressiveWebAppsConciseArticle() {
             The SW operates in a separate thread from the main page, cannot
             access the DOM directly, and communicates via postMessage. It is the
             cornerstone that makes offline-first possible.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>App Shell Architecture:</strong> The app shell is the
             minimal HTML, CSS, and JavaScript required to render the UI
@@ -202,6 +203,7 @@ export default function ProgressiveWebAppsConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/pwa-architecture.svg"
           alt="PWA Architecture showing App Shell, Service Worker, Cache Storage, and Network layers"
           caption="PWA Architecture - The Service Worker sits between the browser and network, serving cached app shell assets and proxying API requests with configurable caching strategies"
+          captionTier="crucial"
         />
 
         <p>
@@ -250,6 +252,7 @@ export default function ProgressiveWebAppsConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/pwa-install-flow.svg"
           alt="PWA Installation Flow from browser detection to home screen icon"
           caption="PWA Installation Flow - From initial site visit through criteria checks, beforeinstallprompt event, custom UI, to home screen placement"
+          captionTier="important"
         />
       </section>
 
@@ -359,23 +362,24 @@ export default function ProgressiveWebAppsConciseArticle() {
           src="/diagrams/system-design-concepts/frontend/offline-support/pwa-vs-native.svg"
           alt="Comparison of PWA vs Native App capabilities, distribution, and performance characteristics"
           caption="PWA vs Native vs Hybrid - Feature support matrix showing where each approach excels and where gaps remain"
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Building a production-quality PWA requires attention to details that
           distinguish a polished experience from a broken one:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>1. Run Lighthouse PWA Audits Regularly:</strong> Lighthouse
             audits check for manifest validity, Service Worker registration,
             HTTPS, offline fallback pages, and performance thresholds. Integrate
             Lighthouse CI into your build pipeline and fail builds that drop
             below your PWA score threshold. Aim for 100 on the PWA category.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>2. Provide Maskable Icons:</strong> Maskable icons ensure
             your app icon looks correct on all Android devices regardless of the
@@ -399,13 +403,13 @@ export default function ProgressiveWebAppsConciseArticle() {
             navigation. Use the appinstalled event to track successful
             installations.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>5. Implement Thoughtful Update Prompts:</strong> Never call
             skipWaiting() automatically on a new Service Worker. Instead, show
             an unobtrusive &quot;Update available&quot; banner and let the user
             choose when to reload. For critical security updates, be more
             assertive but still give the user time to save their work.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>6. Track Installed vs Browser Analytics:</strong> Use the
             display-mode media query or the matchMedia API to distinguish
