@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { Highlight } from "@/components/articles/Highlight";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,129 +26,133 @@ export default function SubresourceIntegrityArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Subresource Integrity (SRI)</strong> is a security feature that enables browsers to verify
           that resources they fetch (typically from CDNs) are delivered without unexpected manipulation. It
           works by allowing you to provide a cryptographic hash that a fetched resource must match.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           SRI addresses a critical security concern: when you load JavaScript or CSS from third-party CDNs,
           you&apos;re trusting that the CDN won&apos;t serve malicious content. If the CDN is compromised,
           attacked, or misconfigured, your users could receive malicious scripts. SRI provides a safety net
           by ensuring the resource matches what you expect.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>How SRI works:</strong>
         </p>
         <ol className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Generate hash:</strong> Create a cryptographic hash (SHA-256, SHA-384, or SHA-512) of the
             resource file
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Add to HTML:</strong> Include the hash in the <code className="text-sm">integrity</code>
             attribute of <code className="text-sm">&lt;script&gt;</code> or <code className="text-sm">&lt;link&gt;</code>
             tags
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Browser verification:</strong> When the browser fetches the resource, it computes the hash
             and compares it to the provided value
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Block on mismatch:</strong> If hashes don&apos;t match, the browser blocks the resource
             from loading
-          </li>
+          </HighlightBlock>
         </ol>
         <p>
           SRI is defined in the W3C Subresource Integrity specification and is supported by all modern browsers
           (Chrome 45+, Firefox 43+, Safari 15+, Edge 79+). It&apos;s recommended by OWASP and security best
           practices for any application loading third-party resources.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why SRI matters for staff/principal engineers:</strong> As a technical leader, you&apos;re
           responsible for supply chain security. Third-party script compromises (Magecart attacks, CDN
           hijacking) are increasingly common. SRI provides defense-in-depth against these attacks. Understanding
           SRI enables you to make informed decisions about CDN usage, build pipeline integration, and security
           hardening.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: SRI Is Supply Chain Security</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             SRI protects against compromised or manipulated third-party resources. It&apos;s a critical component
             of web supply chain security, ensuring that the JavaScript and CSS you load is exactly what you
             expect—not a tampered version.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>SRI Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implementing SRI requires generating hashes for your resources and including them in your HTML.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Basic SRI Syntax</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Scripts and stylesheets include the <code className="text-sm">integrity</code> attribute with a hash value and <code className="text-sm">crossorigin="anonymous"</code>. For example, a script tag might have <code className="text-sm">integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"</code>. Multiple hash algorithms can be specified space-separated (sha256, sha384, sha512) and the browser uses the strongest supported.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">SRI Attribute Format</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The integrity attribute format is <code className="text-sm">integrity="sha384-hash"</code>. Supported algorithms include <code className="text-sm">sha256-</code> (32 bytes, 256 bits), <code className="text-sm">sha384-</code> (48 bytes, 384 bits, recommended), and <code className="text-sm">sha512-</code> (64 bytes, 512 bits). Multiple hashes can be space-separated and the browser uses the strongest algorithm it supports.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Crossorigin Attribute</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code className="text-sm">crossorigin</code> attribute is required for SRI when loading cross-origin resources. Use <code className="text-sm">crossorigin="anonymous"</code> to send no credentials (most common) or <code className="text-sm">crossorigin="use-credentials"</code> to send credentials (cookies, auth).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/sri-verification-flow.svg"
           alt="SRI Verification Flow showing browser fetching resource, computing hash, comparing with integrity attribute"
           caption="SRI Verification: Browser fetches resource, computes hash, compares with integrity attribute. Blocks if mismatch."
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Generating SRI Hashes</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           You need to generate cryptographic hashes for your resources. There are several approaches.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/sri-workflow.svg"
           alt="Subresource Integrity Workflow showing Build Process, CDN, Browser Verification, and Outcomes"
           caption="SRI Workflow: Build generates hash, CDN serves resource, browser verifies hash, allows or blocks based on match."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Online Tools</h3>
-        <p>
-          Online tools like SRIGen (srihash.org) allow you to paste your resource URL or content and get the integrity attribute back. For example, a script tag with integrity <code className="text-sm">sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC</code> and <code className="text-sm">crossorigin="anonymous"</code>. <strong>Warning:</strong> Only use online tools for public resources. Never paste private or sensitive code into online generators.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          Online tools like SRIGen (srihash.org) allow you to paste your resource URL or content and get the integrity attribute back. For example, a script tag with integrity <code className="text-sm">sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC</code> and <code className="text-sm">crossorigin="anonymous"</code>.{" "}
+          <strong>Warning:</strong> Only use online tools for public resources. Never paste{" "}
+          <Highlight tier="important">private or sensitive code</Highlight> into online generators.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Command Line (OpenSSL)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generate SHA-384 hash using <code className="text-sm">cat library.js | openssl dgst -sha384 -binary | openssl base64 -A</code>. The output is a base64-encoded hash like <code className="text-sm">oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC</code>. The full integrity attribute is <code className="text-sm">integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Build Tool Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For Webpack, use the webpack-subresource-integrity plugin. Configure <code className="text-sm">crossOriginLoading: 'anonymous'</code> in output settings and add the SubresourceIntegrityPlugin with <code className="text-sm">hashFuncNames: ['sha384']</code> to the plugins array.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CI/CD Pipeline Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In GitHub Actions, loop through dist files and generate hashes using openssl, appending to an sri-manifest.txt file. Then run a script like <code className="text-sm">node scripts/update-sri.js</code> to update HTML with SRI hashes.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Automate Hash Generation</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Manual hash generation is error-prone and doesn&apos;t scale. Integrate SRI hash generation into
             your build pipeline. Update hashes automatically when resources change. Treat SRI like any other
             build artifact.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -176,24 +182,25 @@ export default function SubresourceIntegrityArticle() {
 
       <section>
         <h2>SRI and CSP</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           SRI works alongside Content Security Policy (CSP) to provide layered security.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CSP require-sri-for Directive</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSP Level 3 introduced <code className="text-sm">require-sri-for</code> directive. Use <code className="text-sm">require-sri-for script</code> to require SRI for scripts, <code className="text-sm">require-sri-for style</code> for styles, or <code className="text-sm">require-sri-for script style</code> for both. The browser blocks scripts/styles without valid SRI even if they're from allowed sources.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Combined Defense</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSP allows scripts from specific domains (like <code className="text-sm">script-src 'self' https://cdn.example.com</code>), while SRI ensures the script from that domain is the expected version by verifying the integrity hash. This provides defense in depth: CSP restricts WHERE resources can load from, SRI verifies WHAT content is loaded.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/sri-csp-layered-defense.svg"
           alt="SRI and CSP Layered Defense showing how CSP restricts sources and SRI verifies content"
           caption="Layered Defense: CSP restricts WHERE resources can load from. SRI verifies WHAT content is loaded."
+          captionTier="crucial"
         />
       </section>
 
@@ -272,24 +279,24 @@ export default function SubresourceIntegrityArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Implementation</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use SHA-384:</strong> Best balance of security and performance (SHA-256 is acceptable,
             SHA-512 is overkill)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always include crossorigin:</strong> Required for SRI verification
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Pin to specific versions:</strong> Never use <code className="text-sm">@latest</code> or
             floating tags
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Automate hash generation:</strong> Integrate into build pipeline, don&apos;t generate
             manually
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Monitor SRI failures:</strong> Set up alerts for CSP violation reports related to SRI
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Selection</h3>
@@ -348,26 +355,26 @@ export default function SubresourceIntegrityArticle() {
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Missing crossorigin attribute:</strong> SRI fails silently without
             <code className="text-sm">crossorigin="anonymous"</code> for cross-origin resources.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using @latest versions:</strong> Resource changes, hash becomes invalid, breaks your
             site. Always pin versions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Generating hash from wrong source:</strong> Hash must be generated from the exact bytes
             served by CDN, not your local copy (minification, whitespace differences).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Not updating hashes on deploy:</strong> Build process changes resources, old hashes
             invalid. Automate hash updates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring browser support:</strong> Older browsers ignore SRI. Use CSP as fallback
             protection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using SRI for dynamic content:</strong> Resources that change (A/B tests, feature flags)
             aren&apos;t suitable for SRI.
@@ -561,23 +568,23 @@ export default function SubresourceIntegrityArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What is Subresource Integrity and why is it important?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: SRI is a security feature that allows browsers to verify that fetched resources (scripts,
               stylesheets) match expected cryptographic hashes. It&apos;s important because it protects against
               compromised or manipulated third-party resources. If a CDN is hacked or misconfigured, SRI prevents
               malicious scripts from loading. It&apos;s a critical component of web supply chain security.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: How do you generate SRI hashes?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Generate SHA-384 hash of the resource file, base64-encode it, and prefix with
               <code className="text-sm">sha384-</code>. Command:
               <code className="text-sm">cat file.js | openssl dgst -sha384 -binary | openssl base64 -A</code>.
               Or use build tool plugins (webpack-subresource-integrity, vite-plugin-sri) for automation. Never
               generate manually in production—automate in CI/CD.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -593,13 +600,13 @@ export default function SubresourceIntegrityArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: How does SRI work with CSP?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: SRI and CSP are complementary. CSP restricts WHERE resources can load from (allowed domains).
               SRI verifies WHAT content is loaded (hash matching). CSP Level 3 adds
               <code className="text-sm">require-sri-for</code> directive to mandate SRI for scripts/styles.
               Together they provide layered defense: CSP blocks unauthorized sources, SRI blocks unauthorized
               content from authorized sources.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +25,18 @@ export default function SecureStorageSensitiveDataArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Secure storage of sensitive data</strong> refers to the practices and techniques for
           safely storing confidential information on the client-side. This includes authentication tokens,
           API keys, personal identifiable information (PII), payment details, and any data that could be
           misused if exposed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Critical principle:</strong> The browser is an <strong>untrusted environment</strong>.
           Anything stored client-side can potentially be accessed by attackers through XSS, malicious
           extensions, compromised devices, or physical access. The golden rule is: <strong>never store
           what you don&apos;t need</strong>.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Common sensitive data types:</strong>
         </p>
@@ -56,34 +57,35 @@ export default function SecureStorageSensitiveDataArticle() {
             <strong>Session data:</strong> Session tokens, CSRF tokens, user preferences with PII
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why secure storage matters for staff/principal engineers:</strong> As a technical leader,
           you&apos;re responsible for data protection strategies. Poor storage decisions lead to data
           breaches, compliance violations (GDPR, HIPAA, PCI-DSS), and loss of user trust. Understanding
           storage options and their trade-offs enables you to design secure, compliant applications.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Minimize Client-Side Storage</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The most secure data is data you don&apos;t store. Question every piece of sensitive data:
             Does it need to be on the client? Can it be fetched on-demand? Can it be tokenized or
             encrypted? Default to server-side storage with minimal client-side caching.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Storage Options Comparison</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different storage mechanisms offer different security characteristics. Understanding these is
           essential for making informed decisions.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/storage-options-comparison.svg"
           alt="Client-Side Storage Options comparison showing localStorage, sessionStorage, Cookies, and IndexedDB security characteristics"
           caption="Storage Options: Each has different security characteristics. Cookies with HttpOnly are most secure for tokens."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">localStorage</h3>
@@ -177,36 +179,37 @@ export default function SecureStorageSensitiveDataArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: HttpOnly Cookies for Tokens</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             For authentication tokens, HttpOnly cookies are the gold standard. They&apos;re inaccessible
             to JavaScript (XSS-safe), automatically sent with requests (convenient), and can be protected
             against CSRF with SameSite. Never store tokens in localStorage if you can avoid it.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Encryption for Client-Side Data</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When you must store sensitive data client-side, encryption provides an additional layer of
           protection. However, encryption in the browser has fundamental limitations.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/secure-storage-comparison.svg"
           alt="Secure Storage Options for Sensitive Data comparing localStorage, sessionStorage, HttpOnly Cookie, IndexedDB, In-Memory, and Secure Enclave"
           caption="Storage Security Comparison: HttpOnly cookies are most secure for web tokens, Secure Enclave for mobile apps, never use localStorage for sensitive data."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Web Crypto API</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Web Crypto API provides methods like <code className="text-sm">window.crypto.subtle.generateKey()</code> for generating AES-GCM keys with 256-bit length, <code className="text-sm">subtle.encrypt()</code> for encrypting data with a random IV, and <code className="text-sm">subtle.decrypt()</code> for decrypting. Encrypted data can be stored in IndexedDB. However, the fundamental question remains: where do you store the encryption key?
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">The Key Management Problem</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Client-side encryption faces a fundamental challenge: where do you store the encryption key?
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Hardcoded key:</strong> Easily extracted from JavaScript source
@@ -221,11 +224,11 @@ export default function SecureStorageSensitiveDataArticle() {
             <strong>Key from server:</strong> Server could decrypt; defeats purpose of client-side encryption
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Conclusion:</strong> Client-side encryption protects against some threats (device theft,
           browser cache inspection) but not others (XSS, malicious extensions). It&apos;s defense in depth,
           not a complete solution.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">When Client-Side Encryption Makes Sense</h3>
         <ul className="space-y-2">
@@ -248,11 +251,15 @@ export default function SecureStorageSensitiveDataArticle() {
 
       <section>
         <h2>Secure Storage Patterns</h2>
+        <HighlightBlock as="p" tier="important" className="mt-4">
+          In production, secure client storage is usually a combination of: cookies for authentication,
+          encrypted IndexedDB for offline data, and memory-only for short-lived secrets.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pattern 1: HttpOnly Cookie for Tokens</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           On the server-side (Node.js/Express), verify credentials in the login handler, generate a JWT token for the authenticated user, and set it as an HttpOnly cookie with options like <code className="text-sm">httpOnly: true</code> (JavaScript cannot access), <code className="text-sm">secure: true</code> (HTTPS only), <code className="text-sm">sameSite: 'strict'</code> (CSRF protection), <code className="text-sm">maxAge: 3600000</code> (1 hour), and <code className="text-sm">path: '/'</code>. On the client-side, the token is automatically sent with requests when using <code className="text-sm">credentials: 'include'</code> in fetch calls, and JavaScript cannot access the token making it XSS-safe.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pattern 2: Encrypted Storage for PII</h3>
         <p>
@@ -271,11 +278,11 @@ export default function SecureStorageSensitiveDataArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Layer Your Defenses</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             No single storage mechanism is perfectly secure. Combine approaches: HttpOnly cookies for
             tokens, encryption for PII, memory-only for temporary secrets, and minimal storage overall.
             Each layer provides protection if others are compromised.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -301,9 +308,9 @@ export default function SecureStorageSensitiveDataArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Storage Selection</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Tokens → HttpOnly cookies:</strong> Never localStorage
-          </li>
+          </HighlightBlock>
           <li>
             <strong>PII → Encrypted IndexedDB:</strong> Or don&apos;t store at all
           </li>
@@ -349,21 +356,21 @@ export default function SecureStorageSensitiveDataArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Defense in Depth</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Secure storage isn&apos;t about one perfect solution—it&apos;s about layering defenses.
             HttpOnly cookies protect against XSS. Encryption protects against cache inspection.
             Memory-only storage limits exposure window. Together they provide comprehensive protection.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Storing tokens in localStorage:</strong> Most common mistake. XSS = instant account
             takeover.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storing passwords anywhere:</strong> Never store passwords client-side, even encrypted.
           </li>
@@ -382,18 +389,18 @@ export default function SecureStorageSensitiveDataArticle() {
           <li>
             <strong>Not handling private browsing:</strong> IndexedDB blocked in private mode.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Trusting client-side encryption:</strong> Encryption keys accessible via XSS defeat
             the purpose.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Architecture at Scale: Secure Storage in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Enterprise-scale secure storage requires coordinated encryption key management, consistent storage policies, and centralized monitoring across multiple applications, services, and geographic regions. In microservices architectures, each service must handle sensitive data consistently while supporting different storage requirements.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Centralized Key Management:</strong> Implement a centralized key management service (AWS KMS, HashiCorp Vault, Azure Key Vault) that manages encryption keys centrally. Services request keys on-demand for encryption/decryption operations. Implement key rotation policies with automatic key versioning. Document key management architecture in system design documentation.
         </p>
@@ -410,9 +417,9 @@ export default function SecureStorageSensitiveDataArticle() {
 
       <section>
         <h2>Testing Strategies: Secure Storage Validation</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Comprehensive secure storage testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Automated Storage Scanning:</strong> Use browser DevTools, OWASP ZAP, or custom scripts to verify storage attributes. Configure CI/CD pipelines to scan storage usage after each deployment. Set up automated alerts for: sensitive data in localStorage, missing encryption for PII, excessive data retention, insecure cookie attributes.
         </p>
@@ -519,24 +526,24 @@ export default function SecureStorageSensitiveDataArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: Where should you store authentication tokens and why?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: <strong>HttpOnly cookies</strong> are the most secure option. They&apos;re inaccessible
               to JavaScript (XSS-safe), automatically sent with requests (convenient), and can be protected
               against CSRF with SameSite attribute. <strong>Never use localStorage</strong> for tokens—any
               XSS vulnerability gives attackers immediate access to all tokens. If you must use localStorage
               (e.g., for API clients), implement strict CSP and XSS protections.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: What are the limitations of client-side encryption?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The fundamental problem is <strong>key management</strong>. Where do you store the
               encryption key? Hardcoded keys are easily extracted. Keys in localStorage are accessible via
               XSS. Keys derived from passwords are only as strong as the password. Client-side encryption
               protects against some threats (device theft, cache inspection) but not others (XSS, malicious
               extensions). It&apos;s defense in depth, not a complete solution.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

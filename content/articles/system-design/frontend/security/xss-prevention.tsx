@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,53 +25,53 @@ export default function XSSPreventionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-Site Scripting (XSS)</strong> is a code injection attack where malicious scripts are
           injected into trusted websites or applications. The attacker exploits vulnerabilities in the web
           application to deliver malicious JavaScript code to end users&apos; browsers. When the victim&apos;s
           browser executes this malicious code, the attacker can steal session cookies, capture credentials,
           redirect users to phishing sites, perform actions on behalf of the user, or exfiltrate sensitive data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           XSS consistently ranks in the OWASP Top 10 web application security risks (currently OWASP Top 10 #3
           in 2021, previously #7 in 2017). Despite being a well-understood vulnerability, XSS remains pervasive
           because modern web applications are increasingly dynamic, accepting and rendering user-generated content
           from multiple sources: form inputs, URL parameters, API responses, third-party widgets, and
           user-uploaded files.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The fundamental issue XSS exploits is the browser&apos;s inability to distinguish between legitimate
           application code and attacker-injected code. Browsers execute any JavaScript they receive from a
           domain, trusting it completely. XSS attacks trick the browser into treating attacker-controlled data
           as executable code by injecting it into contexts where JavaScript is expected: inline event handlers,
           script tags, javascript: URLs, or dynamically evaluated code.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why XSS matters for staff/principal engineers:</strong> As a technical leader, you&apos;re
           responsible for establishing security architecture, defining secure coding standards, and making
           trade-off decisions between functionality and security. XSS prevention requires a defense-in-depth
           approach spanning multiple layers: input validation, output encoding, Content Security Policy, secure
           framework usage, and security monitoring. Understanding XSS at a deep level enables you to design
           systems that are secure by default rather than bolt-on secure.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: XSS Is About Context, Not Just Input</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             XSS isn&apos;t simply &quot;bad input&quot;—it&apos;s about data being interpreted in the wrong
             context. The same payload (&lt;script&gt;alert(1)&lt;/script&gt;) is harmless in a JSON response
             but devastating when rendered as HTML. Prevention requires understanding the target context (HTML,
             attribute, URL, JavaScript, CSS) and applying appropriate encoding for that specific context.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>XSS Attack Types</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           XSS attacks are categorized based on how the malicious payload reaches the victim&apos;s browser.
           Understanding these categories is essential for designing appropriate defenses.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Reflected XSS (Non-Persistent)</h3>
         <p>
@@ -617,11 +618,17 @@ export default function XSSPreventionArticle() {
           src="/diagrams/system-design-concepts/frontend/security/xss-defense-comparison.svg"
           alt="XSS Defense Mechanisms comparison matrix showing effectiveness, complexity, and coverage"
           caption="XSS Defense Comparison: Each layer has different effectiveness against attack types. Layered defense provides comprehensive protection."
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          XSS is best handled by default-safe rendering plus hard guardrails:
+          minimize HTML injection points, enforce CSP, and treat any “escape
+          hatch” like `dangerouslySetInnerHTML` as security-critical code.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Architectural</h3>
         <ul className="space-y-2">
@@ -723,16 +730,21 @@ export default function XSSPreventionArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: XSS Prevention Is Ongoing</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             XSS prevention isn&apos;t a one-time implementation—it requires continuous vigilance. New attack
             techniques emerge, browsers change behavior, and new features introduce new risks. Regular security
             audits, dependency updates, and developer training are essential.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="important">
+          Most production XSS issues come from context mistakes (attribute vs
+          HTML vs URL) and from adding rich-text/HTML rendering without a strict
+          sanitization contract.
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Relying solely on input validation:</strong> Input validation catches obvious attacks but
@@ -949,10 +961,15 @@ export default function XSSPreventionArticle() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: enumerate XSS types, then describe a defense-in-depth
+          plan (safe rendering defaults, context-aware encoding, strict CSP,
+          and controlled HTML rendering for rich text).
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What&apos;s the difference between Reflected, Stored, and DOM-based XSS?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>Reflected XSS</strong> requires the malicious payload to be part of the request and
               immediately reflected in the response—no server-side storage. It requires social engineering
               (victim clicks a crafted link). <strong>Stored XSS</strong> persists the payload on the server
@@ -960,7 +977,7 @@ export default function XSSPreventionArticle() {
               needed. <strong>DOM-based XSS</strong> occurs entirely client-side when JavaScript unsafely
               manipulates the DOM using attacker-controlled data. Server-side defenses are ineffective against
               DOM-based XSS because the payload never touches the server.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,14 +39,14 @@ export default function AuthorizationRBACArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Authorization</strong> determines what an authenticated user
           can do—answering the question &quot;What are you allowed to do?&quot;
           It&apos;s distinct from <strong>authentication</strong>
           (who you are) and is equally critical for security. A user might be
           authenticated but should only access resources and perform actions
           they&apos;re authorized for.
-        </p>
+        </HighlightBlock>
         <p>
           Authorization models define how permissions are structured and
           enforced:
@@ -70,7 +71,7 @@ export default function AuthorizationRBACArticle() {
             systems.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>
             Why authorization matters for staff/principal engineers:
           </strong>{" "}
@@ -80,34 +81,35 @@ export default function AuthorizationRBACArticle() {
           escalation, data breaches, and compliance failures. Understanding
           authorization models enables you to make informed architectural
           decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">
             Key Insight: Authorization Is Multi-Layered
           </h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Authorization must be enforced at every layer: frontend (UX), API
             gateway (routing), service layer (business logic), and data layer
             (row/column level). Frontend authorization improves UX but provides
             no security—always enforce on the server.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Role-Based Access Control (RBAC)</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           RBAC is the most widely used authorization model. Permissions are
           assigned to roles, and users are assigned to roles. This abstraction
           simplifies permission management.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">RBAC Components</h3>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/rbac-model.svg"
           alt="RBAC Model showing Users, Roles, and Permissions relationships"
           caption="RBAC Model: Users are assigned to Roles, Roles have Permissions. Users inherit permissions from their roles."
+          captionTier="important"
         />
 
         <ul className="space-y-2">
@@ -201,17 +203,18 @@ export default function AuthorizationRBACArticle() {
 
       <section>
         <h2>Attribute-Based Access Control (ABAC)</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           ABAC makes access decisions based on attributes of the user, resource,
           action, and environment. It&apos;s more flexible than RBAC but also
           more complex.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ABAC Components</h3>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/abac-model.svg"
           alt="ABAC Model showing Policy Decision Point evaluating User, Resource, and Environment attributes"
           caption="ABAC Model: Access decisions based on attributes of user, resource, action, and environment evaluated against policies."
+          captionTier="important"
         />
 
         <ul className="space-y-2">
@@ -698,7 +701,7 @@ export default function AuthorizationRBACArticle() {
             <p className="font-semibold">
               Q1: What&apos;s the difference between RBAC and ABAC?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: <strong>RBAC (Role-Based Access Control)</strong> assigns
               permissions to roles, users to roles. Simple, widely used, good
               for organizations with clear job functions.
@@ -707,7 +710,7 @@ export default function AuthorizationRBACArticle() {
               flexible but complex. RBAC: &quot;Admins can delete
               documents.&quot; ABAC: &quot;Users can delete documents they own,
               during business hours, from the office network.&quot;
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -715,7 +718,7 @@ export default function AuthorizationRBACArticle() {
               Q2: How do you prevent IDOR (Insecure Direct Object Reference)
               vulnerabilities?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Always check resource ownership or permission before accessing
               by ID. Don&apos;t just check
               <code className="text-sm">
@@ -729,20 +732,20 @@ export default function AuthorizationRBACArticle() {
                 Forbidden
               </code>
               . Never trust client-provided IDs without authorization checks.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q3: Where should authorization be enforced?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: At every layer: (1) Frontend for UX (hide unauthorized
               actions), (2) API gateway for routing decisions, (3) Service layer
               for business logic, (4) Data layer for row/column-level security.
               Frontend authorization provides zero security—attackers bypass it
               easily. Server-side enforcement is mandatory.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

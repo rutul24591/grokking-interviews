@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +25,18 @@ export default function TokenRefreshStrategiesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Token refresh strategies</strong> define how applications maintain user authentication
           over time without requiring repeated logins. Since access tokens should be short-lived (minutes
           to hours) for security, refresh mechanisms allow users to obtain new access tokens without
           re-entering credentials.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>The fundamental challenge:</strong> Balance security (short-lived tokens limit damage
           if stolen) with user experience (users shouldn&apos;t login every 15 minutes). Token refresh
           strategies solve this by using long-lived refresh tokens to obtain new short-lived access tokens
           silently.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Common token patterns:</strong>
         </p>
@@ -53,34 +54,35 @@ export default function TokenRefreshStrategiesArticle() {
             <strong>Sliding sessions:</strong> Extend session lifetime on user activity
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why token refresh matters for staff/principal engineers:</strong> As a technical leader,
           you&apos;re responsible for authentication architecture. Poor refresh strategies lead to security
           vulnerabilities (token theft, session fixation), poor UX (frequent logouts), or both. Understanding
           refresh patterns enables you to design secure, user-friendly authentication systems.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Separate Access and Refresh</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Access tokens and refresh tokens serve different purposes and have different security
             requirements. Access tokens should be short-lived and frequently rotated. Refresh tokens
             should be long-lived but carefully protected and rotated on use. Never use the same token
             for both purposes.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Token Lifecycle</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding the token lifecycle is essential for implementing secure refresh strategies.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/token-lifecycle-flow.svg"
           alt="Token Lifecycle Flow showing access token usage, expiration, refresh token exchange, and new token issuance"
           caption="Token Lifecycle: Access tokens expire quickly, refresh tokens are exchanged for new access tokens, refresh tokens rotate on use."
+          captionTier="crucial"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Typical Token Flow</h3>
@@ -109,23 +111,30 @@ export default function TokenRefreshStrategiesArticle() {
         </ol>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Expiration Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Access tokens are short-lived (15-60 minutes) with claims like sub, type set to "access", exp set to 15 minutes from issuance, and iat. Refresh tokens are long-lived (7-30 days) with type set to "refresh", exp set to 7 days from issuance, iat, and a jti (unique token ID) for rotation tracking. The separation is important: access tokens are used frequently with a short window if compromised (max 15 min damage), while refresh tokens are used rarely (once per session) with a longer lifetime, and compromised refresh tokens are detected on reuse through rotation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Storage for Refresh</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The SECURE approach is to store both tokens in HttpOnly cookies with attributes like <code className="text-sm">HttpOnly</code>, <code className="text-sm">Secure</code>, <code className="text-sm">SameSite=Strict</code>, and appropriate Max-Age values (900 seconds for access token, 604800 seconds for refresh token). JavaScript cannot access these tokens and the browser auto-sends cookies with requests, while the refresh endpoint reads cookies server-side. A LESS SECURE approach is access token in memory and refresh in HttpOnly cookie, but the access token is exposed to XSS if stored in localStorage. The INSECURE approach is storing both tokens in localStorage using <code className="text-sm">setItem()</code>, which leads to instant account takeover via XSS.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Refresh Patterns</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Token refresh is a distributed protocol across browser, tabs, and
+          server. The staff-level bar is being explicit about: where refresh
+          tokens live, how you prevent concurrent refresh storms, and what you
+          do when refresh tokens are stolen (rotation + reuse detection).
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/refresh-strategies-comparison.svg"
           alt="Token Refresh Strategies Comparison showing Silent Refresh, User Re-authentication, and Token Rotation with comparison table"
           caption="Refresh Strategies Comparison: Silent refresh for best UX, re-authentication for high security, token rotation for theft detection."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pattern 1: Silent Refresh (Recommended)</h3>
@@ -179,15 +188,16 @@ export default function TokenRefreshStrategiesArticle() {
           src="/diagrams/system-design-concepts/frontend/security/refresh-patterns-comparison.svg"
           alt="Token Refresh Patterns comparison showing Silent Refresh, Refresh on 401, Token Rotation, and Sliding Session"
           caption="Refresh Patterns: Each has different trade-offs. Silent refresh for best UX, rotation for security, sliding for active sessions."
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Multi-Tab Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Handling token refresh across multiple browser tabs requires coordination to avoid race conditions
           and excessive refresh requests.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Tab Synchronization with BroadcastChannel</h3>
         <p>
@@ -202,6 +212,11 @@ export default function TokenRefreshStrategiesArticle() {
 
       <section>
         <h2>Security Considerations</h2>
+        <HighlightBlock as="p" tier="important">
+          Most real-world token incidents are about refresh-token theft and
+          session fixation. Your strategy should assume refresh tokens can leak
+          and prove you can detect and contain it.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Refresh Token Theft Detection</h3>
         <p>
@@ -232,6 +247,11 @@ export default function TokenRefreshStrategiesArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In production, refresh logic is an availability and incident-response
+          concern as much as an auth concern. The safest designs are idempotent,
+          cookie-based, rotation-enabled, and resilient to multi-tab concurrency.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Token Lifetime</h3>
         <ul className="space-y-2">
@@ -299,16 +319,21 @@ export default function TokenRefreshStrategiesArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Plan for Failure</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Refresh will fail—network issues, token expiration, server errors. Design for graceful
             degradation: queue requests during refresh, retry on transient failures, clear state on
             permanent failures, and always provide a path back to login.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="important">
+          Most token-refresh bugs become security incidents because they either
+          silently extend stolen sessions or cause refresh storms that degrade
+          login reliability.
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>No token rotation:</strong> Static refresh tokens can be used indefinitely if stolen.
@@ -446,29 +471,34 @@ export default function TokenRefreshStrategiesArticle() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          In interviews, call out: rotation + reuse detection, multi-tab
+          coordination (refresh lock), idempotency keys, and cookie-based storage
+          to reduce XSS blast radius.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: Why use separate access and refresh tokens instead of one long-lived token?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Security through separation of concerns. <strong>Access tokens</strong> are used frequently
               (every API request), so short lifetime (15 min) limits damage if stolen.
               <strong>Refresh tokens</strong> are used rarely (once per session), stored more securely, and
               can be rotated/revoked. If you only have one long-lived token and it&apos;s stolen, attacker
               has access until it expires. With two tokens, stolen access token = max 15 min damage, stolen
               refresh token = detected on reuse (rotation).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: What is refresh token rotation and why is it important?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>Refresh token rotation</strong> means issuing a new refresh token every time the
               refresh endpoint is called, and invalidating the old one. Importance: If an attacker steals
               a refresh token, they can use it once. But when the legitimate user tries to refresh, their
               old token is rejected (already used). This detects token theft! Server can then invalidate
               all tokens for that user, force re-authentication, and alert the user. Without rotation,
               stolen tokens can be used indefinitely.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

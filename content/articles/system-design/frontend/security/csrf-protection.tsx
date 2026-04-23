@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,23 +25,23 @@ export default function CSRFProtectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-Site Request Forgery (CSRF or XSRF)</strong> is an attack that tricks an authenticated
           user&apos;s browser into performing unintended actions on a trusted website where they&apos;re logged in.
           The attacker exploits the browser&apos;s automatic inclusion of credentials (cookies, HTTP authentication,
           client certificates) with every request to a domain, regardless of which site initiated the request.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Unlike XSS, which injects malicious code into a trusted site, CSRF abuses the trust relationship between
           a user&apos;s browser and a website. The attacker doesn&apos;t steal credentials or session tokens—they
           simply trick the browser into sending legitimate requests with the user&apos;s existing authentication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>How CSRF works:</strong> When you log into a website (e.g., your bank), the server sets a session
           cookie in your browser. For subsequent requests to that domain, the browser automatically includes the cookie.
           If you visit a malicious site while logged in, that site can craft requests to your bank&apos;s endpoints,
           and your browser will happily include the session cookie—making the request appear legitimate to the server.
-        </p>
+        </HighlightBlock>
         <p>
           CSRF consistently appears in the OWASP Top 10 (currently OWASP Top 10 2021 #1: Broken Access Control,
           which includes CSRF). While modern frameworks and browsers have improved defenses, CSRF remains relevant
@@ -63,31 +64,31 @@ export default function CSRFProtectionArticle() {
             inherently CSRF-vulnerable
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why CSRF matters for staff/principal engineers:</strong> As a technical leader, you&apos;re
           responsible for authentication architecture, session management strategies, and API design patterns.
           CSRF protection requires understanding the interplay between cookies, same-origin policy, CORS, and
           token-based defenses. You must make architectural decisions about authentication (cookie-based vs.
           token-based), design secure APIs, and establish security standards that protect against both known
           and emerging attack vectors.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: CSRF Exploits Browser Behavior, Not Vulnerabilities</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             CSRF doesn&apos;t exploit a bug—it exploits expected browser behavior. Browsers are designed to send
             cookies automatically with requests to the cookie&apos;s domain. This is a feature, not a bug, but
             attackers weaponize it. Defense requires breaking this automatic behavior for state-changing requests.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>CSRF Attack Mechanics</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding CSRF requires grasping how browsers handle credentials and how attackers exploit this
           behavior.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">The Browser&apos;s Credential Behavior</h3>
         <p>
@@ -166,6 +167,7 @@ export default function CSRFProtectionArticle() {
           src="/diagrams/system-design-concepts/frontend/security/csrf-attack-flow.svg"
           alt="CSRF Attack Flow showing attacker tricking victim's browser into sending authenticated requests"
           caption="CSRF Attack Flow: The attacker exploits the browser's automatic credential inclusion to perform unauthorized actions on behalf of the authenticated victim."
+          captionTier="crucial"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Real-World CSRF Impact</h3>
@@ -608,6 +610,11 @@ export default function CSRFProtectionArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          For cookie-authenticated apps, CSRF is a design-time concern. The safe
+          baseline is: SameSite cookies, CSRF tokens for unsafe methods, and
+          Origin/Referer validation for defense-in-depth.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Architectural</h3>
         <ul className="space-y-2">
@@ -702,16 +709,20 @@ export default function CSRFProtectionArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: CSRF Protection Is Framework-Dependent</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Modern frameworks (Express with csurf, Django, Rails, Spring Security, ASP.NET) include built-in CSRF
             protection. Use framework defaults when possible, but understand the underlying mechanisms to configure
             them correctly and debug issues.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="important">
+          The most common production CSRF failures are mismatched auth choices
+          (cookie auth without tokens) and over-reliance on SameSite defaults.
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Relying solely on SameSite:</strong> SameSite cookies are excellent but not comprehensive.
@@ -927,17 +938,22 @@ export default function CSRFProtectionArticle() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: distinguish CSRF (unauthorized writes via cookie
+          attachment) from XSS (unauthorized reads/code execution). Then propose
+          a concrete, layered mitigation plan for cookie-authenticated APIs.
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What is CSRF and how does it differ from XSS?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>CSRF (Cross-Site Request Forgery)</strong> tricks an authenticated user&apos;s browser
               into performing unintended actions on a trusted website by exploiting automatic credential inclusion
               (cookies). The attacker doesn&apos;t steal credentials—they abuse the trust relationship between
               browser and server. <strong>XSS (Cross-Site Scripting)</strong> injects malicious scripts into a
               trusted website, which execute in victims&apos; browsers. XSS steals data or sessions; CSRF performs
               actions on behalf of the user. XSS exploits trust in the website; CSRF exploits trust in the user.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,19 +25,19 @@ export default function ClientSideRateLimitingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Client-side rate limiting</strong> refers to techniques implemented in the browser to
           control the frequency of user actions, API requests, or resource-intensive operations. Unlike
           server-side rate limiting (which is the authoritative defense), client-side rate limiting
           improves user experience, reduces unnecessary server load, and provides a first line of defense
           against accidental or intentional abuse.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Important distinction:</strong> Client-side rate limiting is <strong>not a security
           boundary</strong>. It can be bypassed by attackers using custom scripts, modified clients, or
           direct API calls. Server-side rate limiting is mandatory for security; client-side is for UX
           and defense in depth.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Common use cases:</strong>
         </p>
@@ -67,26 +68,27 @@ export default function ClientSideRateLimitingArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Client-Side Is UX, Server-Side Is Security</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Client-side rate limiting improves UX and reduces unnecessary server load, but provides zero
             security guarantees. Attackers bypass it easily. Always implement server-side rate limiting
             for security-critical operations (login, password reset, API access). Client-side is
             complementary, not a replacement.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Rate Limiting Techniques</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Different techniques serve different purposes. Understanding when to use each is essential for
           effective implementation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/rate-limiting-techniques.svg"
           alt="Rate Limiting Techniques comparison showing Debouncing, Throttling, and Rate Limiting patterns"
           caption="Rate Limiting Techniques: Debouncing delays execution, Throttling limits frequency, Rate Limiting enforces quotas."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Debouncing</h3>
@@ -144,6 +146,11 @@ export default function ClientSideRateLimitingArticle() {
 
       <section>
         <h2>Implementation Patterns</h2>
+        <HighlightBlock as="p" tier="crucial" className="mt-4">
+          Implementation patterns should protect the system from accidental bursts and keep the UI responsive,
+          but they do <strong>not</strong> create a security boundary. Treat them as UX + efficiency and
+          always assume attackers can bypass the browser.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Form Submission Protection</h3>
         <p>
@@ -167,25 +174,26 @@ export default function ClientSideRateLimitingArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Provide User Feedback</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             When rate limiting user actions, always provide clear feedback. Disable buttons, show loading
             states, display &quot;please wait&quot; messages. Users should understand why their action
             wasn&apos;t immediately processed—not think the UI is broken.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Server Coordination</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Client-side rate limiting works best when coordinated with server-side limits. The server is the
           source of truth; client-side is a courtesy layer.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/client-server-coordination.svg"
           alt="Client-Server Rate Limiting Coordination showing browser techniques, server techniques, and response headers"
           caption="Client-Server Coordination: Client-side reduces unnecessary requests, Server-side enforces security limits with coordinated response headers."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Handling 429 Rate Limit Responses</h3>
@@ -251,9 +259,9 @@ export default function ClientSideRateLimitingArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Considerations</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Never trust client-side limits:</strong> Always enforce on server
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Don&apos;t reveal server limits:</strong> Client-side limits can be more restrictive
             than server
@@ -269,21 +277,21 @@ export default function ClientSideRateLimitingArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Rate Limiting Is User-Friendly</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Rate limiting isn&apos;t just about preventing abuse—it&apos;s about being a good citizen of
             the internet. Respectful clients reduce server load, avoid triggering aggressive rate limits,
             and provide better user experiences with clear feedback about limits.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Relying solely on client-side limits:</strong> Attackers bypass easily. Server-side
             enforcement is mandatory.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No user feedback:</strong> Users think UI is broken when clicks don&apos;t work. Always
             show why action was limited.
@@ -296,10 +304,10 @@ export default function ClientSideRateLimitingArticle() {
             <strong>Not handling tab switching:</strong> Rate limit state lost when user switches tabs.
             Use localStorage for persistence.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring server headers:</strong> Not respecting Retry-After or rate limit headers
             leads to repeated failures.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Too aggressive limits:</strong> Frustrates legitimate users. Start conservative,
             adjust based on analytics.
@@ -317,15 +325,15 @@ export default function ClientSideRateLimitingArticle() {
 
       <section>
         <h2>Architecture at Scale: Rate Limiting in Enterprise Systems</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Enterprise-scale rate limiting requires coordinated client-server rate limiting policies, consistent throttling configurations, and centralized monitoring across multiple applications, services, and geographic regions. In microservices architectures, each service must implement rate limiting consistently while supporting different rate limit policies.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Centralized Rate Limit Policy:</strong> Implement a centralized rate limit policy service that manages rate limits across all applications. Use infrastructure-as-code to enforce rate limit configurations consistently. Document rate limit policies in security standards.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Client-Server Coordination:</strong> Implement coordinated rate limiting between client and server. Client-side rate limiting reduces unnecessary requests. Server-side rate limiting enforces security boundaries. Use Retry-After headers to synchronize client behavior with server limits. Document client-server rate limit coordination.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Multi-Region Rate Limiting:</strong> For global applications, implement rate limiting in multiple regions. Use distributed rate limiting (Redis Cluster, DynamoDB) for consistent limits across regions. Implement region-specific rate limits based on traffic patterns. Document multi-region rate limiting architecture.
         </p>
@@ -336,9 +344,9 @@ export default function ClientSideRateLimitingArticle() {
 
       <section>
         <h2>Testing Strategies: Rate Limiting Validation</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Comprehensive rate limiting testing requires automated validation, manual verification, and penetration testing integrated into security operations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Automated Rate Limit Testing:</strong> Use load testing tools (k6, Artillery) to verify rate limiting triggers correctly. Configure CI/CD pipelines to test rate limiting after each deployment. Set up automated alerts for: rate limit bypass, incorrect rate limit headers, excessive false positives.
         </p>
@@ -442,25 +450,25 @@ export default function ClientSideRateLimitingArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What&apos;s the difference between debouncing and throttling?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: <strong>Debouncing</strong> delays execution until a specified time has passed since the
               last invocation. It&apos;s like &quot;wait until they&apos;re done.&quot; Use for search
               autocomplete (wait for user to stop typing). <strong>Throttling</strong> ensures a function
               is called at most once per interval. It&apos;s like &quot;once every X milliseconds.&quot;
               Use for scroll handlers (limit to 10 times per second). Debouncing = execute after pause.
               Throttling = execute at regular intervals.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: Why is client-side rate limiting not sufficient for security?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Client-side rate limiting runs in the user&apos;s browser, which they control. Attackers
               can: disable JavaScript, modify the code in browser dev tools, use custom scripts or API
               clients, or send requests directly to the server. Client-side rate limiting is for UX and
               reducing unnecessary server load. Server-side rate limiting is mandatory for security—it
               enforces limits at the trust boundary.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -476,13 +484,13 @@ export default function ClientSideRateLimitingArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q4: How do you handle server-side 429 responses on the client?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Check for 429 status code in response. Read <code className="text-sm">Retry-After</code>
               header if present—it tells you how long to wait. Display user-friendly message (&quot;Too many
               requests, please wait 30 seconds&quot;). Implement exponential backoff for retries. Update
               client-side rate limiter state to prevent further requests until limit resets. Log the event
               for monitoring.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

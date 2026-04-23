@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,12 @@ export default function HTTPSTLSArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>HTTPS (Hypertext Transfer Protocol Secure)</strong> is the secure version of HTTP that uses
           <strong> TLS (Transport Layer Security)</strong> to encrypt communication between a client (browser)
           and a server. TLS is the successor to SSL (Secure Sockets Layer), and while the terms are often used
           interchangeably, modern implementations use TLS—SSL is deprecated due to security vulnerabilities.
-        </p>
+        </HighlightBlock>
         <p>
           HTTPS provides three critical security guarantees:
         </p>
@@ -47,36 +48,36 @@ export default function HTTPSTLSArticle() {
             are communicating with the legitimate website and not an imposter (preventing man-in-the-middle attacks).
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTPS has evolved from a best practice to a mandatory requirement. Modern browsers mark non-HTTPS sites
           as &quot;Not Secure,&quot; many web platform features (Service Workers, Geolocation, Payment Request API)
           require HTTPS, and search engines (Google) use HTTPS as a ranking signal. As of 2024, over 90% of web
           traffic uses HTTPS.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why HTTPS/TLS matters for staff/principal engineers:</strong> As a technical leader, you&apos;re
           responsible for security architecture, compliance requirements (PCI-DSS, HIPAA, GDPR all require encryption
           in transit), and infrastructure decisions. Understanding TLS enables you to make informed decisions about
           certificate management, cipher suite configuration, performance optimization (HTTP/2, HTTP/3 require TLS),
           and security hardening.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: HTTPS Is Table Stakes</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             HTTPS is no longer optional—it&apos;s the baseline for any production website. The question isn&apos;t
             &quot;should we use HTTPS?&quot; but &quot;how do we implement it correctly and keep it secure?&quot;
             Free certificates (Let&apos;s Encrypt), automated renewal, and CDN support have removed cost barriers.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>TLS Protocol Overview</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           TLS operates between the transport layer (TCP) and application layer (HTTP), providing a secure channel.
           Understanding the TLS handshake is essential for debugging connection issues and optimizing performance.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">TLS Handshake Process</h3>
         <p>
@@ -88,6 +89,7 @@ export default function HTTPSTLSArticle() {
           src="/diagrams/system-design-concepts/frontend/security/tls-handshake-flow.svg"
           alt="TLS 1.3 Handshake Flow showing Client Hello, Server Hello, Certificate, Key Exchange, and Finished messages"
           caption="TLS 1.3 Handshake: Completed in 1-RTT (or 0-RTT for resumed connections), significantly faster than TLS 1.2's 2-RTT."
+          captionTier="crucial"
         />
 
         <h4 className="mt-4 mb-2 font-semibold">TLS 1.3 Handshake Steps</h4>
@@ -571,6 +573,11 @@ export default function HTTPSTLSArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The staff-level failure mode here is “we turned on HTTPS” without a
+          lifecycle: renewal automation, configuration baselines, and monitoring
+          (CT logs, SSL scans). Treat TLS like production infrastructure.
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Server Configuration</h3>
         <ul className="space-y-2">
@@ -657,6 +664,11 @@ export default function HTTPSTLSArticle() {
 
       <section>
         <h2>Common Pitfalls</h2>
+        <HighlightBlock as="p" tier="important">
+          Most TLS incidents are operational: cert expiry, mixed content, and
+          insecure defaults left enabled. They show up as outages, warnings, or
+          silent downgrade risk.
+        </HighlightBlock>
         <ul className="space-y-3">
           <li>
             <strong>Allowing legacy protocols:</strong> SSL 3.0, TLS 1.0, TLS 1.1 are all vulnerable. Disable them.
@@ -877,6 +889,11 @@ export default function HTTPSTLSArticle() {
 
       <section>
         <h2>Interview Questions & Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: explain the TLS guarantees (confidentiality,
+          integrity, authentication), the TLS 1.3 handshake at a high level, and
+          how you operate TLS safely (renewal, HSTS, cipher baselines, scanning).
+        </HighlightBlock>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What&apos;s the difference between SSL, TLS, and HTTPS?</p>

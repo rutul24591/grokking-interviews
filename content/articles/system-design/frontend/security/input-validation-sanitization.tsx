@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,12 @@ export default function InputValidationSanitizationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Input validation</strong> is the process of verifying that user-provided data meets expected
           criteria before processing it. <strong>Sanitization</strong> goes further by cleaning or transforming
           input to remove potentially harmful content. Together, they form the first line of defense against
           injection attacks, data corruption, and application errors.
-        </p>
+        </HighlightBlock>
         <p>
           Input validation answers: &quot;Is this input acceptable?&quot; Sanitization answers: &quot;How can I
           make this input safe to use?&quot; Both are essential because:
@@ -48,47 +49,48 @@ export default function InputValidationSanitizationArticle() {
             <strong>User experience:</strong> Provides immediate feedback on invalid input
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The fundamental principle is <strong>&quot;never trust user input&quot;</strong>. All input is
           potentially malicious until proven otherwise—whether from form fields, URL parameters, API requests,
           file uploads, or third-party integrations.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Why input validation matters for staff/principal engineers:</strong> As a technical leader,
           you&apos;re responsible for establishing security standards, defining validation patterns, and making
           trade-off decisions between security and usability. Understanding validation strategies enables you to
           design systems that are secure by default while maintaining good user experience.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Validate at Every Boundary</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Validate input at every trust boundary: client-side for UX, server-side for security, API gateways,
             database layer, and before output. Defense in depth means assuming any single validation layer might
             fail or be bypassed.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Validation Strategies</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           There are two fundamental approaches to input validation: allowlist (whitelist) and blocklist
           (blacklist). Understanding when to use each is critical for effective security.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/validation-strategies.svg"
           alt="Input Validation Strategies comparing Allowlist vs Blocklist approaches"
           caption="Validation Strategies: Allowlist (whitelist) defines what&apos;s allowed; Blocklist (blacklist) defines what&apos;s forbidden. Allowlist is more secure."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Allowlist Validation (Recommended)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Allowlist validation defines what input is <strong>allowed</strong> and rejects everything else.
           This is the more secure approach because it&apos;s impossible for an attacker to guess all possible
           variations of malicious input. For example, check if input is in an array of allowed values like draft, published, or archived, or validate against patterns like email regex or username pattern for 3-20 alphanumeric characters.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>When to use allowlist:</strong>
         </p>
@@ -100,10 +102,10 @@ export default function InputValidationSanitizationArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Blocklist Validation (Not Recommended)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Blocklist validation defines what input is <strong>forbidden</strong> and allows everything else.
           This approach is inherently weaker because attackers can find variations you haven&apos;t blocked. For example, blocking patterns like <code className="text-sm">&lt;script</code>, <code className="text-sm">javascript:</code>, <code className="text-sm">onerror=</code>, <code className="text-sm">onclick=</code> can be bypassed with case variations (<code className="text-sm">&lt;SCRIPT&gt;</code>), nested tags, HTML entities (<code className="text-sm">&amp;#60;script&amp;#62;</code>), different events (<code className="text-sm">&lt;svg onload=...&gt;</code>), and countless other bypasses.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Why blocklist fails:</strong>
         </p>
@@ -125,32 +127,33 @@ export default function InputValidationSanitizationArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Allowlist Is Always More Secure</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Blocklist validation is like trying to keep water out of a sieve—you can&apos;t plug every hole.
             Allowlist validation is like a dam—it only lets through what you explicitly allow. Use allowlist
             whenever possible.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Validation Layers</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Effective input validation requires multiple layers. Each layer serves a different purpose and
           provides fallback protection if other layers fail.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/validation-layers.svg"
           alt="Input Validation Layers showing Client-side, Server-side, API, Database, and Output validation"
           caption="Validation Layers: Each layer provides different protection. Client-side for UX, server-side for security, database for integrity."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Layer 1: Client-Side Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Client-side validation provides immediate user feedback but provides <strong>no security</strong>.
           Attackers can bypass client-side validation entirely. Use HTML5 built-in validation like <code className="text-sm">type="email"</code>, <code className="text-sm">required</code>, <code className="text-sm">minlength</code>, <code className="text-sm">maxlength</code>, <code className="text-sm">type="number"</code> with <code className="text-sm">min</code>/<code className="text-sm">max</code>, and <code className="text-sm">pattern</code> attribute. In JavaScript (React example), validate email with regex pattern and set error state. <strong>IMPORTANT:</strong> This is for UX only—the server MUST validate independently.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Purpose:</strong> User experience, immediate feedback, reduce server load from invalid requests.
         </p>
@@ -160,9 +163,9 @@ export default function InputValidationSanitizationArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Layer 2: Server-Side Validation (Critical)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Server-side validation is <strong>mandatory for security</strong>. Never trust client-side validation. In Node.js/Express, validate email with regex pattern, username with alphanumeric pattern for 3-20 characters, age with type and range check (18-120), sanitize before use, and return 400 status with error messages for invalid input.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Purpose:</strong> Security, data integrity, business rule enforcement.
         </p>
@@ -235,11 +238,11 @@ export default function InputValidationSanitizationArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Sanitization Is Context-Specific</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The same input requires different sanitization depending on where it&apos;s used. HTML sanitization
             doesn&apos;t protect against SQL injection. URL sanitization doesn&apos;t protect against XSS.
             Always sanitize for the specific context where data will be used.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -360,15 +363,15 @@ export default function InputValidationSanitizationArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Validation Design</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use allowlist whenever possible:</strong> Define what&apos;s allowed, not what&apos;s forbidden
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Validate at every layer:</strong> Client, server, database, output
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Fail closed:</strong> Reject input when validation is uncertain
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use generic error messages:</strong> Don&apos;t leak implementation details
           </li>
@@ -382,9 +385,9 @@ export default function InputValidationSanitizationArticle() {
           <li>
             <strong>Use battle-tested libraries:</strong> DOMPurify for HTML, parameterized queries for SQL
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Sanitize for specific context:</strong> HTML sanitization doesn&apos;t protect against SQL injection
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sanitize on input and output:</strong> Defense in depth
           </li>
@@ -411,9 +414,9 @@ export default function InputValidationSanitizationArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Testing</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Test with malicious payloads:</strong> XSS, SQL injection, path traversal
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Test edge cases:</strong> Empty strings, null, undefined, very long input
           </li>
@@ -427,25 +430,25 @@ export default function InputValidationSanitizationArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Validation Is Ongoing</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Input validation isn&apos;t a one-time implementation. New attack vectors emerge, requirements change,
             and edge cases are discovered. Regularly review and update validation rules, monitor for bypass attempts,
             and keep sanitization libraries updated.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Trusting client-side validation:</strong> Client-side validation is for UX only. Always
             validate on the server.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Using blocklist as primary defense:</strong> Blocklists are inherently bypassable. Use
             allowlist whenever possible.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Double-encoding bugs:</strong> Encoding already-encoded data can create vulnerabilities.
             Encode once, at the right layer.
@@ -682,24 +685,24 @@ export default function InputValidationSanitizationArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What&apos;s the difference between allowlist and blocklist validation? Which is more secure?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: <strong>Allowlist (whitelist)</strong> defines what input is allowed and rejects everything else.
               <strong>Blocklist (blacklist)</strong> defines what input is forbidden and allows everything else.
               Allowlist is significantly more secure because it&apos;s impossible for attackers to guess all
               possible variations of malicious input. Blocklists are inherently bypassable—attackers just need
               to find one variation you haven&apos;t blocked. Always use allowlist whenever possible.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: Why is client-side validation insufficient for security?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Client-side validation can be completely bypassed. Attackers can: modify JavaScript in browser
               dev tools, send direct API requests bypassing the frontend entirely, use custom clients or scripts,
               or disable JavaScript entirely. Client-side validation is for user experience (immediate feedback,
               reduced server load) but provides zero security. Server-side validation is mandatory—all input must
               be validated on the server regardless of client-side checks.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -740,7 +743,7 @@ export default function InputValidationSanitizationArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q6: How do you prevent SQL injection when validating user input?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Never concatenate user input into SQL queries. Use parameterized queries (prepared statements)
               where input is passed as parameters, not interpolated into the query string. Example:
               <code className="text-sm">db.query(&apos;SELECT * FROM users WHERE id = $1&apos;, [userId])</code>
@@ -748,7 +751,7 @@ export default function InputValidationSanitizationArticle() {
               (Sequelize, Prisma, TypeORM) handle parameterization automatically. For LIKE queries, escape
               special characters (% and _). Input validation helps but parameterized queries are the definitive
               defense.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

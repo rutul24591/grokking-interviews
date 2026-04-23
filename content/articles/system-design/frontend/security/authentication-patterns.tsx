@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,12 @@ export default function AuthenticationPatternsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Authentication</strong> is the process of verifying a user&apos;s identity—answering the
           question &quot;Who are you?&quot; It&apos;s distinct from <strong>authorization</strong> which
           determines what an authenticated user can do. Authentication is foundational to web security;
           every other security control depends on correctly identifying users.
-        </p>
+        </HighlightBlock>
         <p>
           There are three primary authentication patterns for web applications:
         </p>
@@ -51,36 +52,37 @@ export default function AuthenticationPatternsArticle() {
           Each pattern has trade-offs in security, scalability, complexity, and user experience. Understanding
           these trade-offs is essential for making informed architectural decisions.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why authentication matters for staff/principal engineers:</strong> As a technical leader,
           you&apos;re responsible for selecting authentication patterns that balance security requirements,
           scalability needs, development complexity, and user experience. Poor authentication design leads to
           data breaches, account takeovers, and compliance failures.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Authentication Is a Chain</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Authentication is only as strong as its weakest link. Secure token generation means nothing if
             tokens are transmitted over HTTP. Strong passwords don&apos;t help if sessions can be hijacked.
             Design authentication as a complete system: credential handling, token/session management,
             transmission security, and storage.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Session-Based Authentication</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Session-based authentication is the traditional approach where the server maintains authentication
           state and the client holds a session identifier.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">How Session Authentication Works</h3>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/session-auth-flow.svg"
           alt="Session-Based Authentication Flow showing login, session creation, cookie storage, and authenticated requests"
           caption="Session Authentication Flow: Server maintains session state, client holds session ID in HttpOnly cookie."
+          captionTier="important"
         />
 
         <ol className="space-y-2">
@@ -94,10 +96,10 @@ export default function AuthenticationPatternsArticle() {
             <strong>Session creation:</strong> Server creates session record in database/cache with unique
             session ID
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Session cookie:</strong> Server sends session ID to client in HttpOnly, Secure, SameSite
             cookie
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Authenticated requests:</strong> Browser automatically includes session cookie with
             subsequent requests
@@ -117,19 +119,19 @@ export default function AuthenticationPatternsArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session Security Best Practices</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Generate secure session IDs:</strong> Minimum 128 bits of entropy using cryptographically
             secure random
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Use HttpOnly cookies:</strong> Prevent JavaScript access, mitigating XSS session theft
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set Secure flag:</strong> Only transmit over HTTPS
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set SameSite attribute:</strong> Lax or Strict for CSRF protection
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement session expiration:</strong> Absolute timeout (e.g., 24 hours) and idle timeout
             (e.g., 30 minutes)
@@ -164,10 +166,10 @@ export default function AuthenticationPatternsArticle() {
 
       <section>
         <h2>Token-Based Authentication (JWT)</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Token-based authentication uses signed tokens (typically JWT—JSON Web Tokens) to represent user
           identity. Unlike sessions, tokens are stateless—the server doesn&apos;t store token state.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">JWT Structure</h3>
         <p>
@@ -179,6 +181,7 @@ export default function AuthenticationPatternsArticle() {
           src="/diagrams/system-design-concepts/frontend/security/jwt-auth-flow.svg"
           alt="JWT Token Authentication Flow showing token generation, client storage, and token validation"
           caption="JWT Authentication Flow: Server signs tokens, client stores and sends them, server verifies signature."
+          captionTier="important"
         />
 
         <ol className="space-y-2">
@@ -192,9 +195,9 @@ export default function AuthenticationPatternsArticle() {
           <li>
             <strong>Token delivery:</strong> Server sends JWT to client (in response body or cookie)
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Token storage:</strong> Client stores JWT (localStorage or HttpOnly cookie)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Authenticated requests:</strong> Client sends JWT in Authorization header
             (<code className="text-sm">Bearer &lt;token&gt;</code>) or cookie
@@ -215,25 +218,25 @@ export default function AuthenticationPatternsArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">JWT Security Considerations</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Token storage:</strong> HttpOnly cookie is more secure than localStorage (protected from
             XSS)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Token expiration:</strong> Use short-lived access tokens (15-60 min) with refresh tokens
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Token revocation:</strong> JWTs can&apos;t be revoked without additional infrastructure
             (blocklist, short expiration)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Signature algorithm:</strong> Use RS256 (asymmetric) for distributed systems, HS256
             (symmetric) for single-server
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Don&apos;t store sensitive data:</strong> JWT payload is encoded, not encrypted. Anyone
             can decode it.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">When to Use JWT Authentication</h3>
@@ -257,21 +260,21 @@ export default function AuthenticationPatternsArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: JWT Is Not a Security Magic Bullet</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             JWT solves statelessness, not security. A JWT stored in localStorage is vulnerable to XSS. A JWT
             without proper expiration can be used indefinitely. JWT adds complexity—only use it when you need
             stateless authentication. For many applications, session authentication is simpler and more secure.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>OAuth 2.0 and OpenID Connect</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           OAuth 2.0 is an authorization framework that enables third-party applications to access user resources
           without exposing credentials. OpenID Connect (OIDC) builds on OAuth 2.0 to provide authentication
           (identity verification).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">OAuth 2.0 Roles</h3>
         <ul className="space-y-2">
@@ -296,6 +299,7 @@ export default function AuthenticationPatternsArticle() {
           src="/diagrams/system-design-concepts/frontend/security/oauth-authorization-code-flow.svg"
           alt="OAuth 2.0 Authorization Code Flow showing redirect, code exchange, and token retrieval"
           caption="OAuth 2.0 Authorization Code Flow: Most secure flow for server-side applications. Code is exchanged server-to-server."
+          captionTier="important"
         />
 
         <ol className="space-y-2">
@@ -310,20 +314,20 @@ export default function AuthenticationPatternsArticle() {
           <li>
             <strong>Authorization grant:</strong> Authorization server redirects back with authorization code
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Token exchange:</strong> Client exchanges code for access token (server-to-server, includes
             <code className="text-sm">client_secret</code>)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Resource access:</strong> Client uses access token to call resource server
           </li>
         </ol>
 
         <h4 className="mt-4 mb-2 font-semibold">PKCE (Proof Key for Code Exchange)</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PKCE is an extension to Authorization Code flow that prevents authorization code interception attacks.
           Required for public clients (SPAs, mobile apps). The flow generates a random code_verifier string (32 characters), creates a code_challenge by taking the SHA256 hash of the verifier, includes the code_challenge in the authorization request to the /authorize endpoint with the client_id and code_challenge_method=S256, then sends the code_verifier in the token exchange POST to /token where the server verifies it matches the challenge.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Implicit Flow (Deprecated)</h4>
         <p>
@@ -372,71 +376,74 @@ export default function AuthenticationPatternsArticle() {
 
       <section>
         <h2>Authentication Pattern Comparison</h2>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
-              <th className="p-3 text-left">Session-Based</th>
-              <th className="p-3 text-left">JWT</th>
-              <th className="p-3 text-left">OAuth 2.0 / OIDC</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Server State</strong></td>
-              <td className="p-3">Stateful (session store)</td>
-              <td className="p-3">Stateless</td>
-              <td className="p-3">Depends on provider</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Scalability</strong></td>
-              <td className="p-3">Requires session sharing (Redis)</td>
-              <td className="p-3">Horizontally scalable</td>
-              <td className="p-3">Outsourced to provider</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Token Revocation</strong></td>
-              <td className="p-3">Immediate (delete session)</td>
-              <td className="p-3">Difficult (need blocklist)</td>
-              <td className="p-3">Provider-dependent</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>XSS Protection</strong></td>
-              <td className="p-3">Good (HttpOnly cookies)</td>
-              <td className="p-3">Depends on storage</td>
-              <td className="p-3">Depends on implementation</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>CSRF Protection</strong></td>
-              <td className="p-3">Required (SameSite, tokens)</td>
-              <td className="p-3">Not needed (Authorization header)</td>
-              <td className="p-3">Built into flow</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Mobile Support</strong></td>
-              <td className="p-3">Limited (cookie handling)</td>
-              <td className="p-3">Excellent</td>
-              <td className="p-3">Excellent</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Third-Party Login</strong></td>
-              <td className="p-3">Not supported</td>
-              <td className="p-3">Not supported</td>
-              <td className="p-3">Native support</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Implementation Complexity</strong></td>
-              <td className="p-3">Low</td>
-              <td className="p-3">Medium</td>
-              <td className="p-3">High</td>
-            </tr>
-          </tbody>
-        </table>
+        <HighlightBlock tier="crucial" className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-3 text-left">Aspect</th>
+                <th className="p-3 text-left">Session-Based</th>
+                <th className="p-3 text-left">JWT</th>
+                <th className="p-3 text-left">OAuth 2.0 / OIDC</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-3"><strong>Server State</strong></td>
+                <td className="p-3">Stateful (session store)</td>
+                <td className="p-3">Stateless</td>
+                <td className="p-3">Depends on provider</td>
+              </tr>
+              <tr>
+                <td className="p-3"><strong>Scalability</strong></td>
+                <td className="p-3">Requires session sharing (Redis)</td>
+                <td className="p-3">Horizontally scalable</td>
+                <td className="p-3">Outsourced to provider</td>
+              </tr>
+              <tr>
+                <td className="p-3"><strong>Token Revocation</strong></td>
+                <td className="p-3">Immediate (delete session)</td>
+                <td className="p-3">Difficult (need blocklist)</td>
+                <td className="p-3">Provider-dependent</td>
+              </tr>
+              <tr>
+                <td className="p-3"><strong>XSS Protection</strong></td>
+                <td className="p-3">Good (HttpOnly cookies)</td>
+                <td className="p-3">Depends on storage</td>
+                <td className="p-3">Depends on implementation</td>
+              </tr>
+              <tr>
+                <td className="p-3"><strong>CSRF Protection</strong></td>
+                <td className="p-3">Required (SameSite, tokens)</td>
+                <td className="p-3">Not needed (Authorization header)</td>
+                <td className="p-3">Built into flow</td>
+              </tr>
+              <tr>
+                <td className="p-3"><strong>Mobile Support</strong></td>
+                <td className="p-3">Limited (cookie handling)</td>
+                <td className="p-3">Excellent</td>
+                <td className="p-3">Excellent</td>
+              </tr>
+              <tr>
+                <td className="p-3"><strong>Third-Party Login</strong></td>
+                <td className="p-3">Not supported</td>
+                <td className="p-3">Not supported</td>
+                <td className="p-3">Native support</td>
+              </tr>
+              <tr>
+                <td className="p-3"><strong>Implementation Complexity</strong></td>
+                <td className="p-3">Low</td>
+                <td className="p-3">Medium</td>
+                <td className="p-3">High</td>
+              </tr>
+            </tbody>
+          </table>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/auth-pattern-comparison.svg"
           alt="Authentication Pattern Comparison matrix showing Session, JWT, and OAuth trade-offs"
           caption="Authentication Comparison: Each pattern has different trade-offs. Choose based on your specific requirements."
+          captionTier="important"
         />
       </section>
 
@@ -445,15 +452,15 @@ export default function AuthenticationPatternsArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Credential Handling</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Never store plaintext passwords:</strong> Always hash with bcrypt, Argon2, or scrypt
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use HTTPS everywhere:</strong> Credentials must never traverse unencrypted networks
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement rate limiting:</strong> Prevent brute-force attacks on login endpoints
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use generic error messages:</strong> &quot;Invalid credentials&quot; not &quot;User not
             found&quot;
@@ -465,23 +472,23 @@ export default function AuthenticationPatternsArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session/Token Security</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use secure random generation:</strong> Minimum 128 bits of entropy for session IDs and
             tokens
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Implement expiration:</strong> Sessions (24 hours), access tokens (15-60 min), refresh
             tokens (7-30 days)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rotate on privilege changes:</strong> New session/token after password change, role change
           </li>
           <li>
             <strong>Bind to context:</strong> Validate IP, user agent (with flexibility for mobile)
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Provide logout functionality:</strong> Server-side invalidation, not just client cleanup
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Factor Authentication (MFA)</h3>
@@ -521,31 +528,31 @@ export default function AuthenticationPatternsArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Use Established Libraries</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Never implement authentication from scratch. Use battle-tested libraries: NextAuth.js, Passport.js,
             Auth0, Okta, AWS Cognito. Authentication has too many subtle security pitfalls to roll your own.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Storing JWT in localStorage:</strong> Vulnerable to XSS. Use HttpOnly cookies instead.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No token expiration:</strong> Tokens without expiration can be used indefinitely. Always
             set exp claim.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Weak session IDs:</strong> Predictable or short session IDs can be guessed. Use
             cryptographically secure random.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Missing HTTPS:</strong> Sending credentials or tokens over HTTP exposes them to
             interception.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not validating OAuth state:</strong> Missing state parameter allows CSRF attacks on OAuth
             flow.
@@ -753,24 +760,24 @@ export default function AuthenticationPatternsArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What&apos;s the difference between session-based and JWT authentication?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: <strong>Session-based:</strong> Server maintains session state in database/cache, client holds
               session ID in cookie. Stateful, requires session lookup on each request. <strong>JWT:</strong>
               Server issues signed token containing user claims, client stores and sends token. Stateless, no
               server-side state. Sessions are better for immediate revocation and simpler security. JWT is
               better for microservices, mobile apps, and distributed systems.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: Where should JWT tokens be stored and why?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>HttpOnly cookie (recommended):</strong> Protected from XSS (JavaScript can&apos;t
               read), automatically sent with requests, SameSite provides CSRF protection.
               <strong>localStorage:</strong> Easy access but vulnerable to XSS—any script can read and steal
               tokens. For most applications, HttpOnly cookies are more secure. Use localStorage only if you
               have strong XSS controls and need client-side token access.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -809,13 +816,13 @@ export default function AuthenticationPatternsArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q6: What is PKCE and when should you use it?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>PKCE (Proof Key for Code Exchange)</strong> is an OAuth 2.0 extension that prevents
               authorization code interception attacks. Client generates a code_verifier, hashes it to create
               code_challenge, sends challenge with authorization request, then sends verifier with token
               exchange. Server verifies they match. Originally for mobile/SPAs, now recommended for ALL
               Authorization Code flows (including server-side) as defense in depth.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

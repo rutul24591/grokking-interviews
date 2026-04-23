@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,12 +25,12 @@ export default function ClickjackingPreventionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Clickjacking</strong> (also known as &quot;UI redressing&quot;) is an attack where an
           attacker tricks a user into clicking on something different from what the user perceives they
           are clicking on. The attacker achieves this by loading the target website in a hidden or
           transparent iframe, overlaid with a decoy interface that appears legitimate to the user.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>How clickjacking works:</strong>
         </p>
@@ -56,35 +57,36 @@ export default function ClickjackingPreventionArticle() {
           It exploits the fundamental web capability of embedding content in frames—a feature essential
           for many legitimate use cases (embedded videos, maps, widgets) but dangerous when misused.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why clickjacking matters for staff/principal engineers:</strong> As a technical leader,
           you&apos;re responsible for protecting users from UI-level attacks. Clickjacking can lead to
           unauthorized actions, data theft, privilege escalation, and reputation damage. Understanding
           clickjacking enables you to implement appropriate defenses (X-Frame-Options, CSP frame-ancestors)
           and make informed decisions about when framing should be allowed.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Clickjacking Exploits User Trust</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Clickjacking doesn&apos;t exploit technical vulnerabilities—it exploits the user&apos;s trust
             in what they see on screen. The user willingly clicks, but they&apos;re clicking in the wrong
             context. Defense requires preventing your site from being embedded in untrusted frames.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Clickjacking Attack Mechanics</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Understanding how clickjacking attacks work is essential for implementing effective defenses.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Basic Clickjacking Attack</h3>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/clickjacking-attack-diagram.svg"
           alt="Clickjacking Attack Diagram showing decoy page with hidden iframe overlaid"
           caption="Clickjacking Attack: Attacker overlays transparent iframe of target site over decoy button. User clicks decoy, click goes to hidden iframe."
+          captionTier="important"
         />
 
         <p>
@@ -135,17 +137,17 @@ export default function ClickjackingPreventionArticle() {
 
       <section>
         <h2>Prevention: X-Frame-Options Header</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           X-Frame-Options is an HTTP response header that controls whether a page can be displayed in a
           frame. It&apos;s the original clickjacking defense, supported by all major browsers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">X-Frame-Options Directives</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">DENY</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The page cannot be displayed in any frame. Use case includes pages that should never be framed such as login pages, transaction confirmation pages, admin panels, and most modern web apps.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">SAMEORIGIN</h4>
         <p>
@@ -153,9 +155,9 @@ export default function ClickjackingPreventionArticle() {
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">ALLOW-FROM (Deprecated)</h4>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Page can be displayed in frames from specified origin. <strong>Deprecated</strong>—not supported in modern browsers (Chrome, Safari). Use CSP frame-ancestors instead. For example, <code className="text-sm">X-Frame-Options: ALLOW-FROM https://trusted-partner.com</code> is deprecated; use <code className="text-sm">Content-Security-Policy: frame-ancestors https://trusted-partner.com</code> instead.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Setting X-Frame-Options</h3>
         <p>
@@ -170,10 +172,10 @@ export default function ClickjackingPreventionArticle() {
           <li>
             <strong>No granular control:</strong> All-or-nothing approach (DENY or SAMEORIGIN)
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Being superseded by CSP:</strong> frame-ancestors is more flexible and is the
             recommended approach
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Still widely supported:</strong> Good fallback for older browsers that don&apos;t
             support CSP
@@ -182,26 +184,26 @@ export default function ClickjackingPreventionArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Use Both X-Frame-Options and CSP</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             X-Frame-Options is deprecated but widely supported. CSP frame-ancestors is modern and flexible.
             Use both for defense in depth: CSP for modern browsers, X-Frame-Options as fallback for older
             browsers.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Prevention: CSP frame-ancestors Directive</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code className="text-sm">frame-ancestors</code> directive in Content Security Policy is the
           modern replacement for X-Frame-Options. It provides more granular control over which origins can
           embed your pages.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">frame-ancestors Syntax</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The frame-ancestors directive supports several values: <code className="text-sm">frame-ancestors 'none'</code> blocks all framing, <code className="text-sm">frame-ancestors 'self'</code> allows same origin only, <code className="text-sm">frame-ancestors https://trusted-partner.com</code> allows a specific origin, <code className="text-sm">frame-ancestors 'self' https://partner1.com https://partner2.com</code> allows multiple origins, and <code className="text-sm">frame-ancestors *</code> allows any origin (NOT recommended as it defeats the protection).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">frame-ancestors vs X-Frame-Options</h3>
         <table className="w-full border-collapse">
@@ -250,20 +252,22 @@ export default function ClickjackingPreventionArticle() {
           src="/diagrams/system-design-concepts/frontend/security/frame-ancestors-protection.svg"
           alt="CSP frame-ancestors Protection showing allowed vs blocked framing attempts"
           caption="frame-ancestors Protection: Browser checks if framing origin is in allowed list. Blocks if not allowed."
+          captionTier="important"
         />
       </section>
 
       <section>
         <h2>Additional Defense: Frame Busting</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Frame busting (or &quot;frame killing&quot;) uses JavaScript to prevent a page from being framed.
           While not as reliable as HTTP headers, it provides defense in depth.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/clickjacking-prevention.svg"
           alt="Clickjacking Prevention Techniques showing X-Frame-Options, CSP frame-ancestors, and JavaScript Frame Busting with defense layers"
           caption="Clickjacking Prevention: Use CSP frame-ancestors as primary, X-Frame-Options as fallback, frame busting as client-side backup."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">JavaScript Frame Busting</h3>
@@ -273,10 +277,10 @@ export default function ClickjackingPreventionArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Limitations of Frame Busting</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Can be bypassed:</strong> Attackers can use sandbox attributes, disable JavaScript,
             or use proxy pages
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Breaks legitimate framing:</strong> If you need to allow framing from trusted origins,
             frame busting prevents it
@@ -294,15 +298,15 @@ export default function ClickjackingPreventionArticle() {
 
       <section>
         <h2>Secure Framing Patterns</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Sometimes you need to allow legitimate framing (embedded widgets, partner integrations). Here&apos;s
           how to do it securely.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Allowlisting Trusted Origins</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Use CSP to allow specific partners with <code className="text-sm">frame-ancestors 'self' https://partner1.com https://partner2.com https://embed.trusted-site.com</code>. Additionally verify the framing origin server-side by checking the Origin header against an allowlist of trusted origins and returning 403 Forbidden if the origin is not allowed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">PostMessage Communication</h3>
         <p>
@@ -310,9 +314,9 @@ export default function ClickjackingPreventionArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sandbox Attribute</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When you must embed untrusted content, use the sandbox attribute to restrict iframe capabilities. A restrictive sandbox (<code className="text-sm">sandbox</code> with no values) allows nothing. Selective permissions like <code className="text-sm">sandbox="allow-scripts allow-same-origin"</code> allow scripts and same-origin access. Avoid <code className="text-sm">allow-top-navigation</code> as it allows the iframe to navigate the parent page.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -320,10 +324,10 @@ export default function ClickjackingPreventionArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Default Deny Framing</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Start with DENY:</strong> Default to <code className="text-sm">X-Frame-Options: DENY</code>
             and <code className="text-sm">frame-ancestors 'none'</code>
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Allow selectively:</strong> Only allow framing where there&apos;s a specific business
             requirement
@@ -335,16 +339,16 @@ export default function ClickjackingPreventionArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Layer Defenses</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use both headers:</strong> CSP frame-ancestors + X-Frame-Options for maximum browser
             coverage
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Add frame busting:</strong> JavaScript defense as additional layer
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Verify server-side:</strong> Check Origin/Referer headers for sensitive operations
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Re-authenticate:</strong> Require password confirmation for sensitive actions
           </li>
@@ -387,11 +391,11 @@ export default function ClickjackingPreventionArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Defense in Depth</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             No single clickjacking defense is perfect. Combine CSP frame-ancestors, X-Frame-Options, CSRF
             tokens, SameSite cookies, and secure application design. Each layer provides protection if
             others fail.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -560,34 +564,34 @@ export default function ClickjackingPreventionArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What is clickjacking and how does it work?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Clickjacking is an attack where users are tricked into clicking on something different from
               what they perceive. Attacker loads target site in a transparent iframe overlaid with a decoy
               interface. User clicks decoy, but click goes to hidden iframe, performing unintended actions
               (transferring money, liking posts, changing settings). Defense: X-Frame-Options, CSP
               frame-ancestors.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q2: What&apos;s the difference between X-Frame-Options and CSP frame-ancestors?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: <strong>X-Frame-Options</strong> is older, simpler (DENY, SAMEORIGIN, or deprecated ALLOW-FROM).
               <strong>CSP frame-ancestors</strong> is modern, more flexible (multiple origins, wildcards).
               X-Frame-Options is deprecated but widely supported. CSP frame-ancestors is the recommended
               approach. Use both for defense in depth: CSP for modern browsers, X-Frame-Options as fallback.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q3: How would you protect a site from clickjacking?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Layered approach: (1) Set <code className="text-sm">X-Frame-Options: DENY</code> header.
               (2) Set CSP <code className="text-sm">frame-ancestors 'none'</code> (or allow specific origins).
               (3) Use SameSite cookies to limit cookie sending in frames. (4) Implement CSRF tokens for
               state-changing actions. (5) Require re-authentication for sensitive operations. (6) Use POST
               (not GET) for state changes. (7) Optional: JavaScript frame busting as additional layer.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

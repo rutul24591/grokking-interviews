@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,16 +25,16 @@ export default function SecureCookieAttributesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Definition & Context</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>HTTP cookies</strong> are small pieces of data (up to 4KB) that servers send to browsers for
           storage and subsequent inclusion in requests. Cookies are fundamental to web session management,
           authentication, personalization, and tracking. However, cookies are also a primary attack vector
           for session hijacking, CSRF, and XSS attacks.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Secure cookie attributes</strong> are flags that control how browsers handle cookies,
           providing critical security protections:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>HttpOnly:</strong> Prevents JavaScript access via <code className="text-sm">document.cookie</code>,
@@ -48,18 +49,18 @@ export default function SecureCookieAttributesArticle() {
             CSRF protection.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cookies have been part of the web since 1994 (Netscape specification). The security attributes
           were added incrementally: <code className="text-sm">Secure</code> (1997), <code className="text-sm">HttpOnly</code>
           (2002, Internet Explorer), <code className="text-sm">SameSite</code> (2016, Chrome). Understanding
           these attributes is essential because cookies remain the primary mechanism for web authentication,
           and misconfiguration is a leading cause of security breaches.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why secure cookie attributes matter for staff/principal engineers:</strong> As a technical
           leader, you&apos;re responsible for authentication architecture, session management strategies, and
           security hardening. Cookie security directly impacts:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Session security:</strong> Properly configured cookies prevent session hijacking
@@ -74,48 +75,49 @@ export default function SecureCookieAttributesArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Cookies Are Trust Tokens</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Treat cookies like cash—anyone who has them can spend them. A session cookie <strong>is</strong>
             the authentication. Protecting cookies with proper attributes is as important as protecting
             passwords. A stolen password can be changed; a stolen session cookie grants immediate access.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Cookie Security Attributes Deep Dive</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each cookie attribute provides a specific security guarantee. Understanding when and how to use
           each is essential for secure implementation.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/security/cookie-attributes-overview.svg"
           alt="Cookie Security Attributes overview showing HttpOnly, Secure, SameSite, Domain, Path, and Expires"
           caption="Cookie Security Attributes: Each attribute provides specific protection. Combine all three (HttpOnly, Secure, SameSite) for maximum security."
+          captionTier="important"
         />
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">HttpOnly Attribute</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code className="text-sm">HttpOnly</code> flag prevents client-side JavaScript from accessing
           the cookie via <code className="text-sm">document.cookie</code> API. This is the primary defense
           against XSS-based session theft.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">How HttpOnly Works</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without HttpOnly, a cookie like <code className="text-sm">sessionId=abc123</code> can be read by JavaScript via <code className="text-sm">document.cookie</code>, allowing an attacker's XSS payload to steal it by sending it to their server. With HttpOnly, the same cookie cannot be accessed by JavaScript—when <code className="text-sm">document.cookie</code> is called, the sessionId is not included, so an XSS payload cannot steal the session cookie.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">HttpOnly Protection Scope</h4>
         <ul className="space-y-2">
           <li>
             <strong>Protects against:</strong> XSS session theft, malicious script cookie access
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Does NOT protect against:</strong> CSRF (cookie is still sent automatically), network
             interception (use Secure flag), server-side vulnerabilities
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Browser support:</strong> Universal (all modern and legacy browsers)
           </li>
@@ -140,15 +142,15 @@ export default function SecureCookieAttributesArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Secure Attribute</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code className="text-sm">Secure</code> flag ensures cookies are only sent over encrypted
           HTTPS connections, preventing interception on insecure networks.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">How Secure Works</h4>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Without Secure, a cookie is sent over both HTTP and HTTPS connections, meaning an attacker on the same WiFi can intercept it. With Secure, the cookie is ONLY sent over HTTPS connections where it's encrypted with TLS and cannot be intercepted. HTTP requests do not include the cookie at all—no Cookie header is sent.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">Secure Attribute Requirements</h4>
         <ul className="space-y-2">
@@ -182,28 +184,28 @@ export default function SecureCookieAttributesArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">SameSite Attribute</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code className="text-sm">SameSite</code> attribute controls when cookies are sent with
           cross-origin requests, providing CSRF protection and limiting cross-site request capabilities.
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">SameSite Values</h4>
 
         <h5 className="mt-3 mb-2 font-semibold">SameSite=Strict</h5>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cookies are NEVER sent with cross-origin requests, including following links from external sites.
           When a user clicks a link from an external site to your site, the cookie is NOT sent so the user appears logged out. When a user types the URL directly or uses a bookmark, the cookie IS sent and the user is authenticated.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use case:</strong> Maximum security for highly sensitive applications (banking, healthcare)
           where CSRF risk outweighs UX impact.
         </p>
 
         <h5 className="mt-3 mb-2 font-semibold">SameSite=Lax (Default in Modern Browsers)</h5>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cookies are sent with top-level navigations (link clicks) but NOT with subrequests (images, forms,
           fetch). When a user clicks a link from an external site, the cookie IS sent. However, when an external site tries to make a subrequest like an image tag or submit a form to your site, the cookie is NOT sent providing CSRF protection.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Use case:</strong> Default for most applications. Good balance of security and UX.
         </p>
@@ -245,35 +247,35 @@ export default function SecureCookieAttributesArticle() {
 
       <section>
         <h2>Cookie-Based Session Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Cookies are the primary mechanism for web session management. Understanding how to securely
           implement cookie-based sessions is essential.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session Cookie Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A secure session cookie configuration includes the session ID value with attributes like <code className="text-sm">Path=/</code>, <code className="text-sm">Domain=example.com</code>, an expiration date, <code className="text-sm">HttpOnly</code>, <code className="text-sm">Secure</code>, and <code className="text-sm">SameSite=Lax</code>. In Node.js/Express, you would use the <code className="text-sm">res.cookie()</code> method with options like <code className="text-sm">httpOnly: true</code>, <code className="text-sm">secure: true</code>, <code className="text-sm">sameSite: 'lax'</code>, <code className="text-sm">maxAge</code> set to 24 hours in milliseconds, <code className="text-sm">path: '/'</code>, and <code className="text-sm">domain: 'example.com'</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session Cookie Best Practices</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Use random session IDs:</strong> Generate with cryptographically secure random (minimum
             128 bits)
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Set appropriate expiration:</strong> Short-lived sessions (hours, not weeks) reduce
             attack window
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement session rotation:</strong> Generate new session ID on login, privilege changes
           </li>
           <li>
             <strong>Bind sessions to context:</strong> Validate IP, user agent (with caveats for mobile)
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Implement logout:</strong> Server-side session invalidation, not just cookie deletion
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Use secure cookie name:</strong> Avoid generic names like <code className="text-sm">session</code>
             or <code className="text-sm">auth</code>
@@ -281,9 +283,9 @@ export default function SecureCookieAttributesArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Remember-Me / Persistent Cookies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Remember-me functionality requires longer-lived cookies with additional security considerations. A remember-me cookie includes a token value with a longer expiration (such as 1 year), along with <code className="text-sm">HttpOnly</code>, <code className="text-sm">Secure</code>, and <code className="text-sm">SameSite=Lax</code> attributes. Server-side, you should store the token hash in the database (not the raw token), associate it with the user account, implement token rotation on use, and allow users to revoke all tokens.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Security considerations:</strong>
         </p>
@@ -296,9 +298,9 @@ export default function SecureCookieAttributesArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">JWT in Cookies vs localStorage</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When using JWT for authentication, storage location impacts security:
-        </p>
+        </HighlightBlock>
 
         <h4 className="mt-4 mb-2 font-semibold">JWT in HttpOnly Cookie (Recommended)</h4>
         <ul className="space-y-2">
@@ -421,21 +423,21 @@ export default function SecureCookieAttributesArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cookie Configuration</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Always use all three attributes:</strong> HttpOnly + Secure + SameSite=Lax (minimum)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Set appropriate scope:</strong> Use specific Path and Domain, avoid wildcards
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use short expiration:</strong> Session cookies (2-24 hours), remember-me (7-30 days max)
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implement session rotation:</strong> New session ID on login, privilege changes, periodic
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use secure random values:</strong> Minimum 128 bits of entropy for session IDs
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Session Management</h3>
@@ -491,25 +493,25 @@ export default function SecureCookieAttributesArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">Key Insight: Defense in Depth for Cookies</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Cookie security requires multiple layers: HttpOnly prevents XSS theft, Secure prevents interception,
             SameSite prevents CSRF. But also implement server-side session validation, rate limiting, and
             monitoring. No single attribute provides complete protection.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Missing HttpOnly:</strong> Session cookies accessible to JavaScript can be stolen via XSS.
             Always use HttpOnly for authentication cookies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Missing Secure:</strong> Cookies sent over HTTP can be intercepted on public WiFi. Always
             use Secure in production.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SameSite=None without Secure:</strong> Modern browsers reject SameSite=None without Secure
             flag. Always pair them.
@@ -701,12 +703,12 @@ export default function SecureCookieAttributesArticle() {
 
       <section>
         <h2>Browser and Platform Compatibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cookie attribute support varies across browsers, requiring careful compatibility planning and fallback strategies.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>SameSite Support:</strong> SameSite supported in Chrome 51+, Firefox 60+, Safari 12.1+, Edge 79+. Chrome 80+ enforces SameSite=Lax as default for cookies without explicit attribute. For older browsers, SameSite is ignored (treated as no protection). Always combine SameSite with CSRF tokens for comprehensive protection. Test SameSite behavior across target browsers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Secure Flag Requirements:</strong> Secure flag supported in all browsers. However, Secure cookies don&apos;t work on localhost HTTP (use localhost HTTPS or omit Secure in development). Some testing tools strip Secure flag. Test Secure cookie behavior in staging environment before production deployment.
         </p>
@@ -716,9 +718,9 @@ export default function SecureCookieAttributesArticle() {
         <p>
           <strong>Mobile WebView Considerations:</strong> iOS WKWebView and Android WebView have separate cookie storage from system browsers. WKWebView uses HTTPCookieStorage. Test cookie behavior in actual app WebViews, not just mobile browsers. Consider using custom Authorization headers for mobile apps instead of cookie-based authentication.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Third-Party Cookie Deprecation:</strong> Chrome, Firefox, Safari are phasing out third-party cookies (2024-2025). SameSite=None cookies may be blocked in future browsers. Plan migration strategy: use first-party cookies, implement Storage Access API, or use server-side session correlation. Monitor browser announcements for third-party cookie deprecation timelines.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -726,13 +728,13 @@ export default function SecureCookieAttributesArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What are the three main cookie security attributes and what do they protect against?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: <strong>HttpOnly</strong> prevents JavaScript access via <code className="text-sm">document.cookie</code>,
               protecting against XSS-based session theft. <strong>Secure</strong> ensures cookies are only sent
               over HTTPS, preventing network interception. <strong>SameSite</strong> controls when cookies are
               sent with cross-origin requests, providing CSRF protection. Together they form a defense-in-depth
               strategy for cookie security.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
