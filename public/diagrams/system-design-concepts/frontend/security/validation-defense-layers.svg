@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" fill="none" stroke="#0f172a" stroke-width="2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" fill="none" stroke="#0f172a" stroke-width="1">
   <!-- Background -->
   <rect width="1000" height="650" fill="#ffffff"/>
   
   <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Input Validation & Sanitization Layers</text>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Input Validation &amp; Sanitization Layers</text>
   <text x="500" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">Defense-in-depth: Client, Server, Database, and Output validation</text>
   
   <!-- Layer 1: Client-Side -->
