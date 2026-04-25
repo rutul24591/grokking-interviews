@@ -964,358 +964,216 @@
 
 3.  System Design Problems
     a.  High-Level Design
-        1. Product & Requirement Scoping
-        •   Design the frontend architecture for a new SPA — how do you start?
-        •   How do you gather and document frontend requirements?
-        •   Performance vs velocity — how do you decide?
-        •   What frontend metrics define "success"?
-        •   How do you design feature rollout strategies?
-        •   Migration plan from legacy frontend to React.
-        •   Shared UI library vs per-team components.
-        •   i18n & RTL considerations at architecture level.
-        •   Supporting multiple client types (web, mobile web).
-        •   Designing frontend for A/B testing and experiments.
-        •   How do you define and enforce a frontend performance budget during product scoping?
-        •   Designing for regulatory requirements (HIPAA, SOX) in frontend architecture.
-        •   How do you scope frontend work for a greenfield product with uncertain requirements?
-        •   Frontend architecture for multi-geography product launches with different feature sets.
+        1. Core Product Systems
+        •   Design the frontend for a social media news feed
+        •   Design a multi-step checkout flow
+        •   Design a search UI with autocomplete, filters, and facets
+        •   Design a real-time dashboard frontend
+        •   Design a low-latency trading UI
+        •   Design cross-device user settings sync
+        •   Design a large file upload system with resume capability
+        •   Design a maps-based delivery tracking application
+        •   Design a document management system (preview, versioning, annotations)
+        •   Design a music/audio streaming frontend
+        •   Design a social media stories/reels feature
+        •   Design a multi-device session continuity system
+        •   Design a user onboarding & activation flow at scale
+        •   Design a personalized homepage/feed system
 
-        2. Frontend Architecture Patterns
-        •   Architecture for an e-commerce frontend.
-        •   Real-time analytics dashboard frontend.
-        •   SPA with SSR — architecture and trade-offs.
-        •   SSR vs SSG vs CSR decision making.
-        •   Multi-tenant / white-label frontend design.
-        •   Monorepo architecture for multiple React apps.
-        •   Micro-frontend architecture — boundaries.
-        •   Module Federation strategy.
-        •   Permission-based feature loading.
-        •   Frontend plugin architecture.
-        •   Island architecture (Astro-style partial hydration) — when and why?
-        •   Architecture for a frontend that must coexist with multiple frameworks (React + Vue + legacy jQuery).
-        •   Resumability vs hydration (Qwik-style) — trade-offs and applicability.
-        •   Frontend architecture for an internal developer portal / platform.
-        •   Event-driven frontend architecture using a client-side event bus.
+        2. Realtime & Collaboration Systems
+        •   Design a real-time collaborative whiteboard (Miro/Figma style)
+        •   Design a video conferencing frontend (Zoom/Google Meet)
+        •   Design a real-time multiplayer game lobby & matchmaking UI
+        •   Design a collaborative editor
+        •   Design an embedded chat system
+        •   Design a presence system (online/offline, typing indicators)
+        •   Design a cursor-sharing system (Figma-like)
+        •   Design a live commenting / annotation system
+        •   Design offline + realtime sync reconciliation system
 
-        3. Component System & Design Systems
-        •   Designing a scalable component library.
-        •   Versioning & governance of shared components.
-        •   Theming and design tokens.
-        •   Accessibility-first component systems.
-        •   High-level design of data-heavy components (tables, charts).
-        •   Third-party embeddable widgets.
-        •   Form system architecture.
-        •   Customization without forking components.
-        •   Internationalized component design.
-        •   Motion and animation consistency.
-        •   Federated design system across multiple business units / acquisitions.
-        •   Design system adoption metrics and governance dashboards.
-        •   Architecture for a headless component library (logic-only, BYO rendering).
-        •   Compound component patterns at scale — how to design flexible yet consistent APIs.
+        3. Platform / SDK / Infra Systems
+        •   Design an embeddable analytics SDK
+        •   Design a frontend SDK for third-party developers
+        •   Design a multi-tenant SaaS admin dashboard
+        •   Design a multi-brand design system
+        •   Design a frontend for a no-code / low-code builder
+        •   Design a frontend architecture for an internal developer platform
+        •   Design a frontend hosting platform dashboard (like Vercel)
+        •   Design a feature flag management system UI
+        •   Design a frontend observability dashboard (RUM like Datadog)
+        •   Design a plugin/extension marketplace UI
+        •   Design a multi-app monorepo management dashboard
 
-        4. State Management & Data Flow
-        •   Choosing a state management strategy.
-        •   Global vs local state boundaries.
-        •   Data caching & synchronization strategy.
-        •   Preventing unnecessary re-renders at scale.
-        •   Server-driven UI trade-offs.
-        •   GraphQL client architecture.
-        •   Infinite scroll vs pagination.
-        •   Cross-tab state synchronization.
-        •   Derived state & memoization strategy.
-        •   Multi-tab cart/session consistency.
-        •   State management for AI/LLM streaming responses in a chat UI.
-        •   URL-as-state architecture — when to make URL the single source of truth.
-        •   State machine / statechart-driven UI architecture (XState patterns).
-        •   Handling optimistic state rollback in complex multi-step workflows.
+        4. AI / Modern Systems
+        •   Design a frontend for an AI chatbot (streaming, history, multimodal)
+        •   Design a RAG-based UI system
+        •   Design a copilot-style AI assistant inside product UI
+        •   Design AI-powered search interface
+        •   Design an AI prompt management UI
+        •   Design a multi-agent workflow UI
+        •   Design an AI model comparison/testing interface
+        •   Design AI-generated content moderation UI
 
-        5. Data Fetching & API Integration
-        •   Fetch strategy for high latency networks.
-        •   Streaming & partial updates.
-        •   Cache invalidation strategy.
-        •   Offline-first data sync.
-        •   Auth token refresh handling.
-        •   Optimistic UI architecture.
-        •   Preventing overfetching.
-        •   GraphQL cache eviction policies.
-        •   Hybrid pre-render + runtime fetch.
-        •   Global error handling architecture.
-        •   Designing frontend for Server-Sent Events (SSE) vs WebSockets vs long polling.
-        •   API versioning strategy from the frontend consumer perspective.
-        •   Data prefetching architecture using route-based predictions.
-        •   Frontend architecture for consuming event-driven / async APIs (webhooks, polling fallback).
+        5. Media & Rich Content Systems
+        •   Design a video player system (adaptive streaming, DRM)
+        •   Design a rich text editor (Google Docs / Notion style)
+        •   Design a media upload + processing UI pipeline
+        •   Design a PDF viewer + annotation system
+        •   Design a content creation studio (image/video editing)
+        •   Design a live streaming platform UI
+        •   Design a short-video editing system
+        •   Design a canvas/WebGL-based design tool
 
-        6. Performance & Rendering Strategy
-        •   Designing for fast TTI (Time to Interactive).
-        •   Bundle size optimization.
-        •   Code splitting strategy.
-        •   Critical CSS & font loading.
-        •   Core Web Vitals strategy.
-        •   Image delivery architecture.
-        •   Web Workers usage strategy.
-        •   Animation performance architecture.
-        •   Network request prioritization.
-        •   Preventing layout thrashing.
-        •   React Server Components architecture and data flow.
-        •   Selective hydration strategy for large pages.
-        •   INP (Interaction to Next Paint) optimization architecture.
-        •   Long-task breaking strategies and scheduler API usage.
-        •   Virtual scrolling architecture for massive lists / grids.
+        6. E-commerce & Marketplace
+        •   Design Amazon / Flipkart frontend
+        •   Design product listing + recommendation system UI
+        •   Design cart + checkout at scale with concurrency
+        •   Design a subscription billing frontend
+        •   Design a dynamic pricing system UI
+        •   Design an inventory-aware UI (real-time stock updates)
+        •   Design an order tracking & returns system
 
-        7. Offline, PWA & Resilience
-        •   PWA architecture.
-        •   Service Worker caching strategy.
-        •   Conflict resolution for offline edits.
-        •   Offline UX design.
-        •   Background sync strategy.
-        •   Service Worker lifecycle management.
-        •   Graceful degradation design.
-        •   Cache version migrations.
-        •   Push notification architecture.
-        •   Progressive enhancement strategy.
-        •   Designing resilient UX for flaky / intermittent network conditions (e.g., elevators, tunnels).
-        •   Frontend circuit-breaker patterns for unreliable third-party APIs.
-        •   Architecture for installable desktop web apps (PWA + Electron trade-offs).
+        7. Social & Engagement
+        •   Design Instagram / Twitter frontend
+        •   Design notification system UI (multi-channel)
+        •   Design infinite scrolling feed with ranking
+        •   Design a user profile & follower system
+        •   Design a content moderation & reporting UI
+        •   Design a viral sharing / engagement system
 
-        8. Scalability & Client Constraints
-        •   Frontend scaling for millions of users.
-        •   Client CPU/memory budgeting.
-        •   Handling massive datasets on the client.
-        •   Preventing bundle size regressions.
-        •   Feature flag systems at scale.
-        •   CDN asset strategies.
-        •   Multi-locale asset delivery.
-        •   Cross-region latency considerations.
-        •   Edge vs browser logic decisions.
-        •   Realtime concurrency limits.
-        •   Frontend cost optimization — reducing CDN, edge compute, and bandwidth bills.
-        •   Designing for WebAssembly (WASM) integration in performance-critical frontend paths.
-        •   Memory leak detection and prevention architecture in long-lived SPAs.
-        •   Lazy module loading with dependency graphs at scale.
+        8. Enterprise / SaaS Systems
+        •   Design a CRM dashboard (Salesforce-like)
+        •   Design a project management tool (Jira/Asana)
+        •   Design a multi-role RBAC dashboard system
+        •   Design a workflow automation system (Zapier-like)
+        •   Design a form builder system
+        •   Design a reporting & analytics dashboard
+        •   Design a admin audit logs & activity tracking UI
 
-        9. Security & Privacy (Frontend)
-        •   XSS, CSRF, clickjacking defenses.
-        •   Content Security Policy design.
-        •   Token storage strategy.
-        •   GDPR/CCPA frontend compliance.
-        •   OAuth & SSO frontend flows.
-        •   PII masking in logs and telemetry.
-        •   Third-party script security.
-        •   Browser permission management.
-        •   Client-side rate limiting.
-        •   Frontend incident response planning.
-        •   Subresource Integrity (SRI) and supply-chain security for frontend dependencies.
-        •   Frontend architecture for zero-trust environments.
-        •   Secure handling of sensitive data in browser memory (credentials, tokens, PII).
-        •   Designing frontend audit trails and tamper-evident logging.
+        9. Search & Discovery Systems
+        •   Design Google-like search frontend
+        •   Design YouTube search + recommendation UI
+        •   Design faceted search for large datasets
+        •   Design a semantic search UI (AI-powered)
+        •   Design a search ranking experimentation UI
+        •   Design a search analytics dashboard
 
-        10. Realtime & Collaboration
-        •   Collaborative editor architecture.
-        •   Embedded chat widget design.
-        •   Presence & typing indicators.
-        •   WebSocket reconnection strategies.
-        •   Bandwidth-efficient realtime updates.
-        •   Subscription sharding.
-        •   Conflict resolution models (CRDT, OT).
-        •   QoS for realtime events.
-        •   Offline + realtime reconciliation.
-        •   Hybrid polling & push models.
-        •   Architecture for real-time multiplayer/interactive experiences on the web.
-        •   Cursor/pointer sharing and live collaboration overlays (Figma-style).
-        •   Designing notification systems — in-app, push, email orchestration from frontend perspective.
-        •   Realtime data visualization with streaming backends (e.g., live dashboards with 10k+ data points).
+        10. Data-Heavy Systems
+        •   Design a BI dashboard (Tableau-like)
+        •   Design real-time analytics with 10k+ data points
+        •   Design log monitoring UI (Datadog/Kibana)
+        •   Design a time-series visualization system
+        •   Design a large dataset exploration UI (millions of rows)
+        •   Design a alerting & anomaly detection dashboard
 
-        11. Testing, Quality & Releases
-        •   Frontend testing pyramid.
-        •   Accessibility testing strategy.
-        •   Canary deployments for frontend.
-        •   Visual regression testing.
-        •   Performance regression prevention.
-        •   Telemetry-gated releases.
-        •   Test data management.
-        •   Security scanning in CI.
-        •   UX sign-off workflows.
-        •   Experiment observability.
-        •   Contract testing between frontend and backend (Pact, schema validation).
-        •   Testing strategy for micro-frontends — integration across team boundaries.
-        •   Chaos engineering for frontend — simulating failures in CI/staging.
-        •   AI-assisted testing — auto-generating and maintaining test suites.
+        11. Messaging & Communication
+        •   Design WhatsApp Web / Slack frontend
+        •   Design email client (Gmail-like)
+        •   Design a threaded messaging system
+        •   Design a notification inbox system
+        •   Design a multi-channel communication hub
 
-        12. Observability & Monitoring
-        •   Frontend KPIs and dashboards.
-        •   Alerting strategies for frontend issues.
-        •   Client error tracking architecture.
-        •   Sampling strategies for high-traffic telemetry.
-        •   Frontend-backend distributed trace correlation.
-        •   Frontend SLO design.
-        •   Third-party performance monitoring.
-        •   Incident playbooks for frontend.
-        •   Experiment metrics and analysis.
-        •   Privacy-preserving telemetry.
-        •   Real User Monitoring (RUM) architecture at scale.
-        •   Session replay systems — architecture, privacy, and storage.
-        •   Anomaly detection in frontend metrics (auto-alerting on regressions).
-        •   Observability for Server Components and edge-rendered content.
+        12. Security, Auth & Privacy Systems
+        •   Design an authentication system (OAuth, SSO, MFA flows)
+        •   Design an account security dashboard (sessions, devices)
+        •   Design a permission & access control system UI
+        •   Design a privacy & consent management system
+        •   Design a secure token/session handling system
 
-        13. Build Systems & Developer Experience
-        •   CI/CD architecture for frontend.
-        •   Performance budgets in CI.
-        •   Prod-like local environments.
-        •   TypeScript adoption strategy.
-        •   Release coordination across packages.
-        •   Preview environments (per-PR deploys).
-        •   Dependency upgrade workflows.
-        •   Developer onboarding experience.
-        •   Reproducible builds.
-        •   CI test parallelization.
-        •   Migrating build tools (Webpack → Vite / Turbopack / RSPack) — strategy and risks.
-        •   Monorepo tooling architecture (Nx, Turborepo) — caching, task orchestration.
-        •   AI-powered developer tools integration (Copilot, Claude Code) in frontend DX.
-        •   Custom ESLint/linting rules as architectural guardrails.
+        13. Developer Experience Systems
+        •   Design a CI/CD dashboard (like GitHub Actions)
+        •   Design an API playground (like Postman)
+        •   Design a package registry UI (like npm)
+        •   Design a developer documentation system (like Notion)
 
-        14. Backend / Edge / CDN Integration
-        •   Edge rendering strategy.
-        •   CDN cache invalidation.
-        •   API gateway contracts.
-        •   Schema evolution strategy.
-        •   Backend failure fallbacks.
-        •   Streaming SSR & hydration.
-        •   Resource hints strategy (preload, prefetch, preconnect).
-        •   Cross-team release coordination.
-        •   Feature flag APIs.
-        •   Backend-for-Frontend (BFF) design.
-        •   Edge middleware architecture (Next.js middleware, Cloudflare Workers).
-        •   Multi-CDN strategy — failover, latency-based routing.
-        •   Frontend architecture for serverless backends (Lambda, edge functions).
-        •   Incremental Static Regeneration (ISR) — architecture and cache consistency.
+        14. Performance / Scale Edge Cases
+        •   Design frontend for 1M+ concurrent users
+        •   Design frontend for low-end devices (India scale)
+        •   Design offline-first system (poor network)
+        •   Design a multi-region frontend architecture
+        •   Design a graceful degradation system
+        •   Design a high-latency network optimized UI
+        •   Design a progressive hydration system
 
-        15. Mobile, Responsive & Cross-Platform
-        •   Responsive architecture.
-        •   Mobile performance constraints.
-        •   Web + React Native code sharing strategy.
-        •   Gesture & navigation systems.
-        •   Mobile asset optimization.
-        •   Layout breakpoint systems.
-        •   Battery-efficient UX.
-        •   Low-end device support.
-        •   Mobile offline UX.
-        •   Mobile conversion metrics.
-        •   Architecture for responsive email templates rendered from React.
-        •   Cross-platform design token synchronization (web, iOS, Android).
-        •   Container queries vs media queries — architectural implications.
-        •   Hybrid app architecture (WebView + native bridges) — communication and performance.
+        15. Cross-Platform & Mobile Systems
+        •   Design a responsive cross-device frontend architecture
+        •   Design a web + React Native shared system
+        •   Design a PWA with offline sync
+        •   Design a hybrid app (WebView + native bridge)
 
-        16. SEO, Accessibility & Content
-        •   SEO-friendly SPA architecture.
-        •   Metadata & structured data strategy.
-        •   Accessibility roadmap for a large application.
-        •   Assistive tech testing.
-        •   SEO with dynamic rendering.
-        •   ARIA patterns at scale.
-        •   Keyboard navigation architecture.
-        •   Multilingual SEO strategy.
-        •   Media CDN strategy.
-        •   Accessibility KPIs.
-        •   Content management system (CMS) integration architecture — headless CMS patterns.
-        •   Designing for screen reader performance in complex SPAs.
-        •   Architecture for AI-generated content rendering and SEO implications.
-        •   Focus management architecture for modals, drawers, and route transitions.
+        16. Experimentation & Growth Systems
+        •   Design an A/B testing platform UI
+        •   Design a feature rollout & experimentation system
+        •   Design a user funnel analytics dashboard
 
-        17. Third-Party Integrations
-        •   Third-party script governance.
-        •   Sandbox strategies for third-party code.
-        •   Analytics performance control.
-        •   Payment provider integration architecture.
-        •   Provider migration strategy.
-        •   Third-party outage handling.
-        •   Secure embed SDK design.
-        •   Consent management systems.
-        •   Third-party SLA monitoring.
-        •   Plugin API governance.
-        •   Designing a frontend SDK for external developers to embed your product.
-        •   Map provider integration (Google Maps, Mapbox) — performance and cost optimization.
-        •   Frontend architecture for AI/ML model inference (TensorFlow.js, ONNX Runtime Web).
-        •   Ad tech integration architecture — performance impact and user experience trade-offs.
+        17. Knowledge & Content Systems
+        •   Design a Medium-like article platform
+        •   Design a Q&A system (StackOverflow-like)
+        •   Design a learning platform (course + progress tracking)
 
-        18. Org, Governance & Process
-        •   Team ownership models for frontend.
-        •   Component ownership strategy.
-        •   Architecture Decision Records.
-        •   Performance budget enforcement.
-        •   Breaking change rollout processes.
-        •   Deprecation policies.
-        •   Production readiness reviews.
-        •   Frontend documentation strategy.
-        •   Mentoring frontend system design.
-        •   ROI estimation for re-architecture.
-        •   Inner-source model for frontend — enabling contributions across teams.
-        •   Frontend guild / community of practice structure.
-        •   Technical debt quantification and prioritization frameworks.
-        •   Architecture review boards for frontend — scope, cadence, decision-making.
+        18. Emerging & Future Systems
+        •   Design a Web3 wallet frontend (like MetaMask)
+        •   Design an AR/VR interface system
+        •   Design a voice-based UI system
+        •   Design a on-device AI inference UI
 
-        19. Interview-Style HLD Prompts
-        •   Design the frontend for a social media news feed.
-        •   Design a multi-step checkout flow.
-        •   Design a multi-brand design system.
-        •   Design a large file upload UI with resume capability.
-        •   Design a real-time dashboard frontend.
-        •   Design a search UI with autocomplete, filters, and facets.
-        •   Plan a REST → GraphQL migration.
-        •   Design a low-latency trading UI.
-        •   Design cross-device user settings sync.
-        •   Design an embeddable analytics SDK.
-        •   Design the frontend for an AI chatbot with streaming responses, history, and multi-modal input.
-        •   Design the frontend for a video conferencing application (Zoom/Meet-style).
-        •   Design a frontend for a no-code / low-code application builder.
-        •   Design a frontend for a real-time collaborative whiteboard (Miro/FigJam-style).
-        •   Design a frontend for a multi-tenant SaaS admin dashboard with role-based views.
-        •   Design the frontend for a music/audio streaming application.
-        •   Design a frontend for a real-time multiplayer game lobby and matchmaking system.
-        •   Design the frontend for a document management system with preview, versioning, and annotations.
-        •   Design a frontend for a maps-based delivery tracking application.
-        •   Design the frontend for a social media stories/reels feature.
+        19. Payments & Fintech Systems
+        •   Design a payment gateway integration UI (like Stripe checkout)
+        •   Design a UPI / wallet payment flow (India-specific scale)
+        •   Design a transaction history & reconciliation UI
+        •   Design a fraud detection / risk alert UI
 
-        20. Advanced Trade-offs & Meta Questions
-        •   Edge vs browser vs server logic — decision framework.
-        •   SPA vs MPA trade-offs.
-        •   Locale-specific UI structure.
-        •   Privacy vs personalization.
-        •   Class → Hooks migration.
-        •   Browser API deprecation handling.
-        •   Secure plugin marketplaces.
-        •   Marketing vs performance balance.
-        •   Designing for sudden 10× traffic.
-        •   On-device ML personalization.
-        •   Build vs buy decision framework for frontend infrastructure.
-        •   How do you evaluate and adopt new frontend frameworks/libraries at an org level?
-        •   Strangler fig pattern for incremental frontend rewrites.
-        •   React vs meta-frameworks (Next.js, Remix, Astro) — when to use what.
-        •   Technical debt vs feature velocity — how to make the case for refactoring.
-        •   Designing frontend architecture for acqui-hire / acquisition integration.
-        •   Frontend architecture for progressive web-to-native migration.
-        •   How would you future-proof a frontend architecture for the next 3-5 years?
+        20. Notification Delivery Platform
+        •   Design a unified notification platform (push + email + SMS + in-app)
+        •   Design user notification preferences system
+        •   Design priority-based notification delivery UI
 
-        21. AI, LLM & Emerging Tech in Frontend
-        •   Architecture for integrating LLM-powered features (chat, summarization, search) into existing frontends.
-        •   Streaming LLM responses — UI rendering, error handling, and cancellation.
-        •   Designing frontend for AI-generated content moderation and safety.
-        •   On-device AI inference architecture using WebGPU / WebNN.
-        •   Architecture for prompt management and AI feature flagging.
-        •   Frontend design for retrieval-augmented generation (RAG) interfaces.
-        •   Designing conversational UIs — state management, context windows, and multi-turn flows.
-        •   AI copilot integration in product UIs — inline suggestions, autocomplete, and smart defaults.
-        •   Architecture for A/B testing AI models behind the same frontend.
-        •   WebXR / AR frontend architecture and interaction design.
+        21. Scheduling & Calendar Systems
+        •   Design a calendar system (like Google Calendar)
+        •   Design a meeting scheduling system (like Calendly)
+        •   Design a resource booking system (rooms, slots, etc.)
 
-        22. Video, Media & Rich Content
-        •   Video player architecture — adaptive bitrate, DRM, and custom controls.
-        •   Architecture for a media upload pipeline (images, video, audio) with processing status.
-        •   Real-time audio/video processing in the browser (WebRTC, MediaStream API).
-        •   Canvas/WebGL rendering architecture for data-intensive visualizations.
-        •   Rich text editor architecture (Slate, ProseMirror, TipTap) — extensibility and collaboration.
-        •   Architecture for PDF viewing, annotation, and generation in the browser.
-        •   Designing a frontend for a content creation studio (image editing, video editing).
-        •   Lazy media loading and intersection observer architecture at scale.
+
+        22. File Storage / Cloud Drive Systems
+        •   Design a cloud storage UI (like Google Drive)
+        •   Design a file sharing & permission system
+        •   Design a file version history + restore system
+
+        23. Maps & Location Intelligence
+        •   Design a maps exploration UI (like Google Maps)
+        •   Design a location-based recommendation system
+        •   Design a route optimization UI
+
+        24. Ads & Monetization Systems
+        •   Design an ads delivery & targeting UI
+        •   Design an ads analytics dashboard
+        •   Design a creator monetization dashboard
+
+        25. Feature Configuration / Admin Systems
+        •   Design a dynamic config management UI
+        •   Design a remote app configuration system
+        •   Design a kill-switch / emergency control panel
+
+        26. Data Import / Export Systems
+        •   Design a bulk data import system (CSV/Excel uploads)
+        •   Design a data export/report generation system
+        •   Design a ETL pipeline monitoring UI
+
+        27. Error Handling & Reliability Systems
+        •   Design a global error handling & fallback UI system
+        •   Design a retry & failure recovery UX
+        •   Design a incident/debugging dashboard for users
+
+        28. Personalization Systems
+        •   Design a user personalization engine UI
+        •   Design a recommendation tuning system
+        •   Design a user preference learning system
+
+        29. Other
+        •   Design a survey/form analytics system
+        •   Design a customer support dashboard (Zendesk-like)
+        •   Design a feature usage analytics dashboard
+        •   Design a device/session management system
 
     b.  Low-Level Design
         1. Component-level / UI Pattern Questions
